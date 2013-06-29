@@ -257,7 +257,7 @@ namespace CSCore.CoreAudioAPI
         public unsafe int GetServiceInternal(Guid riid, out IntPtr ppv)
         {
             fixed(void* pppv = &ppv){
-                return InteropCalls.CallI(_basePtr, riid, pppv, ((void**)(*(void**)_basePtr))[14]);
+                return InteropCalls.CallI(_basePtr, ((void*)&riid), pppv, ((void**)(*(void**)_basePtr))[14]);
             }
         }
 

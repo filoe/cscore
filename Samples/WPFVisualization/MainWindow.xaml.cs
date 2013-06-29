@@ -136,7 +136,7 @@ namespace WPFVisualisation
                 var soundOut = _soundOut;
                 _soundOut = null;
                 soundOut.Stop();
-                //soundOut.Dispose();
+                soundOut.Dispose();
                 if(soundOut.WaveSource != null)
                     soundOut.WaveSource.Dispose();
             }

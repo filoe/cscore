@@ -2,7 +2,7 @@
 namespace CSCore.CoreAudioAPI
 {
     //WTypesbase.h
-    public enum ExecutionContext
+    public enum ExecutionContext : uint
     {
         CLSCTX_INPROC_SERVER = 0x1,
         CLSCTX_INPROC_HANDLER = 0x2,

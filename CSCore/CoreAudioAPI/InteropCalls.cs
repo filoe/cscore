@@ -113,5 +113,35 @@ namespace CSCore.CoreAudioAPI
         {
             throw new NotImplementedException();
         }
+
+        [CSCli]
+        internal static unsafe int CallI(void* _basePtr, Guid iid, ExecutionContext context, void* p1, void* ppinterface, void* p2)
+        {
+            throw new NotImplementedException();
+        }
+
+        [CSCli]
+        internal static unsafe int CallI(void* _basePtr, Guid iid, ExecutionContext context, IntPtr activationParams, IntPtr intPtr, void* p)
+        {
+            throw new NotImplementedException();
+        }
+
+        [CSCli]
+        internal static unsafe int CallI(void* _basePtr, IntPtr intPtr1, ExecutionContext context, IntPtr activationParams, IntPtr intPtr2, void* p)
+        {
+            throw new NotImplementedException();
+        }
+
+        [CSCli]
+        internal static unsafe int CallI(void* _basePtr, void* p1, ExecutionContext context, IntPtr activationParams, IntPtr intPtr, void* p2)
+        {
+            throw new NotImplementedException();
+        }
+
+        [CSCli]
+        internal static unsafe int CallI(void* _basePtr, AudioClientShareMode shareMode, AudioClientStreamFlags streamFlags, long hnsBufferDuration, long hnsPeriodicity, void* p1, void* psession, void* p2)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

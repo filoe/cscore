@@ -29,6 +29,7 @@
     <UseVSHostingProcess>true</UseVSHostingProcess>
     <DocumentationFile>
     </DocumentationFile>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -164,7 +165,6 @@
     <Compile Include="CoreAudioAPI\InteropCalls.cs" />
     <Compile Include="CoreAudioAPI\AudioClient.cs" />
     <Compile Include="CoreAudioAPI\AudioClientShareMode.cs" />
-    <Compile Include="CoreAudioAPI\Interop\InteropCalls.cs" />
     <Compile Include="CoreAudioAPI\MMDeviceCollection.cs" />
     <Compile Include="CoreAudioAPI\MMNotificationClient.cs" />
     <Compile Include="CoreAudioAPI\SimpleAudioVolume.cs" />
@@ -246,10 +246,10 @@
     <Compile Include="CoreAudioAPI\DataFlow.cs" />
     <Compile Include="CoreAudioAPI\DeviceState.cs" />
     <Compile Include="CoreAudioAPI\ExecutionContext.cs" />
-    <Compile Include="CoreAudioAPI\Interop\IMMDevice.cs" />
-    <Compile Include="CoreAudioAPI\Interop\IMMDeviceCollection.cs" />
-    <Compile Include="CoreAudioAPI\Interop\IMMDeviceEnumerator.cs" />
-    <Compile Include="CoreAudioAPI\Interop\IPropertyStore.cs" />
+    <Compile Include="CoreAudioAPI\IMMDevice.cs" />
+    <Compile Include="CoreAudioAPI\IMMDeviceCollection.cs" />
+    <Compile Include="CoreAudioAPI\IMMDeviceEnumerator.cs" />
+    <Compile Include="CoreAudioAPI\IPropertyStore.cs" />
     <Compile Include="CoreAudioAPI\PropertyKey.cs" />
     <Compile Include="CoreAudioAPI\PropertyVariant.cs" />
     <Compile Include="CoreAudioAPI\Role.cs" />
@@ -405,7 +405,9 @@
     <Compile Include="WaveAggregatorBase.cs" />
     <Compile Include="WaveFormat.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="CoreAudioAPI\Interop\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="SoundOut\DirectSound\dsound.h" />
     <Content Include="SoundOut\CoreAudio\WASAPI\Audioclient.h" />

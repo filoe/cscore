@@ -23,12 +23,17 @@ namespace CSCore.DMO
 
         public unsafe void SetInputType(int streamIndex, MediaType mediaType, SetTypeFlags flags, out int result)
         {
-            //void* pvalue = mediaType.HasValue ? &value : IntPtr.Zero.ToPointer();
-            result = InteropCalls.CalliMethodPtr(_basePtr, streamIndex, mediaType, flags, ((void**)(*(void**)_basePtr))[8]);
+            var ptr = ((void**)(*(void**)_basePtr))[8];
+            var ptr1 = mediaType.PtrFormat;
+            byte b = *(byte*)ptr1;
+
+            result = InteropCalls.CalliMethodPtr(_basePtr, streamIndex, 
+                ((void*)(&mediaType)), 
+                flags, ptr);
         }
 
         public void SetInputType(int streamIndex, MediaType mediaType, SetTypeFlags flags)
-        {
+        { 
             int result;
             SetInputType(streamIndex, mediaType, flags, out result);
             DmoException.Try(result, n, "SetInputType");
@@ -52,6 +57,8 @@ namespace CSCore.DMO
         public bool SupportsInputFormat(int streamIndex, MediaType mediaType)
         {
             int result;
+
+
             SetInputType(streamIndex, mediaType, SetTypeFlags.TestOnly, out result);
             switch ((DmoResult)result)
             {
@@ -74,7 +81,7 @@ namespace CSCore.DMO
         public unsafe void SetOutputType(int streamIndex, MediaType mediaType, SetTypeFlags flags, out int result)
         {
             //void* pvalue = mediaType.HasValue ? &value : IntPtr.Zero.ToPointer();
-            result = InteropCalls.CalliMethodPtr(_basePtr, streamIndex, mediaType, flags, ((void**)(*(void**)_basePtr))[9]);
+            result = InteropCalls.CalliMethodPtr(_basePtr, streamIndex, (void*)&mediaType, flags, ((void**)(*(void**)_basePtr))[9]);
         }
 
         public void SetOutputType(int streamIndex, MediaType mediaType, SetTypeFlags flags)
@@ -249,6 +256,12 @@ namespace CSCore.DMO
 
         [CSCli]
         internal static unsafe int CalliMethodPtr(void* _basePtr, void* pccm, void* p)
+        {
+            throw new NotImplementedException();
+        }
+
+        [CSCli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, int streamIndex, IntPtr intPtr, SetTypeFlags flags, void* ptr)
         {
             throw new NotImplementedException();
         }

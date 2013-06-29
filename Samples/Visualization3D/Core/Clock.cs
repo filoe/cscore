@@ -8,11 +8,10 @@ namespace Visualization3D.Core.Graphics
 {
     public class Clock
     {
-        #region Public Interface
+        private bool isRunning;
+        private readonly long frequency;
+        private long count;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Clock"/> class.
-        /// </summary>
         public Clock()
         {
             frequency = Stopwatch.Frequency;
@@ -40,14 +39,5 @@ namespace Visualization3D.Core.Graphics
 
             return result;
         }
-
-        #endregion
-        #region Implementation Detail
-
-        private bool isRunning;
-        private readonly long frequency;
-        private long count;
-
-        #endregion
     }
 }

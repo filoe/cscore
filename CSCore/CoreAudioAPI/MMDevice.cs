@@ -35,7 +35,8 @@ namespace CSCore.CoreAudioAPI
             pinterface = IntPtr.Zero;
             fixed (void* ppinterface = &pinterface)
             {
-                return InteropCalls.CallI(_basePtr, iid, context, activationParams, ppinterface, ((void**)(*(void**)_basePtr))[3]);
+                var result = InteropCalls.CallI(_basePtr, ((void*)&iid), context, activationParams, new IntPtr(ppinterface), ((void**)(*(void**)_basePtr))[3]);
+                return result;
             }
         }
 

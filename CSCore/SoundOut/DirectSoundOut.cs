@@ -97,7 +97,6 @@ namespace CSCore.SoundOut
             WaveFormat waveFormat = _waveSource.WaveFormat;
             int bufferSize = (int)waveFormat.MillisecondsToBytes(_latency);
             IntPtr handle = DSInterop.DirectSoundUtils.GetDesktopWindow();
-            //IntPtr handle = DSInterop.DirectSoundUtils.FindWindow(null, "Rechner");
 
             Guid device = Device;
             IntPtr pDirectSound;
@@ -107,7 +106,14 @@ namespace CSCore.SoundOut
             DirectSoundException.Try(_directSound.SetCooperativeLevel(handle, DSCooperativeLevelType.DSSCL_EXCLUSIVE),
                 "IDirectSound8", "SetCooperativeLevel");
             if (!_directSound.SupportsFormat(waveFormat))
-                throw new FormatException("Invalid WaveFormat. WaveFormat specified by parameter {source} is not supported by this DirectSound-Device");
+            {
+                if (_directSound.SupportsFormat(new WaveFormat(waveFormat.SampleRate, 16, waveFormat.Channels, waveFormat.WaveFormatTag)))
+                    source = source.ToSampleSource().ToWaveSource(16);
+                else if (_directSound.SupportsFormat(new WaveFormat(waveFormat.SampleRate, 8, waveFormat.Channels, waveFormat.WaveFormatTag)))
+                    source = source.ToSampleSource().ToWaveSource(8);
+                else
+                    throw new FormatException("Invalid WaveFormat. WaveFormat specified by parameter {source} is not supported by this DirectSound-Device");
+            }
 
             _primaryBuffer = new DirectSoundPrimaryBuffer(_directSound);
             _secondaryBuffer = new DirectSoundSecondaryBuffer(_directSound, waveFormat, bufferSize, false); //remove true

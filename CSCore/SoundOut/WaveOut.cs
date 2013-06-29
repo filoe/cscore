@@ -31,7 +31,7 @@ namespace CSCore.SoundOut
         public event EventHandler Stopped;
 
         int _device = 0;
-        protected IntPtr _hWaveOut;
+        protected volatile IntPtr _hWaveOut;
         protected object _lockObj = new object();
         IWaveSource _source;
         int _latency = 150;
@@ -142,14 +142,17 @@ namespace CSCore.SoundOut
         {
             if (_playbackState != SoundOut.PlaybackState.Stopped)
             {
+                _playbackState = SoundOut.PlaybackState.Stopped;
                 lock (_lockObj)
                 {
+                    var result = MMInterops.waveOutReset(_hWaveOut);
                     Context.Current.Logger.MMResult(
-                        MMInterops.waveOutReset(_hWaveOut),
+                        result,
                         "waveOutReset",
                         "WaveOut.Stop()");
                 }
-                _playbackState = SoundOut.PlaybackState.Stopped;
+
+                RaiseStopped();
             }
         }
 
@@ -166,7 +169,7 @@ namespace CSCore.SoundOut
 
         protected virtual void Callback(IntPtr handle, WaveMsg msg, UIntPtr user, WaveHeader header, UIntPtr reserved)
         {
-            if (_hWaveOut != handle) return; //nicht für diese waveout instanz
+            if (_hWaveOut != handle) return; //message does not belong to this waveout instance
             if (msg == WaveMsg.WOM_DONE)
             {
                 GCHandle hBuffer = (GCHandle)header.userData;
