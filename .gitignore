@@ -53,3 +53,7 @@ Packages/
 *.cd
 BuildArtefacts/
 TestProj/
+$tf/
+.git/
+commit.bat
+remove.bat

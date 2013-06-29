@@ -405,9 +405,7 @@
     <Compile Include="WaveAggregatorBase.cs" />
     <Compile Include="WaveFormat.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="CoreAudioAPI\Interop\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="SoundOut\DirectSound\dsound.h" />
     <Content Include="SoundOut\CoreAudio\WASAPI\Audioclient.h" />
