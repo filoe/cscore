@@ -1,0 +1,75 @@
+﻿using System;
+using System.Runtime.InteropServices;
+using System.Text;
+
+namespace CSCore.Codecs.MP3
+{
+    /// <summary>
+    /// Klasse die von WaveFormat abgeleitet ist und zusätzliche Informationen zu MP3 beinhaltet
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 2)]
+    public class Mp3Format : WaveFormat
+    {
+        public Mp3FormatId _id;
+        public Mp3PaddingFlags _flags;
+        public ushort _blockSize;
+        public ushort _framesPerBlock;
+        public ushort _codecDelay;
+
+        private const int Mp3WaveFormatExtraBytes = 12;
+
+        /// <summary>
+        /// Erstellt ein neues Mp3Format basierend auf SampleRate, Anzahl der Kanäle, Blockgröße und Bitrate
+        /// </summary>
+        /// <param name="sampleRate">sampleRate</param>
+        /// <param name="channels">channels</param>
+        /// <param name="blockSize">blockSize</param>
+        /// <param name="bitRate">bitRate</param>
+        public Mp3Format(int sampleRate, int channels, int blockSize, int bitRate)
+            : base(sampleRate, 0, channels, AudioEncoding.MpegLayer3, Mp3WaveFormatExtraBytes)
+        {
+            if (bitRate < 0)
+                throw new ArgumentOutOfRangeException("bitRate");
+
+            _bytesPerSecond = bitRate / 8;
+            blockAlign = 1; // must be 1
+
+            extraSize = Mp3WaveFormatExtraBytes;
+            _id = Mp3FormatId.Mpeg;
+            _flags = Mp3PaddingFlags.PaddingIso;
+            blockSize = (ushort)blockSize;
+            _framesPerBlock = 1;
+            _codecDelay = 0;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder builder = GetInformation();
+            builder.Append("|Mp3FormatID: " + _id);
+            builder.Append("|Mp3FormatFlags: " + _flags);
+            builder.Append("|BlockSize: " + _blockSize);
+            builder.Append("|FramesPerBlock: " + _framesPerBlock);
+            builder.Append("|CodecDelay: " + _codecDelay);
+
+            return builder.ToString();
+        }
+    }
+
+    /// <summary>
+    /// Padding Flags
+    /// </summary>
+    [Flags]
+    public enum Mp3PaddingFlags
+    {
+        PaddingIso = 0,
+        PaddingOn = 1,
+        PaddingOff = 2,
+    }
+
+    public enum Mp3FormatId : ushort
+    {
+        Unknown = 0,
+        Mpeg = 1,
+        ConstFrameSize = 2
+    }
+}
