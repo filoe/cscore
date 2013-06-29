@@ -69,9 +69,14 @@ namespace System.Runtime.InteropServices
             }
         }
 
+        protected virtual bool AssertOnNoDispose()
+        {
+            return true;
+        }
+
         ~ComObject()
         {
-            Debug.Assert(false, "ComObject.Dispose not called. Type: " + this.GetType().FullName);
+            Debug.Assert(!AssertOnNoDispose(), "ComObject.Dispose not called. Type: " + this.GetType().FullName);
             Dispose(false);
         }
     }

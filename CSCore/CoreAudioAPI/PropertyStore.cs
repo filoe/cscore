@@ -144,5 +144,10 @@ namespace CSCore.CoreAudioAPI
         {
             return GetEnumerator();
         }
+
+        protected override bool AssertOnNoDispose()
+        {
+            return false;
+        }
     }
 }

@@ -40,7 +40,9 @@ namespace WPFVisualisation
             {
                 _gain = value;
                 if (_gainSource != null)
+                {
                     _gainSource.Gain = (float)value;
+                }
             }
         }
 
@@ -56,13 +58,15 @@ namespace WPFVisualisation
             var ofn = new Microsoft.Win32.OpenFileDialog()
             {
                 Filter = CodecFactory.SupportedFilesFilterDE,
-                Title = "Datei auswählen"
+                Title = "Select file"
             };
 
             if (ofn.ShowDialog().GetValueOrDefault())
             {
+                openmenu.IsEnabled = false;
                 ShowBufferedIndicator(false);
                 OpenSource(CodecFactory.Instance.GetCodec(ofn.FileName));
+                openmenu.IsEnabled = true;
             }
         }
 
@@ -71,6 +75,7 @@ namespace WPFVisualisation
             StreamURLSelector streamSelector = new StreamURLSelector();
             if (streamSelector.ShowDialog().GetValueOrDefault())
             {
+                openmenu.IsEnabled = false;
                 Stop();
                 var stream = new Mp3WebStream(streamSelector.Value, true);
                 stream.ConnectionCreated += (s, args) =>
@@ -83,7 +88,10 @@ namespace WPFVisualisation
                             OpenSource(stream);
                         }));
                     }
-                    else MessageBox.Show("Es konnte keine Verbindung zum Server hergestellt werden.", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
+                    else
+                        MessageBox.Show("Connecting to server failed.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                    Dispatcher.Invoke(new Action(() => { openmenu.IsEnabled = true; }));
                 };
             }
         }
@@ -114,12 +122,12 @@ namespace WPFVisualisation
             }
             catch (CSCore.CoreAudioAPI.CoreAudioAPIException ex)
             {
-                MessageBox.Show("Unbekannter Fehler beim Abspielen: 0x" + ex.ErrorCode.ToString("x"), "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Unknown CoreAudioAPI-error: 0x" + ex.ErrorCode.ToString("x"), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Stop();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Unbekannter Fehler beim Abspielen: " + ex.Message, "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Unknown error: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Stop();
             }
         }

@@ -38,7 +38,7 @@ namespace WPFVisualisation
         }
 
         public static readonly DependencyProperty TextProperty =
-            DependencyProperty.Register("Text", typeof(string), typeof(StreamURLSelector), new PropertyMetadata("URL Eingeben"));
+            DependencyProperty.Register("Text", typeof(string), typeof(StreamURLSelector), new PropertyMetadata("Enter a URL: "));
 
 
         public string Value

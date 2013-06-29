@@ -80,5 +80,15 @@ namespace CSCore.CoreAudioAPI
                 _propertyStore = null;
             }
         }
+
+        protected override bool AssertOnNoDispose()
+        {
+            return false;
+        }
+
+        public override string ToString()
+        {
+            return PropertyStore[PropertyStore.FriendlyName].ToString();
+        }
     }
 }

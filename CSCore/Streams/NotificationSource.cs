@@ -7,7 +7,7 @@ namespace CSCore.Streams
 {
     public class NotificationSource : SampleSourceBase
     {
-        public EventHandler<BlockReadEventArgs<float>> BlockRead;
+        public event EventHandler<BlockReadEventArgs<float>> BlockRead;
 
         Queue<float> _buffer;
 
@@ -23,7 +23,7 @@ namespace CSCore.Streams
             }
         }
 
-        public NotificationSource(IWaveSource source)
+        public NotificationSource(IWaveStream source)
             : base(source)
         {
             BlockSize = (int)(source.WaveFormat.SampleRate * (40.0 / 1000.0));
@@ -46,7 +46,7 @@ namespace CSCore.Streams
                     {
                         float[] b = new float[BlockSize * WaveFormat.Channels];
                         for (int n = 0; n < b.Length; n++)
-                            b[i] = _buffer.Dequeue();
+                            b[n] = _buffer.Dequeue();
 
                         BlockRead(this, new BlockReadEventArgs<float>(b, b.Length));
 

@@ -8,9 +8,9 @@
     <DockPanel LastChildFill="True">
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
             <Menu DockPanel.Dock="Top">
-                <MenuItem Header="_Öffnen">
-                    <MenuItem Header="_Datei öffnen" Click="OnOpenFile"/>
-                    <MenuItem Header="_Stream abspielen" Click="OnOpenStream"/>
+                <MenuItem Header="_Open" x:Name="openmenu">
+                    <MenuItem Header="Open _File" Click="OnOpenFile"/>
+                    <MenuItem Header="Play _Stream" Click="OnOpenStream"/>
                 </MenuItem>
             </Menu>
             <Slider x:Name="sliderGain" Width="300" Minimum="0" Maximum="1.5" Value="{Binding Gain, Mode=TwoWay}"/>

@@ -78,6 +78,11 @@ namespace CSCore.CoreAudioAPI
             return InteropCalls.CallI(_basePtr, client, ((void**)(*(void**)_basePtr))[7]);
         }
 
+        protected override bool AssertOnNoDispose()
+        {
+            return false;
+        }
+
         [ComImport, Guid("BCDE0395-E52F-467C-8E3D-C4579291692E")]
         private class MMDeviceEnumeratorObject
         {
