@@ -5,9 +5,22 @@ using System.Text;
 
 namespace CSCore.Streams
 {
-    public class GainSource : SampleSourceBase
+    public class GainSource : SampleSourceBase, System.ComponentModel.INotifyPropertyChanged
     {
-        public float Gain { get; set; }
+        float _gain;
+        public float Gain
+        {
+            get { return _gain; }
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentOutOfRangeException("value");
+
+                _gain = value;
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs("Gain"));
+            }
+        }
 
         public GainSource(IWaveStream source)
             : base(source)
@@ -37,5 +50,7 @@ namespace CSCore.Streams
                     buffer[i] = 1;
             }
         }
+
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
     }
 }

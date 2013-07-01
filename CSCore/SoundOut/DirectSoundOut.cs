@@ -193,7 +193,7 @@ namespace CSCore.SoundOut
             lock (lockObj)
             {
                 if (_notifyManager != null)
-                    _notifyManager.Stop(100);
+                    _notifyManager.Stop(500);
                 if (_primaryBuffer != null)
                 {
                     _primaryBuffer.Stop();

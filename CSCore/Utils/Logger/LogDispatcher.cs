@@ -137,9 +137,10 @@ namespace CSCore.Utils.Logger
         [Flags]
         public enum MMLogFlag
         {
-            ThrowOnError,
-            ThrowNever,
-            LogAlways
+            ThrowOnError = 0x1,
+            ThrowNever = 0x2,
+            LogAlways = 0x4,
+            ThrowNeverLogAlways = ThrowNever | MMLogFlag.LogAlways
         }
 
         public override void Log(LoggerBase.LogLevel level, string msg)

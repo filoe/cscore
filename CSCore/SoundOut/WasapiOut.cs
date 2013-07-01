@@ -60,6 +60,8 @@ namespace CSCore.SoundOut
 				throw new ArgumentNullException("source");
 			_source = source;
 
+            UninitializeAudioClients();
+
 			_audioClient = AudioClient.FromMMDevice(Device);
 			_outputFormat = SetupWaveFormat(source.WaveFormat, _audioClient);
 
@@ -102,7 +104,7 @@ namespace CSCore.SoundOut
 				}
 				else if (PlaybackState == SoundOut.PlaybackState.Paused)
 				{
-					_playbackState = SoundOut.PlaybackState.Paused;
+					_playbackState = SoundOut.PlaybackState.Playing;
 				}
 			}
 		}
@@ -183,6 +185,9 @@ namespace CSCore.SoundOut
 							}
 						}
 					}
+					else 
+					{
+					}
 				}
 
 				Thread.Sleep(_latency / 2);
@@ -251,8 +256,8 @@ namespace CSCore.SoundOut
 			{
 				if (value == null)
 					throw new ArgumentNullException("value");
-				if (_device != null)
-					_device.Dispose();
+				//if (_device != null)
+				//	_device.Dispose();
 				_device = value;
 			}
 		}
@@ -347,6 +352,25 @@ namespace CSCore.SoundOut
 			return false;
 		}
 
+        private void UninitializeAudioClients()
+        {
+            if (_audioClient != null)
+			{
+				_audioClient.Dispose();
+				_audioClient = null;
+			}
+			if (_renderClient != null)
+			{
+				_renderClient.Dispose();
+				_renderClient = null;
+			}
+			if (_simpleAudioVolume != null)
+			{
+				_simpleAudioVolume.Dispose();
+				_simpleAudioVolume = null;
+			}
+        }
+
 		private bool _disposed;
 		public void Dispose()
 		{
@@ -362,21 +386,7 @@ namespace CSCore.SoundOut
 		protected virtual void Dispose(bool disposing)
 		{
 			Stop();
-			if (_audioClient != null)
-			{
-				_audioClient.Dispose();
-				_audioClient = null;
-			}
-			if (_renderClient != null)
-			{
-				_renderClient.Dispose();
-				_renderClient = null;
-			}
-			if (_simpleAudioVolume != null)
-			{
-				_simpleAudioVolume.Dispose();
-				_simpleAudioVolume = null;
-			}
+            UninitializeAudioClients();
 			if (_device != null)
 			{
 				_device.Dispose();

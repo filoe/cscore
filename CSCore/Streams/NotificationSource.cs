@@ -12,7 +12,10 @@ namespace CSCore.Streams
         Queue<float> _buffer;
 
         int _blockSize;
-        public int BlockSize
+        /// <summary>
+        /// Interval in blocks. One block equals on sample for each channel -> (channels * bitspersample) bits
+        /// </summary>
+        public int BlockCount
         {
             get { return _blockSize; }
             set
@@ -23,11 +26,25 @@ namespace CSCore.Streams
             }
         }
 
+        /// <summary>
+        /// Interval in milliseconds.
+        /// </summary>
+        public int Interval
+        {
+            get { return (int)(1000.0 * ((double)BlockCount / (double)WaveFormat.SampleRate)); }
+            set
+            {
+                int v = (int)(((double)(value * WaveFormat.SampleRate)) / 1000.0);
+                v = Math.Max(1, v);
+                BlockCount = v;
+            }
+        }
+
         public NotificationSource(IWaveStream source)
             : base(source)
         {
-            BlockSize = (int)(source.WaveFormat.SampleRate * (40.0 / 1000.0));
-            _buffer = new Queue<float>(BlockSize);
+            BlockCount = (int)(source.WaveFormat.SampleRate * (40.0 / 1000.0));
+            _buffer = new Queue<float>(BlockCount * source.WaveFormat.Channels);
         }
 
         public override int Read(float[] buffer, int offset, int count)
@@ -40,11 +57,11 @@ namespace CSCore.Streams
                 {
                     _buffer.Enqueue(buffer[i++]);
                 }
-                if (_buffer.Count >= BlockSize * WaveFormat.Channels)
+                if (_buffer.Count >= BlockCount * WaveFormat.Channels)
                 {
                     if (BlockRead != null)
                     {
-                        float[] b = new float[BlockSize * WaveFormat.Channels];
+                        float[] b = new float[BlockCount * WaveFormat.Channels];
                         for (int n = 0; n < b.Length; n++)
                             b[n] = _buffer.Dequeue();
 

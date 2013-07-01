@@ -238,6 +238,9 @@ namespace CSCore.SoundOut
 
         public virtual void Dispose(bool disposing)
         {
+            if (_hWaveOut == IntPtr.Zero)
+                return;
+
             Stop();
             lock (_lockObj)
             {
