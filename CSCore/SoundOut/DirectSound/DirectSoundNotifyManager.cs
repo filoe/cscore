@@ -125,8 +125,8 @@ namespace CSCore.SoundOut.DirectSound
 
         public void Dispose()
         {
-            Dispose(true);
             GC.SuppressFinalize(this);
+            Dispose(true);
         }
 
         protected virtual void Dispose(bool disposing)
@@ -140,6 +140,4 @@ namespace CSCore.SoundOut.DirectSound
             Dispose(false);
         }
     }
-
-
 }

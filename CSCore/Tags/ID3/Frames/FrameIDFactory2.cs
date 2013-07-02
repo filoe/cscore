@@ -738,7 +738,7 @@ namespace CSCore.Tags.ID3.Frames
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.OriginalReleaseYear,
-                ID3v4ID = null,
+                ID3v4ID = "TORY", //not supported in specification
                 ID3v3ID = "TORY",
                 ID3v2ID = "TOR",
                 Desc = "OriginalReleaseYear"
@@ -918,7 +918,7 @@ namespace CSCore.Tags.ID3.Frames
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.Year,
-                ID3v4ID = null,
+                ID3v4ID = "TYER",
                 ID3v3ID = "TYER",
                 ID3v2ID = "TYE",
                 Desc = "Year"

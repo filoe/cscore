@@ -6,6 +6,14 @@ namespace CSCore.Tags.ID3
     //http://id3.org/ID3v1
     public class ID3v1
     {
+        public static ID3v1 FromFile(string filename)
+        {
+            using (var stream = File.OpenRead(filename))
+            {
+                return FromStream(stream);
+            }
+        }
+
         public static ID3v1 FromStream(Stream stream)
         {
             if (stream == null)

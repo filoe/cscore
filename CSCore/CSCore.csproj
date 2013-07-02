@@ -189,6 +189,7 @@
     <Compile Include="Streams\GainSource.cs" />
     <Compile Include="Streams\MonoToSteroSource.cs" />
     <Compile Include="Streams\NotificationSource.cs" />
+    <Compile Include="Streams\PanSource.cs" />
     <Compile Include="Streams\SampleConverter\SampleToIeeeFloat32.cs" />
     <Compile Include="Streams\SampleConverter\SampleToPcm24.cs" />
     <Compile Include="Streams\SampleConverter\SampleToPcm8.cs" />

@@ -11,6 +11,14 @@ namespace CSCore.Tags.ID3
     //http://id3.org/id3v2.3.0
     public class ID3v2 : IEnumerable<Frame>
     {
+        public static ID3v2 FromFile(string filename)
+        {
+            using (var stream = File.OpenRead(filename))
+            {
+                return FromStream(stream);
+            }
+        }
+
         public static ID3v2 FromStream(Stream stream)
         {
             ID3v2 id3v2 = new ID3v2(stream);

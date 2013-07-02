@@ -93,9 +93,8 @@ namespace CSCore.SoundOut
         public void Initialize(IWaveSource source)
         {
             if (source == null) throw new ArgumentNullException("source");
-            _waveSource = source;
-            WaveFormat waveFormat = _waveSource.WaveFormat;
-            int bufferSize = (int)waveFormat.MillisecondsToBytes(_latency);
+            StopInternal();
+
             IntPtr handle = DSInterop.DirectSoundUtils.GetDesktopWindow();
 
             Guid device = Device;
@@ -105,15 +104,19 @@ namespace CSCore.SoundOut
             _directSound = new DirectSound8(pDirectSound);
             DirectSoundException.Try(_directSound.SetCooperativeLevel(handle, DSCooperativeLevelType.DSSCL_EXCLUSIVE),
                 "IDirectSound8", "SetCooperativeLevel");
-            if (!_directSound.SupportsFormat(waveFormat))
+            if (!_directSound.SupportsFormat(source.WaveFormat))
             {
-                if (_directSound.SupportsFormat(new WaveFormat(waveFormat.SampleRate, 16, waveFormat.Channels, waveFormat.WaveFormatTag)))
+                if (_directSound.SupportsFormat(new WaveFormat(source.WaveFormat.SampleRate, 16, source.WaveFormat.Channels, source.WaveFormat.WaveFormatTag)))
                     source = source.ToSampleSource().ToWaveSource(16);
-                else if (_directSound.SupportsFormat(new WaveFormat(waveFormat.SampleRate, 8, waveFormat.Channels, waveFormat.WaveFormatTag)))
+                else if (_directSound.SupportsFormat(new WaveFormat(source.WaveFormat.SampleRate, 8, source.WaveFormat.Channels, source.WaveFormat.WaveFormatTag)))
                     source = source.ToSampleSource().ToWaveSource(8);
                 else
                     throw new FormatException("Invalid WaveFormat. WaveFormat specified by parameter {source} is not supported by this DirectSound-Device");
             }
+
+            _waveSource = source;
+            WaveFormat waveFormat = _waveSource.WaveFormat;
+            int bufferSize = (int)waveFormat.MillisecondsToBytes(_latency);
 
             _primaryBuffer = new DirectSoundPrimaryBuffer(_directSound);
             _secondaryBuffer = new DirectSoundSecondaryBuffer(_directSound, waveFormat, bufferSize, false); //remove true
@@ -192,8 +195,6 @@ namespace CSCore.SoundOut
         {
             lock (lockObj)
             {
-                if (_notifyManager != null)
-                    _notifyManager.Stop(500);
                 if (_primaryBuffer != null)
                 {
                     _primaryBuffer.Stop();
@@ -205,6 +206,26 @@ namespace CSCore.SoundOut
                     _secondaryBuffer.Stop();
                     _secondaryBuffer.Dispose();
                     _secondaryBuffer = null;
+                }
+                if (_notifyManager != null)
+                {
+                    if (!_notifyManager.Stop(100))
+                    {
+                        _notifyManager.Stopped += (s, e) =>
+                        {
+                            (s as DirectSoundNotifyManager).Dispose();
+                        };
+                    }
+                    else
+                    {
+                        _notifyManager.Dispose();
+                    }
+                    _notifyManager = null;
+                }
+                if (_directSound != null)
+                {
+                    _directSound.Dispose();
+                    _directSound = null;
                 }
             }
             Context.Current.Logger.Info("DirectSoundOut playback stopped", "DirectSoundOut.StopInternal()");
