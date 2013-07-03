@@ -4,9 +4,6 @@ using System.Text;
 
 namespace CSCore.Codecs.MP3
 {
-    /// <summary>
-    /// Klasse die von WaveFormat abgeleitet ist und zusätzliche Informationen zu MP3 beinhaltet
-    /// </summary>
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 2)]
     public class Mp3Format : WaveFormat
     {
@@ -18,13 +15,6 @@ namespace CSCore.Codecs.MP3
 
         private const int Mp3WaveFormatExtraBytes = 12;
 
-        /// <summary>
-        /// Erstellt ein neues Mp3Format basierend auf SampleRate, Anzahl der Kanäle, Blockgröße und Bitrate
-        /// </summary>
-        /// <param name="sampleRate">sampleRate</param>
-        /// <param name="channels">channels</param>
-        /// <param name="blockSize">blockSize</param>
-        /// <param name="bitRate">bitRate</param>
         public Mp3Format(int sampleRate, int channels, int blockSize, int bitRate)
             : base(sampleRate, 0, channels, AudioEncoding.MpegLayer3, Mp3WaveFormatExtraBytes)
         {

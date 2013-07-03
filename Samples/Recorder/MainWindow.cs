@@ -12,8 +12,10 @@ using CSCore.Codecs.WAV;
 using CSCore.SoundOut;
 using CSCore;
 using CSCore.DSP;
+using CSCore.Streams;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace Recorder
 {
@@ -29,6 +31,9 @@ namespace Recorder
         WaveIn _waveIn;
         WaveWriter _writer;
         ISoundOut _soundOut;
+
+        IWaveSource _source;
+        byte[] _writerBuffer;
 
         private void deviceslist_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -54,14 +59,22 @@ namespace Recorder
             sfd.FileName = String.Empty;
             if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                _waveIn = new WaveInEvent(new CSCore.WaveFormat(44100, 16, _selectedDevice.Channels));
+                _waveIn = new WaveInEvent(new WaveFormat(44100, 16, _selectedDevice.Channels));
                 _waveIn.Device = deviceslist.SelectedItems[0].Index;
                 _writer = new WaveWriter(sfd.FileName, _waveIn.WaveFormat);
 
-                _waveIn.DataAvailable += OnNewData;
-
                 _waveIn.Initialize();
                 _waveIn.Start();
+
+                var waveInToSource = new WaveInSource(_waveIn);
+                var peak = new PeakMeter(waveInToSource);
+                peak.PeakCalculated += OnPeakCalculated;
+
+                _source = waveInToSource;
+                _source = peak.ToWaveSource(_waveIn.WaveFormat.BitsPerSample);
+                _writerBuffer = new byte[_source.WaveFormat.BytesPerSecond];
+
+                waveInToSource.DataAvailable += OnNewData;
 
                 btnStart.Enabled = false;
                 chbOutput.Enabled = true;
@@ -71,7 +84,13 @@ namespace Recorder
 
         private void OnNewData(object sender, DataAvailableEventArgs e)
         {
-            _writer.Write(e.Data, 0, e.ByteCount);
+            //_writer.Write(e.Data, 0, e.ByteCount);
+            Debug.WriteLine("OnNewData");
+            int read = 0;
+            while ((read = _source.Read(_writerBuffer, 0, _writerBuffer.Length)) > 0)
+            {
+                _writer.Write(_writerBuffer, 0, read);
+            }
         }
 
         private void btnStop_Click(object sender, EventArgs e)
@@ -128,10 +147,7 @@ namespace Recorder
                     {
                         _soundOut = new WaveOutWindow();
                     }
-                    IWaveSource source = new CSCore.Streams.WaveInSource(_waveIn);
-                    var peak = new PeakMeter(source);
-                    peak.PeakCalculated += MainWindow_BlockRead;
-                    source = peak.ToWaveSource(16);
+                    IWaveSource source = new CSCore.Streams.WaveInSource(_waveIn) { FillWithZeros = true };
                     _soundOut.Initialize(source);
                     _soundOut.Play();
                 }
@@ -146,10 +162,10 @@ namespace Recorder
             }
         }
 
-        void MainWindow_BlockRead(object sender, PeakCalculatedEventArgs e)
+        void OnPeakCalculated(object sender, PeakCalculatedEventArgs e)
         {
-            peakLeft.Value = (int)(e.MaxLeftPeak * peakLeft.Maximum);
-            peakRight.Value = (int)(e.MaxRightPeak * peakRight.Maximum);
+            peakLeft.BeginInvoke(new Action(() => { peakLeft.Value = (int)(e.MaxLeftPeak * peakLeft.Maximum); }));
+            peakRight.BeginInvoke(new Action(() => { peakRight.Value = (int)(e.MaxRightPeak * peakRight.Maximum); }));
         }
     }
 }

@@ -19,7 +19,7 @@ namespace CSCore.SoundIn
 		protected IntPtr handle;
 		protected MMInterops.WaveCallback _callback;
 		WaveFormat _waveFormat;
-		int _bufferSizeMs = 150;
+		int _bufferSizeMs = 100;
 		protected bool stopped = true;
 
 		int _bufferCount = 3;
@@ -54,7 +54,7 @@ namespace CSCore.SoundIn
 
 		public WaveIn(WaveFormat waveFormat)
 		{
-			//todo supported format?
+			//todo: supported format?
 			WaveFormat = waveFormat;
 		}
 
@@ -83,9 +83,7 @@ namespace CSCore.SoundIn
 			OnStart();
 		}
 
-		protected virtual void OnStart()
-		{
-		}
+		protected virtual void OnStart(){}
 
 		public void Stop()
 		{
@@ -93,6 +91,8 @@ namespace CSCore.SoundIn
 			{
 				stopped = true;
 				var result = MMInterops.waveInStop(Handle);
+				MmException.Try(result, "waveInStop");
+				OnStopping();
 				foreach (var buffer in _buffers)
 				{
 					if (buffer.Done)
@@ -104,6 +104,7 @@ namespace CSCore.SoundIn
 		}
 
 		protected virtual void OnStop() { }
+		protected virtual void OnStopping() { }
 
 		protected virtual void OpenWaveDevice(int device)
 		{
@@ -116,6 +117,7 @@ namespace CSCore.SoundIn
 		{
 			if (Handle == IntPtr.Zero) return;
 			var result = MMInterops.waveInReset(Handle);
+			MmException.Try(result, "waveInReset");
 			if (_buffers != null)
 			{
 				for (int i = 0; i < _buffers.Length; i++)
@@ -124,6 +126,7 @@ namespace CSCore.SoundIn
 				}
 			}
 			result = MMInterops.waveInClose(Handle);
+			MmException.Try(result, "waveInClose");
 			handle = IntPtr.Zero;
 		}
 
@@ -202,14 +205,9 @@ namespace CSCore.SoundIn
 
 		protected virtual void Dispose(bool disposing)
 		{
-			if(disposing)
-			{
-				//dispose managed
-				if (!stopped)
-					Stop();
-				CloseWaveDevice();
-			}
-
+			if (!stopped)
+				Stop();
+			CloseWaveDevice();
 		}
 
 		~WaveIn()

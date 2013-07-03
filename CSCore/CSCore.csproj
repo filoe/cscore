@@ -194,7 +194,6 @@
     <Compile Include="Streams\SampleConverter\SampleToPcm24.cs" />
     <Compile Include="Streams\SampleConverter\SampleToPcm8.cs" />
     <Compile Include="Streams\VolumeSource.cs" />
-    <Compile Include="Streams\AcmWaveFormatConverterSource.cs" />
     <Compile Include="Streams\WaveInSource.cs" />
     <Compile Include="Tags\ID3\Frames\BinaryFrame.cs" />
     <Compile Include="Tags\ID3\Frames\CommentAndLyricsFrame.cs" />

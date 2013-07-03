@@ -33,12 +33,12 @@
             this.columnName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnChannels = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnDriverVersion = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.peakRight = new System.Windows.Forms.ProgressBar();
+            this.peakLeft = new System.Windows.Forms.ProgressBar();
             this.chbOutput = new System.Windows.Forms.CheckBox();
             this.btnRefreshDevices = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
-            this.peakLeft = new System.Windows.Forms.ProgressBar();
-            this.peakRight = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.appContainer)).BeginInit();
             this.appContainer.Panel1.SuspendLayout();
             this.appContainer.Panel2.SuspendLayout();
@@ -90,12 +90,28 @@
             // 
             // columnChannels
             // 
-            this.columnChannels.Text = "Kanäle";
+            this.columnChannels.Text = "Channels";
             // 
             // columnDriverVersion
             // 
-            this.columnDriverVersion.Text = "Treiberversion";
+            this.columnDriverVersion.Text = "Driverversion";
             this.columnDriverVersion.Width = 80;
+            // 
+            // peakRight
+            // 
+            this.peakRight.Location = new System.Drawing.Point(14, 117);
+            this.peakRight.Maximum = 10000;
+            this.peakRight.Name = "peakRight";
+            this.peakRight.Size = new System.Drawing.Size(203, 13);
+            this.peakRight.TabIndex = 5;
+            // 
+            // peakLeft
+            // 
+            this.peakLeft.Location = new System.Drawing.Point(14, 98);
+            this.peakLeft.Maximum = 10000;
+            this.peakLeft.Name = "peakLeft";
+            this.peakLeft.Size = new System.Drawing.Size(203, 13);
+            this.peakLeft.TabIndex = 4;
             // 
             // chbOutput
             // 
@@ -103,9 +119,9 @@
             this.chbOutput.Enabled = false;
             this.chbOutput.Location = new System.Drawing.Point(14, 74);
             this.chbOutput.Name = "chbOutput";
-            this.chbOutput.Size = new System.Drawing.Size(112, 17);
+            this.chbOutput.Size = new System.Drawing.Size(100, 17);
             this.chbOutput.TabIndex = 3;
-            this.chbOutput.Text = "Realtime Ausgabe";
+            this.chbOutput.Text = "Realtime output";
             this.chbOutput.UseVisualStyleBackColor = true;
             this.chbOutput.CheckedChanged += new System.EventHandler(this.chbOutput_CheckedChanged);
             // 
@@ -117,7 +133,7 @@
             this.btnRefreshDevices.Name = "btnRefreshDevices";
             this.btnRefreshDevices.Size = new System.Drawing.Size(203, 23);
             this.btnRefreshDevices.TabIndex = 2;
-            this.btnRefreshDevices.Text = "Geräte aktualisieren";
+            this.btnRefreshDevices.Text = "Refresh devices";
             this.btnRefreshDevices.UseVisualStyleBackColor = true;
             this.btnRefreshDevices.Click += new System.EventHandler(this.btnRefreshDevices_Click);
             // 
@@ -130,7 +146,7 @@
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(203, 23);
             this.btnStop.TabIndex = 1;
-            this.btnStop.Text = "Aufnahme beenden";
+            this.btnStop.Text = "Stop recording";
             this.btnStop.UseVisualStyleBackColor = true;
             this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
@@ -143,25 +159,9 @@
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(203, 23);
             this.btnStart.TabIndex = 0;
-            this.btnStart.Text = "Aufnahme starten";
+            this.btnStart.Text = "Start recording";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
-            // 
-            // peakLeft
-            // 
-            this.peakLeft.Location = new System.Drawing.Point(14, 98);
-            this.peakLeft.Maximum = 10000;
-            this.peakLeft.Name = "peakLeft";
-            this.peakLeft.Size = new System.Drawing.Size(203, 13);
-            this.peakLeft.TabIndex = 4;
-            // 
-            // peakRight
-            // 
-            this.peakRight.Location = new System.Drawing.Point(14, 117);
-            this.peakRight.Maximum = 10000;
-            this.peakRight.Name = "peakRight";
-            this.peakRight.Size = new System.Drawing.Size(203, 13);
-            this.peakRight.TabIndex = 5;
             // 
             // MainWindow
             // 

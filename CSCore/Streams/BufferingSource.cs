@@ -9,10 +9,13 @@ namespace CSCore.Streams
 		FixedSizeBuffer<byte> _buffer;
 		volatile object _bufferlock = new object();
 
+        public bool FillWithZeros { get; set; }
+
 		public BufferingSource(WaveFormat waveFormat)
 		{
 			_waveFormat = waveFormat;
 			_buffer = new FixedSizeBuffer<byte>(waveFormat.BytesPerSecond * 5);
+            FillWithZeros = true;
 		}
 
 		public int Write(byte[] buffer, int offset, int count)
@@ -28,9 +31,16 @@ namespace CSCore.Streams
 			lock (_bufferlock)
 			{
 				int read = _buffer.Read(buffer, offset, count);
-				if (read < count)
-					Array.Clear(buffer, offset + read, count - read);
-				return count;
+                if (FillWithZeros)
+                {
+                    if (read < count)
+                        Array.Clear(buffer, offset + read, count - read);
+                    return count;
+                }
+                else
+                {
+                    return read;
+                }
 			}
 		}
 

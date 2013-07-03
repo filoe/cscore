@@ -60,7 +60,7 @@ namespace CSCore.SoundOut
 				throw new ArgumentNullException("source");
 			_source = source;
 
-            UninitializeAudioClients();
+			UninitializeAudioClients();
 
 			_audioClient = AudioClient.FromMMDevice(Device);
 			_outputFormat = SetupWaveFormat(source.WaveFormat, _audioClient);
@@ -352,9 +352,9 @@ namespace CSCore.SoundOut
 			return false;
 		}
 
-        private void UninitializeAudioClients()
-        {
-            if (_audioClient != null)
+		private void UninitializeAudioClients()
+		{
+			if (_audioClient != null)
 			{
 				_audioClient.Dispose();
 				_audioClient = null;
@@ -369,7 +369,7 @@ namespace CSCore.SoundOut
 				_simpleAudioVolume.Dispose();
 				_simpleAudioVolume = null;
 			}
-        }
+		}
 
 		private bool _disposed;
 		public void Dispose()
@@ -386,7 +386,7 @@ namespace CSCore.SoundOut
 		protected virtual void Dispose(bool disposing)
 		{
 			Stop();
-            UninitializeAudioClients();
+			UninitializeAudioClients();
 			if (_device != null)
 			{
 				_device.Dispose();

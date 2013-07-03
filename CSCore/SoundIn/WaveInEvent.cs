@@ -7,6 +7,7 @@ namespace CSCore.SoundIn
     public class WaveInEvent : WaveIn
     {
         AutoResetEvent _event;
+        Thread _thread;
 
         public WaveInEvent()
             : this(new WaveFormat())
@@ -27,7 +28,9 @@ namespace CSCore.SoundIn
 
         protected override void OnStart()
         {
-            ThreadPool.QueueUserWorkItem(new WaitCallback(EventProc));
+            //ThreadPool.QueueUserWorkItem(new WaitCallback(EventProc));
+            _thread = new Thread(new ParameterizedThreadStart(EventProc));
+            _thread.Start();
         }
 
         protected override void OnStop()
@@ -35,33 +38,31 @@ namespace CSCore.SoundIn
             _event.Set();
         }
 
+        protected override void OnStopping()
+        {
+            _event.Set();
+            _thread.Join(100);
+            _thread = null;
+        }
+
         private void EventProc(object o)
         {
-            try
+            while (!stopped)
             {
-                while (!stopped)
+                if (_event.WaitOne())
                 {
-                    if (_event.WaitOne())
+                    foreach (var buffer in _buffers)
                     {
-                        foreach (var buffer in _buffers)
+                        if (buffer.Done)
                         {
-                            if (buffer.Done)
-                            {
-                                RaiseDataAvailable(buffer);
-                                buffer.Reset();
-                            }
+                            RaiseDataAvailable(buffer);
+                            buffer.Reset();
                         }
                     }
                 }
             }
-            catch (Exception)
-            {
-            }
-            finally
-            {
-                stopped = true;
-                RaiseStopped();
-            }
+            stopped = true;
+            RaiseStopped();
         }
     }
 }

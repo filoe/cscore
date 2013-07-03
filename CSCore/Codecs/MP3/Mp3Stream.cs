@@ -20,7 +20,7 @@ namespace CSCore.Codecs.MP3
         long dataLength = 0;
         double bitRate = 0.0; //double um möglichst wenig Rundungsfehler zu erzeugen
         int bytesPerSample = 0; //BitsPerSample / 8 * Channel
-        byte[] pcmDstBuffer; //Buffer in den die convertierten pcm bytes kommen
+        byte[] pcmDstBuffer; //Buffer in den die konvertierten pcm bytes kommen
         byte[] _frameBuffer;
 
         const short SamplesPerFrame = 1152;
