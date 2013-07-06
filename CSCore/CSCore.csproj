@@ -161,6 +161,7 @@
     <None Include="Codecs\VORBIS\IdentificationPacket.cs" />
     <None Include="Codecs\VORBIS\SetupHeader.cs" />
     <None Include="Codecs\VORBIS\VorbisException.cs" />
+    <Compile Include="Codecs\RAW\RawDataReader.cs" />
     <Compile Include="CoreAudioAPI\AudioRenderClient.cs" />
     <Compile Include="CoreAudioAPI\InteropCalls.cs" />
     <Compile Include="CoreAudioAPI\AudioClient.cs" />

@@ -39,6 +39,7 @@ namespace CSCore.Codecs.WAV
 				char[] rifftype = reader.ReadChars(4); //RiffType WAVE
 			}
 
+
 			_chunks = ReadChunks(stream);
 			lockObj = new object();
 		}

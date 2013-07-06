@@ -56,3 +56,4 @@ $tf/
 .git/
 commit.bat
 remove.bat
+*.opensdf
