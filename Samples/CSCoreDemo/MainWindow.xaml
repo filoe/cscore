@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:viewmodel="clr-namespace:CSCoreDemo.ViewModel"
+        xmlns:cscore="clr-namespace:CSCore.Visualization.WPF;assembly=CSCore.Visualization"
         Title="MainWindow" Height="350" Width="525" DataContext="{x:Static viewmodel:MainViewModel.Main}"
         Closing="Window_Closing">
     <Grid>
@@ -18,12 +19,42 @@
                 <Button Content="Pause" Command="{Binding PauseCommand}"/>
                 <Button Content="Stop" Command="{Binding StopCommand}"/>
             </StackPanel>
+            <UniformGrid DockPanel.Dock="Top" Rows="2" Columns="2">
+                <!--<Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>-->
+                <Grid Margin="0,0,2,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Target="{Binding ElementName=volume}" Content="Volume: "/>
+                    <Slider Grid.Column="1" Name="volume" Value="{Binding SoundModificationViewModel.Volume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="1"
+                        Grid.Row="0" VerticalAlignment="Center" AutoToolTipPlacement="BottomRight" AutoToolTipPrecision="2"/>
+                </Grid>
+                <Grid Margin="2,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Target="{Binding ElementName=pan}" Content="Pan: "/>
+                    <Slider Value="{Binding SoundModificationViewModel.Pan, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="-1" Maximum="1"
+                        Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" AutoToolTipPlacement="BottomRight" AutoToolTipPrecision="2"/>
+                </Grid>
+
+                <ComboBox ItemsSource="{Binding SoundOutTypes}" SelectedItem="{Binding SelectedSoundOutType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="0,0,2,0" />
+                <ComboBox ItemsSource="{Binding Devices}" SelectedItem="{Binding Device, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="2,0,0,0"/>
+            </UniformGrid>
             <StackPanel DockPanel.Dock="Top">
-                <Slider Value="{Binding SoundModificationViewModel.Volume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="1"/>
-                <Slider Value="{Binding SoundModificationViewModel.Pan, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="-1" Maximum="1"/>
-                <ComboBox ItemsSource="{Binding SoundOutTypes}" SelectedItem="{Binding SelectedSoundOutType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                <ComboBox ItemsSource="{Binding Devices}" SelectedItem="{Binding Device, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                <UniformGrid Columns="2">
+                </UniformGrid>
             </StackPanel>
+            <Border DockPanel.Dock="Left" BorderThickness="0,0,2,0" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
             <StackPanel DataContext="{Binding TagViewModel}">
                 <TextBlock Text="{Binding Title, StringFormat=Title: \{0\}, TargetNullValue=&lt;no value&gt;}"/>
                 <TextBlock Text="{Binding Artist, StringFormat=Artist: \{0\}, TargetNullValue=&lt;no value&gt;}"/>
@@ -33,6 +64,11 @@
                 <TextBlock Text="{Binding Genre, StringFormat='Genre: \{0\}', TargetNullValue=&lt;no value&gt;}"/>
                 <Image Source="{Binding Image}" Width="150" Height="150"/>
             </StackPanel>
+            </Border>
+            <UniformGrid Rows="2">
+                <cscore:WaveForm DataProvider="{Binding VisualizationViewModel.SampleDataProvider, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                <cscore:Point3DSpectrum DataProvider="{Binding VisualizationViewModel.FFTDataProvider, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+            </UniformGrid>
         </DockPanel>
     </Grid>
 </Window>

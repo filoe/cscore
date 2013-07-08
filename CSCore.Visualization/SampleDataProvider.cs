@@ -12,8 +12,11 @@ namespace CSCore.Visualization
         ISampleSource _source;
 
         Queue<float> _sampleBuffer;
+        Queue<float> _sampleBuffer1;
 
         public event EventHandler<BlockReadEventArgs> BlockRead;
+
+        object _lockObj = new object();
 
         int _blockSize;
         public int BlockSize
@@ -21,10 +24,20 @@ namespace CSCore.Visualization
             get { return _blockSize; }
             set
             {
-                if (value < 1)
-                    throw new ArgumentOutOfRangeException("value");
-                _blockSize = value;
+                lock (_lockObj)
+                {
+                    if (value < 1)
+                        throw new ArgumentOutOfRangeException("value");
+                    _blockSize = value;
+                }
             }
+        }
+
+        SampleDataProviderMode _mode = SampleDataProviderMode.Merge;
+        public SampleDataProviderMode Mode
+        {
+            get { return _mode; }
+            set { lock (_lockObj) { _mode = value; } }
         }
 
         public SampleDataProvider(IWaveStream source)
@@ -44,22 +57,36 @@ namespace CSCore.Visualization
             _source = source as ISampleSource;
             BlockSize = (int)(source.WaveFormat.SampleRate * (40.0 / 1000.0));
             _sampleBuffer = new Queue<float>();
+            _sampleBuffer1 = new Queue<float>();
         }
 
         public int Read(float[] buffer, int offset, int count)
         {
-            int read = _source.Read(buffer, offset, count);
-
-            for (int n = 0; n < read; n += WaveFormat.Channels)
+            lock (_lockObj)
             {
-                _sampleBuffer.Enqueue(buffer[n]);
-                if (_sampleBuffer.Count >= BlockSize)
-                {
-                    RaiseBlockRead();
-                }
-            }
+                int read = _source.Read(buffer, offset, count);
 
-            return read;
+                for (int n = 0; n < read; n += WaveFormat.Channels)
+                {
+                    if (WaveFormat.Channels > 1)
+                    {
+                        if (Mode != SampleDataProviderMode.Left && Mode != SampleDataProviderMode.Merge)
+                            _sampleBuffer1.Enqueue(buffer[n + 1]);
+                        else if (Mode == SampleDataProviderMode.Merge)
+                            _sampleBuffer.Enqueue((buffer[n] + buffer[n + 1]) / 2f);
+                    }
+                    if(Mode != SampleDataProviderMode.Right && Mode != SampleDataProviderMode.Merge)
+                    {
+                        _sampleBuffer.Enqueue(buffer[n]);
+                    }
+                    if (_sampleBuffer.Count >= BlockSize || _sampleBuffer1.Count > BlockSize)
+                    {
+                        RaiseBlockRead();
+                    }
+                }
+
+                return read;
+            }
         }
 
         public WaveFormat WaveFormat
@@ -91,16 +118,38 @@ namespace CSCore.Visualization
 
         private void RaiseBlockRead()
         {
-            float[] data = new float[BlockSize];
-            for (int i = 0; i < data.Length; i++)
+            float[] data = null;
+            if (Mode != SampleDataProviderMode.Right)
             {
-                data[i] = _sampleBuffer.Dequeue();
+                data = new float[BlockSize];
+                for (int i = 0; i < data.Length; i++)
+                {
+                    data[i] = _sampleBuffer.Dequeue();
+                }
+            }
+
+            float[] data1 = null;
+            if (Mode != SampleDataProviderMode.Left && Mode != SampleDataProviderMode.Merge)
+            {
+                data1 = new float[BlockSize];
+                for (int i = 0; i < data1.Length; i++)
+                {
+                    data1[i] = _sampleBuffer1.Dequeue();
+                }
             }
 
             if (BlockRead != null)
             {
-                BlockRead(this, new BlockReadEventArgs(data));
+                BlockRead(this, new BlockReadEventArgs(data, data1));
             }
         }
+    }
+
+    public enum SampleDataProviderMode
+    {
+        Left,
+        Right,
+        LeftAndRight,
+        Merge
     }
 }

@@ -24,8 +24,8 @@ namespace CSCore.Visualization.WPF
             }
             set
             {
-                if (value == null)
-                    throw new ArgumentNullException("value");
+                //if (value == null)
+                //    throw new ArgumentNullException("value");
 
                 if (DataProvider != null)
                 {
@@ -33,7 +33,8 @@ namespace CSCore.Visualization.WPF
                 }
 
                 SetValue(DataProviderProperty, value);
-                DataProvider.FFTCalculated += Update;
+                if (value != null)
+                    DataProvider.FFTCalculated += Update;
             }
         }
 
@@ -61,6 +62,13 @@ namespace CSCore.Visualization.WPF
         }
 
         protected abstract void OnUpdate(double[] values);
+
+        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        {
+            base.OnPropertyChanged(e);
+            if (e.Property == DataProviderProperty)
+                DataProvider = e.NewValue as FFTDataProvider;
+        }
 
         private bool _disposed;
 		public void Dispose()

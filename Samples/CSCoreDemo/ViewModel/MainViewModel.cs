@@ -26,6 +26,13 @@ namespace CSCoreDemo.ViewModel
             set { SetProperty(value, ref _soundModificationViewModel, () => SoundModificationViewModel); }
         }
 
+        VisualizationViewModel _visualizationViewModel;
+        public VisualizationViewModel VisualizationViewModel
+        {
+            get { return _visualizationViewModel ?? (_visualizationViewModel = new VisualizationViewModel()); }
+            set { SetProperty(value, ref _visualizationViewModel, () => VisualizationViewModel); }
+        }
+
         AudioPlayer _audioPlayer;
         public AudioPlayer AudioPlayer
         {
@@ -106,7 +113,7 @@ namespace CSCoreDemo.ViewModel
             ofn.Filter = CodecFactory.SupportedFilesFilterEN;
             if (ofn.ShowDialog().Value)
             {
-                AudioPlayer.OpenFile(ofn.FileName);
+                AudioPlayer.OpenFile(ofn.FileName, (s) => VisualizationViewModel.InitializeVisualization(s));
                 TagViewModel.LoadTags(ofn.FileName);
             }
         }

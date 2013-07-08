@@ -10,108 +10,113 @@ using CSCore.SoundOut;
 
 namespace CSCoreDemo.Model
 {
-    public class AudioPlayer : IDisposable
-    {
-        PanSource _panSource;
+	public class AudioPlayer : IDisposable
+	{
+		PanSource _panSource;
 
-        public void SetupAudioPlayer(SoundOutType soundOutType)
-        {
-            SoundOutManager.CreateSoundOut(soundOutType);
-        }
+		public void SetupAudioPlayer(SoundOutType soundOutType)
+		{
+			SoundOutManager.CreateSoundOut(soundOutType);
+		}
 
-        public void OpenFile(string filename)
-        {
-            if (String.IsNullOrWhiteSpace(filename))
-                throw new ArgumentException("filename");
+		public void OpenFile(string filename, Func<IWaveSource, IWaveSource> oninitcallback)
+		{
+			if (String.IsNullOrWhiteSpace(filename))
+				throw new ArgumentException("filename");
 
-            var source = CodecFactory.Instance.GetCodec(filename);
-            _panSource = new PanSource(source){ Pan = this.Pan };
+			var source = CodecFactory.Instance.GetCodec(filename);
+            if (source.WaveFormat.Channels == 1)
+                source = new MonoToStereoSource(source).ToWaveSource(16);
+			_panSource = new PanSource(source){ Pan = this.Pan };
 
-            SoundOutManager.Initialize(_panSource.ToWaveSource(24));
-        }
+            if (oninitcallback != null)
+                SoundOutManager.Initialize(oninitcallback(_panSource.ToWaveSource(16)));
+            else
+			    SoundOutManager.Initialize(_panSource.ToWaveSource(16));
+		}
 
-        public void Play()
-        {
-            SoundOutManager.Play();
-        }
+		public void Play()
+		{
+			SoundOutManager.Play();
+		}
 
-        public void Pause()
-        {
-            SoundOutManager.Pause();
-        }
+		public void Pause()
+		{
+			SoundOutManager.Pause();
+		}
 
-        public void Stop()
-        {
-            SoundOutManager.Stop();
-        }
+		public void Stop()
+		{
+			SoundOutManager.Stop();
+		}
 
-        public bool CanPlay
-        {
-            get { return SoundOutManager.IsInitialized && !SoundOutManager.IsPlaying; }
-        }
+		public bool CanPlay
+		{
+			get { return SoundOutManager.IsInitialized && !SoundOutManager.IsPlaying; }
+		}
 
-        public bool CanStop
-        {
-            get { return SoundOutManager.IsPlaying || SoundOutManager.IsPaused; }
-        }
+		public bool CanStop
+		{
+			get { return SoundOutManager.IsPlaying || SoundOutManager.IsPaused; }
+		}
 
-        public bool CanPause
-        {
-            get { return SoundOutManager.IsPlaying; }
-        }
+		public bool CanPause
+		{
+			get { return SoundOutManager.IsPlaying; }
+		}
 
-        public bool CanOpenFile
-        {
-            get { return SoundOutManager.IsCreated && SoundOutManager.IsStopped; }
-        }
+		public bool CanOpenFile
+		{
+			get { return SoundOutManager.IsCreated && SoundOutManager.IsStopped; }
+		}
 
-        public IEnumerable<SoundOutDevice> Devices
-        {
-            get { return SoundOutManager.IsCreated ? SoundOutManager.GetDevices() : null; }
-        }
+		public IEnumerable<SoundOutDevice> Devices
+		{
+			get { return SoundOutManager.IsCreated ? SoundOutManager.GetDevices() : null; }
+		}
 
-        SoundOutDevice _device;
-        public SoundOutDevice Device
-        {
-            get { return _device; }
-            set
-            {
-                if (value != null)
-                {
-                    _device = value;
-                    SoundOutManager.SetDevice(value);
-                }
-            }
-        }
+		SoundOutDevice _device;
+		public SoundOutDevice Device
+		{
+			get { return _device; }
+			set
+			{
+				if (value != null)
+				{
+					_device = value;
+					SoundOutManager.SetDevice(value);
+				}
+			}
+		}
 
-        SoundOutManager _soundOutManager;
-        public SoundOutManager SoundOutManager
-        {
-            get { return _soundOutManager ?? (_soundOutManager = new SoundOutManager()); }
-            set { _soundOutManager = value; }
-        }
+		SoundOutManager _soundOutManager;
+		public SoundOutManager SoundOutManager
+		{
+			get { return _soundOutManager ?? (_soundOutManager = new SoundOutManager()); }
+			set { _soundOutManager = value; }
+		}
 
-        public float Volume
-        {
-            get { return SoundOutManager.Volume; }
-            set { SoundOutManager.Volume = value; }
-        }
+		public float Volume
+		{
+			get { return SoundOutManager.Volume; }
+			set { SoundOutManager.Volume = value; }
+		}
 
-        float _pan = 0f;
-        public float Pan
-        {
-            get { return _pan; }
-            set 
-            { 
-                _pan = value;
-                if (_panSource != null)
-                    _panSource.Pan = Pan;
-            }
-        }
+		float _pan = 0f;
+		public float Pan
+		{
+			get { return _pan; }
+			set 
+			{ 
+				_pan = value;
+				if (_panSource != null)
+					_panSource.Pan = Pan;
+			}
+		}
 
-        private bool _disposed;
+		private bool _disposed;
 		public void Dispose()
-        {
+		{
 			if(!_disposed)
 			{
 				_disposed = true;
@@ -119,19 +124,19 @@ namespace CSCoreDemo.Model
 				Dispose(true);
 				GC.SuppressFinalize(this);
 			}
-        }
+		}
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if (SoundOutManager.IsCreated)
-            {
-                SoundOutManager.Destroy();
-            }
-        }
+		protected virtual void Dispose(bool disposing)
+		{
+			if (SoundOutManager.IsCreated)
+			{
+				SoundOutManager.Destroy();
+			}
+		}
 
-        ~AudioPlayer()
-        {
-            Dispose(false);
-        }
-    }
+		~AudioPlayer()
+		{
+			Dispose(false);
+		}
+	}
 }

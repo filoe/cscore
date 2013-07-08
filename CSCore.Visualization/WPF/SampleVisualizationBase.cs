@@ -23,8 +23,8 @@ namespace CSCore.Visualization.WPF
             }
             set
             {
-                if (value == null)
-                    throw new ArgumentNullException("value");
+                //if (value == null)
+                //    throw new ArgumentNullException("value");
 
                 if (DataProvider != null)
                 {
@@ -32,7 +32,8 @@ namespace CSCore.Visualization.WPF
                 }
 
                 SetValue(DataProviderProperty, value);
-                DataProvider.BlockRead += Update;
+                if(value != null)
+                    DataProvider.BlockRead += Update;
             }
         }
 
@@ -49,12 +50,20 @@ namespace CSCore.Visualization.WPF
             {
                 if (_mutex.WaitOne(10) == false)
                     return;
-                OnUpdate(e.Data);
+                OnUpdate(e.DataLeft, e.DataRight);
                 _mutex.ReleaseMutex();
             }));
         }
 
-        protected abstract void OnUpdate(float[] values);
+        protected abstract void OnUpdate(float[] left, float[] right);
+
+        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        {
+            base.OnPropertyChanged(e);
+
+            if (e.Property == DataProviderProperty)
+                DataProvider = e.NewValue as SampleDataProvider;
+        }
 
         private bool _disposed;
 		public void Dispose()

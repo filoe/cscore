@@ -62,6 +62,7 @@
     <Compile Include="ViewModel\SoundModificationViewModel.cs" />
     <Compile Include="ViewModel\TagsViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
+    <Compile Include="ViewModel\VisualizationViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -103,6 +104,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CSCore.Visualization\CSCore.Visualization.csproj">
+      <Project>{bcaff0d8-612e-42a9-a9a8-eba2d276e2cd}</Project>
+      <Name>CSCore.Visualization</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\CSCore\CSCore.csproj">
       <Project>{c3dccfe3-dd3f-4eee-849b-33e355b1e064}</Project>
       <Name>CSCore</Name>

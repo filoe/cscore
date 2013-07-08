@@ -63,10 +63,10 @@ namespace CSCoreDemo.Model
             switch (soundOutType)
             {
                 case SoundOutType.WaveOut:
-                    _soundOut = new WaveOutWindow();
+                    _soundOut = new WaveOutWindow() { Latency = 70 };
                     break;
                 case SoundOutType.DirectSound:
-                    _soundOut = new DirectSoundOut();
+                    _soundOut = new DirectSoundOut() { Latency = 50 };
                     break;
                 case SoundOutType.Wasapi:
                     _soundOut = new WasapiOut();

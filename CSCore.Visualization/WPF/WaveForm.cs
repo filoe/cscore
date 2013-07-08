@@ -33,8 +33,10 @@ namespace CSCore.Visualization.WPF
         }
 
         int v;
-        protected override void OnUpdate(float[] values)
+        protected override void OnUpdate(float[] left, float[] right)
         {
+            var values = left == null ? right : left;
+
             if (_bmp == null || v != values.Length)
             {
                 _bmp = new RenderTargetBitmap(values.Length, 200, 120, 96, PixelFormats.Pbgra32);
@@ -45,6 +47,19 @@ namespace CSCore.Visualization.WPF
             Pen pen = DrawingPen.Clone();
             pen.Freeze();
 
+            if(left != null)
+                Render(drawingContext, pen, left);
+            if (right != null)
+                Render(drawingContext, pen, right);
+
+            drawingContext.Close();
+            _bmp.Clear();
+            _bmp.Render(drawingVisual);
+            PART_visualationDisplay.Source = _bmp;
+        }
+
+        private void Render(DrawingContext drawingContext, Pen pen, float[] values)
+        {
             double xinterval = _bmp.Width / values.Length;
             double halfheight = _bmp.Height / 2;
             for (int i = 0; i < values.Length - 1; i++)
@@ -54,11 +69,6 @@ namespace CSCore.Visualization.WPF
 
                 drawingContext.DrawLine(pen, p1, p2);
             }
-
-            drawingContext.Close();
-            _bmp.Clear();
-            _bmp.Render(drawingVisual);
-            PART_visualationDisplay.Source = _bmp;
         }
 
         public Pen DrawingPen

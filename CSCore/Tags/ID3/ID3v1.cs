@@ -44,7 +44,7 @@ namespace CSCore.Tags.ID3
         public string Title { get; private set; }
         public string Artist { get; private set; }
         public string Album { get; private set; }
-        public int Year { get; private set; }
+        public int? Year { get; private set; }
         public string Comment { get; private set; }
         public ID3Genre Genre { get; private set; }
 
@@ -54,7 +54,12 @@ namespace CSCore.Tags.ID3
             Title = new string(reader.ReadChars(30)).Replace("\0", String.Empty).TrimEnd();
             Artist = new string(reader.ReadChars(30)).Replace("\0", String.Empty).TrimEnd();
             Album = new string(reader.ReadChars(30)).Replace("\0", String.Empty).TrimEnd();
-            Year = Int32.Parse(new string(reader.ReadChars(4)));
+            int year;
+            bool parseResult = Int32.TryParse(new string(reader.ReadChars(4)), out year);
+            if (parseResult)
+                Year = year;
+            else
+                Year = null;
             Comment = new string(reader.ReadChars(30)).Replace("\0", String.Empty).TrimEnd();
             Genre = (ID3Genre)reader.ReadByte();
         }

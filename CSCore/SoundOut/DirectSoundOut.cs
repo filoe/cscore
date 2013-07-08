@@ -106,6 +106,8 @@ namespace CSCore.SoundOut
                 "IDirectSound8", "SetCooperativeLevel");
             if (!_directSound.SupportsFormat(source.WaveFormat))
             {
+                if (source.WaveFormat.WaveFormatTag == AudioEncoding.IeeeFloat)
+                    source = source.ToSampleSource().ToWaveSource(16);
                 if (_directSound.SupportsFormat(new WaveFormat(source.WaveFormat.SampleRate, 16, source.WaveFormat.Channels, source.WaveFormat.WaveFormatTag)))
                     source = source.ToSampleSource().ToWaveSource(16);
                 else if (_directSound.SupportsFormat(new WaveFormat(source.WaveFormat.SampleRate, 8, source.WaveFormat.Channels, source.WaveFormat.WaveFormatTag)))

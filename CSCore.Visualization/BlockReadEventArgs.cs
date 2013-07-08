@@ -7,15 +7,15 @@ namespace CSCore.Visualization
 {
     public class BlockReadEventArgs : EventArgs
     {
-        public float[] Data { get; private set; }
+        public float[] DataLeft { get; private set; }
+        public float[] DataRight { get; private set; }
 
-        public BlockReadEventArgs(float[] data)
+        public BlockReadEventArgs(float[] dataleft, float[] dataright)
         {
-            if (data == null)
-                throw new ArgumentNullException("data");
-            if (data.Length == 0)
-                throw new ArgumentException("Length of data is zero");
-            Data = data;
+            if (dataleft == null && dataright == null)
+                throw new ArgumentNullException("data", "at least dataleft or dataright must not be null");
+            DataLeft = dataleft;
+            DataRight = dataright;
         }
     }
 }
