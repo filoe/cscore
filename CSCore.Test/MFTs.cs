@@ -18,11 +18,11 @@ namespace CSCore.Test
             resampler.Dispose();
         }
 
-        /*[TestMethod]
+        [TestMethod]
         [TestCategory("DMO")]
         public void DmoResamplerTest()
         {
-            var source = new SampleToRaw16(new SineGenerator());
+            var source = new SineGenerator().ToWaveSource(16);
             using (DmoResampler resampler = new DmoResampler(source, 11500))
             {
                 byte[] buffer = new byte[source.WaveFormat.BytesPerSecond / 2];
@@ -31,6 +31,6 @@ namespace CSCore.Test
                     throw new Exception("Could not fill the whole buffer");
                 }
             }
-        }*/
+        }
     }
 }

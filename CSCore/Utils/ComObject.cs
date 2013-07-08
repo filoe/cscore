@@ -76,7 +76,8 @@ namespace System.Runtime.InteropServices
 
         ~ComObject()
         {
-            Debug.Assert(!AssertOnNoDispose(), "ComObject.Dispose not called. Type: " + this.GetType().FullName);
+            if(!disposed)
+                Debug.Assert(!AssertOnNoDispose(), "ComObject.Dispose not called. Type: " + this.GetType().FullName);
             Dispose(false);
         }
     }

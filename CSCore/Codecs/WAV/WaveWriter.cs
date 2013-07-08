@@ -26,10 +26,14 @@ namespace CSCore.Codecs.WAV
             if (!stream.CanSeek) throw new ArgumentException("stream not seekable");
 
             _stream = stream;
+            _waveStartPosition = stream.Position;
             _writer = new BinaryWriter(stream);
+            for (int i = 0; i < 44; i++)
+            {
+                _writer.Write((byte)0);
+            }
             _waveFormat = waveFormat;
 
-            _waveStartPosition = stream.Position;
 
             WriteHeader();
         }

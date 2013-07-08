@@ -6,37 +6,37 @@ namespace CSCore.Streams
     {
         double _frequency = 1000;
         double _amplitude = 0.5;
-        double _time = 0;
+        double _phase = 0;
 
         WaveFormat _waveFormat;
 
         /// <summary>
-        /// 1000Hz, 0.5 Amplitude
+        /// 1000Hz, 0.5 Amplitude, 0.0 phase
         /// </summary>
         public SineGenerator()
         {
             _waveFormat = new WaveFormat(44100, 32, 1, AudioEncoding.IeeeFloat);
         }
 
-        public SineGenerator(double frequency, double amplitude, double time)
+        public SineGenerator(double frequency, double amplitude, double phase)
             : this()
         {
             _frequency = frequency;
             _amplitude = amplitude;
-            _time = time;
+            _phase = phase;
         }
 
         public int Read(float[] buffer, int offset, int count)
         {
-            if (_time == 1f)
-                _time = 0;
+            if (_phase == 1f)
+                _phase = 0;
 
             for (int i = offset; i < count; i++)
             {
-                float sine = (float)(_amplitude * Math.Sin(_frequency * _time * Math.PI * 2));
+                float sine = (float)(_amplitude * Math.Sin(_frequency * _phase * Math.PI * 2));
                 buffer[i] = sine;
 
-                _time += (1.0 / WaveFormat.SampleRate);
+                _phase += (1.0 / WaveFormat.SampleRate);
             }
 
             return count;

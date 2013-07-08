@@ -9,6 +9,7 @@ namespace CSCore.DMO
         public WMResamplerProps(IntPtr ptr)
             : base(ptr)
         {
+            System.Diagnostics.Debug.WriteLine("WMResamplerProps created");
         }
 
         /// <summary>

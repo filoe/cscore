@@ -28,15 +28,6 @@ namespace CSCore.DSP
         public DmoResampler(IWaveSource source, int destSampleRate)
             : this(source, new WaveFormat(source.WaveFormat, destSampleRate))
         {
-            if (source == null)
-                throw new ArgumentNullException("source");
-            if (destSampleRate < 1)
-                throw new ArgumentOutOfRangeException("destSampleRate");
-
-            _lockObj = new object();
-            var of = new WaveFormat(source.WaveFormat, destSampleRate);
-            Init(source.WaveFormat, of);
-            _outputformat = of;
         }
 
         public DmoResampler(IWaveSource source, WaveFormat outputFormat)

@@ -19,5 +19,14 @@ namespace CSCore.Test
                 Debug.WriteLine(device.ToString());
             }
         }
+
+        [TestMethod]
+        [TestCategory("DirectSound")]
+        public void OpenDirectSoundDevice()
+        {
+            DirectSoundOut dsoundOut = new DirectSoundOut();
+            dsoundOut.Initialize(new Streams.SineGenerator().ToWaveSource(16));
+            dsoundOut.Dispose();
+        }
     }
 }

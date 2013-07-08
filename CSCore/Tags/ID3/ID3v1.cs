@@ -30,7 +30,7 @@ namespace CSCore.Tags.ID3
 
             ID3v1 tag = null;
             BinaryReader reader = new BinaryReader(stream);
-            if (reader.ReadByte() == 'T' && reader.ReadByte() == 'A' && reader.ReadByte() == 'T')
+            if (reader.ReadByte() == 0x54 && reader.ReadByte() == 0x41 && reader.ReadByte() == 0x47)
             {
                 tag = new ID3v1(stream);
             }
@@ -51,11 +51,11 @@ namespace CSCore.Tags.ID3
         private ID3v1(Stream stream)
         {
             BinaryReader reader = new BinaryReader(stream);
-            Title = new string(reader.ReadChars(30));
-            Artist = new string(reader.ReadChars(30));
-            Album = new string(reader.ReadChars(30));
+            Title = new string(reader.ReadChars(30)).Replace("\0", String.Empty).TrimEnd();
+            Artist = new string(reader.ReadChars(30)).Replace("\0", String.Empty).TrimEnd();
+            Album = new string(reader.ReadChars(30)).Replace("\0", String.Empty).TrimEnd();
             Year = Int32.Parse(new string(reader.ReadChars(4)));
-            Comment = new string(reader.ReadChars(30));
+            Comment = new string(reader.ReadChars(30)).Replace("\0", String.Empty).TrimEnd();
             Genre = (ID3Genre)reader.ReadByte();
         }
     }

@@ -45,34 +45,45 @@ namespace CSCore.DMO
             _obj = obj;
         }
 
-        public void Dispose()
+        private bool _disposed;
+		public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+			if(!_disposed)
+			{
+				_disposed = true;
+
+                GC.SuppressFinalize(this);
+				Dispose(true);
+			}
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            if(disposing)
-            {
-                //dispose managed
-            }
-
-            _transform.Dispose();
-            _propertyStore.Dispose();
-            _mediaObject.Dispose();
-            
-            if (_nativeResamplerProps != null)
-            {
-                Marshal.ReleaseComObject(_nativeResamplerProps);
-                _nativeResamplerProps = null;
-            }
             if (_resamplerprops != null)
             {
                 _resamplerprops.Dispose();
                 _resamplerprops = null;
             }
-
+            if (_nativeResamplerProps != null)
+            {
+                Marshal.ReleaseComObject(_nativeResamplerProps);
+                _nativeResamplerProps = null;
+            }
+            if (_propertyStore != null)
+            {
+                _propertyStore.Dispose();
+                _propertyStore = null;
+            }
+            if (_transform != null)
+            {
+                _transform.Dispose();
+                _transform = null;
+            }
+            if (_mediaObject != null)
+            {
+                _mediaObject.Dispose();
+                _mediaObject = null;
+            }
             if (_obj != null)
             {
                 Marshal.ReleaseComObject(_obj);

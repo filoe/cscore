@@ -31,15 +31,13 @@ namespace CSCore.Test
             }
         }
 
-        /*[TestMethod]
+        [TestMethod]
         [TestCategory("WaveOut")]
         public void CreateWaveOutDevice()
         {
             WaveOut waveOut = new WaveOut();
-            var source = new SampleToRaw16(new SineGenerator());
+            var source = new SineGenerator().ToWaveSource(16);
             waveOut.Initialize(source);
-            waveOut.Play();
-            waveOut.Stop();
             waveOut.Dispose();
         }
 
@@ -49,9 +47,7 @@ namespace CSCore.Test
         {
             WaveIn waveIn = new WaveIn();
             waveIn.Initialize();
-            waveIn.Start();
-            waveIn.Stop();
             waveIn.Dispose();
-        }*/
+        }
     }
 }
