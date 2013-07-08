@@ -23,9 +23,11 @@ namespace CSCoreDemo.ViewModel
                 Title = t2.QuickInfo.Title;
                 Artist = t2.QuickInfo.Artist;
                 Album = t2.QuickInfo.Album;
-                Year = t2.QuickInfo.Year;
+                Year = t2.QuickInfo.Year.ToString();
                 LeadPerformers = t2.QuickInfo.LeadPerformers;
                 Genre = t2.QuickInfo.Genre.ToString();
+                TrackNumber = t2.QuickInfo.TrackNumber.ToString();
+                Comments = t2.QuickInfo.Comments;
 
                 if (t2.QuickInfo.Image != null)
                 {
@@ -34,6 +36,7 @@ namespace CSCoreDemo.ViewModel
                         (Image as BitmapImage).StreamSource.Dispose();
                         Image = null;
                     }
+
                     MemoryStream imgstream = new MemoryStream();
                     t2.QuickInfo.Image.Save(imgstream, System.Drawing.Imaging.ImageFormat.Png);
                     var img = new BitmapImage();
@@ -54,6 +57,8 @@ namespace CSCoreDemo.ViewModel
                     Album = t1.Album;
                 if (String.IsNullOrWhiteSpace(Year))
                     Year = t1.Year.ToString();
+                if (string.IsNullOrWhiteSpace(Comments))
+                    Comments = t1.Comment;
                 Genre = t1.Genre.ToString();
             }
         }
@@ -93,11 +98,25 @@ namespace CSCoreDemo.ViewModel
             set { SetProperty(value, ref _year, () => Year); }
         }
 
+        string _trackNumber;
+        public string TrackNumber
+        {
+            get { return _trackNumber; }
+            set { SetProperty(value, ref _trackNumber, () => TrackNumber); }
+        }
+
         string _genre;
         public string Genre
         {
             get { return _genre; }
             set { SetProperty(value, ref _genre, () => Genre); }
+        }
+
+        string _comment;
+        public string Comments
+        {
+            get { return _comment; }
+            set { SetProperty(value, ref _comment, () => Comments); }
         }
 
         ImageSource _imageSource;

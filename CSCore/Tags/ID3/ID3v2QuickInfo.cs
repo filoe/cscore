@@ -54,6 +54,17 @@ namespace CSCore.Tags.ID3
             }
         }
 
+        public string Comments
+        {
+            get
+            {
+                Frame f;
+                if ((f = _id3[FrameID.Comments]) != null)
+                    return (f as CommentAndLyricsFrame).Text;
+                return String.Empty;
+            }
+        }
+
         public System.Drawing.Image Image
         {
             get
@@ -65,25 +76,37 @@ namespace CSCore.Tags.ID3
             }
         }
 
-        public string Year
+        public int? Year
         {
             get
             {
                 Frame f;
                 if ((f = _id3[FrameID.Year]) != null)
-                    return (f as NumericTextFrame).Text;
-                return String.Empty;
+                    return Int32.Parse((f as NumericTextFrame).Text);
+                return null;
             }
         }
 
-        public string OriginalReleaseYear
+        //Thanks to AliveDevil
+        public int? TrackNumber
+        {
+            get
+            {
+                Frame f;
+                if ((f = _id3[FrameID.TrackNumber]) != null)
+                    return Int32.Parse((f as MultiStringTextFrame).Text);
+                return null;
+            }
+        }
+
+        public int? OriginalReleaseYear
         {
             get
             {
                 Frame f;
                 if ((f = _id3[FrameID.OriginalReleaseYear]) != null)
-                    return (f as NumericTextFrame).Text;
-                return String.Empty;
+                    return Int32.Parse((f as NumericTextFrame).Text);
+                return null;
             }
         }
 

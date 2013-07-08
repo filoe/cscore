@@ -39,10 +39,20 @@ namespace CSCoreDemo.ViewModel
             get { return _audioPlayer ?? (_audioPlayer = new AudioPlayer()); }
         }
 
-        List<SoundOutType> _soundOutTypes = new List<SoundOutType>(new SoundOutType[]{ SoundOutType.WaveOut, SoundOutType.DirectSound, SoundOutType.Wasapi });
+        List<SoundOutType> _soundOutTypes;
         public List<SoundOutType> SoundOutTypes
         {
-            get { return _soundOutTypes; }
+            get 
+            {
+                if (_soundOutTypes == null)
+                {
+                    if(CSCore.SoundOut.WasapiOut.IsSupportedOnCurrentPlatform)
+                        _soundOutTypes = new List<SoundOutType>(new SoundOutType[] { SoundOutType.WaveOut, SoundOutType.DirectSound, SoundOutType.Wasapi });
+                    else
+                        _soundOutTypes = new List<SoundOutType>(new SoundOutType[] { SoundOutType.WaveOut, SoundOutType.DirectSound });
+                }
+                return _soundOutTypes; 
+            }
             set { SetProperty(value, ref _soundOutTypes, () => SoundOutTypes); }
         }
 
