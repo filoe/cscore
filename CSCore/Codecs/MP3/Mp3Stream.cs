@@ -35,7 +35,14 @@ namespace CSCore.Codecs.MP3
                 frameInfoCollection = null;
 
             dataStartIndex = stream.Position;
-            frame = Mp3Frame.FromStream(stream); //True um auf XingHeader zu überprüfen
+            do
+            {
+                frame = Mp3Frame.FromStream(stream);
+                if (frame == null && stream.IsEndOfStream())
+                    throw new FormatException("Stream is no mp3-stream. No MP3-Frame was found.");
+
+            } while (frame == null && !stream.IsEndOfStream());
+
             frameLength = frame.FrameLength;
             sampleRate = frame.SampleRate;
             XingHeader = XingHeader.FromFrame(frame); //Im ersten Frame kann XingHeader enthalten sein

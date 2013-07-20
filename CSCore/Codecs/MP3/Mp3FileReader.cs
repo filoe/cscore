@@ -18,8 +18,6 @@ namespace CSCore.Codecs.MP3
             CSCore.Tags.ID3.ID3v2.SkipTag(stream);
             dataStartIndex = stream.Position;
 
-            //ID3v1:
-            //TODO: TODODODODODO
             var id3v1Tag = ID3v1.FromStream(stream);
             if (id3v1Tag != null)
             {
@@ -34,7 +32,6 @@ namespace CSCore.Codecs.MP3
             stream.Position = dataStartIndex;
 
             dataStream = new Mp3Stream(stream, true, id3v1Tag != null?128:0);
-
         }
 
         public Mp3Stream DataStream

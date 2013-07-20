@@ -93,7 +93,7 @@ namespace CSCore.Utils
         public static float IntToWaveOutVolume(uint volume)
         {
             uint left, right;
-            HightLowConverter<uint> u = new HightLowConverter<uint>(volume);
+            HightLowConverterUInt32 u = new HightLowConverterUInt32(volume);
             left = u.High;
             right = u.Low;
             return (float)(((right + left) / 2) * (1.0 / 0xFFFF));

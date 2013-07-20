@@ -11,6 +11,7 @@ namespace CSCore.SoundOut.DirectSound
      */
     public enum DSBPlayFlags : uint
     {
+        None = 0x0,
         DSBPLAY_LOOPING = 0x00000001,
         DSBPLAY_LOCHARDWARE = 0x00000002,
         DSBPLAY_LOCSOFTWARE = 0x00000004,

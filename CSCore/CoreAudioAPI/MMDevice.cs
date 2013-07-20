@@ -6,6 +6,8 @@ namespace CSCore.CoreAudioAPI
     [Guid("D666063F-1587-4E43-81F1-B948E807363F")]
     public class MMDevice : ComObject
     {
+        const string c = "IMMDevice";
+
         public MMDevice(IntPtr ptr)
             : base(ptr)
         {
@@ -30,7 +32,7 @@ namespace CSCore.CoreAudioAPI
             }
         }
 
-        public unsafe int Activate(Guid iid, ExecutionContext context, IntPtr activationParams, out IntPtr pinterface)
+        public unsafe int ActivateNative(Guid iid, ExecutionContext context, IntPtr activationParams, out IntPtr pinterface)
         {
             pinterface = IntPtr.Zero;
             fixed (void* ppinterface = &pinterface)
@@ -38,6 +40,13 @@ namespace CSCore.CoreAudioAPI
                 var result = InteropCalls.CallI(_basePtr, ((void*)&iid), context, activationParams, new IntPtr(ppinterface), ((void**)(*(void**)_basePtr))[3]);
                 return result;
             }
+        }
+
+        public IntPtr Activate(Guid iid, ExecutionContext context, IntPtr activationParams)
+        {
+            IntPtr ptr;
+            CoreAudioAPIException.Try(ActivateNative(iid, context, activationParams, out ptr), c, "Activate");
+            return ptr;
         }
 
         public unsafe int OpenPropertyStore(StorageAccess access, out IntPtr propertyStore)

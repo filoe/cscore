@@ -25,6 +25,16 @@ namespace CSCore.SoundOut.DirectSound
             _basePtr = basePtr.ToPointer();
         }
 
+        public DSBufferCaps BufferCaps
+        {
+            get
+            {
+                DSBufferCaps caps;
+                DirectSoundException.Try(GetCaps(out caps), "IDirectSoundBuffer", "GetCaps");
+                return caps;
+            }
+        }
+
         public DSResult GetCaps(out DSBufferCaps bufferCaps)
         {
             bufferCaps = new DSBufferCaps();

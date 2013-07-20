@@ -26,6 +26,11 @@ namespace System.Runtime.InteropServices
             return (T)Activator.CreateInstance(typeof(T), QueryInterface(typeof(T)));
         }
 
+        internal T QueryInterface1<T>()
+        {
+            return (T)Activator.CreateInstance(typeof(T), QueryInterface(typeof(T)));
+        }
+
         public IntPtr QueryInterface(Type type)
         {
             IntPtr ptr;

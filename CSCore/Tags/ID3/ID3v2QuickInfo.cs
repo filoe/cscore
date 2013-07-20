@@ -81,8 +81,10 @@ namespace CSCore.Tags.ID3
             get
             {
                 Frame f;
-                if ((f = _id3[FrameID.Year]) != null)
-                    return Int32.Parse((f as NumericTextFrame).Text);
+                int result;
+                if ((f = _id3[FrameID.Year]) != null && 
+                     Int32.TryParse((f as NumericTextFrame).Text, out result))
+                    return result;
                 return null;
             }
         }

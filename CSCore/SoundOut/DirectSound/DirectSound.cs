@@ -8,6 +8,30 @@ namespace CSCore.SoundOut.DirectSound
     [Guid("279AFA83-4981-11CE-A521-0020AF0BE560")]
     public unsafe class DirectSoundBase : ComObject
     {
+        public static DirectSoundBase Create(Guid device)
+        {
+            IntPtr ptr;
+            DirectSoundException.Try(DSInterop.DirectSoundCreate(ref device, out ptr, IntPtr.Zero), "DSInterop", "DirectSoundCreate(ref Guid, out IntPtr, IntPtr)");
+            return new DirectSoundBase(ptr);
+        }
+
+        public static DirectSound8 Create8(Guid device)
+        {
+            IntPtr ptr;
+            DirectSoundException.Try(DSInterop.DirectSoundCreate8(ref device, out ptr, IntPtr.Zero), "DSInterop", "DirectSoundCreate8(ref Guid, out IntPtr, IntPtr)");
+            return new DirectSound8(ptr);
+        }
+
+        public DirectSoundCapabilities Caps
+        {
+            get
+            {
+                DirectSoundCapabilities caps;
+                DirectSoundException.Try(GetCaps(out caps), "IDirectSound", "GetCaps");
+                return caps;
+            }
+        }
+
         public DirectSoundBase(IntPtr directSound)
         {
             if (directSound == IntPtr.Zero) throw new ArgumentException("Invalid pointer to a IDirectSound Interface");

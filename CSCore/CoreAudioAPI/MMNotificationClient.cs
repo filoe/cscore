@@ -17,7 +17,7 @@ namespace CSCore.CoreAudioAPI
 		public event EventHandler<DeviceNotificationEventArgs> DeviceAdded;
 		public event EventHandler<DeviceNotificationEventArgs> DeviceRemoved;
 		public event EventHandler<DefaultDeviceChangedEventArgs> DefaultDeviceChanged;
-		public event EventHandler<DevicePropertyChanged> DevicePropertyChanged;
+		public event EventHandler<DevicePropertyChangedEventArgs> DevicePropertyChanged;
 
 		public MMNotificationClient()
 		{
@@ -76,7 +76,7 @@ namespace CSCore.CoreAudioAPI
 		int IMMNotificationClient.OnPropertyValueChanged(string id, PropertyKey key)
 		{
 			if (DevicePropertyChanged != null)
-				DevicePropertyChanged(this, new DevicePropertyChanged(id, key));
+				DevicePropertyChanged(this, new DevicePropertyChangedEventArgs(id, key));
 
 			return (int)HResult.S_OK;
 		}
@@ -151,11 +151,11 @@ namespace CSCore.CoreAudioAPI
 		}
 	}
 
-	public class DevicePropertyChanged : DeviceNotificationEventArgs
+	public class DevicePropertyChangedEventArgs : DeviceNotificationEventArgs
 	{
 		public PropertyKey PropertyKey { get; private set; }
 
-		public DevicePropertyChanged(string deviceID, PropertyKey propertyKey)
+		public DevicePropertyChangedEventArgs(string deviceID, PropertyKey propertyKey)
 			: base(deviceID)
 		{
 		}

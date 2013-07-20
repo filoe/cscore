@@ -45,7 +45,7 @@ namespace CSCli
             return true;
         }
 
-        const string CSCli = "CSCliAttribute";
+        const string CSCalli = "CSCalliAttribute";
         const string RemoveObj = "RemoveObjAttribute";
 
         private void ProcessType(TypeDefinition type)
@@ -75,7 +75,7 @@ namespace CSCli
                         MethodReference methodDescription = (MethodReference)instruction.Operand;
                         var attributes = GetAttributes(methodDescription.Resolve());
 
-                        if (attributes.Contains(CSCli))
+                        if (attributes.Contains(CSCalli))
                         {
                             var callSite = new CallSite(methodDescription.ReturnType) { CallingConvention = MethodCallingConvention.StdCall };
                             for (int n = 0; n < methodDescription.Parameters.Count - 1; n++)

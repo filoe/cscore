@@ -14,6 +14,8 @@ namespace CSCoreDemo.Model
 	{
 		PanSource _panSource;
 
+        public event EventHandler Updated;
+
 		public void SetupAudioPlayer(SoundOutType soundOutType)
 		{
 			SoundOutManager.CreateSoundOut(soundOutType);
@@ -28,11 +30,15 @@ namespace CSCoreDemo.Model
             if (source.WaveFormat.Channels == 1)
                 source = new MonoToStereoSource(source).ToWaveSource(16);
 			_panSource = new PanSource(source){ Pan = this.Pan };
+            var _notification = new SimpleNotificationSource(_panSource);
+            _notification.DataRead += OnNotification;
 
             if (oninitcallback != null)
-                SoundOutManager.Initialize(oninitcallback(_panSource.ToWaveSource(16)));
+                SoundOutManager.Initialize(oninitcallback(_notification.ToWaveSource(16)));
             else
-			    SoundOutManager.Initialize(_panSource.ToWaveSource(16));
+			    SoundOutManager.Initialize(_notification.ToWaveSource(16));
+
+            RaiseUpdated();
 		}
 
 		public void Play()
@@ -48,6 +54,8 @@ namespace CSCoreDemo.Model
 		public void Stop()
 		{
 			SoundOutManager.Stop();
+            _panSource = null;
+            RaiseUpdated();
 		}
 
 		public bool CanPlay
@@ -69,6 +77,17 @@ namespace CSCoreDemo.Model
 		{
 			get { return SoundOutManager.IsCreated && SoundOutManager.IsStopped; }
 		}
+
+        private void OnNotification(object sender, EventArgs e)
+        {
+            RaiseUpdated();
+        }
+
+        private void RaiseUpdated()
+        {
+            if (Updated != null)
+                Updated(this, EventArgs.Empty);
+        }
 
 		public IEnumerable<SoundOutDevice> Devices
 		{
@@ -95,6 +114,33 @@ namespace CSCoreDemo.Model
 			get { return _soundOutManager ?? (_soundOutManager = new SoundOutManager()); }
 			set { _soundOutManager = value; }
 		}
+
+        public TimeSpan Position
+        {
+            get
+            {
+                if (_panSource != null)
+                    return _panSource.GetPosition();
+                else
+                    return TimeSpan.FromMilliseconds(0);
+            }
+            set
+            {
+                if (_panSource != null)
+                    _panSource.SetPosition(value);
+            }
+        }
+
+        public TimeSpan Length
+        {
+            get
+            {
+                if (_panSource != null)
+                    return _panSource.GetLength();
+                else
+                    return TimeSpan.FromMilliseconds(0);
+            }
+        }
 
 		public float Volume
 		{

@@ -9,10 +9,12 @@ namespace CSCore.SoundOut.DirectSound
         public int SampleOffset { get; private set; }
         public int BufferSize { get; private set; }
         public bool IsTimeOut { get; private set; }
+        public bool DSoundBufferStopped { get; private set; }
         public DirectSoundNotifyEventArgs(int handleIndex, int bufferSize)
         {
             HandleIndex = handleIndex;
             IsTimeOut = handleIndex == WaitHandle.WaitTimeout;
+            DSoundBufferStopped = handleIndex == 2;
 
             BufferSize = bufferSize;
             handleIndex = (handleIndex == 0) ? 1 : 0;

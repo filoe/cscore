@@ -9,6 +9,9 @@ namespace CSCore.CoreAudioAPI
     [Guid("1CB9AD4C-DBFA-4c32-B178-C2F568A703B2")]
     public class AudioClient : ComObject
     {
+        /// <summary>
+        /// IID of the IAudioClient-interface.
+        /// </summary>
         public static readonly Guid IID_IAudioClient = new Guid("1CB9AD4C-DBFA-4c32-B178-C2F568A703B2");
         const string c = "IAudioClient";
 
@@ -18,10 +21,50 @@ namespace CSCore.CoreAudioAPI
                 throw new ArgumentNullException("device");
 
             IntPtr ptr;
-            int result = device.Activate(IID_IAudioClient, ExecutionContext.CLSCTX_ALL, IntPtr.Zero, out ptr);
+            int result = device.ActivateNative(IID_IAudioClient, ExecutionContext.CLSCTX_ALL, IntPtr.Zero, out ptr);
             CoreAudioAPIException.Try(result, "IMMDevice", "Activate");
 
             return new AudioClient(ptr);
+        }
+
+        public long DefaultDevicePeriod
+        {
+            get
+            {
+                long n0, n1;
+                CoreAudioAPIException.Try(GetDevicePeriod(out n0, out n1), c, "GetDevicePeriod");
+                return n0;
+            }
+        }
+
+        public long MinimumDevicePeriod
+        {
+            get
+            {
+                long n0, n1;
+                CoreAudioAPIException.Try(GetDevicePeriod(out n0, out n1), c, "GetDevicePeriod");
+                return n1;
+            }
+        }
+
+        public int BufferSize
+        {
+            get { return GetBufferSize(); }
+        }
+
+        public int CurrentPadding
+        {
+            get { return GetCurrentPadding(); }
+        }
+
+        public WaveFormat MixFormat
+        {
+            get { return GetMixFormat(); }
+        }
+
+        public long StreamLatency
+        {
+            get { return GetStreamLatency(); }
         }
 
         public AudioClient(IntPtr ptr)
@@ -32,7 +75,7 @@ namespace CSCore.CoreAudioAPI
         /// <summary>
         /// The Initialize method initializes the audio stream.
         /// </summary>
-        public unsafe int InitializeInternal(AudioClientShareMode shareMode, AudioClientStreamFlags streamFlags, long hnsBufferDuration, long hnsPeriodicity,
+        public unsafe int InitializeNative(AudioClientShareMode shareMode, AudioClientStreamFlags streamFlags, long hnsBufferDuration, long hnsPeriodicity,
                               WaveFormat waveFormat, Guid audioSessionGuid)
         {
             var hWaveFormat = GCHandle.Alloc(waveFormat, GCHandleType.Pinned);
@@ -47,7 +90,7 @@ namespace CSCore.CoreAudioAPI
         /// </summary>
         public void Initialize(AudioClientShareMode shareMode, AudioClientStreamFlags streamFlags, long hnsBufferDuration, long hnsPeriodicity, WaveFormat waveFormat, Guid audioSessionGuid)
         {
-            CoreAudioAPIException.Try(InitializeInternal(shareMode, streamFlags, hnsBufferDuration, hnsPeriodicity, waveFormat, audioSessionGuid), c, "Initialize");
+            CoreAudioAPIException.Try(InitializeNative(shareMode, streamFlags, hnsBufferDuration, hnsPeriodicity, waveFormat, audioSessionGuid), c, "Initialize");
         }
 
         /// <summary>
@@ -79,7 +122,7 @@ namespace CSCore.CoreAudioAPI
         /// </summary>
         /// <remarks>Rendering clients can use this latency value to compute the minimum amount of data that they can write during any single processing pass. To write less than this minimum is to risk introducing glitches into the audio stream. For more information, see IAudioRenderClient::GetBuffer.</remarks>
         /// <returns>HRESULT</returns>
-        public unsafe int GetStreamLatency(out int hnsLatency)
+        public unsafe int GetStreamLatency(out long hnsLatency)
         {
             fixed (void* pl = &hnsLatency)
             {
@@ -87,9 +130,13 @@ namespace CSCore.CoreAudioAPI
             }
         }
 
-        public int GetStreamLatency()
+        /// <summary>
+        /// The GetStreamLatency method retrieves the maximum latency for the current stream and can be called any time after the stream has been initialized.
+        /// </summary>
+        /// <remarks>Rendering clients can use this latency value to compute the minimum amount of data that they can write during any single processing pass. To write less than this minimum is to risk introducing glitches into the audio stream. For more information, see IAudioRenderClient::GetBuffer.</remarks>
+        public long GetStreamLatency()
         {
-            int latency = -1;
+            long latency = -1;
             CoreAudioAPIException.Try(GetStreamLatency(out latency), c, "GetStreamLatency");
             return latency;
         }
@@ -118,7 +165,7 @@ namespace CSCore.CoreAudioAPI
         /// </summary>
         /// <returns>For exclusive mode, IsFormatSupportedInternal returns S_OK if the audio endpoint device supports the caller-specified format, or it returns AUDCLNT_E_UNSUPPORTED_FORMAT if the device does not support the format. The ppClosestMatch parameter can be NULL. If it is not NULL, the method writes NULL to *ppClosestMatch. 
         /// For shared mode, if the audio engine supports the caller-specified format, IsFormatSupportedInternal sets *ppClosestMatch to NULL and returns S_OK. If the audio engine does not support the caller-specified format but does support a similar format, the method retrieves the similar format through the ppClosestMatch parameter and returns S_FALSE. If the audio engine does not support the caller-specified format or any similar format, the method sets *ppClosestMatch to NULL and returns AUDCLNT_E_UNSUPPORTED_FORMAT.</returns>
-        public unsafe int IsFormatSupportedInternal(AudioClientShareMode shareMode, WaveFormat waveFormat, out WaveFormatExtensible closestMatch)
+        public unsafe int IsFormatSupportedNative(AudioClientShareMode shareMode, WaveFormat waveFormat, out WaveFormatExtensible closestMatch)
         {
             closestMatch = null;
             var hClosestMatch = GCHandle.Alloc(closestMatch, GCHandleType.Pinned);
@@ -140,7 +187,7 @@ namespace CSCore.CoreAudioAPI
         /// </summary>
         public bool IsFormatSupported(AudioClientShareMode shareMode, WaveFormat waveFormat, out WaveFormatExtensible closestMatch)
         {
-            int result = IsFormatSupportedInternal(shareMode, waveFormat, out closestMatch);
+            int result = IsFormatSupportedNative(shareMode, waveFormat, out closestMatch);
             switch (result)
             {
                 case 0x0:
@@ -154,6 +201,12 @@ namespace CSCore.CoreAudioAPI
             }
         }
 
+        /// <summary>
+        /// Checks whether the audio endpoint device supports a particular stream format. 
+        /// </summary>
+        /// <param name="shareMode"></param>
+        /// <param name="waveFormat"></param>
+        /// <returns></returns>
         public bool IsFormatSupported(AudioClientShareMode shareMode, WaveFormat waveFormat)
         {
             WaveFormatExtensible tmp;
@@ -186,6 +239,9 @@ namespace CSCore.CoreAudioAPI
             }
         }
 
+        /// <summary>
+        /// The GetMixFormat method retrieves the stream format that the audio engine uses for its internal processing of shared-mode streams.
+        /// </summary>
         public WaveFormat GetMixFormat()
         {
             WaveFormat waveFormat;
@@ -236,7 +292,7 @@ namespace CSCore.CoreAudioAPI
         /// The SetEventHandle method sets the event handle that the system signals when an audio buffer is ready to be processed by the client.
         /// </summary>
         /// <returns>HRESULT</returns>
-        public unsafe int SetEventHandleInternal(IntPtr handle)
+        public unsafe int SetEventHandleNative(IntPtr handle)
         {
             return InteropCalls.CallI(_basePtr, handle.ToPointer(), ((void**)(*(void**)_basePtr))[13]);
         }
@@ -246,7 +302,7 @@ namespace CSCore.CoreAudioAPI
         /// </summary>
         public void SetEventHandle(IntPtr handle)
         {
-            CoreAudioAPIException.Try(SetEventHandleInternal(handle), c, "SetEventHandle");
+            CoreAudioAPIException.Try(SetEventHandleNative(handle), c, "SetEventHandle");
         }
 
         /// <summary>
@@ -254,7 +310,7 @@ namespace CSCore.CoreAudioAPI
         /// Fore more details see http://msdn.microsoft.com/en-us/library/windows/desktop/dd370873(v=vs.85).aspx
         /// </summary>
         /// <returns>HRESULT</returns>
-        public unsafe int GetServiceInternal(Guid riid, out IntPtr ppv)
+        public unsafe int GetServiceNative(Guid riid, out IntPtr ppv)
         {
             fixed(void* pppv = &ppv){
                 return InteropCalls.CallI(_basePtr, ((void*)&riid), pppv, ((void**)(*(void**)_basePtr))[14]);
@@ -265,10 +321,11 @@ namespace CSCore.CoreAudioAPI
         /// The GetService method accesses additional services from the audio client object.
         /// Fore more details see http://msdn.microsoft.com/en-us/library/windows/desktop/dd370873(v=vs.85).aspx
         /// </summary>
+        /// <remarks>For a few services, there are already existing classes with static "FromAudioClient"-Methods like AudioRenderClient::FromAudioClient.</remarks>
         public IntPtr GetService(Guid riid)
         {
             IntPtr ptr;
-            CoreAudioAPIException.Try(GetServiceInternal(riid, out ptr), c, "GetService");
+            CoreAudioAPIException.Try(GetServiceNative(riid, out ptr), c, "GetService");
             return ptr;
         }
     }

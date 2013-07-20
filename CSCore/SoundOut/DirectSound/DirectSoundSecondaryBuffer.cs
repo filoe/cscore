@@ -58,37 +58,47 @@ namespace CSCore.SoundOut.DirectSound
             _basePtr = handle.ToPointer();
         }
 
-        public DSResult SetFX(int effectsCount, DSEffectDesc[] effects, out DSFXResult[] results)
+        public DSFXResult[] SetFX(params DSEffectDesc[] effects)
         {
-            if (effectsCount < 0 || effectsCount > effects.Length)
+            DSFXResult[] results;
+            SetFX(effects.Length, effects, out results);
+            return results;
+        }
+
+        public void SetFX(int effectsCount, DSEffectDesc[] effects, out DSFXResult[] results)
+        {
+            if (effectsCount <= 0 || effectsCount > effects.Length)
                 throw new ArgumentOutOfRangeException("effectCount");
 
             results = new DSFXResult[effectsCount];
 
-            fixed (void* peffects = effects, presults = results)
+            fixed (void* peffects = &effects[0], presults = &results[0])
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, effectsCount, peffects, null/*presults*/, ((void**)(*(void**)_basePtr))[21]);
+                var result = InteropCalls.CalliMethodPtr(_basePtr, effectsCount, peffects, presults, ((void**)(*(void**)_basePtr))[21]);
+                DirectSoundException.Try(result, "IDirectSoundBuffer8", "SetFX");
             }
         }
 
         public T GetFX<T>(int index) where T : ComObject
         {
             DSResult result;
-            return GetFX<T>(index, out result);
+            var t = GetFX<T>(index, out result);
+            DirectSoundException.Try(result, "IDirectSoundBuffer8", "GetObjectInPath");
+            return t;
         }
 
         public T GetFX<T>(int index, out DSResult result) where T : ComObject
         {
             IntPtr ptr;
-            result = GetObjectInPath(DSInterop.AllObjects, index, typeof(T).GetGuid(), out ptr);
+            result = GetObjectInPath(DSInterop.AllObjects, index, typeof(T).GUID, out ptr);
             return (T)Activator.CreateInstance(typeof(T), ptr);
         }
 
-        public DSResult GetObjectInPath(Guid guidObject, int index, Guid guidInterface, out IntPtr effect)
+        public DSResult GetObjectInPath(Guid guidObject, int index, Guid guidInterface, out IntPtr @object)
         {
-            fixed (void* ptrEffect = &effect)
+            fixed (void* ptrEffect = &@object)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, &guidObject, index, &guidInterface, ((void**)(*(void**)_basePtr))[23]);
+                return InteropCalls.CalliMethodPtr(_basePtr, &guidObject, index, &guidInterface, ptrEffect, ((void**)(*(void**)_basePtr))[23]);
             }
         }
 

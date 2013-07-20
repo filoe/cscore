@@ -72,6 +72,7 @@ namespace CSCore.SoundOut.DirectSound
             _thread = new Thread(NotifyProc);
             _thread.Name = "DirectSoundNotifyManager Thread: ID = 0x" + _notify.BasePtr.ToInt64().ToString("x");
             _thread.Priority = ThreadPriority.AboveNormal;
+            _thread.IsBackground = true;
             _thread.Start();
             Context.Current.Logger.Debug("DirectSoundNotifyManager started", "DirectSoundNotifyManager.Start()");
         }
@@ -132,7 +133,11 @@ namespace CSCore.SoundOut.DirectSound
         protected virtual void Dispose(bool disposing)
         {
             Stop();
-            _notify.Dispose();
+            if (_notify != null)
+            {
+                _notify.Dispose();
+                _notify = null;
+            }
         }
 
         ~DirectSoundNotifyManager()

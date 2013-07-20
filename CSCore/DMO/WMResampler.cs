@@ -10,7 +10,7 @@ namespace CSCore.DMO
         WMResamplerProps _resamplerprops;
         IWMResamplerProps _nativeResamplerProps;
         PropertyStore _propertyStore;
-        MFTransform _transform;
+        //MFTransform _transform;
         MediaObject2 _mediaObject;
         WMResamplerObject _obj;
 
@@ -24,10 +24,10 @@ namespace CSCore.DMO
             get { return _propertyStore; }
         }
 
-        public MFTransform Transform
+        /*public MFTransform Transform
         {
             get { return _transform; }
-        }
+        }*/
 
         public MediaObject2 MediaObject
         {
@@ -37,7 +37,7 @@ namespace CSCore.DMO
         public WMResampler()
         {
             var obj = new WMResamplerObject();
-            _transform = new MFTransform((IMFTransform)obj);
+            //_transform = new MFTransform((IMFTransform)obj);
             _mediaObject = new MediaObject2((IMediaObject)obj);
             _propertyStore = new PropertyStore(Marshal.GetComInterfaceForObject((IPropertyStore)obj, typeof(IPropertyStore)));
             _nativeResamplerProps = obj as IWMResamplerProps;
@@ -74,11 +74,11 @@ namespace CSCore.DMO
                 _propertyStore.Dispose();
                 _propertyStore = null;
             }
-            if (_transform != null)
+            /*if (_transform != null)
             {
                 _transform.Dispose();
                 _transform = null;
-            }
+            }*/
             if (_mediaObject != null)
             {
                 _mediaObject.Dispose();

@@ -34,5 +34,10 @@ namespace CSCore.SoundOut.DirectSound
         {
             return SetNotificationPositions(notifies as IEnumerable<DSBPositionNotify>);
         }
+
+        protected override bool AssertOnNoDispose()
+        {
+            return false;
+        }
     }
 }

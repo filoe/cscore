@@ -7,6 +7,7 @@ using System.Windows.Input;
 using System.Collections.ObjectModel;
 using CSCoreDemo.Model;
 using CSCore.Codecs;
+using System.Diagnostics;
 
 namespace CSCoreDemo.ViewModel
 {
@@ -36,7 +37,28 @@ namespace CSCoreDemo.ViewModel
         AudioPlayer _audioPlayer;
         public AudioPlayer AudioPlayer
         {
-            get { return _audioPlayer ?? (_audioPlayer = new AudioPlayer()); }
+            get
+            {
+                if (_audioPlayer == null)
+                {
+                    _audioPlayer = new AudioPlayer();
+                    _audioPlayer.Updated += OnAudioPlayerUpdated;
+                }
+                return _audioPlayer;
+            }
+        }
+
+        private void OnAudioPlayerUpdated(object sender, EventArgs e)
+        {
+            if (UpdatePosition)
+            {
+                OnPropertyChanged(() => Position);
+                OnPropertyChanged(() => Length);
+            }
+            else
+            {
+                Debug.WriteLine("cancel");
+            }
         }
 
         List<SoundOutType> _soundOutTypes;
@@ -64,7 +86,8 @@ namespace CSCoreDemo.ViewModel
             {
                 AudioPlayer.SetupAudioPlayer(value);
                 OnPropertyChanged(() => Devices);
-                SetProperty(value, ref _soundOutType, () => SelectedSoundOutType); 
+                SetProperty(value, ref _soundOutType, () => SelectedSoundOutType);
+                Device = Devices.FirstOrDefault();
             }
         }
 
@@ -110,6 +133,28 @@ namespace CSCoreDemo.ViewModel
         {
             get { return _stopCommand ?? (_stopCommand = new AutoDelegateCommand((c) => Stop(), (c) => CanStop())); }
             set { SetProperty(value, ref _stopCommand, () => StopCommand); }
+        }
+
+        public TimeSpan Position
+        {
+            get { return AudioPlayer.Position; }
+            set 
+            {     
+                AudioPlayer.Position = value;
+                OnPropertyChanged(() => Position);            
+            }
+        }
+
+        public TimeSpan Length
+        {
+            get { return AudioPlayer.Length; }
+        }
+
+        bool updatePosition = true;
+        public bool UpdatePosition
+        {
+            get { return updatePosition; }
+            set { SetProperty(value, ref updatePosition, () => UpdatePosition); }
         }
 
         public MainViewModel()

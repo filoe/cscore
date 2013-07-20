@@ -13,7 +13,7 @@ namespace CSCli
     {
         static void Main(string[] args)
         {
-            if (args.Length > 1 && File.Exists(args[0]))
+            if (args.Length >= 1 && File.Exists(args[0]))
             {
                 LoadAssembly(args[0]);
             }
@@ -52,7 +52,7 @@ namespace CSCli
             else
             {
                 StdOut.Error(String.Format("{0} could not be patched.", fileName));
-                Environment.Exit(-1);
+                Environment.Exit(-2);
             }
         }
     }

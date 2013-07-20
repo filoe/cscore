@@ -42,10 +42,7 @@ namespace CSCore.Streams
                 buffer[bi++] = _buffer[i];
             }
 
-            read *= 2;
-            if (read != count)
-                System.Diagnostics.Debugger.Break();
-            return read;
+            return read * 2;
         }
 
         public override long Position

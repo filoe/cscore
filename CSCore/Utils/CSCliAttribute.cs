@@ -1,22 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace CSCore.Utils
 {
     [RemoveObj]
     [AttributeUsage(AttributeTargets.Method)]
-    internal class CSCliAttribute : Attribute
+    internal class CSCalliAttribute : Attribute
     {
-    }
+        public CSCalliAttribute()
+        {
 
-    [RemoveObj]
-    [AttributeUsage(AttributeTargets.Method)]
-    internal class MemoryCopyAttribute : Attribute
-    {
-    }
-
-    [RemoveObj]
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Interface)]
-    internal class RemoveObjAttribute : Attribute
-    {
+        }
     }
 }

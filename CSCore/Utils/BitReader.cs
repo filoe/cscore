@@ -28,6 +28,10 @@ namespace CSCore.Utils
             _cache = PeekCache();
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="buffer">buffer</param>
+        /// <param name="offset">offset in bits</param>
         public BitReader(byte* buffer, int offset)
         {
             if (new IntPtr(buffer) == IntPtr.Zero)

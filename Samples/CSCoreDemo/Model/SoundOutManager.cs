@@ -77,6 +77,7 @@ namespace CSCoreDemo.Model
             }
 
             _soundOutType = soundOutType;
+            _soundOut.Stopped += (s, e) => Stop();
         }
 
         public IEnumerable<SoundOutDevice> GetDevices()

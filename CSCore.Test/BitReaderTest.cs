@@ -29,7 +29,25 @@ namespace CSCore.Test
                     reader.ReadInt64();
                     reader.ReadUInt32();
                     reader.ReadUInt16();
+
+                    reader.Dispose();
                 }
+            }
+        }
+
+        public unsafe void RandomBitReaderTest0()
+        {
+            Random rand = new Random();
+            byte[] buffer = new byte[rand.Next(50, 100)];
+            rand.NextBytes(buffer);
+
+            fixed (byte* ptr = buffer)
+            {
+                BitReader reader = new BitReader(ptr, 0);
+
+
+
+                reader.Dispose();
             }
         }
     }

@@ -1,11 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 
 namespace CSCore.Utils
 {
     [StructLayout(LayoutKind.Explicit)]
-    public struct HightLowConverter<T> where T : struct
+    public struct HightLowConverterInt32//<T> where T : struct
     {
-        public HightLowConverter(T value)
+        public HightLowConverterInt32(Int32 value)
         {
             Low = 0;
             High = 0;
@@ -13,7 +14,27 @@ namespace CSCore.Utils
         }
 
         [FieldOffset(0)]
-        public T Value;
+        public Int32 Value;
+
+        [FieldOffset(0)]
+        public ushort Low;
+
+        [FieldOffset(2)]
+        public ushort High;
+    }
+
+    [StructLayout(LayoutKind.Explicit)]
+    public struct HightLowConverterUInt32//<T> where T : struct
+    {
+        public HightLowConverterUInt32(UInt32 value)
+        {
+            Low = 0;
+            High = 0;
+            Value = value;
+        }
+
+        [FieldOffset(0)]
+        public UInt32 Value;
 
         [FieldOffset(0)]
         public ushort Low;

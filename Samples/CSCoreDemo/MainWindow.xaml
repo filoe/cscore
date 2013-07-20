@@ -3,58 +3,67 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:viewmodel="clr-namespace:CSCoreDemo.ViewModel"
         xmlns:cscore="clr-namespace:CSCore.Visualization.WPF;assembly=CSCore.Visualization"
+        xmlns:converter="clr-namespace:CSCoreDemo.Converter"
+        xmlns:controls="clr-namespace:CSCoreDemo.Controls"
         Title="MainWindow" Height="350" Width="525" DataContext="{x:Static viewmodel:MainViewModel.Main}"
         Closing="Window_Closing">
-    <Grid>
-        <DockPanel LastChildFill="True">
-            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-                <StackPanel.Resources>
+    <Window.Resources>
+        <converter:TimeSpanMillisecondsConverter x:Key="TimeSpanToMsConverter"/>
+        <converter:BoolToOppositeBoolConverter x:Key="BoolToOppositeBoolConverter"/>
+    </Window.Resources>
+    <DockPanel LastChildFill="True">      
+        <ToolBarTray DockPanel.Dock="Top">
+            <ToolBar>
+                <ToolBar.Resources>
                     <Style TargetType="Button">
                         <Setter Property="Margin" Value="0,0,6,0"/>
                         <Setter Property="Padding" Value="3,0,3,0"/>
                     </Style>
-                </StackPanel.Resources>
-                <Button Content="Open file" Command="{Binding OpenFileCommand}"/>
+                </ToolBar.Resources>
+                <Button Content="Open file" Command="{Binding OpenFileCommand}" Name="btnOpen"/>
                 <Button Content="Play" Command="{Binding PlayCommand}"/>
                 <Button Content="Pause" Command="{Binding PauseCommand}"/>
                 <Button Content="Stop" Command="{Binding StopCommand}"/>
-            </StackPanel>
-            <UniformGrid DockPanel.Dock="Top" Rows="2" Columns="2">
-                <!--<Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>-->
-                <Grid Margin="0,0,2,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+            </ToolBar>
+            <ToolBar IsEnabled="{Binding ElementName=btnOpen, Path=IsEnabled, Converter={StaticResource BoolToOppositeBoolConverter}}">
+                <TextBlock VerticalAlignment="Center">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}{0:mm\:ss} / {1:mm\:ss}">
+                            <Binding Path="Main.Position"/>
+                            <Binding Path="Main.Length"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+                <controls:SliderDragPriority AllowValueChange="{Binding UpdatePosition, Mode=OneWayToSource}" MinWidth="150" Maximum="{Binding Length, Mode=OneWay, Converter={StaticResource TimeSpanToMsConverter}}" 
+                        Value="{Binding Position, Mode=TwoWay, Converter={StaticResource TimeSpanToMsConverter}}" VerticalAlignment="Center"/>
+            </ToolBar>
+            <ToolBar IsEnabled="{Binding ElementName=btnOpen, Path=IsEnabled}">
+                <StackPanel Orientation="Horizontal">
+                    <ComboBox ItemsSource="{Binding SoundOutTypes}" SelectedItem="{Binding SelectedSoundOutType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                              ToolTip="Soundarchitecture"/>
+                    <!--<Image Source="pack://siteoforigin:,,,/Resources/Speaker_Icon.jpg" Height="20" Width="20" Margin="2,0"/>-->
+                    <TextBlock Text="Speaker:" Margin="4,0" VerticalAlignment="Center"/>
+                    <ComboBox ItemsSource="{Binding Devices}" SelectedItem="{Binding Device, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ToolTip="Outputdevice" MinWidth="100"/>
+                </StackPanel>
+            </ToolBar>
+            <ToolBar Band="1">
+                <StackPanel Orientation="Horizontal">
                     <Label Target="{Binding ElementName=volume}" Content="Volume: "/>
                     <Slider Grid.Column="1" Name="volume" Value="{Binding SoundModificationViewModel.Volume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Maximum="1"
-                        Grid.Row="0" VerticalAlignment="Center" AutoToolTipPlacement="BottomRight" AutoToolTipPrecision="2"/>
-                </Grid>
-                <Grid Margin="2,0,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                    VerticalAlignment="Center" AutoToolTipPlacement="BottomRight" AutoToolTipPrecision="2" MinWidth="150"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
                     <Label Target="{Binding ElementName=pan}" Content="Pan: "/>
-                    <Slider Value="{Binding SoundModificationViewModel.Pan, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="-1" Maximum="1"
-                        Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" AutoToolTipPlacement="BottomRight" AutoToolTipPrecision="2"/>
-                </Grid>
-
-                <ComboBox ItemsSource="{Binding SoundOutTypes}" SelectedItem="{Binding SelectedSoundOutType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="0,0,2,0" />
-                <ComboBox ItemsSource="{Binding Devices}" SelectedItem="{Binding Device, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="2,0,0,0"/>
-            </UniformGrid>
-            <StackPanel DockPanel.Dock="Top">
-                <UniformGrid Columns="2">
-                </UniformGrid>
-            </StackPanel>
-            <Border DockPanel.Dock="Left" BorderThickness="0,0,2,0" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
+                    <Slider Name="pan" Value="{Binding SoundModificationViewModel.Pan, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="-1" Maximum="1"
+                    VerticalAlignment="Center" AutoToolTipPlacement="BottomRight" AutoToolTipPrecision="2" MinWidth="150"/>
+                </StackPanel>
+            </ToolBar>
+        </ToolBarTray>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2.5*"/>
+            </Grid.ColumnDefinitions>
             <StackPanel DataContext="{Binding TagViewModel}">
                 <TextBlock Text="{Binding Title, StringFormat=Title: \{0\}, TargetNullValue=&lt;no value&gt;}"/>
                 <TextBlock Text="{Binding Artist, StringFormat=Artist: \{0\}, TargetNullValue=&lt;no value&gt;}"/>
@@ -66,11 +75,11 @@
                 <TextBlock Text="{Binding Comments, StringFormat='Comments: \{0\}', TargetNullValue=&lt;no value&gt;}"/>
                 <Image Source="{Binding Image}" Width="150" Height="150"/>
             </StackPanel>
-            </Border>
-            <UniformGrid Rows="2">
+            <GridSplitter ResizeDirection="Columns" Width="3"/>
+            <UniformGrid Grid.Column="1" Rows="2">
                 <cscore:WaveForm DataProvider="{Binding VisualizationViewModel.SampleDataProvider, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                 <cscore:Point3DSpectrum DataProvider="{Binding VisualizationViewModel.FFTDataProvider, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
             </UniformGrid>
-        </DockPanel>
-    </Grid>
+        </Grid>
+    </DockPanel>
 </Window>

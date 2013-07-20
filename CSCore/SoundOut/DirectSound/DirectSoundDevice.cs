@@ -8,6 +8,16 @@ namespace CSCore.SoundOut.DirectSound
 {
     public class DirectSoundDevice
     {
+        public static readonly Guid DefaultPlaybackGuid = new Guid("DEF00000-9C6D-47ED-AAF1-4DDA8F2B5C03");
+
+        public static DirectSoundDevice DefaultDevice
+        {
+            get
+            {
+                return EnumerateDevices().FirstOrDefault();
+            }
+        }
+
         static Dictionary<IntPtr, List<DirectSoundDevice>> _activeContexts;
         static Mutex _mutex;
         public static List<DirectSoundDevice> EnumerateDevices()
@@ -59,6 +69,10 @@ namespace CSCore.SoundOut.DirectSound
         public string Description { get; private set; }
         public string Module { get; private set; }
         public Guid Guid { get; private set; }
+
+        internal DirectSoundDevice()
+        {
+        }
 
         public DirectSoundDevice(string description, string module, Guid guid)
         {

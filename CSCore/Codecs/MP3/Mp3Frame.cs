@@ -123,11 +123,11 @@ namespace CSCore.Codecs.MP3
                 }
 
                 totalRead += read;
-                if (totalRead > MaxFrameLength)
+                /*if (totalRead > MaxFrameLength)
                 {
                     Context.Current.Logger.Error("Could not find a MP3 Frame.", loggerLocation);
                     return false;
-                }
+                }*/
 
                 _streamPosition = stream.Position;
             }
@@ -137,6 +137,9 @@ namespace CSCore.Codecs.MP3
 
             if(_stream.CanSeek && seek)
                 _stream.Position += FrameLength - 4;
+
+            if (FrameLength > MaxFrameLength)
+                return false;
 
             return true;
         }

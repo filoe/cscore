@@ -80,7 +80,7 @@ namespace CSCore.SoundOut
 				else //shared
 				{
 					_audioClient.Initialize(_shareMode, AudioClientStreamFlags.StreamFlags_EventCallback, 0, 0, _outputFormat, Guid.Empty);
-					_latency = _audioClient.GetStreamLatency() / 10000;
+					_latency = (int)(_audioClient.StreamLatency / 10000);
 				}
 
 				_eventWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
@@ -132,8 +132,9 @@ namespace CSCore.SoundOut
 
 		private void PlaybackProc()
 		{
-			//try
-			//{
+
+			try
+			{
 				_playbackState = SoundOut.PlaybackState.Playing;
 
 				int frameCount = _audioClient.GetBufferSize();
@@ -196,15 +197,19 @@ namespace CSCore.SoundOut
 				{
 					_audioClient.Reset();
 				}
-			/*}
+			}
 			catch (Exception e)
 			{
 				Context.Current.Logger.Fatal(e, "WasapiOut.PlaybackProc");
+                if (System.Diagnostics.Debugger.IsAttached)
+                    throw e;
 			}
 			finally
 			{
-				RaiseStopped();
-			}*/
+                Stop();
+                _playbackThread = null;
+                RaiseStopped();
+			}
 		}
 
 		private bool FeedBuffer(AudioRenderClient renderClient, byte[] buffer, int numFramesCount, int frameSize)

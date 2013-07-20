@@ -44,8 +44,23 @@ namespace CSCore
             return GetTime(source, source.Position);
         }
 
+        public static void SetPosition(this IWaveStream source, TimeSpan position)
+        {
+            if (source == null)
+                throw new ArgumentNullException("source");
+            if (position.TotalMilliseconds < 0)
+                throw new ArgumentOutOfRangeException("position");
+
+            var bytes = GetBytes(source, (long)position.TotalMilliseconds);
+            source.Position = bytes;
+        }
+
         public static TimeSpan GetTime(this IWaveStream source, long bytes)
         {
+            if (source == null)
+                throw new ArgumentNullException("source");
+            if (bytes < 0)
+                throw new ArgumentNullException("bytes");
             return TimeSpan.FromMilliseconds(GetMilliseconds(source, bytes));
         }
 
@@ -88,7 +103,7 @@ namespace CSCore
             }
             else if (source is ISampleSource)
             {
-                return source.WaveFormat.MillisecondsToBytes(milliseconds * 4);
+                return source.WaveFormat.MillisecondsToBytes(milliseconds / 4);
             }
             else
             {
@@ -131,6 +146,11 @@ namespace CSCore
         public static bool IsClosed(this Stream stream)
         {
             return stream.CanRead || stream.CanWrite;
+        }
+
+        public static bool IsEndOfStream(this Stream stream)
+        {
+            return stream.Position == stream.Length;
         }
 
         public static int LowWord(this int number)

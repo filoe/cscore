@@ -116,6 +116,66 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug x64|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug x64\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug x64|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug x64\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug x64|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug x64\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug x86|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug x86\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug x86|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug x86\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug x86|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug x86\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -157,11 +217,14 @@
     <Compile Include="Codecs\MP3\Mp3Frame.cs" />
     <Compile Include="Codecs\MP3\Mp3WebStream.cs" />
     <Compile Include="Codecs\MP3\XingHeader.cs" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="Codecs\VORBIS\Packet.cs" />
     <None Include="Codecs\VORBIS\IdentificationPacket.cs" />
     <None Include="Codecs\VORBIS\SetupHeader.cs" />
     <None Include="Codecs\VORBIS\VorbisException.cs" />
     <Compile Include="Codecs\RAW\RawDataReader.cs" />
+    <Compile Include="CoreAudioAPI\AudioEndpointVolume.cs" />
+    <Compile Include="CoreAudioAPI\AudioEndpointVolumeChannel.cs" />
     <Compile Include="CoreAudioAPI\AudioRenderClient.cs" />
     <Compile Include="CoreAudioAPI\InteropCalls.cs" />
     <Compile Include="CoreAudioAPI\AudioClient.cs" />
@@ -169,6 +232,7 @@
     <Compile Include="CoreAudioAPI\MMDeviceCollection.cs" />
     <Compile Include="CoreAudioAPI\MMNotificationClient.cs" />
     <Compile Include="CoreAudioAPI\SimpleAudioVolume.cs" />
+    <Compile Include="DMO\InteropCalls.cs" />
     <Compile Include="DMO\MediaBuffer.cs" />
     <Compile Include="DMO\MediaObject.cs" />
     <Compile Include="DMO\MediaType.cs" />
@@ -179,6 +243,14 @@
     <Compile Include="DSP\DmoChannelResampler.cs" />
     <Compile Include="CoreAudioAPI\MMDevice.cs" />
     <Compile Include="CoreAudioAPI\PropertyStore.cs" />
+    <Compile Include="MediaFoundation\InteropCalls.cs" />
+    <Compile Include="MediaFoundation\MediaFoundationException.cs" />
+    <Compile Include="MediaFoundation\MFAttribute.cs" />
+    <Compile Include="MediaFoundation\MFAttributeMatchType.cs" />
+    <Compile Include="MediaFoundation\MFAttributes.cs" />
+    <Compile Include="MediaFoundation\MFAttributeType.cs" />
+    <Compile Include="MediaFoundation\MFMediaType.cs" />
+    <Compile Include="MediaFoundation\MFSourceReader.cs" />
     <Compile Include="SoundIn\WaveInEvent.cs" />
     <Compile Include="SoundIn\WaveInWindow.cs" />
     <Compile Include="SoundOut\WasapiOut.cs" />
@@ -194,6 +266,7 @@
     <Compile Include="Streams\SampleConverter\SampleToIeeeFloat32.cs" />
     <Compile Include="Streams\SampleConverter\SampleToPcm24.cs" />
     <Compile Include="Streams\SampleConverter\SampleToPcm8.cs" />
+    <Compile Include="Streams\SimpleNotificationSource.cs" />
     <Compile Include="Streams\VolumeSource.cs" />
     <Compile Include="Streams\WaveInSource.cs" />
     <Compile Include="Tags\ID3\Frames\BinaryFrame.cs" />
@@ -212,9 +285,11 @@
     <Compile Include="Tags\ID3\ID3Genre.cs" />
     <Compile Include="Tags\ID3\ID3v1.cs" />
     <Compile Include="Tags\ID3\ID3v2QuickInfo.cs" />
+    <Compile Include="Utils\NativeBool.cs" />
     <Compile Include="Utils\FastFourierTransformation.cs" />
     <Compile Include="Utils\HResult.cs" />
     <Compile Include="Utils\ReadBlockStream.cs" />
+    <Compile Include="Utils\RemoveObjAttribute.cs" />
     <Compile Include="WaveFormatExtensible.cs" />
     <None Include="Codecs\OGG\CRC32.cs" />
     <None Include="Codecs\OGG\OggException.cs" />
@@ -270,7 +345,6 @@
     <Compile Include="DMO\IWMResamplerProps.cs" />
     <Compile Include="DMO\MediaObject2.cs" />
     <Compile Include="MediaFoundation\MFTMessageType.cs" />
-    <Compile Include="MediaFoundation\MFTransform.cs" />
     <Compile Include="DMO\WMResampler.cs" />
     <Compile Include="DSP\BlockReadEventArgs.cs" />
     <Compile Include="DSP\DmoResampler.cs" />
@@ -414,7 +488,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(SolutionDir)Tools\CSCli\$(OutDir)CSCli.exe" "$(TargetDir)$(TargetFileName)" "CSCliAttribute"</PostBuildEvent>
+    <PostBuildEvent>"$(SolutionDir)Tools\CSCli\$(OutDir)CSCli.exe" "$(TargetPath)"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
