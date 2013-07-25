@@ -33,9 +33,8 @@ namespace CSCore.SoundOut.DirectSound
         }
 
         public DirectSoundBase(IntPtr directSound)
+            : base(directSound)
         {
-            if (directSound == IntPtr.Zero) throw new ArgumentException("Invalid pointer to a IDirectSound Interface");
-            _basePtr = directSound.ToPointer();
         }
 
         public bool SupportsFormat(WaveFormat format)

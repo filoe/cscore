@@ -58,7 +58,7 @@ namespace CSCore.Visualization.WPF
                     return;
                 OnUpdate(values);
                 _mutex.ReleaseMutex();
-            }));
+            })/*, System.Windows.Threading.DispatcherPriority.Render*/);
         }
 
         protected abstract void OnUpdate(double[] values);

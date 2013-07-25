@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CSCore.SoundOut.DirectSound;
+using System;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using CSCore.SoundOut.DirectSound;
 
 namespace CSCore.SoundOut
 {
-    public class DirectSoundOut : ISoundOut
+    //todo: remove DirectSoundOut1 in next the release 
+    [Obsolete]
+    public class DirectSoundOut1 : ISoundOut
     {
         protected IWaveSource _waveSource;
         protected DirectSound8 _directSound;
@@ -15,76 +15,109 @@ namespace CSCore.SoundOut
         protected DirectSoundSecondaryBuffer _secondaryBuffer;
         protected DirectSoundNotifyManager _notifyManager;
         protected PlaybackState _playbackState = PlaybackState.Stopped;
-        private SynchronizationContext _syncContext;
-        private Guid _device;
-        private int _latency;
-        private bool _isinitialized;
-        protected object _lockObj;
+        protected Guid _device;
+        protected byte[] _buffer;
+        int _latency = 100;
+        bool _isinitialized = false;
+        object lockObj = new object();
+        object lockObj1 = new object();
 
         public event EventHandler Stopped;
-        private byte[] _buffer;
 
         public int Latency
         {
             get { return _latency; }
-            set 
-            {
-                if (value <= 0)
-                    throw new ArgumentOutOfRangeException("value");
-                _latency = value; 
-            }
+            set { _latency = value; }
         }
 
         public Guid Device
         {
             get { return _device; }
-            set
-            {
-                _device = value;
-            }
+            set { _device = value; }
         }
 
-        public DirectSoundOut()
-            : this(DirectSoundDevice.DefaultPlaybackGuid)
+        public float Volume
         {
+            get { return GetVolume(); }
+            set { SetVolume(value); }
         }
 
-        public DirectSoundOut(Guid device)
-            : this(device, 100)
+        public IWaveSource WaveSource
         {
+            get { return _waveSource; }
         }
 
-        public DirectSoundOut(Guid device, int latency)
+        public PlaybackState PlaybackState
         {
-            if (latency <= 0)
-                throw new ArgumentOutOfRangeException("latency");
-
-            Device = device;
-            Latency = latency;
-            _lockObj = new Object();
-            _syncContext = SynchronizationContext.Current;
+            get { return _playbackState; }
         }
 
+        public DirectSoundOut1()
+        {
+            Device = DirectSoundDevice.DefaultPlaybackGuid;
+
+            lockObj1 = lockObj;
+        }
 
         public void Play()
         {
-            if (_playbackState == SoundOut.PlaybackState.Stopped)
+            if (_playbackState == PlaybackState.Stopped)
             {
                 _secondaryBuffer.SetCurrentPosition(0);
                 _secondaryBuffer.Play(DSBPlayFlags.DSBPLAY_LOOPING);
-                PlaybackState = SoundOut.PlaybackState.Playing;
+
+                lock (lockObj1)
+                {
+                    _playbackState = SoundOut.PlaybackState.Playing;
+                }
+
                 _notifyManager.Start();
                 Context.Current.Logger.Info("DirectSoundOut playback started", "DirectSoundOut.Play()");
             }
+            else if (_playbackState == SoundOut.PlaybackState.Paused)
+            {
+                lock (lockObj1)
+                {
+                    _playbackState = SoundOut.PlaybackState.Playing;
+                }
+            }
+        }
 
-            PlaybackState = SoundOut.PlaybackState.Playing;
+        public void Stop()
+        {
+            if (_playbackState != SoundOut.PlaybackState.Stopped)
+            {
+                if (Monitor.TryEnter(lockObj1, 50))
+                {
+                    _playbackState = PlaybackState.Stopped;
+                    Monitor.Exit(lockObj1);
+                }
+                else
+                {
+                    if (_notifyManager != null)
+                    {
+                        if (!_notifyManager.Stop())
+                        {
+                            _notifyManager.Abort();
+                            StopInternal();
+                        }
+                        _notifyManager = null;
+                    }
+                    //StopInternal();
+                }
+
+                lock (lockObj1)
+                {
+                    _playbackState = SoundOut.PlaybackState.Stopped;
+                }
+            }
         }
 
         public void Pause()
         {
-            lock (_lockObj)
+            lock (lockObj1)
             {
-                PlaybackState = SoundOut.PlaybackState.Paused;
+                _playbackState = PlaybackState.Paused;
             }
         }
 
@@ -93,29 +126,9 @@ namespace CSCore.SoundOut
             Play();
         }
 
-        public void Stop()
-        {
-            if (Monitor.TryEnter(_lockObj, 50))
-            {
-                _playbackState = SoundOut.PlaybackState.Stopped;
-                Monitor.Exit(_lockObj);
-            }
-            else
-            {
-                if (_notifyManager != null)
-                {
-                    if (!_notifyManager.Stop())
-                    {
-                        _notifyManager.Abort(); //playbackstate set by Stopped-Eventhandler(NotifyManager)
-                    }
-                    _notifyManager = null;
-                }
-            }
-        }
-
         public void Initialize(IWaveSource source)
         {
-            lock (_lockObj)
+            lock (lockObj)
             {
                 if (source == null) throw new ArgumentNullException("source");
                 StopInternal();
@@ -152,17 +165,12 @@ namespace CSCore.SoundOut
 
                 DSBufferCaps bufferCaps;
                 DirectSoundException.Try(_secondaryBuffer.GetCaps(out bufferCaps), "IDirectSoundBuffer", "GetCaps");
-                _buffer = _buffer.CheckBuffer(bufferCaps.dwBufferBytes); //[bufferCaps.dwBufferBytes];
+                _buffer = new byte[bufferCaps.dwBufferBytes];
 
                 _notifyManager = new DirectSoundNotifyManager(_secondaryBuffer, waveFormat,
                     bufferSize);
                 _notifyManager.NotifyAnyRaised += OnNotify;
-                _notifyManager.Stopped += (s, e) =>
-                    {
-                        StopInternal();
-                        PlaybackState = SoundOut.PlaybackState.Stopped;
-                        RaiseStopped();
-                    };
+                _notifyManager.Stopped += (s, e) => StopInternal();
 
                 _isinitialized = true;
 
@@ -170,33 +178,9 @@ namespace CSCore.SoundOut
             }
         }
 
-        private void StopInternal()
-        {
-            lock (_lockObj)
-            {
-                if (_secondaryBuffer != null)
-                {
-                    _secondaryBuffer.Stop();
-                    _secondaryBuffer.Dispose();
-                    _secondaryBuffer = null;
-                }
-                if (_primaryBuffer != null)
-                {
-                    _primaryBuffer.Stop();
-                    _primaryBuffer.Dispose();
-                    _primaryBuffer = null;
-                }
-                if (_directSound != null)
-                {
-                    _directSound.Dispose();
-                    _directSound = null;
-                }
-            }
-        }
-
         private void OnNotify(object sender, DirectSoundNotifyEventArgs e)
         {
-            lock (_lockObj)
+            lock (lockObj)
             {
                 int handleIndex = e.HandleIndex;
                 if (e.IsTimeOut == false && _secondaryBuffer != null && PlaybackState != SoundOut.PlaybackState.Stopped)
@@ -212,21 +196,18 @@ namespace CSCore.SoundOut
                         {
                             //no more data available
                             StopInternal();
-                            e.StopPlayback = true;
                         }
                     }
                     else
                     {
                         //dsound stopped
                         StopInternal();
-                        e.StopPlayback = true;
                     }
                 }
                 else
                 {
                     //timeout
                     StopInternal();
-                    e.StopPlayback = true;
                 }
             }
         }
@@ -244,8 +225,7 @@ namespace CSCore.SoundOut
             {
                 if (_waveSource != null)
                     read = _waveSource.Read(_buffer, 0, bufferSize);
-                else 
-                    return false;
+                else return false;
             }
 
             if (read > 0 && _secondaryBuffer != null)
@@ -259,44 +239,78 @@ namespace CSCore.SoundOut
             return false;
         }
 
-        private void RaiseStopped()
+        private void StopInternal()
         {
-            if (Stopped != null)
+            lock (lockObj)
             {
-                if (_syncContext != null)
+                if (_primaryBuffer != null)
                 {
-                    _syncContext.Post(c => Stopped(this, EventArgs.Empty), null);
+                    _primaryBuffer.Stop();
+                    _primaryBuffer.Dispose();
+                    _primaryBuffer = null;
+                }
+                if (_secondaryBuffer != null)
+                {
+                    _secondaryBuffer.Stop();
+                    _secondaryBuffer.Dispose();
+                    _secondaryBuffer = null;
+                }
+                //StopNotification();
+                if (_directSound != null)
+                {
+                    _directSound.Dispose();
+                    _directSound = null;
+                }
+
+                _isinitialized = false;
+            }
+            Context.Current.Logger.Info("DirectSoundOut playback stopped", "DirectSoundOut.StopInternal()");
+        }
+
+        private void StopNotification()
+        {
+            lock (lockObj)
+            {
+                if (_notifyManager == null)
+                    return;
+
+                if (!_notifyManager.Stop(100))
+                {
+                    _notifyManager.Stopped += (s, e) =>
+                    {
+                        (s as DirectSoundNotifyManager).Dispose();
+                        lock (lockObj1)
+                        {
+                            _playbackState = SoundOut.PlaybackState.Stopped;
+                        }
+                        RaiseStopped();
+                    };
                 }
                 else
                 {
-                    Stopped(this, EventArgs.Empty);
+                    _notifyManager.Dispose();
+                    lock (lockObj1)
+                    {
+                        _playbackState = SoundOut.PlaybackState.Stopped;
+                    }
+                    RaiseStopped();
                 }
+                _notifyManager = null;
             }
         }
 
-        public float Volume
+        private void SetVolume(float volume)
         {
-            get
-            {
-                CheckForInitialize();
-                return _secondaryBuffer.GetVolume();
-            }
-            set
-            {
-                CheckForInitialize();
-                DirectSoundException.Try(_secondaryBuffer.SetVolume(value), "IDirectSoundBuffer", "SetVolume");
-            }
+            CheckForInitialize();
+            DirectSoundException.Try(_secondaryBuffer.SetVolume(volume), "IDirectSoundBuffer", "SetVolume");
         }
 
-        public IWaveSource WaveSource
+        private float GetVolume()
         {
-            get { return _waveSource; }
-        }
-
-        public PlaybackState PlaybackState
-        {
-            get { return _playbackState; }
-            private set { lock (_lockObj) { _playbackState = value; } }
+            CheckForInitialize();
+            float volume;
+            DirectSoundException.Try(_secondaryBuffer.GetVolume(out volume), "IDirectSoundBuffer", "GetVolume");
+            return volume;
         }
 
         protected void CheckForInitialize()
@@ -305,27 +319,32 @@ namespace CSCore.SoundOut
                 throw new InvalidOperationException("DirectSound is not initialized");
         }
 
-        private bool _disposed;
-		public void Dispose()
+        private void RaiseStopped()
         {
-			if(!_disposed)
-			{
-				_disposed = true;
-				
-				Dispose(true);
-				GC.SuppressFinalize(this);
-			}
+            if (Stopped != null)
+            {
+                Stopped(this, new EventArgs());
+            }
+        }
+
+        public void Dispose()
+        {
+            lock (lockObj)
+            {
+                GC.SuppressFinalize(this);
+                Dispose(true);
+            }
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            lock (_lockObj)
-            {
-                Stop();
-            }
+            Stop();
+            var mgr = _notifyManager;
+            if (mgr != null)
+                mgr.WaitForStopped();
         }
 
-        ~DirectSoundOut()
+        ~DirectSoundOut1()
         {
             Dispose(false);
         }

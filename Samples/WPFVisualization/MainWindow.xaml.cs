@@ -113,7 +113,7 @@ namespace WPFVisualisation
                 }
                 else // < Vista
                 {
-                    _soundOut = new DirectSoundOut() { Latency = 100 };
+                    _soundOut = new DirectSoundOut1() { Latency = 100 };
                 }
 
                 _soundOut.Initialize(source);

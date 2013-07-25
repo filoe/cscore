@@ -1,4 +1,4 @@
-﻿using CSCore.SoundOut.Interop;
+﻿using CSCore.SoundOut.MmInterop;
 using System;
 using System.Windows.Forms;
 

@@ -79,21 +79,32 @@ namespace CSCore.SoundOut.DirectSound
 
         private void NotifyProc()
         {
-            while (true)
+            try
             {
-                int handleIndex = WaitHandle.WaitAny(_waitHandles, _waitHandles.Length * _latency, false);
-                if (_hasToStop(this)) 
-                    break;
-                RaiseNotifyAnyRaised(handleIndex);
-            }
+                while (true)
+                {
+                    int handleIndex = WaitHandle.WaitAny(_waitHandles, _waitHandles.Length * _latency, false);
+                    if (_hasToStop(this))
+                        break;
 
-            RaiseStopped();
-            _thread = null;
+                    if (!RaiseNotifyAnyRaised(handleIndex))
+                        break;
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            finally
+            {
+                RaiseStopped();
+                _thread = null;
+            }
         }
 
-        public void Stop()
+        public bool Stop()
         {
-            Stop(_waitHandles.Length * _latency);
+            return Stop(_waitHandles.Length * _latency);
         }
 
         public bool Stop(int timeout)
@@ -112,16 +123,64 @@ namespace CSCore.SoundOut.DirectSound
             return true;
         }
 
-        protected void RaiseNotifyAnyRaised(int handleIndex)
+        public void Abort()
+        {
+            if (_thread != null)
+            {
+                _disposing = true;
+                _thread.Abort();
+                _thread = null;
+            }
+        }
+
+        protected bool RaiseNotifyAnyRaised(int handleIndex)
         {
             if (NotifyAnyRaised != null)
-                NotifyAnyRaised(this, new DirectSoundNotifyEventArgs(handleIndex, _bufferSize));
+            {
+                var e = new DirectSoundNotifyEventArgs(handleIndex, _bufferSize);
+                NotifyAnyRaised(this, e);
+                return !e.StopPlayback;
+            }
+            return false;
         }
 
         protected void RaiseStopped()
         {
             if (Stopped != null)
                 Stopped(this, new EventArgs());
+        }
+
+        public void WaitForStopped()
+        {
+            try
+            {
+                if (_thread != null && _thread.IsAlive)
+                    _thread.Join();
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        public bool WaitForStopped(int timeout)
+        {
+            try
+            {
+                if (_thread != null && _thread.IsAlive)
+                    return _thread.Join(timeout);
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public bool IsNotifyThread(Thread thread)
+        {
+            if (thread == null)
+                throw new ArgumentNullException("thread");
+            return thread.ManagedThreadId == thread.ManagedThreadId;
         }
 
         public void Dispose()

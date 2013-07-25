@@ -1,4 +1,4 @@
-﻿namespace CSCore.SoundOut.Interop
+﻿namespace CSCore.SoundOut.MmInterop
 {
     /// <summary>
     /// uMsg

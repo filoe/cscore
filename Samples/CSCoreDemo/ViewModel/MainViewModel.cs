@@ -55,10 +55,6 @@ namespace CSCoreDemo.ViewModel
                 OnPropertyChanged(() => Position);
                 OnPropertyChanged(() => Length);
             }
-            else
-            {
-                Debug.WriteLine("cancel");
-            }
         }
 
         List<SoundOutType> _soundOutTypes;

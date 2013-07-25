@@ -6,21 +6,21 @@ namespace CSCore.Codecs.MP3
 {
     public class Mp3Stream : IWaveSource, IDisposable
     {
-        Mp3Frame frame = null;
-        FrameInfoCollection frameInfoCollection;
+        Mp3Frame _frame = null;
+        FrameInfoCollection _frameInfoCollection;
         AcmConverter _converter;
         Stream _stream;
-        object lockObject = new object();
+        object _lockObject = new object();
 
-        int overflows;
-        int bufferoffset;
+        int _overflows;
+        int _bufferoffset;
 
-        int sampleRate = 0;
-        long dataStartIndex = 0;
-        long dataLength = 0;
-        double bitRate = 0.0; //double um möglichst wenig Rundungsfehler zu erzeugen
-        int bytesPerSample = 0; //BitsPerSample / 8 * Channel
-        byte[] pcmDstBuffer; //Buffer in den die konvertierten pcm bytes kommen
+        int _sampleRate = 0;
+        long _dataStartIndex = 0;
+        long _dataLength = 0;
+        double _bitRate = 0.0;
+        //int _bytesPerSample = 0; //BitsPerSample / 8 * Channel
+        byte[] _pcmDstBuffer;
         byte[] _frameBuffer;
 
         const short SamplesPerFrame = 1152;
@@ -30,33 +30,33 @@ namespace CSCore.Codecs.MP3
         {
             int frameLength = 0;
             if (scanStream)
-                frameInfoCollection = new FrameInfoCollection();
+                _frameInfoCollection = new FrameInfoCollection();
             else
-                frameInfoCollection = null;
+                _frameInfoCollection = null;
 
-            dataStartIndex = stream.Position;
+            _dataStartIndex = stream.Position;
             do
             {
-                frame = Mp3Frame.FromStream(stream);
-                if (frame == null && stream.IsEndOfStream())
-                    throw new FormatException("Stream is no mp3-stream. No MP3-Frame was found.");
+                _frame = Mp3Frame.FromStream(stream);
+                if (_frame == null && stream.IsEndOfStream())
+                    throw new FormatException("Stream is no MP3-stream. No MP3-Frame was found.");
 
-            } while (frame == null && !stream.IsEndOfStream());
+            } while (_frame == null && !stream.IsEndOfStream());
 
-            frameLength = frame.FrameLength;
-            sampleRate = frame.SampleRate;
-            XingHeader = XingHeader.FromFrame(frame); //Im ersten Frame kann XingHeader enthalten sein
+            frameLength = _frame.FrameLength;
+            _sampleRate = _frame.SampleRate;
+            XingHeader = XingHeader.FromFrame(_frame); //Im ersten Frame kann XingHeader enthalten sein
             if (XingHeader != null)
             {
                 //Todo: dataInitPosition = stream.Position
-                dataStartIndex = stream.Position;
+                _dataStartIndex = stream.Position;
             }
 
-            dataLength = stream.Length - dataStartIndex - lengthOffset;
+            _dataLength = stream.Length - _dataStartIndex - lengthOffset;
 
             if (scanStream)
             {
-                stream.Position = dataStartIndex;
+                stream.Position = _dataStartIndex;
                 PreScanFile(stream);
                 CanSeek = true;
             }
@@ -65,27 +65,27 @@ namespace CSCore.Codecs.MP3
                 CanSeek = false;
             }
 
-            stream.Position = dataStartIndex;
+            stream.Position = _dataStartIndex;
 
             /*
              * bytes * 8 (8bits perbyte) / ms = totalbits / totalms = bits per ms
              */
             if (scanStream)
             {
-                bitRate = ((dataLength * 8.0) / ((double)frameInfoCollection.TotalSamples / (double)sampleRate));
+                _bitRate = ((_dataLength * 8.0) / ((double)_frameInfoCollection.TotalSamples / (double)_sampleRate));
             }
             else
             {
-                bitRate = ( (frame.BitRate) / 1);
+                _bitRate = ( (_frame.BitRate) / 1);
             }
-            MP3Format = new Mp3Format(sampleRate, frame.ChannelMode.ToShort(), frameLength, (int)Math.Round(bitRate));
+            MP3Format = new Mp3Format(_sampleRate, _frame.ChannelMode.ToShort(), frameLength, (int)Math.Round(_bitRate));
             _converter = new AcmConverter(MP3Format);
             WaveFormat = _converter.DestinationFormat;
 
-            bytesPerSample = (WaveFormat.BitsPerSample / 8 * WaveFormat.Channels);
-            pcmDstBuffer = new byte[SamplesPerFrame * bytesPerSample * 2];
+            //_bytesPerSample = (WaveFormat.BitsPerSample / 8 * WaveFormat.Channels);
+            _pcmDstBuffer = new byte[SamplesPerFrame * WaveFormat.BytesPerSample * 2];
 
-            stream.Position = dataStartIndex;
+            stream.Position = _dataStartIndex;
             _stream = stream;
         }
 
@@ -96,7 +96,7 @@ namespace CSCore.Codecs.MP3
             try
             {
                 int read = 0;
-                lock (lockObject)
+                lock (_lockObject)
                 {
                     read += CheckForOverflows(buffer, ref offset, count);
                     if (read == count)
@@ -106,21 +106,21 @@ namespace CSCore.Codecs.MP3
                     {
                         try
                         {
-                            frame = ReadNextMP3Frame();
-                            if (frame == null) { IsEOF = true; break; }
+                            _frame = ReadNextMP3Frame();
+                            if (_frame == null) { IsEOF = true; break; }
 
-                            int converted = _converter.Convert(_frameBuffer, frame.FrameLength, pcmDstBuffer, 0);
+                            int converted = _converter.Convert(_frameBuffer, _frame.FrameLength, _pcmDstBuffer, 0);
                             int BTCC = Math.Min(count - read, converted);
 
-                            Array.Copy(pcmDstBuffer, 0, buffer, offset, BTCC);
+                            Array.Copy(_pcmDstBuffer, 0, buffer, offset, BTCC);
                             offset += BTCC; read += BTCC;
 
                             /*
                              * If there are any overflows -> store them in a 
                              * buffer to use it next time.
                              */
-                            overflows = ((converted > BTCC) ? (converted - BTCC) : 0);
-                            bufferoffset = ((converted > BTCC) ? (BTCC) : 0);
+                            _overflows = ((converted > BTCC) ? (converted - BTCC) : 0);
+                            _bufferoffset = ((converted > BTCC) ? (BTCC) : 0);
                         }
                         catch (Exception ex)
                         {
@@ -139,14 +139,14 @@ namespace CSCore.Codecs.MP3
 
         private int CheckForOverflows(byte[] buffer, ref int offset, int count)
         {
-            if (overflows != 0)
+            if (_overflows != 0)
             {
                 int result = 0;
-                int BTCC = Math.Min(count, overflows);
-                Array.Copy(pcmDstBuffer, bufferoffset, buffer, offset, BTCC);
+                int BTCC = Math.Min(count, _overflows);
+                Array.Copy(_pcmDstBuffer, _bufferoffset, buffer, offset, BTCC);
 
-                overflows -= BTCC;
-                bufferoffset = overflows == 0 ? 0 : (bufferoffset + BTCC);
+                _overflows -= BTCC;
+                _bufferoffset = _overflows == 0 ? 0 : (_bufferoffset + BTCC);
                 result += BTCC;
                 offset += BTCC;
 
@@ -161,8 +161,8 @@ namespace CSCore.Codecs.MP3
         private Mp3Frame ReadNextMP3Frame()
         {
             Mp3Frame frame = Mp3Frame.FromStream(_stream, ref _frameBuffer);
-            if (frame != null && frameInfoCollection != null)
-                frameInfoCollection.PlaybackIndex++;
+            if (frame != null && _frameInfoCollection != null)
+                _frameInfoCollection.PlaybackIndex++;
 
             return frame;
         }
@@ -173,8 +173,8 @@ namespace CSCore.Codecs.MP3
             {
                 if (CanSeek)
                 {
-                    if (frameInfoCollection.PlaybackIndex < frameInfoCollection.Count)
-                        return (frameInfoCollection[frameInfoCollection.PlaybackIndex].SampleIndex * bytesPerSample);
+                    if (_frameInfoCollection.PlaybackIndex < _frameInfoCollection.Count)
+                        return (_frameInfoCollection[_frameInfoCollection.PlaybackIndex].SampleIndex * WaveFormat.BytesPerSample);
                     else
                         return Length;
                 }
@@ -185,17 +185,17 @@ namespace CSCore.Codecs.MP3
                 if (!CanSeek)
                     return;//throw new InvalidOperationException("This Mp3Stream does not support seeking. You have to use Pre_Scan strategy to use this feature");
 
-                lock (lockObject)
+                lock (_lockObject)
                 {
                     value = Math.Min(value, Length);
                     value = (value > 0)? value: 0;
 
-                    for (int i = 0; i < frameInfoCollection.Count; i++)
+                    for (int i = 0; i < _frameInfoCollection.Count; i++)
                     {
-                        if ((value / bytesPerSample) <= frameInfoCollection[i].SampleIndex)
+                        if ((value / WaveFormat.BytesPerSample) <= _frameInfoCollection[i].SampleIndex)
                         {
-                            _stream.Position = frameInfoCollection[i].StreamPosition;
-                            frameInfoCollection.PlaybackIndex = i;
+                            _stream.Position = _frameInfoCollection[i].StreamPosition;
+                            _frameInfoCollection.PlaybackIndex = i;
                             if (_stream.Position < _stream.Length)
                                 IsEOF = false;
 
@@ -203,7 +203,7 @@ namespace CSCore.Codecs.MP3
                         }
                     }
 
-                    bufferoffset = 0; overflows = 0;
+                    _bufferoffset = 0; _overflows = 0;
                 }
 
             }
@@ -211,10 +211,7 @@ namespace CSCore.Codecs.MP3
 
         private void PreScanFile(Stream stream)
         {
-            do
-            {
-                //nothing.. :)
-            } while (frameInfoCollection.AddFromMP3Stream(stream));
+            while (_frameInfoCollection.AddFromMP3Stream(stream));
         }
 
         public XingHeader XingHeader { get; private set; }
@@ -231,12 +228,12 @@ namespace CSCore.Codecs.MP3
         {
             get
             {
-                return CanSeek ? (frameInfoCollection.TotalSamples * bytesPerSample) : -1;
+                return CanSeek ? (_frameInfoCollection.TotalSamples * WaveFormat.BytesPerSample) : -1;
             }
         }
 
-        internal double BitRate { get { return bitRate; } }
-        internal long DataStartIndex { get { return dataStartIndex; } }
+        internal double BitRate { get { return _bitRate; } }
+        internal long DataStartIndex { get { return _dataStartIndex; } }
 
         public void Dispose()
         {
@@ -246,7 +243,7 @@ namespace CSCore.Codecs.MP3
 
         protected void Dispose(bool disposing)
         {
-            lock (lockObject)
+            lock (_lockObject)
             {
                 if (disposing)
                 {
@@ -260,13 +257,13 @@ namespace CSCore.Codecs.MP3
                         _stream.Dispose();
                         _stream = null;
                     }
-                    if (frameInfoCollection != null)
+                    if (_frameInfoCollection != null)
                     {
-                        frameInfoCollection.Dispose();
-                        frameInfoCollection = null;
+                        _frameInfoCollection.Dispose();
+                        _frameInfoCollection = null;
                     }
-                    pcmDstBuffer = null;
-                    frame = null;
+                    _pcmDstBuffer = null;
+                    _frame = null;
                     Context.Current.Logger.Info(String.Format("Disposed Mp3Stream Disposing: {0}", disposing), "Mp3Stream.Dispose(bool)");
                 }
             }

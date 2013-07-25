@@ -253,6 +253,7 @@
     <Compile Include="MediaFoundation\MFSourceReader.cs" />
     <Compile Include="SoundIn\WaveInEvent.cs" />
     <Compile Include="SoundIn\WaveInWindow.cs" />
+    <Compile Include="SoundOut\DirectSoundOut.cs" />
     <Compile Include="SoundOut\WasapiOut.cs" />
     <Compile Include="Streams\AutoGain.cs" />
     <Compile Include="Streams\BlockReadEventArgs.cs" />
@@ -380,7 +381,7 @@
     <Compile Include="Streams\SampleConverter\SampleToWaveBase.cs" />
     <Compile Include="Streams\StereoToMonoSource.cs" />
     <Compile Include="SampleSourceBase.cs" />
-    <Compile Include="SoundOut\DirectSoundOut.cs" />
+    <None Include="SoundOut\DirectSoundOut1.cs" />
     <Compile Include="SoundOut\DirectSoundOutExtended.cs" />
     <Compile Include="SoundOut\DirectSound\3D\D3DVector.cs" />
     <Compile Include="SoundOut\DirectSound\3D\DS3DApplyMode.cs" />
@@ -483,8 +484,6 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="SoundOut\DirectSound\dsound.h" />
-    <Content Include="SoundOut\CoreAudio\WASAPI\Audioclient.h" />
-    <Content Include="SoundOut\CoreAudio\WASAPI\Audioclient.idl" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

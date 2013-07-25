@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace CSCore.SoundOut.Interop
+namespace CSCore.SoundOut.MmInterop
 {
     public class WaveWindow : NativeWindow, IWaveCallbackWindow
     {

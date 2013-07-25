@@ -7,7 +7,7 @@ namespace CSCore.Codecs.MP3
     {
         public const int MaxFrameLength = 0x4000;
 
-        private static readonly int[,,] _bitRates = new int[,,]
+        private static readonly int[,,] BitRates = new int[,,]
         {
             {
                 // Version 1
@@ -219,15 +219,15 @@ namespace CSCore.Codecs.MP3
                  * BitRate
                  * 
                  */
-                int BitrateIndex = (buffer[2] & 0xF0) >> 4;
-                if (BitrateIndex >= 0x0F)
+                int bitrateIndex = (buffer[2] & 0xF0) >> 4;
+                if (bitrateIndex >= 0x0F)
                 {
                     //Reserved --> 1111
                     return false;
                 }
                 else
                 {
-                    BitRate = _bitRates[(MPEGVersion == MpegVersion.Version1) ? 0 : 1, mpegLayerIndex, BitrateIndex] * 1000;
+                    BitRate = BitRates[(MPEGVersion == MpegVersion.Version1) ? 0 : 1, mpegLayerIndex, bitrateIndex] * 1000;
                     if (BitRate == 0) return false;
                 }
 

@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace CSCore.SoundOut.Interop
+namespace CSCore.SoundOut.MmInterop
 {
     [System.Security.SuppressUnmanagedCodeSecurity]
     public static class MMInterops
@@ -118,10 +118,15 @@ namespace CSCore.SoundOut.Interop
         public static extern MmResult waveInGetErrorText(MmResult mmrError, StringBuilder pszText, int cchText);
         #endregion
 
-        #region other
-        public static MmResult SetSystemVolume(uint dwVolume) { return waveOutSetVolume(IntPtr.Zero, dwVolume); }
-        public static MmResult GetSystemVolume(out uint pdwVolume) { return waveOutGetVolume(IntPtr.Zero, out pdwVolume); } 
-        #endregion
+        public static MmResult SetSystemVolume(uint dwVolume) 
+        { 
+            return waveOutSetVolume(IntPtr.Zero, dwVolume);
+        }
+
+        public static MmResult GetSystemVolume(out uint pdwVolume)
+        { 
+            return waveOutGetVolume(IntPtr.Zero, out pdwVolume);
+        } 
 
         public static void SetVolume(IntPtr waveOut, float left, float right)
         {
@@ -139,6 +144,15 @@ namespace CSCore.SoundOut.Interop
             if (result != MmResult.MMSYSERR_NOERROR)
                 Context.Current.Logger.MMResult(result, "waveOutGetVolume", "MMInterop.GetVolume(IntPtr)");
             return CSCore.Utils.CSMath.IntToWaveOutVolume(volume);
+        }
+
+        public static void GetVolume(IntPtr waveOut, out float left, out float right)
+        {
+            uint volume;
+            MmException.Try(waveOutGetVolume(waveOut, out volume), "waveOutGetVolume");
+            left = (volume / 0xFFFF);
+            right = ((volume / 0xFFFF) << 16);
+            return;
         }
     }
 }

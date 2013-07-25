@@ -27,6 +27,8 @@ namespace CSCoreDemo.Model
 				throw new ArgumentException("filename");
 
 			var source = CodecFactory.Instance.GetCodec(filename);
+            source = new LoopStream(source);
+
             if (source.WaveFormat.Channels == 1)
                 source = new MonoToStereoSource(source).ToWaveSource(16);
 			_panSource = new PanSource(source){ Pan = this.Pan };

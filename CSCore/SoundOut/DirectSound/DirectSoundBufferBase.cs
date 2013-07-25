@@ -19,7 +19,10 @@ namespace CSCore.SoundOut.DirectSound
         public const uint FrequencyMin = 100;
         public const uint FrequencyMax = 20000;
 
-        public DirectSoundBufferBase() { }
+        public DirectSoundBufferBase() 
+        {
+        }
+
         public DirectSoundBufferBase(IntPtr basePtr)
         {
             _basePtr = basePtr.ToPointer();
@@ -174,6 +177,13 @@ namespace CSCore.SoundOut.DirectSound
             var result = GetVolume(out dvolume);
             volume = 1 - ((float)dvolume / MinVolume);
             return result;
+        }
+
+        public float GetVolume()
+        {
+            float volume;
+            DirectSoundException.Try(GetVolume(out volume), "IDirectSoundBuffer", "GetVolume");
+            return volume;
         }
 
         public DSResult GetFormat(out WaveFormat waveFormat)

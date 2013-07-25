@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace CSCore.SoundOut.Interop
+namespace CSCore.SoundOut.MmInterop
 {
 	public class WaveOutBuffer : IDisposable
 	{

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CSCore.SoundOut.Interop
+namespace CSCore.SoundOut.MmInterop
 {
     public interface IWaveCallbackWindow : IDisposable
     {

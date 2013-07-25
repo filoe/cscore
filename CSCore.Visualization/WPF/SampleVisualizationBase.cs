@@ -52,7 +52,7 @@ namespace CSCore.Visualization.WPF
                     return;
                 OnUpdate(e.DataLeft, e.DataRight);
                 _mutex.ReleaseMutex();
-            }));
+            })/*, System.Windows.Threading.DispatcherPriority.Render*/);
         }
 
         protected abstract void OnUpdate(float[] left, float[] right);

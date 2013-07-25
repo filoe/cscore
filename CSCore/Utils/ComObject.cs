@@ -17,7 +17,8 @@ namespace System.Runtime.InteropServices
         }
         public ComObject(IntPtr ptr)
         {
-            if (ptr == IntPtr.Zero) throw new ArgumentException("ptr is IntPtr.Zero");
+            if (ptr == IntPtr.Zero)
+                throw new ArgumentException("ptr is IntPtr.Zero");
             _basePtr = ptr.ToPointer();
         }
 
