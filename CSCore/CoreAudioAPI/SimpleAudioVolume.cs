@@ -53,13 +53,13 @@ namespace CSCore.CoreAudioAPI
         {
             get
             {
-                bool muted;
+                NativeBool muted;
                 CoreAudioAPIException.Try(GetMuteInternal(out muted), c, "GetMute");
                 return muted;
             }
             set
             {
-                CoreAudioAPIException.Try(SetMuteInternal(value), c, "SetMute");
+                CoreAudioAPIException.Try(SetMuteInternal(value, Guid.Empty), c, "SetMute");
             }
         }
 
@@ -88,16 +88,16 @@ namespace CSCore.CoreAudioAPI
         /// The SetMute method sets the muting state for the audio session.
         /// </summary>
         /// <returns>HRESULT</returns>
-        public unsafe int SetMuteInternal(bool muted)
+        public unsafe int SetMuteInternal(NativeBool muted, Guid eventContext)
         {
-            return InteropCalls.CallI(_basePtr, muted, ((void**)(*(void**)_basePtr))[5]);
+            return InteropCalls.CallI(_basePtr, muted, &eventContext, ((void**)(*(void**)_basePtr))[5]);
         }
 
         /// <summary>
         /// The GetMute method retrieves the current muting state for the audio session.
         /// </summary>
         /// <returns>HRESULT</returns>
-        public unsafe int GetMuteInternal(out bool ismuted)
+        public unsafe int GetMuteInternal(out NativeBool ismuted)
         {
             fixed (void* pismuted = &ismuted)
             {

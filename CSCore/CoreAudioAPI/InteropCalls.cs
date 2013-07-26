@@ -103,7 +103,7 @@ namespace CSCore.CoreAudioAPI
         }
 
         [CSCalli]
-        internal static unsafe int CallI(void* _basePtr, bool muted, void* p)
+        internal static unsafe int CallI(void* _basePtr, System.Runtime.InteropServices.NativeBool muted, void* p)
         {
             throw new NotImplementedException();
         }

@@ -43,11 +43,13 @@ namespace CSCli
             if (patcher.Patch())
             {
                 var output = fileName;
-                if (File.Exists(output)) File.Delete(output);
+                if (File.Exists(output)) 
+                    File.Delete(output);
 
+                StdOut.Info("Writing assembly [{0}] including symbols file [{1}].", Path.GetFileName(fileName), Path.ChangeExtension(fileName, "pdb"));
                 assembly.Write(output, wp);
 
-                StdOut.Info("CSCli patched {" + Path.GetFileName(fileName) + "} successfully");
+                StdOut.Info("CSCli patched assembly [{0}] successfully", Path.GetFileName(fileName));
             }
             else
             {

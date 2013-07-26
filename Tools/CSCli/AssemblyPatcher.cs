@@ -26,12 +26,17 @@ namespace CSCli
             try
             {
 #endif
+                StdOut.Info("CSCli is searching for calls to replace.");
                 var assembly = _asm;
 
                 foreach (var type in assembly.MainModule.Types)
                 {
                     ProcessType(type);
                 }
+
+                StdOut.Info("Processed {0} types.", assembly.MainModule.Types.Count);
+                StdOut.Info("Replaced {0} method-calls", ReplacedCalls);
+                StdOut.Info("Cleaning up assembly. {0} types to remove.", _objectsToRemove.Count);
 
                 _objectsToRemove.ForEach((t) => assembly.MainModule.Types.Remove(t));
 #if handleException
@@ -47,6 +52,12 @@ namespace CSCli
 
         const string CSCalli = "CSCalliAttribute";
         const string RemoveObj = "RemoveObjAttribute";
+
+        int replacedCalls = 0;
+        public int ReplacedCalls
+        {
+            get { return replacedCalls; }
+        }
 
         private void ProcessType(TypeDefinition type)
         {
@@ -77,6 +88,8 @@ namespace CSCli
 
                         if (attributes.Contains(CSCalli))
                         {
+                            StdOut.Info("Patching [{0}].", methodDescription.FullName);
+
                             var callSite = new CallSite(methodDescription.ReturnType) { CallingConvention = MethodCallingConvention.StdCall };
                             for (int n = 0; n < methodDescription.Parameters.Count - 1; n++)
                             {
@@ -85,6 +98,8 @@ namespace CSCli
 
                             var callInstruction = ilProcessor.Create(OpCodes.Calli, callSite);
                             ilProcessor.Replace(instruction, callInstruction);
+
+                            replacedCalls++;
                         }
                     }
                 }

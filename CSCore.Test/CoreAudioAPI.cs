@@ -319,8 +319,10 @@ namespace CSCore.Test
                 audioClient.Initialize(AudioClientShareMode.Shared, AudioClientStreamFlags.None, 1000, 0, audioClient.GetMixFormat(), Guid.Empty);
                 using (var volume = SimpleAudioVolume.FromAudioClient(audioClient))
                 {
+                    var muted = volume.IsMuted;
                     volume.IsMuted = true;
                     volume.IsMuted = false;
+                    volume.IsMuted = muted;
                 }
             }
         }
