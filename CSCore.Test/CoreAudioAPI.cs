@@ -57,7 +57,7 @@ namespace CSCore.Test
                     Debug.Assert(e.Channels == endpointVolume.ChannelCount);
                 };
                 endpointVolume.RegisterControlChangeNotify(callback);
-                var result = endpointVolume.SetChannelVolumeLevelScalarNative(1, 1f, Guid.Empty);
+                var result = endpointVolume.SetChannelVolumeLevelScalarNative(0, 1f, Guid.Empty);
                 System.Threading.Thread.Sleep(1000);
             }
         }

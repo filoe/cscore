@@ -25,7 +25,7 @@ namespace CSCore.Test
         [TestCategory("DirectSound")]
         public void OpenDirectSoundDevice()
         {
-            DirectSoundOut1 dsoundOut = new DirectSoundOut1();
+            DirectSoundOut dsoundOut = new DirectSoundOut();
             dsoundOut.Initialize(new Streams.SineGenerator().ToWaveSource(16));
             dsoundOut.Dispose();
         }
