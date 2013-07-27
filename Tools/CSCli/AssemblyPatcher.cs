@@ -93,7 +93,10 @@ namespace CSCli
                             var callSite = new CallSite(methodDescription.ReturnType) { CallingConvention = MethodCallingConvention.StdCall };
                             for (int n = 0; n < methodDescription.Parameters.Count - 1; n++)
                             {
-                                callSite.Parameters.Add(methodDescription.Parameters[n]);
+                                var p = methodDescription.Parameters[n];
+                                if (p.ParameterType.FullName == "System.Boolean")
+                                    StdOut.Error(methodDescription.FullName + ": Don't use System.Boolean in a CalllI-signature. Use any type which has a size of 32bit instead(see System.Runtime.InteropServices.NativeBool contained by CSCore.dll).");
+                                callSite.Parameters.Add(p);
                             }
 
                             var callInstruction = ilProcessor.Create(OpCodes.Calli, callSite);

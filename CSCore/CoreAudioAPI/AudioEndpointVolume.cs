@@ -80,7 +80,7 @@ namespace CSCore.CoreAudioAPI
             if (!_notifies.Contains(notify))
             {
                 _notifies.Add(notify);
-                return InteropCalls.CallI(_basePtr, notify, ((void**)(*(void**)_basePtr))[3]);
+                return InteropCalls.CallI(_basePtr, Marshal.GetComInterfaceForObject(notify, typeof(IAudioEndpointVolumeCallback)), ((void**)(*(void**)_basePtr))[3]);
             }
             return 0;
 		}
@@ -105,7 +105,7 @@ namespace CSCore.CoreAudioAPI
             if (_notifies.Contains(notify))
             {
                 _notifies.Remove(notify);
-                return InteropCalls.CallI(_basePtr, notify, ((void**)(*(void**)_basePtr))[4]);
+                return InteropCalls.CallI(_basePtr, Marshal.GetComInterfaceForObject(notify, typeof(IAudioEndpointVolumeCallback)), ((void**)(*(void**)_basePtr))[4]);
             }
             return 0;
 		}
@@ -466,81 +466,5 @@ namespace CSCore.CoreAudioAPI
         {
             base.Dispose(disposing);
         }
-	}
-
-    public enum EndpointHardwareSupport
-    {
-        Volume = 0x1,
-        Mute = 0x2,
-        Meter = 0x4
-    }
-
-	[ComImport]
-	[Guid("657804FA-D6AD-4496-8A60-352752AF4F89")]
-	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-	[System.Security.SuppressUnmanagedCodeSecurity]
-	public interface IAudioEndpointVolumeCallback
-	{
-		int OnNotify(IntPtr notifyData);
-	}
-
-	[Guid("657804FA-D6AD-4496-8A60-352752AF4F89")]
-	public class AudioEndpointVolumeCallback : IAudioEndpointVolumeCallback
-	{
-		public event EventHandler<AudioEndpointVolumeCallbackEventArgs> NotifyRecived;
-
-		int IAudioEndpointVolumeCallback.OnNotify(IntPtr notifyData)
-		{
-			if (notifyData == IntPtr.Zero)
-				return (int)Utils.HResult.E_INVALIDARG;
-
-			var data = (AudioVolumeNotificationData)Marshal.PtrToStructure(notifyData, typeof(AudioVolumeNotificationData));
-			if (NotifyRecived != null)
-				NotifyRecived(this, new AudioEndpointVolumeCallbackEventArgs(data, notifyData));
-
-			return (int)Utils.HResult.S_OK;
-		}
-	}
-
-	public class AudioEndpointVolumeCallbackEventArgs : EventArgs
-	{
-		public Guid EventContext { get; private set; }
-		public bool Muted { get; private set; }
-		public float MasterVolume { get; private set; }
-		public uint Channels { get; private set; }
-		public float[] ChannelVolumes { get; private set; }
-
-		public AudioEndpointVolumeCallbackEventArgs(AudioVolumeNotificationData data, IntPtr nativePtr)
-		{
-			EventContext = data.EventContext;
-			Muted = data.Muted;
-			MasterVolume = data.MasterVolume;
-			Channels = data.Channels;
-			ChannelVolumes = data.GetAllChannelVolumes(nativePtr);
-		}
-	}
-
-	[StructLayout(LayoutKind.Sequential)]
-	public struct AudioVolumeNotificationData
-	{
-		public Guid EventContext;
-		public NativeBool Muted;
-		public float MasterVolume;
-		public uint Channels;
-		public float ChannelVolumes; //array?
-
-		public unsafe float[] GetAllChannelVolumes(IntPtr ptr)
-		{
-            float[] result = new float[Channels];
-
-            IntPtr pchannels = (IntPtr)((long)ptr + (long)Marshal.OffsetOf(typeof(AudioVolumeNotificationData), "ChannelVolumes"));
-            for (int i = 0; i < Channels; i++)
-            {
-                result[i] = (float)Marshal.PtrToStructure(pchannels, typeof(float));
-                pchannels += Marshal.SizeOf(typeof(float));
-            }
-
-			return result;
-		}
 	}
 }

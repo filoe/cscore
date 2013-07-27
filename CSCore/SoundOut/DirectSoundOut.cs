@@ -95,6 +95,13 @@ namespace CSCore.SoundOut
 
         public void Stop()
         {
+            if (_notifyManager != null && !_notifyManager.GotStarted)
+            {
+                StopInternal();
+                _notifyManager.Dispose();
+                _notifyManager = null;
+            }
+
             if (Monitor.TryEnter(_lockObj, 50))
             {
                 _playbackState = SoundOut.PlaybackState.Stopped;
@@ -322,6 +329,11 @@ namespace CSCore.SoundOut
             lock (_lockObj)
             {
                 Stop();
+                //var mgr = _notifyManager;
+                //if (mgr != null)
+                //{
+                //    mgr.WaitForStopped();
+                //}
             }
         }
 

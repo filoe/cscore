@@ -21,6 +21,11 @@ namespace CSCore.SoundOut.DirectSound
 
         DirectSoundNotify _notify;
 
+        /// <summary>
+        /// Was the notifymanager ever started?
+        /// </summary>
+        public bool GotStarted { get; private set; }
+
         public DirectSoundNotifyManager(DirectSoundSecondaryBuffer buffer, WaveFormat waveFormat, int bufferSize)
             : this(buffer, waveFormat, bufferSize, null)
         {
@@ -81,6 +86,7 @@ namespace CSCore.SoundOut.DirectSound
         {
             try
             {
+                GotStarted = true;
                 while (true)
                 {
                     int handleIndex = WaitHandle.WaitAny(_waitHandles, _waitHandles.Length * _latency, false);

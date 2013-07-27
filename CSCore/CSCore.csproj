@@ -224,8 +224,13 @@
     <None Include="Codecs\VORBIS\VorbisException.cs" />
     <Compile Include="Codecs\RAW\RawDataReader.cs" />
     <Compile Include="CoreAudioAPI\AudioEndpointVolume.cs" />
+    <Compile Include="CoreAudioAPI\AudioEndpointVolumeCallback.cs" />
+    <Compile Include="CoreAudioAPI\AudioEndpointVolumeCallbackEventArgs.cs" />
     <Compile Include="CoreAudioAPI\AudioEndpointVolumeChannel.cs" />
     <Compile Include="CoreAudioAPI\AudioRenderClient.cs" />
+    <Compile Include="CoreAudioAPI\AudioVolumeNotificationData.cs" />
+    <Compile Include="CoreAudioAPI\EndpointHardwareSupport.cs" />
+    <Compile Include="CoreAudioAPI\IAudioEndpointVolumeCallback.cs" />
     <Compile Include="CoreAudioAPI\InteropCalls.cs" />
     <Compile Include="CoreAudioAPI\AudioClient.cs" />
     <Compile Include="CoreAudioAPI\AudioClientShareMode.cs" />

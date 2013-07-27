@@ -54,10 +54,16 @@ namespace CSCore.Test
                 AudioEndpointVolumeCallback callback = new AudioEndpointVolumeCallback();
                 callback.NotifyRecived += (s, e) =>
                 {
-                    Debug.Assert(e.Channels == endpointVolume.ChannelCount);
+                    Debug.WriteLine("Notification1");
+                    //Debug.Assert(e.Channels == endpointVolume.ChannelCount);
                 };
                 endpointVolume.RegisterControlChangeNotify(callback);
-                var result = endpointVolume.SetChannelVolumeLevelScalarNative(0, 1f, Guid.Empty);
+
+                var vol = endpointVolume.GetChannelVolumeLevelScalar(0);
+                endpointVolume.SetChannelVolumeLevelScalar(0, 1f, Guid.Empty);
+                endpointVolume.SetChannelVolumeLevelScalar(0, vol, Guid.Empty);
+
+                endpointVolume.UnregisterControlChangeNotify(callback);
                 System.Threading.Thread.Sleep(1000);
             }
         }
@@ -320,8 +326,7 @@ namespace CSCore.Test
                 using (var volume = SimpleAudioVolume.FromAudioClient(audioClient))
                 {
                     var muted = volume.IsMuted;
-                    volume.IsMuted = true;
-                    volume.IsMuted = false;
+                    volume.IsMuted = !muted;
                     volume.IsMuted = muted;
                 }
             }

@@ -15,7 +15,12 @@ namespace CSCli
 
         public static void Error(string message)
         {
-            Instance.WriteError(message);
+            Error(message, String.Empty);
+        }
+
+        public static void Error(string message, string location)
+        {
+            Instance.WriteError(message, location);
         }
 
         public static void Info(string message)
@@ -30,10 +35,10 @@ namespace CSCli
 
         private StdOut() { }
 
-        public void WriteError(string message)
+        public void WriteError(string message, string location)
         {
             Console.Error.WriteLine("[CSCLI][ERROR]: " + message);
-            Console.Error.WriteLine(":error:" + message); //see http://blogs.msdn.com/b/msbuild/archive/2006/11/03/msbuild-visual-studio-aware-error-messages-and-message-formats.aspx
+            Console.Error.WriteLine(location + ":error:" + message); //see http://blogs.msdn.com/b/msbuild/archive/2006/11/03/msbuild-visual-studio-aware-error-messages-and-message-formats.aspx
         }
 
         public void WriteInfo(string message)

@@ -34,7 +34,7 @@ namespace CSCore.Tags.ID3.Frames
                 int pos = 0;
                 for (int i = offset; i < content.Length; i++)
                 {
-                    PlayedCounter |= (content[i] << pos);
+                    PlayedCounter |= ((uint)(content[i] << pos)); //cast to uint to fix warning CS0675 
                     pos += 8;
                 }
             }
