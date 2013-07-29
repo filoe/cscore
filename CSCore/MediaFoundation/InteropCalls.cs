@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CSCore.Utils;
+using CSCore.Win32;
 
 namespace CSCore.MediaFoundation
 {
@@ -14,7 +15,7 @@ namespace CSCore.MediaFoundation
             throw new NotImplementedException();
         }
 
-        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, int streamIndex, System.Runtime.InteropServices.NativeBool selected, void* p)
+        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, int streamIndex, NativeBool selected, void* p)
         {
             throw new NotImplementedException();
         }
@@ -24,12 +25,12 @@ namespace CSCore.MediaFoundation
             throw new NotImplementedException();
         }
 
-        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, Guid* guid, CoreAudioAPI.PropertyVariant* propertyVariant, System.Runtime.InteropServices.NativeBool* pr, void* p)
+        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, Guid* guid, PropertyVariant* propertyVariant, NativeBool* pr, void* p)
         {
             throw new NotImplementedException();
         }
 
-        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, void* p1, MFAttributeMatchType matchType, System.Runtime.InteropServices.NativeBool* pr, void* p2)
+        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, void* p1, MFAttributeMatchType matchType, NativeBool* pr, void* p2)
         {
             throw new NotImplementedException();
         }
@@ -110,6 +111,46 @@ namespace CSCore.MediaFoundation
         }
 
         [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, Guid guidRepresenation, IntPtr intPtr, void* p)
+        {
+            throw new NotImplementedException();
+        }
+
+        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, int streamIndex, int mediatypeIndex, IntPtr* intPtr, void* p)
+        {
+            throw new NotImplementedException();
+        }
+
+        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, IntPtr reserved, void* p1, void* p2)
+        {
+            throw new NotImplementedException();
+        }
+
+        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, MFSampleFlags flags, void* p)
+        {
+            throw new NotImplementedException();
+        }
+
+        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, long hnsSampleTime, void* p)
+        {
+            throw new NotImplementedException();
+        }
+
+        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, void* pbuffer, void* pmaxlength, void* pcurrentlength, void* p)
+        {
+            throw new NotImplementedException();
+        }
+
+        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, int streamIndex, int controlFlags, void* ptr0, void* ptr1, void* ptr2, IntPtr* intPtr, void* p)
+        {
+            throw new NotImplementedException();
+        }
+
+        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, int streamIndex, Guid* guid1, Guid* guid2, void* ptr, void* p)
+        {
+            throw new NotImplementedException();
+        }
+
+        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, int streamIndex, Guid* guid, void* ptr, void* p)
         {
             throw new NotImplementedException();
         }

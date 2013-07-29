@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
 using CSCore.Utils;
+using CSCore.Win32;
 
 namespace CSCore.CoreAudioAPI
 {

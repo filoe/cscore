@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSCore.Win32;
+using System;
 using System.Runtime.InteropServices;
 
 namespace CSCore.DMO

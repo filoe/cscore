@@ -193,12 +193,17 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="BitReaderTest.cs" />
+    <Compile Include="CoreAudioAPI\Utils.cs" />
+    <Compile Include="CoreAudioAPI\EndpointTests.cs" />
+    <Compile Include="CoreAudioAPI\MMDevicesTests.cs" />
+    <Compile Include="MediaFoundation\BasicMediaFoundationTests.cs" />
+    <Compile Include="Utils\BitReaderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DirectSoundTest.cs" />
-    <Compile Include="MFTs.cs" />
-    <Compile Include="CoreAudioAPI.cs" />
-    <Compile Include="MMTest.cs" />
+    <Compile Include="DirectSound\DirectSoundTests.cs" />
+    <Compile Include="DMO\ResamplerTests.cs" />
+    <Compile Include="CoreAudioAPI\AudioClientTests.cs" />
+    <Compile Include="WaveInOut\WaveInTests.cs" />
+    <Compile Include="WaveInOut\WaveOutTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSCore\CSCore.csproj">
@@ -206,6 +211,7 @@
       <Name>CSCore</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

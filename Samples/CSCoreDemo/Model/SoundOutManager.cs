@@ -7,6 +7,7 @@ using CSCore;
 using CSCore.SoundOut;
 using CSCore.SoundOut.DirectSound;
 using CSCore.CoreAudioAPI;
+using CSCore.Win32;
 
 namespace CSCoreDemo.Model
 {

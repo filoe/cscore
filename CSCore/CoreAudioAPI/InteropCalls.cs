@@ -1,4 +1,5 @@
 ﻿using CSCore.Utils;
+using CSCore.Win32;
 using System;
 
 namespace CSCore.CoreAudioAPI
@@ -103,7 +104,7 @@ namespace CSCore.CoreAudioAPI
         }
 
         [CSCalli]
-        internal static unsafe int CallI(void* _basePtr, System.Runtime.InteropServices.NativeBool muted, void* p)
+        internal static unsafe int CallI(void* _basePtr, NativeBool muted, void* p)
         {
             throw new NotImplementedException();
         }
@@ -151,7 +152,7 @@ namespace CSCore.CoreAudioAPI
         }
 
         [CSCalli]
-        internal static unsafe int CallI(void* _basePtr, System.Runtime.InteropServices.NativeBool mute, Guid* guid, void* p)
+        internal static unsafe int CallI(void* _basePtr, NativeBool mute, Guid* guid, void* p)
         {
             throw new NotImplementedException();
         }

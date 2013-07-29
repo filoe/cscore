@@ -5,6 +5,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 using CSCore.CoreAudioAPI;
 using System.Security;
+using CSCore.Win32;
 
 namespace CSCore.MediaFoundation
 {

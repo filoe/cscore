@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSCore.Win32;
+using System;
 using System.Runtime.InteropServices;
 using System.Security;
 
@@ -31,11 +32,11 @@ namespace CSCore.MediaFoundation
         /// <summary>
         /// Retrieves the buffer requirements and other information for an input stream.
         /// </summary>
-        int GetInputStreamInfo(int inputStreamID, [Out] out InputStreamInfo streaminfo);
+        int GetInputStreamInfo(int inputStreamID, [Out] out MFInputStreamInfo streaminfo);
         /// <summary>
         /// Gets the buffer requirements and other information for an output stream on this Media Foundation transform (MFT). 
         /// </summary>
-        int GetOutputStreamInfo(int outputStreamID, [Out] out OutputStreamInfo streaminfo);
+        int GetOutputStreamInfo(int outputStreamID, [Out] out MFOutputStreamInfo streaminfo);
         /// <summary>
         /// Retrieves the attribute store for this MFT.
         /// </summary>
@@ -136,7 +137,7 @@ namespace CSCore.MediaFoundation
     /// After you set a media type on all of the input and output streams (not including optional streams), all of the values returned by the GetInputStreamInfo method are valid. They might change if you set different media types.
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
-    public struct InputStreamInfo
+    public struct MFInputStreamInfo
     {
         /// <summary>
         /// Maximum amount of time between an input sample and the corresponding output sample, in 100-nanosecond units. For example, an MFT that buffers two samples, each with a duration of 1 second, has a maximum latency of two seconds. If the MFT always turns input samples directly into output samples, with no buffering, the latency is zero.
@@ -145,7 +146,7 @@ namespace CSCore.MediaFoundation
         /// <summary>
         /// Bitwise OR of zero or more flags from the InputStreamInfoFlags enumeration.
         /// </summary>
-        public InputStreamInfoFlags Flags;
+        public MFInputStreamInfoFlags Flags;
         /// <summary>
         /// The minimum size of each input buffer, in bytes. If the size is variable or the MFT does not require a specific size, the value is zero. For uncompressed audio, the value should be the audio frame size, which you can get from the MF_MT_AUDIO_BLOCK_ALIGNMENT attribute in the media type. 
         /// </summary>
@@ -178,12 +179,12 @@ namespace CSCore.MediaFoundation
     /// After you set a media type on all of the input and output streams (not including optional streams), all of the values returned by the GetOutputStreamInfo method are valid. They might change if you set different media types.
     /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
-    public struct OutputStreamInfo
+    public struct MFOutputStreamInfo
     {
         /// <summary>
         /// Bitwise OR of zero or more flags from the _MFT_OUTPUT_STREAM_INFO_FLAGS enumeration.
         /// </summary>
-        public OutputStreamInfoFlags Flags;
+        public MFOutputStreamInfoFlags Flags;
         /// <summary>
         /// Minimum size of each output buffer, in bytes. If the MFT does not require a specific size, the value is zero. For uncompressed audio, the value should be the audio frame size, which you can get from the MF_MT_AUDIO_BLOCK_ALIGNMENT attribute in the media type.
         /// If the dwFlags member contains the MFT_OUTPUT_STREAM_PROVIDES_SAMPLES flag, the value is zero, because the MFT allocates the output buffers.
@@ -204,7 +205,7 @@ namespace CSCore.MediaFoundation
 
     //http://msdn.microsoft.com/en-us/library/windows/desktop/ms703975(v=vs.85).aspx
     [Flags]
-    public enum InputStreamInfoFlags
+    public enum MFInputStreamInfoFlags
     {
         WholeSamples = 0x00000001,
         SingleSamplePerBuffer = 0x00000002,
@@ -218,7 +219,7 @@ namespace CSCore.MediaFoundation
 
     //http://msdn.microsoft.com/en-us/library/windows/desktop/ms705618(v=vs.85).aspx
     [Flags]
-    public enum OutputStreamInfoFlags
+    public enum MFOutputStreamInfoFlags
     {
         WholeSamples = 0x1,
         SingleSamplePerBuffer = 0x2,

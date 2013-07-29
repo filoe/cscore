@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSCore.Win32;
+using System;
 using System.Runtime.InteropServices;
 
 namespace CSCore.DMO
@@ -61,16 +62,16 @@ namespace CSCore.DMO
 		{
 			if (length > MaxLength)
 			{
-				return (int)Utils.HResult.E_INVALIDARG;
+				return (int)HResult.E_INVALIDARG;
 			}
 			_length = length;
-			return (int)Utils.HResult.S_OK;
+			return (int)HResult.S_OK;
 		}
 
 		int IMediaBuffer.GetMaxLength(out int length)
 		{
 			length = _maxlength;
-			return (int)Utils.HResult.S_OK;
+			return (int)HResult.S_OK;
 		}
 
 		int IMediaBuffer.GetBufferAndLength(IntPtr ppBuffer, IntPtr validDataByteLength)
@@ -85,7 +86,7 @@ namespace CSCore.DMO
 			{
 				Marshal.WriteInt32(validDataByteLength, _length);
 			}
-			return (int)Utils.HResult.S_OK;
+			return (int)HResult.S_OK;
 		}
 
 		public void Dispose()

@@ -1,4 +1,5 @@
 ﻿using CSCore.Utils;
+using CSCore.Win32;
 using System;
 using System.Runtime.InteropServices;
 

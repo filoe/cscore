@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
+using CSCore.Win32;
 
 namespace CSCore.CoreAudioAPI
 {
@@ -14,13 +15,13 @@ namespace CSCore.CoreAudioAPI
         int IAudioEndpointVolumeCallback.OnNotify(IntPtr notifyData)
         {
             if (notifyData == IntPtr.Zero)
-                return (int)Utils.HResult.E_INVALIDARG;
+                return (int)HResult.E_INVALIDARG;
 
             var data = (AudioVolumeNotificationData)Marshal.PtrToStructure(notifyData, typeof(AudioVolumeNotificationData));
             if (NotifyRecived != null)
                 NotifyRecived(this, new AudioEndpointVolumeCallbackEventArgs(data, notifyData));
 
-            return (int)Utils.HResult.S_OK;
+            return (int)HResult.S_OK;
         }
     }
 }

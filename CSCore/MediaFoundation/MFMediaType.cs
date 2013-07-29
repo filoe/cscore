@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
 using System.Security;
+using CSCore.Win32;
 
 namespace CSCore.MediaFoundation
 {
@@ -11,6 +12,11 @@ namespace CSCore.MediaFoundation
     public class MFMediaType : MFAttributes
     {
         const string c = "IMFMediaType";
+        public MFMediaType(IntPtr ptr)
+            : base(ptr)
+        {
+        }
+
         /// <summary>
         /// Queries whether the media type is a temporally compressed format. Temporal compression uses information from previously decoded samples when decompressing the current sample.
         /// </summary>
@@ -144,21 +150,5 @@ namespace CSCore.MediaFoundation
         [SuppressUnmanagedCodeSecurity]
         [DllImport("Mfplat.dll", CallingConvention = CallingConvention.StdCall, EntryPoint = "MFCreateWaveFormatExFromMFMediaType")]
         private unsafe static extern int MFCreateWaveFormatExFromMFMediaType(void* arg0, void* arg1, void* arg2, int arg3);
-    }
-
-    [Flags]
-    public enum MediaTypeEqualFlags
-    {
-        MajorTypes = 0x1,
-        FormatTypes = 0x2,
-        Data = 0x4,
-        UserData = 0x8
-    }
-
-    [Flags]
-    public enum MFWaveFormatExConvertFlags
-    {
-        Normal = 0,
-        ForceExtensible = 1
     }
 }

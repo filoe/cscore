@@ -1,5 +1,6 @@
 ﻿using CSCore.CoreAudioAPI;
 using CSCore.MediaFoundation;
+using CSCore.Win32;
 using System;
 using System.Runtime.InteropServices;
 
