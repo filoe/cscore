@@ -161,11 +161,18 @@ namespace CSCoreDemo.ViewModel
         public void OpenFile()
         {
             var ofn = new Microsoft.Win32.OpenFileDialog();
-            ofn.Filter = CodecFactory.SupportedFilesFilterEN;
+            ofn.Filter = CodecFactory1.Instance.GenerateFilter();
             if (ofn.ShowDialog().Value)
             {
-                AudioPlayer.OpenFile(ofn.FileName, (s) => VisualizationViewModel.InitializeVisualization(s));
-                TagViewModel.LoadTags(ofn.FileName);
+                if (AudioPlayer.OpenFile(ofn.FileName, (s) => VisualizationViewModel.InitializeVisualization(s)))
+                {
+                    TagViewModel.ResetTags();
+                    TagViewModel.LoadTags(ofn.FileName);
+                }
+                else
+                {
+                    System.Windows.MessageBox.Show("Format not supported.");
+                }
             }
         }
 

@@ -21,26 +21,33 @@ namespace CSCoreDemo.Model
 			SoundOutManager.CreateSoundOut(soundOutType);
 		}
 
-		public void OpenFile(string filename, Func<IWaveSource, IWaveSource> oninitcallback)
+		public bool OpenFile(string filename, Func<IWaveSource, IWaveSource> oninitcallback)
 		{
 			if (String.IsNullOrWhiteSpace(filename))
 				throw new ArgumentException("filename");
 
-			var source = CodecFactory.Instance.GetCodec(filename);
-            source = new LoopStream(source);
+            try
+            {
+                var source = CodecFactory1.Instance.GetCodec(filename);
+                source = new LoopStream(source);
 
-            if (source.WaveFormat.Channels == 1)
-                source = new MonoToStereoSource(source).ToWaveSource(16);
-			_panSource = new PanSource(source){ Pan = this.Pan };
-            var _notification = new SimpleNotificationSource(_panSource);
-            _notification.DataRead += OnNotification;
+                if (source.WaveFormat.Channels == 1)
+                    source = new MonoToStereoSource(source).ToWaveSource(16);
+			    _panSource = new PanSource(source){ Pan = this.Pan };
+                var _notification = new SimpleNotificationSource(_panSource);
+                _notification.DataRead += OnNotification;
 
-            if (oninitcallback != null)
-                SoundOutManager.Initialize(oninitcallback(_notification.ToWaveSource(16)));
-            else
-			    SoundOutManager.Initialize(_notification.ToWaveSource(16));
-
+                if (oninitcallback != null)
+                    SoundOutManager.Initialize(oninitcallback(_notification.ToWaveSource(16)));
+                else
+			        SoundOutManager.Initialize(_notification.ToWaveSource(16));
+                }
+            catch (Exception)
+            {
+                return false;
+            }
             RaiseUpdated();
+            return true;
 		}
 
 		public void Play()

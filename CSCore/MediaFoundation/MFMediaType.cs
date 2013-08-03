@@ -11,10 +11,70 @@ namespace CSCore.MediaFoundation
     [Guid("44ae0fa8-ea31-4109-8d2e-4cae4997c555")]
     public class MFMediaType : MFAttributes
     {
+        public static MFMediaType CreateEmpty()
+        {
+            MediaFoundationCore.Startup();
+            return MediaFoundationCore.CreateMediaType();
+        }
+
         const string c = "IMFMediaType";
         public MFMediaType(IntPtr ptr)
             : base(ptr)
         {
+        }
+
+        /// <summary>
+        /// Number of channels
+        /// </summary>
+        public int Channels
+        {
+            get { return GetUINT32(MediaFoundationAttributes.MF_MT_AUDIO_NUM_CHANNELS); }
+            set { SetUINT32(MediaFoundationAttributes.MF_MT_AUDIO_NUM_CHANNELS, value); }
+        }
+
+        /// <summary>
+        /// Bits per sample
+        /// </summary>
+        public int BitsPerSample
+        {
+            get { return GetUINT32(MediaFoundationAttributes.MF_MT_AUDIO_BITS_PER_SAMPLE); }
+            set { SetUINT32(MediaFoundationAttributes.MF_MT_AUDIO_BITS_PER_SAMPLE, value); }
+        }
+
+        /// <summary>
+        /// Samples per second(for one channel each)
+        /// </summary>
+        public int SampleRate
+        {
+            get { return GetUINT32(MediaFoundationAttributes.MF_MT_AUDIO_SAMPLES_PER_SECOND); }
+            set { SetUINT32(MediaFoundationAttributes.MF_MT_AUDIO_SAMPLES_PER_SECOND, value); }
+        }
+
+        /// <summary>
+        /// AVG bytes per second
+        /// </summary>
+        public int AverageBytesPerSecond
+        {
+            get { return GetUINT32(MediaFoundationAttributes.MF_MT_AUDIO_AVG_BYTES_PER_SECOND); }
+            set { SetUINT32(MediaFoundationAttributes.MF_MT_AUDIO_AVG_BYTES_PER_SECOND, value); }
+        }
+
+        /// <summary>
+        /// Audiosubtype
+        /// </summary>
+        public Guid SubType
+        {
+            get { return GetGuid(MediaFoundationAttributes.MF_MT_SUBTYPE); }
+            set { SetGuid(MediaFoundationAttributes.MF_MT_SUBTYPE, value); }
+        }
+
+        /// <summary>
+        /// Majortype
+        /// </summary>
+        public Guid MajorType
+        {
+            get { return GetGuid(MediaFoundationAttributes.MF_MT_MAJOR_TYPE); }
+            set { SetGuid(MediaFoundationAttributes.MF_MT_MAJOR_TYPE, value); }
         }
 
         /// <summary>

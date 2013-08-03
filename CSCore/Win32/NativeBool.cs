@@ -10,6 +10,9 @@ namespace CSCore.Win32
     [StructLayout(LayoutKind.Sequential, Size=4)]
     public struct NativeBool : IEquatable<NativeBool>
     {
+        public static readonly NativeBool True = new NativeBool(true);
+        public static readonly NativeBool False = new NativeBool(false);
+
         int _value;
         public NativeBool(bool value)
         {
@@ -52,6 +55,11 @@ namespace CSCore.Win32
         public static implicit operator NativeBool(bool value)
         {
             return new NativeBool(value);
+        }
+
+        public override string ToString()
+        {
+            return this ? "True" : "False";
         }
     }
 }

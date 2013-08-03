@@ -1,78 +1,182 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using CSCore.MediaFoundation;
+using System.Text;
 
 namespace CSCore.Codecs
 {
     public class CodecFactory
     {
-        public const string SupportedFilesFilterDE = "Unterstütze Dateien|*.wav;*.mp3;*.flac|Wavesound-Dateien (*.wav)|*.wav|MP3-Dateien (*.mp3)|*.mp3|FLAC-Dateien (*.flac, *.fla)|*.flac;*.fla|Alle Dateien (*.*)|*.*";
-        public const string SupportedFilesFilterEN = "Supported Files|*.wav;*.mp3;*.flac|Wavesound-Files (*.wav)|*.wav|MP3-Files (*.mp3)|*.mp3|FLAC-Files (*.flac, *.fla)|*.flac;*.fla|All Files (*.*)|*.*";
-
-        static CodecFactory _instance;
+        private static CodecFactory _instance;
         public static CodecFactory Instance
         {
             get { return _instance ?? (_instance = new CodecFactory()); }
         }
 
-        Dictionary<object, Func<Stream, IWaveSource>> _codecs = new Dictionary<object, Func<Stream, IWaveSource>>();
+        private Dictionary<object, CodecFactoryEntry> _codecs;
 
         private CodecFactory()
         {
-            Register("mp3", (e) =>
+            _codecs = new Dictionary<object, CodecFactoryEntry>();
+            Register("mp3", new CodecFactoryEntry((s) =>
+            {
+                return new MP3.Mp3FileReader(s).DataStream;
+            },
+                "mp3", "mpeg3"));
+            Register("wave", new CodecFactoryEntry((s) =>
+            {
+                IWaveSource res = new WAV.WaveFileReader(s);
+                if (res.WaveFormat.WaveFormatTag != AudioEncoding.Pcm &&
+                    res.WaveFormat.WaveFormatTag != AudioEncoding.IeeeFloat &&
+                    res.WaveFormat.WaveFormatTag != AudioEncoding.Extensible)
                 {
-                    return new MP3.Mp3FileReader(e).DataStream;
-                });
-            Register("wave", (e) =>
+                    res.Dispose();
+                    res = new MediaFoundation.MediaFoundationDecoder(s);
+                }
+                return res;
+            },
+                "wav", "wave"));
+            Register("flac", new CodecFactoryEntry((s) =>
+            {
+                return new FLAC.FlacFile(s);
+            },
+                "flac", "fla"));
+
+            if (AAC.AACDecoder.IsSupported)
+            {
+                Register("aac", new CodecFactoryEntry((s) =>
                 {
-                    return new WAV.WaveFileReader(e);
-                });
-            Register("wav", (e) =>
+                    return new AAC.AACDecoder(s);
+                },
+                    "aac", "adt", "adts", "m2ts", "mp2", "3g2", "3gp2", "3gp", "3gpp", "m4a", "m4v", "mp4v", "mp4", "mov"));
+            }
+
+            if (WMA.WMADecoder.IsSupported)
+            {
+                Register("wma", new CodecFactoryEntry((s) =>
                 {
-                    return new WAV.WaveFileReader(e);
-                    //return new WAV.WaveFile(e);
-                });
-            Register("flac", (e) =>
+                    return new WMA.WMADecoder(s);
+                },
+                    "asf", "wm", "wmv", "wma"));
+            }
+
+            if (MP1.MP1Decoder.IsSupported)
+            {
+                Register("mp1", new CodecFactoryEntry((s) =>
                 {
-                    return new FLAC.FlacFile(e);
-                });
-            Register("fla", (e) =>
+                    return new MP1.MP1Decoder(s);
+                },
+                    "mp1", "m2ts"));
+            }
+
+            if (MP2.MP2Decoder.IsSupported)
+            {
+                Register("mp2", new CodecFactoryEntry((s) =>
                 {
-                    return new FLAC.FlacFile(e);
-                });
+                    return new MP1.MP1Decoder(s);
+                },
+                    "mp2", "m2ts"));
+            }
+
+            if (DDP.DDPDecoder.IsSupported)
+            {
+                Register("ddp", new CodecFactoryEntry((s) =>
+                {
+                    return new DDP.DDPDecoder(s);
+                },
+                    "mp2", "m2ts", "m4a", "m4v", "mp4v", "mp4", "mov", "asf", "wm", "wmv", "wma", "avi", "ac3", "ec3"));
+            }
         }
 
-        public void Register(object key, Func<Stream, IWaveSource> produceProc)
+        public void Register(object key, CodecFactoryEntry codec)
         {
             if (key is string)
                 key = (key as string).ToLower();
 
-            if(_codecs.ContainsKey(key) != true)
-                _codecs.Add(key, produceProc);
+            if (_codecs.ContainsKey(key) != true)
+                _codecs.Add(key, codec);
         }
 
-        public IWaveSource GetCodec(Stream stream, object key)
+        public IWaveSource GetCodec(string filename)
         {
-            if (_codecs.ContainsKey(key))
+            try
             {
-                if (key is string)
-                    key = (key as string).ToLower();
-
-                return _codecs[key](stream);
+                Uri uri = new Uri(filename);
+                if (uri.IsFile)
+                {
+                    var extension = Path.GetExtension(filename).Remove(0, 1);
+                    foreach (var codecEntry in _codecs)
+                    {
+                        try
+                        {
+                            if (codecEntry.Value.FileExtensions.Contains(extension))
+                                return codecEntry.Value.GetCodecAction(File.OpenRead(filename));
+                        }
+                        catch (Exception) { }
+                    }
+                    return Default(filename);
+                }
+                else
+                {
+                    return Default(filename);
+                }
             }
-            else
+            catch (Exception e)
             {
-                Context.Current.Logger.Error("Not supported codec: " + key + ".", "CodecFactory.GetCodec(Stream, object)");
-                throw new NotSupportedException("Not supported codec. Use Register(object, Func<Stream, IWaveSource> to register a new codec.");
+                throw new NotSupportedException("Codec not supported.", e);
             }
         }
 
-        public IWaveSource GetCodec(string fileName)
+        public IWaveSource GetCodec(object key, Stream stream)
         {
-            Stream stream = File.OpenRead(fileName);
-            object key = Path.GetExtension(fileName).Remove(0, 1).ToLower();
-
-            return GetCodec(stream, key);
+            try
+            {
+                CodecFactoryEntry entry;
+                if (_codecs.TryGetValue(key, out entry))
+                    return entry.GetCodecAction(stream);
+            }
+            catch (Exception e)
+            {
+                throw new NotSupportedException("Codec not supported.", e);
+            }
+            throw new NotSupportedException("Codec not supported");
         }
+
+        private IWaveSource Default(string url)
+        {
+            return new MediaFoundation.MediaFoundationDecoder(url);
+        }
+
+        private IWaveSource Default(Stream stream)
+        {
+            return new MediaFoundation.MediaFoundationDecoder(stream);
+        }
+
+        public string[] GetSupportedFileExtensions()
+        {
+            List<string> extensions = new List<string>();
+            foreach (var item in _codecs.Select(x => x.Value))
+            {
+                foreach (var e in item.FileExtensions)
+                {
+                    if (!extensions.Contains(e))
+                        extensions.Add(e);
+                }
+            }
+            return extensions.ToArray();
+        }
+
+        public string GenerateFilter()
+        {
+            StringBuilder result = new StringBuilder();
+            result.Append("Supported Files|");
+            result.Append(String.Concat(GetSupportedFileExtensions().Select(x => "*." + x + ";")));
+            result.Remove(result.Length - 1, 1);
+            return result.ToString();
+        }
+
+        public static string SupportedFilesFilterDE { get; set; }
     }
 }

@@ -202,7 +202,7 @@ namespace CSCore.SoundOut
 			{
 				Context.Current.Logger.Fatal(e, "WasapiOut.PlaybackProc");
                 if (System.Diagnostics.Debugger.IsAttached)
-                    throw e;
+                    throw new Exception("Unhandled exception in wasapi playback proc.", e);
 			}
 			finally
 			{

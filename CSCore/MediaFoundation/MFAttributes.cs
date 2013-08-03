@@ -41,10 +41,36 @@ namespace CSCore.MediaFoundation
             _basePtr = zero.ToPointer();
         }
 
+        public PropertyVariant this[int index]
+        {
+            get
+            {
+                Guid key;
+                return GetItemByIndex(index, out key);
+            }
+            set
+            {
+                Guid key;
+                GetItemByIndex(index, out key);
+                SetItem(key, value);
+            }
+        }
+
         public object this[Guid key]
         {
             get { return Get(key); }
             set { Set(key, value); }
+        }
+
+        /// <summary>
+        /// Retrieves the number of attributes that are set on this object.
+        /// </summary>
+        public int Count
+        {
+            get
+            {
+                return GetCount();
+            }
         }
 
         /// <summary>
@@ -311,9 +337,17 @@ namespace CSCore.MediaFoundation
         /// Associates an attribute value with a key.
         /// </summary>
         /// <returns>HRESULT</returns>
-        public unsafe int SetItem(Guid key, PropertyVariant value)
+        public unsafe int SetItemNative(Guid key, PropertyVariant value)
         {
             return InteropCalls.CalliMethodPtr(_basePtr, &key, &value, ((void**)(*(void**)_basePtr))[18]);
+        }
+
+        /// <summary>
+        /// Associates an attribute value with a key.
+        /// </summary>
+        public void SetItem(Guid key, PropertyVariant value)
+        {
+            MediaFoundationException.Try(SetItemNative(key, value), c, "SetItem");
         }
 
         /// <summary>
@@ -422,25 +456,46 @@ namespace CSCore.MediaFoundation
         /// Retrieves the number of attributes that are set on this object.
         /// </summary>
         /// <returns>HRESULT</returns>
-        public unsafe int GetCount(out int itemCount)
+        public unsafe int GetCountNative(out int itemCount)
         {
+            itemCount = -1;
             fixed (void* ptr = &itemCount)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, new IntPtr(ptr), ((void**)(*(void**)_basePtr))[30]);
+                return InteropCalls.CalliMethodPtr(_basePtr, ptr, ((void**)(*(void**)_basePtr))[30]);
             }
+        }
+
+        /// <summary>
+        /// Retrieves the number of attributes that are set on this object.
+        /// </summary>
+        public int GetCount()
+        {
+            int count;
+            MediaFoundationException.Try(GetCountNative(out count), c, "GetCount");
+            return count;
         }
 
         /// <summary>
         /// Retrieves an attribute at the specified index.
         /// </summary>
         /// <returns>HRESULT</returns>
-        public unsafe int GetItemByIndex(int index, out Guid key, IntPtr value)
+        public unsafe int GetItemByIndexNative(int index, out Guid key, IntPtr value)
         {
             key = default(Guid);
             fixed (void* ptr = &key)
             {
                 return InteropCalls.CalliMethodPtr(_basePtr, index, new IntPtr(ptr), (void*)value, ((void**)(*(void**)_basePtr))[31]);
             }
+        }
+
+        /// <summary>
+        /// Retrieves an attribute at the specified index.
+        /// </summary>
+        public unsafe PropertyVariant GetItemByIndex(int index, out Guid key)
+        {
+            PropertyVariant value = default(PropertyVariant);
+            MediaFoundationException.Try(GetItemByIndexNative(index, out key, new IntPtr(&value)), c, "GetItemByIndex");
+            return value;
         }
 
         /// <summary>

@@ -156,6 +156,7 @@
     </ApplicationDefinition>
     <Compile Include="Common\AutoDelegateCommand.cs" />
     <Compile Include="Common\DelegateCommand.cs" />
+    <Compile Include="Common\UIDisplayPropertyAttribute.cs" />
     <Compile Include="Controls\SliderDragPriority.cs" />
     <Compile Include="Converter\BoolToOppositeBoolConverter.cs" />
     <Compile Include="Converter\TimeSpanMillisecondsConverter.cs" />

@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.IO;
+using System.Reflection;
 
 namespace CSCoreDemo.ViewModel
 {
@@ -63,7 +64,18 @@ namespace CSCoreDemo.ViewModel
             }
         }
 
+        public void ResetTags()
+        {
+            var properties = GetType().GetProperties();
+            foreach (var p in properties)
+            {
+                if (p.GetCustomAttribute(typeof(UIDisplayPropertyAttribute)) != null)
+                    p.SetValue(this, p.PropertyType.IsValueType ? Activator.CreateInstance(p.PropertyType) : null);
+            }
+        }
+
         string _title;
+        [UIDisplayProperty]
         public string Title
         {
             get { return _title; }
@@ -71,6 +83,7 @@ namespace CSCoreDemo.ViewModel
         }
 
         string _artist;
+        [UIDisplayProperty]
         public string Artist
         {
             get { return _artist; }
@@ -78,6 +91,7 @@ namespace CSCoreDemo.ViewModel
         }
 
         string _album;
+        [UIDisplayProperty]
         public string Album
         {
             get { return _album; }
@@ -85,6 +99,7 @@ namespace CSCoreDemo.ViewModel
         }
 
         string _leadperformers;
+        [UIDisplayProperty]
         public string LeadPerformers
         {
             get { return _leadperformers; }
@@ -92,6 +107,7 @@ namespace CSCoreDemo.ViewModel
         }
 
         string _year;
+        [UIDisplayProperty]
         public string Year
         {
             get { return _year; }
@@ -99,6 +115,7 @@ namespace CSCoreDemo.ViewModel
         }
 
         string _trackNumber;
+        [UIDisplayProperty]
         public string TrackNumber
         {
             get { return _trackNumber; }
@@ -106,6 +123,7 @@ namespace CSCoreDemo.ViewModel
         }
 
         string _genre;
+        [UIDisplayProperty]
         public string Genre
         {
             get { return _genre; }
@@ -113,6 +131,7 @@ namespace CSCoreDemo.ViewModel
         }
 
         string _comment;
+        [UIDisplayProperty]
         public string Comments
         {
             get { return _comment; }
@@ -120,6 +139,7 @@ namespace CSCoreDemo.ViewModel
         }
 
         ImageSource _imageSource;
+        [UIDisplayProperty]
         public ImageSource Image
         {
             get { return _imageSource; }

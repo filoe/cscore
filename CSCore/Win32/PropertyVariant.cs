@@ -7,6 +7,11 @@ namespace CSCore.Win32
     [StructLayout(LayoutKind.Explicit)]
     public struct PropertyVariant : IDisposable
     {
+        public static PropertyVariant CreateLong(long value)
+        {
+            return new PropertyVariant() { HValue = value, DataType = VarEnum.VT_I8 };
+        }
+
         //todo: create interop class
         [DllImport("ole32.dll")]
         private static extern int PropVariantClear(ref PropertyVariant propertyVariant);
@@ -65,6 +70,7 @@ namespace CSCore.Win32
         public VarEnum DataType
         {
             get { return (VarEnum)Vartype; }
+            set { Vartype = (short)value; }
         }
 
         /// <summary>

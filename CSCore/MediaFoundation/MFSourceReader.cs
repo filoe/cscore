@@ -17,6 +17,26 @@ namespace CSCore.MediaFoundation
             : base(ptr)
         {
         }
+
+        public bool CanSeek
+        {
+            get { return (MediaSourceCharacteristics & MFMediaSourceCharacteristics.CanSeek) == MFMediaSourceCharacteristics.CanSeek; }
+        }
+
+        public MFMediaSourceCharacteristics MediaSourceCharacteristics
+        {
+            get { return (MFMediaSourceCharacteristics)GetSourceFlags(); }
+        }
+
+        public int GetSourceFlags()
+        {
+            int flags = 0;
+            var value = GetPresentationAttribute(MFInterops.MF_SOURCE_READER_MEDIASOURCE, MediaFoundationAttributes.MF_SOURCE_READER_MEDIASOURCE_CHARACTERISTICS);
+
+            flags = (int)value.UIntValue;
+            value.Dispose();
+            return flags;
+        }
         
         /// <summary>
         /// Queries whether a stream is selected.
@@ -140,7 +160,7 @@ namespace CSCore.MediaFoundation
         /// Reads the next sample from the media source.
         /// </summary>
         /// <returns>HRESULT</returns>
-        public unsafe int ReadSampleNative(int streamIndex, int controlFlags, out int actualStreamIndex, out int streamFlags, out long timestamp, out MFSample sample)
+        public unsafe int ReadSampleNative(int streamIndex, int controlFlags, out int actualStreamIndex, out MFSourceReaderFlag streamFlags, out long timestamp, out MFSample sample)
         {
             IntPtr psample = IntPtr.Zero;
             fixed (void* ptr0 = &actualStreamIndex, ptr1 = &streamFlags, ptr2 = &timestamp)
@@ -154,7 +174,7 @@ namespace CSCore.MediaFoundation
         /// <summary>
         /// Reads the next sample from the media source.
         /// </summary>
-        public MFSample ReadSample(int streamIndex, int controlFlags, out int actualStreamIndex, out int streamFlags, out long timestamp)
+        public MFSample ReadSample(int streamIndex, int controlFlags, out int actualStreamIndex, out MFSourceReaderFlag streamFlags, out long timestamp)
         {
             MFSample sample;
             MediaFoundationException.Try(ReadSampleNative(streamIndex, controlFlags, out actualStreamIndex, out streamFlags, out timestamp, out sample), c, "ReadSample");

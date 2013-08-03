@@ -189,6 +189,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Codecs\CodecFactoryEntry.cs" />
+    <Compile Include="Codecs\AAC\AACDecoder.cs" />
+    <Compile Include="Codecs\DDP\DDPDecoder.cs" />
     <Compile Include="Codecs\CodecFactory.cs" />
     <Compile Include="Codecs\ConnectionCreatedEventArgs.cs" />
     <Compile Include="Codecs\FLAC\FlacException.cs" />
@@ -211,15 +214,28 @@
     <Compile Include="Codecs\FLAC\SubFrames\FlacSubFrameFixed.cs" />
     <Compile Include="Codecs\FLAC\SubFrames\FlacSubFrameLPC.cs" />
     <Compile Include="Codecs\FLAC\SubFrames\FlacSubFrameVerbatim.cs" />
+    <Compile Include="Codecs\GetCodecAction.cs" />
+    <Compile Include="Codecs\MP1\MP1Decoder.cs" />
+    <Compile Include="Codecs\MP2\MP2Decoder.cs" />
     <Compile Include="Codecs\MP3\FrameInfoCollection.cs" />
     <Compile Include="Codecs\MP3\Mp3FileReader.cs" />
     <Compile Include="Codecs\MP3\Mp3Format.cs" />
     <Compile Include="Codecs\MP3\Mp3Frame.cs" />
     <Compile Include="Codecs\MP3\Mp3WebStream.cs" />
     <Compile Include="Codecs\MP3\XingHeader.cs" />
+    <Compile Include="Codecs\WMA\WMADecoder.cs" />
     <Compile Include="CoreAudioAPI\AudioMeterInformation.cs" />
+    <Compile Include="MediaFoundation\CommonAudioDecoder.cs" />
+    <Compile Include="MediaFoundation\MediaFoundationAttributes.cs" />
+    <Compile Include="MediaFoundation\MediaFoundationCore.cs" />
+    <Compile Include="MediaFoundation\MediaFoundationDecoder.cs" />
+    <Compile Include="MediaFoundation\MFActivate.cs" />
     <Compile Include="MediaFoundation\MFInterops.cs" />
-    <Compile Include="MediaFoundation\NativeBool.cs" />
+    <Compile Include="MediaFoundation\MFMediaSourceCharacteristics.cs" />
+    <Compile Include="MediaFoundation\MFSourceReaderFlag.cs" />
+    <Compile Include="MediaFoundation\MFTCategories.cs" />
+    <Compile Include="MediaFoundation\MFTEnumFlags.cs" />
+    <Compile Include="MediaFoundation\MFTRegisterTypeInfo.cs" />
     <Compile Include="Win32\ComStream.cs" />
     <Compile Include="Win32\IStream.cs" />
     <Compile Include="Win32\Win32ComException.cs" />
