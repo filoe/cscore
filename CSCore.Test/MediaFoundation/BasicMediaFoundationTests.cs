@@ -41,17 +41,19 @@ namespace CSCore.Test.MediaFoundation
         public void CanCreateSourceReaderFromIOStream()
         {
             MediaFoundationCore.Startup();
-            var stream = new MemoryStream();
-            var comstream = new ComStream(stream);
-            var byteStream = MediaFoundationCore.IStreamToByteStream(comstream);
-            Assert.IsNotNull(byteStream);
-
-            using (var reader = MediaFoundationCore.CreateSourceReaderFromByteStream(byteStream, IntPtr.Zero))
+            var stream = File.OpenRead(@"C:\Temp\test.mp3");
+            using (var comstream = new ComStream(stream))
             {
-                Assert.IsNotNull(reader);
-            }
+                var byteStream = MediaFoundationCore.IStreamToByteStream(comstream);
+                Assert.IsNotNull(byteStream);
 
-            Marshal.ReleaseComObject(byteStream);
+                using (var reader = MediaFoundationCore.CreateSourceReaderFromByteStream(byteStream, IntPtr.Zero))
+                {
+                    Assert.IsNotNull(reader);
+                }
+
+                Marshal.ReleaseComObject(byteStream);
+            }
             MediaFoundationCore.Shutdown();
         }
 

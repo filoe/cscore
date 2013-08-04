@@ -177,6 +177,9 @@ namespace CSCore.Codecs
             return result.ToString();
         }
 
-        public static string SupportedFilesFilterDE { get; set; }
+        public static string SupportedFilesFilterEN
+        {
+            get { return Instance.GenerateFilter(); }
+        }
     }
 }

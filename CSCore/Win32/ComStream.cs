@@ -164,5 +164,14 @@ namespace CSCore.Win32
         {
             _stream.Write(buffer, offset, count);
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (_stream != null)
+            {
+                _stream.Dispose();
+                _stream = null;
+            }
+        }
     }
 }

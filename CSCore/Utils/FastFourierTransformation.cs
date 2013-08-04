@@ -1,5 +1,4 @@
-﻿//#define stackalloc_fft_opt
-using System;
+﻿using System;
 
 namespace CSCore.Utils
 {
@@ -45,12 +44,7 @@ namespace CSCore.Utils
 
             for (int j = 1; j <= potenz; j++)
             {
-#if stackalloc_fft_opt
-                Complex* rComplex = stackalloc Complex[1 << (j - 1)];
-                Rotate1(rComplex, j, 1);
-#else
                 Complex[] rComplex = Roatate(j, 1);
-#endif
                 tm = tn;
                 tn <<= 1;
 
@@ -112,7 +106,6 @@ namespace CSCore.Utils
             }
         }
 
-#if !stackalloc_fft_opt
         private static Complex[] Roatate(int logIndex, int direction)
         {
             double uReal, uImg, angleReal, angleImg, angle, t;
@@ -133,26 +126,7 @@ namespace CSCore.Utils
             }
             return tmp;
         }
-#else
-            private static unsafe void Rotate1(Complex* tmp, int logIndex, int direction)
-            {
-                double uReal, uImg, angleReal, angleImg, angle, t;
-                int n = 1 << (logIndex - 1);
-                angle = (Math.PI / n) * direction;
-                angleReal = Math.Cos(angle); angleImg = Math.Sin(angle);
-                uReal = 1.0; uImg = 0.0;
 
-                for (int i = 0; i < n; i++)
-                {
-                    tmp[i].Real = uReal;
-                    tmp[i].Imaginary = uImg;
-
-                    t = uReal * angleImg + uImg * angleReal;
-                    uReal = uReal * angleReal - uImg * angleImg;
-                    uImg = t;
-                }
-            }
-#endif
         private static void SWAP(Complex[] data, int index, int index2)
         {
             Complex tmp = data[index];

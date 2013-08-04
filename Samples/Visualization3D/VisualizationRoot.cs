@@ -132,7 +132,7 @@ namespace Visualization3D
             _input.EnableMouse = false;
 
             OpenFileDialog ofn = new OpenFileDialog();
-            ofn.Filter = CodecFactory.SupportedFilesFilterDE;
+            ofn.Filter = CodecFactory.SupportedFilesFilterEN;
             if (ofn.ShowDialog() == DialogResult.OK)
             {
                 _audioPlayer.StartStream(new CSCore.Streams.LoopStream(CodecFactory.Instance.GetCodec(ofn.FileName)));

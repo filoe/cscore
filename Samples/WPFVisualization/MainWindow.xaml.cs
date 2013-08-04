@@ -57,7 +57,7 @@ namespace WPFVisualisation
         {
             var ofn = new Microsoft.Win32.OpenFileDialog()
             {
-                Filter = CodecFactory.SupportedFilesFilterDE,
+                Filter = CodecFactory.SupportedFilesFilterEN,
                 Title = "Select file"
             };
 

@@ -161,7 +161,7 @@ namespace CSCoreDemo.ViewModel
         public void OpenFile()
         {
             var ofn = new Microsoft.Win32.OpenFileDialog();
-            ofn.Filter = CodecFactory1.Instance.GenerateFilter();
+            ofn.Filter = CodecFactory.Instance.GenerateFilter();
             if (ofn.ShowDialog().Value)
             {
                 if (AudioPlayer.OpenFile(ofn.FileName, (s) => VisualizationViewModel.InitializeVisualization(s)))

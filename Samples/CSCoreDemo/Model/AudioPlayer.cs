@@ -28,7 +28,7 @@ namespace CSCoreDemo.Model
 
             try
             {
-                var source = CodecFactory1.Instance.GetCodec(filename);
+                var source = CodecFactory.Instance.GetCodec(filename);
                 source = new LoopStream(source);
 
                 if (source.WaveFormat.Channels == 1)
