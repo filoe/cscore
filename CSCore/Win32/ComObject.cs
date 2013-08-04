@@ -58,14 +58,19 @@ namespace CSCore.Win32
             return Marshal.Release(BasePtr);
         }
 
+        object _lockObj = new object();
+
         bool disposed = false;
         public void Dispose()
         {
-            if (!disposed)
+            lock (_lockObj)
             {
-                disposed = true;
-                Dispose(true);
-                GC.SuppressFinalize(this);
+                if (!disposed)
+                {
+                    disposed = true;
+                    Dispose(true);
+                    GC.SuppressFinalize(this);
+                }
             }
         }
 
@@ -85,9 +90,12 @@ namespace CSCore.Win32
 
         ~ComObject()
         {
-            if(!disposed)
-                Debug.Assert(!AssertOnNoDispose(), "ComObject.Dispose not called. Type: " + this.GetType().FullName);
-            Dispose(false);
+            lock (_lockObj)
+            {
+                if (!disposed)
+                    Debug.Assert(!AssertOnNoDispose(), "ComObject.Dispose not called. Type: " + this.GetType().FullName);
+                Dispose(false);
+            }
         }
     }
 }

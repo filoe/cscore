@@ -100,6 +100,7 @@ namespace CSCore.SoundOut
 				{
 					_playbackThread = new Thread(new ThreadStart(PlaybackProc));
 					_playbackThread.Name = "WASAPI Playback-Thread; ID = " + _audioClient.BasePtr.ToString();
+                    _playbackThread.Priority = ThreadPriority.AboveNormal;
 					_playbackThread.Start();
 				}
 				else if (PlaybackState == SoundOut.PlaybackState.Paused)

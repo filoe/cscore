@@ -329,11 +329,6 @@ namespace CSCore.SoundOut
             lock (_lockObj)
             {
                 Stop();
-                //var mgr = _notifyManager;
-                //if (mgr != null)
-                //{
-                //    mgr.WaitForStopped();
-                //}
             }
         }
 

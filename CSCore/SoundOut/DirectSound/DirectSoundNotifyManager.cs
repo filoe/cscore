@@ -77,7 +77,7 @@ namespace CSCore.SoundOut.DirectSound
             _thread = new Thread(NotifyProc);
             _thread.Name = "DirectSoundNotifyManager Thread: ID = 0x" + _notify.BasePtr.ToInt64().ToString("x");
             _thread.Priority = ThreadPriority.AboveNormal;
-            _thread.IsBackground = true;
+            //_thread.IsBackground = true;
             _thread.Start();
             Context.Current.Logger.Debug("DirectSoundNotifyManager started", "DirectSoundNotifyManager.Start()");
         }
@@ -89,9 +89,10 @@ namespace CSCore.SoundOut.DirectSound
                 GotStarted = true;
                 while (true)
                 {
-                    int handleIndex = WaitHandle.WaitAny(_waitHandles, _waitHandles.Length * _latency, false);
                     if (_hasToStop(this))
                         break;
+
+                    int handleIndex = WaitHandle.WaitAny(_waitHandles, _waitHandles.Length * _latency, true);
 
                     if (!RaiseNotifyAnyRaised(handleIndex))
                         break;
