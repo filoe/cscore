@@ -73,7 +73,7 @@
                 <TextBlock Text="{Binding Genre, StringFormat='Genre: \{0\}', TargetNullValue=&lt;no value&gt;}"/>
                 <TextBlock Text="{Binding TrackNumber, StringFormat='TrackNumber: \{0\}', TargetNullValue=&lt;no value&gt;}"/>
                 <TextBlock Text="{Binding Comments, StringFormat='Comments: \{0\}', TargetNullValue=&lt;no value&gt;}"/>
-                <Image Source="{Binding Image}" Width="150" Height="150"/>
+                <Image Source="{Binding Image}" Width="150" Height="150" HorizontalAlignment="Left" Margin="5"/>
             </StackPanel>
             <GridSplitter ResizeDirection="Columns" Width="3"/>
             <UniformGrid Grid.Column="1" Rows="2">

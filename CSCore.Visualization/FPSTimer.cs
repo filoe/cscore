@@ -2,50 +2,61 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace CSCore.Visualization
 {
     public class FPSTimer
     {
-        [DllImport("winmm.dll", EntryPoint = "timeGetTime")]
-        public static extern uint timeGetTime();
+        Stopwatch _stopWatch;
 
         int _interval;
-        uint msSafe = 0;
-        public int Interval { get { return _interval; } }
-        public FPSTimer(int interval)
+
+        public int Interval 
+        { 
+            get 
+            {
+                return _interval; 
+            }
+            set
+            {
+                if (value <= 0)
+                    throw new ArgumentOutOfRangeException("value");
+                _interval = value;
+            }
+        }
+
+        public FPSTimer(int fps)
         {
-            _interval = interval;
+            Interval = (int)(1000.0 / fps);
+            _stopWatch = new Stopwatch();
         }
 
         public void Start()
         {
-            msSafe = timeGetTime();
+            _stopWatch.Start();
         }
 
         public bool Update()
         {
-            uint time = timeGetTime();
-            if (time - msSafe < _interval)
+            if (_stopWatch.ElapsedMilliseconds < _interval)
             {
                 return false;
             }
             else
             {
-                msSafe = time;
+                _stopWatch.Restart();
                 return true;
             }
         }
 
         public void UpdateSleep()
         {
-            uint time = timeGetTime();
-            if (time - msSafe < _interval)
+            if (_stopWatch.ElapsedMilliseconds < _interval)
             {
-                System.Threading.Thread.Sleep(_interval - (int)(time - msSafe));
+                System.Threading.Thread.Sleep((int)Math.Max(_interval - _stopWatch.ElapsedMilliseconds, 0));
             }
-            msSafe = timeGetTime();
+            _stopWatch.Restart();
         }
     }
 }

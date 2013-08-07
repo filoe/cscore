@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define DIAGNOSTICS
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -49,17 +51,17 @@ namespace CSCore.Codecs.FLAC
         }
 
         public FlacFile(Stream stream)
-            : this(stream, FlacPreScanMethod.Default)
+            : this(stream, FlacPreScanMethodMode.Default)
         {
 
         }
 
-        public FlacFile(Stream stream, FlacPreScanMethod? scanFlag)
+        public FlacFile(Stream stream, FlacPreScanMethodMode? scanFlag)
             : this(stream, scanFlag, null)
         {
         }
 
-        public FlacFile(Stream stream, FlacPreScanMethod? scanFlag, Action<FlacPreScanFinishedEventArgs> onscanFinished)
+        public FlacFile(Stream stream, FlacPreScanMethodMode? scanFlag, Action<FlacPreScanFinishedEventArgs> onscanFinished)
         {
             const string loggerLoaction = "FlacFile.ctor(Stream)";
 
@@ -115,7 +117,7 @@ namespace CSCore.Codecs.FLAC
                     if (onscanFinished != null)
                         onscanFinished(e);
                 };
-                scan.ScanStream(_streamInfo, (FlacPreScanMethod)scanFlag);
+                scan.ScanStream(_streamInfo, (FlacPreScanMethodMode)scanFlag);
                 _scan = scan;
             }
         }
@@ -163,7 +165,7 @@ namespace CSCore.Codecs.FLAC
 
         protected int GetOverflows(byte[] buffer, ref int offset, int count)
         {
-            if (_overflowCount != 0 && _overflowBuffer != null)
+            if (_overflowCount != 0 && _overflowBuffer != null && count > 0)
             {
                 int bytesToCopy = Math.Min(count, _overflowCount);
                 Array.Copy(_overflowBuffer, _overflowOffset, buffer, offset, bytesToCopy);
@@ -186,10 +188,19 @@ namespace CSCore.Codecs.FLAC
         {
             get
             {
-                return _scan.Frames[_frameIndex].SampleOffset * WaveFormat.BlockAlign;
-#if DIAGNOSTICS
-                return _position;
+                if (!CanSeek)
+                    return 0;
+
+                lock (_bufferLock)
+                {
+#if !DIAGNOSTICS
+                    if (_frameIndex == _scan.Frames.Count)
+                        return Length;
+                    return _scan.Frames[_frameIndex].SampleOffset * WaveFormat.BlockAlign;
+#else
+                    return _position;
 #endif
+                }
             }
             set
             {

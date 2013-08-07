@@ -31,6 +31,7 @@ namespace CSCoreDemo.ViewModel
             FFTDataProvider = source as FFTDataProvider;
 
             var sampleDataProvier = new SampleDataProvider(source);
+            sampleDataProvier.Mode = SampleDataProviderMode.LeftAndRight;
             SampleDataProvider = sampleDataProvier;
 
             return sampleDataProvier.ToWaveSource(16);

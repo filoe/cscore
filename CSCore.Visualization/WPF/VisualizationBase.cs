@@ -12,19 +12,14 @@ namespace CSCore.Visualization.WPF
 {
     public abstract class VisualizationBase : ContentControl, IVisualization
     {
-        bool _enablerendering = true;
-        public virtual bool EnableRendering
+        public bool EnableRendering
         {
-            get { return _enablerendering; }
-            set 
-            {
-                if (_enablerendering != value)
-                {
-                    _enablerendering = value;
-                    OnEnableRenderingChanged(value);
-                }
-            }
+            get { return (bool)GetValue(EnableRenderingProperty); }
+            set { SetValue(EnableRenderingProperty, value); }
         }
+
+        public static readonly DependencyProperty EnableRenderingProperty =
+            DependencyProperty.Register("EnableRendering", typeof(bool), typeof(VisualizationBase), new PropertyMetadata(true));
 
         FPSTimer _timer;
         protected FPSTimer Timer
@@ -35,12 +30,8 @@ namespace CSCore.Visualization.WPF
 
         public VisualizationBase()
         {
-            _timer = new FPSTimer(1000 / 60);
-        }
-
-        protected virtual void OnEnableRenderingChanged(bool newvalue)
-        {
-
+            _timer = new FPSTimer(60);
+            _timer.Start();
         }
 
         protected virtual bool ValidateTimer()

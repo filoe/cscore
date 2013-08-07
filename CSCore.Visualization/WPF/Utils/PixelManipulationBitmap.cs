@@ -12,7 +12,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-
 namespace CSCore.Visualization.WPF.Utils
 {
     public class PixelManipulationBitmap
@@ -55,21 +54,21 @@ namespace CSCore.Visualization.WPF.Utils
 
         public void BeginRender()
         {
-            //lock (_lockObj)
-            //{
-            _bitmap.Lock();
-            _updateRegion = new Int32Rect();
-            //}
+            lock (_lockObj)
+            {
+                _bitmap.Lock();
+                _updateRegion = new Int32Rect();
+            }
         }
 
         public BitmapSource EndRender()
         {
-            //lock (_lockObj)
-            //{
-            _bitmap.AddDirtyRect(_updateRegion);
-            _bitmap.Unlock();
-            return _bitmap;
-            //}
+            lock (_lockObj)
+            {
+                _bitmap.AddDirtyRect(_updateRegion);
+                _bitmap.Unlock();
+                return _bitmap;
+            }
         }
 
         public BitmapSource GetBitmap()

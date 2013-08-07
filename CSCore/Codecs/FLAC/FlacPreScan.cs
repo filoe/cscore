@@ -27,7 +27,7 @@ namespace CSCore.Codecs.FLAC
             _stream = stream;
         }
 
-        public void ScanStream(FlacMetadataStreamInfo streamInfo, FlacPreScanMethod method)
+        public void ScanStream(FlacMetadataStreamInfo streamInfo, FlacPreScanMethodMode method)
         {
             long saveOffset = _stream.Position;
             StartScan(streamInfo, method);
@@ -43,14 +43,14 @@ namespace CSCore.Codecs.FLAC
             TotalSamples = totalsamples;
         }
 
-        protected void StartScan(FlacMetadataStreamInfo streamInfo, FlacPreScanMethod method)
+        protected void StartScan(FlacMetadataStreamInfo streamInfo, FlacPreScanMethodMode method)
         {
             if (_isRunning)
                 Context.Current.Logger.Fatal(new Exception("Scan is already running."), "FlacPreScan.StartScan(FlacMetadataStreamInfo, FlacPreScanMethod)", true);
 
             _isRunning = true;
 
-            if (method == FlacPreScanMethod.Async)
+            if (method == FlacPreScanMethodMode.Async)
             {
                 new Thread((o) =>
                 {
@@ -182,11 +182,11 @@ namespace CSCore.Codecs.FLAC
         public long SampleOffset { get; set; }
     }
 
-    public enum FlacPreScanMethod
+    public enum FlacPreScanMethodMode
     {
         Default,
         /// <summary>
-        /// Scan Async BUT don't use the stream while scan is running because the stream position will change while scaning. 
+        /// Scan async BUT don't use the stream while scan is running because the stream position will change while scanning. 
         /// If you playback the stream, it will cause an error!
         /// </summary>
         Async

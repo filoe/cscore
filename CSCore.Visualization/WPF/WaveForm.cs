@@ -44,13 +44,21 @@ namespace CSCore.Visualization.WPF
             }
             DrawingVisual drawingVisual = new DrawingVisual();
             DrawingContext drawingContext = drawingVisual.RenderOpen();
-            Pen pen = DrawingPen.Clone();
-            pen.Freeze();
 
-            if(left != null)
+            drawingContext.DrawLine(AxisPen, new Point(0, _bmp.Height / 2), new Point(_bmp.Width, _bmp.Height / 2));
+
+            if (left != null)
+            {
+                var pen = DrawingPenLeft.Clone();
+                pen.Freeze();
                 Render(drawingContext, pen, left);
+            }
             if (right != null)
+            {
+                var pen = DrawingPenRight.Clone();
+                pen.Freeze();
                 Render(drawingContext, pen, right);
+            }
 
             drawingContext.Close();
             _bmp.Clear();
@@ -71,13 +79,45 @@ namespace CSCore.Visualization.WPF
             }
         }
 
-        public Pen DrawingPen
+        public Pen DrawingPenLeft
         {
             get { return (Pen)GetValue(DrawingPenProperty); }
             set { SetValue(DrawingPenProperty, value); }
         }
 
         public static readonly DependencyProperty DrawingPenProperty =
-            DependencyProperty.Register("DrawingPen", typeof(Pen), typeof(WaveForm), new PropertyMetadata(new Pen(Brushes.Red, 0.5)));
+            DependencyProperty.Register("DrawingPenLeft", typeof(Pen), typeof(WaveForm), new PropertyMetadata(new Pen(Brushes.Red, 0.5)));
+
+
+
+        public Pen DrawingPenRight
+        {
+            get { return (Pen)GetValue(DrawingPenRightProperty); }
+            set { SetValue(DrawingPenRightProperty, value); }
+        }
+
+        public static readonly DependencyProperty DrawingPenRightProperty =
+            DependencyProperty.Register("DrawingPenRight", typeof(Pen), typeof(WaveForm), new PropertyMetadata(new Pen(Brushes.Green, 0.5)));
+
+
+        public Pen AxisPen
+        {
+            get { return (Pen)GetValue(AxisPenProperty); }
+            set { SetValue(AxisPenProperty, value); }
+        }
+
+        public static readonly DependencyProperty AxisPenProperty =
+            DependencyProperty.Register("AxisPen", typeof(Pen), typeof(WaveForm), new PropertyMetadata(new Pen(Brushes.Black, 0.3)));
+
+
+
+        public bool RenderAxis
+        {
+            get { return (bool)GetValue(RenderAxisProperty); }
+            set { SetValue(RenderAxisProperty, value); }
+        }
+
+        public static readonly DependencyProperty RenderAxisProperty =
+            DependencyProperty.Register("RenderAxis", typeof(bool), typeof(WaveForm), new PropertyMetadata(true));
     }
 }
