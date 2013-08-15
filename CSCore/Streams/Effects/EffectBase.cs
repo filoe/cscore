@@ -1,12 +1,10 @@
-﻿
-namespace CSCore.Streams.Effects
+﻿namespace CSCore.Streams.Effects
 {
     public abstract class EffectBase : SampleSourceBase
     {
         public EffectBase(ISampleSource source)
             : base(source)
         {
-
         }
 
         public override int Read(float[] buffer, int offset, int count)
@@ -31,7 +29,6 @@ namespace CSCore.Streams.Effects
 
         protected virtual unsafe void Process(float* buffer, int count)
         {
-
         }
     }
 
@@ -40,7 +37,6 @@ namespace CSCore.Streams.Effects
         public MockEffect(ISampleSource source)
             : base(source)
         {
-
         }
 
         protected override unsafe void Process(float* buffer, int count)

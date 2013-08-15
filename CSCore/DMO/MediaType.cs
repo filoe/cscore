@@ -11,7 +11,7 @@ namespace CSCore.DMO
 
         public static MediaType FromWaveFormat(WaveFormat waveFormat)
         {
-            if(waveFormat == null)
+            if (waveFormat == null)
                 throw new ArgumentNullException("waveFormat");
 
             MediaType mediaType = new MediaType();
@@ -33,37 +33,52 @@ namespace CSCore.DMO
         }
 
         /// <summary>
-        /// A GUID identifying the stream's major media type. This must be one of the DMO Media Types(see http://msdn.microsoft.com/en-us/library/aa924843.aspx). 
+        /// A GUID identifying the stream's major media type. This must be one of the DMO Media
+        /// Types(see http://msdn.microsoft.com/en-us/library/aa924843.aspx).
         /// </summary>
         public Guid MajorType;
+
         /// <summary>
-        /// Subtype GUID of the stream. 
+        /// Subtype GUID of the stream.
         /// </summary>
         public Guid SubType;
+
         /// <summary>
-        /// If TRUE, samples are of a fixed size. This field is informational only. For audio, it is generally set to TRUE. For video, it is usually TRUE for uncompressed video and FALSE for compressed video.
+        /// If TRUE, samples are of a fixed size. This field is informational only. For audio, it is
+        /// generally set to TRUE. For video, it is usually TRUE for uncompressed video and FALSE
+        /// for compressed video.
         /// </summary>
         public int FixedSizeSamples;
+
         /// <summary>
-        /// If TRUE, samples are compressed using temporal (interframe) compression. A value of TRUE indicates that not all frames are key frames. This field is informational only. 
+        /// If TRUE, samples are compressed using temporal (interframe) compression. A value of TRUE
+        /// indicates that not all frames are key frames. This field is informational only.
         /// </summary>
         public int TemporalCompression;
+
         /// <summary>
-        /// Size of the sample, in bytes. For compressed data, the value can be zero. 
+        /// Size of the sample, in bytes. For compressed data, the value can be zero.
         /// </summary>
         public uint SampleSize;
+
         /// <summary>
-        /// GUID specifying the format type. The pbFormat member points to the corresponding format structure.(see http://msdn.microsoft.com/en-us/library/aa929922.aspx)
+        /// GUID specifying the format type. The pbFormat member points to the corresponding format
+        /// structure.(see http://msdn.microsoft.com/en-us/library/aa929922.aspx)
         /// </summary>
         public Guid FormatType;
+
         //not used
         private IntPtr pUnk;
+
         /// <summary>
-        /// Size of the format block of the media type. 
+        /// Size of the format block of the media type.
         /// </summary>
         public uint CbFormat;
+
         /// <summary>
-        /// Pointer to the format structure. The structure type is specified by the formattype member. The format structure must be present, unless formattype is GUID_NULL or FORMAT_None. 
+        /// Pointer to the format structure. The structure type is specified by the formattype
+        /// member. The format structure must be present, unless formattype is GUID_NULL or
+        /// FORMAT_None.
         /// </summary>
         public IntPtr PtrFormat;
 

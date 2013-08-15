@@ -19,7 +19,9 @@ namespace CSCore.Tags.ID3.Frames
         }
 
         public FrameHeader Header { get; private set; }
+
         public string FrameID { get { return Header.FrameID; } }
+
         public int FrameSize { get { return Header.FrameSize; } }
 
         public Frame(FrameHeader header)

@@ -5,7 +5,7 @@ namespace CSCore.SoundOut.MmInterop
 {
     public class WaveWindow : NativeWindow, IWaveCallbackWindow
     {
-        MMInterops.WaveCallback _waveCallback;
+        private MMInterops.WaveCallback _waveCallback;
 
         public WaveWindow(MMInterops.WaveCallback callback)
         {
@@ -42,6 +42,7 @@ namespace CSCore.SoundOut.MmInterop
         }
 
         #region ICallbackWindow Member
+
         public MMInterops.WaveCallback CallBack
         {
             get { return _waveCallback; }
@@ -52,6 +53,6 @@ namespace CSCore.SoundOut.MmInterop
             ReleaseHandle();
         }
 
-        #endregion
+        #endregion ICallbackWindow Member
     }
 }

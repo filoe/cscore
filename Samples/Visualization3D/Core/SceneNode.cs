@@ -1,14 +1,15 @@
-﻿using System;
+﻿using SharpDX;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using SharpDX;
 
 namespace Visualization3D.Core
 {
     public class SceneNode : IRenderComponent
     {
-        List<IComponent> _childs;
+        private List<IComponent> _childs;
+
         public List<IComponent> Childs
         {
             get { return _childs ?? (_childs = new List<IComponent>()); }
@@ -42,15 +43,15 @@ namespace Visualization3D.Core
         public void Dispose()
         {
             Dispose(true);
-			GC.SuppressFinalize(this);
+            GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)
         {
-			if(disposing)
-			{
-				//dispose managed
-			}
+            if (disposing)
+            {
+                //dispose managed
+            }
             foreach (var item in Childs)
             {
                 item.Dispose();

@@ -31,6 +31,7 @@ namespace CSCore.Utils
                     crc_table[i] = (UInt16)(crc & bitmask);
                 }
             }
+
             public abstract T CalcCheckSum(byte[] buffer, int offset, int count);
         }
     }

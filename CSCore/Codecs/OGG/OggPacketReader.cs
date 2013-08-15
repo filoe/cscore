@@ -50,7 +50,7 @@ namespace CSCore.Codecs.OGG
             if (_continues)
             {
                 var packet = _packets.Last();
-                ProcessPacket(packet, rawPackets);    
+                ProcessPacket(packet, rawPackets);
             }
 
             while (rawPackets.Count > 0)

@@ -8,7 +8,7 @@ namespace CSCore.SoundOut.DirectSound
     [SuppressUnmanagedCodeSecurity]
     [Guid("6825A449-7524-4D82-920F-50E36AB3AB1E")]
     public unsafe class DirectSoundSecondaryBuffer : DirectSoundBufferBase
-    {      
+    {
         public DirectSoundSecondaryBuffer(DirectSoundBase directSound, WaveFormat waveFormat, int bufferSize, bool controlEffects = false)
         {
             if (directSound == null) throw new ArgumentNullException("directSound");

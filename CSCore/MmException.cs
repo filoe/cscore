@@ -13,6 +13,7 @@ namespace CSCore
         }
 
         public MmResult Result { get; private set; }
+
         public string Target { get; private set; }
 
         public MmException(MmResult result, string target)

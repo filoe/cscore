@@ -16,7 +16,7 @@ namespace CSCore.DSP
         protected MediaObject nativeObject;
 
         protected double _ratio;
-        int _quality = 30;
+        private int _quality = 30;
 
         protected object _lockObj;
 
@@ -167,12 +167,15 @@ namespace CSCore.DSP
         /// </summary>
         public int Quality
         {
-            get { return _quality; }
-            set 
+            get
+            {
+                return _quality;
+            }
+            set
             {
                 if (value < 1 || value > 60)
                     throw new ArgumentOutOfRangeException("value");
-                _quality = value; 
+                _quality = value;
                 _resampler.ResamplerProps.SetHalfFilterLength(value);
             }
         }

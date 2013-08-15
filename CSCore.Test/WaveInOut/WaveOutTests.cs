@@ -1,10 +1,10 @@
-﻿using System;
-using System.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using CSCore.SoundIn;
 using CSCore.SoundOut;
-using CSCore.SoundIn;
 using CSCore.Streams;
 using CSCore.Streams.SampleConverter;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Diagnostics;
 
 namespace CSCore.Test.WaveInOut
 {

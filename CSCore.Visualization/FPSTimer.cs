@@ -1,22 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Diagnostics;
 
 namespace CSCore.Visualization
 {
     public class FPSTimer
     {
-        Stopwatch _stopWatch;
+        private Stopwatch _stopWatch;
 
-        int _interval;
+        private int _interval;
 
-        public int Interval 
-        { 
-            get 
+        public int Interval
+        {
+            get
             {
-                return _interval; 
+                return _interval;
             }
             set
             {

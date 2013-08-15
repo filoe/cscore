@@ -6,13 +6,15 @@ namespace CSCore.Codecs.MP3
 {
     public class Mp3FileReader : IDisposable
     {
-        long dataStartIndex;
-        long dataLength;
-        Mp3Stream dataStream;
+        private long dataStartIndex;
+        private long dataLength;
+        private Mp3Stream dataStream;
 
-        public Mp3FileReader(string fileName) : this(File.OpenRead(fileName))
+        public Mp3FileReader(string fileName)
+            : this(File.OpenRead(fileName))
         {
         }
+
         public Mp3FileReader(Stream stream)
         {
             CSCore.Tags.ID3.ID3v2.SkipTag(stream);
@@ -27,11 +29,10 @@ namespace CSCore.Codecs.MP3
             {
                 dataLength = stream.Length - dataStartIndex;
             }
-            
 
             stream.Position = dataStartIndex;
 
-            dataStream = new Mp3Stream(stream, true, id3v1Tag != null?128:0);
+            dataStream = new Mp3Stream(stream, true, id3v1Tag != null ? 128 : 0);
         }
 
         public Mp3Stream DataStream
@@ -42,7 +43,7 @@ namespace CSCore.Codecs.MP3
         public void Dispose()
         {
             Dispose(true);
-			GC.SuppressFinalize(this);
+            GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)

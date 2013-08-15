@@ -16,10 +16,10 @@ namespace CSCore.Visualization.WPF.Utils
 {
     public class PixelManipulationBitmap
     {
-        WriteableBitmap _bitmap;
+        private WriteableBitmap _bitmap;
 
-        Int32Rect _updateRegion;
-        object _lockObj;
+        private Int32Rect _updateRegion;
+        private object _lockObj;
 
         public int Height
         {

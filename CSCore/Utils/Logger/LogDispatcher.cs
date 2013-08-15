@@ -5,7 +5,8 @@ namespace CSCore.Utils.Logger
 {
     public class LogDispatcher : LoggerBase
     {
-        static List<LoggerBase> _loggers;
+        private static List<LoggerBase> _loggers;
+
         public static List<LoggerBase> Loggers
         {
             get
@@ -64,7 +65,7 @@ namespace CSCore.Utils.Logger
 
         public void Error(string msg, params object[] objects)
         {
-            Error(String.Format(msg, objects));   
+            Error(String.Format(msg, objects));
         }
 
         public void Error(string msg, string where)
@@ -75,7 +76,7 @@ namespace CSCore.Utils.Logger
         public void Error(Exception e, string where, bool throwEx = true)
         {
             Error(e.Message, where);
-            if(throwEx)
+            if (throwEx)
                 throw e;
         }
 
@@ -128,7 +129,7 @@ namespace CSCore.Utils.Logger
             {
                 Error(String.Format("[{0}]: {1}", result, functionName), where);
             }
-            else if(flag.HasFlag(MMLogFlag.LogAlways))
+            else if (flag.HasFlag(MMLogFlag.LogAlways))
             {
                 Debug(String.Format("[{0}]: {1}", result, functionName), where);
             }

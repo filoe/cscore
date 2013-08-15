@@ -4,15 +4,15 @@ namespace CSCore.DMO
 {
     public class MediaObject2 : IDisposable
     {
-        const string n = "IMediaObject";
+        private const string n = "IMediaObject";
 
-        IMediaObject mediaObject;
+        private IMediaObject mediaObject;
 
         public IMediaObject NativeObject
         {
             get { return mediaObject; }
         }
-        
+
         public MediaObject2(IMediaObject mediaObject)
         {
             if (mediaObject == null)
@@ -89,6 +89,7 @@ namespace CSCore.DMO
             {
                 case DmoResult.S_OK:
                     return true;
+
                 case DmoResult.DMO_E_INVALIDSTREAMINDEX:
                     throw new ArgumentOutOfRangeException("streamIndex");
                 case DmoResult.DMO_E_INVALIDTYPE:
@@ -137,6 +138,7 @@ namespace CSCore.DMO
             {
                 case DmoResult.S_OK:
                     return true;
+
                 case DmoResult.DMO_E_INVALIDSTREAMINDEX:
                     throw new ArgumentOutOfRangeException("streamIndex");
                 case DmoResult.DMO_E_INVALIDTYPE:
@@ -164,6 +166,7 @@ namespace CSCore.DMO
             int result = mediaObject.ProcessInput(streamIndex, mediaBuffer, flags, timestamp, timeduration);
             DmoException.Try(result, n, "ProcessInput");
         }
+
         //---
 
         public void ProcessOutput(ProcessOutputFlags flags, params DmoOutputDataBuffer[] buffers)
@@ -194,15 +197,15 @@ namespace CSCore.DMO
         public void Dispose()
         {
             Dispose(true);
-			GC.SuppressFinalize(this);
+            GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)
         {
-			if(disposing)
-			{
-				//dispose managed
-			}
+            if (disposing)
+            {
+                //dispose managed
+            }
             if (mediaObject != null)
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(mediaObject);
 

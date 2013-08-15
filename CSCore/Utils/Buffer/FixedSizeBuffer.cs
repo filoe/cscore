@@ -1,4 +1,5 @@
 ﻿#define static_buffer_org
+
 //#define static_buffer_queue
 using System;
 
@@ -46,11 +47,11 @@ namespace CSCore.Utils.Buffer
         }
 #endif
 #if static_buffer_org
-        T[] _buffer; //buffer welcher immer wieder überschrieben wird
-        int _bufferedBytes = 0; //anzahl der vorhandenen Bytes
-        int _writeOffset = 0; //Schreibeoffset im Buffer
-        int _readOffset = 0; //Leseoffset im Buffer
-        object _lockObj = new object();
+        private T[] _buffer; //buffer welcher immer wieder überschrieben wird
+        private int _bufferedBytes = 0; //anzahl der vorhandenen Bytes
+        private int _writeOffset = 0; //Schreibeoffset im Buffer
+        private int _readOffset = 0; //Leseoffset im Buffer
+        private object _lockObj = new object();
 
         public FixedSizeBuffer(int bufferSize)
         {
@@ -114,6 +115,7 @@ namespace CSCore.Utils.Buffer
         }
 
         public int Length { get { return _buffer.Length; } }
+
         public int Buffered { get { return _bufferedBytes; } }
 
         public void Clear()
@@ -129,6 +131,7 @@ namespace CSCore.Utils.Buffer
         {
             _buffer = null;
         }
+
 #endif
     }
 }

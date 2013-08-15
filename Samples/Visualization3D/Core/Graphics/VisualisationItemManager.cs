@@ -1,21 +1,21 @@
-﻿using System;
+﻿using CSCore.Utils;
+using SharpDX;
+using SharpDX.Direct3D;
+using SharpDX.Direct3D9;
+using SharpDX.Windows;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using SharpDX;
-using SharpDX.Direct3D9;
-using SharpDX.Direct3D;
-using SharpDX.Windows;
-using System.Diagnostics;
-using CSCore.Utils;
 
 namespace Visualization3D.Core.Graphics
 {
     public class VisualisationItemManager<T> : SceneNode where T : IVisualisationItem
     {
-        int _itemCount;
-        Device _device;
-        Context _context;
+        private int _itemCount;
+        private Device _device;
+        private Context _context;
 
         public VisualisationItemManager(Context context, int itemCount)
         {
@@ -63,14 +63,14 @@ namespace Visualization3D.Core.Graphics
 
         protected override void Dispose(bool disposing)
         {
-			if(disposing)
-			{
+            if (disposing)
+            {
                 foreach (var item in Childs)
                 {
                     item.Dispose();
                 }
                 Childs.Clear();
-			}
+            }
         }
 
         ~VisualisationItemManager()
@@ -81,13 +81,15 @@ namespace Visualization3D.Core.Graphics
 
     public class ResourceManager
     {
-        static ResourceManager _instance;
-        public ResourceManager Instance 
-        { 
-            get { return _instance ?? (_instance = new ResourceManager()); } 
+        private static ResourceManager _instance;
+
+        public ResourceManager Instance
+        {
+            get { return _instance ?? (_instance = new ResourceManager()); }
         }
 
-        Dictionary<string, IDisposable> _resources;
+        private Dictionary<string, IDisposable> _resources;
+
         public ResourceManager()
         {
             _resources = new Dictionary<string, IDisposable>();
@@ -115,7 +117,7 @@ namespace Visualization3D.Core.Graphics
         {
             var resource = GetResource(key);
             resource.Dispose();
-            if(remove)
+            if (remove)
                 _resources.Remove(key);
         }
 

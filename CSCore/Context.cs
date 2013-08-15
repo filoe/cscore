@@ -4,7 +4,8 @@ namespace CSCore
 {
     public class Context
     {
-        static Context _context;
+        private static Context _context;
+
         public static Context Current
         {
             get
@@ -15,7 +16,8 @@ namespace CSCore
 
         public int ErrorCount { get; set; }
 
-        Utils.Logger.LogDispatcher _logger;
+        private Utils.Logger.LogDispatcher _logger;
+
         public Utils.Logger.LogDispatcher Logger
         {
             get

@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.IO;
 
 namespace CSCore.Codecs.RAW
 {
     public class RawDataReader : IWaveSource
     {
-        WaveFormat _waveFormat;
-        Stream _stream;
+        private WaveFormat _waveFormat;
+        private Stream _stream;
 
-        long _startPosition = 0;
+        private long _startPosition = 0;
 
         public RawDataReader(Stream stream, WaveFormat waveFormat)
         {
@@ -65,15 +65,16 @@ namespace CSCore.Codecs.RAW
         }
 
         private bool _disposed;
-		public void Dispose()
+
+        public void Dispose()
         {
-			if(!_disposed)
-			{
-				_disposed = true;
-				
-				Dispose(true);
-				GC.SuppressFinalize(this);
-			}
+            if (!_disposed)
+            {
+                _disposed = true;
+
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
         }
 
         protected virtual void Dispose(bool disposing)

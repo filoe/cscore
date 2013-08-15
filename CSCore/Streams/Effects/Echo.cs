@@ -4,11 +4,11 @@ namespace CSCore.Streams.Effects
 {
     public class Echo : EffectBase
     {
-        const float maxdelay = 10f;
-        float delay = 1.0f; //second
-        float decay = 0.45f;
+        private const float maxdelay = 10f;
+        private float delay = 1.0f; //second
+        private float decay = 0.45f;
 
-        Queue<float> backBuffer;
+        private Queue<float> backBuffer;
 
         public Echo(ISampleSource source)
             : base(source)

@@ -4,8 +4,10 @@ namespace CSCore.Codecs.FLAC
 {
     public class FlacPartitionedRice
     {
-        public int PartitionOrder { get; private set;}
+        public int PartitionOrder { get; private set; }
+
         public FlacPartitionedRiceContent Content { get; private set; }
+
         public FlacEntropyCoding CodingMethod { get; private set; }
 
         public FlacPartitionedRice(int partitionOrder, FlacEntropyCoding codingMethod, FlacPartitionedRiceContent content)

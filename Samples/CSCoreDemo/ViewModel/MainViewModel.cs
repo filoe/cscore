@@ -1,40 +1,40 @@
-﻿using System;
+﻿using CSCore.Codecs;
+using CSCoreDemo.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Collections.ObjectModel;
-using CSCoreDemo.Model;
-using CSCore.Codecs;
-using System.Diagnostics;
 
 namespace CSCoreDemo.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        TagsViewModel _tagViewModel;
+        private TagsViewModel _tagViewModel;
+
         public TagsViewModel TagViewModel
         {
             get { return _tagViewModel ?? (_tagViewModel = new TagsViewModel()); }
             set { SetProperty(value, ref _tagViewModel, () => TagViewModel); }
         }
 
-        SoundModificationViewModel _soundModificationViewModel;
+        private SoundModificationViewModel _soundModificationViewModel;
+
         public SoundModificationViewModel SoundModificationViewModel
         {
             get { return _soundModificationViewModel ?? (_soundModificationViewModel = new SoundModificationViewModel()); }
             set { SetProperty(value, ref _soundModificationViewModel, () => SoundModificationViewModel); }
         }
 
-        VisualizationViewModel _visualizationViewModel;
+        private VisualizationViewModel _visualizationViewModel;
+
         public VisualizationViewModel VisualizationViewModel
         {
             get { return _visualizationViewModel ?? (_visualizationViewModel = new VisualizationViewModel()); }
             set { SetProperty(value, ref _visualizationViewModel, () => VisualizationViewModel); }
         }
 
-        AudioPlayer _audioPlayer;
+        private AudioPlayer _audioPlayer;
+
         public AudioPlayer AudioPlayer
         {
             get
@@ -57,28 +57,36 @@ namespace CSCoreDemo.ViewModel
             }
         }
 
-        List<SoundOutType> _soundOutTypes;
+        private List<SoundOutType> _soundOutTypes;
+
         public List<SoundOutType> SoundOutTypes
         {
-            get 
+            get
             {
                 if (_soundOutTypes == null)
                 {
-                    if(CSCore.SoundOut.WasapiOut.IsSupportedOnCurrentPlatform)
+                    if (CSCore.SoundOut.WasapiOut.IsSupportedOnCurrentPlatform)
                         _soundOutTypes = new List<SoundOutType>(new SoundOutType[] { SoundOutType.WaveOut, SoundOutType.DirectSound, SoundOutType.Wasapi });
                     else
                         _soundOutTypes = new List<SoundOutType>(new SoundOutType[] { SoundOutType.WaveOut, SoundOutType.DirectSound });
                 }
-                return _soundOutTypes; 
+                return _soundOutTypes;
             }
-            set { SetProperty(value, ref _soundOutTypes, () => SoundOutTypes); }
+            set
+            {
+                SetProperty(value, ref _soundOutTypes, () => SoundOutTypes);
+            }
         }
 
-        SoundOutType _soundOutType = SoundOutType.DirectSound;
+        private SoundOutType _soundOutType = SoundOutType.DirectSound;
+
         public SoundOutType SelectedSoundOutType
         {
-            get { return _soundOutType; }
-            set 
+            get
+            {
+                return _soundOutType;
+            }
+            set
             {
                 AudioPlayer.SetupAudioPlayer(value);
                 OnPropertyChanged(() => Devices);
@@ -92,10 +100,14 @@ namespace CSCoreDemo.ViewModel
             get { return AudioPlayer.Devices; }
         }
 
-        SoundOutDevice _device;
+        private SoundOutDevice _device;
+
         public SoundOutDevice Device
         {
-            get { return _device; }
+            get
+            {
+                return _device;
+            }
             set
             {
                 AudioPlayer.Device = value;
@@ -103,28 +115,32 @@ namespace CSCoreDemo.ViewModel
             }
         }
 
-        ICommand _openfileCommand;
+        private ICommand _openfileCommand;
+
         public ICommand OpenFileCommand
         {
             get { return _openfileCommand ?? new AutoDelegateCommand((c) => OpenFile(), (c) => CanOpenFile()); }
             set { SetProperty(value, ref _openfileCommand, () => OpenFileCommand); }
         }
 
-        ICommand _playCommand;
+        private ICommand _playCommand;
+
         public ICommand PlayCommand
         {
             get { return _playCommand ?? (_playCommand = new AutoDelegateCommand((c) => Play(), (c) => CanPlay())); }
             set { SetProperty(value, ref _playCommand, () => PlayCommand); }
         }
 
-        ICommand _pauseCommand;
+        private ICommand _pauseCommand;
+
         public ICommand PauseCommand
         {
             get { return _pauseCommand ?? (_pauseCommand = new AutoDelegateCommand((c) => Pause(), (c) => CanPause())); }
             set { SetProperty(value, ref _pauseCommand, () => PauseCommand); }
         }
 
-        ICommand _stopCommand;
+        private ICommand _stopCommand;
+
         public ICommand StopCommand
         {
             get { return _stopCommand ?? (_stopCommand = new AutoDelegateCommand((c) => Stop(), (c) => CanStop())); }
@@ -133,11 +149,14 @@ namespace CSCoreDemo.ViewModel
 
         public TimeSpan Position
         {
-            get { return AudioPlayer.Position; }
-            set 
-            {     
+            get
+            {
+                return AudioPlayer.Position;
+            }
+            set
+            {
                 AudioPlayer.Position = value;
-                OnPropertyChanged(() => Position);            
+                OnPropertyChanged(() => Position);
             }
         }
 
@@ -146,7 +165,8 @@ namespace CSCoreDemo.ViewModel
             get { return AudioPlayer.Length; }
         }
 
-        bool updatePosition = true;
+        private bool updatePosition = true;
+
         public bool UpdatePosition
         {
             get { return updatePosition; }

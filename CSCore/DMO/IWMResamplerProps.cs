@@ -10,11 +10,13 @@ namespace CSCore.DMO
     public interface IWMResamplerProps
     {
         /// <summary>
-        /// Specifies the quality of the output. 
+        /// Specifies the quality of the output.
         /// </summary>
-        /// <param name="quality">Specifies the quality of the output. The valid range is 1 to 60, inclusive.</param>
+        /// <param name="quality">Specifies the quality of the output. The valid range is 1 to 60,
+        /// inclusive.</param>
         /// <returns></returns>
         int SetHalfFilterLength(int quality);
+
         //http://msdn.microsoft.com/en-us/library/windows/desktop/ff819252(v=vs.85).aspx
         int SetUserChannelMtx([In] float[] channelConversionMatrix);
     }

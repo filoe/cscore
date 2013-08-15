@@ -7,16 +7,18 @@ namespace CSCore.CoreAudioAPI
     [Guid("D666063F-1587-4E43-81F1-B948E807363F")]
     public class MMDevice : ComObject
     {
-        const string c = "IMMDevice";
+        private const string c = "IMMDevice";
 
         public MMDevice(IntPtr ptr)
             : base(ptr)
         {
         }
 
-        PropertyStore _propertyStore;
+        private PropertyStore _propertyStore;
+
         /// <summary>
-        /// Warning: This PropertyStore is just Readable. Use the OpenPropertyStore-Method to get writeable PropertyStore.
+        /// Warning: This PropertyStore is just Readable. Use the OpenPropertyStore-Method to get
+        ///          writeable PropertyStore.
         /// </summary>
         public PropertyStore PropertyStore
         {
@@ -25,7 +27,7 @@ namespace CSCore.CoreAudioAPI
                 if (_propertyStore == null)
                 {
                     IntPtr propstorePtr;
-                    CoreAudioAPIException.Try(OpenPropertyStore(StorageAccess.Read, out propstorePtr), 
+                    CoreAudioAPIException.Try(OpenPropertyStore(StorageAccess.Read, out propstorePtr),
                         "IMMDevice", "OpenPropertyStore");
                     _propertyStore = new PropertyStore(propstorePtr);
                 }

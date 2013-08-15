@@ -9,15 +9,20 @@ namespace CSCore.Streams
     {
         public event EventHandler<BlockReadEventArgs<float>> BlockRead;
 
-        Queue<float> _buffer;
+        private Queue<float> _buffer;
 
-        int _blockSize;
+        private int _blockSize;
+
         /// <summary>
-        /// Interval in blocks. One block equals on sample for each channel -> (channels * bitspersample) bits
+        /// Interval in blocks. One block equals on sample for each channel -> (channels *
+        /// bitspersample) bits
         /// </summary>
         public int BlockCount
         {
-            get { return _blockSize; }
+            get
+            {
+                return _blockSize;
+            }
             set
             {
                 if (value < 1)
@@ -31,7 +36,10 @@ namespace CSCore.Streams
         /// </summary>
         public int Interval
         {
-            get { return (int)(1000.0 * ((double)BlockCount / (double)WaveFormat.SampleRate)); }
+            get
+            {
+                return (int)(1000.0 * ((double)BlockCount / (double)WaveFormat.SampleRate));
+            }
             set
             {
                 int v = (int)(((double)(value * WaveFormat.SampleRate)) / 1000.0);
@@ -51,9 +59,9 @@ namespace CSCore.Streams
         {
             int read = base.Read(buffer, offset, count);
 
-            for (int i = 0; i < read;)
+            for (int i = 0; i < read; )
             {
-                for (int n = 0; n < WaveFormat.Channels; n++ )
+                for (int n = 0; n < WaveFormat.Channels; n++)
                 {
                     _buffer.Enqueue(buffer[i++]);
                 }

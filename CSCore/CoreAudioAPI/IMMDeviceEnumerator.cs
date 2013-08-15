@@ -10,9 +10,13 @@ namespace CSCore.CoreAudioAPI
     public interface IMMDeviceEnumerator : IUnknown
     {
         int EnumAudioEndpoints(DataFlow dataFlow, DeviceState stateMask, [Out] out IMMDeviceCollection deviceCollection);
+
         int GetDefaultAudioEndpoint(DataFlow dataFlow, Role role, [Out] out IMMDevice device);
+
         int GetDevice([In, MarshalAs(UnmanagedType.LPWStr)] string id, [Out] out IMMDevice device);
+
         int RegisterEndpointNotificationCallback(IMMNotificationClient notificationClient);
+
         int UnregisterEndpointNotificationCallback(IMMNotificationClient notificationClient);
     }
 }

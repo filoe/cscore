@@ -11,7 +11,6 @@ namespace CSCore.Utils
     {
         public CSCalliAttribute()
         {
-
         }
     }
 }

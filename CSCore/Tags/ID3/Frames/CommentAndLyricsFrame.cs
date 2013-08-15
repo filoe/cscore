@@ -5,13 +5,14 @@ namespace CSCore.Tags.ID3.Frames
     public class CommentAndLyricsFrame : Frame
     {
         public string Language { get; private set; }
+
         public string Description { get; private set; }
+
         public string Text { get; private set; }
 
         public CommentAndLyricsFrame(FrameHeader header)
             : base(header)
         {
-
         }
 
         protected override void Decode(byte[] content)

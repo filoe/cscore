@@ -7,12 +7,14 @@ namespace CSCore.Utils.Logger
     public class FileLogger : StreamLogger, IDisposable
     {
         public LogFileLayout Layout { get; private set; }
-        XmlWriter _xmlw;
 
-        Func<string, string> _timeFormatter = new Func<string, string>((s) =>
+        private XmlWriter _xmlw;
+
+        private Func<string, string> _timeFormatter = new Func<string, string>((s) =>
             {
                 return String.Format("[{0}]{1}", DateTime.Now.ToString("HH_mm_ss.f"), s);
             });
+
         public Func<string, string> TimeFormatter
         {
             get
@@ -43,6 +45,7 @@ namespace CSCore.Utils.Logger
         private const string messageTag = "MSG";
         private const string locationTag = "LOCATION";
         private const string timeAttributeName = "Time";
+
         public override void Log(LogLevel level, string msg)
         {
             if (level > LoggerLevel) return;

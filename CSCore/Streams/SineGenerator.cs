@@ -4,11 +4,11 @@ namespace CSCore.Streams
 {
     public class SineGenerator : ISampleSource
     {
-        double _frequency = 1000;
-        double _amplitude = 0.5;
-        double _phase = 0;
+        private double _frequency = 1000;
+        private double _amplitude = 0.5;
+        private double _phase = 0;
 
-        WaveFormat _waveFormat;
+        private WaveFormat _waveFormat;
 
         /// <summary>
         /// 1000Hz, 0.5 Amplitude, 0.0 phase
@@ -61,15 +61,15 @@ namespace CSCore.Streams
         public void Dispose()
         {
             Dispose(true);
-			GC.SuppressFinalize(this);
+            GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)
         {
-			if(disposing)
-			{
-				//dispose managed
-			}
+            if (disposing)
+            {
+                //dispose managed
+            }
             //keine ressourcen zum freigeben
         }
 

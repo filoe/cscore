@@ -6,26 +6,32 @@ namespace CSCore.Codecs.MP3
 {
     public class Mp3Stream : IWaveSource, IDisposable
     {
-        Mp3Frame _frame = null;
-        FrameInfoCollection _frameInfoCollection;
-        AcmConverter _converter;
-        Stream _stream;
-        object _lockObject = new object();
+        private Mp3Frame _frame = null;
+        private FrameInfoCollection _frameInfoCollection;
+        private AcmConverter _converter;
+        private Stream _stream;
+        private object _lockObject = new object();
 
-        int _overflows;
-        int _bufferoffset;
+        private int _overflows;
+        private int _bufferoffset;
 
-        int _sampleRate = 0;
-        long _dataStartIndex = 0;
-        long _dataLength = 0;
-        double _bitRate = 0.0;
+        private int _sampleRate = 0;
+        private long _dataStartIndex = 0;
+        private long _dataLength = 0;
+        private double _bitRate = 0.0;
+
         //int _bytesPerSample = 0; //BitsPerSample / 8 * Channel
-        byte[] _pcmDstBuffer;
-        byte[] _frameBuffer;
+        private byte[] _pcmDstBuffer;
 
-        const short SamplesPerFrame = 1152;
+        private byte[] _frameBuffer;
 
-        public Mp3Stream(Stream stream, bool scanStream) : this(stream, scanStream, 0) { }
+        private const short SamplesPerFrame = 1152;
+
+        public Mp3Stream(Stream stream, bool scanStream)
+            : this(stream, scanStream, 0)
+        {
+        }
+
         public Mp3Stream(Stream stream, bool scanStream, int lengthOffset)
         {
             int frameLength = 0;
@@ -40,7 +46,6 @@ namespace CSCore.Codecs.MP3
                 _frame = Mp3Frame.FromStream(stream);
                 if (_frame == null && stream.IsEndOfStream())
                     throw new FormatException("Stream is no MP3-stream. No MP3-Frame was found.");
-
             } while (_frame == null && !stream.IsEndOfStream());
 
             frameLength = _frame.FrameLength;
@@ -76,7 +81,7 @@ namespace CSCore.Codecs.MP3
             }
             else
             {
-                _bitRate = ( (_frame.BitRate) / 1);
+                _bitRate = ((_frame.BitRate) / 1);
             }
             MP3Format = new Mp3Format(_sampleRate, _frame.ChannelMode.ToShort(), frameLength, (int)Math.Round(_bitRate));
             _converter = new AcmConverter(MP3Format);
@@ -116,7 +121,7 @@ namespace CSCore.Codecs.MP3
                             offset += BTCC; read += BTCC;
 
                             /*
-                             * If there are any overflows -> store them in a 
+                             * If there are any overflows -> store them in a
                              * buffer to use it next time.
                              */
                             _overflows = ((converted > BTCC) ? (converted - BTCC) : 0);
@@ -169,7 +174,7 @@ namespace CSCore.Codecs.MP3
 
         public long Position
         {
-            get 
+            get
             {
                 if (CanSeek)
                 {
@@ -188,7 +193,7 @@ namespace CSCore.Codecs.MP3
                 lock (_lockObject)
                 {
                     value = Math.Min(value, Length);
-                    value = (value > 0)? value: 0;
+                    value = (value > 0) ? value : 0;
 
                     for (int i = 0; i < _frameInfoCollection.Count; i++)
                     {
@@ -205,13 +210,12 @@ namespace CSCore.Codecs.MP3
 
                     _bufferoffset = 0; _overflows = 0;
                 }
-
             }
         }
 
         private void PreScanFile(Stream stream)
         {
-            while (_frameInfoCollection.AddFromMP3Stream(stream));
+            while (_frameInfoCollection.AddFromMP3Stream(stream)) ;
         }
 
         public XingHeader XingHeader { get; private set; }
@@ -233,12 +237,13 @@ namespace CSCore.Codecs.MP3
         }
 
         internal double BitRate { get { return _bitRate; } }
+
         internal long DataStartIndex { get { return _dataStartIndex; } }
 
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this); 
+            GC.SuppressFinalize(this);
         }
 
         protected void Dispose(bool disposing)

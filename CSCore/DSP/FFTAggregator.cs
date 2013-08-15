@@ -6,7 +6,8 @@ namespace CSCore.DSP
     public class FFTAggregator : WaveAggregatorBase
     {
         public event EventHandler<FFTCalculatedEventArgs> FFTCalculated;
-        int _iteratorOffset = 0;
+
+        private int _iteratorOffset = 0;
 
         public FFTAggregator()
             : base()
@@ -24,10 +25,14 @@ namespace CSCore.DSP
             Bands = bands;
         }
 
-        int _bands = 1024;
+        private int _bands = 1024;
+
         public int Bands
         {
-            get { return _bands; }
+            get
+            {
+                return _bands;
+            }
             set
             {
                 if (CSMath.GetExponent(value, 2) % 1 != 0)
@@ -36,7 +41,8 @@ namespace CSCore.DSP
             }
         }
 
-        Complex[] _complex;
+        private Complex[] _complex;
+
         protected Complex[] Complex
         {
             get { return _complex ?? (_complex = new Complex[_bands]); }

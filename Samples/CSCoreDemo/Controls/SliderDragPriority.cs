@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 
 namespace CSCoreDemo.Controls
 {
@@ -19,7 +11,8 @@ namespace CSCoreDemo.Controls
             set { SetValue(AllowValueChangeProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for AllowValueChange.  This enables animation, styling, binding, etc...
+        // Using a DependencyProperty as the backing store for AllowValueChange. This enables
+        // animation, styling, binding, etc...
         public static readonly DependencyProperty AllowValueChangeProperty =
             DependencyProperty.Register("AllowValueChange", typeof(bool), typeof(SliderDragPriority), new PropertyMetadata(true));
 

@@ -1,5 +1,4 @@
-﻿
-namespace CSCore.Tags.ID3.Frames
+﻿namespace CSCore.Tags.ID3.Frames
 {
     public enum FrameID
     {

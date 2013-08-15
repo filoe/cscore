@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
+using System.Web;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -10,8 +12,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using System.Web;
-using System.Net.NetworkInformation;
 
 namespace WPFVisualisation
 {
@@ -20,8 +20,8 @@ namespace WPFVisualisation
     /// </summary>
     public partial class StreamURLSelector : Window
     {
-        const string oe3 = @"http://mp3stream7.apasf.apa.at:8000";
-        const string test = @"http://streamplus5.leonex.de:10686/;Lippstadt-FM.mp3";
+        private const string oe3 = @"http://mp3stream7.apasf.apa.at:8000";
+        private const string test = @"http://streamplus5.leonex.de:10686/;Lippstadt-FM.mp3";
 
         public StreamURLSelector()
         {
@@ -40,7 +40,6 @@ namespace WPFVisualisation
         public static readonly DependencyProperty TextProperty =
             DependencyProperty.Register("Text", typeof(string), typeof(StreamURLSelector), new PropertyMetadata("Enter a URL: "));
 
-
         public string Value
         {
             get { return (string)GetValue(ValueProperty); }
@@ -50,7 +49,6 @@ namespace WPFVisualisation
         public static readonly DependencyProperty ValueProperty =
             DependencyProperty.Register("Value", typeof(string), typeof(StreamURLSelector), new PropertyMetadata(oe3));
 
-
         private void OnOKClick(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
@@ -58,7 +56,7 @@ namespace WPFVisualisation
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
-            if(DialogResult == null)
+            if (DialogResult == null)
                 e.Cancel = true;
         }
     }

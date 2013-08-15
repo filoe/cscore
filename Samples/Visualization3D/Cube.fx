@@ -43,15 +43,15 @@ PS_IN VS( VS_IN input )
 	output.Position = mul(input.Position, worldViewProj);
 	output.Color = input.Color;
 	//output.istop = istop;
-	
+
 	return output;
 }
 
 float4 PS( PS_IN input ) : COLOR
 {
 	float4 colorh = float4(0.0, 0.0, 1.0, 0.0); //blau
-	float4 colorl = float4(0.0, 1.0, 0.0, 0.0); //grün
-	input.Color.rgb = CalculateColor(value, colorh, colorl);
+		float4 colorl = float4(0.0, 1.0, 0.0, 0.0); //grün
+		input.Color.rgb = CalculateColor(value, colorh, colorl);
 	input.Color.rgb = input.Color.rgb + input.BR.r;
 	return input.Color;
 }
@@ -59,6 +59,6 @@ float4 PS( PS_IN input ) : COLOR
 technique Main {
 	pass P0 {
 		VertexShader = compile vs_2_0 VS();
-        PixelShader  = compile ps_2_0 PS();
+		PixelShader  = compile ps_2_0 PS();
 	}
 }

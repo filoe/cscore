@@ -5,7 +5,8 @@ namespace CSCore.Codecs.FLAC
     public class FlacBitReader : BitReader
     {
         /*unary table from codeproject*/
-        internal static readonly byte[] UnaryTable = new byte[] 
+
+        internal static readonly byte[] UnaryTable = new byte[]
 		{
 			8, 7, 6, 6, 5, 5, 5, 5, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 			2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
@@ -25,7 +26,6 @@ namespace CSCore.Codecs.FLAC
         public unsafe FlacBitReader(byte* buffer, int offset)
             : base(buffer, offset)
         {
-            
         }
 
         public uint ReadUnary()
@@ -52,6 +52,7 @@ namespace CSCore.Codecs.FLAC
         }
 
         #region utf8
+
         public bool ReadUTF8_64(out ulong result)
         {
             uint x = ReadBits(8);
@@ -174,6 +175,7 @@ namespace CSCore.Codecs.FLAC
             result = v;
             return true;
         }
-        #endregion
+
+        #endregion utf8
     }
 }

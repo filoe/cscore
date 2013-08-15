@@ -5,7 +5,7 @@ namespace CSCore.SoundIn
 {
     public class WaveInWindow : WaveIn
     {
-        IWaveCallbackWindow _window;
+        private IWaveCallbackWindow _window;
 
         public IntPtr WindowHandle { get { return _window.Handle; } }
 

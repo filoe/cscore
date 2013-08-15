@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CSCore;
+﻿using CSCore;
+using CSCore.CoreAudioAPI;
 using CSCore.SoundOut;
 using CSCore.SoundOut.DirectSound;
-using CSCore.CoreAudioAPI;
 using CSCore.Win32;
+using System;
+using System.Collections.Generic;
 
 namespace CSCoreDemo.Model
 {
     public class SoundOutManager
     {
-        ISoundOut _soundOut;
-        SoundOutType _soundOutType;
+        private ISoundOut _soundOut;
+        private SoundOutType _soundOutType;
 
         public bool IsPlaying
         {
@@ -37,10 +34,14 @@ namespace CSCoreDemo.Model
         }
 
         private float _volume = 1.0f;
+
         public float Volume
         {
-            get { return _volume; }
-            set 
+            get
+            {
+                return _volume;
+            }
+            set
             {
                 _volume = value;
                 if (IsCreated && IsInitialized)
@@ -48,7 +49,8 @@ namespace CSCoreDemo.Model
             }
         }
 
-        bool _isinitialized = false;
+        private bool _isinitialized = false;
+
         public bool IsInitialized
         {
             get { return IsCreated && _isinitialized; }
@@ -66,12 +68,15 @@ namespace CSCoreDemo.Model
                 case SoundOutType.WaveOut:
                     _soundOut = new WaveOutWindow() { Latency = 70 };
                     break;
+
                 case SoundOutType.DirectSound:
                     _soundOut = new DirectSoundOut() { Latency = 50 };
                     break;
+
                 case SoundOutType.Wasapi:
                     _soundOut = new WasapiOut();
                     break;
+
                 default:
                     _soundOutType = SoundOutType.None;
                     throw new ArgumentOutOfRangeException("soundOutType");
@@ -93,18 +98,21 @@ namespace CSCoreDemo.Model
                         yield return new SoundOutDevice(dev.szPname, i);
                     }
                     break;
+
                 case SoundOutType.DirectSound:
                     foreach (var dev in DirectSoundDevice.EnumerateDevices())
                     {
                         yield return new SoundOutDevice(dev.Description, dev);
                     }
                     break;
+
                 case SoundOutType.Wasapi:
                     foreach (var dev in new MMDeviceEnumerator().EnumAudioEndpoints(DataFlow.Render, DeviceState.Active))
                     {
                         yield return new SoundOutDevice(dev.PropertyStore[PropertyStore.FriendlyName].ToString(), dev);
                     }
                     break;
+
                 default:
                     throw new InvalidOperationException();
             }
@@ -119,14 +127,17 @@ namespace CSCoreDemo.Model
                     var waveOut = (WaveOut)_soundOut;
                     waveOut.Device = (int)device.NativeDevice;
                     break;
+
                 case SoundOutType.DirectSound:
                     var dsound = (DirectSoundOut)_soundOut;
                     dsound.Device = ((DirectSoundDevice)device.NativeDevice).Guid;
                     break;
+
                 case SoundOutType.Wasapi:
                     var wasapi = (WasapiOut)_soundOut;
                     wasapi.Device = (MMDevice)device.NativeDevice;
                     break;
+
                 default:
                     throw new InvalidOperationException();
             }
@@ -145,14 +156,14 @@ namespace CSCoreDemo.Model
         public void Play()
         {
             CheckForCreated();
-            if(IsPaused || IsStopped)
+            if (IsPaused || IsStopped)
                 _soundOut.Play();
         }
 
         public void Pause()
         {
             CheckForCreated();
-            if(IsPlaying)
+            if (IsPlaying)
                 _soundOut.Pause();
         }
 
@@ -186,6 +197,7 @@ namespace CSCoreDemo.Model
     public class SoundOutDevice
     {
         public string FriendlyName { get; private set; }
+
         public object NativeDevice { get; private set; }
 
         public SoundOutDevice(string friendlyName, object nativeDevice)

@@ -1,9 +1,9 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
-using CSCore.MediaFoundation;
+﻿using CSCore.MediaFoundation;
 using CSCore.Win32;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace CSCore.Test.MediaFoundation

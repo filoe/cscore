@@ -1,11 +1,11 @@
-﻿
-namespace CSCore.Utils
+﻿namespace CSCore.Utils
 {
     public partial class CSMath
     {
         /// <summary>
-        /// http://flac.sourceforge.net/format.html#frame_footer
-        /// CRC-16 (polynomial = x^16 + x^15 + x^2 + x^0, initialized with 0) of everything before the crc, back to and including the frame header sync code 
+        /// http: //flac.sourceforge.net/format.html#frame_footer
+        /// CRC-16 (polynomial = x^16 + x^15 + x^2 + x^0, initialized with 0) of everything before
+        /// the crc, back to and including the frame header sync code
         /// </summary>
         public class CRC16 : CRCBase<ushort>
         {

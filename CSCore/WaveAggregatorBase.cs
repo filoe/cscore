@@ -18,7 +18,10 @@ namespace CSCore
 
         public virtual IWaveSource BaseStream
         {
-            get { return _baseStream; }
+            get
+            {
+                return _baseStream;
+            }
             set
             {
                 if (value == null)
@@ -64,14 +67,15 @@ namespace CSCore
             }
         }
 
-        bool disposed = false;
+        private bool disposed = false;
+
         protected virtual void Dispose(bool disposing)
         {
-			if(disposing)
-			{
-				//dispose managed
-			}
-            if(BaseStream != null)
+            if (disposing)
+            {
+                //dispose managed
+            }
+            if (BaseStream != null)
                 BaseStream.Dispose();
             _baseStream = null;
         }

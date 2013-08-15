@@ -7,7 +7,8 @@ namespace CSCli
 {
     public class StdOut
     {
-        static StdOut _instance;
+        private static StdOut _instance;
+
         public static StdOut Instance
         {
             get { return _instance ?? (_instance = new StdOut()); }
@@ -33,7 +34,9 @@ namespace CSCli
             Info(String.Format(message, values));
         }
 
-        private StdOut() { }
+        private StdOut()
+        {
+        }
 
         public void WriteError(string message, string location)
         {

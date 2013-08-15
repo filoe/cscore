@@ -1,16 +1,16 @@
-﻿using System;
+﻿using SharpDX;
+using SharpDX.Direct3D;
+using SharpDX.Direct3D9;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using SharpDX;
-using SharpDX.Direct3D;
-using SharpDX.Direct3D9;
 
 namespace Visualization3D.Core.Graphics
 {
     public class CustomLight : IComponent
     {
-        DeviceManager _deviceMgr;
+        private DeviceManager _deviceMgr;
 
         public Light Light;
 
@@ -47,12 +47,10 @@ namespace Visualization3D.Core.Graphics
 
         public void Update(float time)
         {
-            
         }
 
         public void Dispose()
         {
-            
         }
     }
 }

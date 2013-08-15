@@ -6,6 +6,7 @@ namespace CSCore.Tags.ID3.Frames
     public class DataFrame : Frame
     {
         public string OwnerIdentifier { get; private set; }
+
         public byte[] Data { get; private set; }
 
         public DataFrame(FrameHeader header)

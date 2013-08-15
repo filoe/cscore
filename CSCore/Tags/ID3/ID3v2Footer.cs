@@ -44,11 +44,16 @@ namespace CSCore.Tags.ID3
             return null;
         }
 
-        private ID3v2Footer() { }
+        private ID3v2Footer()
+        {
+        }
 
         public ID3Version Version { get; private set; }
+
         public byte[] RawVersion { get; private set; }
+
         public long DataLength { get; private set; }
+
         public ID3v2HeaderFlags Flags { get; private set; }
     }
 }

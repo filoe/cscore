@@ -1,7 +1,6 @@
-﻿
-namespace CSCore.Utils
+﻿namespace CSCore.Utils
 {
-    static class Memory
+    internal static class Memory
     {
         unsafe public static void MemorySet(int* result, int source, int count)
         {

@@ -10,7 +10,7 @@ namespace CSCore.MediaFoundation
     [Guid("045FA593-8799-42b8-BC8D-8968C6453507")]
     public class MFMediaBuffer : ComObject
     {
-        const string c = "IMFMediaBuffer";
+        private const string c = "IMFMediaBuffer";
 
         public int CurrentLength
         {

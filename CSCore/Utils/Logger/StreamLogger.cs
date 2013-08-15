@@ -8,6 +8,7 @@ namespace CSCore.Utils.Logger
         protected Stream _stream;
 
         protected StreamWriter _writer;
+
         protected StreamWriter Writer
         {
             get
@@ -28,7 +29,7 @@ namespace CSCore.Utils.Logger
 
         public override void Log(LogLevel level, string msg)
         {
-            if(level <= LoggerLevel)
+            if (level <= LoggerLevel)
                 Writer.WriteLine(String.Format("[{0}]: {1}", level, msg));
         }
 

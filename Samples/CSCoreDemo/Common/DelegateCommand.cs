@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Input;
 
 namespace CSCoreDemo
@@ -31,7 +28,7 @@ namespace CSCoreDemo
             {
                 return true;
             }
-			
+
             return _canExecute(parameter);
         }
 
@@ -48,5 +45,4 @@ namespace CSCoreDemo
             }
         }
     }
- 
 }

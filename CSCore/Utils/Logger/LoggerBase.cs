@@ -4,11 +4,11 @@ namespace CSCore.Utils.Logger
 {
     public abstract class LoggerBase
     {
-
-        static Func<string, string, string> _locationFormatter = (m, l) =>
+        private static Func<string, string, string> _locationFormatter = (m, l) =>
             {
                 return String.Format("{0}: {1}", l, m);
             };
+
         public static Func<string, string, string> LocationFormatter
         {
             get
@@ -21,10 +21,11 @@ namespace CSCore.Utils.Logger
             }
         }
 
-        static Func<LogLevel, string, string> _levelFormatter = (l, m) =>
+        private static Func<LogLevel, string, string> _levelFormatter = (l, m) =>
             {
                 return String.Format("[{0}]:{1}", l, m);
             };
+
         public static Func<LogLevel, string, string> LevelFormatter
         {
             get
@@ -37,10 +38,11 @@ namespace CSCore.Utils.Logger
             }
         }
 
-        static Func<string, string> _dateTimeFormatter = (m) =>
+        private static Func<string, string> _dateTimeFormatter = (m) =>
             {
                 return String.Format("[{0}]{1}", DateTime.Now.ToString("HH_mm_ss.f"), m);
             };
+
         public static Func<string, string> DateTimeFormatter
         {
             get
@@ -53,7 +55,7 @@ namespace CSCore.Utils.Logger
             }
         }
 
-        public LoggerBase( )
+        public LoggerBase()
         {
             LoggerLevel = LoggerBase.LogLevel.DEBUG;
         }
@@ -74,6 +76,7 @@ namespace CSCore.Utils.Logger
         }
 
         public abstract void Log(LogLevel level, string msg);
+
         public abstract void Log(LogLevel level, string msg, string location);
     }
 }

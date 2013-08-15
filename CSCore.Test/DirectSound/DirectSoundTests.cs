@@ -1,8 +1,8 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Diagnostics;
-using CSCore.SoundOut;
+﻿using CSCore.SoundOut;
 using CSCore.SoundOut.DirectSound;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Diagnostics;
 using System.Threading;
 
 namespace CSCore.Test.DirectSound
@@ -15,7 +15,7 @@ namespace CSCore.Test.DirectSound
         public void EnumerateDirectSoundDeviceTest()
         {
             var devices = DirectSoundDevice.EnumerateDevices();
-            foreach(var device in devices)
+            foreach (var device in devices)
             {
                 Debug.WriteLine(device.ToString());
             }

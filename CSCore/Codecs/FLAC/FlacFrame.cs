@@ -7,15 +7,16 @@ namespace CSCore.Codecs.FLAC
 {
     public sealed class FlacFrame
     {
-        List<FlacSubFrameData> _data;
-        Stream _stream;
-        FlacMetadataStreamInfo _streamInfo;
+        private List<FlacSubFrameData> _data;
+        private Stream _stream;
+        private FlacMetadataStreamInfo _streamInfo;
 
-        GCHandle handle1, handle2;
-        int[] destBuffer;
-        int[] residualBuffer;
+        private GCHandle handle1, handle2;
+        private int[] destBuffer;
+        private int[] residualBuffer;
 
-        FlacFrameHeader _header;
+        private FlacFrameHeader _header;
+
         public FlacFrameHeader Header
         {
             get { return _header; }
@@ -82,7 +83,7 @@ namespace CSCore.Codecs.FLAC
             _data = data;
 
             byte[] buffer = new byte[0x20000];
-            if((_streamInfo.MaxFrameSize * Header.Channels * Header.BitsPerSample * 2 >> 3) > buffer.Length)
+            if ((_streamInfo.MaxFrameSize * Header.Channels * Header.BitsPerSample * 2 >> 3) > buffer.Length)
             {
                 buffer = new byte[(_streamInfo.MaxFrameSize * Header.Channels * Header.BitsPerSample * 2 >> 3) - FlacConstant.FrameHeaderSize];
             }
@@ -103,7 +104,7 @@ namespace CSCore.Codecs.FLAC
 
                     var subframe = FlacSubFrameBase.GetSubFrame(reader, data[c], Header, bps);
 
-                    subFrames.Add(subframe);              
+                    subFrames.Add(subframe);
                 }
 
                 reader.Flush();
@@ -142,7 +143,6 @@ namespace CSCore.Codecs.FLAC
                     side = data[1].destBuffer[i];
 
                     mid |= (side & 1);
-
 
                     data[0].destBuffer[i] = (mid + side) >> 1;
                     data[1].destBuffer[i] = (mid - side) >> 1;
@@ -205,10 +205,9 @@ namespace CSCore.Codecs.FLAC
             }
         }
 
-        
         private unsafe List<FlacSubFrameData> AllocOuputMemory()
         {
-            if(destBuffer == null || destBuffer.Length < (Header.Channels * Header.BlockSize))
+            if (destBuffer == null || destBuffer.Length < (Header.Channels * Header.BlockSize))
                 destBuffer = new int[Header.Channels * Header.BlockSize];
             if (residualBuffer == null || residualBuffer.Length < (Header.Channels * Header.BlockSize))
                 residualBuffer = new int[Header.Channels * Header.BlockSize];
@@ -246,7 +245,8 @@ namespace CSCore.Codecs.FLAC
         public int* destBuffer;
         public int* residualBuffer;
 
-        FlacPartitionedRiceContent _content;
+        private FlacPartitionedRiceContent _content;
+
         public FlacPartitionedRiceContent Content
         {
             get { return _content ?? (_content = new FlacPartitionedRiceContent()); }

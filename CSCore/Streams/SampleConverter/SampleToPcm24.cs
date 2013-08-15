@@ -1,14 +1,14 @@
-﻿using System;
+﻿using CSCore.Utils.Buffer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CSCore.Utils.Buffer;
 
 namespace CSCore.Streams.SampleConverter
 {
     public class SampleToPcm24 : SampleToWaveBase
     {
-        float[] _buffer;
+        private float[] _buffer;
 
         public SampleToPcm24(ISampleSource source)
             : base(source, 24, AudioEncoding.Pcm)

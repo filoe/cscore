@@ -11,9 +11,13 @@ namespace CSCore.Win32
     public interface IPropertyStore : IUnknown
     {
         int GetCount(out int propertyCount);
+
         int GetAt(int propertyIndex, [Out] out PropertyKey propertyKey);
+
         int GetValue(ref PropertyKey key, [Out] out PropertyVariant value);
+
         int SetValue(ref PropertyKey key, ref PropertyVariant value);
+
         int Commit();
     }
 }

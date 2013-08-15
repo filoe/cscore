@@ -1,5 +1,4 @@
-﻿
-namespace CSCore.Win32
+﻿namespace CSCore.Win32
 {
     public enum HResult : int
     {

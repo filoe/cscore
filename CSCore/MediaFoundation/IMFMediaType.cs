@@ -64,7 +64,8 @@ namespace CSCore.MediaFoundation
                        out int pcchLength);
 
         /// <summary>
-        /// Retrieves a wide-character string associated with a key. This method allocates the memory for the string.
+        /// Retrieves a wide-character string associated with a key. This method allocates the
+        /// memory for the string.
         /// </summary>
         new int GetAllocatedString([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [MarshalAs(UnmanagedType.LPWStr)] out string ppwszValue,
                                 out int pcchLength);
@@ -81,7 +82,8 @@ namespace CSCore.MediaFoundation
                      out int pcbBlobSize);
 
         /// <summary>
-        /// Retrieves a byte array associated with a key. This method allocates the memory for the array.
+        /// Retrieves a byte array associated with a key. This method allocates the memory for the
+        /// array.
         /// </summary>
         new int GetAllocatedBlob([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, out IntPtr ip, out int pcbSize);
 
@@ -167,10 +169,14 @@ namespace CSCore.MediaFoundation
         new int CopyAllItems([In, MarshalAs(UnmanagedType.Interface)] IMFAttributes pDest);
 
         int GetMajorType([Out] Guid majerType);
+
         int IsCompressedFormat([Out] bool iscompressed);
+
         [PreserveSig]
         int IsEqual([In, MarshalAs(UnmanagedType.Interface)] IMFMediaType mediaType, out uint flags);
+
         int GetRepresentation([In] Guid guidrepresentation, out IntPtr representation);
+
         int FreeRepresentation([In] Guid guidrepresentation, [In] IntPtr representation);
     }
 }

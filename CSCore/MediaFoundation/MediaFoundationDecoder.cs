@@ -1,262 +1,263 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
+﻿using CSCore.DMO;
 using CSCore.Win32;
-using CSCore.DMO;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace CSCore.MediaFoundation
 {
-	public class MediaFoundationDecoder : IWaveSource
-	{
-		Stream _stream;
-		IMFByteStream _byteStream;
-		MFSourceReader _reader;
-		WaveFormat _waveFormat;
-		Object _lockObj = new Object();
+    public class MediaFoundationDecoder : IWaveSource
+    {
+        private Stream _stream;
+        private IMFByteStream _byteStream;
+        private MFSourceReader _reader;
+        private WaveFormat _waveFormat;
+        private Object _lockObj = new Object();
 
-		long _length;
-		long _position = 0; //could not find a possibility to find out the position
-		bool _hasFixedLength = false;
+        private long _length;
+        private long _position = 0; //could not find a possibility to find out the position
+        private bool _hasFixedLength = false;
 
-		byte[] _decoderBuffer;
-		int _decoderBufferOffset;
-		int _decoderBufferCount;
+        private byte[] _decoderBuffer;
+        private int _decoderBufferOffset;
+        private int _decoderBufferCount;
 
-		public MediaFoundationDecoder(string url)
-		{
-			if (String.IsNullOrWhiteSpace(url))
-				throw new ArgumentNullException("filename");
+        public MediaFoundationDecoder(string url)
+        {
+            if (String.IsNullOrWhiteSpace(url))
+                throw new ArgumentNullException("filename");
 
-			_hasFixedLength = true;
+            _hasFixedLength = true;
 
-		    MediaFoundationCore.Startup();
+            MediaFoundationCore.Startup();
             _reader = Initialize(MediaFoundationCore.CreateSourceReaderFromUrl(url));
-		}
+        }
 
-		public MediaFoundationDecoder(Stream stream)
-		{
-			if (stream == null)
-				throw new ArgumentNullException("stream");
-			if (!stream.CanRead)
-				throw new ArgumentException("Stream is not readable.", "stream");
+        public MediaFoundationDecoder(Stream stream)
+        {
+            if (stream == null)
+                throw new ArgumentNullException("stream");
+            if (!stream.CanRead)
+                throw new ArgumentException("Stream is not readable.", "stream");
 
-			stream = new ComStream(stream);
+            stream = new ComStream(stream);
             _byteStream = MediaFoundationCore.IStreamToByteStream((IStream)stream);
-			_reader = Initialize(_byteStream);
-		}
+            _reader = Initialize(_byteStream);
+        }
 
-		public MediaFoundationDecoder(IMFByteStream byteStream)
-		{
-			if (byteStream == null)
-				throw new ArgumentNullException("byteStream");
-			_byteStream = byteStream;
-			_reader = Initialize(_byteStream);
-		}
+        public MediaFoundationDecoder(IMFByteStream byteStream)
+        {
+            if (byteStream == null)
+                throw new ArgumentNullException("byteStream");
+            _byteStream = byteStream;
+            _reader = Initialize(_byteStream);
+        }
 
-		private MFSourceReader Initialize(IMFByteStream stream)
-		{
+        private MFSourceReader Initialize(IMFByteStream stream)
+        {
             MediaFoundationCore.Startup();
             return Initialize(MediaFoundationCore.CreateSourceReaderFromByteStream(stream, IntPtr.Zero));
-		}
+        }
 
-		private MFSourceReader Initialize(MFSourceReader reader)
-		{
+        private MFSourceReader Initialize(MFSourceReader reader)
+        {
             MediaFoundationCore.Startup();
 
-			reader.SetStreamSelection(MFInterops.MF_SOURCE_READER_ALL_STREAMS, false);
-			reader.SetStreamSelection(MFInterops.MF_SOURCE_READER_FIRST_AUDIO_STREAM, true);
+            reader.SetStreamSelection(MFInterops.MF_SOURCE_READER_ALL_STREAMS, false);
+            reader.SetStreamSelection(MFInterops.MF_SOURCE_READER_FIRST_AUDIO_STREAM, true);
 
             using (var mediaType = MFMediaType.CreateEmpty())
-			{
-				mediaType.MajorType = MediaTypes.MediaTypeAudio;
-				mediaType.SubType = MediaTypes.MEDIASUBTYPE_PCM; //variable??
+            {
+                mediaType.MajorType = MediaTypes.MediaTypeAudio;
+                mediaType.SubType = MediaTypes.MEDIASUBTYPE_PCM; //variable??
 
-				reader.SetCurrentMediaType(MFInterops.MF_SOURCE_READER_FIRST_AUDIO_STREAM, mediaType);
-			}
+                reader.SetCurrentMediaType(MFInterops.MF_SOURCE_READER_FIRST_AUDIO_STREAM, mediaType);
+            }
 
-			using (var currentMediaType = reader.GetCurrentMediaType(MFInterops.MF_SOURCE_READER_FIRST_AUDIO_STREAM))
-			{
-				if (currentMediaType.MajorType != MediaTypes.MediaTypeAudio)
-					throw new InvalidOperationException(String.Format("Invalid Majortype set on sourcereader: {0}.", currentMediaType.MajorType.ToString()));
+            using (var currentMediaType = reader.GetCurrentMediaType(MFInterops.MF_SOURCE_READER_FIRST_AUDIO_STREAM))
+            {
+                if (currentMediaType.MajorType != MediaTypes.MediaTypeAudio)
+                    throw new InvalidOperationException(String.Format("Invalid Majortype set on sourcereader: {0}.", currentMediaType.MajorType.ToString()));
 
-				AudioEncoding encoding;
-				if (currentMediaType.SubType == MediaTypes.MEDIASUBTYPE_PCM)
-					encoding = AudioEncoding.Pcm;
-				else if (currentMediaType.SubType == MediaTypes.MEDIASUBTYPE_IEEE_FLOAT)
-					encoding = AudioEncoding.IeeeFloat;
-				else
-					throw new InvalidOperationException(String.Format("Invalid Subtype set on sourcereader: {0}.", currentMediaType.SubType.ToString()));
+                AudioEncoding encoding;
+                if (currentMediaType.SubType == MediaTypes.MEDIASUBTYPE_PCM)
+                    encoding = AudioEncoding.Pcm;
+                else if (currentMediaType.SubType == MediaTypes.MEDIASUBTYPE_IEEE_FLOAT)
+                    encoding = AudioEncoding.IeeeFloat;
+                else
+                    throw new InvalidOperationException(String.Format("Invalid Subtype set on sourcereader: {0}.", currentMediaType.SubType.ToString()));
 
-				_waveFormat = new WaveFormat(currentMediaType.SampleRate, currentMediaType.BitsPerSample, currentMediaType.Channels, encoding);
-			}
+                _waveFormat = new WaveFormat(currentMediaType.SampleRate, currentMediaType.BitsPerSample, currentMediaType.Channels, encoding);
+            }
 
-			reader.SetStreamSelection(MFInterops.MF_SOURCE_READER_FIRST_AUDIO_STREAM, true);
+            reader.SetStreamSelection(MFInterops.MF_SOURCE_READER_FIRST_AUDIO_STREAM, true);
 
-			if (_hasFixedLength)
-				_length = GetLength(reader);
+            if (_hasFixedLength)
+                _length = GetLength(reader);
 
-			return reader;
-		}
+            return reader;
+        }
 
-		private long GetLength(MFSourceReader reader)
-		{
-			lock (_lockObj)
-			{
-				try
-				{
-					PropertyVariant value = reader.GetPresentationAttribute(MFInterops.MF_SOURCE_READER_MEDIASOURCE, MediaFoundationAttributes.MF_PD_DURATION);
-					var length = ((value.HValue) * _waveFormat.BytesPerSecond) / 10000000L;
-					value.Dispose();
-					return length;
-				}
-				catch (MediaFoundationException e)
-				{
-					if (e.Result == (int)HResult.MF_E_ATTRIBUTENOTFOUND)
-						return 0;
-					throw;
-				}
-			}
-		}
+        private long GetLength(MFSourceReader reader)
+        {
+            lock (_lockObj)
+            {
+                try
+                {
+                    PropertyVariant value = reader.GetPresentationAttribute(MFInterops.MF_SOURCE_READER_MEDIASOURCE, MediaFoundationAttributes.MF_PD_DURATION);
+                    var length = ((value.HValue) * _waveFormat.BytesPerSecond) / 10000000L;
+                    value.Dispose();
+                    return length;
+                }
+                catch (MediaFoundationException e)
+                {
+                    if (e.Result == (int)HResult.MF_E_ATTRIBUTENOTFOUND)
+                        return 0;
+                    throw;
+                }
+            }
+        }
 
-		public int Read(byte[] buffer, int offset, int count)
-		{
-			if (buffer == null)
-				throw new ArgumentNullException("buffer");
-			if (buffer.Length < count)
-				throw new ArgumentException("Length is too small.", "buffer");
+        public int Read(byte[] buffer, int offset, int count)
+        {
+            if (buffer == null)
+                throw new ArgumentNullException("buffer");
+            if (buffer.Length < count)
+                throw new ArgumentException("Length is too small.", "buffer");
 
-			lock (_lockObj)
-			{
-				int read = 0;
+            lock (_lockObj)
+            {
+                int read = 0;
 
-				if (_decoderBufferCount > 0)
-				{
-					read += CopyDecoderBuffer(buffer, offset + read, count - read);
-				}
+                if (_decoderBufferCount > 0)
+                {
+                    read += CopyDecoderBuffer(buffer, offset + read, count - read);
+                }
 
-				while (read < count)
-				{
-					MFSourceReaderFlag flags;
-					long timestamp;
-					int actualStreamIndex;
-					using (var sample = _reader.ReadSample(MFInterops.MF_SOURCE_READER_FIRST_AUDIO_STREAM, 0, out actualStreamIndex, out flags, out timestamp))
-					{
-						if (flags != MFSourceReaderFlag.None)
-							break;
+                while (read < count)
+                {
+                    MFSourceReaderFlag flags;
+                    long timestamp;
+                    int actualStreamIndex;
+                    using (var sample = _reader.ReadSample(MFInterops.MF_SOURCE_READER_FIRST_AUDIO_STREAM, 0, out actualStreamIndex, out flags, out timestamp))
+                    {
+                        if (flags != MFSourceReaderFlag.None)
+                            break;
 
-						using (MFMediaBuffer mediaBuffer = sample.ConvertToContinousBuffer())
-						{
-							int maxlength, currentlength;
-							IntPtr pdata = mediaBuffer.Lock(out maxlength, out currentlength);
-							_decoderBuffer = _decoderBuffer.CheckBuffer(currentlength);
-							Marshal.Copy(pdata, _decoderBuffer, 0, currentlength);
-							_decoderBufferCount = currentlength;
-							_decoderBufferOffset = 0;
+                        using (MFMediaBuffer mediaBuffer = sample.ConvertToContinousBuffer())
+                        {
+                            int maxlength, currentlength;
+                            IntPtr pdata = mediaBuffer.Lock(out maxlength, out currentlength);
+                            _decoderBuffer = _decoderBuffer.CheckBuffer(currentlength);
+                            Marshal.Copy(pdata, _decoderBuffer, 0, currentlength);
+                            _decoderBufferCount = currentlength;
+                            _decoderBufferOffset = 0;
 
-							int tmp = CopyDecoderBuffer(buffer, offset + read, count - read);
-							read += tmp;
-							_position += tmp;
+                            int tmp = CopyDecoderBuffer(buffer, offset + read, count - read);
+                            read += tmp;
+                            _position += tmp;
 
-							mediaBuffer.Unlock();
-						}
-					}
-				}
+                            mediaBuffer.Unlock();
+                        }
+                    }
+                }
 
-				return read;
-			}
-		}
+                return read;
+            }
+        }
 
-		private int CopyDecoderBuffer(byte[] destBuffer, int offset, int count)
-		{
-			count = Math.Min(count, _decoderBufferCount);
-			Array.Copy(_decoderBuffer, _decoderBufferOffset, destBuffer, offset, count);
-			_decoderBufferCount -= count;
-			_decoderBufferOffset += count;
+        private int CopyDecoderBuffer(byte[] destBuffer, int offset, int count)
+        {
+            count = Math.Min(count, _decoderBufferCount);
+            Array.Copy(_decoderBuffer, _decoderBufferOffset, destBuffer, offset, count);
+            _decoderBufferCount -= count;
+            _decoderBufferOffset += count;
 
-			if (_decoderBufferCount == 0)
-				_decoderBufferOffset = 0;
+            if (_decoderBufferCount == 0)
+                _decoderBufferOffset = 0;
 
-			return count;
-		}
+            return count;
+        }
 
-		private bool _disposed;
-		public void Dispose()
-		{
-			if(!_disposed)
-			{
-				_disposed = true;
-				
-				Dispose(true);
-				GC.SuppressFinalize(this);
-			}
-		}
+        private bool _disposed;
 
-		protected virtual void Dispose(bool disposing)
-		{
-			lock (_lockObj)
-			{
-				if (_reader != null)
-				{
-					_reader.Dispose();
-					_reader = null;
-				}
-				if (_byteStream != null)
-				{
-					Marshal.ReleaseComObject(_byteStream);
-					_byteStream = null;
-				}
-			}
-		}
+        public void Dispose()
+        {
+            if (!_disposed)
+            {
+                _disposed = true;
 
-		~MediaFoundationDecoder()
-		{
-			Dispose(false);
-		}
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+        }
 
-		public WaveFormat WaveFormat
-		{
-			get { return _waveFormat; }
-		}
+        protected virtual void Dispose(bool disposing)
+        {
+            lock (_lockObj)
+            {
+                if (_reader != null)
+                {
+                    _reader.Dispose();
+                    _reader = null;
+                }
+                if (_byteStream != null)
+                {
+                    Marshal.ReleaseComObject(_byteStream);
+                    _byteStream = null;
+                }
+            }
+        }
 
-		public long Position
-		{
-			get
-			{
-				return _position;
-			}
-			set
-			{
-				if (CanSeek)
-				{
-					lock (_lockObj)
-					{
-						long hnsPos = (10000000L * value) / WaveFormat.BytesPerSecond;
-						var propertyVariant = PropertyVariant.CreateLong(hnsPos);
-						_reader.SetCurrentPosition(Guid.Empty, propertyVariant);
-						_decoderBufferCount = 0;
-						_decoderBufferOffset = 0;
-						_position = value;
-					}
-				}
-			}
-		}
+        ~MediaFoundationDecoder()
+        {
+            Dispose(false);
+        }
 
-		public long Length
-		{
-			get
-			{
-				if (this._hasFixedLength)
-					return _length;
-				return GetLength(_reader);
-			}
-		}
+        public WaveFormat WaveFormat
+        {
+            get { return _waveFormat; }
+        }
 
-		public bool CanSeek
-		{
-			get { return _reader.CanSeek; }
-		}
-	}
+        public long Position
+        {
+            get
+            {
+                return _position;
+            }
+            set
+            {
+                if (CanSeek)
+                {
+                    lock (_lockObj)
+                    {
+                        long hnsPos = (10000000L * value) / WaveFormat.BytesPerSecond;
+                        var propertyVariant = PropertyVariant.CreateLong(hnsPos);
+                        _reader.SetCurrentPosition(Guid.Empty, propertyVariant);
+                        _decoderBufferCount = 0;
+                        _decoderBufferOffset = 0;
+                        _position = value;
+                    }
+                }
+            }
+        }
+
+        public long Length
+        {
+            get
+            {
+                if (this._hasFixedLength)
+                    return _length;
+                return GetLength(_reader);
+            }
+        }
+
+        public bool CanSeek
+        {
+            get { return _reader.CanSeek; }
+        }
+    }
 }

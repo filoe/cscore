@@ -1,19 +1,21 @@
 ﻿#define handleException
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using Mono.Cecil.Pdb;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace CSCli
 {
     public class AssemblyPatcher
     {
-        AssemblyDefinition _asm;
-        List<TypeDefinition> _objectsToRemove;
+        private AssemblyDefinition _asm;
+        private List<TypeDefinition> _objectsToRemove;
+
         public AssemblyPatcher(AssemblyDefinition asm)
         {
             _asm = asm;
@@ -50,10 +52,11 @@ namespace CSCli
             return true;
         }
 
-        const string CSCalli = "CSCalliAttribute";
-        const string RemoveObj = "RemoveObjAttribute";
+        private const string CSCalli = "CSCalliAttribute";
+        private const string RemoveObj = "RemoveObjAttribute";
 
-        int replacedCalls = 0;
+        private int replacedCalls = 0;
+
         public int ReplacedCalls
         {
             get { return replacedCalls; }
@@ -71,7 +74,7 @@ namespace CSCli
                 ProcessMethod(method);
             }
         }
-        
+
         private void ProcessMethod(MethodDefinition method)
         {
             if (method.HasBody)
@@ -89,6 +92,8 @@ namespace CSCli
                         if (attributes.Contains(CSCalli))
                         {
                             StdOut.Info("Patching [{0}].", methodDescription.FullName);
+                            if (!methodDescription.FullName.EndsWith("Native"))
+                                StdOut.Instance.WriteInfo("CallI-Comimport Methodnames should end with a \"Native\"");
 
                             var callSite = new CallSite(methodDescription.ReturnType) { CallingConvention = MethodCallingConvention.StdCall };
                             for (int n = 0; n < methodDescription.Parameters.Count - 1; n++)

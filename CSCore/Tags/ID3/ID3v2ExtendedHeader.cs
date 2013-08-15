@@ -7,15 +7,22 @@ namespace CSCore.Tags.ID3
     {
         //länge des extendedheaders ohne die headerlength(4 byte)
         public int HeaderLength { get; private set; }
+
         public int PaddingSize { get; private set; }
+
         public ID3v2ExtendedHeaderFlags Flags { get; private set; }
+
         public byte[] CRC { get; private set; }
 
         //ID3v4
         public ID3v2TagSizeRestriction TagSizeRestriction { get; private set; }
+
         public ID3v2TextEncodingRestriction TextEncodingRestriction { get; private set; }
+
         public ID3v2TextFieldSizeRestriction TextFieldSizeRestriction { get; private set; }
+
         public ID3v2ImageEncodingRestriction ImageEncodingRestriction { get; private set; }
+
         public ID3v2ImageSizeRestriction ImageSizeRestriction { get; private set; }
 
         public ID3Version Version { get; private set; }
@@ -66,7 +73,7 @@ namespace CSCore.Tags.ID3
             {
                 //%ppqrrstt
                 TagSizeRestriction = (ID3v2TagSizeRestriction)(flags[0] & 0xC0); //p --> last 2 bit
-                TextEncodingRestriction = (ID3v2TextEncodingRestriction)(flags[0] & 0x20); //q 
+                TextEncodingRestriction = (ID3v2TextEncodingRestriction)(flags[0] & 0x20); //q
                 TextFieldSizeRestriction = (ID3v2TextFieldSizeRestriction)(flags[0] & 0x18); //r
                 ImageEncodingRestriction = (ID3v2ImageEncodingRestriction)(flags[0] & 0x4); //s
                 ImageSizeRestriction = (ID3v2ImageSizeRestriction)(flags[0] & 0x3); //t

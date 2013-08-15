@@ -9,10 +9,12 @@
         /// Playback is stopped
         /// </summary>
         Stopped,
+
         /// <summary>
         /// Playback is playing
         /// </summary>
         Playing,
+
         /// <summary>
         /// Playback is paused
         /// </summary>

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace CSCore.Win32
 {
@@ -15,7 +15,9 @@ namespace CSCore.Win32
         }
 
         public int Result { get; private set; }
+
         public string InterfaceName { get; private set; }
+
         public string Member { get; private set; }
 
         public Win32ComException(int result, string interfaceName, string member)

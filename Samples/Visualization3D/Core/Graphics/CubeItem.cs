@@ -1,42 +1,44 @@
 ﻿//#define rotation
 
+using SharpDX;
+using SharpDX.Direct3D;
+using SharpDX.Direct3D9;
+using SharpDX.Windows;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using SharpDX;
-using SharpDX.Direct3D9;
-using SharpDX.Direct3D;
-using SharpDX.Windows;
-using System.Diagnostics;
 
 namespace Visualization3D.Core.Graphics
 {
     public class CubeItem : IVisualisationItem
     {
-        const string techniquekey = "technique";
-        const string effectkey = "effect";
-        const string vertexbufferkey = "vertexbuffer";
-        const string vertexdeclkey = "vertexdecl";
+        private const string techniquekey = "technique";
+        private const string effectkey = "effect";
+        private const string vertexbufferkey = "vertexbuffer";
+        private const string vertexdeclkey = "vertexdecl";
 
-        static readonly VertexElement[] vertexElements = new VertexElement[]
+        private static readonly VertexElement[] vertexElements = new VertexElement[]
             {
                 new VertexElement(0, 0, DeclarationType.Float4, DeclarationMethod.Default, DeclarationUsage.Position, 0),
-                new VertexElement(0, 16, DeclarationType.Float4, DeclarationMethod.Default, DeclarationUsage.Color, 0), 
+                new VertexElement(0, 16, DeclarationType.Float4, DeclarationMethod.Default, DeclarationUsage.Color, 0),
                 VertexElement.VertexDeclarationEnd
             };
 
-        static bool isprepared = false;
-        static ResourceManager resourceManager;
+        private static bool isprepared = false;
+        private static ResourceManager resourceManager;
+
         protected static ResourceManager ResourceManager
         {
             get { return resourceManager; }
         }
 
         public Context Context { get; set; }
+
         public float Value { get; set; }
 
-        Matrix _world = Matrix.Identity;
+        private Matrix _world = Matrix.Identity;
 
         public void BeginItemRendering()
         {
@@ -68,7 +70,7 @@ namespace Visualization3D.Core.Graphics
                 var effect = Effect.FromFile(Context.Device, "Cube.fx", ShaderFlags.None);
                 effect.SetValue("heightFactor", 25f);
                 effect.SetValue("baseHeight", 1f);
-                
+
                 /*var texture = Texture.FromFile(Context.Device, "default_color.dds");
 
                 var effect = Effect.FromFile(Context.Device, "BumpFX.fx", ShaderFlags.None);

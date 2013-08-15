@@ -1,17 +1,17 @@
-﻿using System;
+﻿using CSCore.MediaFoundation;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using CSCore.MediaFoundation;
-using System.IO;
 
 namespace CSCore.Codecs.WMA
 {
     public class WMADecoder : MediaFoundationDecoder
     {
-        static bool? _isspeechsupported;
-        static bool? _iswmasupported;
-        static bool? _iswmaprosupported;
+        private static bool? _isspeechsupported;
+        private static bool? _iswmasupported;
+        private static bool? _iswmaprosupported;
 
         public static bool IsSupported
         {
@@ -20,7 +20,6 @@ namespace CSCore.Codecs.WMA
                 return IsSpeechSupported || IsWMAProfessionalSupported || IsWMASupported;
             }
         }
-
 
         public static bool IsSpeechSupported
         {
@@ -69,7 +68,6 @@ namespace CSCore.Codecs.WMA
         public WMADecoder(Stream stream)
             : base(stream)
         {
-
         }
     }
 }

@@ -46,7 +46,7 @@ PS_IN VS( VS_IN input )
 	output.pos = mul(input.pos, WorldViewProj);
 	output.col = input.col;
 	output.UV = input.UV.xy;
-	
+
 	return output;
 }
 
@@ -59,6 +59,6 @@ float4 PS( PS_IN input ) : COLOR
 technique Main {
 	pass P0 {
 		VertexShader = compile vs_2_0 VS();
-        PixelShader  = compile ps_2_0 PS();
+		PixelShader  = compile ps_2_0 PS();
 	}
 }

@@ -77,7 +77,7 @@ namespace CSCore.SoundOut.DirectSound
         {
             throw new NotImplementedException();
         }
-        
+
         [CSCalli]
         internal static unsafe DSResult CalliMethodPtr(void* _basePtr, float x, float y, float z, int p1, void* p2)
         {

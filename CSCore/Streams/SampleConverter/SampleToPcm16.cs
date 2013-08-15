@@ -5,9 +5,10 @@ namespace CSCore.Streams.SampleConverter
 {
     public class SampleToPcm16 : SampleToWaveBase
     {
-        float[] _buffer;
+        private float[] _buffer;
 
-        public SampleToPcm16(ISampleSource source) : base(source, 16, AudioEncoding.Pcm)
+        public SampleToPcm16(ISampleSource source)
+            : base(source, 16, AudioEncoding.Pcm)
         {
         }
 

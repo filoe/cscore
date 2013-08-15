@@ -4,10 +4,10 @@ namespace CSCore.DSP
 {
     public class PeakMeter : SampleSourceBase
     {
-        float _maxLeftPeak;
-        float _maxRightPeak;
-        int _blocksRead;
-        int _blockSize;
+        private float _maxLeftPeak;
+        private float _maxRightPeak;
+        private int _blocksRead;
+        private int _blockSize;
 
         public event EventHandler<PeakCalculatedEventArgs> PeakCalculated;
 
@@ -18,6 +18,7 @@ namespace CSCore.DSP
         }
 
         public float MaxLeftPeak { get { return _maxLeftPeak; } }
+
         public float MaxRightPeak { get { return _maxRightPeak; } }
 
         public PeakMeter(IWaveStream source)
@@ -62,7 +63,7 @@ namespace CSCore.DSP
             maxleft = Math.Max(Math.Min(1, maxleft), 0);
             maxright = Math.Abs(maxright);
             maxright = Math.Max(Math.Min(1, maxright), 0);
-            if(PeakCalculated != null)
+            if (PeakCalculated != null)
                 PeakCalculated(this, new PeakCalculatedEventArgs(maxleft, maxright));
         }
     }

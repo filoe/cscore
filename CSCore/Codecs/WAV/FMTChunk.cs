@@ -7,7 +7,8 @@ namespace CSCore.Codecs.WAV
     {
         public const int chunkID = 0x20746D66;
 
-        WaveFormat _waveFormat;
+        private WaveFormat _waveFormat;
+
         public WaveFormat WaveFormat
         {
             get { return _waveFormat; }
@@ -21,7 +22,7 @@ namespace CSCore.Codecs.WAV
         public FMTChunk(BinaryReader reader)
             : base(reader)
         {
-            if(reader == null) throw new ArgumentNullException("reader");
+            if (reader == null) throw new ArgumentNullException("reader");
 
             if (ChunkID == chunkID) //"fmt "
             {

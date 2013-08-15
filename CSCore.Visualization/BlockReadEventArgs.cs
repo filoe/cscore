@@ -8,6 +8,7 @@ namespace CSCore.Visualization
     public class BlockReadEventArgs : EventArgs
     {
         public float[] DataLeft { get; private set; }
+
         public float[] DataRight { get; private set; }
 
         public BlockReadEventArgs(float[] dataleft, float[] dataright)

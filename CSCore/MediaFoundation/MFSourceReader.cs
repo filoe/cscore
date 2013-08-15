@@ -1,17 +1,17 @@
-﻿using System;
+﻿using CSCore.CoreAudioAPI;
+using CSCore.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using CSCore.CoreAudioAPI;
-using CSCore.Win32;
 
 namespace CSCore.MediaFoundation
 {
     [Guid("70ae66f2-c809-4e4f-8915-bdcb406b7993")]
     public class MFSourceReader : ComObject
     {
-        const string c = "IMFSourceReader";
+        private const string c = "IMFSourceReader";
 
         public MFSourceReader(IntPtr ptr)
             : base(ptr)
@@ -37,7 +37,7 @@ namespace CSCore.MediaFoundation
             value.Dispose();
             return flags;
         }
-        
+
         /// <summary>
         /// Queries whether a stream is selected.
         /// </summary>
@@ -51,15 +51,14 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Queries whether a stream is selected.
-        /// </summary
+        /// Queries whether a stream is selected. </summary
         public NativeBool GetStreamSelection(int streamIndex)
         {
             NativeBool result;
             MediaFoundationException.Try(GetStreamSelectionNative(streamIndex, out result), c, "GetStreamSelection");
             return result;
         }
-        
+
         /// <summary>
         /// Selects or deselects one or more streams.
         /// </summary>
@@ -123,7 +122,9 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// This media type defines that format that the Source Reader produces as output. It can differ from the native format provided by the media source. See Remarks for more information.
+        /// This media type defines that format that the Source Reader produces as output. It can
+        /// differ from the native format provided by the media source. See Remarks for more
+        /// information.
         /// </summary>
         /// <returns>HRESULT</returns>
         public unsafe int SetCurrentMediaTypeNative(int streamIndex, IntPtr reserved, MFMediaType mediaType)
@@ -132,7 +133,9 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// This media type defines that format that the Source Reader produces as output. It can differ from the native format provided by the media source. See Remarks for more information.
+        /// This media type defines that format that the Source Reader produces as output. It can
+        /// differ from the native format provided by the media source. See Remarks for more
+        /// information.
         /// </summary>
         public void SetCurrentMediaType(int streamIndex, MFMediaType mediaType)
         {
@@ -227,7 +230,7 @@ namespace CSCore.MediaFoundation
         public unsafe int GetPresentationAttributeNative(int streamIndex, Guid guidAttribute, out PropertyVariant variant)
         {
             variant = default(PropertyVariant);
-            fixed(void* ptr = &variant)
+            fixed (void* ptr = &variant)
             {
                 return InteropCalls.CalliMethodPtr(_basePtr, streamIndex, &guidAttribute, ptr, ((void**)(*(void**)_basePtr))[12]);
             }

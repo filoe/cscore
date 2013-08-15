@@ -8,7 +8,7 @@ namespace CSCore.DMO
     [Guid("d8ad0f58-5494-4102-97c5-ec798e59bcf4")]
     public class MediaObject : ComObject
     {
-        const string n = "MediaObject1";
+        private const string n = "MediaObject1";
 
         public static MediaObject FromComObject(ComObject comObj)
         {
@@ -28,13 +28,13 @@ namespace CSCore.DMO
             var ptr1 = mediaType.PtrFormat;
             byte b = *(byte*)ptr1;
 
-            result = InteropCalls.CalliMethodPtr(_basePtr, streamIndex, 
-                ((void*)(&mediaType)), 
+            result = InteropCalls.CalliMethodPtr(_basePtr, streamIndex,
+                ((void*)(&mediaType)),
                 flags, ptr);
         }
 
         public void SetInputType(int streamIndex, MediaType mediaType, SetTypeFlags flags)
-        { 
+        {
             int result;
             SetInputType(streamIndex, mediaType, flags, out result);
             DmoException.Try(result, n, "SetInputType");
@@ -59,12 +59,12 @@ namespace CSCore.DMO
         {
             int result;
 
-
             SetInputType(streamIndex, mediaType, SetTypeFlags.TestOnly, out result);
             switch ((DmoResult)result)
             {
                 case DmoResult.S_OK:
                     return true;
+
                 case DmoResult.DMO_E_INVALIDSTREAMINDEX:
                     throw new ArgumentOutOfRangeException("streamIndex");
                 case DmoResult.DMO_E_INVALIDTYPE:
@@ -89,7 +89,7 @@ namespace CSCore.DMO
         {
             int result;
             SetOutputType(streamIndex, mediaType, flags, out result);
-            if(!flags.HasFlag(SetTypeFlags.TestOnly))
+            if (!flags.HasFlag(SetTypeFlags.TestOnly))
                 DmoException.Try(result, n, "SetOutputType");
         }
 
@@ -116,6 +116,7 @@ namespace CSCore.DMO
             {
                 case DmoResult.S_OK:
                     return true;
+
                 case DmoResult.DMO_E_INVALIDSTREAMINDEX:
                     throw new ArgumentOutOfRangeException("streamIndex");
                 case DmoResult.DMO_E_INVALIDTYPE:
@@ -168,6 +169,7 @@ namespace CSCore.DMO
             int result = InteropCalls.CalliMethodPtr(_basePtr, streamIndex, mediaBuffer, flags, timestamp, timeduration, ((void**)(*(void**)_basePtr))[21]);
             DmoException.Try(result, n, "ProcessInput");
         }
+
         //------
         public void ProcessOutput(ProcessOutputFlags flags, params DmoOutputDataBuffer[] buffers)
         {
@@ -180,7 +182,6 @@ namespace CSCore.DMO
 
             int result = ProcessOutput(flags, bufferCount, buffers, out status);
             DmoException.Try(result, n, "ProcessOutput");
-
         }
 
         public unsafe int ProcessOutput(ProcessOutputFlags flags, int bufferCount, DmoOutputDataBuffer[] buffers, out int status)

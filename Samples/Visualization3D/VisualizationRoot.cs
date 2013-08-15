@@ -1,17 +1,16 @@
-﻿using System;
+﻿using CSCore.Codecs;
+using SharpDX;
+using SharpDX.Direct3D;
+using SharpDX.Direct3D9;
+using SharpDX.DirectInput;
+using SharpDX.Windows;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SharpDX;
-using SharpDX.Direct3D9;
-using SharpDX.Direct3D;
-using SharpDX.Windows;
-using System.Diagnostics;
 using System.Windows.Forms;
-using CSCore.Codecs;
-using SharpDX.DirectInput;
-
 using Visualization3D.Core;
 using Visualization3D.Core.Graphics;
 using Visualization3D.Core.Input;
@@ -20,22 +19,22 @@ namespace Visualization3D
 {
     public class VisualizationRoot : RenderForm, IDisposable
     {
-        const int bands = 128 * 4;
+        private const int bands = 128 * 4;
 
-        InputManager _input;
-        DeviceManager _deviceManager;
-        Matrix view, proj;
+        private InputManager _input;
+        private DeviceManager _deviceManager;
+        private Matrix view, proj;
 
-        VisualisationItemManager<CubeItem> _cubeManager;
-        Camera _camera;
-        Clock _clock;
-        AudioPlayer<CubeItem> _audioPlayer;
-        bool _close = false;
+        private VisualisationItemManager<CubeItem> _cubeManager;
+        private Camera _camera;
+        private Clock _clock;
+        private AudioPlayer<CubeItem> _audioPlayer;
+        private bool _close = false;
 
-        List<Key> _pressedKeys;
+        private List<Key> _pressedKeys;
 
-        bool _autoRotate = false;
-        float _rotation = 0f;
+        private bool _autoRotate = false;
+        private float _rotation = 0f;
 
         public VisualizationRoot()
         {

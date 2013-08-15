@@ -11,7 +11,9 @@ namespace CSCore.CoreAudioAPI
         }
 
         public int Result { get; private set; }
+
         public string InterfaceName { get; private set; }
+
         public string Member { get; private set; }
 
         public CoreAudioAPIException(int result, string interfaceName, string member)

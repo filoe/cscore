@@ -9,7 +9,6 @@ namespace CSCore.Tags.ID3.Frames
         public TextFrame(FrameHeader header)
             : base(header)
         {
-
         }
 
         protected override void Decode(byte[] content)

@@ -6,13 +6,13 @@ namespace CSCore.Codecs.WAV
 {
     public class WaveWriter : IDisposable
     {
-        Stream _stream;
-        BinaryWriter _writer;
+        private Stream _stream;
+        private BinaryWriter _writer;
 
-        WaveFormat _waveFormat;
+        private WaveFormat _waveFormat;
 
-        long _waveStartPosition;
-        int _dataLength;
+        private long _waveStartPosition;
+        private int _dataLength;
 
         public WaveWriter(string fileName, WaveFormat waveFormat)
             : this(File.OpenWrite(fileName), waveFormat)
@@ -34,7 +34,6 @@ namespace CSCore.Codecs.WAV
             }
             _waveFormat = waveFormat;
 
-
             WriteHeader();
         }
 
@@ -52,6 +51,7 @@ namespace CSCore.Codecs.WAV
                         byte[] buffer = BitConverter.GetBytes((int)(int.MaxValue * sample));
                         Write(new byte[] { buffer[0], buffer[1], buffer[2] }, 0, 3);
                         break;
+
                     default:
                         throw new InvalidOperationException("Invalid Waveformat", new InvalidOperationException("Invalid BitsPerSample while using PCM encoding."));
                 }
@@ -129,9 +129,15 @@ namespace CSCore.Codecs.WAV
 
         private void WriteFMTChunk()
         {
+            var tag = _waveFormat.WaveFormatTag;
+            if (tag == AudioEncoding.Extensible)
+            {
+                tag = DMO.MediaTypes.EncodingFromMediaType((_waveFormat as WaveFormatExtensible).SubFormat);
+            }
+
             _writer.Write(Encoding.UTF8.GetBytes("fmt "));
             _writer.Write(16);
-            _writer.Write((short)_waveFormat.WaveFormatTag);
+            _writer.Write((short)tag);
             _writer.Write(_waveFormat.Channels);
             _writer.Write(_waveFormat.SampleRate);
             _writer.Write(_waveFormat.BytesPerSecond);
@@ -144,17 +150,6 @@ namespace CSCore.Codecs.WAV
             _writer.Write(Encoding.UTF8.GetBytes("data"));
             _writer.Write(_dataLength);
         }
-
-        /*private int CalculateFileLength()
-        {
-            int length = 0;
-            length += 4; //WAVE
-            length += 16 + 4 + 4; //fmt
-            length += 8; //Datachunk
-            length += _dataLength;
-
-            return _dataLength;
-        }*/
 
         public void Dispose()
         {
@@ -169,7 +164,7 @@ namespace CSCore.Codecs.WAV
                 {
                     WriteHeader();
                 }
-                catch (Exception ex) 
+                catch (Exception ex)
                 {
                     Context.Current.Logger.Fatal(ex, "WaveWriter.Dispose(bool)");
                 }

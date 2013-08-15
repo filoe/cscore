@@ -1,8 +1,8 @@
-﻿using System;
+﻿using CSCore.MediaFoundation;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using CSCore.MediaFoundation;
 using System.Text;
 
 namespace CSCore.Codecs
@@ -10,6 +10,7 @@ namespace CSCore.Codecs
     public class CodecFactory
     {
         private static CodecFactory _instance;
+
         public static CodecFactory Instance
         {
             get { return _instance ?? (_instance = new CodecFactory()); }

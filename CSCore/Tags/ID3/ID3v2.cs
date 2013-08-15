@@ -42,18 +42,21 @@ namespace CSCore.Tags.ID3
                 stream.Position = streamOffset;
         }
 
-        Stream _stream;
-        ID3v2Header _header;
-        ID3v2ExtendedHeader _extendedHeader;
-        ID3v2Footer _footer;
-        List<Frame> _frames = new List<Frame>();
-        ID3v2QuickInfo _quickInfo;
+        private Stream _stream;
+        private ID3v2Header _header;
+        private ID3v2ExtendedHeader _extendedHeader;
+        private ID3v2Footer _footer;
+        private List<Frame> _frames = new List<Frame>();
+        private ID3v2QuickInfo _quickInfo;
 
-        byte[] _content;
+        private byte[] _content;
 
         public ID3v2Header Header { get { return _header; } }
+
         public ID3v2ExtendedHeader ExtendedHeader { get { return _extendedHeader; } }
+
         public ID3v2Footer Footer { get { return _footer; } }
+
         public ID3v2QuickInfo QuickInfo { get { return _quickInfo ?? (_quickInfo = new ID3v2QuickInfo(this)); } }
 
         public Frame this[FrameID id]
@@ -102,12 +105,15 @@ namespace CSCore.Tags.ID3
                     case ID3Version.ID3v2_2:
                         success &= Parse2(contentStream);
                         break;
+
                     case ID3Version.ID3v2_3:
                         success &= Parse3(contentStream);
                         break;
+
                     case ID3Version.ID3v2_4:
                         success &= Parse4(contentStream);
                         break;
+
                     default:
                         throw new ID3Exception("Invalid Version: [2.{0};{1}]", _header.RawVersion[0], _header.RawVersion[1]);
                 }
@@ -128,9 +134,9 @@ namespace CSCore.Tags.ID3
 
         private bool Parse2(Stream stream)
         {
-            if(((int)_header.Flags & 0x3F) != 0)
+            if (((int)_header.Flags & 0x3F) != 0)
                 throw new ID3Exception("Invalid headerflags: 0x{0}.", ((int)_header.Flags).ToString("x"));
-             
+
             return true;
         }
 

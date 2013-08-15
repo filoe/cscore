@@ -5,14 +5,14 @@ namespace CSCore.Tags.ID3.Frames
 {
     public class FrameFactory
     {
-        static FrameFactory _instance;
+        private static FrameFactory _instance;
+
         public static FrameFactory Instance
         {
             get { return _instance ?? (_instance = new FrameFactory()); }
         }
 
-
-        private FrameFactory() 
+        private FrameFactory()
         {
         }
 
@@ -53,7 +53,7 @@ namespace CSCore.Tags.ID3.Frames
                 case FrameID.FileType:
                 case FrameID.ContentGroupDescription:
                 case FrameID.Title:
-                case FrameID.Subtitle: 
+                case FrameID.Subtitle:
                 case FrameID.InitialKey:
                 case FrameID.Languages:
                 case FrameID.MediaType:
@@ -109,6 +109,7 @@ namespace CSCore.Tags.ID3.Frames
                 case FrameID.PrivateFrame:
                 case FrameID.UniqueFileIdentifier:
                     return new DataFrame(header);
+
                 case FrameID.MusicCDIdentifier:
                 case FrameID.RecommendedBufferSize: //---
                 case FrameID.EncryptedMetaData:
@@ -120,20 +121,27 @@ namespace CSCore.Tags.ID3.Frames
                 case FrameID.Equalization:
                 case FrameID.EqualizationOld:
                     return new BinaryFrame(header);
+
                 case FrameID.UserTextInformation:
                 case FrameID.UserURLLinkFrame:
                     return new UserDefiniedTextFrame(header);
+
                 case FrameID.AttachedPicutre:
                     return new PictureFrame(header, version);
+
                 case FrameID.UnsynchronizedLyris:
                 case FrameID.Comments:
                     return new CommentAndLyricsFrame(header);
+
                 case FrameID.TermsOfUse:
                     return new TermsOfUseFrame(header);
+
                 case FrameID.OwnershipFrame:
                     return new OwnershipFrame(header);
+
                 case FrameID.CommercialFrame:
                     return new CommercialFrame(header);
+
                 case FrameID.Popularimeter:
                     return new Popularimeter(header);
             }

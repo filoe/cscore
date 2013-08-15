@@ -5,7 +5,7 @@ namespace CSCore.Tags.ID3
 {
     public class UnsyncStream : Stream
     {
-        Stream _stream;
+        private Stream _stream;
 
         public UnsyncStream(Stream stream)
         {
@@ -46,7 +46,7 @@ namespace CSCore.Tags.ID3
             set { throw new NotImplementedException(); }
         }
 
-        int _svalue = 0;
+        private int _svalue = 0;
 
         public override int ReadByte()
         {
@@ -71,7 +71,7 @@ namespace CSCore.Tags.ID3
                 if (_svalue == 0xFF && value == 0x00)
                 {
                     value = _stream.ReadByte();
-                    if(value != 0x00 && value < 0xE0 && value != -1)
+                    if (value != 0x00 && value < 0xE0 && value != -1)
                         throw new ID3Exception("Invalid Unsync-Byte found");
                 }
                 if (value != -1)

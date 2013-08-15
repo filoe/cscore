@@ -1,5 +1,4 @@
-﻿
-namespace CSCore.Codecs.FLAC
+﻿namespace CSCore.Codecs.FLAC
 {
     public sealed class FlacSubFrameFixed : FlacSubFrameBase
     {
@@ -33,6 +32,7 @@ namespace CSCore.Codecs.FLAC
                         *(data++) = *(residual++);
                     }
                     break;
+
                 case 1:
                     t1 = data[-1];
                     for (int i = 0; i < length; i++)
@@ -41,6 +41,7 @@ namespace CSCore.Codecs.FLAC
                         *(data++) = t1;
                     }
                     break;
+
                 case 2:
                     t2 = data[-2];
                     t1 = data[-1];
@@ -51,6 +52,7 @@ namespace CSCore.Codecs.FLAC
                         t1 = t0;
                     }
                     break;
+
                 case 3:
                     for (int i = 0; i < length; i++)
                     {
@@ -62,6 +64,7 @@ namespace CSCore.Codecs.FLAC
                         residual++;
                     }
                     break;
+
                 case 4:
                     for (int i = 0; i < length; i++)
                     {
@@ -74,6 +77,7 @@ namespace CSCore.Codecs.FLAC
                         residual++;
                     }
                     break;
+
                 default:
                     Context.Current.Logger.Error("Invalid FlacFixedSubFrame predictororder", "FlacSubFrameFixed.RestoreSignal(...)");
                     return false;

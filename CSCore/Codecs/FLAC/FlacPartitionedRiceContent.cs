@@ -1,12 +1,11 @@
-﻿
-namespace CSCore.Codecs.FLAC
+﻿namespace CSCore.Codecs.FLAC
 {
     public unsafe class FlacPartitionedRiceContent
     {
         public int[] parameters;
         public int[] raw_bits;
 
-        int capByOrder = -1;
+        private int capByOrder = -1;
 
         public void UpdateSize(int po)
         {

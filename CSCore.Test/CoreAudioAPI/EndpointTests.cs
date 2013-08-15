@@ -74,7 +74,7 @@ namespace CSCore.Test.CoreAudioAPI
         public void CanCreateAudioMeterInformation()
         {
             using (var device = Utils.GetDefaultRenderDevice())
-            using(var meter = AudioMeterInformation.FromDevice(device))
+            using (var meter = AudioMeterInformation.FromDevice(device))
             {
             }
         }

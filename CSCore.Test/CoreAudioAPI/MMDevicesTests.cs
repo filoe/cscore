@@ -33,7 +33,6 @@ namespace CSCore.Test.CoreAudioAPI
             using (var enumerator = new MMDeviceEnumerator())
             using (var collection = enumerator.EnumAudioEndpoints(DataFlow.All, DeviceState.All))
             {
-
                 foreach (var item in collection)
                 {
                     Debug.WriteLine(item.ToString());
@@ -52,7 +51,6 @@ namespace CSCore.Test.CoreAudioAPI
             using (var enumerator = new MMDeviceEnumerator())
             using (var collection = enumerator.EnumAudioEndpoints(DataFlow.Render, DeviceState.All))
             {
-
                 foreach (var item in collection)
                 {
                     Debug.WriteLine(item.ToString());
@@ -71,7 +69,6 @@ namespace CSCore.Test.CoreAudioAPI
             using (var enumerator = new MMDeviceEnumerator())
             using (var collection = enumerator.EnumAudioEndpoints(DataFlow.Capture, DeviceState.All))
             {
-
                 foreach (var item in collection)
                 {
                     Debug.WriteLine(item.ToString());
@@ -116,7 +113,6 @@ namespace CSCore.Test.CoreAudioAPI
             using (var enumerator = new MMDeviceEnumerator())
             using (var collection = enumerator.EnumAudioEndpoints(DataFlow.All, DeviceState.All))
             {
-
                 Utils.DumpCollection(collection);
 
                 enumerator.Dispose();

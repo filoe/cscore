@@ -1,14 +1,14 @@
-﻿using System;
+﻿using CSCore.Tags.ID3.Frames;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CSCore.Tags.ID3.Frames;
 
 namespace CSCore.Tags.ID3
 {
     public class ID3v2QuickInfo
     {
-        ID3v2 _id3;
+        private ID3v2 _id3;
 
         public string Title
         {
@@ -82,7 +82,7 @@ namespace CSCore.Tags.ID3
             {
                 Frame f;
                 int result;
-                if ((f = _id3[FrameID.Year]) != null && 
+                if ((f = _id3[FrameID.Year]) != null &&
                      Int32.TryParse((f as NumericTextFrame).Text, out result))
                     return result;
                 return null;
@@ -119,7 +119,7 @@ namespace CSCore.Tags.ID3
             get
             {
                 MultiStringTextFrame f = _id3[FrameID.ContentType] as MultiStringTextFrame;
-                if (f == null) 
+                if (f == null)
                     return null;
 
                 var str = f.Text;
@@ -141,7 +141,7 @@ namespace CSCore.Tags.ID3
                 do
                 {
                     c = str[i++];
-                    if(Char.IsNumber(c))
+                    if (Char.IsNumber(c))
                         sr += c;
                 } while (i < str.Length && Char.IsNumber(c));
 

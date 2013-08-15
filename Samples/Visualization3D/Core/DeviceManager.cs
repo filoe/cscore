@@ -1,24 +1,25 @@
-﻿using System;
+﻿using CSCore.Codecs;
+using SharpDX;
+using SharpDX.Direct3D;
+using SharpDX.Direct3D9;
+using SharpDX.Windows;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SharpDX;
-using SharpDX.Direct3D9;
-using SharpDX.Direct3D;
-using SharpDX.Windows;
-using System.Diagnostics;
 using System.Windows.Forms;
-using CSCore.Codecs;
 
 namespace Visualization3D.Core
 {
     public class DeviceManager : IDisposable
     {
-        Direct3D _direct3D;
-        Device _device;
+        private Direct3D _direct3D;
+        private Device _device;
 
         public Direct3D D3D { get { return _direct3D; } }
+
         public Device Device { get { return _device; } }
 
         public DeviceManager(Direct3D direct3D)
@@ -58,7 +59,7 @@ namespace Visualization3D.Core
                 multisampleType = MultisampleType.NonMaskable;
             else
                 multisampleType = MultisampleType.None;
-            
+
             quality = Math.Min(4, quality);
 
             PresentParameters pp = new PresentParameters(width, heigth)
@@ -87,15 +88,15 @@ namespace Visualization3D.Core
         public void Dispose()
         {
             Dispose(true);
-			GC.SuppressFinalize(this);
+            GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)
         {
-			if(disposing)
-			{
-				//dispose managed
-			}
+            if (disposing)
+            {
+                //dispose managed
+            }
 
             if (_direct3D != null && !_direct3D.IsDisposed)
                 _direct3D.Dispose();

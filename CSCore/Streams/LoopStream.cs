@@ -11,14 +11,15 @@ namespace CSCore.Streams
         {
         }
 
-        bool _enalbeLoop = true;
+        private bool _enalbeLoop = true;
+
         public bool EnableLoop
         {
             get { return _enalbeLoop; }
             set { _enalbeLoop = value; }
         }
 
-        bool raised = false;
+        private bool raised = false;
 
         public override int Read(byte[] buffer, int offset, int count)
         {

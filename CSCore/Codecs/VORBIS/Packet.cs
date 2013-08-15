@@ -20,8 +20,6 @@ namespace CSCore.Codecs.VORBIS
         protected abstract int ReadBytes(byte[] buffer, int offset, int count);
         public abstract void AppendPacket(Packet packet);
 
-
-
         public uint ReadBits(int bits)
         {
             throw new NotImplementedException();

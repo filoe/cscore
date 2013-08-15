@@ -2,8 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace CSCore.CoreAudioAPI
 {
@@ -13,7 +13,7 @@ namespace CSCore.CoreAudioAPI
     [Guid("C02216F6-8C67-4B5B-9D00-D008E73E0064")]
     public class AudioMeterInformation : ComObject
     {
-        const string c = "IAudioMeterInformation";
+        private const string c = "IAudioMeterInformation";
 
         /// <summary>
         /// Creates a new AudioMeterInformation instance for the given device.
@@ -56,7 +56,8 @@ namespace CSCore.CoreAudioAPI
         }
 
         /// <summary>
-        /// The QueryHardwareSupport method queries the audio endpoint device for its hardware-supported functions.
+        /// The QueryHardwareSupport method queries the audio endpoint device for its
+        /// hardware-supported functions.
         /// </summary>
         public EndpointHardwareSupport HardwareSupport
         {
@@ -94,7 +95,8 @@ namespace CSCore.CoreAudioAPI
         }
 
         /// <summary>
-        /// The GetMeteringChannelCount method gets the number of channels in the audio stream that are monitored by peak meters.
+        /// The GetMeteringChannelCount method gets the number of channels in the audio stream that
+        /// are monitored by peak meters.
         /// </summary>
         /// <returns>HRESULT</returns>
         public unsafe int GetMeteringChannelCountNative(out int channelCount)
@@ -106,7 +108,8 @@ namespace CSCore.CoreAudioAPI
         }
 
         /// <summary>
-        /// The GetMeteringChannelCount method gets the number of channels in the audio stream that are monitored by peak meters.
+        /// The GetMeteringChannelCount method gets the number of channels in the audio stream that
+        /// are monitored by peak meters.
         /// </summary>
         public int GetMeteringChannelCount()
         {
@@ -116,7 +119,8 @@ namespace CSCore.CoreAudioAPI
         }
 
         /// <summary>
-        /// The GetChannelsPeakValues method gets the peak sample values for all the channels in the audio stream.
+        /// The GetChannelsPeakValues method gets the peak sample values for all the channels in the
+        /// audio stream.
         /// </summary>
         /// <returns>HRESULT</returns>
         public unsafe int GetChannelsPeakValuesNative(int channelCount, out float[] peakValues)
@@ -129,7 +133,8 @@ namespace CSCore.CoreAudioAPI
         }
 
         /// <summary>
-        /// The GetChannelsPeakValues method gets the peak sample values for all the channels in the audio stream.
+        /// The GetChannelsPeakValues method gets the peak sample values for all the channels in the
+        /// audio stream.
         /// </summary>
         public float[] GetChannelsPeakValues(int channelCount)
         {
@@ -139,7 +144,8 @@ namespace CSCore.CoreAudioAPI
         }
 
         /// <summary>
-        /// The GetChannelsPeakValues method gets the peak sample values for all the channels in the audio stream.
+        /// The GetChannelsPeakValues method gets the peak sample values for all the channels in the
+        /// audio stream.
         /// </summary>
         public float[] GetChannelsPeakValues()
         {
@@ -147,7 +153,8 @@ namespace CSCore.CoreAudioAPI
         }
 
         /// <summary>
-        /// The QueryHardwareSupport method queries the audio endpoint device for its hardware-supported functions.
+        /// The QueryHardwareSupport method queries the audio endpoint device for its
+        /// hardware-supported functions.
         /// </summary>
         /// <returns>HRESULT</returns>
         public unsafe int QueryHardwareSupportNative(out EndpointHardwareSupport hardwareSupportMask)
@@ -159,7 +166,8 @@ namespace CSCore.CoreAudioAPI
         }
 
         /// <summary>
-        /// The QueryHardwareSupport method queries the audio endpoint device for its hardware-supported functions.
+        /// The QueryHardwareSupport method queries the audio endpoint device for its
+        /// hardware-supported functions.
         /// </summary>
         public EndpointHardwareSupport QueryHardwareSupport()
         {

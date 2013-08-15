@@ -6,9 +6,10 @@ namespace CSCore.Utils
 {
     public class ReadBlockStream : Stream
     {
-        long position;
+        private long position;
 
-        Stream _stream;
+        private Stream _stream;
+
         public ReadBlockStream(Stream stream)
         {
             if (stream == null)

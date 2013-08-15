@@ -1,5 +1,4 @@
-﻿
-namespace CSCore.Tags.ID3
+﻿namespace CSCore.Tags.ID3
 {
     public enum ID3v2ImageSizeRestriction
     {

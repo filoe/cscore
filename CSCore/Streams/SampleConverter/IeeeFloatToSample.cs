@@ -27,7 +27,7 @@ namespace CSCore.Streams.SampleConverter
                 startIndex++;
             }
 
-            return read / 4;    
+            return read / 4;
         }
     }
 }

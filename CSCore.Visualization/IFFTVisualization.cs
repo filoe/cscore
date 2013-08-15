@@ -8,6 +8,7 @@ namespace CSCore.Visualization
     public interface IFFTVisualization
     {
         FFTDataProvider DataProvider { get; set; }
+
         void Update(object sender, CSCore.DSP.FFTCalculatedEventArgs e);
     }
 }

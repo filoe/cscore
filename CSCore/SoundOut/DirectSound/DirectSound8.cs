@@ -11,13 +11,12 @@ namespace CSCore.SoundOut.DirectSound
         public DirectSound8(IntPtr directSound)
             : base(directSound)
         {
-
         }
 
         public DSResult VerifyCertification(out DSCertification certified)
         {
             certified = DSCertification.Uncertified;
-            fixed(void* pcertified = &certified)
+            fixed (void* pcertified = &certified)
             {
                 var result = InteropCalls.CalliMethodPtr(_basePtr, pcertified, ((void**)(*(void**)_basePtr))[11]);
                 return result;

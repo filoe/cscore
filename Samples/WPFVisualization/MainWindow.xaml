@@ -9,14 +9,14 @@
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_Open" x:Name="openmenu">
-                    <MenuItem Header="Open _File" Click="OnOpenFile"/>
-                    <MenuItem Header="Play _Stream" Click="OnOpenStream"/>
+                    <MenuItem Header="Open _File" Click="OnOpenFile" />
+                    <MenuItem Header="Play _Stream" Click="OnOpenStream" />
                 </MenuItem>
             </Menu>
-            <Slider x:Name="sliderGain" Width="300" Minimum="0" Maximum="1.5" Value="{Binding Gain, Mode=TwoWay}"/>
-            <TextBlock Text="{Binding ElementName=sliderGain, Path=Value, StringFormat=Gain: {0:0.###}}"/>
+            <Slider x:Name="sliderGain" Width="300" Minimum="0" Maximum="1.5" Value="{Binding Gain, Mode=TwoWay}" />
+            <TextBlock Text="{Binding ElementName=sliderGain, Path=Value, StringFormat=Gain: {0:0.###}}" />
         </StackPanel>
-        <ProgressBar Name="bufferedDataIndicator" DockPanel.Dock="Top" Height="20" Visibility="Collapsed"/>
+        <ProgressBar Name="bufferedDataIndicator" DockPanel.Dock="Top" Height="20" Visibility="Collapsed" />
         <UniformGrid Rows="3" Margin="4">
             <cscore:WaveForm x:Name="waveform"></cscore:WaveForm>
             <cscore:Point3DSpectrum x:Name="spectrum"></cscore:Point3DSpectrum>

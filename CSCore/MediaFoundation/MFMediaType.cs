@@ -1,10 +1,10 @@
-﻿using System;
+﻿using CSCore.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Runtime.InteropServices;
 using System.Security;
-using CSCore.Win32;
+using System.Text;
 
 namespace CSCore.MediaFoundation
 {
@@ -17,7 +17,8 @@ namespace CSCore.MediaFoundation
             return MediaFoundationCore.CreateMediaType();
         }
 
-        const string c = "IMFMediaType";
+        private const string c = "IMFMediaType";
+
         public MFMediaType(IntPtr ptr)
             : base(ptr)
         {
@@ -78,7 +79,8 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Queries whether the media type is a temporally compressed format. Temporal compression uses information from previously decoded samples when decompressing the current sample.
+        /// Queries whether the media type is a temporally compressed format. Temporal compression
+        /// uses information from previously decoded samples when decompressing the current sample.
         /// </summary>
         public NativeBool IsCompressed
         {
@@ -90,8 +92,8 @@ namespace CSCore.MediaFoundation
 
         /// <summary>
         /// Gets the major type of the format.
-        /// </summary
-        /// <returns>HRESULT</returns>
+        /// </summary <returns>
+        /// HRESULT</returns>
         public unsafe int GetMajorType(out Guid majorType)
         {
             majorType = default(Guid);
@@ -112,7 +114,8 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Queries whether the media type is a temporally compressed format. Temporal compression uses information from previously decoded samples when decompressing the current sample.
+        /// Queries whether the media type is a temporally compressed format. Temporal compression
+        /// uses information from previously decoded samples when decompressing the current sample.
         /// </summary>
         /// <returns>HRESULT</returns>
         public unsafe int IsCompressedFormat(out NativeBool iscompressed)
@@ -125,7 +128,8 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Queries whether the media type is a temporally compressed format. Temporal compression uses information from previously decoded samples when decompressing the current sample.
+        /// Queries whether the media type is a temporally compressed format. Temporal compression
+        /// uses information from previously decoded samples when decompressing the current sample.
         /// </summary>
         public NativeBool IsCompressedFormat()
         {
@@ -135,7 +139,8 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Compares two media types and determines whether they are identical. If they are not identical, the method indicates how the two formats differ.
+        /// Compares two media types and determines whether they are identical. If they are not
+        /// identical, the method indicates how the two formats differ.
         /// </summary>
         /// <returns>HRESULT</returns>
         public unsafe int IsEqual(MFMediaType mediaType, out MediaTypeEqualFlags flags)
@@ -147,7 +152,8 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Compares two media types and determines whether they are identical. If they are not identical, the method indicates how the two formats differ.
+        /// Compares two media types and determines whether they are identical. If they are not
+        /// identical, the method indicates how the two formats differ.
         /// </summary>
         public MediaTypeEqualFlags IsEqual(MFMediaType mediaType)
         {
@@ -157,7 +163,8 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Retrieves an alternative representation of the media type. Currently only the DirectShow AM_MEDIA_TYPE structure is supported.
+        /// Retrieves an alternative representation of the media type. Currently only the DirectShow
+        /// AM_MEDIA_TYPE structure is supported.
         /// </summary>
         /// <returns>HRESULT</returns>
         public unsafe int GetRepresentation(Guid guidRepresenation, out IntPtr representation)
@@ -169,7 +176,8 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Retrieves an alternative representation of the media type. Currently only the DirectShow AM_MEDIA_TYPE structure is supported.
+        /// Retrieves an alternative representation of the media type. Currently only the DirectShow
+        /// AM_MEDIA_TYPE structure is supported.
         /// </summary>
         public IntPtr GetRepresentation(Guid guidRepresentation)
         {
@@ -198,7 +206,8 @@ namespace CSCore.MediaFoundation
         public unsafe WaveFormat ToWaveFormat(out int bufferSize, MFWaveFormatExConvertFlags flags)
         {
             IntPtr pointer = IntPtr.Zero;
-            fixed(void* ptr = &bufferSize){
+            fixed (void* ptr = &bufferSize)
+            {
                 MediaFoundationException.Try(MFCreateWaveFormatExFromMFMediaType(BasePtr.ToPointer(), (void*)(&pointer), (void*)(ptr), (int)flags), "interop", "MFCreateWaveFormatExFromMFMediaType");
             }
             var waveformat = (WaveFormat)Marshal.PtrToStructure(pointer, typeof(WaveFormat)); //todo:

@@ -7,13 +7,15 @@ namespace CSCore.Tags.ID3.Frames
     public class FrameHeader
     {
         public string FrameID { get; private set; }
+
         public int FrameSize { get; private set; }
+
         public FrameFlags Flags { get; private set; }
 
         public byte GroupIdentifier { get; private set; }
 
-        int _uncompressedSize, _dataLengthIndicator;
-        byte _encryptionMethod;
+        private int _uncompressedSize, _dataLengthIndicator;
+        private byte _encryptionMethod;
 
         public FrameIDFactory2.ID3v2FrameEntry GetFrameInformation()
         {
@@ -30,12 +32,15 @@ namespace CSCore.Tags.ID3.Frames
                 case ID3Version.ID3v2_2:
                     Parse2(stream);
                     break;
+
                 case ID3Version.ID3v2_3:
                     Parse3(stream);
                     break;
+
                 case ID3Version.ID3v2_4:
                     Parse4(stream);
                     break;
+
                 default:
                     throw new ID3Exception("Invalid ID3Version in Frameheader");
             }
@@ -66,7 +71,7 @@ namespace CSCore.Tags.ID3.Frames
                 Flags |= FrameFlags.PreserveFileAltered;
             if ((flags[0] & 0x20) != 0)
                 Flags |= FrameFlags.ReadOnly;
-             //%ijk00000
+            //%ijk00000
             if ((flags[1] & 0x80) != 0)
             {
                 Flags |= FrameFlags.Compressed;

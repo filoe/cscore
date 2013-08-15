@@ -31,15 +31,15 @@ namespace CSCore.Streams.Effects
             //todo
         }
 
-        ulong _skipcount;
-        float _phase, lfoskip;
-        float xn1, xn2, yn1, yn2;
-        float b0, b1, b2, a0, a1, a2;
+        private ulong _skipcount;
+        private float _phase, lfoskip;
+        private float xn1, xn2, yn1, yn2;
+        private float b0, b1, b2, a0, a1, a2;
 
-        float freq, startphase;
-        float depth, freqofs, res;
+        private float freq, startphase;
+        private float depth, freqofs, res;
 
-        const int lfoskipsamples = 30;
+        private const int lfoskipsamples = 30;
 
         protected override unsafe void Process(float* buffer, int count)
         {
@@ -84,7 +84,7 @@ namespace CSCore.Streams.Effects
 
                 if (output > 1.0f)
                     output = 1.0f;
-                else if(output < -1.0f)
+                else if (output < -1.0f)
                     output = -1.0f;
 
                 buffer[i] = (float)output;

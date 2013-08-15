@@ -6,20 +6,25 @@ namespace CSCore.SoundIn
 {
     public class WaveInBuffer : IDisposable
     {
-        int _bufferSize;
+        private int _bufferSize;
 
-        byte[] _buffer;
-        WaveHeader _header;
+        private byte[] _buffer;
+        private WaveHeader _header;
 
-        GCHandle _bufferHandle, _headerHandle, _userDataHandle;
+        private GCHandle _bufferHandle, _headerHandle, _userDataHandle;
 
-        IntPtr _waveInHandle;
+        private IntPtr _waveInHandle;
 
         public IntPtr WaveInHandle { get { return _waveInHandle; } }
+
         public Byte[] Buffer { get { return _buffer; } }
+
         public int Recorded { get { return _header.bytesRecorded; } }
+
         public int BufferSize { get { return _buffer.Length; } }
+
         public bool IsInQueue { get { return _header.flags.HasFlag(WaveHeaderFlags.WHDR_INQUEUE); } }
+
         public bool Done { get { return _header.flags.HasFlag(WaveHeaderFlags.WHDR_DONE); } }
 
         public WaveInBuffer(WaveIn waveIn, int bufferSize)
@@ -79,15 +84,15 @@ namespace CSCore.SoundIn
         public void Dispose()
         {
             Dispose(true);
-			GC.SuppressFinalize(this);
+            GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)
         {
-			if(disposing)
-			{
-				//dispose managed
-			}
+            if (disposing)
+            {
+                //dispose managed
+            }
             //todo: lock
 
             if (_header != null)
@@ -103,11 +108,11 @@ namespace CSCore.SoundIn
                 }
             }
 
-            if(_bufferHandle.IsAllocated)
+            if (_bufferHandle.IsAllocated)
                 _bufferHandle.Free();
-            if(_headerHandle.IsAllocated)
+            if (_headerHandle.IsAllocated)
                 _headerHandle.Free();
-            if(_userDataHandle.IsAllocated)
+            if (_userDataHandle.IsAllocated)
                 _userDataHandle.Free();
         }
 

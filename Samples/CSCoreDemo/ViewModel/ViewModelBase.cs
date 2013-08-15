@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -10,7 +7,8 @@ namespace CSCoreDemo.ViewModel
 {
     public class ViewModelBase : INotifyPropertyChanged
     {
-        static MainViewModel _main;
+        private static MainViewModel _main;
+
         public static MainViewModel Main
         {
             get { return _main ?? (_main = new MainViewModel()); }
@@ -18,6 +16,7 @@ namespace CSCoreDemo.ViewModel
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
         public bool SetProperty<T>(T value, ref T field, Expression<Func<object>> property)
         {
             return SetProperty(value, ref field, GetPropertyName(property));

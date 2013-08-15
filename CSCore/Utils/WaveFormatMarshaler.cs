@@ -9,23 +9,28 @@ namespace CSCore.Utils
 
         public static ICustomMarshaler GetInstance(string cookie)
         {
-            return (instance != null)? instance : new WaveFormatMarshaler();
+            return (instance != null) ? instance : new WaveFormatMarshaler();
         }
+
         public void CleanUpManagedData(object ManagedObj)
         {
         }
+
         public void CleanUpNativeData(IntPtr pNativeData)
         {
             Marshal.FreeHGlobal(pNativeData);
         }
+
         public int GetNativeDataSize()
         {
             throw new NotImplementedException();
         }
+
         public IntPtr MarshalManagedToNative(object ManagedObj)
         {
             return WaveFormatToPointer((WaveFormat)ManagedObj);
         }
+
         public object MarshalNativeToManaged(IntPtr pNativeData)
         {
             return PointerToWaveFormat(pNativeData);

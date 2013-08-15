@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Controls;
 
 namespace CSCore.Visualization.WPF
 {
     [TemplatePart(Name = "PART_visualationDisplay", Type = typeof(Image))]
     public class WaveForm : SampleVisualizationBase
     {
-        Image PART_visualationDisplay;
-        RenderTargetBitmap _bmp;
+        private Image PART_visualationDisplay;
+        private RenderTargetBitmap _bmp;
 
         public WaveForm()
         {
@@ -32,7 +32,8 @@ namespace CSCore.Visualization.WPF
             }
         }
 
-        int v;
+        private int v;
+
         protected override void OnUpdate(float[] left, float[] right)
         {
             var values = left == null ? right : left;
@@ -88,8 +89,6 @@ namespace CSCore.Visualization.WPF
         public static readonly DependencyProperty DrawingPenProperty =
             DependencyProperty.Register("DrawingPenLeft", typeof(Pen), typeof(WaveForm), new PropertyMetadata(new Pen(Brushes.Red, 0.5)));
 
-
-
         public Pen DrawingPenRight
         {
             get { return (Pen)GetValue(DrawingPenRightProperty); }
@@ -99,7 +98,6 @@ namespace CSCore.Visualization.WPF
         public static readonly DependencyProperty DrawingPenRightProperty =
             DependencyProperty.Register("DrawingPenRight", typeof(Pen), typeof(WaveForm), new PropertyMetadata(new Pen(Brushes.Green, 0.5)));
 
-
         public Pen AxisPen
         {
             get { return (Pen)GetValue(AxisPenProperty); }
@@ -108,8 +106,6 @@ namespace CSCore.Visualization.WPF
 
         public static readonly DependencyProperty AxisPenProperty =
             DependencyProperty.Register("AxisPen", typeof(Pen), typeof(WaveForm), new PropertyMetadata(new Pen(Brushes.Black, 0.3)));
-
-
 
         public bool RenderAxis
         {

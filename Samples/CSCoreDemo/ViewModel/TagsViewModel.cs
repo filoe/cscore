@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CSCore.Tags.ID3;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+﻿using CSCore.Tags.ID3;
+using System;
 using System.IO;
 using System.Reflection;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace CSCoreDemo.ViewModel
 {
@@ -74,7 +69,8 @@ namespace CSCoreDemo.ViewModel
             }
         }
 
-        string _title;
+        private string _title;
+
         [UIDisplayProperty]
         public string Title
         {
@@ -82,7 +78,8 @@ namespace CSCoreDemo.ViewModel
             set { SetProperty(value, ref _title, () => Title); }
         }
 
-        string _artist;
+        private string _artist;
+
         [UIDisplayProperty]
         public string Artist
         {
@@ -90,7 +87,8 @@ namespace CSCoreDemo.ViewModel
             set { SetProperty(value, ref _artist, () => Artist); }
         }
 
-        string _album;
+        private string _album;
+
         [UIDisplayProperty]
         public string Album
         {
@@ -98,7 +96,8 @@ namespace CSCoreDemo.ViewModel
             set { SetProperty(value, ref _album, () => Album); }
         }
 
-        string _leadperformers;
+        private string _leadperformers;
+
         [UIDisplayProperty]
         public string LeadPerformers
         {
@@ -106,7 +105,8 @@ namespace CSCoreDemo.ViewModel
             set { SetProperty(value, ref _leadperformers, () => LeadPerformers); }
         }
 
-        string _year;
+        private string _year;
+
         [UIDisplayProperty]
         public string Year
         {
@@ -114,7 +114,8 @@ namespace CSCoreDemo.ViewModel
             set { SetProperty(value, ref _year, () => Year); }
         }
 
-        string _trackNumber;
+        private string _trackNumber;
+
         [UIDisplayProperty]
         public string TrackNumber
         {
@@ -122,7 +123,8 @@ namespace CSCoreDemo.ViewModel
             set { SetProperty(value, ref _trackNumber, () => TrackNumber); }
         }
 
-        string _genre;
+        private string _genre;
+
         [UIDisplayProperty]
         public string Genre
         {
@@ -130,7 +132,8 @@ namespace CSCoreDemo.ViewModel
             set { SetProperty(value, ref _genre, () => Genre); }
         }
 
-        string _comment;
+        private string _comment;
+
         [UIDisplayProperty]
         public string Comments
         {
@@ -138,7 +141,8 @@ namespace CSCoreDemo.ViewModel
             set { SetProperty(value, ref _comment, () => Comments); }
         }
 
-        ImageSource _imageSource;
+        private ImageSource _imageSource;
+
         [UIDisplayProperty]
         public ImageSource Image
         {

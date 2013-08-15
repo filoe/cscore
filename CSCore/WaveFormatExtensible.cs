@@ -5,17 +5,18 @@ namespace CSCore
 {
     //http://msdn.microsoft.com/en-us/library/windows/hardware/ff536383(v=vs.85).aspx
     //http://msdn.microsoft.com/en-us/library/windows/hardware/gg463006.aspx
-    [StructLayout(LayoutKind.Sequential, Pack=2, CharSet=CharSet.Ansi)]
+    [StructLayout(LayoutKind.Sequential, Pack = 2, CharSet = CharSet.Ansi)]
     public class WaveFormatExtensible : WaveFormat
     {
         //extrasize: 22 bytes
-        short _validBitsPerSample;
-        ChannelMask _channelMask;
-        Guid _subFormat;
+        private short _validBitsPerSample;
+
+        private ChannelMask _channelMask;
+        private Guid _subFormat;
 
         public static Guid SubTypeFromWaveFormat(WaveFormat waveFormat)
         {
-            if(waveFormat == null)
+            if (waveFormat == null)
                 throw new ArgumentNullException("waveFormat");
             if (waveFormat is WaveFormatExtensible)
                 return ((WaveFormatExtensible)waveFormat).SubFormat;
@@ -83,7 +84,8 @@ namespace CSCore
     }
 
     /// <summary>
-    /// Channelmask for WaveFormatExtensible. For more infos see http://msdn.microsoft.com/en-us/library/windows/desktop/dd757714(v=vs.85).aspx
+    /// Channelmask for WaveFormatExtensible. For more infos see
+    /// http://msdn.microsoft.com/en-us/library/windows/desktop/dd757714(v=vs.85).aspx
     /// </summary>
     [Flags]
     public enum ChannelMask

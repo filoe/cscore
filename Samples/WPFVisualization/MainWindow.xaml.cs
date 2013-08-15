@@ -1,7 +1,16 @@
-﻿using System;
+﻿using CSCore;
+using CSCore.Codecs;
+using CSCore.Codecs.MP3;
+using CSCore.DSP;
+using CSCore.SoundOut;
+using CSCore.SoundOut.DirectSound;
+using CSCore.Streams;
+using CSCore.Streams.SampleConverter;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -12,31 +21,26 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-using CSCore;
-using CSCore.Codecs;
-using CSCore.SoundOut;
-using CSCore.SoundOut.DirectSound;
-using CSCore.Streams.SampleConverter;
-using CSCore.Codecs.MP3;
-using CSCore.DSP;
-using CSCore.Streams;
-using System.Threading.Tasks;
 
 namespace WPFVisualisation
 {
     public partial class MainWindow : Window
     {
-        ISoundOut _soundOut;
-        DispatcherTimer _timer;
+        private ISoundOut _soundOut;
+        private DispatcherTimer _timer;
 
-        IWaveSource _audioSource;
-        GainSource _gainSource;
+        private IWaveSource _audioSource;
+        private GainSource _gainSource;
 
-        double _gain = 1;
+        private double _gain = 1;
+
         public double Gain
         {
-            get { return _gain; }
-            set 
+            get
+            {
+                return _gain;
+            }
+            set
             {
                 _gain = value;
                 if (_gainSource != null)
@@ -145,7 +149,7 @@ namespace WPFVisualisation
                 _soundOut = null;
                 soundOut.Stop();
                 soundOut.Dispose();
-                if(soundOut.WaveSource != null)
+                if (soundOut.WaveSource != null)
                     soundOut.WaveSource.Dispose();
             }
         }
@@ -171,7 +175,7 @@ namespace WPFVisualisation
             }
             else
             {
-                if(_timer != null)
+                if (_timer != null)
                     _timer.Stop();
                 bufferedDataIndicator.Visibility = System.Windows.Visibility.Collapsed;
             }

@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using Mono.Cecil;
+﻿using Mono.Cecil;
 using Mono.Cecil.Cil;
 using Mono.Cecil.Pdb;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace CSCli
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             if (args.Length >= 1 && File.Exists(args[0]))
             {
@@ -25,7 +25,7 @@ namespace CSCli
             Environment.Exit(0);
         }
 
-        static void LoadAssembly(string fileName)
+        private static void LoadAssembly(string fileName)
         {
             WriterParameters wp = new WriterParameters();
             ReaderParameters rp = new ReaderParameters();
@@ -43,7 +43,7 @@ namespace CSCli
             if (patcher.Patch())
             {
                 var output = fileName;
-                if (File.Exists(output)) 
+                if (File.Exists(output))
                     File.Delete(output);
 
                 StdOut.Info("Writing assembly [{0}] including symbols file [{1}].", Path.GetFileName(fileName), Path.ChangeExtension(fileName, "pdb"));

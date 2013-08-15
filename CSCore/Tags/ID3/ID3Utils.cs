@@ -36,7 +36,7 @@ namespace CSCore.Tags.ID3
                 }
             }
 
-            return Math.Max(value, 0); 
+            return Math.Max(value, 0);
         }
 
         public static Int32 ReadInt32(Stream stream, bool sync, int length = 4)
@@ -134,7 +134,6 @@ namespace CSCore.Tags.ID3
             if (newoffset == prem.Length)
                 return offset + newoffset;
             else return offset;
-
         }
 
         public const string MimeURL = "-->";

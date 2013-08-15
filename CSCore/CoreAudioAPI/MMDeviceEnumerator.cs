@@ -7,7 +7,7 @@ namespace CSCore.CoreAudioAPI
     [Guid("BCDE0395-E52F-467C-8E3D-C4579291692E")]
     public class MMDeviceEnumerator : ComObject
     {
-        const string c = "IMMDeviceEnumerator";
+        private const string c = "IMMDeviceEnumerator";
 
         public static MMDevice DefaultAudioEndpoint(DataFlow dataFlow, Role role)
         {
@@ -40,7 +40,7 @@ namespace CSCore.CoreAudioAPI
         public unsafe int EnumAudioEndpoints(DataFlow dataFlow, DeviceState stateMask, out IntPtr collection)
         {
             IntPtr pcollection;
-            int result =  InteropCalls.CallI(_basePtr, unchecked(dataFlow), unchecked(stateMask), &pcollection, ((void**)(*(void**)_basePtr))[3]);
+            int result = InteropCalls.CallI(_basePtr, unchecked(dataFlow), unchecked(stateMask), &pcollection, ((void**)(*(void**)_basePtr))[3]);
             collection = pcollection;
             return result;
         }

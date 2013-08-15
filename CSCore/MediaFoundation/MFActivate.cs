@@ -8,7 +8,7 @@ namespace CSCore.MediaFoundation
 {
     public unsafe class MFActivate : MFAttributes
     {
-        const string c = "IMFActivate";
+        private const string c = "IMFActivate";
 
         public MFActivate(IntPtr ptr)
             : base(ptr)
@@ -16,19 +16,19 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Creates the object associated with this activation object. 
+        /// Creates the object associated with this activation object.
         /// </summary>
         /// <returns>HRESULT</returns>
         public unsafe int ActivateObjectNative(Guid riid, out IntPtr ptr)
         {
-            fixed(void* pptr = &ptr)
+            fixed (void* pptr = &ptr)
             {
                 return InteropCalls.CalliMethodPtr(_basePtr, &riid, pptr, ((void**)(*(void**)_basePtr))[33]);
             }
         }
 
         /// <summary>
-        /// Creates the object associated with this activation object. 
+        /// Creates the object associated with this activation object.
         /// </summary>
         public T ActivateObject<T>(Guid riid) where T : ComObject
         {
@@ -40,7 +40,7 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Creates the object associated with this activation object. 
+        /// Creates the object associated with this activation object.
         /// </summary>
         public IntPtr ActivateObject(Guid riid)
         {

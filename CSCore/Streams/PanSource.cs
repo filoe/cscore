@@ -7,12 +7,16 @@ namespace CSCore.Streams
 {
     public class PanSource : SampleSourceBase
     {
-        object _lockObj;
+        private object _lockObj;
 
-        float _pan = 0.0f;
+        private float _pan = 0.0f;
+
         public float Pan
         {
-            get { return _pan; }
+            get
+            {
+                return _pan;
+            }
             set
             {
                 if (value < -1 || value > 1)
@@ -27,7 +31,7 @@ namespace CSCore.Streams
         public PanSource(IWaveStream source)
             : base(source)
         {
-            if(source.WaveFormat.Channels != 2)
+            if (source.WaveFormat.Channels != 2)
                 throw new ArgumentException("Source has to be stereo.", "source");
             _lockObj = new object();
         }

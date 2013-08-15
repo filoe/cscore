@@ -5,7 +5,7 @@ namespace CSCore.Codecs.FLAC
 {
     public class FlacMetadataSeekTable : FlacMetadata
     {
-        FlacSeekPoint[] seekPoints;
+        private FlacSeekPoint[] seekPoints;
 
         public FlacMetadataSeekTable(Stream stream, Int32 length, bool lastBlock)
             : base(FlacMetaDataType.Seektable, lastBlock, length)
@@ -28,6 +28,7 @@ namespace CSCore.Codecs.FLAC
         }
 
         public int EntryCount { get; private set; }
+
         public FlacSeekPoint[] SeekPoints { get; private set; }
 
         public FlacSeekPoint this[int index]

@@ -1,11 +1,11 @@
-﻿using System;
+﻿using CSCore.CoreAudioAPI;
+using CSCore.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Runtime.InteropServices;
-using CSCore.CoreAudioAPI;
 using System.Security;
-using CSCore.Win32;
+using System.Text;
 
 namespace CSCore.MediaFoundation
 {
@@ -21,7 +21,8 @@ namespace CSCore.MediaFoundation
         [SuppressUnmanagedCodeSecurity]
         [DllImport("Mfplat.dll", CallingConvention = CallingConvention.StdCall, EntryPoint = "MFCreateAttributes")]
         private unsafe static extern int MFCreateAttributes_(IntPtr ptr, int initialSize);
-        const string c = "IMFAttributes";
+
+        private const string c = "IMFAttributes";
 
         public MFAttributes(IntPtr ptr)
             : base(ptr)
@@ -261,13 +262,17 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Retrieves a wide-character string associated with a key. This method allocates the memory for the string.
+        /// Retrieves a wide-character string associated with a key. This method allocates the
+        /// memory for the string.
         /// </summary>
         /// <returns>HRESULT</returns>
-        /// <remarks>If the key is found and the value is a string type, this parameter receives a copy of the string. The caller must free the memory for the string by calling CoTaskMemFree. </remarks>
+        /// <remarks>
+        /// If the key is found and the value is a string type, this parameter receives a copy of
+        /// the string. The caller must free the memory for the string by calling CoTaskMemFree.
+        /// </remarks>
         public unsafe int GetAllocatedString(Guid key, IntPtr wszValue, out int cchLength)
         {
-            fixed(int* pcchl = (&cchLength))
+            fixed (int* pcchl = (&cchLength))
             {
                 return InteropCalls.CalliMethodPtr(_basePtr, &key, (void*)wszValue, (IntPtr*)pcchl, ((void**)(*(void**)_basePtr))[13]);
             }
@@ -305,10 +310,14 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Retrieves a byte array associated with a key. This method allocates the memory for the array.
+        /// Retrieves a byte array associated with a key. This method allocates the memory for the
+        /// array.
         /// </summary>
         /// <returns>HRESULT</returns>
-        /// <remarks>If the key is found and the value is a byte array, this parameter receives a copy of the array. The caller must free the memory for the array by calling CoTaskMemFree.</remarks>
+        /// <remarks>
+        /// If the key is found and the value is a byte array, this parameter receives a copy of the
+        /// array. The caller must free the memory for the array by calling CoTaskMemFree.
+        /// </remarks>
         public unsafe int GetAllocatedBlob(Guid key, out byte[] ip, out int pcbSize)
         {
             fixed (void* ppcbsize = &pcbSize)
@@ -525,6 +534,7 @@ namespace CSCore.MediaFoundation
                 {
                     case MFAttributeType.UInt32:
                         return this.Get<int>(key);
+
                     case MFAttributeType.UInt64:
                         return this.Get<long>(key);
                 }

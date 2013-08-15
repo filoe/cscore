@@ -8,13 +8,14 @@ namespace CSCore.DSP
     /// </summary>
     public class DmoChannelResampler : DmoResampler
     {
-        ChannelMatrix _channelMatrix = ChannelMatrix.TwoToSixChannels;
+        private ChannelMatrix _channelMatrix = ChannelMatrix.TwoToSixChannels;
 
         /// <summary>
         /// Resampler based on wavesource and new samplerate
         /// </summary>
         /// <param name="source">Source which has to get resampled</param>
-        /// <param name="channelMatrix">Channelmatrix which contains information about the channel mapping.</param>
+        /// <param name="channelMatrix">Channelmatrix which contains information about the channel
+        /// mapping.</param>
         public DmoChannelResampler(IWaveSource source, ChannelMatrix channelMatrix)
             : this(source, channelMatrix, source.WaveFormat.SampleRate)
         {

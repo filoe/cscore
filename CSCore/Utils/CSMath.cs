@@ -119,6 +119,5 @@ namespace CSCore.Utils
             }
             return result;
         }
-        
     }
 }

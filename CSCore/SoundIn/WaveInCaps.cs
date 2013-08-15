@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace CSCore.SoundIn
 {
-    [StructLayout(LayoutKind.Sequential, Pack=4)]
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct WaveInCaps
     {
         public static WaveInCaps[] GetCaps()
@@ -24,8 +24,10 @@ namespace CSCore.SoundIn
         private short wMid;
         private short wPid;
         private uint vDriverVersion;
+
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
         private string szPname;
+
         private WaveCapsFormats dwFormats;
         private short wChannels;
         private short wReserved1;

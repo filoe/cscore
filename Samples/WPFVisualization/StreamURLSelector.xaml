@@ -5,27 +5,27 @@
     <Grid>
         <Grid.Resources>
             <Style TargetType="{x:Type FrameworkElement}" x:Key="baseStyle">
-                <Setter Property="Margin" Value="5,5,5,5"/>
+                <Setter Property="Margin" Value="5,5,5,5" />
             </Style>
             <Style TargetType="{x:Type Button}" BasedOn="{StaticResource baseStyle}">
-                <Setter Property="Padding" Value="10,0"/>
+                <Setter Property="Padding" Value="10,0" />
             </Style>
-            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource baseStyle}"/>
-            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource baseStyle}"/>
+            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource baseStyle}" />
+            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource baseStyle}" />
         </Grid.Resources>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        
-        <TextBlock Grid.RowSpan="2" Text="{Binding Text}"/>
-        <Button Content="OK" Grid.Column="1" Click="OnOKClick" IsDefault="True"/>
-        <Button Content="Cancel" Grid.Column="1" Grid.Row="1" IsCancel="True"/>
-        <TextBox Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding Value}"/>
+
+        <TextBlock Grid.RowSpan="2" Text="{Binding Text}" />
+        <Button Content="OK" Grid.Column="1" Click="OnOKClick" IsDefault="True" />
+        <Button Content="Cancel" Grid.Column="1" Grid.Row="1" IsCancel="True" />
+        <TextBox Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding Value}" />
     </Grid>
 </Window>

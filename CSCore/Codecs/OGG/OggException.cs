@@ -10,7 +10,6 @@ namespace CSCore.Codecs.OGG
         public OggException(string message, OggExceptionLayer layer)
             : base(message + " " + layer.ToString())
         {
-
         }
     }
 

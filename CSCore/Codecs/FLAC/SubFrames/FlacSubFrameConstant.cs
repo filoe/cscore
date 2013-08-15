@@ -1,5 +1,4 @@
-﻿
-namespace CSCore.Codecs.FLAC
+﻿namespace CSCore.Codecs.FLAC
 {
     public sealed class FlacSubFrameConstant : FlacSubFrameBase
     {

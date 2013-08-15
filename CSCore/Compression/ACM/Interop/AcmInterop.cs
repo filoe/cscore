@@ -5,7 +5,7 @@ namespace CSCore.Compression.ACM
 {
     internal static class AcmInterop
     {
-        const string msacm = "msacm32.dll";
+        private const string msacm = "msacm32.dll";
 
         [DllImport(msacm)]
         public static extern MmResult acmStreamOpen(

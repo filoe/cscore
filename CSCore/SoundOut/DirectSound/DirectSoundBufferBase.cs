@@ -20,7 +20,7 @@ namespace CSCore.SoundOut.DirectSound
         public const uint FrequencyMin = 100;
         public const uint FrequencyMax = 20000;
 
-        public DirectSoundBufferBase() 
+        public DirectSoundBufferBase()
         {
         }
 
@@ -122,7 +122,7 @@ namespace CSCore.SoundOut.DirectSound
 
         public DSResult GetFrequency(out int frequency)
         {
-            fixed(void* pfrequency = &frequency)
+            fixed (void* pfrequency = &frequency)
             {
                 return InteropCalls.CalliMethodPtr(_basePtr, pfrequency, ((void**)(*(void**)_basePtr))[8]);
             }
@@ -141,7 +141,7 @@ namespace CSCore.SoundOut.DirectSound
 
         public DSResult GetPan(out int pan)
         {
-            fixed(void* ppan = &pan)
+            fixed (void* ppan = &pan)
             {
                 return InteropCalls.CalliMethodPtr(_basePtr, ppan, ((void**)(*(void**)_basePtr))[7]);
             }
@@ -159,6 +159,7 @@ namespace CSCore.SoundOut.DirectSound
         {
             return InteropCalls.CalliMethodPtr(_basePtr, volume, ((void**)(*(void**)_basePtr))[15]);
         }
+
         public DSResult SetVolume(float volume)
         {
             return SetVolume((int)(volume * Math.Abs(MinVolume)) - Math.Abs(MinVolume));
@@ -204,7 +205,6 @@ namespace CSCore.SoundOut.DirectSound
             hWaveFormat.Free();
             return result;
         }
-
 
         public bool IsBufferLost()
         {

@@ -1,5 +1,4 @@
-﻿
-namespace CSCore.SoundOut.DirectSound
+﻿namespace CSCore.SoundOut.DirectSound
 {
     public enum DSCooperativeLevelType : uint
     {

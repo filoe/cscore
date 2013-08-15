@@ -45,12 +45,18 @@ namespace CSCore.Tags.ID3
             return null;
         }
 
-        private ID3v2Header(){ }
+        private ID3v2Header()
+        {
+        }
 
         public ID3Version Version { get; private set; }
+
         public byte[] RawVersion { get; private set; }
+
         public int DataLength { get; private set; }
+
         public ID3v2HeaderFlags Flags { get; private set; }
+
         public bool IsUnsync { get { return Flags.HasFlag(ID3v2HeaderFlags.Unsynchronisation); } }
     }
 }

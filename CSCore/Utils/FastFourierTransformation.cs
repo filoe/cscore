@@ -4,9 +4,9 @@ namespace CSCore.Utils
 {
     public static class FastFourierTransformation
     {
-        const double minDB = -96;
+        private const double minDB = -96;
 
-        private const double minValueRaw = 0.0000677287; // -96dB
+        private const double minValueRaw = 0.0000677287; // - 96dB
         private const double minLog = minDB / 10;
 
         public static double GetIntensity(Complex c)

@@ -18,7 +18,7 @@ namespace CSCore.Codecs.FLAC
                 Context.Current.Logger.Fatal(new FlacException(new EndOfStreamException("Could not read metadata"), FlacLayer.Metadata),
                     "FlacMetadata.FromStream(Stream)", true);
 
-            fixed(byte* headerBytes = b)
+            fixed (byte* headerBytes = b)
             {
                 FlacBitReader bitReader = new FlacBitReader(headerBytes, 0);
 
@@ -43,9 +43,11 @@ namespace CSCore.Codecs.FLAC
                     case FlacMetaDataType.StreamInfo:
                         data = new FlacMetadataStreamInfo(stream, length, lastBlock);
                         break;
+
                     case FlacMetaDataType.Seektable:
                         data = new FlacMetadataSeekTable(stream, length, lastBlock);
                         break;
+
                     default:
                         data = new FlacMetadata(type, lastBlock, length);
                         break;
@@ -79,7 +81,9 @@ namespace CSCore.Codecs.FLAC
         }
 
         public FlacMetaDataType MetaDataType { get; private set; }
+
         public Boolean IsLastMetaBlock { get; private set; }
+
         public Int32 Length { get; private set; }
     }
 

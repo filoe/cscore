@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace CSCore.SoundOut
 {
-    //todo: remove DirectSoundOut1 in next the release 
+    //todo: remove DirectSoundOut1 in next the release
     [Obsolete]
     public class DirectSoundOut1 : ISoundOut
     {

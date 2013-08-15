@@ -6,8 +6,8 @@ namespace CSCore.SoundIn
 {
     public class WaveInEvent : WaveIn
     {
-        AutoResetEvent _event;
-        Thread _thread;
+        private AutoResetEvent _event;
+        private Thread _thread;
 
         public WaveInEvent()
             : this(new WaveFormat())

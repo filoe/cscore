@@ -1,9 +1,9 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using CSCore.DMO;
+﻿using CSCore.DMO;
 using CSCore.DSP;
 using CSCore.Streams;
 using CSCore.Streams.SampleConverter;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace CSCore.Test.DMO
 {

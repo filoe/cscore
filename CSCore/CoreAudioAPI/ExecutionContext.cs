@@ -1,5 +1,4 @@
-﻿
-namespace CSCore.CoreAudioAPI
+﻿namespace CSCore.CoreAudioAPI
 {
     //WTypesbase.h
     public enum ExecutionContext : uint
@@ -27,9 +26,11 @@ namespace CSCore.CoreAudioAPI
         CLSCTX_ENABLE_CLOAKING = 0x100000,
         CLSCTX_APPCONTAINER = 0x400000,
         CLSCTX_ACTIVATE_AAA_AS_IU = 0x800000,
+
         //CLSCTX_PS_DLL = 0x80000000,
         //combaseapi.h
         CLSCTX_INPROC = CLSCTX_INPROC_SERVER | CLSCTX_INPROC_HANDLER,
+
         CLSCTX_SERVER = CLSCTX_INPROC_SERVER | CLSCTX_LOCAL_SERVER | CLSCTX_REMOTE_SERVER,
         CLSCTX_ALL = CLSCTX_INPROC | CLSCTX_SERVER
     }

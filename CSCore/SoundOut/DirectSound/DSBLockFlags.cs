@@ -7,6 +7,7 @@ namespace CSCore.SoundOut.DirectSound
      #define DSBLOCK_FROMWRITECURSOR     0x00000001
      #define DSBLOCK_ENTIREBUFFER        0x00000002
     */
+
     [FlagsAttribute]
     public enum DSBLock
     {

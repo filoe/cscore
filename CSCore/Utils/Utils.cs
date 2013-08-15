@@ -43,16 +43,17 @@ namespace CSCore.Utils
             }
             else if (bitsPerSample == 32)
             {
-                buffer[index++] = (byte)((short)sample &    0x000000FF);
-                buffer[index++] = (byte)(((short)sample &   0x0000FF00) >> 8);
-                buffer[index++] = (byte)(((short)sample &   0x00FF0000) >> 16);
-                buffer[index++] = (byte)(((short)sample &   0xFF000000) >> 24);
+                buffer[index++] = (byte)((short)sample & 0x000000FF);
+                buffer[index++] = (byte)(((short)sample & 0x0000FF00) >> 8);
+                buffer[index++] = (byte)(((short)sample & 0x00FF0000) >> 16);
+                buffer[index++] = (byte)(((short)sample & 0xFF000000) >> 24);
             }
 
             index = index - i + 1;
         }
 
 #if DEBUG
+
         internal static unsafe void DumpPtr(int* i, int count)
         {
             for (int n = 0; n < count; n++)
@@ -60,6 +61,7 @@ namespace CSCore.Utils
                 System.Diagnostics.Debug.WriteLine(n + " " + *(i++));
             }
         }
+
 #endif
     }
 }

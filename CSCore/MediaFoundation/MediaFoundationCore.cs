@@ -80,7 +80,8 @@ namespace CSCore.MediaFoundation
             return new MFSourceReader(ptr);
         }
 
-        static bool _isstarted = false;
+        private static bool _isstarted = false;
+
         public static void Startup()
         {
             if (!_isstarted)

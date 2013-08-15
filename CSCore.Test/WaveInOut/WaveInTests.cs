@@ -9,7 +9,7 @@ using System.Text;
 namespace CSCore.Test.WaveInOut
 {
     [TestClass]
-    class WaveInTests
+    internal class WaveInTests
     {
         [TestMethod]
         [TestCategory("WaveIn")]

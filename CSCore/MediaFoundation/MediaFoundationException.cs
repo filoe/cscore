@@ -14,7 +14,9 @@ namespace CSCore.MediaFoundation
         }
 
         public int Result { get; private set; }
+
         public string InterfaceName { get; private set; }
+
         public string Member { get; private set; }
 
         public MediaFoundationException(int result, string interfaceName, string member)

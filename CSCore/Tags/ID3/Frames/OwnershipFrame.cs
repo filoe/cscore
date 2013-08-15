@@ -1,9 +1,9 @@
-﻿
-namespace CSCore.Tags.ID3.Frames
+﻿namespace CSCore.Tags.ID3.Frames
 {
     public class OwnershipFrame : TextFrame
     {
         public string Price { get; private set; }
+
         public string PurchaseDate { get; private set; }
 
         public OwnershipFrame(FrameHeader header)

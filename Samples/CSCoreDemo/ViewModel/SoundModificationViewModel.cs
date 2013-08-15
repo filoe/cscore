@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CSCoreDemo.ViewModel
+﻿namespace CSCoreDemo.ViewModel
 {
     public class SoundModificationViewModel : ViewModelBase
     {
         public float Volume
         {
-            get { return Main.AudioPlayer.Volume; }
+            get
+            {
+                return Main.AudioPlayer.Volume;
+            }
             set
             {
                 Main.AudioPlayer.Volume = value;
@@ -20,7 +17,10 @@ namespace CSCoreDemo.ViewModel
 
         public float Pan
         {
-            get { return Main.AudioPlayer.Pan; }
+            get
+            {
+                return Main.AudioPlayer.Pan;
+            }
             set
             {
                 Main.AudioPlayer.Pan = value;

@@ -30,16 +30,16 @@ namespace CSCore.SoundOut
 
         public event EventHandler Stopped;
 
-        int _device = 0;
+        private int _device = 0;
         protected volatile IntPtr _hWaveOut;
         protected object _lockObj = new object();
-        IWaveSource _source;
-        int _latency = 150;
+        private IWaveSource _source;
+        private int _latency = 150;
 
-        PlaybackState _playbackState = PlaybackState.Stopped;
-        List<WaveOutBuffer> _buffers;
+        private PlaybackState _playbackState = PlaybackState.Stopped;
+        private List<WaveOutBuffer> _buffers;
 
-        int _activeBuffers;
+        private int _activeBuffers;
 
         internal object LockObj { get { return _lockObj; } }
 
@@ -78,7 +78,7 @@ namespace CSCore.SoundOut
 
         public WaveOut()
         {
-             callback = new MMInterops.WaveCallback(Callback);
+            callback = new MMInterops.WaveCallback(Callback);
         }
 
         public virtual void Initialize(IWaveSource source)

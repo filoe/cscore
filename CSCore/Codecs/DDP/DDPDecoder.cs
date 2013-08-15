@@ -9,7 +9,8 @@ namespace CSCore.Codecs.DDP
 {
     public class DDPDecoder : MediaFoundationDecoder
     {
-        static bool? _issupported;
+        private static bool? _issupported;
+
         public static bool IsSupported
         {
             get

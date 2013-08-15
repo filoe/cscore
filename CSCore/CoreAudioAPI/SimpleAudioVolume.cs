@@ -1,10 +1,10 @@
-﻿using System;
+﻿using CSCore.Utils;
+using CSCore.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Runtime.InteropServices;
-using CSCore.Utils;
-using CSCore.Win32;
+using System.Text;
 
 namespace CSCore.CoreAudioAPI
 {
@@ -12,8 +12,8 @@ namespace CSCore.CoreAudioAPI
     [Guid("87CE5498-68D6-44E5-9215-6DA47EF883D8")]
     public class SimpleAudioVolume : ComObject
     {
-        const string c = "ISimpleAudioVolume";
-        static readonly Guid IID_SimpleAudioVolume = new Guid("87CE5498-68D6-44E5-9215-6DA47EF883D8");
+        private const string c = "ISimpleAudioVolume";
+        private static readonly Guid IID_SimpleAudioVolume = new Guid("87CE5498-68D6-44E5-9215-6DA47EF883D8");
 
         public static SimpleAudioVolume FromAudioClient(AudioClient audioClient)
         {

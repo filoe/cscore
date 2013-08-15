@@ -5,7 +5,8 @@ using System.Runtime.InteropServices;
 namespace CSCore.CoreAudioAPI
 {
     /// <summary>
-    /// Wrapper of the IAudioClient-Interface. For more details see http://msdn.microsoft.com/en-us/library/windows/desktop/dd370865(v=vs.85).aspx
+    /// Wrapper of the IAudioClient-Interface. For more details see
+    /// http://msdn.microsoft.com/en-us/library/windows/desktop/dd370865(v=vs.85).aspx
     /// </summary>
     [Guid("1CB9AD4C-DBFA-4c32-B178-C2F568A703B2")]
     public class AudioClient : ComObject
@@ -14,7 +15,8 @@ namespace CSCore.CoreAudioAPI
         /// IID of the IAudioClient-interface.
         /// </summary>
         public static readonly Guid IID_IAudioClient = new Guid("1CB9AD4C-DBFA-4c32-B178-C2F568A703B2");
-        const string c = "IAudioClient";
+
+        private const string c = "IAudioClient";
 
         public static AudioClient FromMMDevice(MMDevice device)
         {
@@ -97,7 +99,12 @@ namespace CSCore.CoreAudioAPI
         /// <summary>
         /// The GetBufferSize method retrieves the size (maximum capacity) of the endpoint buffer.
         /// </summary>
-        /// <remarks>The length is expressed as the number of audio frames the buffer can hold. The size in bytes of an audio frame is calculated as the number of channels in the stream multiplied by the sample size per channel. For example, the frame size is four bytes for a stereo (2-channel) stream with 16-bit samples.</remarks>
+        /// <remarks>
+        /// The length is expressed as the number of audio frames the buffer can hold. The size in
+        /// bytes of an audio frame is calculated as the number of channels in the stream multiplied
+        /// by the sample size per channel. For example, the frame size is four bytes for a stereo
+        /// (2-channel) stream with 16-bit samples.
+        /// </remarks>
         /// <returns>HRESULT</returns>
         public unsafe int GetBufferSize(out UInt32 bufferFramesCount)
         {
@@ -110,7 +117,13 @@ namespace CSCore.CoreAudioAPI
         /// <summary>
         /// The GetBufferSize method retrieves the size (maximum capacity) of the endpoint buffer.
         /// </summary>
-        /// /// <remarks>The length is expressed as the number of audio frames the buffer can hold. The size in bytes of an audio frame is calculated as the number of channels in the stream multiplied by the sample size per channel. For example, the frame size is four bytes for a stereo (2-channel) stream with 16-bit samples.</remarks>
+        /// ///
+        /// <remarks>
+        /// The length is expressed as the number of audio frames the buffer can hold. The size in
+        /// bytes of an audio frame is calculated as the number of channels in the stream multiplied
+        /// by the sample size per channel. For example, the frame size is four bytes for a stereo
+        /// (2-channel) stream with 16-bit samples.
+        /// </remarks>
         public int GetBufferSize()
         {
             uint bufferSize;
@@ -119,9 +132,15 @@ namespace CSCore.CoreAudioAPI
         }
 
         /// <summary>
-        /// The GetStreamLatency method retrieves the maximum latency for the current stream and can be called any time after the stream has been initialized.
+        /// The GetStreamLatency method retrieves the maximum latency for the current stream and can
+        /// be called any time after the stream has been initialized.
         /// </summary>
-        /// <remarks>Rendering clients can use this latency value to compute the minimum amount of data that they can write during any single processing pass. To write less than this minimum is to risk introducing glitches into the audio stream. For more information, see IAudioRenderClient::GetBuffer.</remarks>
+        /// <remarks>
+        /// Rendering clients can use this latency value to compute the minimum amount of data that
+        /// they can write during any single processing pass. To write less than this minimum is to
+        /// risk introducing glitches into the audio stream. For more information, see
+        /// IAudioRenderClient::GetBuffer.
+        /// </remarks>
         /// <returns>HRESULT</returns>
         public unsafe int GetStreamLatency(out long hnsLatency)
         {
@@ -132,9 +151,15 @@ namespace CSCore.CoreAudioAPI
         }
 
         /// <summary>
-        /// The GetStreamLatency method retrieves the maximum latency for the current stream and can be called any time after the stream has been initialized.
+        /// The GetStreamLatency method retrieves the maximum latency for the current stream and can
+        /// be called any time after the stream has been initialized.
         /// </summary>
-        /// <remarks>Rendering clients can use this latency value to compute the minimum amount of data that they can write during any single processing pass. To write less than this minimum is to risk introducing glitches into the audio stream. For more information, see IAudioRenderClient::GetBuffer.</remarks>
+        /// <remarks>
+        /// Rendering clients can use this latency value to compute the minimum amount of data that
+        /// they can write during any single processing pass. To write less than this minimum is to
+        /// risk introducing glitches into the audio stream. For more information, see
+        /// IAudioRenderClient::GetBuffer.
+        /// </remarks>
         public long GetStreamLatency()
         {
             long latency = -1;
@@ -143,7 +168,8 @@ namespace CSCore.CoreAudioAPI
         }
 
         /// <summary>
-        /// The GetCurrentPadding method retrieves the number of frames of padding in the endpoint buffer.
+        /// The GetCurrentPadding method retrieves the number of frames of padding in the endpoint
+        /// buffer.
         /// </summary>
         /// <returns>HRESULT</returns>
         public unsafe int GetCurrentPadding(out UInt32 numPaddingFrames)
@@ -162,10 +188,20 @@ namespace CSCore.CoreAudioAPI
         }
 
         /// <summary>
-        /// The IsFormatSupportedInternal method indicates whether the audio endpoint device supports a particular stream format.
+        /// The IsFormatSupportedInternal method indicates whether the audio endpoint device
+        /// supports a particular stream format.
         /// </summary>
-        /// <returns>For exclusive mode, IsFormatSupportedInternal returns S_OK if the audio endpoint device supports the caller-specified format, or it returns AUDCLNT_E_UNSUPPORTED_FORMAT if the device does not support the format. The ppClosestMatch parameter can be NULL. If it is not NULL, the method writes NULL to *ppClosestMatch. 
-        /// For shared mode, if the audio engine supports the caller-specified format, IsFormatSupportedInternal sets *ppClosestMatch to NULL and returns S_OK. If the audio engine does not support the caller-specified format but does support a similar format, the method retrieves the similar format through the ppClosestMatch parameter and returns S_FALSE. If the audio engine does not support the caller-specified format or any similar format, the method sets *ppClosestMatch to NULL and returns AUDCLNT_E_UNSUPPORTED_FORMAT.</returns>
+        /// <returns>For exclusive mode, IsFormatSupportedInternal returns S_OK if the audio
+        /// endpoint device supports the caller-specified format, or it returns
+        /// AUDCLNT_E_UNSUPPORTED_FORMAT if the device does not support the format. The
+        /// ppClosestMatch parameter can be NULL. If it is not NULL, the method writes NULL to
+        /// *ppClosestMatch. For shared mode, if the audio engine supports the caller-specified
+        /// format, IsFormatSupportedInternal sets *ppClosestMatch to NULL and returns S_OK. If the
+        /// audio engine does not support the caller-specified format but does support a similar
+        /// format, the method retrieves the similar format through the ppClosestMatch parameter and
+        /// returns S_FALSE. If the audio engine does not support the caller-specified format or any
+        /// similar format, the method sets *ppClosestMatch to NULL and returns
+        /// AUDCLNT_E_UNSUPPORTED_FORMAT.</returns>
         public unsafe int IsFormatSupportedNative(AudioClientShareMode shareMode, WaveFormat waveFormat, out WaveFormatExtensible closestMatch)
         {
             closestMatch = null;
@@ -175,7 +211,7 @@ namespace CSCore.CoreAudioAPI
             IntPtr pclosestmatch = hClosestMatch.AddrOfPinnedObject();
 
             var result = InteropCalls.CallI(_basePtr, shareMode, hWaveFormat.AddrOfPinnedObject().ToPointer(),
-                &pclosestmatch, ((void**)(*(void**)_basePtr))[7]); 
+                &pclosestmatch, ((void**)(*(void**)_basePtr))[7]);
 
             hWaveFormat.Free();
             hClosestMatch.Free();
@@ -184,7 +220,7 @@ namespace CSCore.CoreAudioAPI
         }
 
         /// <summary>
-        /// Checks whether the audio endpoint device supports a particular stream format. 
+        /// Checks whether the audio endpoint device supports a particular stream format.
         /// </summary>
         public bool IsFormatSupported(AudioClientShareMode shareMode, WaveFormat waveFormat, out WaveFormatExtensible closestMatch)
         {
@@ -193,9 +229,11 @@ namespace CSCore.CoreAudioAPI
             {
                 case 0x0:
                     return true;
+
                 case 0x1:
                 case unchecked((int)0x88890008):
                     return false;
+
                 default:
                     CoreAudioAPIException.Try(result, c, "IsFormatSupported");
                     return false;
@@ -203,7 +241,7 @@ namespace CSCore.CoreAudioAPI
         }
 
         /// <summary>
-        /// Checks whether the audio endpoint device supports a particular stream format. 
+        /// Checks whether the audio endpoint device supports a particular stream format.
         /// </summary>
         /// <param name="shareMode"></param>
         /// <param name="waveFormat"></param>
@@ -215,7 +253,8 @@ namespace CSCore.CoreAudioAPI
         }
 
         /// <summary>
-        /// The GetMixFormat method retrieves the stream format that the audio engine uses for its internal processing of shared-mode streams.
+        /// The GetMixFormat method retrieves the stream format that the audio engine uses for its
+        /// internal processing of shared-mode streams.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -224,7 +263,7 @@ namespace CSCore.CoreAudioAPI
         {
             IntPtr pdeviceFormat = IntPtr.Zero;
             int result = -1;
-            if((result = InteropCalls.CallI(_basePtr, &pdeviceFormat, ((void**)(*(void**)_basePtr))[8])) == 0 && pdeviceFormat != IntPtr.Zero)
+            if ((result = InteropCalls.CallI(_basePtr, &pdeviceFormat, ((void**)(*(void**)_basePtr))[8])) == 0 && pdeviceFormat != IntPtr.Zero)
             {
                 deviceFormat = Marshal.PtrToStructure(pdeviceFormat, typeof(WaveFormat)) as WaveFormat;
                 if (deviceFormat != null && deviceFormat.WaveFormatTag == AudioEncoding.Extensible)
@@ -241,7 +280,8 @@ namespace CSCore.CoreAudioAPI
         }
 
         /// <summary>
-        /// The GetMixFormat method retrieves the stream format that the audio engine uses for its internal processing of shared-mode streams.
+        /// The GetMixFormat method retrieves the stream format that the audio engine uses for its
+        /// internal processing of shared-mode streams.
         /// </summary>
         public WaveFormat GetMixFormat()
         {
@@ -251,7 +291,8 @@ namespace CSCore.CoreAudioAPI
         }
 
         /// <summary>
-        /// The GetDevicePeriod method retrieves the length of the periodic interval separating successive processing passes by the audio engine on the data in the endpoint buffer.
+        /// The GetDevicePeriod method retrieves the length of the periodic interval separating
+        /// successive processing passes by the audio engine on the data in the endpoint buffer.
         /// </summary>
         /// <returns>HRESULT</returns>
         public unsafe int GetDevicePeriod(out long hnsDefaultDevicePeriod, out long hnsMinimumDevicePeriod)
@@ -284,13 +325,14 @@ namespace CSCore.CoreAudioAPI
         /// The Reset method resets the audio stream.
         /// </summary>
         /// <returns>HRESULT</returns>
-        public unsafe int Reset()
+        public unsafe int ResetNative()
         {
             return InteropCalls.CallI(_basePtr, ((void**)(*(void**)_basePtr))[12]);
         }
 
         /// <summary>
-        /// The SetEventHandle method sets the event handle that the system signals when an audio buffer is ready to be processed by the client.
+        /// The SetEventHandle method sets the event handle that the system signals when an audio
+        /// buffer is ready to be processed by the client.
         /// </summary>
         /// <returns>HRESULT</returns>
         public unsafe int SetEventHandleNative(IntPtr handle)
@@ -299,7 +341,8 @@ namespace CSCore.CoreAudioAPI
         }
 
         /// <summary>
-        /// The SetEventHandle method sets the event handle that the system signals when an audio buffer is ready to be processed by the client.
+        /// The SetEventHandle method sets the event handle that the system signals when an audio
+        /// buffer is ready to be processed by the client.
         /// </summary>
         public void SetEventHandle(IntPtr handle)
         {
@@ -307,22 +350,28 @@ namespace CSCore.CoreAudioAPI
         }
 
         /// <summary>
-        /// The GetService method accesses additional services from the audio client object.
-        /// Fore more details see http://msdn.microsoft.com/en-us/library/windows/desktop/dd370873(v=vs.85).aspx
+        /// The GetService method accesses additional services from the audio client object. Fore
+        /// more details see
+        /// http://msdn.microsoft.com/en-us/library/windows/desktop/dd370873(v=vs.85).aspx
         /// </summary>
         /// <returns>HRESULT</returns>
         public unsafe int GetServiceNative(Guid riid, out IntPtr ppv)
         {
-            fixed(void* pppv = &ppv){
+            fixed (void* pppv = &ppv)
+            {
                 return InteropCalls.CallI(_basePtr, ((void*)&riid), pppv, ((void**)(*(void**)_basePtr))[14]);
             }
         }
 
         /// <summary>
-        /// The GetService method accesses additional services from the audio client object.
-        /// Fore more details see http://msdn.microsoft.com/en-us/library/windows/desktop/dd370873(v=vs.85).aspx
+        /// The GetService method accesses additional services from the audio client object. Fore
+        /// more details see
+        /// http://msdn.microsoft.com/en-us/library/windows/desktop/dd370873(v=vs.85).aspx
         /// </summary>
-        /// <remarks>For a few services, there are already existing classes with static "FromAudioClient"-Methods like AudioRenderClient::FromAudioClient.</remarks>
+        /// <remarks>
+        /// For a few services, there are already existing classes with static
+        /// "FromAudioClient"-Methods like AudioRenderClient::FromAudioClient.
+        /// </remarks>
         public IntPtr GetService(Guid riid)
         {
             IntPtr ptr;
@@ -332,7 +381,9 @@ namespace CSCore.CoreAudioAPI
     }
 
     /// <summary>
-    /// For details see: http://msdn.microsoft.com/en-us/library/windows/desktop/dd370791(v=vs.85).aspx and http://msdn.microsoft.com/en-us/library/windows/desktop/dd370789(v=vs.85).aspx
+    /// For details see:
+    /// http://msdn.microsoft.com/en-us/library/windows/desktop/dd370791(v=vs.85).aspx and
+    /// http://msdn.microsoft.com/en-us/library/windows/desktop/dd370789(v=vs.85).aspx
     /// </summary>
     [Flags]
     public enum AudioClientStreamFlags
@@ -342,10 +393,12 @@ namespace CSCore.CoreAudioAPI
         StreamFlags_Loopback = 0x00020000,
         StreamFlags_EventCallback = 0x00040000,
         StreamFlags_NoPersist = 0x00080000,
+
         /// <summary>
         /// Supported since Windows 7
         /// </summary>
         StreamFlags_RateAdjust = 0x00100000,
+
         SessionFlags_ExpireWhenUnowned = 0x10000000,
         SessionFlags_DisplayHide = 0x20000000,
         SessionFlags_Display_HideWhenExpired = 0x40000000

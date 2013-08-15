@@ -1,5 +1,5 @@
-﻿using System;
-using CSCore.Utils.Buffer;
+﻿using CSCore.Utils.Buffer;
+using System;
 
 namespace CSCore.Streams.SampleConverter
 {

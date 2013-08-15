@@ -1,156 +1,185 @@
-﻿using System;
+﻿using CSCore.Utils;
+using CSCore.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CSCore.Utils;
-using CSCore.Win32;
 
 namespace CSCore.MediaFoundation
 {
     [RemoveObj]
     internal class InteropCalls
     {
-        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, int streamIndex, void* pflags, void* p)
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, int streamIndex, void* pflags, void* p)
         {
             throw new NotImplementedException();
         }
 
-        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, int streamIndex, NativeBool selected, void* p)
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, int streamIndex, NativeBool selected, void* p)
         {
             throw new NotImplementedException();
         }
 
-        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, Guid* guid, void* p1, void* p2)
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, Guid* guid, void* p1, void* p2)
         {
             throw new NotImplementedException();
         }
 
-        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, Guid* guid, PropertyVariant* propertyVariant, NativeBool* pr, void* p)
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, Guid* guid, PropertyVariant* propertyVariant, NativeBool* pr, void* p)
         {
             throw new NotImplementedException();
         }
 
-        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, void* p1, MFAttributeMatchType matchType, NativeBool* pr, void* p2)
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, void* p1, MFAttributeMatchType matchType, NativeBool* pr, void* p2)
         {
             throw new NotImplementedException();
         }
 
-        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, Guid* guid, void* pwszv, int cchBufSize, void* pcchl, void* p)
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, Guid* guid, void* pwszv, int cchBufSize, void* pcchl, void* p)
         {
             throw new NotImplementedException();
         }
 
-        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, Guid* guid, void* p1, IntPtr* pcchl, void* p2)
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, Guid* guid, void* p1, IntPtr* pcchl, void* p2)
         {
             throw new NotImplementedException();
         }
 
-        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, Guid* guid, IntPtr* intPtr, void* ppcbsize, void* p)
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, Guid* guid, IntPtr* intPtr, void* ppcbsize, void* p)
         {
             throw new NotImplementedException();
         }
 
-        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, Guid* guid, void* p)
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, Guid* guid, void* p)
         {
             throw new NotImplementedException();
         }
 
-        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, void* p)
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, void* p)
         {
             throw new NotImplementedException();
         }
 
-        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, Guid* guid, int unValue, void* p)
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, Guid* guid, int unValue, void* p)
         {
             throw new NotImplementedException();
         }
 
-        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, Guid* guid, long unValue, void* p)
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, Guid* guid, long unValue, void* p)
         {
             throw new NotImplementedException();
         }
 
-        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, Guid* guid, double value, void* p)
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, Guid* guid, double value, void* p)
         {
             throw new NotImplementedException();
         }
 
-        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, Guid* guid, Guid value, void* p)
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, Guid* guid, Guid value, void* p)
         {
             throw new NotImplementedException();
         }
 
-        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, Guid* guid, void* p1, int cbBufSize, void* p2)
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, Guid* guid, void* p1, int cbBufSize, void* p2)
         {
             throw new NotImplementedException();
         }
 
-        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, Guid* guid, IntPtr unknown, void* p)
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, Guid* guid, IntPtr unknown, void* p)
         {
             throw new NotImplementedException();
         }
 
-        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, IntPtr intPtr, void* p)
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, IntPtr intPtr, void* p)
         {
             throw new NotImplementedException();
         }
 
-        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, int index, IntPtr intPtr, void* p1, void* p2)
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, int index, IntPtr intPtr, void* p1, void* p2)
         {
             throw new NotImplementedException();
         }
 
-        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, void* p1, void* p2)
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, void* p1, void* p2)
         {
             throw new NotImplementedException();
         }
 
-        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, void* p1, IntPtr intPtr, void* p2)
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, void* p1, IntPtr intPtr, void* p2)
         {
             throw new NotImplementedException();
         }
 
-        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, Guid guidRepresenation, IntPtr intPtr, void* p)
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, Guid guidRepresenation, IntPtr intPtr, void* p)
         {
             throw new NotImplementedException();
         }
 
-        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, int streamIndex, int mediatypeIndex, IntPtr* intPtr, void* p)
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, int streamIndex, int mediatypeIndex, IntPtr* intPtr, void* p)
         {
             throw new NotImplementedException();
         }
 
-        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, IntPtr reserved, void* p1, void* p2)
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, IntPtr reserved, void* p1, void* p2)
         {
             throw new NotImplementedException();
         }
 
-        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, MFSampleFlags flags, void* p)
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, MFSampleFlags flags, void* p)
         {
             throw new NotImplementedException();
         }
 
-        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, long hnsSampleTime, void* p)
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, long hnsSampleTime, void* p)
         {
             throw new NotImplementedException();
         }
 
-        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, void* pbuffer, void* pmaxlength, void* pcurrentlength, void* p)
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, void* pbuffer, void* pmaxlength, void* pcurrentlength, void* p)
         {
             throw new NotImplementedException();
         }
 
-        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, int streamIndex, int controlFlags, void* ptr0, void* ptr1, void* ptr2, IntPtr* intPtr, void* p)
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, int streamIndex, int controlFlags, void* ptr0, void* ptr1, void* ptr2, IntPtr* intPtr, void* p)
         {
             throw new NotImplementedException();
         }
 
-        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, int streamIndex, Guid* guid1, Guid* guid2, void* ptr, void* p)
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, int streamIndex, Guid* guid1, Guid* guid2, void* ptr, void* p)
         {
             throw new NotImplementedException();
         }
 
-        [CSCalli]internal static unsafe int CalliMethodPtr(void* _basePtr, int streamIndex, Guid* guid, void* ptr, void* p)
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, int streamIndex, Guid* guid, void* ptr, void* p)
         {
             throw new NotImplementedException();
         }

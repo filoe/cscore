@@ -10,6 +10,7 @@ namespace CSCore.Codecs.MP3
         private int playbackIndex = 0;
 
         public int TotalSamples { get; private set; }
+
         public int PlaybackIndex { get { return playbackIndex; } set { playbackIndex = value; } }
 
         public bool AddFromMP3Stream(Stream stream)

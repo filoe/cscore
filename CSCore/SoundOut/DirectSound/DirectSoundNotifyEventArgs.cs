@@ -6,9 +6,13 @@ namespace CSCore.SoundOut.DirectSound
     public class DirectSoundNotifyEventArgs : EventArgs
     {
         public int HandleIndex { get; private set; }
+
         public int SampleOffset { get; private set; }
+
         public int BufferSize { get; private set; }
+
         public bool IsTimeOut { get; private set; }
+
         public bool DSoundBufferStopped { get; private set; }
 
         /// <summary>

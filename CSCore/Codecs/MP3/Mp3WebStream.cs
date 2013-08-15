@@ -11,19 +11,20 @@ namespace CSCore.Codecs.MP3
 {
     public sealed class Mp3WebStream : IWaveSource
     {
-        Stream _stream;
-        WebResponse _response;
+        private Stream _stream;
+        private WebResponse _response;
 
-        FixedSizeBuffer<byte> _buffer;
-        byte[] _frameBuffer;
+        private FixedSizeBuffer<byte> _buffer;
+        private byte[] _frameBuffer;
 
-        bool _disposing = false;
+        private bool _disposing = false;
 
-        Thread _bufferThread;
+        private Thread _bufferThread;
 
         public event EventHandler<ConnectionCreatedEventArgs> ConnectionCreated;
 
         private Uri _uri;
+
         public Uri StreamUri
         {
             get { return _uri; }
@@ -160,7 +161,7 @@ namespace CSCore.Codecs.MP3
                 }
             } while (!_disposing);
 
-            if(converter != null)
+            if (converter != null)
                 converter.Dispose();
         }
 
@@ -175,7 +176,8 @@ namespace CSCore.Codecs.MP3
             return frame;
         }
 
-        WaveFormat _waveFormat;
+        private WaveFormat _waveFormat;
+
         public WaveFormat WaveFormat
         {
             get { return _waveFormat; }
@@ -186,7 +188,7 @@ namespace CSCore.Codecs.MP3
             int read = 0;
             Array.Clear(buffer, offset, count);
 
-            if (_buffer.Buffered < _buffer.Length /2)
+            if (_buffer.Buffered < _buffer.Length / 2)
                 return count;
             else
             {
@@ -240,7 +242,8 @@ namespace CSCore.Codecs.MP3
 
         /// <summary>
         /// Copied from
-        /// http://social.msdn.microsoft.com/forums/en-US/netfxnetcom/thread/ff098248-551c-4da9-8ba5-358a9f8ccc57/
+        /// http:
+        ///       //social.msdn.microsoft.com/forums/en-US/netfxnetcom/thread/ff098248-551c-4da9-8ba5-358a9f8ccc57/
         /// </summary>
         private static bool SetAllowUnsafeHeaderParsing20()
         {

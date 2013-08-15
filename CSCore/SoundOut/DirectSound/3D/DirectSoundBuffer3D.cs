@@ -15,7 +15,8 @@ namespace CSCore.SoundOut.DirectSound
             return buffer.QueryInterface<DirectSoundBuffer3D>();
         }
 
-        public DirectSoundBuffer3D(IntPtr ptr) : base(ptr)
+        public DirectSoundBuffer3D(IntPtr ptr)
+            : base(ptr)
         {
         }
 
@@ -77,7 +78,7 @@ namespace CSCore.SoundOut.DirectSound
 
         public DSResult GetPosition(out D3DVector position)
         {
-            fixed(void* pposition = &position)
+            fixed (void* pposition = &position)
             {
                 return InteropCalls.CalliMethodPtr(_basePtr, pposition, ((void**)(*(void**)_basePtr))[10]);
             }
@@ -85,7 +86,7 @@ namespace CSCore.SoundOut.DirectSound
 
         public DSResult GetVelocity(out D3DVector velocity)
         {
-            fixed(void* pvelocity = &velocity)
+            fixed (void* pvelocity = &velocity)
             {
                 return InteropCalls.CalliMethodPtr(_basePtr, pvelocity, ((void**)(*(void**)_basePtr))[11]);
             }

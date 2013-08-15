@@ -8,6 +8,7 @@ namespace CSCore.Win32
     public unsafe class ComObject : IUnknown, IDisposable
     {
         protected void* _basePtr;
+
         public IntPtr BasePtr
         {
             get { return new IntPtr(_basePtr); }
@@ -16,8 +17,8 @@ namespace CSCore.Win32
 
         public ComObject()
         {
-
         }
+
         public ComObject(IntPtr ptr)
         {
             if (ptr == IntPtr.Zero)
@@ -58,9 +59,10 @@ namespace CSCore.Win32
             return Marshal.Release(BasePtr);
         }
 
-        object _lockObj = new object();
+        private object _lockObj = new object();
 
-        bool disposed = false;
+        private bool disposed = false;
+
         public void Dispose()
         {
             lock (_lockObj)

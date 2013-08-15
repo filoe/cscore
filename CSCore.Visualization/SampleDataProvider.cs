@@ -1,27 +1,32 @@
-﻿using System;
+﻿using CSCore.Streams;
+using CSCore.Streams.SampleConverter;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CSCore.Streams;
-using CSCore.Streams.SampleConverter;
 
 namespace CSCore.Visualization
 {
     public class SampleDataProvider : ISampleSource
     {
-        ISampleSource _source;
+        private ISampleSource _source;
 
-        Queue<float> _sampleBuffer;
-        Queue<float> _sampleBuffer1;
+        private Queue<float> _sampleBuffer;
+        private Queue<float> _sampleBuffer1;
 
         public event EventHandler<BlockReadEventArgs> BlockRead;
 
-        object _lockObj = new object();
+        private object _lockObj = new object();
+        private bool _blockStarted = false;
 
-        int _blockSize;
+        private int _blockSize;
+
         public int BlockSize
         {
-            get { return _blockSize; }
+            get
+            {
+                return _blockSize;
+            }
             set
             {
                 lock (_lockObj)
@@ -33,11 +38,22 @@ namespace CSCore.Visualization
             }
         }
 
-        SampleDataProviderMode _mode = SampleDataProviderMode.Merge;
+        private SampleDataProviderMode _mode = SampleDataProviderMode.Merge;
+
         public SampleDataProviderMode Mode
         {
-            get { return _mode; }
-            set { lock (_lockObj) { _mode = value; } }
+            get
+            {
+                return _mode;
+            }
+            set
+            {
+                lock (_lockObj)
+                {
+                    _mode = value;
+                    Reset();
+                }
+            }
         }
 
         public SampleDataProvider(IWaveStream source)
@@ -64,6 +80,7 @@ namespace CSCore.Visualization
         {
             lock (_lockObj)
             {
+                _blockStarted = true;
                 int read = _source.Read(buffer, offset, count);
 
                 for (int n = 0; n < read; n += WaveFormat.Channels)
@@ -75,13 +92,14 @@ namespace CSCore.Visualization
                         else if (Mode == SampleDataProviderMode.Merge)
                             _sampleBuffer.Enqueue((buffer[n] + buffer[n + 1]) / 2f);
                     }
-                    if(Mode != SampleDataProviderMode.Right && Mode != SampleDataProviderMode.Merge)
+                    if (Mode != SampleDataProviderMode.Right && Mode != SampleDataProviderMode.Merge)
                     {
                         _sampleBuffer.Enqueue(buffer[n]);
                     }
                     if (_sampleBuffer.Count >= BlockSize || _sampleBuffer1.Count > BlockSize)
                     {
                         RaiseBlockRead();
+                        Mode = Mode;
                     }
                 }
 
@@ -142,6 +160,12 @@ namespace CSCore.Visualization
             {
                 BlockRead(this, new BlockReadEventArgs(data, data1));
             }
+        }
+
+        private void Reset()
+        {
+            _sampleBuffer.Clear();
+            _sampleBuffer1.Clear();
         }
     }
 

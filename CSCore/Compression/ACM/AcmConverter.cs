@@ -4,9 +4,10 @@ namespace CSCore.Compression.ACM
 {
     public class AcmConverter : IDisposable
     {
-        AcmBufferConverter _acmBufferConverter;
+        private AcmBufferConverter _acmBufferConverter;
 
         public WaveFormat SourceFormat { get; private set; }
+
         public WaveFormat DestinationFormat { get; private set; }
 
         public AcmConverter(WaveFormat sourceFormat)
@@ -35,23 +36,24 @@ namespace CSCore.Compression.ACM
         }
 
         private bool _disposed;
-		public void Dispose()
+
+        public void Dispose()
         {
-			if(!_disposed)
-			{
-				_disposed = true;
-				
-				Dispose(true);
-				GC.SuppressFinalize(this);
-			}
+            if (!_disposed)
+            {
+                _disposed = true;
+
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
         }
 
         protected virtual void Dispose(bool disposing)
         {
-			if(disposing)
-			{
-				//dispose managed
-			}
+            if (disposing)
+            {
+                //dispose managed
+            }
             if (_acmBufferConverter != null)
             {
                 _acmBufferConverter.Dispose();

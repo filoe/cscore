@@ -1,5 +1,4 @@
-﻿
-namespace CSCore.SoundOut.DirectSound
+﻿namespace CSCore.SoundOut.DirectSound
 {
     /*
     #define DSBPLAY_LOOPING             0x00000001
@@ -9,6 +8,7 @@ namespace CSCore.SoundOut.DirectSound
     #define DSBPLAY_TERMINATEBY_DISTANCE    0x000000010
     #define DSBPLAY_TERMINATEBY_PRIORITY    0x000000020
      */
+
     public enum DSBPlayFlags : uint
     {
         None = 0x0,

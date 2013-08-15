@@ -10,8 +10,8 @@ namespace CSCore.Streams
     /// </summary>
     public class MonoToStereoSource : SampleSourceBase
     {
-        WaveFormat _waveFormat;
-        float[] _buffer;
+        private WaveFormat _waveFormat;
+        private float[] _buffer;
 
         public override WaveFormat WaveFormat
         {

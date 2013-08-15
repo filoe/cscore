@@ -18,8 +18,9 @@ namespace CSCore.SoundOut.DirectSound
             }
         }
 
-        static Dictionary<IntPtr, List<DirectSoundDevice>> _activeContexts;
-        static Mutex _mutex;
+        private static Dictionary<IntPtr, List<DirectSoundDevice>> _activeContexts;
+        private static Mutex _mutex;
+
         public static List<DirectSoundDevice> EnumerateDevices()
         {
             if (_activeContexts == null) _activeContexts = new Dictionary<IntPtr, List<DirectSoundDevice>>();
@@ -67,7 +68,9 @@ namespace CSCore.SoundOut.DirectSound
         }
 
         public string Description { get; private set; }
+
         public string Module { get; private set; }
+
         public Guid Guid { get; private set; }
 
         internal DirectSoundDevice()

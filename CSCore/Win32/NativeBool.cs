@@ -7,13 +7,14 @@ using System.Text;
 namespace CSCore.Win32
 {
     [Serializable]
-    [StructLayout(LayoutKind.Sequential, Size=4)]
+    [StructLayout(LayoutKind.Sequential, Size = 4)]
     public struct NativeBool : IEquatable<NativeBool>
     {
         public static readonly NativeBool True = new NativeBool(true);
         public static readonly NativeBool False = new NativeBool(false);
 
-        int _value;
+        private int _value;
+
         public NativeBool(bool value)
         {
             _value = value ? 1 : 0;

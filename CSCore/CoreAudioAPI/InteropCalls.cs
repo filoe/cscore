@@ -97,7 +97,7 @@ namespace CSCore.CoreAudioAPI
             throw new NotImplementedException();
         }
 
-        [CSCalli] 
+        [CSCalli]
         internal static unsafe int CallI(void* _basePtr, float volume, Guid* guid, void* p)
         {
             throw new NotImplementedException();
@@ -189,6 +189,18 @@ namespace CSCore.CoreAudioAPI
 
         [CSCalli]
         internal static unsafe int CallI(void* _basePtr, IntPtr intPtr, void* p)
+        {
+            throw new NotImplementedException();
+        }
+
+        [CSCalli]
+        internal static unsafe int CallI(void* _basePtr, void* d, void* p0, void* p1, void* p2, void* p3, void* p)
+        {
+            throw new NotImplementedException();
+        }
+
+        [CSCalli]
+        internal static unsafe int CallI(void* _basePtr, UInt32 framesRead, void* p)
         {
             throw new NotImplementedException();
         }

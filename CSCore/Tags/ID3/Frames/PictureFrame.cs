@@ -7,14 +7,19 @@ namespace CSCore.Tags.ID3.Frames
     public class PictureFrame : Frame
     {
         public string MimeType { get; private set; }
+
         public PictureFormat Format { get; set; }
+
         public string Description { get; private set; }
+
         internal byte[] RawData { get; private set; }
 
-        Image _image;
+        private Image _image;
+
         /// <summary>
         /// WARNING: If MimeType equals "-->" the picture will be downloaded from the web.
-        /// Use GetURL() the get the url to the picture. If not, data, contained by the frame will be used.
+        /// Use GetURL() the get the url to the picture. If not, data, contained by the frame will
+        /// be used.
         /// </summary>
         public Image Image
         {
@@ -26,7 +31,8 @@ namespace CSCore.Tags.ID3.Frames
             return ID3Utils.DecodeImage(RawData, MimeType);
         }
 
-        ID3Version _version;
+        private ID3Version _version;
+
         public PictureFrame(FrameHeader header, ID3Version version)
             : base(header)
         {

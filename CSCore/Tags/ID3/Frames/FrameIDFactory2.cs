@@ -9,6 +9,7 @@ namespace CSCore.Tags.ID3.Frames
     public static class FrameIDFactory2
     {
         private static List<ID3v2FrameEntry> _entries = new List<ID3v2FrameEntry>();
+
         public static List<ID3v2FrameEntry> Frames
         {
             get { return _entries; }
@@ -22,10 +23,13 @@ namespace CSCore.Tags.ID3.Frames
                     throw new ArgumentException("version");
                 case ID3Version.ID3v2_2:
                     return Frames.Where((x) => !String.IsNullOrEmpty(x.ID3v2ID) && x.ID3v2ID.Equals(id, StringComparison.InvariantCultureIgnoreCase)).First();
+
                 case ID3Version.ID3v2_3:
                     return Frames.Where((x) => !String.IsNullOrEmpty(x.ID3v3ID) && x.ID3v3ID.Equals(id, StringComparison.InvariantCultureIgnoreCase)).First();
+
                 case ID3Version.ID3v2_4:
                     return Frames.Where((x) => !String.IsNullOrEmpty(x.ID3v4ID) && x.ID3v4ID.Equals(id, StringComparison.InvariantCultureIgnoreCase)).First();
+
                 default:
                     throw new ArgumentException("Unknown version");
             }
@@ -79,7 +83,6 @@ namespace CSCore.Tags.ID3.Frames
             writer.Flush();
             writer.Dispose();
 #endif
-
         }
 
         private static void CreateEntries()
@@ -198,8 +201,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.AttachedPicutre,
@@ -209,8 +210,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "AttachedPicutre"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -222,8 +221,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.CommercialFrame,
@@ -233,8 +230,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "CommercialFrame"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -246,8 +241,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.Equalization,
@@ -257,8 +250,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "Equalization"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -270,8 +261,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.GeneralEncapsulatedObject,
@@ -282,8 +271,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.GroupIdentificationRegistration,
@@ -293,8 +280,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "GroupIdentificationRegistration"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -325,8 +310,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.MusicCDIdentifier,
@@ -336,8 +319,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "MusicCDIdentifier"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -349,8 +330,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.OwnershipFrame,
@@ -360,8 +339,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "OwnershipFrame"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -373,8 +350,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.PlayCounter,
@@ -384,8 +359,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "PlayCounter"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -397,8 +370,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.PositionSynchronisationFrame,
@@ -408,8 +379,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "PositionSynchronisationFrame"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -421,8 +390,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.RelativeVolumeAdjustment,
@@ -432,8 +399,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "RelativeVolumeAdjustment"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -445,8 +410,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.SynchronizedLyrics,
@@ -456,8 +419,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "SynchronizedLyrics"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -469,8 +430,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.Album,
@@ -480,8 +439,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "Album"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -493,8 +450,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.Composer,
@@ -504,8 +459,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "Composer"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -517,8 +470,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.CopyrightMessage,
@@ -528,8 +479,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "CopyrightMessage"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -541,8 +490,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.PlaylistDelay,
@@ -552,8 +499,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "PlaylistDelay"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -565,8 +510,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.TextWriter,
@@ -576,8 +519,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "TextWriter"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -589,8 +530,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.Time,
@@ -600,8 +539,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "Time"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -613,8 +550,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.Title,
@@ -624,8 +559,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "Title"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -637,8 +570,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.InitialKey,
@@ -648,8 +579,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "InitialKey"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -661,8 +590,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.Length,
@@ -672,8 +599,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "Length"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -685,8 +610,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.OriginalAlbum,
@@ -696,8 +619,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "OriginalAlbum"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -709,8 +630,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.OriginalTextWriter,
@@ -720,8 +639,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "OriginalTextWriter"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -733,8 +650,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.OriginalReleaseYear,
@@ -744,8 +659,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "OriginalReleaseYear"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -757,8 +670,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.LeadPerformers,
@@ -768,8 +679,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "LeadPerformers"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -781,8 +690,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.Conductor,
@@ -792,8 +699,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "Conductor"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -805,8 +710,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.PartOfASet,
@@ -816,8 +719,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "PartOfASet"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -829,8 +730,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.TrackNumber,
@@ -840,8 +739,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "TrackNumber"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -853,8 +750,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.InternetRadioStationName,
@@ -864,8 +759,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "InternetRadioStationName"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -877,8 +770,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.Size,
@@ -888,8 +779,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "Size"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -901,8 +790,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.EncodingSettings,
@@ -912,8 +799,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "EncodingSettings"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -925,8 +810,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.UserTextInformation,
@@ -936,8 +819,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "UserTextInformation"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -949,8 +830,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.TermsOfUse,
@@ -960,8 +839,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "TermsOfUse"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -973,8 +850,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.CommercialInformationURL,
@@ -984,8 +859,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "CommercialInformationURL"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -997,8 +870,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.OfficialAudioFileWebpage,
@@ -1008,8 +879,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "OfficialAudioFileWebpage"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -1021,8 +890,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.OfficialAudioSourceWebpage,
@@ -1032,8 +899,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "OfficialAudioSourceWebpage"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -1045,8 +910,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.PaymentURL,
@@ -1056,8 +919,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "PaymentURL"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -1069,8 +930,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.UserURLLinkFrame,
@@ -1080,8 +939,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "UserURLLinkFrame"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -1093,8 +950,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.Mood,
@@ -1104,8 +959,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "Mood"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -1117,8 +970,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.AlbumSortOrder,
@@ -1128,8 +979,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "AlbumSortOrder"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -1141,8 +990,6 @@ namespace CSCore.Tags.ID3.Frames
             };
             _entries.Add(entry);
 
-
-
             entry = new ID3v2FrameEntry()
             {
                 ID = FrameID.TitleSortOrder,
@@ -1152,8 +999,6 @@ namespace CSCore.Tags.ID3.Frames
                 Desc = "TitleSortOrder"
             };
             _entries.Add(entry);
-
-
 
             entry = new ID3v2FrameEntry()
             {
@@ -1169,9 +1014,13 @@ namespace CSCore.Tags.ID3.Frames
         public class ID3v2FrameEntry
         {
             public FrameID ID { get; set; }
+
             public string ID3v4ID { get; set; }
+
             public string ID3v3ID { get; set; }
+
             public string ID3v2ID { get; set; }
+
             public string Desc { get; set; }
         }
 
@@ -1191,7 +1040,7 @@ namespace CSCore.Tags.ID3.Frames
                 else
                     throw new InvalidOperationException(String.Format("FrameID {0} is not supported on version {1}", id, version));
 
-                if(sid == null)
+                if (sid == null)
                     throw new InvalidOperationException(String.Format("FrameID {0} is not supported on version {1}", id, version));
                 return sid;
             }

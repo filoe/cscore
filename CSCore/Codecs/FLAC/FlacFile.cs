@@ -9,18 +9,19 @@ namespace CSCore.Codecs.FLAC
 {
     public class FlacFile : IWaveSource
     {
-        Stream _stream;
-        FlacMetadataStreamInfo _streamInfo;
-        FlacPreScan _scan;
+        private Stream _stream;
+        private FlacMetadataStreamInfo _streamInfo;
+        private FlacPreScan _scan;
 
-        object _bufferLock = new object();
+        private object _bufferLock = new object();
 
         //overflow:
-        byte[] _overflowBuffer;
-        int _overflowCount;
-        int _overflowOffset;
+        private byte[] _overflowBuffer;
 
-        int _frameIndex = 0;
+        private int _overflowCount;
+        private int _overflowOffset;
+
+        private int _frameIndex = 0;
 
         public List<FlacMetadata> Metadata
         {
@@ -28,7 +29,8 @@ namespace CSCore.Codecs.FLAC
             protected set;
         }
 
-        WaveFormat _waveFormat;
+        private WaveFormat _waveFormat;
+
         public WaveFormat WaveFormat
         {
             get { return _waveFormat; }
@@ -39,7 +41,8 @@ namespace CSCore.Codecs.FLAC
             get { return _scan != null; }
         }
 
-        FlacFrame _frame;
+        private FlacFrame _frame;
+
         protected FlacFrame Frame
         {
             get { return _frame ?? (_frame = FlacFrame.FromStream(_stream, _streamInfo)); }
@@ -53,7 +56,6 @@ namespace CSCore.Codecs.FLAC
         public FlacFile(Stream stream)
             : this(stream, FlacPreScanMethodMode.Default)
         {
-
         }
 
         public FlacFile(Stream stream, FlacPreScanMethodMode? scanFlag)
@@ -84,7 +86,6 @@ namespace CSCore.Codecs.FLAC
             if (beginSync[0] == 0x66 && beginSync[1] == 0x4C &&
                beginSync[2] == 0x61 && beginSync[3] == 0x43)
             {
-
                 //read metadata
                 var metadata = FlacMetadata.AllDataFromStream(stream);
 
@@ -182,8 +183,9 @@ namespace CSCore.Codecs.FLAC
         }
 
 #if DIAGNOSTICS
-        long _position = 0;
+        private long _position = 0;
 #endif
+
         public long Position
         {
             get
@@ -229,7 +231,6 @@ namespace CSCore.Codecs.FLAC
                         }
                     }
                 }
-                
             }
         }
 
@@ -237,7 +238,7 @@ namespace CSCore.Codecs.FLAC
         {
             get
             {
-                if (CanSeek) 
+                if (CanSeek)
                     return _scan.TotalSamples * WaveFormat.BlockAlign;
                 return -1;
             }

@@ -1,23 +1,23 @@
-﻿using System;
+﻿using CSCore;
+using CSCore.Codecs;
+using CSCore.DSP;
+using CSCore.SoundOut;
+using CSCore.Streams.Effects;
+using CSCore.Streams.SampleConverter;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CSCore;
-using CSCore.Codecs;
-using CSCore.SoundOut;
-using CSCore.DSP;
-using CSCore.Streams.Effects;
-using CSCore.Streams.SampleConverter;
 using Visualization3D.Core.Graphics;
 
 namespace Visualization3D
 {
     public class AudioPlayer<T> : IDisposable where T : IVisualisationItem
     {
-        ISoundOut _soundOut;
+        private ISoundOut _soundOut;
 
-        VisualisationItemManager<T> _visualizer;
-        int _bands;
+        private VisualisationItemManager<T> _visualizer;
+        private int _bands;
 
         public AudioPlayer(VisualisationItemManager<T> visualizer, int bands)
         {

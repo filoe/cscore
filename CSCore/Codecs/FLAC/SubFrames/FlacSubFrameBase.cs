@@ -1,5 +1,4 @@
-﻿
-namespace CSCore.Codecs.FLAC
+﻿namespace CSCore.Codecs.FLAC
 {
     public class FlacSubFrameBase
     {
@@ -73,15 +72,16 @@ namespace CSCore.Codecs.FLAC
 
             //System.Diagnostics.Debug.WriteLine(subFrame.GetType().Name);
 
-            if(subFrame != null)
+            if (subFrame != null)
                 subFrame.WastedBits = wastedBits;
             else
                 Context.Current.Logger.Fatal("Unknown error while reading FlacSubFrameHeader");
 
-            return subFrame;   
+            return subFrame;
         }
 
         protected int _wastedBits;
+
         public int WastedBits
         {
             get { return _wastedBits; }
@@ -89,6 +89,7 @@ namespace CSCore.Codecs.FLAC
         }
 
         protected FlacFrameHeader _header;
+
         public FlacFrameHeader Header
         {
             get { return _header; }

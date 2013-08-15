@@ -40,15 +40,30 @@ namespace CSCore.Test.CoreAudioAPI
             }
         }
 
-        public static AudioClient CreateAudioClient()
+        public static AudioClient CreateDefaultRenderClient()
         {
-            var enumerator = new MMDeviceEnumerator();
-            var device = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Console);
-            var audioClient = AudioClient.FromMMDevice(device);
-            Assert.IsNotNull(audioClient);
-            device.Dispose();
-            enumerator.Dispose();
-            return audioClient;
+            using (var enumerator = new MMDeviceEnumerator())
+            {
+                using (var device = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Console))
+                {
+                    var audioClient = AudioClient.FromMMDevice(device);
+                    Assert.IsNotNull(audioClient);
+                    return audioClient;
+                }
+            }
+        }
+
+        public static AudioClient CreateDefaultCaptureClient()
+        {
+            using (var enumerator = new MMDeviceEnumerator())
+            {
+                using (var device = enumerator.GetDefaultAudioEndpoint(DataFlow.Capture, Role.Console))
+                {
+                    var audioClient = AudioClient.FromMMDevice(device);
+                    Assert.IsNotNull(audioClient);
+                    return audioClient;
+                }
+            }
         }
     }
 }

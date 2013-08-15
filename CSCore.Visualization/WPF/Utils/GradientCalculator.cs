@@ -8,7 +8,8 @@ namespace CSCore.Visualization.WPF
 {
     public class GradientCalculator
     {
-        List<Color> _colors;
+        private List<Color> _colors;
+
         public List<Color> Colors
         {
             get { return _colors ?? (_colors = new List<Color>()); }

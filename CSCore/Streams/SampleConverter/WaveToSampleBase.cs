@@ -16,10 +16,13 @@ namespace CSCore.Streams.SampleConverter
                 {
                     case 8:
                         return new Pcm8BitToSample(source);
+
                     case 16:
                         return new Pcm16BitToSample(source);
+
                     case 24:
                         return new Pcm24BitToSample(source);
+
                     default:
                         Context.Current.Logger.Fatal(new NotSupportedException("Not supported BPS"), loggerLocation, true);
                         break;
@@ -39,7 +42,7 @@ namespace CSCore.Streams.SampleConverter
         protected byte[] _buffer;
         protected IWaveSource _source;
         protected double _bpsratio;
-        WaveFormat _waveFormat;
+        private WaveFormat _waveFormat;
 
         public WaveToSampleBase(IWaveSource source, int bits, AudioEncoding encoding)
         {

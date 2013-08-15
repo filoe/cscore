@@ -1,7 +1,6 @@
-﻿
-using System;
+﻿using CSCore.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using CSCore.Utils;
+using System;
 using System.Collections.Generic;
 
 namespace CSCore.Test.Utils
@@ -44,8 +43,6 @@ namespace CSCore.Test.Utils
             fixed (byte* ptr = buffer)
             {
                 BitReader reader = new BitReader(ptr, 0);
-
-
 
                 reader.Dispose();
             }

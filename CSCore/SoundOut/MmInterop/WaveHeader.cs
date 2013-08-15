@@ -6,21 +6,44 @@ namespace CSCore.SoundOut.MmInterop
     [StructLayout(LayoutKind.Sequential)]
     public class WaveHeader
     {
-        /// <summary>pointer to locked data buffer (lpData)</summary>
+        /// <summary>
+        /// pointer to locked data buffer (lpData)
+        /// </summary>
         public IntPtr dataBuffer;
-        /// <summary>length of data buffer (dwBufferLength)</summary>
+
+        /// <summary>
+        /// length of data buffer (dwBufferLength)
+        /// </summary>
         public int bufferLength;
-        /// <summary>used for input only (dwBytesRecorded)</summary>
+
+        /// <summary>
+        /// used for input only (dwBytesRecorded)
+        /// </summary>
         public int bytesRecorded;
-        /// <summary>for client's use (dwUser)</summary>
+
+        /// <summary>
+        /// for client's use (dwUser)
+        /// </summary>
         public IntPtr userData;
-        /// <summary>assorted flags (dwFlags)</summary>
+
+        /// <summary>
+        /// assorted flags (dwFlags)
+        /// </summary>
         public WaveHeaderFlags flags;
-        /// <summary>loop control counter (dwLoops)</summary>
+
+        /// <summary>
+        /// loop control counter (dwLoops)
+        /// </summary>
         public int loops;
-        /// <summary>PWaveHdr, reserved for driver (lpNext)</summary>
+
+        /// <summary>
+        /// PWaveHdr, reserved for driver (lpNext)
+        /// </summary>
         public IntPtr next;
-        /// <summary>reserved for driver</summary>
+
+        /// <summary>
+        /// reserved for driver
+        /// </summary>
         public IntPtr reserved;
     }
 

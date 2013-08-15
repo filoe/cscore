@@ -1,8 +1,8 @@
-﻿using System;
+﻿using CSCore.DSP;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CSCore.DSP;
 
 namespace CSCore.Visualization
 {
@@ -10,7 +10,7 @@ namespace CSCore.Visualization
     {
         public event EventHandler<FFTCalculatedEventArgs> FFTCalculated;
 
-        FFTAggregator _fftaggregator;
+        private FFTAggregator _fftaggregator;
 
         public int Bands
         {

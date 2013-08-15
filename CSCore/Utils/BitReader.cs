@@ -5,14 +5,16 @@ namespace CSCore.Utils
 {
     public unsafe class BitReader : IDisposable
     {
-        GCHandle _hBuffer;
-        byte* _buffer, _storedBuffer;
-        int _bitoffset;
-        uint _cache;
-        int _position;
+        private GCHandle _hBuffer;
+        private byte* _buffer, _storedBuffer;
+        private int _bitoffset;
+        private uint _cache;
+        private int _position;
 
         protected internal uint Cache { get { return _cache; } }
+
         public byte* Buffer { get { return _storedBuffer; } }
+
         public int Position { get { return _position; } }
 
         public BitReader(byte[] buffer, int offset)

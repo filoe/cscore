@@ -1,5 +1,4 @@
-﻿
-namespace CSCore.Codecs.FLAC
+﻿namespace CSCore.Codecs.FLAC
 {
     public static class FlacConstant
     {
@@ -18,11 +17,11 @@ namespace CSCore.Codecs.FLAC
         };
 
         public static readonly int[] FlacBlockSizes = new int[]
-        { 
+        {
             0, 192, 576, 1152,
             2304, 4608, 0, 0,
             256, 512, 1024, 2048,
-            4096, 8192, 16384 
+            4096, 8192, 16384
         };
 
         public const int FrameHeaderSize = 16;
@@ -31,11 +30,13 @@ namespace CSCore.Codecs.FLAC
 
         //FLAC__SUBFRAME_LPC_QLP_COEFF_PRECISION_LEN
         public const int SUBFRAME_LPC_QLP_COEFF_PRECISION_LEN = 4;
+
         //FLAC__SUBFRAME_LPC_QLP_SHIFT_LEN
         public const int SUBFRAME_LPC_QLP_SHIFT_LEN = 5;
 
         //FLAC__ENTROPY_CODING_METHOD_TYPE_LEN
         public const int ENTROPY_CODING_METHOD_TYPE_LEN = 2;
+
         //FLAC__ENTROPY_CODING_METHOD_PARTITIONED_RICE_ORDER_LEN
         public const int ENTROPY_CODING_METHOD_PARTITIONED_RICE_ORDER_LEN = 4;
 
@@ -43,6 +44,7 @@ namespace CSCore.Codecs.FLAC
         /// 4 bit
         /// </summary>
         public const int ENTROPY_CODING_METHOD_PARTITIONED_RICE_PARAMETER_LEN = 4;
+
         /// <summary>
         /// 5 bit
         /// </summary>
@@ -52,6 +54,7 @@ namespace CSCore.Codecs.FLAC
         /// 15 bit
         /// </summary>
         public const int ENTROPY_CODING_METHOD_PARTITIONED_RICE_ESCAPE_PARAMETER = 15;  //1111
+
         /// <summary>
         /// 31 bit
         /// </summary>

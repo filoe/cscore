@@ -1,17 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Diagnostics;
 
 namespace CSCore.Streams
 {
     public class VolumeSource : SampleSourceBase
     {
-        float _volume = 1f;
+        private float _volume = 1f;
+
         public virtual float Volume
         {
-            get { return _volume; }
+            get
+            {
+                return _volume;
+            }
             set
             {
                 if (_volume < 0 || _volume > 1)

@@ -1,15 +1,16 @@
-﻿
-namespace CSCore.Utils
+﻿namespace CSCore.Utils
 {
     public partial class CSMath
     {
         /// <summary>
-        /// http://flac.sourceforge.net/format.html#frame_header
-        /// CRC-8 (polynomial = x^8 + x^2 + x^1 + x^0, initialized with 0) of everything before the crc, including the sync code 
+        /// http: //flac.sourceforge.net/format.html#frame_header
+        /// CRC-8 (polynomial = x^8 + x^2 + x^1 + x^0, initialized with 0) of everything before the
+        /// crc, including the sync code
         /// </summary>
         public class CRC8 : CRCBase<byte>
         {
-            static CRC8 _instance;
+            private static CRC8 _instance;
+
             public static CRC8 Instance
             {
                 get { return _instance ?? (_instance = new CRC8()); }

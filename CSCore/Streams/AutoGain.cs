@@ -16,7 +16,7 @@ namespace CSCore.Streams
             Gain = 1f;
         }
 
-        float _storedgain = 1f;
+        private float _storedgain = 1f;
 
         public override int Read(float[] buffer, int offset, int count)
         {

@@ -9,6 +9,7 @@ namespace CSCore.CoreAudioAPI
     {
         protected AudioEndpointVolume _audioEndpointVolume;
         private int _channelIndex;
+
         public int ChannelIndex
         {
             get { return _channelIndex; }

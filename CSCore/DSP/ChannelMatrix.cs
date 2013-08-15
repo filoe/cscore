@@ -29,13 +29,14 @@ namespace CSCore.DSP
             MonoToStereoMatrix[1, 0].Value = 1f;
         }
 
-        ChannelMask _inputMask;
-        ChannelMask _outputMask;
+        private ChannelMask _inputMask;
+        private ChannelMask _outputMask;
 
         public ChannelMask InputMask { get { return _inputMask; } }
+
         public ChannelMask OutputMask { get { return _outputMask; } }
 
-        ChannelMatrixElement[,] _matrix;
+        private ChannelMatrixElement[,] _matrix;
 
         public int Height
         {
@@ -47,10 +48,8 @@ namespace CSCore.DSP
             get { return _matrix.GetLength(0); }
         }
 
-
         /// <summary>
-        /// Equals Width
-        /// <see cref="Width"/>
+        /// Equals Width <see cref="Width"/>
         /// </summary>
         public int InputChannelCount
         {
@@ -58,8 +57,7 @@ namespace CSCore.DSP
         }
 
         /// <summary>
-        /// Equals Height
-        /// <see cref="Height"/>
+        /// Equals Height <see cref="Height"/>
         /// </summary>
         public int OutputChannelCount
         {
@@ -145,7 +143,9 @@ namespace CSCore.DSP
     public class ChannelMatrixElement
     {
         public ChannelMask InputChannel { get; private set; }
+
         public ChannelMask OutputChannel { get; private set; }
+
         /// <summary>
         /// Value from 0 to 1
         /// </summary>

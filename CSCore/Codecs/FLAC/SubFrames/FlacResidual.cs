@@ -1,17 +1,18 @@
-﻿
-namespace CSCore.Codecs.FLAC
+﻿namespace CSCore.Codecs.FLAC
 {
     public class FlacResidual
     {
         public FlacEntropyCoding CodingMethod { get; private set; }
+
         public int RiceOrder { get; private set; }
+
         internal FlacPartitionedRice Rice { get; private set; }
 
         public FlacResidual(FlacBitReader reader, FlacFrameHeader header, FlacSubFrameData data, int order)
         {
             const string loggerLocation = "FlacResidual.ctor(...)";
 
-            FlacEntropyCoding codingMethod = (FlacEntropyCoding)reader.ReadBits(FlacConstant.ENTROPY_CODING_METHOD_TYPE_LEN); // 2 Bit 
+            FlacEntropyCoding codingMethod = (FlacEntropyCoding)reader.ReadBits(FlacConstant.ENTROPY_CODING_METHOD_TYPE_LEN); // 2 Bit
             int riceOrder = -1;
 
             if (codingMethod == FlacEntropyCoding.PartitionedRice || codingMethod == FlacEntropyCoding.PartitionedRice2)

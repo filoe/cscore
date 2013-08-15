@@ -63,7 +63,7 @@ namespace CSCore.Codecs.OGG
             }
             else
             {
-                if(_buffer != null)
+                if (_buffer != null)
                 {
                     var result = _buffer[_boffset + _offset];
                     _offset++;

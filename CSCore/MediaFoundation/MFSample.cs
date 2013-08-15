@@ -7,7 +7,7 @@ namespace CSCore.MediaFoundation
 {
     public class MFSample : MFAttributes
     {
-        const string c = "IMFSample";
+        private const string c = "IMFSample";
 
         public MFSample(IntPtr ptr)
             : base(ptr)
@@ -15,7 +15,9 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Currently no flags are defined. Instead, metadata for samples is defined using attributes. To get attibutes from a sample, use the IMFAttributes interface, which IMFSample inherits.
+        /// Currently no flags are defined. Instead, metadata for samples is defined using
+        /// attributes. To get attibutes from a sample, use the IMFAttributes interface, which
+        /// IMFSample inherits.
         /// </summary>
         /// <returns>HRESULT</returns>
         public unsafe int GetSampleFlagsNative(out MFSampleFlags sampleFlags)
@@ -27,7 +29,9 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Currently no flags are defined. Instead, metadata for samples is defined using attributes. To get attibutes from a sample, use the IMFAttributes interface, which IMFSample inherits.
+        /// Currently no flags are defined. Instead, metadata for samples is defined using
+        /// attributes. To get attibutes from a sample, use the IMFAttributes interface, which
+        /// IMFSample inherits.
         /// </summary>
         public MFSampleFlags GetSampleFlags()
         {
@@ -37,7 +41,9 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Currently no flags are defined. Instead, metadata for samples is defined using attributes. To set attibutes on a sample, use the IMFAttributes interface, which IMFSample inherits.
+        /// Currently no flags are defined. Instead, metadata for samples is defined using
+        /// attributes. To set attibutes on a sample, use the IMFAttributes interface, which
+        /// IMFSample inherits.
         /// </summary>
         /// <param name="flags">must be zero</param>
         /// <returns>HRESULT</returns>
@@ -47,7 +53,9 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Currently no flags are defined. Instead, metadata for samples is defined using attributes. To set attibutes on a sample, use the IMFAttributes interface, which IMFSample inherits.
+        /// Currently no flags are defined. Instead, metadata for samples is defined using
+        /// attributes. To set attibutes on a sample, use the IMFAttributes interface, which
+        /// IMFSample inherits.
         /// </summary>
         /// <param name="flags">must be zero</param>
         public void SetSampleFlags(MFSampleFlags flags)

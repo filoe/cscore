@@ -7,68 +7,88 @@ namespace CSCore.SoundOut.DirectSound
     public class DSEchoEffect : DSEffectBase
     {
         //for details see dsound.h
+
         #region constants
+
         /// <summary>
         /// Default percentage of output fed back into input.
         /// </summary>
         public const float FeedbackDefault = 50f;
+
         /// <summary>
         /// Maximum percentage of output fed back into input.
         /// </summary>
         public const float FeedbackMax = 100f;
+
         /// <summary>
         /// Minimum percentage of output fed back into input.
         /// </summary>
         public const float FeedbackMin = 0f;
+
         /// <summary>
         /// Default delay for left channel, in milliseconds.
         /// </summary>
         public const float LeftDelayDefault = 500f;
+
         /// <summary>
         /// Maximum delay for left channel, in milliseconds.
         /// </summary>
         public const float LeftDelayMax = 2000f;
+
         /// <summary>
         /// Minimum delay for left channel, in milliseconds.
         /// </summary>
         public const float LeftDelayMin = 1f;
+
         /// <summary>
-        /// Default value that specifies whether to swap left and right delays with each successive echo. The default value is zero, meaning no swap.
+        /// Default value that specifies whether to swap left and right delays with each successive
+        /// echo. The default value is zero, meaning no swap.
         /// </summary>
         public const int PanDelayDefault = 0;
+
         /// <summary>
-        /// Maximum value that specifies whether to swap left and right delays with each successive echo. The default value is zero, meaning no swap.
+        /// Maximum value that specifies whether to swap left and right delays with each successive
+        /// echo. The default value is zero, meaning no swap.
         /// </summary>
         public const int PanDelayMax = 1;
+
         /// <summary>
-        /// Minimum value that specifies whether to swap left and right delays with each successive echo. The default value is zero, meaning no swap.
+        /// Minimum value that specifies whether to swap left and right delays with each successive
+        /// echo. The default value is zero, meaning no swap.
         /// </summary>
         public const int PanDelayMin = 0;
+
         /// <summary>
         /// Default delay for right channel, in milliseconds.
         /// </summary>
         public const float RightDelayDefault = 500f;
+
         /// <summary>
         /// Maximum delay for right channel, in milliseconds.
         /// </summary>
         public const float RightDelayMax = 2000f;
+
         /// <summary>
         /// Minimum delay for right channel, in milliseconds.
         /// </summary>
         public const float RightDelayMin = 1f;
+
         /// <summary>
         /// Default ratio of wet (processed) signal to dry (unprocessed) signal.
         /// </summary>
         public const float WetDryMixDefault = 50f;
+
         /// <summary>
         /// Maximum ratio of wet (processed) signal to dry (unprocessed) signal.
         /// </summary>
         public const float WetDryMixMax = 100f;
+
         /// <summary>
         /// Minimum ratio of wet (processed) signal to dry (unprocessed) signal.
         /// </summary>
         public const float WetDryMixMin = 0f;
-        #endregion
+
+        #endregion constants
 
         public static DSEffectDesc GetDefaultDescription()
         {
@@ -95,11 +115,16 @@ namespace CSCore.SoundOut.DirectSound
         }
 
         /// <summary>
-        /// Ratio of wet (processed) signal to dry (unprocessed) signal. Must be in the range from DSFXECHO_WETDRYMIX_MIN through DSFXECHO_WETDRYMIX_MAX (all wet). The default value is 50.
+        /// Ratio of wet (processed) signal to dry (unprocessed) signal. Must be in the range from
+        /// DSFXECHO_WETDRYMIX_MIN through DSFXECHO_WETDRYMIX_MAX (all wet). The default value is
+        /// 50.
         /// </summary>
         public float WetDryMix
         {
-            get { return Parameters.WetDryMix; }
+            get
+            {
+                return Parameters.WetDryMix;
+            }
             set
             {
                 if (value < WetDryMixMin || value > WetDryMixMax)
@@ -111,11 +136,15 @@ namespace CSCore.SoundOut.DirectSound
         }
 
         /// <summary>
-        /// Percentage of output fed back into input, in the range from DSFXECHO_FEEDBACK_MIN through DSFXECHO_FEEDBACK_MAX. The default value is 50.
+        /// Percentage of output fed back into input, in the range from DSFXECHO_FEEDBACK_MIN
+        /// through DSFXECHO_FEEDBACK_MAX. The default value is 50.
         /// </summary>
         public float Feedback
         {
-            get { return Parameters.Feedback; }
+            get
+            {
+                return Parameters.Feedback;
+            }
             set
             {
                 if (value < FeedbackMin || value > FeedbackMax)
@@ -127,11 +156,15 @@ namespace CSCore.SoundOut.DirectSound
         }
 
         /// <summary>
-        /// Delay for left channel, in milliseconds, in the range from DSFXECHO_LEFTDELAY_MIN through DSFXECHO_LEFTDELAY_MAX. The default value is 500 ms.
+        /// Delay for left channel, in milliseconds, in the range from DSFXECHO_LEFTDELAY_MIN
+        /// through DSFXECHO_LEFTDELAY_MAX. The default value is 500 ms.
         /// </summary>
         public float LeftDelay
         {
-            get { return Parameters.LeftDelay; }
+            get
+            {
+                return Parameters.LeftDelay;
+            }
             set
             {
                 if (value < LeftDelayMin || value > LeftDelayMax)
@@ -143,11 +176,15 @@ namespace CSCore.SoundOut.DirectSound
         }
 
         /// <summary>
-        /// Delay for right channel, in milliseconds, in the range from DSFXECHO_RIGHTDELAY_MIN through DSFXECHO_RIGHTDELAY_MAX. The default value is 500 ms.
+        /// Delay for right channel, in milliseconds, in the range from DSFXECHO_RIGHTDELAY_MIN
+        /// through DSFXECHO_RIGHTDELAY_MAX. The default value is 500 ms.
         /// </summary>
         public float RightDelay
         {
-            get { return Parameters.RightDelay; }
+            get
+            {
+                return Parameters.RightDelay;
+            }
             set
             {
                 if (value < RightDelayMin || value > RightDelayMax)
@@ -159,11 +196,17 @@ namespace CSCore.SoundOut.DirectSound
         }
 
         /// <summary>
-        /// Value that specifies whether to swap left and right delays with each successive echo. The default value is zero, meaning no swap. Possible values are defined as DSFXECHO_PANDELAY_MIN (equivalent to FALSE) and DSFXECHO_PANDELAY_MAX (equivalent to TRUE).
+        /// Value that specifies whether to swap left and right delays with each successive echo.
+        /// The default value is zero, meaning no swap. Possible values are defined as
+        /// DSFXECHO_PANDELAY_MIN (equivalent to FALSE) and DSFXECHO_PANDELAY_MAX (equivalent to
+        /// TRUE).
         /// </summary>
         public int PanDelay
         {
-            get { return Parameters.PanDelay; }
+            get
+            {
+                return Parameters.PanDelay;
+            }
             set
             {
                 if (value < PanDelayMin || value > PanDelayMax)
@@ -178,9 +221,9 @@ namespace CSCore.SoundOut.DirectSound
             : base(ptr)
         {
         }
-        
+
         /// <summary>
-        /// The SetAllParameters method sets the echo parameters of a buffer. 
+        /// The SetAllParameters method sets the echo parameters of a buffer.
         /// </summary>
         /// <returns>HRESULT</returns>
         public unsafe DSResult SetAllParameters(ref DSFXEcho settings)
@@ -192,7 +235,7 @@ namespace CSCore.SoundOut.DirectSound
         }
 
         /// <summary>
-        /// The GetAllParameters method retrieves the echo parameters of a buffer. 
+        /// The GetAllParameters method retrieves the echo parameters of a buffer.
         /// </summary>
         /// <returns>HRESULT</returns>
         public unsafe DSResult GetAllParameters(out DSFXEcho settings)

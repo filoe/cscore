@@ -5,13 +5,19 @@ namespace CSCore.Tags.ID3.Frames
     public class CommercialFrame : Frame
     {
         public string Price { get; private set; }
+
         public string IsValidUntil { get; private set; }
+
         public string ContactURL { get; private set; }
+
         public ReceivedType ReceivedType { get; private set; }
+
         public string SellerName { get; private set; }
+
         public string Description { get; private set; }
 
         public string LogoMimeType { get; private set; }
+
         public System.Drawing.Image Image { get; private set; }
 
         public CommercialFrame(FrameHeader header)
@@ -55,7 +61,6 @@ namespace CSCore.Tags.ID3.Frames
 
                 Image = ID3Utils.DecodeImage(logoData, LogoMimeType);
             }
-
         }
     }
 

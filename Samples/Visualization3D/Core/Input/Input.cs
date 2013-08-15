@@ -1,26 +1,30 @@
-﻿using System;
+﻿using SharpDX.DirectInput;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using SharpDX.DirectInput;
 using System.Windows.Forms;
 
 namespace Visualization3D.Core.Input
 {
     public class InputManager : IDisposable
     {
-        DirectInput _directInput;
-        Mouse _mouse;
-        Keyboard _keyboard;
+        private DirectInput _directInput;
+        private Mouse _mouse;
+        private Keyboard _keyboard;
 
-        KeyboardState _keyboardState;
-        MouseState _mouseState;
-        MouseState _prevmouseState;
+        private KeyboardState _keyboardState;
+        private MouseState _mouseState;
+        private MouseState _prevmouseState;
 
-        bool _enableMouse = true;
+        private bool _enableMouse = true;
+
         public bool EnableMouse
         {
-            get { return _enableMouse; }
+            get
+            {
+                return _enableMouse;
+            }
             set
             {
                 _enableMouse = value;
@@ -81,6 +85,7 @@ namespace Visualization3D.Core.Input
         }
 
         public int MouseDeltaX { get; protected set; }
+
         public int MouseDeltaY { get; protected set; }
 
         public void ResetMouse()
@@ -95,18 +100,18 @@ namespace Visualization3D.Core.Input
         public void Dispose()
         {
             Dispose(true);
-			GC.SuppressFinalize(this);
+            GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)
         {
-			if(disposing)
-			{
-				//dispose managed
+            if (disposing)
+            {
+                //dispose managed
                 ResetMouse();
-			}
+            }
 
-            if(!_directInput.IsDisposed)
+            if (!_directInput.IsDisposed)
                 _directInput.Dispose();
             if (!_keyboard.IsDisposed)
                 _keyboard.Dispose();

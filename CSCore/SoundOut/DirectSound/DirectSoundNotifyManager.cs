@@ -6,20 +6,21 @@ namespace CSCore.SoundOut.DirectSound
     public class DirectSoundNotifyManager : IDisposable
     {
         public event EventHandler<DirectSoundNotifyEventArgs> NotifyAnyRaised;
+
         public event EventHandler Stopped;
 
-        DirectSoundSecondaryBuffer _buffer;
-        WaveFormat _waveFormat;
-        int _bufferSize;
-        DSBPositionNotify[] _positionNotifies;
-        WaitHandle[] _waitHandles;
-        bool _disposing;
-        Func<object, bool> _hasToStop;
-        int _latency;
+        private DirectSoundSecondaryBuffer _buffer;
+        private WaveFormat _waveFormat;
+        private int _bufferSize;
+        private DSBPositionNotify[] _positionNotifies;
+        private WaitHandle[] _waitHandles;
+        private bool _disposing;
+        private Func<object, bool> _hasToStop;
+        private int _latency;
 
-        Thread _thread;
+        private Thread _thread;
 
-        DirectSoundNotify _notify;
+        private DirectSoundNotify _notify;
 
         /// <summary>
         /// Was the notifymanager ever started?
@@ -100,7 +101,6 @@ namespace CSCore.SoundOut.DirectSound
             }
             catch (Exception)
             {
-
             }
             finally
             {

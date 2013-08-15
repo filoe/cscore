@@ -5,7 +5,7 @@ namespace CSCore.SoundOut.MmInterop
 {
     public class WaveWindowForm : Form, IWaveCallbackWindow
     {
-        MMInterops.WaveCallback _waveCallback;
+        private MMInterops.WaveCallback _waveCallback;
 
         public WaveWindowForm(MMInterops.WaveCallback callBack)
         {
@@ -25,12 +25,14 @@ namespace CSCore.SoundOut.MmInterop
                     System.Runtime.InteropServices.Marshal.PtrToStructure(m.LParam, header); //header von wparam
                     _waveCallback(hWaveOut, (WaveMsg)m.Msg, UIntPtr.Zero, header, UIntPtr.Zero);
                     break;
+
                 case (int)WaveMsg.WOM_OPEN:
                 case (int)WaveMsg.WOM_CLOSE:
                 case (int)WaveMsg.WIM_CLOSE: //WaveIn Messages für spätere WaveIn implementierung
                 case (int)WaveMsg.WIM_OPEN:
                     _waveCallback(m.WParam, (WaveMsg)m.Msg, UIntPtr.Zero, null, UIntPtr.Zero);
                     break;
+
                 default:
                     base.WndProc(ref m);
                     break;
@@ -38,6 +40,7 @@ namespace CSCore.SoundOut.MmInterop
         }
 
         #region ICallbackWindow Member
+
         public MMInterops.WaveCallback CallBack
         {
             get { return _waveCallback; }
@@ -47,6 +50,7 @@ namespace CSCore.SoundOut.MmInterop
         {
             base.Dispose(disposing);
         }
-        #endregion
+
+        #endregion ICallbackWindow Member
     }
 }

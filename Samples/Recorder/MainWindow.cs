@@ -1,21 +1,21 @@
-﻿using System;
+﻿using CSCore;
+using CSCore.Codecs.WAV;
+using CSCore.DSP;
+using CSCore.SoundIn;
+using CSCore.SoundOut;
+using CSCore.Streams;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using CSCore.SoundIn;
-using CSCore.Codecs.WAV;
-using CSCore.SoundOut;
-using CSCore;
-using CSCore.DSP;
-using CSCore.Streams;
-using System.IO;
-using System.Runtime.InteropServices;
-using System.Diagnostics;
 
 namespace Recorder
 {
@@ -26,14 +26,14 @@ namespace Recorder
             InitializeComponent();
         }
 
-        WaveInCaps _selectedDevice;
+        private WaveInCaps _selectedDevice;
 
-        WaveIn _waveIn;
-        WaveWriter _writer;
-        ISoundOut _soundOut;
+        private WaveIn _waveIn;
+        private WaveWriter _writer;
+        private ISoundOut _soundOut;
 
-        IWaveSource _source;
-        byte[] _writerBuffer;
+        private IWaveSource _source;
+        private byte[] _writerBuffer;
 
         private void deviceslist_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -162,7 +162,7 @@ namespace Recorder
             }
         }
 
-        void OnPeakCalculated(object sender, PeakCalculatedEventArgs e)
+        private void OnPeakCalculated(object sender, PeakCalculatedEventArgs e)
         {
             peakLeft.BeginInvoke(new Action(() => { peakLeft.Value = (int)(e.MaxLeftPeak * peakLeft.Maximum); }));
             peakRight.BeginInvoke(new Action(() => { peakRight.Value = (int)(e.MaxRightPeak * peakRight.Maximum); }));

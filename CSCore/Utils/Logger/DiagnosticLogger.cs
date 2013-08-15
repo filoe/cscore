@@ -4,7 +4,8 @@ namespace CSCore.Utils.Logger
 {
     public class DiagnosticLogger : LoggerBase
     {
-        bool? _isDebuggerAttached;
+        private bool? _isDebuggerAttached;
+
         private bool IsDebuggerAttached
         {
             get

@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows;
 using System.Threading;
+using System.Windows;
 
 namespace CSCore.Visualization.WPF
 {
     public abstract class FFTVisualizationBase : VisualizationBase, IFFTVisualization, IDisposable
     {
-        Mutex _mutex;
+        private Mutex _mutex;
 
         public FFTVisualizationBase()
         {
@@ -71,15 +71,16 @@ namespace CSCore.Visualization.WPF
         }
 
         private bool _disposed;
-		public void Dispose()
+
+        public void Dispose()
         {
-			if(!_disposed)
-			{
-				_disposed = true;
-				
-				Dispose(true);
-				GC.SuppressFinalize(this);
-			}
+            if (!_disposed)
+            {
+                _disposed = true;
+
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
         }
 
         protected virtual void Dispose(bool disposing)
@@ -94,6 +95,6 @@ namespace CSCore.Visualization.WPF
         ~FFTVisualizationBase()
         {
             Dispose(false);
-        }    
+        }
     }
 }

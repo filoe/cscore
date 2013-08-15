@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows;
 using System.Threading;
+using System.Windows;
 
 namespace CSCore.Visualization.WPF
 {
     public abstract class SampleVisualizationBase : VisualizationBase, ISampleVisualization, IDisposable
     {
-        Mutex _mutex;
+        private Mutex _mutex;
+
         public SampleVisualizationBase()
         {
             _mutex = new Mutex();
@@ -32,14 +33,13 @@ namespace CSCore.Visualization.WPF
                 }
 
                 SetValue(DataProviderProperty, value);
-                if(value != null)
+                if (value != null)
                     DataProvider.BlockRead += Update;
             }
         }
 
         public static readonly DependencyProperty DataProviderProperty =
             DependencyProperty.Register("DataProvider", typeof(SampleDataProvider), typeof(SampleVisualizationBase), new PropertyMetadata(null));
-
 
         public void Update(object sender, BlockReadEventArgs e)
         {
@@ -66,15 +66,16 @@ namespace CSCore.Visualization.WPF
         }
 
         private bool _disposed;
-		public void Dispose()
+
+        public void Dispose()
         {
-			if(!_disposed)
-			{
-				_disposed = true;
-				
-				Dispose(true);
-				GC.SuppressFinalize(this);
-			}
+            if (!_disposed)
+            {
+                _disposed = true;
+
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
         }
 
         protected virtual void Dispose(bool disposing)
@@ -89,6 +90,6 @@ namespace CSCore.Visualization.WPF
         ~SampleVisualizationBase()
         {
             Dispose(false);
-        }    
+        }
     }
 }

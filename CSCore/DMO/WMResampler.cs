@@ -8,12 +8,14 @@ namespace CSCore.DMO
 {
     public class WMResampler : IDisposable
     {
-        WMResamplerProps _resamplerprops;
-        IWMResamplerProps _nativeResamplerProps;
-        PropertyStore _propertyStore;
+        private WMResamplerProps _resamplerprops;
+        private IWMResamplerProps _nativeResamplerProps;
+        private PropertyStore _propertyStore;
+
         //MFTransform _transform;
-        MediaObject2 _mediaObject;
-        WMResamplerObject _obj;
+        private MediaObject2 _mediaObject;
+
+        private WMResamplerObject _obj;
 
         public WMResamplerProps ResamplerProps
         {
@@ -47,15 +49,16 @@ namespace CSCore.DMO
         }
 
         private bool _disposed;
-		public void Dispose()
+
+        public void Dispose()
         {
-			if(!_disposed)
-			{
-				_disposed = true;
+            if (!_disposed)
+            {
+                _disposed = true;
 
                 GC.SuppressFinalize(this);
-				Dispose(true);
-			}
+                Dispose(true);
+            }
         }
 
         protected virtual void Dispose(bool disposing)

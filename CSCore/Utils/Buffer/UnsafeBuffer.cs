@@ -2,24 +2,26 @@
 
 namespace CSCore.Utils.Buffer
 {
-    [StructLayout(LayoutKind.Explicit, Pack=2)]
+    [StructLayout(LayoutKind.Explicit, Pack = 2)]
     public class UnsafeBuffer
     {
         [FieldOffset(0)]
-        long tmp = 0;
+        private long tmp = 0;
 
         [FieldOffset(8)]
-        byte[] _byteBuffer;
+        private byte[] _byteBuffer;
+
         [FieldOffset(8)]
-        short[] _shortBuffer;
+        private short[] _shortBuffer;
+
         [FieldOffset(8)]
-        float[] _floatBuffer;
+        private float[] _floatBuffer;
+
         [FieldOffset(8)]
-        int[] _intBuffer;
+        private int[] _intBuffer;
 
         public UnsafeBuffer()
         {
-
         }
 
         public UnsafeBuffer(byte[] byteBuffer)

@@ -6,18 +6,24 @@ namespace CSCore.Codecs.FLAC
 {
     public class FlacFrameHeader
     {
-        int blocksize_hint = 0; //if bsindex == 6 || 7
-        int sampleRate_hint = 0; //if sampleRateIndex == 12 || 13 || 14
+        private int blocksize_hint = 0; //if bsindex == 6 || 7
+        private int sampleRate_hint = 0; //if sampleRateIndex == 12 || 13 || 14
 
         public int BlockSize { get; set; }
+
         public int SampleRate { get; set; }
+
         public int Channels { get; set; }
+
         public ChannelAssignment ChannelAssignment { get; set; }
+
         public int BitsPerSample { get; set; }
 
         //union
         public FlacNumberType NumberType { get; set; }
+
         public ulong SampleNumber { get; set; }
+
         public uint FrameNumber { get; set; }
 
         public byte CRC8 { get; set; }
@@ -56,7 +62,6 @@ namespace CSCore.Codecs.FLAC
         public unsafe FlacFrameHeader(ref byte* buffer, FlacMetadataStreamInfo streamInfo, bool doCrc)
             : this(ref buffer, streamInfo, doCrc, true)
         {
-
         }
 
         internal unsafe FlacFrameHeader(ref byte* buffer, FlacMetadataStreamInfo streamInfo, bool doCrc, bool logError)
@@ -317,7 +322,7 @@ namespace CSCore.Codecs.FLAC
 
         internal void Error(string msg, string location)
         {
-            if(printErrors)
+            if (printErrors)
                 Context.Current.Logger.Error(msg, location);
         }
 

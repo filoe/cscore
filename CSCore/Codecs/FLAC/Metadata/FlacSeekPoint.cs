@@ -1,10 +1,11 @@
-﻿
-namespace CSCore.Codecs.FLAC
+﻿namespace CSCore.Codecs.FLAC
 {
     public class FlacSeekPoint
     {
         public long Number { get; private set; }
+
         public long Offset { get; private set; }
+
         public int FrameSize { get; private set; }
 
         public FlacSeekPoint()

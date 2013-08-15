@@ -7,13 +7,16 @@ namespace CSCore.DMO
     {
         protected object _comobj;
 
-        MediaObject2 _mediaObject;
+        private MediaObject2 _mediaObject;
+
         public MediaObject2 MediaObject
         {
             get { return _mediaObject; }
         }
 
-        public DmoObject() { }
+        public DmoObject()
+        {
+        }
 
         public DmoObject(object comobj)
         {
@@ -27,15 +30,15 @@ namespace CSCore.DMO
         public void Dispose()
         {
             Dispose(true);
-			GC.SuppressFinalize(this);
+            GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)
         {
-			if(disposing)
-			{
-				//dispose managed
-			}
+            if (disposing)
+            {
+                //dispose managed
+            }
             Marshal.ReleaseComObject(_comobj);
         }
 

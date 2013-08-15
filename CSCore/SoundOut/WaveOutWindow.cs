@@ -6,7 +6,7 @@ namespace CSCore.SoundOut
 {
     public class WaveOutWindow : WaveOut
     {
-        IWaveCallbackWindow _window;
+        private IWaveCallbackWindow _window;
 
         public IntPtr WindowHandle { get { return _window.Handle; } }
 
@@ -29,7 +29,7 @@ namespace CSCore.SoundOut
             IntPtr ptr;
             lock (_lockObj)
             {
-                Context.Current.Logger.MMResult(MMInterops.waveOutOpenWithWindow(out ptr, (IntPtr)Device, WaveSource.WaveFormat, WindowHandle, 
+                Context.Current.Logger.MMResult(MMInterops.waveOutOpenWithWindow(out ptr, (IntPtr)Device, WaveSource.WaveFormat, WindowHandle,
                     IntPtr.Zero, MMInterops.WaveInOutOpenFlags.CALLBACK_WINDOW),
                     "waveOutOpenWithWindow <-- waveOutOpen", "WaveOutWindow.OpenWaveOut");
             }
@@ -45,5 +45,5 @@ namespace CSCore.SoundOut
                 _window = null;
             }
         }
-    } 
+    }
 }

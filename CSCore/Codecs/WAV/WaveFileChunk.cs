@@ -28,6 +28,7 @@ namespace CSCore.Codecs.WAV
         }
 
         public int ChunkID { get; private set; }
+
         public int ChunkDataSize { get; private set; }
 
         public WaveFileChunk(Stream stream)

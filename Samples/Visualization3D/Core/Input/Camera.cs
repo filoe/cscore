@@ -1,27 +1,28 @@
-﻿using System;
+﻿using SharpDX;
+using SharpDX.DirectInput;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using SharpDX;
-using SharpDX.DirectInput;
 
 namespace Visualization3D.Core.Input
 {
     public class Camera
     {
-        const float mouseSensitivity = 0.005f;
-        const float movementSpeed = 20f;
+        private const float mouseSensitivity = 0.005f;
+        private const float movementSpeed = 20f;
 
-        float _pitch, _yaw;
-        Vector3 _position;
+        private float _pitch, _yaw;
+        private Vector3 _position;
 
-        Matrix _view;
+        private Matrix _view;
 
-        InputManager _input;
+        private InputManager _input;
 
         public Matrix View { get { return _view; } }
 
         public bool EnableMouse { get; set; }
+
         public bool Enabled { get; set; }
 
         public Camera(InputManager input)

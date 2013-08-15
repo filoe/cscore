@@ -1,5 +1,4 @@
-﻿
-namespace CSCore.Compression.ACM
+﻿namespace CSCore.Compression.ACM
 {
     public enum AcmStreamSizeFlags
     {

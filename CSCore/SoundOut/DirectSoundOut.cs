@@ -1,9 +1,9 @@
-﻿using System;
+﻿using CSCore.SoundOut.DirectSound;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using CSCore.SoundOut.DirectSound;
 
 namespace CSCore.SoundOut
 {
@@ -22,26 +22,27 @@ namespace CSCore.SoundOut
         protected object _lockObj;
 
         public event EventHandler Stopped;
+
         private byte[] _buffer;
 
         public int Latency
         {
-            get { return _latency; }
-            set 
+            get
+            {
+                return _latency;
+            }
+            set
             {
                 if (value <= 0)
                     throw new ArgumentOutOfRangeException("value");
-                _latency = value; 
+                _latency = value;
             }
         }
 
         public Guid Device
         {
             get { return _device; }
-            set
-            {
-                _device = value;
-            }
+            set { _device = value; }
         }
 
         public DirectSoundOut()
@@ -64,7 +65,6 @@ namespace CSCore.SoundOut
             _lockObj = new Object();
             _syncContext = SynchronizationContext.Current;
         }
-
 
         public void Play()
         {
@@ -251,7 +251,7 @@ namespace CSCore.SoundOut
             {
                 if (_waveSource != null)
                     read = _waveSource.Read(_buffer, 0, bufferSize);
-                else 
+                else
                     return false;
             }
 
@@ -313,15 +313,16 @@ namespace CSCore.SoundOut
         }
 
         private bool _disposed;
-		public void Dispose()
+
+        public void Dispose()
         {
-			if(!_disposed)
-			{
-				_disposed = true;
-				
-				Dispose(true);
-				GC.SuppressFinalize(this);
-			}
+            if (!_disposed)
+            {
+                _disposed = true;
+
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
         }
 
         protected virtual void Dispose(bool disposing)

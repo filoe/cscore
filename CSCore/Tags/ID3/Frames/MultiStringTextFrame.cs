@@ -6,7 +6,8 @@ namespace CSCore.Tags.ID3.Frames
 {
     public class MultiStringTextFrame : TextFrame
     {
-        List<string> _strings;
+        private List<string> _strings;
+
         public List<string> Strings
         {
             get { return _strings ?? (_strings = new List<string>()); }

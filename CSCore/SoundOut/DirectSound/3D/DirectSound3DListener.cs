@@ -13,7 +13,8 @@ namespace CSCore.SoundOut.DirectSound
             return buffer.QueryInterface<DirectSound3DListener>();
         }
 
-        public DirectSound3DListener(IntPtr basePtr) : base(basePtr)
+        public DirectSound3DListener(IntPtr basePtr)
+            : base(basePtr)
         {
         }
 

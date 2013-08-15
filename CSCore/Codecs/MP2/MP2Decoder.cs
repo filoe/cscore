@@ -1,15 +1,16 @@
-﻿using System;
+﻿using CSCore.MediaFoundation;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using CSCore.MediaFoundation;
-using System.IO;
 
 namespace CSCore.Codecs.MP2
 {
     public class MP2Decoder : MediaFoundationDecoder
     {
-        static bool? _issupported;
+        private static bool? _issupported;
+
         public static bool IsSupported
         {
             get

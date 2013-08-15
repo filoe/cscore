@@ -6,12 +6,14 @@ namespace CSCore.SoundOut.DirectSound
     {
         public static void Try(DSResult result, string interfaceName, string member)
         {
-            if(result != DSResult.DS_OK)
+            if (result != DSResult.DS_OK)
                 throw new DirectSoundException(result, interfaceName, member);
         }
 
         public DSResult Result { get; private set; }
+
         public string InterfaceName { get; private set; }
+
         public string Member { get; private set; }
 
         public DirectSoundException(DSResult result, string interfaceName, string member)

@@ -21,13 +21,13 @@ namespace CSCore.Utils.Buffer
 
             if (type.IsPrimitive)
             {
-                // Make sure the array won't be moved around by the GC 
+                // Make sure the array won't be moved around by the GC
                 var handle = GCHandle.Alloc(output, GCHandleType.Pinned);
 
                 var destination = (byte*)handle.AddrOfPinnedObject().ToPointer();
                 var byteLength = length * sizeInBytes;
 
-                // There are faster ways to do this, particularly by using wider types or by 
+                // There are faster ways to do this, particularly by using wider types or by
                 // handling special lengths.
                 for (int i = 0; i < byteLength; i++)
                     destination[i] = ((byte*)source)[i];

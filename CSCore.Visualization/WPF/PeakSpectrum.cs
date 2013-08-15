@@ -11,8 +11,8 @@ namespace CSCore.Visualization.WPF
 {
     public class PeakSpectrum : FFTVisualizationBase
     {
-        Image PART_visualationDisplay;
-        RenderTargetBitmap _bmp;
+        private Image PART_visualationDisplay;
+        private RenderTargetBitmap _bmp;
 
         public PeakSpectrum()
         {
@@ -66,18 +66,15 @@ namespace CSCore.Visualization.WPF
             PART_visualationDisplay.Source = _bmp;
         }
 
-
-
         public Brush DrawingBrush
         {
             get { return (Brush)GetValue(DrawingBrushProperty); }
             set { SetValue(DrawingBrushProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for DrawingBrush.  This enables animation, styling, binding, etc...
+        // Using a DependencyProperty as the backing store for DrawingBrush. This enables animation,
+        // styling, binding, etc...
         public static readonly DependencyProperty DrawingBrushProperty =
             DependencyProperty.Register("DrawingBrush", typeof(Brush), typeof(PeakSpectrum), new PropertyMetadata(Brushes.Red));
-
-
     }
 }

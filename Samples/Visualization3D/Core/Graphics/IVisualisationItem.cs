@@ -8,8 +8,11 @@ namespace Visualization3D.Core.Graphics
     public interface IVisualisationItem : IRenderComponent
     {
         float Value { get; set; }
+
         Context Context { get; set; }
+
         void BeginItemRendering();
+
         void EndItemRendering();
     }
 }

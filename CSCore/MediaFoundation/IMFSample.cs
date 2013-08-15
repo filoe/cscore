@@ -56,7 +56,7 @@ namespace CSCore.MediaFoundation
         void ConvertToContiguousBuffer(out IMFMediaBuffer ppBuffer);
 
         /// <summary>
-        ///  Adds a buffer to the end of the list of buffers in the sample.
+        /// Adds a buffer to the end of the list of buffers in the sample.
         /// </summary>
         void AddBuffer(IMFMediaBuffer pBuffer);
 

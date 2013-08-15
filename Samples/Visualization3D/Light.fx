@@ -1,6 +1,4 @@
-﻿
-
-technique Main
+﻿technique Main
 {
 	pass P0
 	{

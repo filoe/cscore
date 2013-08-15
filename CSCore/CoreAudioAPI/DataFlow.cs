@@ -1,5 +1,4 @@
-﻿
-namespace CSCore.CoreAudioAPI
+﻿namespace CSCore.CoreAudioAPI
 {
     public enum DataFlow
     {

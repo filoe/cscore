@@ -5,16 +5,16 @@ namespace CSCore.Compression.ACM
 {
     public class AcmHeader : IDisposable
     {
-        IntPtr _handle;
-        int _sourceBufferSize, _destinationBufferSize;
-        byte[] _sourceBuffer, _destinationBuffer;
-        GCHandle _sourceBufferPtr, _destinationBufferPtr;
+        private IntPtr _handle;
+        private int _sourceBufferSize, _destinationBufferSize;
+        private byte[] _sourceBuffer, _destinationBuffer;
+        private GCHandle _sourceBufferPtr, _destinationBufferPtr;
 
-        WaveFormat _sourceFormat;
+        private WaveFormat _sourceFormat;
 
-        NativeAcmHeader _header;
+        private NativeAcmHeader _header;
 
-        AcmConvertFlags _flags = AcmConvertFlags.ACM_STREAMCONVERTF_START | AcmConvertFlags.ACM_STREAMCONVERTF_BLOCKALIGN;
+        private AcmConvertFlags _flags = AcmConvertFlags.ACM_STREAMCONVERTF_START | AcmConvertFlags.ACM_STREAMCONVERTF_BLOCKALIGN;
 
         public AcmHeader(IntPtr acmStreamHandle, WaveFormat sourceFormat, int sourceBufferSize, int destinationBufferSize)
         {
@@ -89,23 +89,24 @@ namespace CSCore.Compression.ACM
         }
 
         private bool _disposed;
-		public void Dispose()
+
+        public void Dispose()
         {
-			if(!_disposed)
-			{
-				_disposed = true;
-				
-				Dispose(true);
-				GC.SuppressFinalize(this);
-			}
+            if (!_disposed)
+            {
+                _disposed = true;
+
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
         }
 
         protected virtual void Dispose(bool disposing)
         {
-			if(disposing)
-			{
-				//dispose managed
-			}
+            if (disposing)
+            {
+                //dispose managed
+            }
             if (_sourceBufferPtr.IsAllocated)
                 _sourceBufferPtr.Free();
             if (_destinationBufferPtr.IsAllocated)

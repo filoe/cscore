@@ -1,12 +1,12 @@
-﻿using System;
+﻿using CSCore.Utils;
+using CSCore.Visualization.WPF.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
-using System.Windows.Media;
 using System.Windows.Controls;
-using CSCore.Visualization.WPF.Utils;
-using CSCore.Utils;
+using System.Windows.Media;
 
 namespace CSCore.Visualization.WPF
 {
@@ -18,11 +18,11 @@ namespace CSCore.Visualization.WPF
             get { return new Color[] { Colors.Black, Colors.Blue, Colors.Cyan, Colors.Lime, Colors.Yellow, Colors.Red }; }
         }
 
-        Image PART_visualationDisplay;
-        PixelManipulationBitmap _pmbitmap;
-        GradientCalculator _gradientCalculator;
-        int _bands;
-        int _activeColumn = 0;
+        private Image PART_visualationDisplay;
+        private PixelManipulationBitmap _pmbitmap;
+        private GradientCalculator _gradientCalculator;
+        private int _bands;
+        private int _activeColumn = 0;
 
         public Point3DSpectrum()
         {
@@ -40,7 +40,7 @@ namespace CSCore.Visualization.WPF
                 PART_visualationDisplay = img;
                 Content = PART_visualationDisplay;
             }
-        } 
+        }
 
         protected override void OnUpdate(double[] values)
         {
@@ -88,7 +88,8 @@ namespace CSCore.Visualization.WPF
             set { SetValue(SpectrumColorsProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for SpectrumColors.  This enables animation, styling, binding, etc...
+        // Using a DependencyProperty as the backing store for SpectrumColors. This enables
+        // animation, styling, binding, etc...
         public static readonly DependencyProperty SpectrumColorsProperty =
             DependencyProperty.Register("SpectrumColors", typeof(IEnumerable<Color>), typeof(Point3DSpectrum), new PropertyMetadata(DefaultColors));
 

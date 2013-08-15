@@ -2,7 +2,7 @@
 {
     /// <summary>
     /// uMsg
-    /// http://msdn.microsoft.com/en-us/library/dd743869%28VS.85%29.aspx
+    /// http: //msdn.microsoft.com/en-us/library/dd743869%28VS.85%29.aspx
     /// </summary>
     public enum WaveMsg
     {

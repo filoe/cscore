@@ -6,8 +6,11 @@ namespace CSCore.Codecs.FLAC
     public sealed class FlacSubFrameLPC : FlacSubFrameBase
     {
         public int QLPCoeffPrecision { get; private set; }
+
         public int LPCShiftNeeded { get; private set; }
+
         public int[] QLPCoeffs { get; private set; }
+
         public int[] Warmup { get; private set; }
 
         public FlacResidual Residual { get; private set; }
@@ -47,7 +50,6 @@ namespace CSCore.Codecs.FLAC
             }
 
             QLPCoeffs = coeffs;
-
 
             Residual = new FlacResidual(reader, header, data, order);
 

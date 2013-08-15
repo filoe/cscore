@@ -1,9 +1,9 @@
 ﻿using CSCore.Codecs.MP3;
+using CSCore.Streams.SampleConverter;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using CSCore.Streams.SampleConverter;
 
 namespace CSCore
 {
@@ -18,7 +18,7 @@ namespace CSCore
                 return new SampleToPcm8(sampleSource);
             if (bits == 16)
                 return new SampleToPcm16(sampleSource);
-            if(bits == 24)
+            if (bits == 24)
                 return new SampleToPcm24(sampleSource);
             if (bits == 32)
                 return new SampleToIeeeFloat32(sampleSource);
@@ -66,7 +66,7 @@ namespace CSCore
 
         public static long GetMilliseconds(this IWaveStream source, long bytes)
         {
-            if(source == null)
+            if (source == null)
                 throw new ArgumentNullException("source");
             if (bytes < 0)
                 throw new ArgumentOutOfRangeException("bytes");
@@ -155,19 +155,25 @@ namespace CSCore
 
         public static int LowWord(this int number)
         { return number & 0x0000FFFF; }
+
         public static int LowWord(this int number, int newValue)
         { return (int)((number & 0xFFFF0000) + (newValue & 0x0000FFFF)); }
+
         public static int HighWord(this int number)
         { return (int)(number & 0xFFFF0000); }
+
         public static int HighWord(this int number, int newValue)
         { return (number & 0x0000FFFF) + (newValue << 16); }
 
         public static uint LowWord(this uint number)
         { return number & 0x0000FFFF; }
+
         public static uint LowWord(this uint number, int newValue)
         { return (uint)((number & 0xFFFF0000) + (newValue & 0x0000FFFF)); }
+
         public static uint HighWord(this uint number)
         { return (uint)(number & 0xFFFF0000); }
+
         public static uint HighWord(this uint number, int newValue)
         { return (uint)((number & 0x0000FFFF) + (newValue << 16)); }
 

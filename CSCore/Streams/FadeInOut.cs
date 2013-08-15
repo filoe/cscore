@@ -31,13 +31,13 @@ namespace CSCore.Streams
             get { return _duration; }
         }
 
-        bool _fade;
-        int _duration;
+        private bool _fade;
+        private int _duration;
 
-        int _samplesRead = 0;
-        float _step = 0;
-        int _blockSize = 0;
-        float _targetVolume = 1f;
+        private int _samplesRead = 0;
+        private float _step = 0;
+        private int _blockSize = 0;
+        private float _targetVolume = 1f;
 
         public FadeInOut(IWaveStream source, float initialVolume)
             : base(source)

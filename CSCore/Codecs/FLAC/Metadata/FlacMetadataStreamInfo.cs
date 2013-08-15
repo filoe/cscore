@@ -41,16 +41,24 @@ namespace CSCore.Codecs.FLAC
         }
 
         public short MinBlockSize { get; private set; }
+
         public short MaxBlockSize { get; private set; }
+
         public uint MaxFrameSize { get; private set; }
+
         public uint MinFrameSize { get; private set; }
+
         public int SampleRate { get; private set; }
+
         public int Channels { get; private set; }
+
         public int BitsPerSample { get; private set; }
+
         /// <summary>
         /// 0 = Unknown
         /// </summary>
         public long TotalSamples { get; private set; }
+
         public string MD5 { get; private set; }
     }
 }

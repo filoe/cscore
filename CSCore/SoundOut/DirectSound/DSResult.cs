@@ -1,8 +1,7 @@
-﻿
-namespace CSCore.SoundOut.DirectSound
+﻿namespace CSCore.SoundOut.DirectSound
 {
     /// <summary>
-    /// http://msdn.microsoft.com/en-us/library/windows/desktop/ee416775%28v=vs.85%29.aspx
+    /// http: //msdn.microsoft.com/en-us/library/windows/desktop/ee416775%28v=vs.85%29.aspx
     /// TODO: finish
     /// </summary>
     public enum DSResult : uint

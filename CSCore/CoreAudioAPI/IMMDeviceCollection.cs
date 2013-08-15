@@ -10,6 +10,7 @@ namespace CSCore.CoreAudioAPI
     public interface IMMDeviceCollection : IUnknown
     {
         int GetCount(ref int deviceCount);
+
         int Item(int deviceindex, [Out] out IMMDevice device);
     }
 }

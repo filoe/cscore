@@ -5,7 +5,7 @@ namespace CSCore.Tags.ID3.Frames
 {
     public class TimestampTextFrame : MultiStringTextFrame
     {
-        List<DateTime> _dateTimes;
+        private List<DateTime> _dateTimes;
 
         public List<DateTime> DateTimes
         {
@@ -61,16 +61,22 @@ namespace CSCore.Tags.ID3.Frames
             {
                 case 4:
                     return "yyyy";
+
                 case 7:
                     return "yyyy-MM";
+
                 case 10:
                     return "yyyy-MM-dd";
+
                 case 13:
                     return "yyyy-MM-ddTHH";
+
                 case 16:
                     return "yyyy-MM-ddTHH:mm";
+
                 case 19:
                     return "yyyy-MM-ddTHH:mm:ss";
+
                 default:
                     throw new ID3Exception("Invalid length of timestamp");
             }

@@ -224,6 +224,7 @@
     <Compile Include="Codecs\MP3\Mp3WebStream.cs" />
     <Compile Include="Codecs\MP3\XingHeader.cs" />
     <Compile Include="Codecs\WMA\WMADecoder.cs" />
+    <Compile Include="CoreAudioAPI\AudioCaptureClient.cs" />
     <Compile Include="CoreAudioAPI\AudioMeterInformation.cs" />
     <Compile Include="MediaFoundation\CommonAudioDecoder.cs" />
     <Compile Include="MediaFoundation\MediaFoundationAttributes.cs" />
@@ -236,10 +237,13 @@
     <Compile Include="MediaFoundation\MFTCategories.cs" />
     <Compile Include="MediaFoundation\MFTEnumFlags.cs" />
     <Compile Include="MediaFoundation\MFTRegisterTypeInfo.cs" />
+    <Compile Include="SoundIn\ISoundRecorder.cs" />
+    <Compile Include="SoundIn\RecordingState.cs" />
+    <Compile Include="SoundIn\WasapiCapture.cs" />
+    <Compile Include="SoundIn\WasapiLoopbackCapture.cs" />
     <Compile Include="Win32\ComStream.cs" />
     <Compile Include="Win32\IStream.cs" />
     <Compile Include="Win32\Win32ComException.cs" />
-    <None Include="ClassDiagram1.cd" />
     <None Include="Codecs\VORBIS\Packet.cs" />
     <None Include="Codecs\VORBIS\IdentificationPacket.cs" />
     <None Include="Codecs\VORBIS\SetupHeader.cs" />

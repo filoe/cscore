@@ -3,8 +3,10 @@
 namespace CSCore.Codecs.MP3
 {
     /// <summary>
-    /// <remarks>Liste von http://www.codeproject.com/KB/audio-video/mpegaudioinfo.aspx#XINGHeader || 
-    /// www.mp3-tech.org/programmer/sources/vbrheadersdk.zip</remarks>
+    /// <remarks>
+    /// Liste von http://www.codeproject.com/KB/audio-video/mpegaudioinfo.aspx#XINGHeader ||
+    /// www.mp3-tech.org/programmer/sources/vbrheadersdk.zip
+    /// </remarks>
     /// </summary>
     public class XingHeader
     {
@@ -89,6 +91,7 @@ namespace CSCore.Codecs.MP3
 
             return offset;
         }
+
         private static bool CheckForValidXingHeader(Mp3Frame frame, int offset)
         {
             byte[] data = null;
@@ -101,6 +104,7 @@ namespace CSCore.Codecs.MP3
             else
                 return false;
         }
+
         private static int ReadHeaderFlags(Mp3Frame frame, int offset)
         {
             byte[] data = null;

@@ -8,6 +8,7 @@ namespace CSCore.Streams
     public class BlockReadEventArgs<T> : EventArgs
     {
         public int Length { get; private set; }
+
         public T[] Data { get; private set; }
 
         public BlockReadEventArgs(T[] data, int length)

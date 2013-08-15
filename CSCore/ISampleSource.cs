@@ -1,5 +1,4 @@
-﻿
-namespace CSCore
+﻿namespace CSCore
 {
     public interface ISampleSource : IWaveStream
     {

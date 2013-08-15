@@ -1,9 +1,9 @@
-﻿using System;
+﻿using CSCore.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using CSCore.Win32;
 
 namespace CSCore.MediaFoundation
 {
@@ -33,12 +33,13 @@ namespace CSCore.MediaFoundation
         [DllImport("mfreadwrite.dll", ExactSpelling = true)]
         public static extern int MFCreateSourceReaderFromURL([In, MarshalAs(UnmanagedType.LPWStr)] string pwszURL, [In] IntPtr pAttributes,
                                                                 [Out] out IntPtr ppSourceReader);
+
         [DllImport("mfplat.dll", ExactSpelling = true)]
         public static extern int MFCreateMediaType(out IntPtr ppMFType);
 
-        [DllImport("mfplat.dll", ExactSpelling=true)]
-        public static extern int MFTEnumEx([In] Guid category, [In] MFTEnumFlags enumflags, 
-            [In] MFTRegisterTypeInfo inputtype, [In] MFTRegisterTypeInfo outputType, 
+        [DllImport("mfplat.dll", ExactSpelling = true)]
+        public static extern int MFTEnumEx([In] Guid category, [In] MFTEnumFlags enumflags,
+            [In] MFTRegisterTypeInfo inputtype, [In] MFTRegisterTypeInfo outputType,
             [Out] out IntPtr pppMftActivate, [Out] out int mftCount);
     }
 }

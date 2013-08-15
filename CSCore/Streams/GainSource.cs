@@ -7,10 +7,14 @@ namespace CSCore.Streams
 {
     public class GainSource : SampleSourceBase, System.ComponentModel.INotifyPropertyChanged
     {
-        float _gain;
+        private float _gain;
+
         public float Gain
         {
-            get { return _gain; }
+            get
+            {
+                return _gain;
+            }
             set
             {
                 if (value < 0)
@@ -32,7 +36,7 @@ namespace CSCore.Streams
         {
             int read = base.Read(buffer, offset, count);
 
-            if(Gain != 1)
+            if (Gain != 1)
                 ApplyGain(buffer, offset, read, Gain);
 
             return read;

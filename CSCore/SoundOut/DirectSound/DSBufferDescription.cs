@@ -7,8 +7,10 @@ namespace CSCore.SoundOut.DirectSound
     public struct DSBufferDescription
     {
         public int dwSize;
+
         [MarshalAs(UnmanagedType.U4)]
         public DSBufferCapsFlags dwFlags;
+
         public uint dwBufferBytes;
         public int dwReserved;
         public IntPtr lpwfxFormat;

@@ -5,7 +5,7 @@ namespace CSCore.DSP
     [Obsolete()]
     public class AdjustableResampler : DmoResampler
     {
-        int _sampleRate;
+        private int _sampleRate;
 
         public AdjustableResampler(IWaveSource source)
             : this(source, source.WaveFormat.SampleRate)

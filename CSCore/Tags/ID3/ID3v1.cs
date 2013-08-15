@@ -42,10 +42,15 @@ namespace CSCore.Tags.ID3
         }
 
         public string Title { get; private set; }
+
         public string Artist { get; private set; }
+
         public string Album { get; private set; }
+
         public int? Year { get; private set; }
+
         public string Comment { get; private set; }
+
         public ID3Genre Genre { get; private set; }
 
         private ID3v1(Stream stream)

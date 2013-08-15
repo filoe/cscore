@@ -8,7 +8,6 @@
         public Complex(double real)
             : this(real, 0.0)
         {
-
         }
 
         public Complex(double real, double img)
@@ -27,7 +26,7 @@
 
         public double Value
         {
-            get { return FastFourierTransformation.GetIntensity(this); } 
+            get { return FastFourierTransformation.GetIntensity(this); }
         }
 
         public double CalculateFFTPercentage()

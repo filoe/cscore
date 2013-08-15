@@ -13,7 +13,7 @@ namespace CSCore.Win32
     /// </summary>
     public class ComStream : Stream, IStream
     {
-        Stream _stream;
+        private Stream _stream;
 
         public ComStream(Stream stream)
             : this(stream, true)
@@ -61,7 +61,7 @@ namespace CSCore.Win32
                 throw new InvalidOperationException("Stream not readable");
 
             int read = Read(pv, 0, cb);
-            if(pcbRead != IntPtr.Zero)
+            if (pcbRead != IntPtr.Zero)
                 Marshal.WriteInt64(pcbRead, read);
             return HResult.S_OK;
         }
@@ -75,7 +75,7 @@ namespace CSCore.Win32
         {
             SeekOrigin origin = (SeekOrigin)dwOrigin; //hope that the SeekOrigin enumeration won't change
             long pos = Seek(dlibMove, origin);
-            if(plibNewPosition != IntPtr.Zero)
+            if (plibNewPosition != IntPtr.Zero)
                 Marshal.WriteInt64(plibNewPosition, pos);
             return HResult.S_OK;
         }
@@ -103,7 +103,7 @@ namespace CSCore.Win32
                 throw new InvalidOperationException("Stream is not writeable.");
 
             Write(pv, 0, cb);
-            if(pcbWritten != null)
+            if (pcbWritten != null)
                 Marshal.WriteInt64(pcbWritten, (long)cb);
             return HResult.S_OK;
         }

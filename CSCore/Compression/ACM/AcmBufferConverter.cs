@@ -25,8 +25,8 @@ namespace CSCore.Compression.ACM
             return result;
         }
 
-        IntPtr _handle = IntPtr.Zero;
-        AcmHeader _header;
+        private IntPtr _handle = IntPtr.Zero;
+        private AcmHeader _header;
 
         public AcmBufferConverter(WaveFormat sourceFormat, WaveFormat destinationFormat)
             : this(sourceFormat, destinationFormat, IntPtr.Zero)
@@ -44,7 +44,7 @@ namespace CSCore.Compression.ACM
                     IntPtr.Zero,
                     IntPtr.Zero,
                     AcmStreamOpenFlags.ACM_STREAMOPENF_NONREALTIME),
-                "acmStreamOpen", "AcmBufferConverter.ctor(WaveFormat, WaveFormat, IntPtr", 
+                "acmStreamOpen", "AcmBufferConverter.ctor(WaveFormat, WaveFormat, IntPtr",
                 Utils.Logger.LogDispatcher.MMLogFlag.ThrowOnError | Utils.Logger.LogDispatcher.MMLogFlag.LogAlways);
 
             int sourceBufferSize = Math.Max(UInt16.MaxValue + 1 /*65536*/, sourceFormat.BytesPerSecond);

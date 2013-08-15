@@ -1,7 +1,7 @@
-﻿using System;
+﻿using CSCore.CoreAudioAPI;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using CSCore.CoreAudioAPI;
 
 namespace CSCore.Win32
 {
@@ -13,17 +13,20 @@ namespace CSCore.Win32
     [Guid("886d8eeb-8cf2-4446-8d02-cdba1dbdcf99")]
     public class PropertyStore : ComObject, IEnumerable<KeyValuePair<PropertyKey, PropertyVariant>>
     {
-        const string c = "IPropertyStore";
+        private const string c = "IPropertyStore";
 
         public static readonly PropertyKey DeviceDesc = new PropertyKey(
             new Guid(0x026e516e, 0xb814, 0x414b, 0x83, 0xcd, 0x85, 0x6d, 0x6f, 0xef, 0x48, 0x22),
             2);
+
         public static readonly PropertyKey DeviceInterfaceEnabled = new PropertyKey(
             new Guid(0x026e516e, 0xb814, 0x414b, 0x83, 0xcd, 0x85, 0x6d, 0x6f, 0xef, 0x48, 0x22),
             3);
+
         public static readonly PropertyKey DeviceInterfaceClassGuid = new PropertyKey(
             new Guid(0x026e516e, 0xb814, 0x414b, 0x83, 0xcd, 0x85, 0x6d, 0x6f, 0xef, 0x48, 0x22),
             4);
+
         public static readonly PropertyKey FriendlyName = new PropertyKey(
             new Guid("{a45c254e-df1c-4efd-8020-67d146a850e0}"),
             14);
