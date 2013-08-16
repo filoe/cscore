@@ -162,7 +162,13 @@ namespace CSCore.SoundOut.DirectSound
 
         public DSResult SetVolume(float volume)
         {
-            return SetVolume((int)(volume * Math.Abs(MinVolume)) - Math.Abs(MinVolume));
+            if (volume == 0)
+                volume = 0.00001f;
+            int dvolume = (int)(20 * Math.Log(volume));
+            dvolume *= 100;
+            dvolume = Math.Max(MinVolume, dvolume);
+            dvolume = Math.Min(MaxVolume, dvolume);
+            return SetVolume(dvolume);
         }
 
         public DSResult GetVolume(out int volume)
@@ -177,7 +183,11 @@ namespace CSCore.SoundOut.DirectSound
         {
             int dvolume;
             var result = GetVolume(out dvolume);
-            volume = 1 - ((float)dvolume / MinVolume);
+            volume = (float)Math.Pow(10.0, (double)dvolume / 20.0);
+            volume = Math.Min(1, volume);
+            volume = Math.Max(0, volume);
+            if (volume == 0.00001f)
+                volume = 0;
             return result;
         }
 
@@ -210,7 +220,7 @@ namespace CSCore.SoundOut.DirectSound
         {
             DSBStatus status;
             DirectSoundException.Try(GetStatus(out status), "IDirectSoundBuffer", "GetStatus");
-            return status.HasFlag(DSBStatus.BufferLost);
+            return (status & DSBStatus.BufferLost) == DSBStatus.BufferLost;
         }
 
         public bool Write(byte[] buffer, int offset, int count)

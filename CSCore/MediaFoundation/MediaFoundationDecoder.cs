@@ -11,7 +11,6 @@ namespace CSCore.MediaFoundation
 {
     public class MediaFoundationDecoder : IWaveSource
     {
-        private Stream _stream;
         private IMFByteStream _byteStream;
         private MFSourceReader _reader;
         private WaveFormat _waveFormat;
@@ -27,7 +26,7 @@ namespace CSCore.MediaFoundation
 
         public MediaFoundationDecoder(string url)
         {
-            if (String.IsNullOrWhiteSpace(url))
+            if (String.IsNullOrEmpty(url))
                 throw new ArgumentNullException("filename");
 
             _hasFixedLength = true;

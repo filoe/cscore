@@ -17,7 +17,6 @@ namespace CSCore.Visualization
         public event EventHandler<BlockReadEventArgs> BlockRead;
 
         private object _lockObj = new object();
-        private bool _blockStarted = false;
 
         private int _blockSize;
 
@@ -80,7 +79,6 @@ namespace CSCore.Visualization
         {
             lock (_lockObj)
             {
-                _blockStarted = true;
                 int read = _source.Read(buffer, offset, count);
 
                 for (int n = 0; n < read; n += WaveFormat.Channels)

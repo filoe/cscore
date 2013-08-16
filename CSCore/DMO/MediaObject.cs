@@ -89,7 +89,7 @@ namespace CSCore.DMO
         {
             int result;
             SetOutputType(streamIndex, mediaType, flags, out result);
-            if (!flags.HasFlag(SetTypeFlags.TestOnly))
+            if ((flags & SetTypeFlags.TestOnly) != SetTypeFlags.TestOnly)
                 DmoException.Try(result, n, "SetOutputType");
         }
 
@@ -149,7 +149,7 @@ namespace CSCore.DMO
 
         public bool IsReadyForInput(int streamIndex)
         {
-            return GetInputStatus(streamIndex).HasFlag(InputStatusFlags.AcceptData);
+            return (GetInputStatus(streamIndex) & (InputStatusFlags.AcceptData)) == InputStatusFlags.AcceptData;
         }
 
         //----

@@ -123,7 +123,7 @@ namespace CSCore.Tags.ID3
                     return null;
 
                 var str = f.Text;
-                if (String.IsNullOrWhiteSpace(str) || !str.StartsWith("(") || str.Length < 3)
+                if (String.IsNullOrEmpty(str) || !str.StartsWith("(") || str.Length < 3)
                 {
                     try
                     {

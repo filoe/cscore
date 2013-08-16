@@ -15,17 +15,35 @@ namespace CSCore.SoundIn
 
         private IntPtr _waveInHandle;
 
-        public IntPtr WaveInHandle { get { return _waveInHandle; } }
+        public IntPtr WaveInHandle 
+        { 
+            get { return _waveInHandle; } 
+        }
 
-        public Byte[] Buffer { get { return _buffer; } }
+        public Byte[] Buffer 
+        { 
+            get { return _buffer; } 
+        }
 
-        public int Recorded { get { return _header.bytesRecorded; } }
+        public int Recorded 
+        { 
+            get { return _header.bytesRecorded; } 
+        }
 
-        public int BufferSize { get { return _buffer.Length; } }
+        public int BufferSize 
+        { 
+            get { return _buffer.Length; } 
+        }
 
-        public bool IsInQueue { get { return _header.flags.HasFlag(WaveHeaderFlags.WHDR_INQUEUE); } }
+        public bool IsInQueue 
+        { 
+            get { return (_header.flags & WaveHeaderFlags.WHDR_INQUEUE) == WaveHeaderFlags.WHDR_INQUEUE; } 
+        }
 
-        public bool Done { get { return _header.flags.HasFlag(WaveHeaderFlags.WHDR_DONE); } }
+        public bool Done 
+        {
+            get { return (_header.flags & WaveHeaderFlags.WHDR_DONE) == WaveHeaderFlags.WHDR_DONE; }
+        }
 
         public WaveInBuffer(WaveIn waveIn, int bufferSize)
         {

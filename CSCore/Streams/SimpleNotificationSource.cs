@@ -7,7 +7,7 @@ namespace CSCore.Streams
 {
     public class SimpleNotificationSource : SampleSourceBase
     {
-        public EventHandler DataRead;
+        public event EventHandler DataRead;
 
         public SimpleNotificationSource(IWaveStream source)
             : base(source)

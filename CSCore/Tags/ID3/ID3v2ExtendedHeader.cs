@@ -66,10 +66,10 @@ namespace CSCore.Tags.ID3
             byte[] flags = ID3Utils.Read(stream, 1);
             Flags = (ID3v2ExtendedHeaderFlags)flags[0];
 
-            if (Flags.HasFlag(ID3v2ExtendedHeaderFlags.CrcPresent))
+            if ((Flags & ID3v2ExtendedHeaderFlags.CrcPresent) == ID3v2ExtendedHeaderFlags.CrcPresent)
                 CRC = ID3Utils.Read(stream, 5);
 
-            if (Flags.HasFlag(ID3v2ExtendedHeaderFlags.Restrict))
+            if ((Flags & ID3v2ExtendedHeaderFlags.Restrict) == ID3v2ExtendedHeaderFlags.Restrict)
             {
                 //%ppqrrstt
                 TagSizeRestriction = (ID3v2TagSizeRestriction)(flags[0] & 0xC0); //p --> last 2 bit

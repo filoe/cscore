@@ -27,7 +27,8 @@ namespace CSCore.CoreAudioAPI
             for (int i = 0; i < Channels; i++)
             {
                 result[i] = (float)Marshal.PtrToStructure(pchannels, typeof(float));
-                pchannels += Marshal.SizeOf(typeof(float));
+                int size = Marshal.SizeOf(typeof(float));
+                pchannels = new IntPtr((byte*)pchannels.ToPointer() + size);
             }
 
             return result;

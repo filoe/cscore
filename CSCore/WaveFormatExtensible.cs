@@ -72,7 +72,7 @@ namespace CSCore
             int valuesSet = 0;
             for (int i = 0; i < totalChannelMaskValues.Length; i++)
             {
-                if (channelMask.HasFlag((CSCore.ChannelMask)totalChannelMaskValues.GetValue(i)))
+                if ((channelMask & (CSCore.ChannelMask)totalChannelMaskValues.GetValue(i)) == (CSCore.ChannelMask)totalChannelMaskValues.GetValue(i))
                     valuesSet++;
             }
 

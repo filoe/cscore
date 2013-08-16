@@ -14,7 +14,13 @@ namespace CSCore.SoundOut.MmInterop
 
         private WaveHeader _header;
 
-        public bool IsInQueue { get { return _header.flags.HasFlag(WaveHeaderFlags.WHDR_INQUEUE); } }
+        public bool IsInQueue 
+        { 
+            get 
+            { 
+                return (_header.flags & WaveHeaderFlags.WHDR_INQUEUE) == WaveHeaderFlags.WHDR_INQUEUE; 
+            } 
+        }
 
         public WaveOutBuffer(WaveOut waveOut, int bufferSize)
         {

@@ -26,7 +26,7 @@ namespace CSCore.Tags.ID3.Frames
                 DateTime result;
                 if (str == null)
                     throw new ID3Exception("Timestamp-String is null");
-                if (String.IsNullOrWhiteSpace(str))
+                if (String.IsNullOrEmpty(str))
                 {
                     result = DateTime.MinValue;
                 }

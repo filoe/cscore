@@ -51,7 +51,7 @@ namespace CSCore.SoundOut.DirectSound
         private void Create(DirectSoundBase directSound, DSBufferDescription bufferDesc)
         {
             IntPtr handle;
-            if (bufferDesc.dwFlags.HasFlag(DSBufferCapsFlags.DSBCAPS_PRIMARYBUFFER))
+            if ((bufferDesc.dwFlags & DSBufferCapsFlags.DSBCAPS_PRIMARYBUFFER) == DSBufferCapsFlags.DSBCAPS_PRIMARYBUFFER)
                 throw new ArgumentException("Don t set the PRIMARYBUFFER flag for creating a secondarybuffer.", "bufferDesc");
             var result = directSound.CreateSoundBuffer(bufferDesc, out handle, IntPtr.Zero);
             DirectSoundException.Try(result, "IDirectSound", "CreateSoundBuffer");

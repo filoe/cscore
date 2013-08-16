@@ -44,16 +44,17 @@ namespace CSCore.SoundOut.DirectSound
             DirectSoundException.Try(GetCaps(out caps), "IDirectSound", "GetCaps");
             bool result = true;
             if (format.Channels == 2)
-                result &= caps.Flags.HasFlag(DSCapabilitiesFlags.SecondaryBufferStereo);
+                result &= (caps.Flags & DSCapabilitiesFlags.SecondaryBufferStereo) == DSCapabilitiesFlags.SecondaryBufferStereo;
             else if (format.Channels == 1)
-                result &= caps.Flags.HasFlag(DSCapabilitiesFlags.SecondaryBufferMono);
+                result &= (caps.Flags & DSCapabilitiesFlags.SecondaryBufferMono) == DSCapabilitiesFlags.SecondaryBufferMono;
             else result &= false;
 
             if (format.BitsPerSample == 8)
-                result &= caps.Flags.HasFlag(DSCapabilitiesFlags.SecondaryBuffer8Bit);
+                result &= (caps.Flags & DSCapabilitiesFlags.SecondaryBuffer8Bit) == DSCapabilitiesFlags.SecondaryBuffer8Bit;
             else if (format.BitsPerSample == 16)
-                result &= caps.Flags.HasFlag(DSCapabilitiesFlags.SecondaryBuffer16Bit);
-            else result &= false;
+                result &= (caps.Flags & DSCapabilitiesFlags.SecondaryBuffer16Bit) == DSCapabilitiesFlags.SecondaryBuffer16Bit;
+            else 
+                result &= false;
 
             result &= format.WaveFormatTag == AudioEncoding.Pcm;
             return result;

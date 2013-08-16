@@ -80,11 +80,12 @@ namespace CSCore.Visualization.WPF
 
         protected virtual void Dispose(bool disposing)
         {
-            if (_mutex != null)
-            {
-                _mutex.Dispose();
-                _mutex = null;
-            }
+            //only available in .net 4.0+
+            //if (_mutex != null)
+            //{
+            //    _mutex.Dispose();
+            //    _mutex = null;
+            //}
         }
 
         ~SampleVisualizationBase()

@@ -170,7 +170,7 @@ namespace CSCore.Codecs.WAV
                 }
                 finally
                 {
-                    _writer.Dispose();
+                    _writer.Close();
                     _writer = null;
                     _stream = null;
                 }

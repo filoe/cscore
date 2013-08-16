@@ -142,7 +142,7 @@ namespace CSCore.Tags.ID3
 
         private bool Parse3(Stream stream)
         {
-            if (_header.Flags.HasFlag(ID3v2HeaderFlags.ExtendedHeader))
+            if ((_header.Flags & ID3v2HeaderFlags.ExtendedHeader) == ID3v2HeaderFlags.ExtendedHeader)
             {
                 _extendedHeader = new ID3v2ExtendedHeader(stream, ID3Version.ID3v2_3);
             }
@@ -154,11 +154,11 @@ namespace CSCore.Tags.ID3
 
         private bool Parse4(Stream stream)
         {
-            if (_header.Flags.HasFlag(ID3v2HeaderFlags.ExtendedHeader))
+            if ((_header.Flags & ID3v2HeaderFlags.ExtendedHeader) == ID3v2HeaderFlags.ExtendedHeader)
             {
                 _extendedHeader = new ID3v2ExtendedHeader(stream, ID3Version.ID3v2_4);
             }
-            if (_header.Flags.HasFlag(ID3v2HeaderFlags.FooterPresent))
+            if ((_header.Flags & ID3v2HeaderFlags.FooterPresent) == ID3v2HeaderFlags.FooterPresent)
             {
                 //footer vom orginal stream lesen - da im neuen stream kein footer vorhanden ist
                 _footer = ID3v2Footer.FromStream(_stream);

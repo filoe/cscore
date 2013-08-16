@@ -191,7 +191,7 @@ namespace CSCore.DMO
 
         public bool IsReadyForInput(int streamIndex)
         {
-            return GetInputStatus(streamIndex).HasFlag(InputStatusFlags.AcceptData);
+            return ((GetInputStatus(streamIndex) & InputStatusFlags.AcceptData) == InputStatusFlags.AcceptData);
         }
 
         public void Dispose()

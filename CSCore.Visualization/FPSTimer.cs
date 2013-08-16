@@ -45,7 +45,8 @@ namespace CSCore.Visualization
             }
             else
             {
-                _stopWatch.Restart();
+                _stopWatch.Stop();
+                _stopWatch.Start();
                 return true;
             }
         }
@@ -56,7 +57,8 @@ namespace CSCore.Visualization
             {
                 System.Threading.Thread.Sleep((int)Math.Max(_interval - _stopWatch.ElapsedMilliseconds, 0));
             }
-            _stopWatch.Restart();
+            _stopWatch.Stop();
+            _stopWatch.Start();
         }
     }
 }

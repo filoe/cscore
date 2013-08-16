@@ -5,7 +5,6 @@ using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace CSCore.Codecs.MP3
 {
@@ -61,26 +60,27 @@ namespace CSCore.Codecs.MP3
         {
             _disposing = false;
 
-            var task = new Task<bool>(() =>
-            {
-                ManualResetEvent resetEvent = new ManualResetEvent(false);
-
-                bool success = InitializeConnection();
-                if (success)
+            Func<bool> action = () =>
                 {
-                    _bufferThread = new Thread(new ParameterizedThreadStart(BufferProc));
-                    _bufferThread.Start(resetEvent);
+                    ManualResetEvent resetEvent = new ManualResetEvent(false);
 
-                    success = resetEvent.WaitOne(1000);
-                }
-                if (ConnectionCreated != null && async)
-                    ConnectionCreated(this, new ConnectionCreatedEventArgs(_uri, success));
+                    bool success = InitializeConnection();
+                    if (success)
+                    {
+                        _bufferThread = new Thread(new ParameterizedThreadStart(BufferProc));
+                        _bufferThread.Start(resetEvent);
 
-                return success;
-            });
+                        success = resetEvent.WaitOne(1000);
+                    }
+                    if (ConnectionCreated != null && async)
+                        ConnectionCreated(this, new ConnectionCreatedEventArgs(_uri, success));
+
+                    return success;
+                };
             if (async)
-                task.Start();
-            else task.RunSynchronously();
+                ThreadPool.QueueUserWorkItem(new WaitCallback((o) => action()));
+            else
+                action.Invoke();
         }
 
         private bool InitializeConnection()
@@ -144,12 +144,11 @@ namespace CSCore.Codecs.MP3
                 catch (MmException)
                 {
                     _disposing = true;
-                    Task task = new Task(() =>
-                        {
-                            while (_bufferThread.ThreadState != ThreadState.Stopped) ;
-                            CreateStream(false);
-                        });
-                    task.Start();
+                    ThreadPool.QueueUserWorkItem((c) =>
+                    {
+                        while (_bufferThread.ThreadState != ThreadState.Stopped) ;
+                        CreateStream(false);
+                    });
                 }
                 catch (WebException)
                 {

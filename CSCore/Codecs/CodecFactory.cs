@@ -173,7 +173,7 @@ namespace CSCore.Codecs
         {
             StringBuilder result = new StringBuilder();
             result.Append("Supported Files|");
-            result.Append(String.Concat(GetSupportedFileExtensions().Select(x => "*." + x + ";")));
+            result.Append(String.Concat(GetSupportedFileExtensions().Select(x => "*." + x + ";").ToArray()));
             result.Remove(result.Length - 1, 1);
             return result.ToString();
         }

@@ -57,6 +57,9 @@ namespace CSCore.Tags.ID3
 
         public ID3v2HeaderFlags Flags { get; private set; }
 
-        public bool IsUnsync { get { return Flags.HasFlag(ID3v2HeaderFlags.Unsynchronisation); } }
+        public bool IsUnsync 
+        { 
+            get { return (Flags & ID3v2HeaderFlags.Unsynchronisation) == ID3v2HeaderFlags.Unsynchronisation; } 
+        }
     }
 }

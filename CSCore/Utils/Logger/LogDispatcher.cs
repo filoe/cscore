@@ -121,7 +121,7 @@ namespace CSCore.Utils.Logger
         public void MMResult(MmResult result, string functionName, string where, MMLogFlag flag = MMLogFlag.ThrowOnError)
         {
             //Log(LogLevel.DEBUG, String.Format("[{0}]: {1}", MMResult, functionName), where);
-            if (result != MmResult.MMSYSERR_NOERROR && flag.HasFlag(MMLogFlag.ThrowOnError))
+            if (result != MmResult.MMSYSERR_NOERROR && (flag & MMLogFlag.ThrowOnError) == MMLogFlag.ThrowOnError)
             {
                 Fatal(new MmException(result, functionName, where), where, true);
             }
@@ -129,7 +129,7 @@ namespace CSCore.Utils.Logger
             {
                 Error(String.Format("[{0}]: {1}", result, functionName), where);
             }
-            else if (flag.HasFlag(MMLogFlag.LogAlways))
+            else if ((flag & MMLogFlag.LogAlways) == MMLogFlag.LogAlways)
             {
                 Debug(String.Format("[{0}]: {1}", result, functionName), where);
             }
