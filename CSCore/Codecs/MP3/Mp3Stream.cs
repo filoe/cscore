@@ -1,5 +1,6 @@
-﻿using CSCore.Compression.ACM;
+﻿using CSCore.ACM;
 using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace CSCore.Codecs.MP3
@@ -129,7 +130,7 @@ namespace CSCore.Codecs.MP3
                         }
                         catch (Exception ex)
                         {
-                            Context.Current.Logger.Error(ex, "Mp3Stream.Read(byte[], int, int)", false);
+                            Debug.WriteLine("Mp3Stream::Read: " + ex.ToString());
                         }
                     }
 
@@ -269,7 +270,6 @@ namespace CSCore.Codecs.MP3
                     }
                     _pcmDstBuffer = null;
                     _frame = null;
-                    Context.Current.Logger.Info(String.Format("Disposed Mp3Stream Disposing: {0}", disposing), "Mp3Stream.Dispose(bool)");
                 }
             }
         }

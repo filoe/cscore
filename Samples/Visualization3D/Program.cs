@@ -19,8 +19,6 @@ namespace Visualization3D
         [STAThread]
         private static void Main(string[] args)
         {
-            CSCore.Utils.Logger.LogDispatcher.Loggers.Add(new CSCore.Utils.Logger.ConsoleLogger());
-
             VisualizationRoot program = new VisualizationRoot() { WindowState = FormWindowState.Maximized };
             program.Text = "3D Visualisierung";
             program.Show();

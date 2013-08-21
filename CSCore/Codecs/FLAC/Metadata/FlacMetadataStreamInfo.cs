@@ -9,7 +9,6 @@ namespace CSCore.Codecs.FLAC
         public unsafe FlacMetadataStreamInfo(Stream stream, Int32 length, bool lastBlock)
             : base(FlacMetaDataType.StreamInfo, lastBlock, length)
         {
-            const string loggerLocation = "FlacMetadataStreamInfo.ctor(Stream, int, bool)";
             //http://flac.sourceforge.net/format.html#metadata_block_streaminfo
             BinaryReader reader = new BinaryReader(stream, Encoding.ASCII);
             try
@@ -19,13 +18,12 @@ namespace CSCore.Codecs.FLAC
             }
             catch (IOException e)
             {
-                Context.Current.Logger.Fatal(new FlacException(e, FlacLayer.Metadata), loggerLocation, true);
+                throw new FlacException(e, FlacLayer.Metadata);
             }
             int bytesToRead = (240 / 8) - 16;
             byte[] buffer = reader.ReadBytes(bytesToRead);
             if (buffer.Length != bytesToRead)
-                Context.Current.Logger.Fatal(new FlacException(new EndOfStreamException("Could not read StreamInfo-content"), FlacLayer.Metadata),
-                    loggerLocation, true);
+                throw new FlacException(new EndOfStreamException("Could not read StreamInfo-content"), FlacLayer.Metadata);
 
             fixed (byte* b = buffer)
             {

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -65,7 +66,6 @@ namespace CSCore.Codecs.FLAC
 
         public FlacFile(Stream stream, FlacPreScanMethodMode? scanFlag, Action<FlacPreScanFinishedEventArgs> onscanFinished)
         {
-            const string loggerLoaction = "FlacFile.ctor(Stream)";
 
             if (stream == null)
                 throw new ArgumentNullException();
@@ -82,7 +82,7 @@ namespace CSCore.Codecs.FLAC
             byte[] beginSync = new byte[4];
             read = stream.Read(beginSync, 0, beginSync.Length);
             if (read < beginSync.Length)
-                Context.Current.Logger.Fatal(new EndOfStreamException("Can not read \"fLaC\" sync."), loggerLoaction, true);
+                throw new EndOfStreamException("Can not read \"fLaC\" sync.");
             if (beginSync[0] == 0x66 && beginSync[1] == 0x4C &&
                beginSync[2] == 0x61 && beginSync[3] == 0x43)
             {
@@ -92,21 +92,21 @@ namespace CSCore.Codecs.FLAC
                 Metadata = metadata;
                 if (metadata == null || metadata.Count <= 0)
                 {
-                    Context.Current.Logger.Fatal(new FlacException("No Metadata found.", FlacLayer.Metadata), loggerLoaction, true);
+                    throw new FlacException("No Metadata found.", FlacLayer.Metadata);
                 }
 
                 FlacMetadataStreamInfo streamInfo = metadata.Where(x => x.MetaDataType == FlacMetaDataType.StreamInfo).First() as FlacMetadataStreamInfo;
                 if (streamInfo == null)
-                    Context.Current.Logger.Fatal(new FlacException("No StreamInfo-Metadata found.", FlacLayer.Metadata), loggerLoaction, true);
+                    new FlacException("No StreamInfo-Metadata found.", FlacLayer.Metadata);
 
                 _streamInfo = streamInfo;
                 _waveFormat = new WaveFormat(streamInfo.SampleRate, (short)streamInfo.BitsPerSample, (short)streamInfo.Channels, AudioEncoding.Pcm);
-                Context.Current.Logger.Debug("Flac StreamInfo found -> WaveFormat: " + _waveFormat.ToString(), loggerLoaction);
-                Context.Current.Logger.Info("Flac-File-Metadata read.", loggerLoaction);
+                Debug.WriteLine("Flac StreamInfo found -> WaveFormat: " + _waveFormat.ToString());
+                Debug.WriteLine("Flac-File-Metadata read.");
             }
             else
             {
-                Context.Current.Logger.Fatal(new FlacException("Invalid Flac-File. \"fLaC\" Sync not found.", FlacLayer.Top), loggerLoaction, true);
+                throw new FlacException("Invalid Flac-File. \"fLaC\" Sync not found.", FlacLayer.Top);
             }
 
             //prescan stream
@@ -220,7 +220,7 @@ namespace CSCore.Codecs.FLAC
                             _stream.Position = _scan.Frames[i].StreamOffset;
                             _frameIndex = i;
                             if (_stream.Position >= _stream.Length)
-                                Context.Current.Logger.Fatal(new EndOfStreamException("Stream got EOF"), "FlacFile.setPosition(value)", true);
+                                throw new EndOfStreamException("Stream got EOF");
 
 #if DIAGNOSTICS
                             _position = _scan.Frames[i].SampleOffset * WaveFormat.BlockAlign;

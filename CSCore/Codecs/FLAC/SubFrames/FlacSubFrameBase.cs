@@ -1,10 +1,10 @@
-﻿namespace CSCore.Codecs.FLAC
+﻿using System.Diagnostics;
+namespace CSCore.Codecs.FLAC
 {
     public class FlacSubFrameBase
     {
         public unsafe static FlacSubFrameBase GetSubFrame(FlacBitReader reader, FlacSubFrameData data, FlacFrameHeader header, int bps)
         {
-            const string location = "FlacSubFrame.DecodeHeader(BitReader)";
             uint x;
             int wastedBits = 0, totalBits = 0, order = 0;
 
@@ -22,7 +22,7 @@
 
             if ((x & 0x80) != 0)
             {
-                Context.Current.Logger.Fatal("Flacdecoder lost sync while reading FlacSubFrameHeader. [x & 0x80]", location);
+                Debug.WriteLine("Flacdecoder lost sync while reading FlacSubFrameHeader. [x & 0x80].");
                 return null;
             }
 
@@ -31,7 +31,7 @@
             if ((x > 2 && x < 16) ||
                  (x > 24 && x < 64))
             {
-                Context.Current.Logger.Fatal("Invalid FlacSubFrameHeader. [" + x.ToString("x") + "]", location);
+                Debug.WriteLine("Invalid FlacSubFrameHeader. [" + x.ToString("x") + "]");
                 return null;
             }
             else if (x == 0)
@@ -57,7 +57,7 @@
             }
             else
             {
-                Context.Current.Logger.Fatal("Invalid Flac-SubframeType: x = " + x + ".", location);
+                Debug.WriteLine("Invalid Flac-SubframeType: x = " + x + ".");
                 return null;
             }
 
@@ -75,7 +75,7 @@
             if (subFrame != null)
                 subFrame.WastedBits = wastedBits;
             else
-                Context.Current.Logger.Fatal("Unknown error while reading FlacSubFrameHeader");
+                Debug.WriteLine("Unknown error while reading FlacSubFrameHeader");
 
             return subFrame;
         }

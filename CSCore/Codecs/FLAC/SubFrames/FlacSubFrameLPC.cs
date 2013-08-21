@@ -1,5 +1,6 @@
 ﻿using CSCore.Utils;
 using System;
+using System.Diagnostics;
 
 namespace CSCore.Codecs.FLAC
 {
@@ -18,7 +19,6 @@ namespace CSCore.Codecs.FLAC
         public unsafe FlacSubFrameLPC(FlacBitReader reader, FlacFrameHeader header, FlacSubFrameData data, int bps, int order)
             : base(header)
         {
-            const string loggerLocation = "FlacSubFrameLPC.ctor(...)";
 
             //warmup
             int[] warmup = new int[FlacConstant.MAX_LPC_ORDER];
@@ -31,7 +31,7 @@ namespace CSCore.Codecs.FLAC
             int u32 = (int)reader.ReadBits(FlacConstant.SUBFRAME_LPC_QLP_COEFF_PRECISION_LEN);
             if (u32 == (1 << FlacConstant.SUBFRAME_LPC_QLP_COEFF_PRECISION_LEN) - 1)
             {
-                Context.Current.Logger.Fatal("Invalid FlacLPC qlp coeff precision.", loggerLocation);
+                Debug.WriteLine("Invalid FlacLPC qlp coeff precision.");
                 return; //return false;
             }
             QLPCoeffPrecision = u32 + 1;

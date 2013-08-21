@@ -1,6 +1,7 @@
 ﻿using CSCore.CoreAudioAPI;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -106,7 +107,7 @@ namespace CSCore.SoundIn
             }
 
             _audioCaptureClient = AudioCaptureClient.FromAudioClient(_audioClient);
-            Context.Current.Logger.Debug("Initialized WasapiCapture[Mode: {0}; Latency: {1}; OutputFormat: {2}]", _shareMode, _latency, _waveFormat);
+            Debug.WriteLine(String.Format("Initialized WasapiCapture[Mode: {0}; Latency: {1}; OutputFormat: {2}]", _shareMode, _latency, _waveFormat));
         }
 
         public void Start()
@@ -178,7 +179,7 @@ namespace CSCore.SoundIn
             }
             catch (Exception e)
             {
-                Context.Current.Logger.Fatal(e, "WasapiCapture.CaptureProc");
+                Debug.WriteLine("WasapiCapture::CaptureProc: " + e.ToString());
                 if (System.Diagnostics.Debugger.IsAttached)
                     throw new Exception("Unhandled exception in wasapi capture proc.", e);
             }

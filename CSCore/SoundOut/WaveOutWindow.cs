@@ -29,9 +29,9 @@ namespace CSCore.SoundOut
             IntPtr ptr;
             lock (_lockObj)
             {
-                Context.Current.Logger.MMResult(MMInterops.waveOutOpenWithWindow(out ptr, (IntPtr)Device, WaveSource.WaveFormat, WindowHandle,
+                MmException.Try(MMInterops.waveOutOpenWithWindow(out ptr, (IntPtr)Device, WaveSource.WaveFormat, WindowHandle,
                     IntPtr.Zero, MMInterops.WaveInOutOpenFlags.CALLBACK_WINDOW),
-                    "waveOutOpenWithWindow <-- waveOutOpen", "WaveOutWindow.OpenWaveOut");
+                    "waveOutOpenWithWindow <-- waveOutOpen");
             }
             return ptr;
         }

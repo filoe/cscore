@@ -1,6 +1,7 @@
-﻿using CSCore.Compression.ACM;
+﻿using CSCore.ACM;
 using CSCore.Utils.Buffer;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Reflection;
@@ -8,7 +9,7 @@ using System.Threading;
 
 namespace CSCore.Codecs.MP3
 {
-    public sealed class Mp3WebStream : IWaveSource
+    public class Mp3WebStream : IWaveSource
     {
         private Stream _stream;
         private WebResponse _response;
@@ -51,7 +52,7 @@ namespace CSCore.Codecs.MP3
             _uri = uri;
 
             if (!SetAllowUnsafeHeaderParsing20())
-                Context.Current.Logger.Fatal(new Exception("Setting allowed Unsafe-Header-Parsing failed"), "Mp3WebStream.ctor(Uri, Actoin<Mp3WebStream>)", true);
+                throw new Exception("Setting allowed Unsafe-Header-Parsing failed.");
 
             CreateStream(async);
         }
@@ -85,7 +86,6 @@ namespace CSCore.Codecs.MP3
 
         private bool InitializeConnection()
         {
-            const string loggerLocation = "Mp3WebStream.Initialize()";
             try
             {
                 WebRequest.DefaultWebProxy = null;
@@ -102,7 +102,7 @@ namespace CSCore.Codecs.MP3
             }
             catch (Exception ex)
             {
-                Context.Current.Logger.Error(ex, loggerLocation, false);
+                Debug.WriteLine("Error Mp3WebStream::InitializeConnection: " + ex.ToString());
                 return false;
             }
         }
@@ -146,7 +146,7 @@ namespace CSCore.Codecs.MP3
                     _disposing = true;
                     ThreadPool.QueueUserWorkItem((c) =>
                     {
-                        while (_bufferThread.ThreadState != ThreadState.Stopped) ;
+                        while (_bufferThread.ThreadState != System.Threading.ThreadState.Stopped) ;
                         CreateStream(false);
                     });
                 }
@@ -216,12 +216,30 @@ namespace CSCore.Codecs.MP3
             get { return 0; }
         }
 
+        private bool _disposed;
         public void Dispose()
         {
-            _disposing = true;
-            if (_bufferThread != null && _bufferThread.ThreadState != ThreadState.Stopped && !_bufferThread.Join(500))
-                _bufferThread.Abort();
-            CloseResponse();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                _disposing = true;
+                if (_bufferThread != null &&
+                    _bufferThread.ThreadState != System.Threading.ThreadState.Stopped &&
+                    !_bufferThread.Join(500))
+                    _bufferThread.Abort();
+                CloseResponse();
+            }
+            _disposed = true;
+        }
+
+        ~Mp3WebStream()
+        {
+            Dispose(false);
         }
 
         private void CloseResponse()

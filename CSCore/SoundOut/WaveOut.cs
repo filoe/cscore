@@ -1,6 +1,7 @@
 ﻿using CSCore.SoundOut.MmInterop;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 
@@ -118,8 +119,8 @@ namespace CSCore.SoundOut
             {
                 lock (_lockObj)
                 {
-                    Context.Current.Logger.MMResult(MMInterops.waveOutPause(_hWaveOut),
-                        "waveOutPause", "WaveOut.Pause()");
+                    Debug.WriteLine(MMInterops.waveOutPause(_hWaveOut),
+                        "waveOutPause");
                 }
                 _playbackState = SoundOut.PlaybackState.Paused;
             }
@@ -131,8 +132,8 @@ namespace CSCore.SoundOut
             {
                 lock (_lockObj)
                 {
-                    Context.Current.Logger.MMResult(MMInterops.waveOutRestart(_hWaveOut),
-                        "waveOutRestart", "WaveOut.Resume()");
+                    Debug.WriteLine(MMInterops.waveOutRestart(_hWaveOut),
+                        "waveOutRestart");
                 }
                 _playbackState = SoundOut.PlaybackState.Playing;
             }
@@ -146,10 +147,10 @@ namespace CSCore.SoundOut
                 lock (_lockObj)
                 {
                     var result = MMInterops.waveOutReset(_hWaveOut);
-                    Context.Current.Logger.MMResult(
+                    Debug.WriteLine(
                         result,
-                        "waveOutReset",
-                        "WaveOut.Stop()");
+                        "waveOutReset"
+                        );
                 }
 
                 RaiseStopped();
@@ -161,8 +162,12 @@ namespace CSCore.SoundOut
         protected virtual IntPtr CreateWaveOut()
         {
             IntPtr handle;
-            Context.Current.Logger.MMResult(MMInterops.waveOutOpen(out handle, (IntPtr)_device, _source.WaveFormat, callback, IntPtr.Zero,
-                                            MMInterops.WaveInOutOpenFlags.CALLBACK_FUNCTION), "waveOutOpen", "WaveOut.CreateWaveOut()");
+            MmException.Try(MMInterops.waveOutOpen(out handle, 
+                (IntPtr)_device, 
+                _source.WaveFormat, 
+                callback, 
+                IntPtr.Zero,
+                MMInterops.WaveInOutOpenFlags.CALLBACK_FUNCTION), "waveOutOpen");
 
             return handle;
         }
@@ -198,7 +203,7 @@ namespace CSCore.SoundOut
                 _playbackState = SoundOut.PlaybackState.Stopped;
                 if (state != SoundOut.PlaybackState.Stopped)
                     RaiseStopped();
-                Context.Current.Logger.Info("Closing WaveOut", "WaveOut.CallBack");
+                Debug.WriteLine("WaveOut::Callback: Closing WaveOut.");
             }
         }
 
@@ -246,11 +251,11 @@ namespace CSCore.SoundOut
             {
                 if (_buffers != null)
                     _buffers.ForEach(x => x.Dispose());
-                Context.Current.Logger.MMResult(MMInterops.waveOutClose(_hWaveOut), "waveOutClose", "WaveOut.Dispose()");
+                MmException.Try(MMInterops.waveOutClose(_hWaveOut), "waveOutClose");
                 _hWaveOut = IntPtr.Zero;
             }
 
-            Context.Current.Logger.Info("WaveOut disposed");
+            Debug.WriteLine("WaveOut disposed.");
         }
 
         ~WaveOut()

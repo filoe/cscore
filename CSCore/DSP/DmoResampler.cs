@@ -1,5 +1,6 @@
 ﻿using CSCore.DMO;
 using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace CSCore.DSP
@@ -118,7 +119,7 @@ namespace CSCore.DSP
 
                             if (_outputBuffer.Length <= 0)
                             {
-                                Context.Current.Logger.Debug("No data in output buffer", "DmoResampler::Read(byte[], int, int)");
+                                Debug.WriteLine("DmoResampler::Read: No data in output buffer.");
                                 break;
                             }
 
@@ -129,7 +130,7 @@ namespace CSCore.DSP
                     }
                     else
                     {
-                        System.Diagnostics.Debug.Assert(false, "Case of not ready for input is not implemented yet");
+                        System.Diagnostics.Debug.Assert(false, "Case of not ready for input is not implemented yet."); //todo: .
                     }
                 }
 

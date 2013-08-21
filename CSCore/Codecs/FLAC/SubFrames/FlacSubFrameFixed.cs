@@ -1,4 +1,5 @@
-﻿namespace CSCore.Codecs.FLAC
+﻿using System.Diagnostics;
+namespace CSCore.Codecs.FLAC
 {
     public sealed class FlacSubFrameFixed : FlacSubFrameBase
     {
@@ -79,7 +80,7 @@
                     break;
 
                 default:
-                    Context.Current.Logger.Error("Invalid FlacFixedSubFrame predictororder", "FlacSubFrameFixed.RestoreSignal(...)");
+                    Debug.WriteLine("Invalid FlacFixedSubFrame predictororder.");
                     return false;
             }
 

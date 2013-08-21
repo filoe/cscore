@@ -16,16 +16,10 @@ namespace CSCore
 
         public string Target { get; private set; }
 
-        public MmException(MmResult result, string target)
-            : this(result, target, String.Empty)
-        {
-        }
-
-        public MmException(MmResult result, string target, string location)
+        public MmException(MmResult result, string function)
         {
             Result = result;
-            Target = target;
-            base.Source = location;
+            Target = function;
         }
     }
 }

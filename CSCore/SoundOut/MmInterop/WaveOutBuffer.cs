@@ -48,8 +48,8 @@ namespace CSCore.SoundOut.MmInterop
             _header = header;
             lock (_waveOut.LockObj)
             {
-                Context.Current.Logger.MMResult(MMInterops.waveOutPrepareHeader(_waveOut.WaveOutHandle, header, Marshal.SizeOf(header)),
-                    "waveOutPrepareHeader", "WaveOutBuffer.Initialize()");
+                MmException.Try(MMInterops.waveOutPrepareHeader(_waveOut.WaveOutHandle, header, Marshal.SizeOf(header)),
+                    "waveOutPrepareHeader");
             }
         }
 
@@ -68,7 +68,7 @@ namespace CSCore.SoundOut.MmInterop
                     MmResult result = MMInterops.waveOutWrite(_waveOut.WaveOutHandle, _header, Marshal.SizeOf(_header));
                     if (result != MmResult.MMSYSERR_NOERROR)
                     {
-                        Context.Current.Logger.MMResult(result, "waveOutWrite", "WaveOutBuffer.WriteData()");
+                        MmException.Try(result, "waveOutWrite");
                     }
                     return result == MmResult.MMSYSERR_NOERROR;
                 }
@@ -93,9 +93,10 @@ namespace CSCore.SoundOut.MmInterop
         {
             lock (_waveOut.LockObj)
             {
-                if (_header == null) return;
-                Context.Current.Logger.MMResult(MMInterops.waveOutUnprepareHeader(_waveOut.WaveOutHandle, _header, Marshal.SizeOf(_header)),
-                    "waveOutUnprepareHeader", "WaveOutBuffer.Dispose()", Utils.Logger.LogDispatcher.MMLogFlag.ThrowNever);
+                if (_header == null) 
+                    return;
+                MmException.Try(MMInterops.waveOutUnprepareHeader(_waveOut.WaveOutHandle, _header, Marshal.SizeOf(_header)),
+                    "waveOutUnprepareHeader"); //don't throw?
 
                 if (_bufferHandle.IsAllocated) _bufferHandle.Free();
                 if (_headerHandle.IsAllocated) _headerHandle.Free();

@@ -84,19 +84,19 @@ namespace CSCore.SoundIn
         private void AddBuffer()
         {
             var result = MMInterops.waveInAddBuffer(_waveInHandle, _header, Marshal.SizeOf(_header));
-            Context.Current.Logger.MMResult(result, "waveInAddBuffer", "WaveInBuffer.Reset()");
+            MmException.Try(result, "waveInAddBuffer");
         }
 
         private void Prepare()
         {
             var result = MMInterops.waveInPrepareHeader(_waveInHandle, _header, Marshal.SizeOf(_header));
-            Context.Current.Logger.MMResult(result, "waveInPrepareHeader", "WaveInBuffer.Prepare()");
+            MmException.Try(result, "waveInPrepareHeader");
         }
 
         private void Unprepare()
         {
             var result = MMInterops.waveInUnprepareHeader(_waveInHandle, _header, Marshal.SizeOf(_header));
-            Context.Current.Logger.MMResult(result, "waveInUnprepareHeader", "WaveInBuffer.Unprepare()");
+            MmException.Try(result, "waveInUnprepareHeader");
         }
 
         public void Dispose()

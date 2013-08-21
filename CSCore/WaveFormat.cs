@@ -241,8 +241,6 @@ namespace CSCore
         WAVE_FORMAT_QUALCOMM_HALFRATE = 0x0151, // Qualcomm, Inc.
         WAVE_FORMAT_TUBGSM = 0x0155, // Ring Zero Systems, Inc.
         WAVE_FORMAT_MSAUDIO1 = 0x0160, // Microsoft Corporation
-        WAVE_FORMAT_WMAUDIO2 = 0x0161,
-        WAVE_FORMAT_WMAUDIO3 = 0x0162,
         WAVE_FORMAT_UNISYS_NAP_ADPCM = 0x0170, // Unisys Corp.
         WAVE_FORMAT_UNISYS_NAP_ULAW = 0x0171, // Unisys Corp.
         WAVE_FORMAT_UNISYS_NAP_ALAW = 0x0172, // Unisys Corp.
@@ -273,6 +271,13 @@ namespace CSCore
         WAVE_FORMAT_NORRIS = 0x1400, // Norris Communications, Inc.
         WAVE_FORMAT_SOUNDSPACE_MUSICOMPRESS = 0x1500, // AT&T Labs, Inc.
         WAVE_FORMAT_DVM = 0x2000, // FAST Multimedia AG
+        WAVE_FORMAT_RAW_AAC1 = 0x00FF, // Advanced Audio Coding (AAC).
+        WAVE_FORMAT_MPEG_HEAAC = 0x1610, // Advanced Audio Coding (AAC).
+        WAVE_FORMAT_WMAVOICE9 = 0x000A, 
+        WAVE_FORMAT_WMASPDIF = 0x0164,
+        WAVE_FORMAT_WMAUDIO_LOSSLESS = 0x0163,
+        WAVE_FORMAT_WMAUDIO2 = 0x0161,
+        WAVE_FORMAT_WMAUDIO3 = 0x0162,
         Extensible = 0xFFFE, // Microsoft
         WAVE_FORMAT_DEVELOPMENT = 0xFFFF
     }

@@ -2,6 +2,7 @@
 using CSCore.DSP;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -89,7 +90,7 @@ namespace CSCore.SoundOut
 
             _renderClient = AudioRenderClient.FromAudioClient(_audioClient);
             _simpleAudioVolume = SimpleAudioVolume.FromAudioClient(_audioClient);
-            Context.Current.Logger.Debug("Initialized WasapiOut[Mode: {0}; Latency: {1}; OutputFormat: {2}]", _shareMode, _latency, _outputFormat);
+            Debug.WriteLine(String.Format("Initialized WasapiOut[Mode: {0}; Latency: {1}; OutputFormat: {2}]", _shareMode, _latency, _outputFormat));
         }
 
         public void Play()
@@ -197,7 +198,7 @@ namespace CSCore.SoundOut
             }
             catch (Exception e)
             {
-                Context.Current.Logger.Fatal(e, "WasapiOut.PlaybackProc");
+                Debug.WriteLine("WasapiOut::PlaybackProc: " + e.ToString(), "WasapiOut.PlaybackProc");
                 if (System.Diagnostics.Debugger.IsAttached)
                     throw new Exception("Unhandled exception in wasapi playback proc.", e);
             }

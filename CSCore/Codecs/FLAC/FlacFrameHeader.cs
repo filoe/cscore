@@ -1,5 +1,6 @@
 ﻿using CSCore.Utils;
 using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace CSCore.Codecs.FLAC
@@ -323,7 +324,7 @@ namespace CSCore.Codecs.FLAC
         internal void Error(string msg, string location)
         {
             if (printErrors)
-                Context.Current.Logger.Error(msg, location);
+                Debug.WriteLine(location + msg);
         }
 
         public bool CompareTo(FlacFrameHeader header)

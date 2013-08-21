@@ -23,7 +23,7 @@ namespace CSCore.SoundIn
         protected override void OpenWaveDevice(int device)
         {
             var result = MMInterops.waveInOpenWithWindow(out handle, (IntPtr)device, WaveFormat, _event.SafeWaitHandle.DangerousGetHandle(), IntPtr.Zero, MMInterops.WaveInOutOpenFlags.CALLBACK_EVENT);
-            Context.Current.Logger.MMResult(result, "waveInOpen", "WaveInEvent.OpenWaveDevice", Utils.Logger.LogDispatcher.MMLogFlag.LogAlways | Utils.Logger.LogDispatcher.MMLogFlag.ThrowOnError);
+            MmException.Try(result, "waveInOpen");
         }
 
         protected override void OnStart()

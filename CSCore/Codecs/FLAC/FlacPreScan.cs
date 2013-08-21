@@ -47,7 +47,7 @@ namespace CSCore.Codecs.FLAC
         protected void StartScan(FlacMetadataStreamInfo streamInfo, FlacPreScanMethodMode method)
         {
             if (_isRunning)
-                Context.Current.Logger.Fatal(new Exception("Scan is already running."), "FlacPreScan.StartScan(FlacMetadataStreamInfo, FlacPreScanMethod)", true);
+                throw new Exception("Scan is already running.");
 
             _isRunning = true;
 
@@ -69,7 +69,6 @@ namespace CSCore.Codecs.FLAC
         protected virtual List<FlacFrameInformation> RunScan(FlacMetadataStreamInfo streamInfo)
         {
 #if DEBUG
-            const string loggerLocation = "FlacPreScan.ScanStream(FlacMetadataStreamInfo)";
             Stopwatch watch = new Stopwatch();
             watch.Start();
 #endif
@@ -77,8 +76,8 @@ namespace CSCore.Codecs.FLAC
 
 #if DEBUG
             watch.Stop();
-            Context.Current.Logger.Debug("FlacPreScan finished: {0} Bytes processed in {1} ms.", loggerLocation,
-                _stream.Length.ToString(), watch.ElapsedMilliseconds.ToString());
+            Debug.WriteLine(String.Format("FlacPreScan finished: {0} Bytes processed in {1} ms.",
+                _stream.Length.ToString(), watch.ElapsedMilliseconds.ToString()));
 #endif
             RaiseScanFinished(result);
             return result;

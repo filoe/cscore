@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
 
 namespace CSCore.SoundOut.DirectSound
@@ -68,7 +69,7 @@ namespace CSCore.SoundOut.DirectSound
 
             _notify = notify;
 
-            Context.Current.Logger.Debug("DirectSoundNotifyManager initialized", "DirectSoundNotifyManager.ctor(DirectSoundSecondaryBuffer, WaveFormat, int, Func<object, bool>)");
+            Debug.WriteLine("DirectSoundNotifyManager initialized.");
         }
 
         public void Start()
@@ -80,7 +81,7 @@ namespace CSCore.SoundOut.DirectSound
             _thread.Priority = ThreadPriority.AboveNormal;
             //_thread.IsBackground = true;
             _thread.Start();
-            Context.Current.Logger.Debug("DirectSoundNotifyManager started", "DirectSoundNotifyManager.Start()");
+            Debug.WriteLine("DirectSoundNotifyManager started");
         }
 
         private void NotifyProc()
@@ -121,12 +122,12 @@ namespace CSCore.SoundOut.DirectSound
             {
                 if (!_thread.Join(timeout))
                 {
-                    Context.Current.Logger.Error(String.Format("DirectSoundNotifyManager stop failed: timeout after {0} ms", timeout), "DirectSoundNotifyManager.Stop()");
+                    Debug.WriteLine(String.Format("DirectSoundNotifyManager stop failed: timeout after {0} ms", timeout));
                     return false;
                 }
                 _thread = null;
             }
-            Context.Current.Logger.Debug("DirectSoundNotifyManager stopped successfully", "DirectSoundNotifyManager.Stop(int)");
+            Debug.WriteLine("DirectSoundNotifyManager stopped successfully");
             return true;
         }
 

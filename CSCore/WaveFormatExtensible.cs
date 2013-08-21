@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSCore.DMO;
+using System;
 using System.Runtime.InteropServices;
 
 namespace CSCore
@@ -22,11 +23,7 @@ namespace CSCore
                 return ((WaveFormatExtensible)waveFormat).SubFormat;
             else
             {
-                if (waveFormat.WaveFormatTag == AudioEncoding.IeeeFloat)
-                    return DMO.MediaTypes.MEDIASUBTYPE_IEEE_FLOAT;
-                else if (waveFormat.WaveFormatTag == AudioEncoding.Pcm)
-                    return DMO.MediaTypes.MEDIASUBTYPE_PCM;
-                else throw new NotSupportedException("Waveformat encoding is not supported: " + waveFormat.WaveFormatTag.ToString());
+                return MediaTypes.MediaTypeFromEncoding(waveFormat.WaveFormatTag);
                 //todo: mp3, gsm,...?
             }
         }
@@ -80,6 +77,21 @@ namespace CSCore
                 throw new ArgumentException("Channels has to equal the set bits in the channelmask");
 
             _channelMask = channelMask;
+        }
+
+        public bool IsPcm
+        {
+            get { return SubFormat == DMO.MediaTypes.MEDIASUBTYPE_PCM; }
+        }
+
+        public bool IsIeeeFloat
+        {
+            get { return SubFormat == DMO.MediaTypes.MEDIASUBTYPE_IEEE_FLOAT; }
+        }
+
+        public WaveFormat ToWaveFormat()
+        {
+            return new WaveFormat(SampleRate, BitsPerSample, Channels, MediaTypes.EncodingFromMediaType(SubFormat));
         }
     }
 

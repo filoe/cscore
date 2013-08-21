@@ -183,6 +183,7 @@ namespace CSCore.SoundOut.DirectSound
         {
             int dvolume;
             var result = GetVolume(out dvolume);
+            dvolume /= 100;
             volume = (float)Math.Pow(10.0, (double)dvolume / 20.0);
             volume = Math.Min(1, volume);
             volume = Math.Max(0, volume);

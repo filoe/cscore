@@ -15,8 +15,7 @@ namespace CSCore.Codecs.FLAC
 
             byte[] b = new byte[4];
             if (stream.Read(b, 0, 4) <= 0)
-                Context.Current.Logger.Fatal(new FlacException(new EndOfStreamException("Could not read metadata"), FlacLayer.Metadata),
-                    "FlacMetadata.FromStream(Stream)", true);
+                throw new FlacException(new EndOfStreamException("Could not read metadata"), FlacLayer.Metadata);
 
             fixed (byte* headerBytes = b)
             {

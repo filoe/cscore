@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -197,8 +198,9 @@ namespace CSCore.Codecs.FLAC
                 }
                 else
                 {
-                    Context.Current.Logger.Fatal("Invalid Flac-BitsPerSample: " + Header.BitsPerSample.ToString() + ".", "FlacFrame.GetBuffer(...)");
-                    throw new Exception();
+                    string error = "FlacFrame::GetBuffer: Invalid Flac-BitsPerSample: " + Header.BitsPerSample.ToString() + ".";
+                    Debug.WriteLine(error);
+                    throw new FlacException(error, FlacLayer.Frame);
                 }
 
                 return (int)(ptr - ptrBuffer);

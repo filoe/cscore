@@ -8,6 +8,7 @@ using CSCore.Streams;
 using CSCore.Streams.SampleConverter;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -54,7 +55,6 @@ namespace WPFVisualisation
         {
             InitializeComponent();
             DataContext = this;
-            CSCore.Context.Current.CreateDefaultLogger();
         }
 
         private void OnOpenFile(object sender, RoutedEventArgs e)
@@ -138,7 +138,7 @@ namespace WPFVisualisation
 
         private void OnPlaybackStopped(object sender, EventArgs e)
         {
-            Context.Current.Logger.Debug("Playback stopped");
+            Debug.WriteLine("Playback stopped");
         }
 
         private void Stop()

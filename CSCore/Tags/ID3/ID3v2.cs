@@ -1,6 +1,7 @@
 ﻿using CSCore.Tags.ID3.Frames;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -83,7 +84,6 @@ namespace CSCore.Tags.ID3
 
         private bool ReadData(Stream stream, bool readData)
         {
-            const string loggerLocation = "ID3v2.Parse(Stream, bool)";
 
             bool success = true;
 
@@ -127,7 +127,7 @@ namespace CSCore.Tags.ID3
             }
             else
             {
-                Context.Current.Logger.Debug("No ID3v2 Header found.", loggerLocation);
+                Debug.WriteLine("ID3v2::ReadData: No ID3v2 Header found.");
                 return false;
             }
         }

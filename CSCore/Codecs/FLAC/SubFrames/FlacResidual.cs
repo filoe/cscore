@@ -10,8 +10,6 @@
 
         public FlacResidual(FlacBitReader reader, FlacFrameHeader header, FlacSubFrameData data, int order)
         {
-            const string loggerLocation = "FlacResidual.ctor(...)";
-
             FlacEntropyCoding codingMethod = (FlacEntropyCoding)reader.ReadBits(FlacConstant.ENTROPY_CODING_METHOD_TYPE_LEN); // 2 Bit
             int riceOrder = -1;
 
@@ -23,7 +21,7 @@
 
                 if (rice.ProcessResidual(reader, header, data, order) == false)
                 {
-                    Context.Current.Logger.Fatal(new FlacException("Decoding Flac Residual failed.", FlacLayer.SubFrame), loggerLocation);
+                    throw new FlacException("Decoding Flac Residual failed.", FlacLayer.SubFrame);
                 }
 
                 CodingMethod = codingMethod;
@@ -32,7 +30,7 @@
             }
             else
             {
-                Context.Current.Logger.Fatal(new FlacException("Not supported RICE-Coding-Method. Stream unparseable!", FlacLayer.SubFrame), loggerLocation);
+                throw new FlacException("Not supported RICE-Coding-Method. Stream unparseable!", FlacLayer.SubFrame);
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
 namespace CSCore.Codecs.WAV
@@ -100,6 +101,7 @@ namespace CSCore.Codecs.WAV
             get { return _stream.Length - _dataInitPosition; }
         }
 
+        private bool _disposed;
         public void Dispose()
         {
             Dispose(true);
@@ -108,19 +110,19 @@ namespace CSCore.Codecs.WAV
 
         protected virtual void Dispose(bool disposing)
         {
-            lock (lockObj)
+            if (!_disposed)
             {
-                if (disposing)
+                lock (lockObj)
                 {
-                    //dispose managed
+                    if (_stream != null)
+                    {
+                        _stream.Dispose();
+                        _stream = null;
+                    }
+                    Debug.WriteLine("WaveFile disposed.");
                 }
-                if (_stream != null)
-                {
-                    _stream.Dispose();
-                    _stream = null;
-                }
-                Context.Current.Logger.Info("WaveFile disposed");
             }
+            _disposed = true;
         }
 
         ~WaveFileReader()

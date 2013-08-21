@@ -14,6 +14,7 @@ namespace CSCore.MediaFoundation
         private IMFByteStream _byteStream;
         private MFSourceReader _reader;
         private WaveFormat _waveFormat;
+        private Stream _stream;
         private Object _lockObj = new Object();
 
         private long _length;
@@ -43,6 +44,7 @@ namespace CSCore.MediaFoundation
                 throw new ArgumentException("Stream is not readable.", "stream");
 
             stream = new ComStream(stream);
+            _stream = stream;
             _byteStream = MediaFoundationCore.IStreamToByteStream((IStream)stream);
             _reader = Initialize(_byteStream);
         }
@@ -207,6 +209,11 @@ namespace CSCore.MediaFoundation
                 {
                     Marshal.ReleaseComObject(_byteStream);
                     _byteStream = null;
+                }
+                if (_stream != null)
+                {
+                    _stream.Dispose();
+                    _stream = null;
                 }
             }
         }

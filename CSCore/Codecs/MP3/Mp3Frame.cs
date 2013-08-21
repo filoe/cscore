@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace CSCore.Codecs.MP3
@@ -99,13 +100,12 @@ namespace CSCore.Codecs.MP3
             if (stream == null) throw new ArgumentNullException("stream");
             if (!stream.CanRead) throw new ArgumentException("stream not readable");
 
-            const string loggerLocation = "Mp3Frame.FindFrame(Stream)";
             byte[] buffer = new byte[4];
             int read;
 
             if ((read = stream.Read(buffer, 0, buffer.Length)) < 4)
             {
-                Context.Current.Logger.Fatal("Stream EOF.", loggerLocation);
+                Debug.WriteLine("Stream is EOF.");
                 return false;
             }
 
@@ -120,7 +120,7 @@ namespace CSCore.Codecs.MP3
 
                 if ((read = stream.Read(buffer, 3, 1)) < 1)
                 {
-                    Context.Current.Logger.Fatal("Stream EOF.", loggerLocation);
+                    Debug.WriteLine("Mp3Frame::FindFrame: Stream EOF.");
                     return false;
                 }
 
@@ -187,14 +187,14 @@ namespace CSCore.Codecs.MP3
                 MPEGVersion = (MpegVersion)((buffer[1] & 0x18) >> 3);
                 if (MPEGVersion == MpegVersion.Reserved)
                 {
-                    Context.Current.Logger.Error("MPEGVERSION = MpegVersion.Reserved", "Mp3Header.ParseBytes()");
+                    Debug.WriteLine("Mp3Frame::ParseFrame: MPEGVERSION = MpegVersion.Reserved");
                     return false;
                 }
 
                 MPEGLayer = (MpegLayer)((buffer[1] & 0x6) >> 1);
                 if (MPEGLayer == MpegLayer.Reserved)
                 {
-                    Context.Current.Logger.Error("MPEGLayer == MpegLayer.Reserved", "Mp3Header.ParseBytes()");
+                    Debug.WriteLine("Mp3Frame::ParseFrame: MPEGLayer == MpegLayer.Reserved");
                     return false;
                 }
 

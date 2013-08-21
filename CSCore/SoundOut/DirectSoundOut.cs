@@ -1,6 +1,7 @@
 ﻿using CSCore.SoundOut.DirectSound;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -74,7 +75,7 @@ namespace CSCore.SoundOut
                 _secondaryBuffer.Play(DSBPlayFlags.DSBPLAY_LOOPING);
                 PlaybackState = SoundOut.PlaybackState.Playing;
                 _notifyManager.Start();
-                Context.Current.Logger.Info("DirectSoundOut playback started", "DirectSoundOut.Play()");
+                Debug.WriteLine("DirectSoundOut playback started", "DirectSoundOut.Play()");
             }
 
             PlaybackState = SoundOut.PlaybackState.Playing;
@@ -173,7 +174,7 @@ namespace CSCore.SoundOut
 
                 _isinitialized = true;
 
-                Context.Current.Logger.Info("DirectSoundOut initialized", "DirectSoundOut.Initialize(IWaveSource)");
+                Debug.WriteLine("DirectSoundOut initialized");
             }
         }
 

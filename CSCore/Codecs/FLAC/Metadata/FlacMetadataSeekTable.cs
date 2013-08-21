@@ -23,7 +23,7 @@ namespace CSCore.Codecs.FLAC
             }
             catch (IOException e)
             {
-                Context.Current.Logger.Fatal(new FlacException(e, FlacLayer.Metadata), "FlacMetadataSeekTable(Stream, int, bool)", true);
+                throw new FlacException(e, FlacLayer.Metadata);
             }
         }
 

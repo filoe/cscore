@@ -157,8 +157,8 @@ namespace CSCore.SoundOut.MmInterop
             uint tmp = CSCore.Utils.CSMath.FloatToWaveOutVolume(left, right);
             MmResult result = MMInterops.waveOutSetVolume(waveOut, tmp);
             if (result != MmResult.MMSYSERR_NOERROR)
-                Context.Current.Logger.MMResult(MMInterops.waveOutSetVolume(waveOut, tmp),
-                    "waveOutSetVolume", "MMInterop.SetVolume(IntPtr, float, float)");
+                MmException.Try(MMInterops.waveOutSetVolume(waveOut, tmp),
+                    "waveOutSetVolume");
         }
 
         public static float GetVolume(IntPtr waveOut)
@@ -166,7 +166,7 @@ namespace CSCore.SoundOut.MmInterop
             uint volume = 0;
             MmResult result = MMInterops.waveOutGetVolume(waveOut, out volume);
             if (result != MmResult.MMSYSERR_NOERROR)
-                Context.Current.Logger.MMResult(result, "waveOutGetVolume", "MMInterop.GetVolume(IntPtr)");
+                MmException.Try(result, "waveOutGetVolume");
             return CSCore.Utils.CSMath.IntToWaveOutVolume(volume);
         }
 

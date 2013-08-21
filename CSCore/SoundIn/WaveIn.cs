@@ -84,7 +84,7 @@ namespace CSCore.SoundIn
 
             ResetBuffers();
             var result = MMInterops.waveInStart(Handle);
-            Context.Current.Logger.MMResult(result, "waveInStart", "WaveIn.Start()");
+            MmException.Try(result, "waveInStart");
             stopped = false;
 
             OnStart();
@@ -124,7 +124,7 @@ namespace CSCore.SoundIn
         {
             _callback = new MMInterops.WaveCallback(Callback);
             var result = MMInterops.waveInOpen(out handle, (IntPtr)device, _waveFormat, _callback, IntPtr.Zero, MMInterops.WaveInOutOpenFlags.CALLBACK_FUNCTION);
-            Context.Current.Logger.MMResult(result, "waveInOpen", "WaveIn.OpenWaveDevice", Utils.Logger.LogDispatcher.MMLogFlag.LogAlways | Utils.Logger.LogDispatcher.MMLogFlag.ThrowOnError);
+            MmException.Try(result, "waveInOpen");
         }
 
         private void CloseWaveDevice()

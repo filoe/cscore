@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 
@@ -151,14 +152,16 @@ namespace CSCore.Codecs.WAV
             _writer.Write(_dataLength);
         }
 
+        private bool _disposed;
         public void Dispose()
         {
             Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing && _stream != null && _writer != null)
+            if (!_disposed)
             {
                 try
                 {
@@ -166,7 +169,7 @@ namespace CSCore.Codecs.WAV
                 }
                 catch (Exception ex)
                 {
-                    Context.Current.Logger.Fatal(ex, "WaveWriter.Dispose(bool)");
+                    Debug.WriteLine("WaveWriter::Dispose: " + ex.ToString());
                 }
                 finally
                 {
@@ -175,6 +178,7 @@ namespace CSCore.Codecs.WAV
                     _stream = null;
                 }
             }
+            _disposed = true;
         }
 
         ~WaveWriter()

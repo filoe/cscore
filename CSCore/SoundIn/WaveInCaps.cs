@@ -15,7 +15,7 @@ namespace CSCore.SoundIn
             {
                 WaveInCaps c;
                 var result = MMInterops.waveInGetDevCaps(i, out c, (uint)Marshal.SizeOf(typeof(WaveInCaps)));
-                Context.Current.Logger.MMResult(result, "waveInGetDevCaps", "WaveInCaps::GetCaps()");
+                MmException.Try(result, "waveInGetDevCaps");
                 caps[i] = c;
             }
             return caps;
