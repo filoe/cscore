@@ -89,7 +89,7 @@
             </StackPanel>
             <GridSplitter ResizeDirection="Columns" Width="3" />
             <UniformGrid Grid.Column="1" Rows="2">
-                <cscore:WaveForm DataProvider="{Binding VisualizationViewModel.SampleDataProvider, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                <cscore:WaveForm DataProvider="{Binding VisualizationViewModel.SampleDataProvider, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" EnableRendering="True"/>
                 <cscore:Point3DSpectrum DataProvider="{Binding VisualizationViewModel.FFTDataProvider, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
             </UniformGrid>
         </Grid>

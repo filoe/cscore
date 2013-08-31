@@ -181,7 +181,7 @@ namespace CSCore.SoundIn
             {
                 Debug.WriteLine("WasapiCapture::CaptureProc: " + e.ToString());
                 if (System.Diagnostics.Debugger.IsAttached)
-                    throw new Exception("Unhandled exception in wasapi capture proc.", e);
+                    throw new Exception("Unhandled exception in wasapi capture proc. See innerexception for details.", e);
             }
             finally
             {
@@ -233,6 +233,8 @@ namespace CSCore.SoundIn
 
         private void RaiseDataAvilable(byte[] buffer, int offset, int count)
         {
+            if (count < 1)
+                return;
             if (DataAvailable != null)
                 DataAvailable(this, new DataAvailableEventArgs(buffer, offset, count, WaveFormat));
         }

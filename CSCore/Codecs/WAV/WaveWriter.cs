@@ -7,6 +7,27 @@ namespace CSCore.Codecs.WAV
 {
     public class WaveWriter : IDisposable
     {
+        public static void WriteToFile(string filename, IWaveSource source, bool deleteIfExists, int maxlength = -1)
+        {
+            if (deleteIfExists && File.Exists(filename))
+                File.Delete(filename);
+
+            int read = 0;
+            int r = 0;
+            byte[] buffer = new byte[source.WaveFormat.BytesPerSecond];
+            using (var w = new WaveWriter(filename, source.WaveFormat))
+            {
+                while ((read = source.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    w.Write(buffer, 0, read);
+                    r += read;
+                    if (maxlength != -1 && r > maxlength)
+                        break;
+                }
+            }
+        }
+            
+
         private Stream _stream;
         private BinaryWriter _writer;
 

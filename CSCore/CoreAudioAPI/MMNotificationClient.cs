@@ -42,7 +42,7 @@ namespace CSCore.CoreAudioAPI
 
         private void Initialize(MMDeviceEnumerator enumerator)
         {
-            int result = enumerator.RegisterEndpointNotificationCallback(this as IMMNotificationClient);
+            int result = enumerator.RegisterEndpointNotificationCallbackNative(this as IMMNotificationClient);
             CoreAudioAPIException.Try(result, "IMMDeviceEnumerator", "RegisterEndpointNotificationCallback");
         }
 
@@ -106,7 +106,7 @@ namespace CSCore.CoreAudioAPI
             {
                 using (MMDeviceEnumerator enumerator = new MMDeviceEnumerator())
                 {
-                    CoreAudioAPIException.Try(enumerator.UnregisterEndpointNotificationCallback(this as IMMNotificationClient),
+                    CoreAudioAPIException.Try(enumerator.UnregisterEndpointNotificationCallbackNative(this as IMMNotificationClient),
                         c, "UnregisterEndpointNotificationCallback");
                 }
             }
@@ -120,95 +120,5 @@ namespace CSCore.CoreAudioAPI
         {
             Dispose(false);
         }
-    }
-
-    public class DeviceNotificationEventArgs : EventArgs
-    {
-        public string DeviceID { get; private set; }
-
-        public DeviceNotificationEventArgs(string deviceID)
-        {
-            if (String.IsNullOrEmpty(deviceID))
-                throw new ArgumentNullException("deviceID");
-            DeviceID = deviceID;
-        }
-    }
-
-    public class DeviceStateChangedEventArgs : DeviceNotificationEventArgs
-    {
-        public DeviceState DeviceState { get; private set; }
-
-        public DeviceStateChangedEventArgs(string deviceID, DeviceState deviceState)
-            : base(deviceID)
-        {
-            DeviceState = deviceState;
-        }
-    }
-
-    public class DefaultDeviceChangedEventArgs : DeviceNotificationEventArgs
-    {
-        public DataFlow DataFlow { get; private set; }
-
-        public Role Role { get; private set; }
-
-        public DefaultDeviceChangedEventArgs(string deviceID, DataFlow dataFlow, Role role)
-            : base(deviceID)
-        {
-            DataFlow = dataFlow;
-            Role = role;
-        }
-    }
-
-    public class DevicePropertyChangedEventArgs : DeviceNotificationEventArgs
-    {
-        public PropertyKey PropertyKey { get; private set; }
-
-        public DevicePropertyChangedEventArgs(string deviceID, PropertyKey propertyKey)
-            : base(deviceID)
-        {
-        }
-    }
-
-    /// <summary>
-    /// mmdeviceapi.h line 221
-    /// </summary>
-    [ComImport]
-    [Guid("7991EEC9-7E89-4D85-8390-6C703CEC60C0")]
-    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    [SuppressUnmanagedCodeSecurity]
-    public interface IMMNotificationClient
-    {
-        /// <summary>
-        /// The OnDeviceStateChanged method indicates that the state of an audio endpoint device has
-        /// changed.
-        /// </summary>
-        /// <returns>HRESULT</returns>
-        int OnDeviceStateChanged([In, MarshalAs(UnmanagedType.LPWStr)] string deviceID, DeviceState deviceState);
-
-        /// <summary>
-        /// The OnDeviceAdded method indicates that a new audio endpoint device has been added.
-        /// </summary>
-        /// <returns>HRESULT</returns>
-        int OnDeviceAdded([In, MarshalAs(UnmanagedType.LPWStr)] string deviceID);
-
-        /// <summary>
-        /// The OnDeviceRemoved method indicates that an audio endpoint device has been removed.
-        /// </summary>
-        /// <returns>HRESULT</returns>
-        int OnDeviceRemoved([In, MarshalAs(UnmanagedType.LPWStr)] string deviceID);
-
-        /// <summary>
-        /// The OnDefaultDeviceChanged method notifies the client that the default audio endpoint
-        /// device for a particular device role has changed.
-        /// </summary>
-        /// <returns>HRESULT</returns>
-        int OnDefaultDeviceChanged([In] DataFlow flow, [In] Role role, [In, MarshalAs(UnmanagedType.LPWStr)] string deviceID);
-
-        /// <summary>
-        /// The OnPropertyValueChanged method indicates that the value of a property belonging to an
-        /// audio endpoint device has changed.
-        /// </summary>
-        /// <returns>HRESULT</returns>
-        int OnPropertyValueChanged([In, MarshalAs(UnmanagedType.LPWStr)] string deviceID, PropertyKey key);
     }
 }

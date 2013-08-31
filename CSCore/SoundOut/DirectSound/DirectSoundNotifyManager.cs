@@ -102,6 +102,8 @@ namespace CSCore.SoundOut.DirectSound
             }
             catch (Exception)
             {
+                if(Debugger.IsAttached)
+                    throw;
             }
             finally
             {

@@ -83,10 +83,7 @@ namespace CSCore.SoundOut
 
         public void Pause()
         {
-            lock (_lockObj)
-            {
-                PlaybackState = SoundOut.PlaybackState.Paused;
-            }
+            PlaybackState = SoundOut.PlaybackState.Paused;
         }
 
         public void Resume()
@@ -304,7 +301,7 @@ namespace CSCore.SoundOut
         public PlaybackState PlaybackState
         {
             get { return _playbackState; }
-            private set { lock (_lockObj) { _playbackState = value; } }
+            private set {  _playbackState = value;  }
         }
 
         protected void CheckForInitialize()

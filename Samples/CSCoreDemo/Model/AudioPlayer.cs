@@ -33,10 +33,12 @@ namespace CSCoreDemo.Model
                 var _notification = new SimpleNotificationSource(_panSource);
                 _notification.DataRead += OnNotification;
 
+                source = _notification.ToWaveSource(16);
+
                 if (oninitcallback != null)
-                    SoundOutManager.Initialize(oninitcallback(_notification.ToWaveSource(16)));
+                    SoundOutManager.Initialize(oninitcallback(source));
                 else
-                    SoundOutManager.Initialize(_notification.ToWaveSource(16));
+                    SoundOutManager.Initialize(source);
             }
             catch (Exception)
             {

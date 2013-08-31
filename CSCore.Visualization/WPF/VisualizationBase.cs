@@ -12,10 +12,11 @@ namespace CSCore.Visualization.WPF
 {
     public abstract class VisualizationBase : ContentControl, IVisualization
     {
+        bool enableRendering = true;
         public bool EnableRendering
         {
             get { return (bool)GetValue(EnableRenderingProperty); }
-            set { SetValue(EnableRenderingProperty, value); }
+            set { SetValue(EnableRenderingProperty, value); enableRendering = value; }
         }
 
         public static readonly DependencyProperty EnableRenderingProperty =
@@ -33,11 +34,17 @@ namespace CSCore.Visualization.WPF
         {
             _timer = new FPSTimer(60);
             _timer.Start();
+            EnableRendering = true;
         }
 
         protected virtual bool ValidateTimer()
         {
-            return _timer.Update();
+            bool flag = false;
+            if (_timer.Update())
+            {
+                Dispatcher.Invoke(new Action(() => flag = EnableRendering));
+            }
+            return flag;
         }
     }
 }

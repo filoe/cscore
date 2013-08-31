@@ -147,7 +147,7 @@ namespace Recorder
                     {
                         _soundOut = new WaveOutWindow();
                     }
-                    IWaveSource source = new CSCore.Streams.WaveInSource(_waveIn) { FillWithZeros = true };
+                    IWaveSource source = new CSCore.Streams.WaveInSource(_waveIn);
                     _soundOut.Initialize(source);
                     _soundOut.Play();
                 }

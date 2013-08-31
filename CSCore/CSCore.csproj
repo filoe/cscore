@@ -221,11 +221,18 @@
     <Compile Include="Codecs\MP3\Mp3FileReader.cs" />
     <Compile Include="Codecs\MP3\Mp3Format.cs" />
     <Compile Include="Codecs\MP3\Mp3Frame.cs" />
+    <Compile Include="Codecs\MP3\MP3MediafoundationDecoder.cs" />
     <Compile Include="Codecs\MP3\Mp3WebStream.cs" />
     <Compile Include="Codecs\MP3\XingHeader.cs" />
     <Compile Include="Codecs\WMA\WMADecoder.cs" />
     <Compile Include="CoreAudioAPI\AudioCaptureClient.cs" />
     <Compile Include="CoreAudioAPI\AudioMeterInformation.cs" />
+    <Compile Include="CoreAudioAPI\DefaultDeviceChangedEventArgs.cs" />
+    <Compile Include="CoreAudioAPI\DeviceNotificationEventArgs.cs" />
+    <Compile Include="CoreAudioAPI\DevicePropertyChangedEventArgs.cs" />
+    <Compile Include="CoreAudioAPI\DeviceStateEventArgs.cs" />
+    <Compile Include="CoreAudioAPI\IMMNotificationClient.cs" />
+    <Compile Include="DSP\BiQuad.cs" />
     <Compile Include="DSP\ChannelMatrixElement.cs" />
     <Compile Include="MediaFoundation\CommonAudioDecoder.cs" />
     <Compile Include="MediaFoundation\MediaFoundationAttributes.cs" />
@@ -242,6 +249,10 @@
     <Compile Include="SoundIn\RecordingState.cs" />
     <Compile Include="SoundIn\WasapiCapture.cs" />
     <Compile Include="SoundIn\WasapiLoopbackCapture.cs" />
+    <Compile Include="Streams\EqFilter.cs" />
+    <Compile Include="Streams\EqFilterCollection.cs" />
+    <Compile Include="Streams\EqFilterEntry.cs" />
+    <Compile Include="Streams\Equalizer.cs" />
     <Compile Include="Win32\ComStream.cs" />
     <Compile Include="Win32\IStream.cs" />
     <Compile Include="Win32\Win32ComException.cs" />
@@ -517,6 +528,10 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>call "$(SolutionDir)Tools\CSCli\$(OutDir)CSCli.exe" "$(TargetPath)"</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

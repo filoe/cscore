@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace CSCore.Visualization.WPF
 {
-    public abstract class FFTVisualizationBase : VisualizationBase, IFFTVisualization, IDisposable
+    public abstract class FFTVisualizationBase : VisualizationBase, IFFTVisualization
     {
         private Mutex _mutex;
 
@@ -24,9 +24,6 @@ namespace CSCore.Visualization.WPF
             }
             set
             {
-                //if (value == null)
-                //    throw new ArgumentNullException("value");
-
                 if (DataProvider != null)
                 {
                     DataProvider.FFTCalculated -= Update;
@@ -68,34 +65,6 @@ namespace CSCore.Visualization.WPF
             base.OnPropertyChanged(e);
             if (e.Property == DataProviderProperty)
                 DataProvider = e.NewValue as FFTDataProvider;
-        }
-
-        private bool _disposed;
-
-        public void Dispose()
-        {
-            if (!_disposed)
-            {
-                _disposed = true;
-
-                Dispose(true);
-                GC.SuppressFinalize(this);
-            }
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            //only available in .net 4.0+
-            //if (_mutex != null)
-            //{
-            //    _mutex.Dispose();
-            //    _mutex = null;
-            //}
-        }
-
-        ~FFTVisualizationBase()
-        {
-            Dispose(false);
         }
     }
 }

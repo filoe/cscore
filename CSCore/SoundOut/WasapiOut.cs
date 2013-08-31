@@ -163,6 +163,7 @@ namespace CSCore.SoundOut
                     }
                     else
                     {
+                        //Thread.Sleep(_latency / 8);
                         Thread.Sleep(_latency / 8);
                     }
 
@@ -179,7 +180,9 @@ namespace CSCore.SoundOut
                         }
 
                         int framesReadyToFill = bufferSize - padding;
-                        if (framesReadyToFill > 5 && !(_source is DmoResampler && ((DmoResampler)_source).OutputToInput(framesReadyToFill * frameSize) <= 0)) //avoid conversion errors
+                        if (framesReadyToFill > 5 && 
+                            !(_source is DmoResampler && 
+                            ((DmoResampler)_source).OutputToInput(framesReadyToFill * frameSize) <= 0)) //avoid conversion errors
                         {
                             if (!FeedBuffer(_renderClient, buffer, framesReadyToFill, frameSize))
                             {
@@ -200,7 +203,7 @@ namespace CSCore.SoundOut
             {
                 Debug.WriteLine("WasapiOut::PlaybackProc: " + e.ToString(), "WasapiOut.PlaybackProc");
                 if (System.Diagnostics.Debugger.IsAttached)
-                    throw new Exception("Unhandled exception in wasapi playback proc.", e);
+                    throw new Exception("Unhandled exception in wasapi playback proc. See innerexception for details.", e);
             }
             finally
             {
@@ -213,6 +216,10 @@ namespace CSCore.SoundOut
         private bool FeedBuffer(AudioRenderClient renderClient, byte[] buffer, int numFramesCount, int frameSize)
         {
             int count = numFramesCount * frameSize;
+            count -= (count % _source.WaveFormat.BlockAlign);
+            if (count <= 0)
+                return true;
+
             var ptr = renderClient.GetBuffer(numFramesCount);
 
             int read = _source.Read(buffer, 0, count);

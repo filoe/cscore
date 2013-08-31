@@ -47,11 +47,8 @@ namespace CSCore.Visualization
             }
             set
             {
-                lock (_lockObj)
-                {
-                    _mode = value;
-                    Reset();
-                }
+                _mode = value;
+                Reset();
             }
         }
 

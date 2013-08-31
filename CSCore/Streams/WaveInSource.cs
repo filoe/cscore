@@ -5,31 +5,25 @@ namespace CSCore.Streams
 {
     public class WaveInSource : IWaveSource
     {
-        private WaveIn _wavein;
+        private ISoundIn _soundIn;
         private BufferingSource _buffer;
 
         public event EventHandler<DataAvailableEventArgs> DataAvailable;
 
-        public WaveIn WaveIn
+        public ISoundIn SoundIn
         {
-            get { return _wavein; }
+            get { return _soundIn; }
         }
 
-        public bool FillWithZeros
+        public WaveInSource(WaveIn soundIn)
         {
-            get { return _buffer.FillWithZeros; }
-            set { _buffer.FillWithZeros = value; }
-        }
+            if (soundIn == null)
+                throw new ArgumentNullException("soundIn");
 
-        public WaveInSource(WaveIn wavein)
-        {
-            if (wavein == null)
-                throw new ArgumentNullException("wavein");
-
-            _buffer = new BufferingSource(wavein.WaveFormat);
+            _buffer = new BufferingSource(soundIn.WaveFormat);
             _buffer.FillWithZeros = false;
-            _wavein = wavein;
-            _wavein.DataAvailable += WaveinDataAvailable;
+            _soundIn = soundIn;
+            _soundIn.DataAvailable += WaveinDataAvailable;
         }
 
         private void WaveinDataAvailable(object sender, DataAvailableEventArgs e)
@@ -48,14 +42,14 @@ namespace CSCore.Streams
 
         public WaveFormat WaveFormat
         {
-            get { return WaveIn.WaveFormat; }
+            get { return SoundIn.WaveFormat; }
         }
 
         public long Position
         {
             get
             {
-                return -1;
+                return 0;
             }
             set
             {
@@ -65,9 +59,10 @@ namespace CSCore.Streams
 
         public long Length
         {
-            get { return -1; }
+            get { return 0; }
         }
 
+        private bool _disposed;
         public void Dispose()
         {
             Dispose(true);
@@ -76,17 +71,21 @@ namespace CSCore.Streams
 
         protected virtual void Dispose(bool disposing)
         {
-            if (WaveIn != null)
+            if (!_disposed)
             {
-                WaveIn.DataAvailable -= WaveinDataAvailable;
-                _wavein = null;
-            }
+                if (SoundIn != null)
+                {
+                    SoundIn.DataAvailable -= WaveinDataAvailable;
+                    _soundIn = null;
+                }
 
-            if (_buffer != null)
-            {
-                _buffer.Dispose();
-                _buffer = null;
+                if (_buffer != null)
+                {
+                    _buffer.Dispose();
+                    _buffer = null;
+                }
             }
+            _disposed = true;
         }
 
         ~WaveInSource()

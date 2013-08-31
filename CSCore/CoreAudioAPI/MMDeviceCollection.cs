@@ -17,17 +17,17 @@ namespace CSCore.CoreAudioAPI
 
         public MMDevice this[int index]
         {
-            get { return Get(index); }
+            get { return ItemAt(index); }
         }
 
-        public MMDevice Get(int index)
+        public int GetCount()
         {
-            IntPtr device;
-            CoreAudioAPIException.Try(ItemAt(index, out device), "IMMDeviceCollection", "Item");
-            return new MMDevice(device);
+            int count = 0;
+            CoreAudioAPIException.Try(GetCountNative(out count), "IMMDeviceCollection", "GetCount");
+            return count;
         }
 
-        public unsafe int GetCount(out int deviceCount)
+        public unsafe int GetCountNative(out int deviceCount)
         {
             fixed (void* pdeviceCount = &deviceCount)
             {
@@ -36,20 +36,20 @@ namespace CSCore.CoreAudioAPI
             }
         }
 
-        public unsafe int ItemAt(int deviceIndex, out IntPtr device)
+        public MMDevice ItemAt(int deviceIndex)
+        {
+            IntPtr device;
+            CoreAudioAPIException.Try(ItemAtNative(deviceIndex, out device), "IMMDeviceCollection", "Item");
+            return new MMDevice(device);
+        }
+
+        public unsafe int ItemAtNative(int deviceIndex, out IntPtr device)
         {
             device = IntPtr.Zero;
             fixed (void* pdevice = &device)
             {
                 return InteropCalls.CallI(_basePtr, deviceIndex, pdevice, ((void**)(*(void**)_basePtr))[4]);
             }
-        }
-
-        private int GetCount()
-        {
-            int count = 0;
-            CoreAudioAPIException.Try(GetCount(out count), "IMMDeviceCollection", "GetCount");
-            return count;
         }
 
         public IEnumerator<MMDevice> GetEnumerator()

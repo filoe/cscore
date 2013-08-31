@@ -103,10 +103,6 @@ namespace CSCore.ACM
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                //dispose managed
-            }
             if (_sourceBufferPtr.IsAllocated)
                 _sourceBufferPtr.Free();
             if (_destinationBufferPtr.IsAllocated)

@@ -24,14 +24,27 @@ namespace CSCore.CoreAudioAPI
         {
             get
             {
-                if (_propertyStore == null)
-                {
-                    IntPtr propstorePtr;
-                    CoreAudioAPIException.Try(OpenPropertyStore(StorageAccess.Read, out propstorePtr),
-                        "IMMDevice", "OpenPropertyStore");
-                    _propertyStore = new PropertyStore(propstorePtr);
-                }
-                return _propertyStore;
+                return _propertyStore ?? (_propertyStore = OpenPropertyStore(StorageAccess.Read));
+            }
+        }
+
+        public string DeviceID
+        {
+            get
+            {
+                string id;
+                CoreAudioAPIException.Try(GetIdNative(out id), c, "GetId");
+                return id;
+            }
+        }
+
+        public DeviceState DeviceState
+        {
+            get
+            {
+                DeviceState state;
+                CoreAudioAPIException.Try(GetStateNative(out state), c, "GetState");
+                return state;
             }
         }
 
@@ -52,7 +65,15 @@ namespace CSCore.CoreAudioAPI
             return ptr;
         }
 
-        public unsafe int OpenPropertyStore(StorageAccess access, out IntPtr propertyStore)
+        public PropertyStore OpenPropertyStore(StorageAccess storageAccess)
+        {
+            IntPtr propstorePtr;
+            CoreAudioAPIException.Try(OpenPropertyStoreNative(storageAccess, out propstorePtr),
+                "IMMDevice", "OpenPropertyStore");
+            return new PropertyStore(propstorePtr);
+        }
+
+        public unsafe int OpenPropertyStoreNative(StorageAccess access, out IntPtr propertyStore)
         {
             propertyStore = IntPtr.Zero;
             fixed (void* pps = &propertyStore)
@@ -61,7 +82,7 @@ namespace CSCore.CoreAudioAPI
             }
         }
 
-        public unsafe int GetId(out string deviceid)
+        public unsafe int GetIdNative(out string deviceid)
         {
             IntPtr pdeviceid = IntPtr.Zero;
             deviceid = null;
@@ -75,7 +96,7 @@ namespace CSCore.CoreAudioAPI
             return err;
         }
 
-        public unsafe int GetState(out DeviceState state)
+        public unsafe int GetStateNative(out DeviceState state)
         {
             fixed (void* pstate = &state)
             {
