@@ -68,16 +68,21 @@ namespace CSCore
         }
 
         private bool disposed = false;
+        private bool disposeBaseSource = true;
+        protected bool DisposeBaseSource
+        {
+            get { return disposeBaseSource; }
+            set { disposeBaseSource = value; }
+        }
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
+            if (DisposeBaseSource)
             {
-                //dispose managed
+                if (BaseStream != null)
+                    BaseStream.Dispose();
+                _baseStream = null;
             }
-            if (BaseStream != null)
-                BaseStream.Dispose();
-            _baseStream = null;
         }
 
         ~WaveAggregatorBase()

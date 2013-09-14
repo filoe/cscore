@@ -5,7 +5,7 @@ using System.IO;
 
 namespace CSCore.Codecs.MP3
 {
-    public class Mp3Stream : IWaveSource, IDisposable
+    public class MP3Stream : IWaveSource, IDisposable
     {
         private Mp3Frame _frame = null;
         private FrameInfoCollection _frameInfoCollection;
@@ -28,12 +28,12 @@ namespace CSCore.Codecs.MP3
 
         private const short SamplesPerFrame = 1152;
 
-        public Mp3Stream(Stream stream, bool scanStream)
+        public MP3Stream(Stream stream, bool scanStream)
             : this(stream, scanStream, 0)
         {
         }
 
-        public Mp3Stream(Stream stream, bool scanStream, int lengthOffset)
+        public MP3Stream(Stream stream, bool scanStream, int lengthOffset)
         {
             int frameLength = 0;
             if (scanStream)
@@ -84,7 +84,7 @@ namespace CSCore.Codecs.MP3
             {
                 _bitRate = ((_frame.BitRate) / 1);
             }
-            MP3Format = new Mp3Format(_sampleRate, _frame.ChannelMode.ToShort(), frameLength, (int)Math.Round(_bitRate));
+            MP3Format = new MP3Format(_sampleRate, _frame.ChannelMode.ToShort(), frameLength, (int)Math.Round(_bitRate));
             _converter = new AcmConverter(MP3Format);
             WaveFormat = _converter.DestinationFormat;
 
@@ -223,7 +223,7 @@ namespace CSCore.Codecs.MP3
 
         public Boolean CanSeek { get; private set; }
 
-        public Mp3Format MP3Format { get; private set; }
+        public MP3Format MP3Format { get; private set; }
 
         public WaveFormat WaveFormat { get; private set; }
 
@@ -274,7 +274,7 @@ namespace CSCore.Codecs.MP3
             }
         }
 
-        ~Mp3Stream()
+        ~MP3Stream()
         {
             Dispose(false);
         }

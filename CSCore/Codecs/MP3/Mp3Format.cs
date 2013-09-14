@@ -5,7 +5,7 @@ using System.Text;
 namespace CSCore.Codecs.MP3
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 2)]
-    public class Mp3Format : WaveFormat
+    public class MP3Format : WaveFormat
     {
         public Mp3FormatId _id;
         public Mp3PaddingFlags _flags;
@@ -15,7 +15,7 @@ namespace CSCore.Codecs.MP3
 
         private const int Mp3WaveFormatExtraBytes = 12;
 
-        public Mp3Format(int sampleRate, int channels, int blockSize, int bitRate)
+        public MP3Format(int sampleRate, int channels, int blockSize, int bitRate)
             : base(sampleRate, 0, channels, AudioEncoding.MpegLayer3, Mp3WaveFormatExtraBytes)
         {
             if (bitRate < 0)

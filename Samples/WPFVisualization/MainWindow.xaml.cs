@@ -81,7 +81,7 @@ namespace WPFVisualisation
             {
                 openmenu.IsEnabled = false;
                 Stop();
-                var stream = new Mp3WebStream(streamSelector.Value, true);
+                var stream = new MP3WebStream(streamSelector.Value, true);
                 stream.ConnectionCreated += (s, args) =>
                 {
                     if (args.Success)
@@ -184,7 +184,7 @@ namespace WPFVisualisation
         private void OnTimerTick(object sender, EventArgs e)
         {
             //update the amount of buffered data
-            var stream = _audioSource as Mp3WebStream;
+            var stream = _audioSource as MP3WebStream;
             if (stream != null)
             {
                 bufferedDataIndicator.Maximum = stream.BufferSize;

@@ -18,6 +18,7 @@ namespace CSCore.SoundOut.DirectSound
         private bool _disposing;
         private Func<object, bool> _hasToStop;
         private int _latency;
+        private Object _lockObject = new Object();
 
         private Thread _thread;
 
@@ -74,14 +75,18 @@ namespace CSCore.SoundOut.DirectSound
 
         public void Start()
         {
-            if (_thread != null) return;
+            lock (_lockObject)
+            {
+                if (_thread != null)
+                    return;
 
-            _thread = new Thread(NotifyProc);
-            _thread.Name = "DirectSoundNotifyManager Thread: ID = 0x" + _notify.BasePtr.ToInt64().ToString("x");
-            _thread.Priority = ThreadPriority.AboveNormal;
-            //_thread.IsBackground = true;
-            _thread.Start();
-            Debug.WriteLine("DirectSoundNotifyManager started");
+                _thread = new Thread(NotifyProc);
+                _thread.Name = "DirectSoundNotifyManager Thread: ID = 0x" + _notify.BasePtr.ToInt64().ToString("x");
+                _thread.Priority = ThreadPriority.AboveNormal;
+                //_thread.IsBackground = true;
+                _thread.Start();
+                Debug.WriteLine("DirectSoundNotifyManager started");
+            }
         }
 
         private void NotifyProc()
@@ -109,6 +114,7 @@ namespace CSCore.SoundOut.DirectSound
             {
                 RaiseStopped();
                 _thread = null;
+                Debug.WriteLine("DirectSoundNotifyManager stopped successfully");
             }
         }
 
@@ -120,26 +126,34 @@ namespace CSCore.SoundOut.DirectSound
         public bool Stop(int timeout)
         {
             _disposing = true;
-            if (_thread != null)
+            lock (_lockObject)
             {
-                if (!_thread.Join(timeout))
+                if (_thread != null)
                 {
-                    Debug.WriteLine(String.Format("DirectSoundNotifyManager stop failed: timeout after {0} ms", timeout));
-                    return false;
+                    if (!_thread.Join(timeout))
+                    {
+                        Debug.WriteLine(String.Format("DirectSoundNotifyManager stop failed: timeout after {0} ms", timeout));
+                        return false;
+                    }
+                    _thread = null;
                 }
-                _thread = null;
+                return true;
             }
-            Debug.WriteLine("DirectSoundNotifyManager stopped successfully");
-            return true;
         }
 
         public void Abort()
         {
-            if (_thread != null)
+            lock (_lockObject)
             {
-                _disposing = true;
-                _thread.Abort();
-                _thread = null;
+                if (_thread != null)
+                {
+                    if (!_thread.IsAlive)
+                    {
+                        _disposing = true;
+                        _thread.Abort();
+                    }
+                    _thread = null;
+                }
             }
         }
 
@@ -193,20 +207,25 @@ namespace CSCore.SoundOut.DirectSound
             return thread.ManagedThreadId == thread.ManagedThreadId;
         }
 
+        private bool _disposed;
         public void Dispose()
         {
-            GC.SuppressFinalize(this);
             Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            Stop();
-            if (_notify != null)
+            if (!_disposed)
             {
-                _notify.Dispose();
-                _notify = null;
+                Stop();
+                if (_notify != null)
+                {
+                    _notify.Dispose();
+                    _notify = null;
+                }
             }
+            _disposed = true;
         }
 
         ~DirectSoundNotifyManager()

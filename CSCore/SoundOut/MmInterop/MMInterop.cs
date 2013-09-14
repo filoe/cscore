@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace CSCore.SoundOut.MmInterop
+namespace CSCore.SoundOut.MMInterop
 {
     [System.Security.SuppressUnmanagedCodeSecurity]
     public static class MMInterops

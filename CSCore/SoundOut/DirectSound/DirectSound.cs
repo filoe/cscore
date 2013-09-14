@@ -12,14 +12,14 @@ namespace CSCore.SoundOut.DirectSound
         public static DirectSoundBase Create(Guid device)
         {
             IntPtr ptr;
-            DirectSoundException.Try(DSInterop.DirectSoundCreate(ref device, out ptr, IntPtr.Zero), "DSInterop", "DirectSoundCreate(ref Guid, out IntPtr, IntPtr)");
+            DirectSoundException.Try(NativeMethods.DirectSoundCreate(ref device, out ptr, IntPtr.Zero), "DSInterop", "DirectSoundCreate(ref Guid, out IntPtr, IntPtr)");
             return new DirectSoundBase(ptr);
         }
 
         public static DirectSound8 Create8(Guid device)
         {
             IntPtr ptr;
-            DirectSoundException.Try(DSInterop.DirectSoundCreate8(ref device, out ptr, IntPtr.Zero), "DSInterop", "DirectSoundCreate8(ref Guid, out IntPtr, IntPtr)");
+            DirectSoundException.Try(NativeMethods.DirectSoundCreate8(ref device, out ptr, IntPtr.Zero), "DSInterop", "DirectSoundCreate8(ref Guid, out IntPtr, IntPtr)");
             return new DirectSound8(ptr);
         }
 

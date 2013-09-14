@@ -1,4 +1,4 @@
-﻿#define static_buffer_org
+﻿#define static_buffer_array
 
 //#define static_buffer_queue
 using System;
@@ -46,7 +46,7 @@ namespace CSCore.Utils.Buffer
             _queue = null;
         }
 #endif
-#if static_buffer_org
+#if static_buffer_array
         private T[] _buffer; //buffer welcher immer wieder überschrieben wird
         private int _bufferedBytes = 0; //anzahl der vorhandenen Bytes
         private int _writeOffset = 0; //Schreibeoffset im Buffer
@@ -73,7 +73,6 @@ namespace CSCore.Utils.Buffer
                 written += length;
                 _writeOffset = _writeOffset % _buffer.Length;
 
-                //WENN GERADE ENDE DES ARRAYS ÜBERSCHRITTEN WURDE:
                 if (written < count)
                 {
                     Array.Copy(buffer, offset + written, _buffer, _writeOffset, count - written);
@@ -100,7 +99,6 @@ namespace CSCore.Utils.Buffer
                 _readOffset += read;
                 _readOffset = _readOffset % _buffer.Length;
 
-                //WENN GERADE ENDE DES ARRAYS ÜBERSCHRITTEN WURDE:
                 if (read < count)
                 {
                     Array.Copy(_buffer, _readOffset, buffer, offset + read, count - read);
@@ -121,15 +119,31 @@ namespace CSCore.Utils.Buffer
         public void Clear()
         {
             Array.Clear(_buffer, 0, _buffer.Length);
-            //alle offsets zurücksetzen
+            //reset all offsets
             _bufferedBytes = 0;
             _writeOffset = 0;
             _readOffset = 0;
         }
 
+        private bool _disposed;
         public void Dispose()
         {
-            _buffer = null;
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                _buffer = null;
+            }
+            _disposed = true;
+        }
+
+        ~FixedSizeBuffer()
+        {
+            Dispose(false);
         }
 
 #endif

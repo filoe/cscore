@@ -91,7 +91,7 @@ namespace CSCore.SoundOut.DirectSound
         public T GetFX<T>(int index, out DSResult result) where T : ComObject
         {
             IntPtr ptr;
-            result = GetObjectInPath(DSInterop.AllObjects, index, typeof(T).GUID, out ptr);
+            result = GetObjectInPath(DSUtils.AllObjects, index, typeof(T).GUID, out ptr);
             return (T)Activator.CreateInstance(typeof(T), ptr);
         }
 

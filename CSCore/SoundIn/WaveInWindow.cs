@@ -1,4 +1,4 @@
-﻿using CSCore.SoundOut.MmInterop;
+﻿using CSCore.SoundOut.MMInterop;
 using System;
 
 namespace CSCore.SoundIn

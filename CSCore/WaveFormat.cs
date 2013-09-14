@@ -100,7 +100,7 @@ namespace CSCore
 
         public long MillisecondsToBytes(long milliseconds)
         {
-            long result = (BytesPerSecond / 1000) * milliseconds;
+            long result = (long)((BytesPerSecond / 1000.0) * milliseconds);
             result -= result % BlockAlign;
             return result;
         }
@@ -108,7 +108,7 @@ namespace CSCore
         public long BytesToMilliseconds(long bytes)
         {
             bytes -= bytes % BlockAlign;
-            long result = (bytes / BytesPerSecond) * 1000;
+            long result = (long)(((double)bytes / (double)BytesPerSecond) * 1000);
             return result;
         }
 

@@ -197,6 +197,7 @@
     <Compile Include="CoreAudioAPI\EndpointTests.cs" />
     <Compile Include="CoreAudioAPI\MMDevicesTests.cs" />
     <Compile Include="MediaFoundation\BasicMediaFoundationTests.cs" />
+    <Compile Include="ACM\AcmDriverTests.cs" />
     <Compile Include="Utils\BitReaderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DirectSound\DirectSoundTests.cs" />

@@ -22,9 +22,16 @@ namespace CSCore.Tags.ID3
 
         public static ID3v2 FromStream(Stream stream)
         {
-            ID3v2 id3v2 = new ID3v2(stream);
-            if (id3v2.ReadData(stream, true))
-                return id3v2;
+            try
+            {
+                ID3v2 id3v2 = new ID3v2(stream);
+                if (id3v2.ReadData(stream, true))
+                    return id3v2;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
             return null;
         }
 

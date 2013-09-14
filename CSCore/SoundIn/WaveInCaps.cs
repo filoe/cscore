@@ -1,5 +1,5 @@
 ﻿using CSCore.SoundOut;
-using CSCore.SoundOut.MmInterop;
+using CSCore.SoundOut.MMInterop;
 using System.Runtime.InteropServices;
 
 namespace CSCore.SoundIn

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace CSCore.SoundOut.MmInterop
+namespace CSCore.SoundOut.MMInterop
 {
     public class WaveOutBuffer : IDisposable
     {
@@ -24,8 +24,10 @@ namespace CSCore.SoundOut.MmInterop
 
         public WaveOutBuffer(WaveOut waveOut, int bufferSize)
         {
-            if (waveOut == null) throw new ArgumentNullException("waveOut");
-            if (bufferSize <= 0) throw new ArgumentOutOfRangeException("bufferSize");
+            if (waveOut == null)
+                throw new ArgumentNullException("waveOut");
+            if (bufferSize <= 0) 
+                throw new ArgumentOutOfRangeException("bufferSize");
 
             _waveOut = waveOut;
             _bufferSize = bufferSize;
@@ -82,11 +84,10 @@ namespace CSCore.SoundOut.MmInterop
         {
             if (!_disposed)
             {
-                _disposed = true;
-
                 Dispose(true);
                 GC.SuppressFinalize(this);
             }
+            _disposed = true;
         }
 
         protected virtual void Dispose(bool disposing)
@@ -95,12 +96,22 @@ namespace CSCore.SoundOut.MmInterop
             {
                 if (_header == null) 
                     return;
-                MmException.Try(MMInterops.waveOutUnprepareHeader(_waveOut.WaveOutHandle, _header, Marshal.SizeOf(_header)),
-                    "waveOutUnprepareHeader"); //don't throw?
-
-                if (_bufferHandle.IsAllocated) _bufferHandle.Free();
-                if (_headerHandle.IsAllocated) _headerHandle.Free();
-                if (_userDataHandle.IsAllocated) _userDataHandle.Free();
+                try
+                {
+                    MmException.Try(MMInterops.waveOutUnprepareHeader(_waveOut.WaveOutHandle, _header, Marshal.SizeOf(_header)),
+                        "waveOutUnprepareHeader"); //don't throw?
+                }
+                catch (MmException ex)
+                {
+                    if (ex.Result != MmResult.WAVERR_STILLPLAYING)
+                        throw; //can't fix bug
+                }
+                if (_bufferHandle.IsAllocated) 
+                    _bufferHandle.Free();
+                if (_headerHandle.IsAllocated) 
+                    _headerHandle.Free();
+                if (_userDataHandle.IsAllocated) 
+                    _userDataHandle.Free();
                 _header = null;
             }
         }

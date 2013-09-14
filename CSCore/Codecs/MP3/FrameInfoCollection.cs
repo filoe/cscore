@@ -39,27 +39,32 @@ namespace CSCore.Codecs.MP3
             catch (Exception) { return false; }
         }
 
+        private bool _disposed;
         public void Dispose()
         {
-            GC.SuppressFinalize(this);
             Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        protected void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
-            for (int i = 0; i < Count; i++)
+            if (!_disposed)
             {
-                this[i] = null;
+                if (disposing)
+                {
+                    for (int i = 0; i < Count; i++)
+                    {
+                        this[i] = null;
+                    }
+                    frame = null;
+                }
             }
-            frame = null;
+            _disposed = true;
         }
-    }
 
-    public class MP3FrameInfo
-    {
-        public long StreamPosition;
-        public int SampleIndex;
-        public int SampleAmount;
-        public int Size;
+        ~FrameInfoCollection()
+        {
+            Dispose(false);
+        }
     }
 }

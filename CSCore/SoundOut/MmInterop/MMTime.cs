@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace CSCore.SoundOut.MmInterop
+namespace CSCore.SoundOut.MMInterop
 {
     /// <summary>
     /// http: //www.pinvoke.net/default.aspx/Structures/MmTime.html

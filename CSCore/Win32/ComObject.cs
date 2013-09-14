@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace CSCore.Win32
@@ -7,7 +8,7 @@ namespace CSCore.Win32
     //((void**)(*(void**)_basePtr))[3]
     public unsafe class ComObject : IUnknown, IDisposable
     {
-        protected void* _basePtr;
+        protected volatile void* _basePtr;
 
         public IntPtr BasePtr
         {

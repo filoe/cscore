@@ -197,10 +197,15 @@ namespace CSCore.DSP
             return result;
         }
 
+        public void DisposeResamplerOnly()
+        {
+            DisposeBaseSource = false;
+            Dispose();
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
-
             _resampler.Dispose();
             _outputBuffer.Dispose();
             _inputBuffer.Dispose();

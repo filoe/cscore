@@ -67,39 +67,47 @@ namespace CSCore.MediaFoundation
         {
             MediaFoundationCore.Startup();
 
-            reader.SetStreamSelection(MFInterops.MF_SOURCE_READER_ALL_STREAMS, false);
-            reader.SetStreamSelection(MFInterops.MF_SOURCE_READER_FIRST_AUDIO_STREAM, true);
-
-            using (var mediaType = MFMediaType.CreateEmpty())
+            try
             {
-                mediaType.MajorType = MediaTypes.MediaTypeAudio;
-                mediaType.SubType = MediaTypes.MEDIASUBTYPE_PCM; //variable??
+                reader.SetStreamSelection(MFInterops.MF_SOURCE_READER_ALL_STREAMS, false);
+                reader.SetStreamSelection(MFInterops.MF_SOURCE_READER_FIRST_AUDIO_STREAM, true);
 
-                reader.SetCurrentMediaType(MFInterops.MF_SOURCE_READER_FIRST_AUDIO_STREAM, mediaType);
+                using (var mediaType = MFMediaType.CreateEmpty())
+                {
+                    mediaType.MajorType = MediaTypes.MediaTypeAudio;
+                    mediaType.SubType = MediaTypes.MEDIASUBTYPE_PCM; //variable??
+
+                    reader.SetCurrentMediaType(MFInterops.MF_SOURCE_READER_FIRST_AUDIO_STREAM, mediaType);
+                }
+
+                using (var currentMediaType = reader.GetCurrentMediaType(MFInterops.MF_SOURCE_READER_FIRST_AUDIO_STREAM))
+                {
+                    if (currentMediaType.MajorType != MediaTypes.MediaTypeAudio)
+                        throw new InvalidOperationException(String.Format("Invalid Majortype set on sourcereader: {0}.", currentMediaType.MajorType.ToString()));
+
+                    AudioEncoding encoding;
+                    if (currentMediaType.SubType == MediaTypes.MEDIASUBTYPE_PCM)
+                        encoding = AudioEncoding.Pcm;
+                    else if (currentMediaType.SubType == MediaTypes.MEDIASUBTYPE_IEEE_FLOAT)
+                        encoding = AudioEncoding.IeeeFloat;
+                    else
+                        throw new InvalidOperationException(String.Format("Invalid Subtype set on sourcereader: {0}.", currentMediaType.SubType.ToString()));
+
+                    _waveFormat = new WaveFormat(currentMediaType.SampleRate, currentMediaType.BitsPerSample, currentMediaType.Channels, encoding);
+                }
+
+                reader.SetStreamSelection(MFInterops.MF_SOURCE_READER_FIRST_AUDIO_STREAM, true);
+
+                if (_hasFixedLength)
+                    _length = GetLength(reader);
+
+                return reader;
             }
-
-            using (var currentMediaType = reader.GetCurrentMediaType(MFInterops.MF_SOURCE_READER_FIRST_AUDIO_STREAM))
+            catch (Exception)
             {
-                if (currentMediaType.MajorType != MediaTypes.MediaTypeAudio)
-                    throw new InvalidOperationException(String.Format("Invalid Majortype set on sourcereader: {0}.", currentMediaType.MajorType.ToString()));
-
-                AudioEncoding encoding;
-                if (currentMediaType.SubType == MediaTypes.MEDIASUBTYPE_PCM)
-                    encoding = AudioEncoding.Pcm;
-                else if (currentMediaType.SubType == MediaTypes.MEDIASUBTYPE_IEEE_FLOAT)
-                    encoding = AudioEncoding.IeeeFloat;
-                else
-                    throw new InvalidOperationException(String.Format("Invalid Subtype set on sourcereader: {0}.", currentMediaType.SubType.ToString()));
-
-                _waveFormat = new WaveFormat(currentMediaType.SampleRate, currentMediaType.BitsPerSample, currentMediaType.Channels, encoding);
+                Dispose();
+                throw;
             }
-
-            reader.SetStreamSelection(MFInterops.MF_SOURCE_READER_FIRST_AUDIO_STREAM, true);
-
-            if (_hasFixedLength)
-                _length = GetLength(reader);
-
-            return reader;
         }
 
         private long GetLength(MFSourceReader reader)
@@ -133,6 +141,9 @@ namespace CSCore.MediaFoundation
             {
                 int read = 0;
 
+                if (_reader == null || _disposed)
+                    return read;
+
                 if (_decoderBufferCount > 0)
                 {
                     read += CopyDecoderBuffer(buffer, offset + read, count - read);
@@ -159,12 +170,13 @@ namespace CSCore.MediaFoundation
 
                             int tmp = CopyDecoderBuffer(buffer, offset + read, count - read);
                             read += tmp;
-                            _position += tmp;
 
                             mediaBuffer.Unlock();
                         }
                     }
                 }
+
+                _position += read;
 
                 return read;
             }

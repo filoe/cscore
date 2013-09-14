@@ -188,7 +188,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ACM\AcmDriver.cs" />
     <Compile Include="ACM\AcmException.cs" />
+    <Compile Include="ACM\Interop\AcmDriverDetails.cs" />
+    <Compile Include="ACM\Interop\AcmDriverDetailsSupport.cs" />
+    <Compile Include="ACM\Interop\AcmDriverEnumCallback.cs" />
+    <Compile Include="ACM\Interop\AcmDriverEnumFlags.cs" />
     <Compile Include="Codecs\CodecFactoryEntry.cs" />
     <Compile Include="Codecs\AAC\AACDecoder.cs" />
     <Compile Include="Codecs\DDP\DDPDecoder.cs" />
@@ -218,11 +223,12 @@
     <Compile Include="Codecs\MP1\MP1Decoder.cs" />
     <Compile Include="Codecs\MP2\MP2Decoder.cs" />
     <Compile Include="Codecs\MP3\FrameInfoCollection.cs" />
-    <Compile Include="Codecs\MP3\Mp3FileReader.cs" />
-    <Compile Include="Codecs\MP3\Mp3Format.cs" />
+    <Compile Include="Codecs\MP3\MP3FileReader.cs" />
+    <Compile Include="Codecs\MP3\MP3Format.cs" />
     <Compile Include="Codecs\MP3\Mp3Frame.cs" />
+    <Compile Include="Codecs\MP3\MP3FrameInfo.cs" />
     <Compile Include="Codecs\MP3\MP3MediafoundationDecoder.cs" />
-    <Compile Include="Codecs\MP3\Mp3WebStream.cs" />
+    <Compile Include="Codecs\MP3\MP3WebStream.cs" />
     <Compile Include="Codecs\MP3\XingHeader.cs" />
     <Compile Include="Codecs\WMA\WMADecoder.cs" />
     <Compile Include="CoreAudioAPI\AudioCaptureClient.cs" />
@@ -249,6 +255,10 @@
     <Compile Include="SoundIn\RecordingState.cs" />
     <Compile Include="SoundIn\WasapiCapture.cs" />
     <Compile Include="SoundIn\WasapiLoopbackCapture.cs" />
+    <Compile Include="SoundOut\DirectSound\DirectSoundDeviceEnumerator.cs" />
+    <Compile Include="SoundOut\DirectSound\DSUtils.cs" />
+    <Compile Include="SoundOut\MMInterop\WaveCapsFormats.cs" />
+    <Compile Include="SoundOut\MMInterop\WaveCapsSupported.cs" />
     <Compile Include="Streams\EqFilter.cs" />
     <Compile Include="Streams\EqFilterCollection.cs" />
     <Compile Include="Streams\EqFilterEntry.cs" />
@@ -360,11 +370,11 @@
     <Compile Include="ACM\AcmHeader.cs" />
     <Compile Include="ACM\Interop\NativeAcmHeader.cs" />
     <Compile Include="ACM\Interop\AcmHeaderState.cs" />
-    <Compile Include="ACM\Interop\AcmInterop.cs" />
+    <Compile Include="ACM\Interop\NativeMethods.cs" />
     <Compile Include="ACM\Interop\AcmStreamOpenFlags.cs" />
     <Compile Include="ACM\Interop\AcmStreamSizeFlags.cs" />
     <Compile Include="ACM\Interop\AcmWaveFilter.cs" />
-    <Compile Include="Codecs\MP3\Mp3Stream.cs" />
+    <Compile Include="Codecs\MP3\MP3Stream.cs" />
     <Compile Include="CoreAudioAPI\CoreAudioAPIException.cs" />
     <Compile Include="Win32\Blob.cs" />
     <Compile Include="CoreAudioAPI\DataFlow.cs" />
@@ -380,7 +390,7 @@
     <Compile Include="CoreAudioAPI\StorageAccess.cs" />
     <Compile Include="CoreAudioAPI\MMDeviceEnumerator.cs" />
     <Compile Include="DMO\DmoException.cs" />
-    <Compile Include="DMO\DmoInterop.cs" />
+    <Compile Include="DMO\NativeMethods.cs" />
     <Compile Include="DMO\DmoObject.cs" />
     <Compile Include="DMO\DmoResult.cs" />
     <Compile Include="DMO\IMediaObject.cs" />
@@ -418,9 +428,9 @@
     <Compile Include="SoundOut\DirectSound\Effects\DSEchoEffect.cs" />
     <Compile Include="SoundOut\DirectSound\Effects\DSEffectBase.cs" />
     <Compile Include="SoundOut\DirectSound\Effects\DSFXResult.cs" />
-    <Compile Include="SoundOut\MmInterop\IWaveCallbackWindow.cs" />
-    <Compile Include="SoundOut\MmInterop\WaveWindow.cs" />
-    <Compile Include="SoundOut\MmInterop\WaveWindowForm.cs">
+    <Compile Include="SoundOut\MMInterop\IWaveCallbackWindow.cs" />
+    <Compile Include="SoundOut\MMInterop\WaveWindow.cs" />
+    <Compile Include="SoundOut\MMInterop\WaveWindowForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Streams\SampleConverter\IeeeFloatToSample.cs" />
@@ -428,7 +438,6 @@
     <Compile Include="Streams\SampleConverter\SampleToWaveBase.cs" />
     <Compile Include="Streams\StereoToMonoSource.cs" />
     <Compile Include="SampleSourceBase.cs" />
-    <None Include="SoundOut\DirectSoundOut1.cs" />
     <Compile Include="SoundOut\DirectSoundOutExtended.cs" />
     <Compile Include="SoundOut\DirectSound\3D\D3DVector.cs" />
     <Compile Include="SoundOut\DirectSound\3D\DS3DApplyMode.cs" />
@@ -439,8 +448,8 @@
     <Compile Include="SoundOut\DirectSound\DirectSoundNotifyManager.cs" />
     <Compile Include="SoundOut\DirectSound\DSBPositionNotify.cs" />
     <Compile Include="SoundOut\DirectSound\DSCapabilitiesFlags.cs" />
-    <Compile Include="SoundOut\DirectSound\DSInterop.cs" />
-    <Compile Include="SoundOut\MmInterop\WaveOutBuffer.cs" />
+    <Compile Include="SoundOut\DirectSound\NativeMethods.cs" />
+    <Compile Include="SoundOut\MMInterop\WaveOutBuffer.cs" />
     <Compile Include="SoundOut\WaveOut.cs" />
     <Compile Include="SoundOut\WaveOutWindow.cs" />
     <Compile Include="Tags\ID3\Frames\FrameFactory.cs" />
@@ -485,15 +494,15 @@
     <Compile Include="SoundOut\DirectSound\DSEnumCallback.cs" />
     <Compile Include="SoundOut\DirectSound\DSResult.cs" />
     <Compile Include="SoundOut\DirectSound\InteropCalls.cs" />
-    <Compile Include="SoundOut\MmInterop\MMInterop.cs" />
+    <Compile Include="SoundOut\MMInterop\MMInterop.cs" />
     <Compile Include="Utils\FlacBitReader.cs" />
     <Compile Include="Win32\IUnknown.cs" />
-    <Compile Include="SoundOut\MmInterop\MmResult.cs" />
-    <Compile Include="SoundOut\MmInterop\MMTime.cs" />
-    <Compile Include="SoundOut\MmInterop\WaveHeader.cs" />
+    <Compile Include="SoundOut\MMInterop\MmResult.cs" />
+    <Compile Include="SoundOut\MMInterop\MMTime.cs" />
+    <Compile Include="SoundOut\MMInterop\WaveHeader.cs" />
     <Compile Include="SoundIn\WaveInCaps.cs" />
-    <Compile Include="SoundOut\MmInterop\WaveMsg.cs" />
-    <Compile Include="SoundOut\MmInterop\WaveOutCaps.cs" />
+    <Compile Include="SoundOut\MMInterop\WaveMsg.cs" />
+    <Compile Include="SoundOut\MMInterop\WaveOutCaps.cs" />
     <Compile Include="SoundOut\ISoundOut.cs" />
     <Compile Include="SoundOut\PlaybackState.cs" />
     <Compile Include="Streams\Effects\WahWah.cs" />
@@ -517,7 +526,7 @@
     <Compile Include="Utils\Memory.cs" />
     <Compile Include="Utils\UintOffsets.cs" />
     <Compile Include="Utils\Utils.cs" />
-    <Compile Include="Utils\WaveFormatMarshaler.cs" />
+    <Compile Include="Win32\WaveFormatMarshaler.cs" />
     <Compile Include="WaveAggregatorBase.cs" />
     <Compile Include="WaveFormat.cs" />
   </ItemGroup>

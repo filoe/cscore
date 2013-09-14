@@ -27,6 +27,7 @@ namespace CSCore.DMO
             _mediaObject = new MediaObject2(comobj as IMediaObject);
         }
 
+        private bool _disposed;
         public void Dispose()
         {
             Dispose(true);
@@ -35,11 +36,14 @@ namespace CSCore.DMO
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
+            if (!_disposed)
             {
-                //dispose managed
+                _mediaObject.Dispose();
+                _mediaObject = null;
+                Marshal.ReleaseComObject(_comobj);
+                _comobj = null;
             }
-            Marshal.ReleaseComObject(_comobj);
+            _disposed = true;
         }
 
         ~DmoObject()

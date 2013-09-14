@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 
 namespace CSCore.Tags.ID3
 {
@@ -41,17 +42,24 @@ namespace CSCore.Tags.ID3
             return tag;
         }
 
-        public string Title { get; private set; }
+        public static ID3v1 CreateEmpty()
+        {
+            return new ID3v1();
+        }
 
-        public string Artist { get; private set; }
+        public string Title { get; set; }
 
-        public string Album { get; private set; }
+        public string Artist { get; set; }
 
-        public int? Year { get; private set; }
+        public string Album { get; set; }
 
-        public string Comment { get; private set; }
+        public int? Year { get; set; }
 
-        public ID3Genre Genre { get; private set; }
+        public string Comment { get; set; }
+
+        public ID3Genre Genre { get; set; }
+
+        private ID3v1() { }
 
         private ID3v1(Stream stream)
         {
@@ -67,6 +75,25 @@ namespace CSCore.Tags.ID3
                 Year = null;
             Comment = new string(reader.ReadChars(30)).Replace("\0", String.Empty).TrimEnd();
             Genre = (ID3Genre)reader.ReadByte();
+        }
+
+        public void SaveToStream(Stream stream)
+        {
+            BinaryWriter writer = new BinaryWriter(stream);
+            var title = Title.Length > 30 ? Title.Substring(0, 30) : Title;
+            var artist = Artist.Length > 30 ? Title.Substring(0, 30) : Artist;
+            var album = Album.Length > 30 ? Album.Substring(0, 30) : Album;
+            int year = Year.HasValue ? Year.Value : 0;
+            var comment = Comment.Length > 30 ? Comment.Substring(0, 30) : Comment;
+            var genre = (byte)Genre;
+
+            writer.Write(title);
+            writer.Write(artist);
+            writer.Write(album);
+            writer.Write(year);
+            writer.Write(comment);
+            writer.Write(genre);
+            writer.Flush();
         }
     }
 }

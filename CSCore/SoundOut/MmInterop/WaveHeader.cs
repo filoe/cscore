@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace CSCore.SoundOut.MmInterop
+namespace CSCore.SoundOut.MMInterop
 {
     [StructLayout(LayoutKind.Sequential)]
     public class WaveHeader

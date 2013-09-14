@@ -1,4 +1,4 @@
-﻿using CSCore.SoundOut.MmInterop;
+﻿using CSCore.SoundOut.MMInterop;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -151,6 +151,7 @@ namespace CSCore.SoundOut
                         result,
                         "waveOutReset"
                         );
+                    MmException.Try(result, "waveOutReset");
                 }
 
                 RaiseStopped();
@@ -250,7 +251,12 @@ namespace CSCore.SoundOut
             lock (_lockObj)
             {
                 if (_buffers != null)
-                    _buffers.ForEach(x => x.Dispose());
+                {
+                    foreach (var buffer in _buffers)
+                    {
+                        buffer.Dispose();
+                    }
+                }
                 MmException.Try(MMInterops.waveOutClose(_hWaveOut), "waveOutClose");
                 _hWaveOut = IntPtr.Zero;
             }

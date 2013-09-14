@@ -40,5 +40,10 @@ namespace CSCore.SoundOut.DirectSound
         {
             return false;
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            //base.Dispose(disposing); todo: 
+        }
     }
 }

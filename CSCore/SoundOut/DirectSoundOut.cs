@@ -71,11 +71,14 @@ namespace CSCore.SoundOut
         {
             if (_playbackState == SoundOut.PlaybackState.Stopped)
             {
-                _secondaryBuffer.SetCurrentPosition(0);
-                _secondaryBuffer.Play(DSBPlayFlags.DSBPLAY_LOOPING);
-                PlaybackState = SoundOut.PlaybackState.Playing;
-                _notifyManager.Start();
-                Debug.WriteLine("DirectSoundOut playback started", "DirectSoundOut.Play()");
+                //lock (_lockObj)
+                //{
+                    _secondaryBuffer.SetCurrentPosition(0);
+                    _secondaryBuffer.Play(DSBPlayFlags.DSBPLAY_LOOPING);
+                    PlaybackState = SoundOut.PlaybackState.Playing;
+                    _notifyManager.Start();
+                    Debug.WriteLine("DirectSoundOut playback started", "DirectSoundOut.Play()");
+                //}
             }
 
             PlaybackState = SoundOut.PlaybackState.Playing;
@@ -93,29 +96,32 @@ namespace CSCore.SoundOut
 
         public void Stop()
         {
-            if (_notifyManager != null && !_notifyManager.GotStarted)
-            {
-                StopInternal();
-                _notifyManager.Dispose();
-                _notifyManager = null;
-            }
+            //if(PlaybackState == SoundOut.PlaybackState.Stopped)
+            //    return;
 
-            if (Monitor.TryEnter(_lockObj, 50))
-            {
-                _playbackState = SoundOut.PlaybackState.Stopped;
-                Monitor.Exit(_lockObj);
-            }
-            else
-            {
-                if (_notifyManager != null)
-                {
-                    if (!_notifyManager.Stop())
+                //lock (_lockObj)
+                //{
+                    if (_notifyManager != null && _notifyManager.GotStarted)
                     {
-                        _notifyManager.Abort(); //playbackstate set by Stopped-Eventhandler(NotifyManager)
+                        /*
+                         * Will call stop event which will call StopInternal
+                         */
+                        if (_notifyManager.Stop(Int32.MaxValue) == false)
+                        {
+                            //lock (_lockObj)
+                            //{
+                            Debugger.Break();
+                                _notifyManager.Abort();
+                                StopInternal(); //abort manually 
+                            //}
+                        }
+
+                        _notifyManager.Dispose();
+                        _notifyManager = null;
+                        PlaybackState = SoundOut.PlaybackState.Stopped;
                     }
-                    _notifyManager = null;
-                }
-            }
+                    StopInternal();
+                //}
         }
 
         public void Initialize(IWaveSource source)
@@ -125,14 +131,15 @@ namespace CSCore.SoundOut
                 if (source == null) throw new ArgumentNullException("source");
                 StopInternal();
 
-                IntPtr handle = DSInterop.DirectSoundUtils.GetDesktopWindow();
+                IntPtr handle = DSUtils.GetDesktopWindow();
 
                 Guid device = Device;
                 IntPtr ptrdsound;
-                DirectSoundException.Try(DSInterop.DirectSoundCreate8(ref device, out ptrdsound, IntPtr.Zero), "DSInterop", "DirectSoundCreate8(ref Guid, out IntPtr, IntPtr)");
+                DirectSoundException.Try(NativeMethods.DirectSoundCreate8(ref device, out ptrdsound, IntPtr.Zero), "DSInterop", "DirectSoundCreate8(ref Guid, out IntPtr, IntPtr)");
 
+                //create directsound
                 _directSound = new DirectSound8(ptrdsound);
-                DirectSoundException.Try(_directSound.SetCooperativeLevel(handle, DSCooperativeLevelType.DSSCL_EXCLUSIVE),
+                DirectSoundException.Try(_directSound.SetCooperativeLevel(handle, DSCooperativeLevelType.DSSCL_NORMAL),
                     "IDirectSound8", "SetCooperativeLevel");
                 if (!_directSound.SupportsFormat(source.WaveFormat))
                 {
@@ -150,6 +157,7 @@ namespace CSCore.SoundOut
                 WaveFormat waveFormat = _waveSource.WaveFormat;
                 int bufferSize = (int)waveFormat.MillisecondsToBytes(_latency);
 
+                //create buffers
                 _primaryBuffer = new DirectSoundPrimaryBuffer(_directSound);
                 _secondaryBuffer = new DirectSoundSecondaryBuffer(_directSound, waveFormat, bufferSize, false); //remove true
 
@@ -159,19 +167,20 @@ namespace CSCore.SoundOut
                 DirectSoundException.Try(_secondaryBuffer.GetCaps(out bufferCaps), "IDirectSoundBuffer", "GetCaps");
                 _buffer = _buffer.CheckBuffer(bufferCaps.dwBufferBytes); //[bufferCaps.dwBufferBytes];
 
-                _notifyManager = new DirectSoundNotifyManager(_secondaryBuffer, waveFormat,
-                    bufferSize);
+                _notifyManager = new DirectSoundNotifyManager(_secondaryBuffer, waveFormat, bufferSize);
                 _notifyManager.NotifyAnyRaised += OnNotify;
                 _notifyManager.Stopped += (s, e) =>
                     {
                         StopInternal();
+                        Debug.WriteLine("Stopped");
                         PlaybackState = SoundOut.PlaybackState.Stopped;
                         RaiseStopped();
                     };
 
                 _isinitialized = true;
+                Interlocked.Exchange(ref _disposeCount, 0);
 
-                Debug.WriteLine("DirectSoundOut initialized");
+                //Debug.WriteLine("DirectSoundOut initialized");
             }
         }
 
@@ -310,25 +319,22 @@ namespace CSCore.SoundOut
                 throw new InvalidOperationException("DirectSound is not initialized");
         }
 
-        private bool _disposed;
+        private int _disposeCount = 0;
 
+        private volatile bool _disposed;
         public void Dispose()
         {
-            if (!_disposed)
-            {
-                _disposed = true;
-
-                Dispose(true);
-                GC.SuppressFinalize(this);
-            }
+            GC.SuppressFinalize(this);
+            Dispose(true);
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            lock (_lockObj)
+            if (!_disposed)
             {
                 Stop();
             }
+            _disposed = true;
         }
 
         ~DirectSoundOut()

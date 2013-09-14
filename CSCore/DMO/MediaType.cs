@@ -15,7 +15,7 @@ namespace CSCore.DMO
                 throw new ArgumentNullException("waveFormat");
 
             MediaType mediaType = new MediaType();
-            DmoInterop.MoInitMediaType(ref mediaType, Marshal.SizeOf(waveFormat));
+            NativeMethods.MoInitMediaType(ref mediaType, Marshal.SizeOf(waveFormat));
 
             mediaType.MajorType = MediaTypes.MediaTypeAudio;
             mediaType.SubType = WaveFormatExtensible.SubTypeFromWaveFormat(waveFormat);
@@ -84,7 +84,7 @@ namespace CSCore.DMO
 
         public void Free()
         {
-            DmoInterop.MoFreeMediaType(ref this);
+            NativeMethods.MoFreeMediaType(ref this);
         }
     }
 }

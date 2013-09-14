@@ -26,7 +26,9 @@ namespace CSCore.SoundOut
         private WaveFormat _outputFormat;
 
         private int _latency;
+        private Boolean _createdResampler = false;
         private PlaybackState _playbackState;
+        private Object _lockObject = new Object();
 
         private Thread _playbackThread;
         private EventWaitHandle _eventWaitHandle;
@@ -57,64 +59,73 @@ namespace CSCore.SoundOut
 
         public void Initialize(IWaveSource source)
         {
-            if (source == null)
-                throw new ArgumentNullException("source");
-            _source = source;
-
-            UninitializeAudioClients();
-
-            _audioClient = AudioClient.FromMMDevice(Device);
-            _outputFormat = SetupWaveFormat(source.WaveFormat, _audioClient);
-
-            long latency = _latency * 10000;
-
-            if (!_eventSync)
+            lock (_lockObject)
             {
-                _audioClient.Initialize(_shareMode, AudioClientStreamFlags.None, latency, 0, _outputFormat, Guid.Empty);
-            }
-            else //event sync
-            {
-                if (_shareMode == AudioClientShareMode.Exclusive) //exclusive
+                if (source == null)
+                    throw new ArgumentNullException("source");
+                _source = source;
+
+                UninitializeAudioClients();
+
+                _audioClient = AudioClient.FromMMDevice(Device);
+                _outputFormat = SetupWaveFormat(source.WaveFormat, _audioClient);
+
+                long latency = _latency * 10000;
+
+                if (!_eventSync)
                 {
-                    _audioClient.Initialize(_shareMode, AudioClientStreamFlags.StreamFlags_EventCallback, latency, latency, _outputFormat, Guid.Empty);
+                    _audioClient.Initialize(_shareMode, AudioClientStreamFlags.None, latency, 0, _outputFormat, Guid.Empty);
                 }
-                else //shared
+                else //event sync
                 {
-                    _audioClient.Initialize(_shareMode, AudioClientStreamFlags.StreamFlags_EventCallback, 0, 0, _outputFormat, Guid.Empty);
-                    _latency = (int)(_audioClient.StreamLatency / 10000);
+                    if (_shareMode == AudioClientShareMode.Exclusive) //exclusive
+                    {
+                        _audioClient.Initialize(_shareMode, AudioClientStreamFlags.StreamFlags_EventCallback, latency, latency, _outputFormat, Guid.Empty);
+                    }
+                    else //shared
+                    {
+                        _audioClient.Initialize(_shareMode, AudioClientStreamFlags.StreamFlags_EventCallback, 0, 0, _outputFormat, Guid.Empty);
+                        _latency = (int)(_audioClient.StreamLatency / 10000);
+                    }
+
+                    _eventWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
+                    _audioClient.SetEventHandle(_eventWaitHandle.SafeWaitHandle.DangerousGetHandle());
                 }
 
-                _eventWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
-                _audioClient.SetEventHandle(_eventWaitHandle.SafeWaitHandle.DangerousGetHandle());
+                _renderClient = AudioRenderClient.FromAudioClient(_audioClient);
+                _simpleAudioVolume = SimpleAudioVolume.FromAudioClient(_audioClient);
             }
-
-            _renderClient = AudioRenderClient.FromAudioClient(_audioClient);
-            _simpleAudioVolume = SimpleAudioVolume.FromAudioClient(_audioClient);
             Debug.WriteLine(String.Format("Initialized WasapiOut[Mode: {0}; Latency: {1}; OutputFormat: {2}]", _shareMode, _latency, _outputFormat));
         }
 
         public void Play()
         {
-            if (PlaybackState != PlaybackState.Playing)
+            lock (_lockObject)
             {
-                if (PlaybackState == SoundOut.PlaybackState.Stopped && _playbackThread == null)
+                if (PlaybackState != PlaybackState.Playing)
                 {
-                    _playbackThread = new Thread(new ThreadStart(PlaybackProc));
-                    _playbackThread.Name = "WASAPI Playback-Thread; ID = " + DebuggingID;
-                    _playbackThread.Priority = ThreadPriority.AboveNormal;
-                    _playbackThread.Start();
-                }
-                else if (PlaybackState == SoundOut.PlaybackState.Paused)
-                {
-                    _playbackState = SoundOut.PlaybackState.Playing;
+                    if (PlaybackState == SoundOut.PlaybackState.Stopped && _playbackThread == null)
+                    {
+                        _playbackThread = new Thread(new ThreadStart(PlaybackProc));
+                        _playbackThread.Name = "WASAPI Playback-Thread; ID = " + DebuggingID;
+                        _playbackThread.Priority = ThreadPriority.AboveNormal;
+                        _playbackThread.Start();
+                    }
+                    else if (PlaybackState == SoundOut.PlaybackState.Paused)
+                    {
+                        _playbackState = SoundOut.PlaybackState.Playing;
+                    }
                 }
             }
         }
 
         public void Pause()
         {
-            if (PlaybackState == SoundOut.PlaybackState.Playing)
-                _playbackState = SoundOut.PlaybackState.Paused;
+            lock (_lockObject)
+            {
+                if (PlaybackState == SoundOut.PlaybackState.Playing)
+                    _playbackState = SoundOut.PlaybackState.Paused;
+            }
         }
 
         public void Resume()
@@ -124,11 +135,14 @@ namespace CSCore.SoundOut
 
         public void Stop()
         {
-            if (PlaybackState != SoundOut.PlaybackState.Stopped)
+            lock (_lockObject)
             {
-                _playbackState = SoundOut.PlaybackState.Stopped;
-                _playbackThread.Join();
-                _playbackThread = null;
+                if (PlaybackState != SoundOut.PlaybackState.Stopped)
+                {
+                    _playbackState = SoundOut.PlaybackState.Stopped;
+                    _playbackThread.Join();
+                    _playbackThread = null;
+                }
             }
         }
 
@@ -136,22 +150,34 @@ namespace CSCore.SoundOut
         {
             try
             {
-                _playbackState = SoundOut.PlaybackState.Playing;
+                int bufferSize;
+                int frameSize;
+                byte[] buffer;
+                int eventWaitHandleIndex;
+                WaitHandle[] eventWaitHandleArray;
 
-                int bufferSize = _audioClient.BufferSize;
-                int frameSize = _outputFormat.Channels * _outputFormat.BytesPerSample;
-
-                byte[] buffer = new byte[bufferSize * frameSize];
-
-                int eventWaitHandleIndex = WaitHandle.WaitTimeout;
-                WaitHandle[] eventWaitHandleArray = new WaitHandle[] { _eventWaitHandle };
-
-                if (!FeedBuffer(_renderClient, buffer, bufferSize, frameSize))
+                lock (_lockObject)
                 {
-                    _playbackState = PlaybackState.Stopped;
-                }
+                    if (PlaybackState == SoundOut.PlaybackState.Stopped)
+                        return;
 
-                _audioClient.Start();
+                    _playbackState = SoundOut.PlaybackState.Playing;
+
+                    bufferSize = _audioClient.BufferSize;
+                    frameSize = _outputFormat.Channels * _outputFormat.BytesPerSample;
+
+                    buffer = new byte[bufferSize * frameSize];
+
+                    eventWaitHandleIndex = WaitHandle.WaitTimeout;
+                    eventWaitHandleArray = new WaitHandle[] { _eventWaitHandle };
+
+                    if (!FeedBuffer(_renderClient, buffer, bufferSize, frameSize))
+                    {
+                        _playbackState = PlaybackState.Stopped;
+                    }
+
+                    _audioClient.Start();
+                }
 
                 while (PlaybackState != PlaybackState.Stopped)
                 {
@@ -167,36 +193,42 @@ namespace CSCore.SoundOut
                         Thread.Sleep(_latency / 8);
                     }
 
-                    if (PlaybackState == PlaybackState.Playing)
+                    lock(_lockObject) 
                     {
-                        int padding;
-                        if (_eventSync && _shareMode == AudioClientShareMode.Exclusive)
+                        if (PlaybackState == PlaybackState.Playing)
                         {
-                            padding = 0;
-                        }
-                        else
-                        {
-                            padding = _audioClient.GetCurrentPadding();
-                        }
-
-                        int framesReadyToFill = bufferSize - padding;
-                        if (framesReadyToFill > 5 && 
-                            !(_source is DmoResampler && 
-                            ((DmoResampler)_source).OutputToInput(framesReadyToFill * frameSize) <= 0)) //avoid conversion errors
-                        {
-                            if (!FeedBuffer(_renderClient, buffer, framesReadyToFill, frameSize))
+                            int padding;
+                            if (_eventSync && _shareMode == AudioClientShareMode.Exclusive)
                             {
-                                _playbackState = PlaybackState.Stopped;
+                                padding = 0;
+                            }
+                            else
+                            {
+                                padding = _audioClient.GetCurrentPadding();
+                            }
+
+                            int framesReadyToFill = bufferSize - padding;
+                            if (framesReadyToFill > 5 && 
+                                !(_source is DmoResampler && 
+                                ((DmoResampler)_source).OutputToInput(framesReadyToFill * frameSize) <= 0)) //avoid conversion errors
+                            {
+                                if (!FeedBuffer(_renderClient, buffer, framesReadyToFill, frameSize))
+                                {
+                                    _playbackState = PlaybackState.Stopped;
+                                }
                             }
                         }
                     }
                 }
 
                 Thread.Sleep(_latency / 2);
-                _audioClient.Stop();
-                if (_playbackState == SoundOut.PlaybackState.Stopped)
+                lock(_lockObject)
                 {
-                    _audioClient.ResetNative();
+                    _audioClient.Stop();
+                    if (_playbackState == SoundOut.PlaybackState.Stopped)
+                    {
+                        _audioClient.ResetNative();
+                    }
                 }
             }
             catch (Exception e)
@@ -341,6 +373,7 @@ namespace CSCore.SoundOut
                     DmoResampler resampler = new DmoResampler(_source, finalFormat);
                     resampler.Quality = 60;
                     _source = resampler;
+                    _createdResampler = true;
                 }
                 else
                 {
@@ -396,9 +429,18 @@ namespace CSCore.SoundOut
         {
             if (!_disposed)
             {
-                Stop();
-                UninitializeAudioClients();
-                //todo: dispose device?
+                lock (_lockObject)
+                {
+                    Stop();
+                    UninitializeAudioClients();
+                    if (_source is DmoResampler && _createdResampler)
+                    {
+                        var resampler = _source as DmoResampler;
+                        _source = resampler.BaseStream;
+                        resampler.DisposeResamplerOnly();
+                    }
+                    //todo: dispose device?
+                }
             }
 
             _disposed = true;
