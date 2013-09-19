@@ -11,11 +11,11 @@ namespace CSCore.SoundOut
     public class DirectSoundOut : ISoundOut
     {
         protected IWaveSource _waveSource;
-        protected DirectSound8 _directSound;
-        protected DirectSoundPrimaryBuffer _primaryBuffer;
-        protected DirectSoundSecondaryBuffer _secondaryBuffer;
-        protected DirectSoundNotifyManager _notifyManager;
-        protected PlaybackState _playbackState = PlaybackState.Stopped;
+        protected volatile DirectSound8 _directSound;
+        protected volatile DirectSoundPrimaryBuffer _primaryBuffer;
+        protected volatile DirectSoundSecondaryBuffer _secondaryBuffer;
+        protected volatile DirectSoundNotifyManager _notifyManager;
+        protected volatile PlaybackState _playbackState = PlaybackState.Stopped;
         private SynchronizationContext _syncContext;
         private Guid _device;
         private int _latency;
@@ -96,32 +96,29 @@ namespace CSCore.SoundOut
 
         public void Stop()
         {
-            //if(PlaybackState == SoundOut.PlaybackState.Stopped)
-            //    return;
+            if (Monitor.TryEnter(_lockObj, 50))
+            {
+                PlaybackState = SoundOut.PlaybackState.Stopped;
+                Monitor.Exit(_lockObj);
+                return;
+            }
 
-                //lock (_lockObj)
-                //{
-                    if (_notifyManager != null && _notifyManager.GotStarted)
-                    {
-                        /*
-                         * Will call stop event which will call StopInternal
-                         */
-                        if (_notifyManager.Stop(Int32.MaxValue) == false)
-                        {
-                            //lock (_lockObj)
-                            //{
-                            Debugger.Break();
-                                _notifyManager.Abort();
-                                StopInternal(); //abort manually 
-                            //}
-                        }
+            if (_notifyManager != null && _notifyManager.GotStarted)
+            {
+                /*
+                 * Will call stop event which will call StopInternal
+                 */
+                if (_notifyManager.Stop(Int32.MaxValue) == false)
+                {
+                    _notifyManager.Abort();
+                    StopInternal(); //abort manually 
+                }
 
-                        _notifyManager.Dispose();
-                        _notifyManager = null;
-                        PlaybackState = SoundOut.PlaybackState.Stopped;
-                    }
-                    StopInternal();
-                //}
+                _notifyManager.Dispose();
+                _notifyManager = null;
+                PlaybackState = SoundOut.PlaybackState.Stopped;
+            }
+            //StopInternal();
         }
 
         public void Initialize(IWaveSource source)

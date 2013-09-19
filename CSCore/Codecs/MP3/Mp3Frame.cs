@@ -290,6 +290,8 @@ namespace CSCore.Codecs.MP3
 
         public MP3ChannelMode ChannelMode { get; private set; }
 
+        public short ChannelCount { get { return GetChannelCount(ChannelMode); }}
+
         public int SampleCount { get; private set; }
 
         public int FrameLength { get; private set; }
@@ -305,6 +307,20 @@ namespace CSCore.Codecs.MP3
         public bool Padding { get; private set; }
 
         public bool CrcEnabled { get; private set; }
+
+        private short GetChannelCount(MP3ChannelMode channelsMode)
+        {
+            if (channelsMode == MP3ChannelMode.Mono)
+                return 1;
+            else if (channelsMode == MP3ChannelMode.Stereo)
+                return 2;
+            else if (channelsMode == MP3ChannelMode.JointStereo)
+                return 2;
+            else if (channelsMode == MP3ChannelMode.DualChannel)
+                return 2;
+
+            return 0;
+        }
     }
 
     public enum MP3ChannelMode

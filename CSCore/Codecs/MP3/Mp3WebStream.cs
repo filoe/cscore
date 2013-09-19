@@ -114,7 +114,7 @@ namespace CSCore.Codecs.MP3
             Mp3Frame frame = GetNextFrame(_stream);
 
             int channels = frame.ChannelMode == MP3ChannelMode.Stereo ? 2 : 1;
-            AcmConverter converter = new AcmConverter(new MP3Format(frame.SampleRate, frame.ChannelMode.ToShort(), frame.FrameLength, frame.BitRate));
+            AcmConverter converter = new AcmConverter(new MP3Format(frame.SampleRate, frame.ChannelCount, frame.FrameLength, frame.BitRate));
 
             _waveFormat = converter.DestinationFormat;
 

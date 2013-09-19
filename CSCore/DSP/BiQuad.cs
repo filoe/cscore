@@ -7,9 +7,9 @@ namespace CSCore.DSP
 {
     public class BiQuad
     {
-        double a0, a1, a2, b1, b2;
-        double fc, Q, peakGain;
-        double z1, z2;
+        private double a0, a1, a2, b1, b2;
+        private double fc, Q, peakGain;
+        private double z1, z2;
 
         public static BiQuad CreatePeakEQFilter(int sampleRate, double frequency, double bandWidth, double peakGainDB)
         {

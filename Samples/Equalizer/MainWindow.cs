@@ -60,6 +60,7 @@ namespace EqualizerTest
         {
             if (_soundOut != null)
             {
+                _soundOut.Stop();
                 _soundOut.Dispose();
                 _eq.Dispose();
             }

@@ -1,4 +1,5 @@
 ﻿using CSCore.Codecs.MP3;
+using CSCore.Codecs.WAV;
 using CSCore.Streams.SampleConverter;
 using System;
 using System.Collections.Generic;
@@ -111,18 +112,30 @@ namespace CSCore
             }
         }
 
-        public static short ToShort(this MP3ChannelMode channel)
+        public static void WriteToWaveStream(this IWaveSource source, string filename)
         {
-            if (channel == MP3ChannelMode.Mono)
-                return 1;
-            else if (channel == MP3ChannelMode.Stereo)
-                return 2;
-            else if (channel == MP3ChannelMode.JointStereo)
-                return 2;
-            else if (channel == MP3ChannelMode.DualChannel)
-                return 2;
+            using (var stream = File.OpenWrite(filename))
+            {
+                WriteToWaveStream(source, stream);
+            }
+        }
 
-            return 0;
+        public static void WriteToWaveStream(this IWaveSource source, Stream stream)
+        {
+            if (stream == null)
+                throw new ArgumentNullException();
+            if (!stream.CanWrite)
+                throw new ArgumentException("Stream not writeable.", "stream");
+
+            using (var writer = new WaveWriter(stream, source.WaveFormat))
+            {
+                int read = 0;
+                byte[] buffer = new byte[source.WaveFormat.BytesPerSecond];
+                while((read = source.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    writer.Write(buffer, 0, read);
+                }
+            }
         }
 
         public static T[] CheckBuffer<T>(this T[] inst, long size, bool exactSize = false)

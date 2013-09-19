@@ -84,7 +84,7 @@ namespace CSCore.Codecs.MP3
             {
                 _bitRate = ((_frame.BitRate) / 1);
             }
-            MP3Format = new MP3Format(_sampleRate, _frame.ChannelMode.ToShort(), frameLength, (int)Math.Round(_bitRate));
+            MP3Format = new MP3Format(_sampleRate, _frame.ChannelCount, frameLength, (int)Math.Round(_bitRate));
             _converter = new AcmConverter(MP3Format);
             WaveFormat = _converter.DestinationFormat;
 

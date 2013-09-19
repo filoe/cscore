@@ -58,10 +58,11 @@ namespace CSCore.Streams
         public override int Read(float[] buffer, int offset, int count)
         {
             int read = base.Read(buffer, offset, count);
+            int channels = WaveFormat.Channels;
 
             for (int i = 0; i < read; )
             {
-                for (int n = 0; n < WaveFormat.Channels; n++)
+                for (int n = 0; n < channels; n++)
                 {
                     _buffer.Enqueue(buffer[i++]);
                 }

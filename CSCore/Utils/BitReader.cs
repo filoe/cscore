@@ -37,7 +37,7 @@ namespace CSCore.Utils
         public BitReader(byte* buffer, int offset)
         {
             if (new IntPtr(buffer) == IntPtr.Zero)
-                throw new ArgumentNullException("buffer is null");
+                throw new ArgumentNullException("buffer");
             if (offset < 0)
                 throw new ArgumentOutOfRangeException("offset");
 
@@ -51,15 +51,16 @@ namespace CSCore.Utils
 
         private uint PeekCache()
         {
-            byte* ptr = _buffer;
-            uint result = *(ptr++);
-            result = (result << 8) + *(ptr++);
-            result = (result << 8) + *(ptr++);
-            result = (result << 8) + *(ptr++);
-            //for (int i = 0; i < 3; i++)
-            //    result = (result << 8) + *(ptr++);
+            unchecked
+            {
+                byte* ptr = _buffer;
+                uint result = *(ptr++);
+                result = (result << 8) + *(ptr++);
+                result = (result << 8) + *(ptr++);
+                result = (result << 8) + *(ptr++);
 
-            return result << _bitoffset;
+                return result << _bitoffset;
+            }
         }
 
         public void SeekBytes(int bytes)
@@ -75,7 +76,7 @@ namespace CSCore.Utils
             if (bits <= 0)
                 throw new ArgumentOutOfRangeException("bits");
 
-            int tmp = (_bitoffset + bits);
+            int tmp = _bitoffset + bits;
             _buffer += tmp >> 3; //skip bytes
             _bitoffset = tmp & 7; //bitoverflow -> max 7 bit
 

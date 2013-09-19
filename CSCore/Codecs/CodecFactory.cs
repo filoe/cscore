@@ -118,7 +118,10 @@ namespace CSCore.Codecs
                             if (codecEntry.Value.FileExtensions.Contains(extension))
                                 return codecEntry.Value.GetCodecAction(File.OpenRead(filename));
                         }
-                        catch (Exception) { }
+                        catch (Exception)
+                        {
+                            
+                        }
                     }
                     return Default(filename);
                 }

@@ -111,10 +111,7 @@ namespace CSCore.SoundOut
                         _playbackThread.Priority = ThreadPriority.AboveNormal;
                         _playbackThread.Start();
                     }
-                    else if (PlaybackState == SoundOut.PlaybackState.Paused)
-                    {
-                        _playbackState = SoundOut.PlaybackState.Playing;
-                    }
+                    _playbackState = SoundOut.PlaybackState.Playing;
                 }
             }
         }
@@ -135,14 +132,22 @@ namespace CSCore.SoundOut
 
         public void Stop()
         {
-            lock (_lockObject)
+            if (PlaybackState != SoundOut.PlaybackState.Stopped && 
+                _playbackThread != null &&
+                _playbackThread.IsAlive)
             {
-                if (PlaybackState != SoundOut.PlaybackState.Stopped)
+                if (Monitor.TryEnter(_lockObject, 50))
                 {
                     _playbackState = SoundOut.PlaybackState.Stopped;
+                    Monitor.Exit(_lockObject);
                     _playbackThread.Join();
-                    _playbackThread = null;
                 }
+                else
+                {
+                    _playbackThread.Abort();
+                    Debug.WriteLine("Wasapi aborted.");
+                }
+                _playbackThread = null;
             }
         }
 
@@ -164,12 +169,12 @@ namespace CSCore.SoundOut
                     _playbackState = SoundOut.PlaybackState.Playing;
 
                     bufferSize = _audioClient.BufferSize;
-                    frameSize = _outputFormat.Channels * _outputFormat.BytesPerSample;
+                    frameSize = _outputFormat.Channels*_outputFormat.BytesPerSample;
 
-                    buffer = new byte[bufferSize * frameSize];
+                    buffer = new byte[bufferSize*frameSize];
 
                     eventWaitHandleIndex = WaitHandle.WaitTimeout;
-                    eventWaitHandleArray = new WaitHandle[] { _eventWaitHandle };
+                    eventWaitHandleArray = new WaitHandle[] {_eventWaitHandle};
 
                     if (!FeedBuffer(_renderClient, buffer, bufferSize, frameSize))
                     {
@@ -183,17 +188,18 @@ namespace CSCore.SoundOut
                 {
                     if (_eventSync)
                     {
-                        eventWaitHandleIndex = WaitHandle.WaitAny(eventWaitHandleArray, 3 * _latency, false); //3 * latency = see msdn: recommended timeout
+                        eventWaitHandleIndex = WaitHandle.WaitAny(eventWaitHandleArray, 3*_latency, false);
+                            //3 * latency = see msdn: recommended timeout
                         if (eventWaitHandleIndex == WaitHandle.WaitTimeout)
                             continue;
                     }
                     else
                     {
                         //Thread.Sleep(_latency / 8);
-                        Thread.Sleep(_latency / 8);
+                        Thread.Sleep(_latency/8);
                     }
 
-                    lock(_lockObject) 
+                    lock (_lockObject)
                     {
                         if (PlaybackState == PlaybackState.Playing)
                         {
@@ -208,9 +214,10 @@ namespace CSCore.SoundOut
                             }
 
                             int framesReadyToFill = bufferSize - padding;
-                            if (framesReadyToFill > 5 && 
-                                !(_source is DmoResampler && 
-                                ((DmoResampler)_source).OutputToInput(framesReadyToFill * frameSize) <= 0)) //avoid conversion errors
+                            if (framesReadyToFill > 5 &&
+                                !(_source is DmoResampler &&
+                                  ((DmoResampler) _source).OutputToInput(framesReadyToFill*frameSize) <= 0))
+                                //avoid conversion errors
                             {
                                 if (!FeedBuffer(_renderClient, buffer, framesReadyToFill, frameSize))
                                 {
@@ -221,8 +228,8 @@ namespace CSCore.SoundOut
                     }
                 }
 
-                Thread.Sleep(_latency / 2);
-                lock(_lockObject)
+                Thread.Sleep(_latency/2);
+                lock (_lockObject)
                 {
                     _audioClient.Stop();
                     if (_playbackState == SoundOut.PlaybackState.Stopped)
@@ -230,6 +237,9 @@ namespace CSCore.SoundOut
                         _audioClient.ResetNative();
                     }
                 }
+            }
+            catch (ThreadAbortException)
+            {
             }
             catch (Exception e)
             {
@@ -301,8 +311,6 @@ namespace CSCore.SoundOut
             {
                 if (value == null)
                     throw new ArgumentNullException("value");
-                //if (_device != null)
-                //	_device.Dispose();
                 _device = value;
             }
         }
@@ -429,9 +437,9 @@ namespace CSCore.SoundOut
         {
             if (!_disposed)
             {
+                Stop();
                 lock (_lockObject)
                 {
-                    Stop();
                     UninitializeAudioClients();
                     if (_source is DmoResampler && _createdResampler)
                     {

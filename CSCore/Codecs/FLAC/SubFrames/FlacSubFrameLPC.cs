@@ -6,13 +6,18 @@ namespace CSCore.Codecs.FLAC
 {
     public sealed class FlacSubFrameLPC : FlacSubFrameBase
     {
-        public int QLPCoeffPrecision { get; private set; }
+        private int[] _warmup;
+        private int[] _qlpCoeffs;
+        private int _lpcShiftNeeded;
+        private int _qlpCoeffPrecision;
 
-        public int LPCShiftNeeded { get; private set; }
+        public int QLPCoeffPrecision { get { return _qlpCoeffPrecision; } }
 
-        public int[] QLPCoeffs { get; private set; }
+        public int LPCShiftNeeded { get { return _lpcShiftNeeded; } }
 
-        public int[] Warmup { get; private set; }
+        public int[] QLPCoeffs { get { return _qlpCoeffs; } }
+
+        public int[] Warmup { get { return _warmup; } }
 
         public FlacResidual Residual { get; private set; }
 
@@ -21,10 +26,10 @@ namespace CSCore.Codecs.FLAC
         {
 
             //warmup
-            int[] warmup = new int[FlacConstant.MAX_LPC_ORDER];
+            _warmup = new int[FlacConstant.MAX_LPC_ORDER];
             for (int i = 0; i < order; i++)
             {
-                warmup[i] = data.residualBuffer[i] = reader.ReadBitsSigned(bps);
+                _warmup[i] = data.residualBuffer[i] = reader.ReadBitsSigned(bps);
             }
 
             //header
@@ -34,22 +39,22 @@ namespace CSCore.Codecs.FLAC
                 Debug.WriteLine("Invalid FlacLPC qlp coeff precision.");
                 return; //return false;
             }
-            QLPCoeffPrecision = u32 + 1;
+            _qlpCoeffPrecision = u32 + 1;
 
             int level = reader.ReadBitsSigned(FlacConstant.SUBFRAME_LPC_QLP_SHIFT_LEN);
             if (level < 0)
                 throw new Exception("negative shift");
-            LPCShiftNeeded = level;
+            _lpcShiftNeeded = level;
 
-            int[] coeffs = new int[FlacConstant.MAX_LPC_ORDER];
+            _qlpCoeffs = new int[FlacConstant.MAX_LPC_ORDER];
 
             //qlp coeffs
             for (int i = 0; i < order; i++)
             {
-                coeffs[i] = reader.ReadBitsSigned(QLPCoeffPrecision);
+                _qlpCoeffs[i] = reader.ReadBitsSigned(_qlpCoeffPrecision);
             }
 
-            QLPCoeffs = coeffs;
+            //QLPCoeffs = coeffs;
 
             Residual = new FlacResidual(reader, header, data, order);
 
@@ -58,9 +63,9 @@ namespace CSCore.Codecs.FLAC
                 data.destBuffer[i] = data.residualBuffer[i];
             }
 
-            if (bps + QLPCoeffPrecision + CSMath.ILog(order) <= 32)
+            if (bps + _qlpCoeffPrecision + CSMath.ILog(order) <= 32)
             {
-                if (bps <= 16 && QLPCoeffPrecision <= 16)
+                if (bps <= 16 && _qlpCoeffPrecision <= 16)
                     RestoreLPCSignal(data.residualBuffer + order, data.destBuffer + order, header.BlockSize - order, order); //Restore(data.residualBuffer + order, data.destBuffer, Header.BlockSize - order, order, order);
                 else
                     RestoreLPCSignal(data.residualBuffer + order, data.destBuffer + order, header.BlockSize - order, order);
@@ -70,7 +75,7 @@ namespace CSCore.Codecs.FLAC
                 RestoreLPCSignalWide(data.residualBuffer + order, data.destBuffer + order, header.BlockSize - order, order);//RestoreWide(data.residualBuffer + order, data.destBuffer, Header.BlockSize - order, order, order);
             }
 
-            Warmup = warmup;
+            //Warmup = warmup;
         }
 
         private unsafe void Restore(int* residual, int* dest, int length, int predictorOrder, int destOffset)
@@ -80,10 +85,10 @@ namespace CSCore.Codecs.FLAC
                 int sum = 0;
                 for (int j = 0; j < predictorOrder; j++)
                 {
-                    sum += (int)QLPCoeffs[j] * (int)dest[destOffset + i - j - 1];
+                    sum += (int)_qlpCoeffs[j] * (int)dest[destOffset + i - j - 1];
                 }
                 //System.Diagnostics.Debug.WriteLine(i + " " + (residual[i] + (int)(sum >> LPCShiftNeeded)));
-                dest[destOffset + i] = residual[i] + (int)(sum >> LPCShiftNeeded);
+                dest[destOffset + i] = residual[i] + (int)(sum >> _lpcShiftNeeded);
             }
         }
 
@@ -101,10 +106,10 @@ namespace CSCore.Codecs.FLAC
                 history = dest;
                 for (int j = 0; j < order; j++)
                 {
-                    sum += QLPCoeffs[j] * *(--history);
+                    sum += _qlpCoeffs[j] * *(--history);
                 }
 
-                *(dest++) = *(r++) + (sum >> LPCShiftNeeded);
+                *(dest++) = *(r++) + (sum >> _lpcShiftNeeded);
             }
         }
 
@@ -122,10 +127,10 @@ namespace CSCore.Codecs.FLAC
                 history = dest;
                 for (int j = 0; j < order; j++)
                 {
-                    sum += (long)QLPCoeffs[j] * ((long)*(--history));
+                    sum += (long)_qlpCoeffs[j] * ((long)*(--history));
                 }
 
-                *(dest++) = *(r++) + (int)(sum >> LPCShiftNeeded);
+                *(dest++) = *(r++) + (int)(sum >> _lpcShiftNeeded);
             }
         }
     }
