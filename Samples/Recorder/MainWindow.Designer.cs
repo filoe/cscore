@@ -35,7 +35,6 @@
             this.columnDriverVersion = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.peakRight = new System.Windows.Forms.ProgressBar();
             this.peakLeft = new System.Windows.Forms.ProgressBar();
-            this.chbOutput = new System.Windows.Forms.CheckBox();
             this.btnRefreshDevices = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
@@ -59,7 +58,6 @@
             // 
             this.appContainer.Panel2.Controls.Add(this.peakRight);
             this.appContainer.Panel2.Controls.Add(this.peakLeft);
-            this.appContainer.Panel2.Controls.Add(this.chbOutput);
             this.appContainer.Panel2.Controls.Add(this.btnRefreshDevices);
             this.appContainer.Panel2.Controls.Add(this.btnStop);
             this.appContainer.Panel2.Controls.Add(this.btnStart);
@@ -99,7 +97,7 @@
             // 
             // peakRight
             // 
-            this.peakRight.Location = new System.Drawing.Point(14, 117);
+            this.peakRight.Location = new System.Drawing.Point(14, 95);
             this.peakRight.Maximum = 10000;
             this.peakRight.Name = "peakRight";
             this.peakRight.Size = new System.Drawing.Size(203, 13);
@@ -107,23 +105,11 @@
             // 
             // peakLeft
             // 
-            this.peakLeft.Location = new System.Drawing.Point(14, 98);
+            this.peakLeft.Location = new System.Drawing.Point(14, 76);
             this.peakLeft.Maximum = 10000;
             this.peakLeft.Name = "peakLeft";
             this.peakLeft.Size = new System.Drawing.Size(203, 13);
             this.peakLeft.TabIndex = 4;
-            // 
-            // chbOutput
-            // 
-            this.chbOutput.AutoSize = true;
-            this.chbOutput.Enabled = false;
-            this.chbOutput.Location = new System.Drawing.Point(14, 74);
-            this.chbOutput.Name = "chbOutput";
-            this.chbOutput.Size = new System.Drawing.Size(100, 17);
-            this.chbOutput.TabIndex = 3;
-            this.chbOutput.Text = "Realtime output";
-            this.chbOutput.UseVisualStyleBackColor = true;
-            this.chbOutput.CheckedChanged += new System.EventHandler(this.chbOutput_CheckedChanged);
             // 
             // btnRefreshDevices
             // 
@@ -174,7 +160,6 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindow_FormClosing);
             this.appContainer.Panel1.ResumeLayout(false);
             this.appContainer.Panel2.ResumeLayout(false);
-            this.appContainer.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.appContainer)).EndInit();
             this.appContainer.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -191,7 +176,6 @@
         private System.Windows.Forms.ColumnHeader columnName;
         private System.Windows.Forms.ColumnHeader columnChannels;
         private System.Windows.Forms.ColumnHeader columnDriverVersion;
-        private System.Windows.Forms.CheckBox chbOutput;
         private System.Windows.Forms.ProgressBar peakRight;
         private System.Windows.Forms.ProgressBar peakLeft;
     }

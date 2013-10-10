@@ -409,11 +409,9 @@
     <Compile Include="DMO\MediaObject2.cs" />
     <Compile Include="MediaFoundation\MFTMessageType.cs" />
     <Compile Include="DMO\WMResampler.cs" />
-    <Compile Include="DSP\BlockReadEventArgs.cs" />
     <Compile Include="DSP\DmoResampler.cs" />
     <Compile Include="DSP\FFTAggregator.cs" />
     <Compile Include="DSP\FFTCalculatedEventArgs.cs" />
-    <Compile Include="DSP\PeakMeter.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ISampleSource.cs" />
     <Compile Include="IWaveAggregator.cs" />
