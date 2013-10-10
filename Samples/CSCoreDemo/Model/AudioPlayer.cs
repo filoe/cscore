@@ -9,6 +9,7 @@ namespace CSCoreDemo.Model
     public class AudioPlayer : IDisposable
     {
         private PanSource _panSource;
+        private IWaveSource _source;
 
         public event EventHandler Updated;
 
@@ -34,6 +35,9 @@ namespace CSCoreDemo.Model
                 _notification.DataRead += OnNotification;
 
                 source = _notification.ToWaveSource(16);
+                source = new BufferSource(source, source.WaveFormat.BytesPerSecond * 2);
+
+                _source = source;
 
                 if (oninitcallback != null)
                     SoundOutManager.Initialize(oninitcallback(source));
@@ -62,6 +66,7 @@ namespace CSCoreDemo.Model
         {
             SoundOutManager.Stop();
             _panSource = null;
+            _source = null;
             RaiseUpdated();
         }
 
@@ -131,15 +136,15 @@ namespace CSCoreDemo.Model
         {
             get
             {
-                if (_panSource != null)
-                    return _panSource.GetPosition();
+                if (_source != null)
+                    return _source.GetPosition();
                 else
                     return TimeSpan.FromMilliseconds(0);
             }
             set
             {
-                if (_panSource != null)
-                    _panSource.SetPosition(value);
+                if (_source != null)
+                    _source.SetPosition(value);
             }
         }
 
@@ -147,8 +152,8 @@ namespace CSCoreDemo.Model
         {
             get
             {
-                if (_panSource != null)
-                    return _panSource.GetLength();
+                if (_source != null)
+                    return _source.GetLength();
                 else
                     return TimeSpan.FromMilliseconds(0);
             }

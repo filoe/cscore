@@ -6,7 +6,7 @@ namespace CSCore.Codecs.MP3
 {
     public class FrameInfoCollection : Collection<MP3FrameInfo>, IDisposable
     {
-        private Mp3Frame frame;
+        private MP3Frame frame;
         private int playbackIndex = 0;
 
         public int TotalSamples { get; private set; }
@@ -21,7 +21,7 @@ namespace CSCore.Codecs.MP3
 
                 info.StreamPosition = stream.Position;
                 info.SampleIndex = TotalSamples;
-                frame = Mp3Frame.FromStream(stream);
+                frame = MP3Frame.FromStream(stream);
                 if (frame != null)
                 {
                     info.SampleAmount = frame.SampleCount;
@@ -36,7 +36,10 @@ namespace CSCore.Codecs.MP3
                     return false;
                 }
             }
-            catch (Exception) { return false; }
+            catch (Exception) 
+            {
+                return false; 
+            }
         }
 
         private bool _disposed;

@@ -48,9 +48,9 @@ namespace EqualizerTest
                     _soundOut = null;
                 }
 
-                _soundOut = new WasapiOut();//DirectSoundOut();
+                _soundOut = new DirectSoundOut();//DirectSoundOut();
                 var source = CodecFactory.Instance.GetCodec(ofn.FileName);
-                _eq = Equalizer.Create11BandEqualizer(source);
+                _eq = Equalizer.Create10BandEqualizer(source);
                 _soundOut.Initialize(_eq.ToWaveSource(16));
                 _soundOut.Play();
             }

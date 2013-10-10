@@ -71,7 +71,7 @@ namespace CSCore.Streams
             _blockSize = (WaveFormat.SampleRate * WaveFormat.Channels) / resolution;
             _blockSize -= (_blockSize % WaveFormat.BlockAlign);
             if (_blockSize <= 0)
-                throw new InvalidOperationException("blockSize");
+                throw new InvalidOperationException("c");
 
             _step = (targetVolume - Volume) / (WaveFormat.SampleRate * WaveFormat.Channels * duration) * _blockSize;
         }

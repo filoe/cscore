@@ -7,7 +7,7 @@ namespace CSCore.Codecs.MP3
 {
     public class MP3Stream : IWaveSource, IDisposable
     {
-        private Mp3Frame _frame = null;
+        private MP3Frame _frame = null;
         private FrameInfoCollection _frameInfoCollection;
         private AcmConverter _converter;
         private Stream _stream;
@@ -21,9 +21,10 @@ namespace CSCore.Codecs.MP3
         private long _dataLength = 0;
         private double _bitRate = 0.0;
 
+        private long _position;
+
         //int _bytesPerSample = 0; //BitsPerSample / 8 * Channel
         private byte[] _pcmDstBuffer;
-
         private byte[] _frameBuffer;
 
         private const short SamplesPerFrame = 1152;
@@ -44,14 +45,14 @@ namespace CSCore.Codecs.MP3
             _dataStartIndex = stream.Position;
             do
             {
-                _frame = Mp3Frame.FromStream(stream);
+                _frame = MP3Frame.FromStream(stream);
                 if (_frame == null && stream.IsEndOfStream())
                     throw new FormatException("Stream is no MP3-stream. No MP3-Frame was found.");
             } while (_frame == null && !stream.IsEndOfStream());
 
             frameLength = _frame.FrameLength;
             _sampleRate = _frame.SampleRate;
-            XingHeader = XingHeader.FromFrame(_frame); //Im ersten Frame kann XingHeader enthalten sein
+            XingHeader = XingHeader.FromFrame(_frame); //The first frame can contain a Xingheader
             if (XingHeader != null)
             {
                 //Todo: dataInitPosition = stream.Position
@@ -89,7 +90,7 @@ namespace CSCore.Codecs.MP3
             WaveFormat = _converter.DestinationFormat;
 
             //_bytesPerSample = (WaveFormat.BitsPerSample / 8 * WaveFormat.Channels);
-            _pcmDstBuffer = new byte[SamplesPerFrame * WaveFormat.BytesPerSample * 2];
+            _pcmDstBuffer = new byte[SamplesPerFrame * WaveFormat.BytesPerBlock * 2];
 
             stream.Position = _dataStartIndex;
             _stream = stream;
@@ -97,7 +98,8 @@ namespace CSCore.Codecs.MP3
 
         public int Read(byte[] buffer, int offset, int count)
         {
-            if (IsEOF) return 0;
+            if (IsEOF) 
+                return 0;
 
             try
             {
@@ -113,13 +115,18 @@ namespace CSCore.Codecs.MP3
                         try
                         {
                             _frame = ReadNextMP3Frame();
-                            if (_frame == null) { IsEOF = true; break; }
+                            if (_frame == null) 
+                            { 
+                                IsEOF = true; 
+                                break; 
+                            }
 
                             int converted = _converter.Convert(_frameBuffer, _frame.FrameLength, _pcmDstBuffer, 0);
                             int BTCC = Math.Min(count - read, converted);
 
                             Array.Copy(_pcmDstBuffer, 0, buffer, offset, BTCC);
-                            offset += BTCC; read += BTCC;
+                            offset += BTCC; 
+                            read += BTCC;
 
                             /*
                              * If there are any overflows -> store them in a
@@ -130,9 +137,12 @@ namespace CSCore.Codecs.MP3
                         }
                         catch (Exception ex)
                         {
+                            Debugger.Break();
                             Debug.WriteLine("Mp3Stream::Read: " + ex.ToString());
                         }
                     }
+
+                    _position += read;
 
                     return read;
                 }
@@ -164,9 +174,9 @@ namespace CSCore.Codecs.MP3
             }
         }
 
-        private Mp3Frame ReadNextMP3Frame()
+        private MP3Frame ReadNextMP3Frame()
         {
-            Mp3Frame frame = Mp3Frame.FromStream(_stream, ref _frameBuffer);
+            MP3Frame frame = MP3Frame.FromStream(_stream, ref _frameBuffer);
             if (frame != null && _frameInfoCollection != null)
                 _frameInfoCollection.PlaybackIndex++;
 
@@ -177,31 +187,47 @@ namespace CSCore.Codecs.MP3
         {
             get
             {
-                if (CanSeek)
+                /*if (CanSeek)
                 {
                     if (_frameInfoCollection.PlaybackIndex < _frameInfoCollection.Count)
-                        return (_frameInfoCollection[_frameInfoCollection.PlaybackIndex].SampleIndex * WaveFormat.BytesPerSample);
+                    {
+                        int frameIndex = _frameInfoCollection.PlaybackIndex;
+                        int result = ((_frameInfoCollection[frameIndex].SampleIndex) * WaveFormat.BytesPerBlock) + _bufferoffset;
+                        return result;
+                    }
                     else
+                    {
                         return Length;
+                    }
                 }
-                return -1;
+                
+                return -1;*/
+                lock (_lockObject)
+                {
+                    return _position;
+                }
             }
             set
             {
                 if (!CanSeek)
-                    return;//throw new InvalidOperationException("This Mp3Stream does not support seeking. You have to use Pre_Scan strategy to use this feature");
+                    return;
 
                 lock (_lockObject)
                 {
                     value = Math.Min(value, Length);
                     value = (value > 0) ? value : 0;
 
+                    long n = value / WaveFormat.BytesPerBlock;
+
                     for (int i = 0; i < _frameInfoCollection.Count; i++)
                     {
-                        if ((value / WaveFormat.BytesPerSample) <= _frameInfoCollection[i].SampleIndex)
+                        if ((value / WaveFormat.BytesPerBlock) <= _frameInfoCollection[i].SampleIndex)
                         {
                             _stream.Position = _frameInfoCollection[i].StreamPosition;
                             _frameInfoCollection.PlaybackIndex = i;
+
+                            _position = _frameInfoCollection[i].SampleIndex * WaveFormat.BlockAlign;
+
                             if (_stream.Position < _stream.Length)
                                 IsEOF = false;
 
@@ -209,7 +235,8 @@ namespace CSCore.Codecs.MP3
                         }
                     }
 
-                    _bufferoffset = 0; _overflows = 0;
+                    _bufferoffset = 0; 
+                    _overflows = 0;
                 }
             }
         }
@@ -233,7 +260,7 @@ namespace CSCore.Codecs.MP3
         {
             get
             {
-                return CanSeek ? (_frameInfoCollection.TotalSamples * WaveFormat.BytesPerSample) : -1;
+                return CanSeek ? (_frameInfoCollection.TotalSamples * WaveFormat.BytesPerBlock) : -1;
             }
         }
 

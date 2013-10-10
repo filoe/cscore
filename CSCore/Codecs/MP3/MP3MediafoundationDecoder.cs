@@ -17,7 +17,7 @@ namespace CSCore.Codecs.MP3
                 if (_issupported == null)
                 {
                     _issupported = MediaFoundationCore.IsTransformAvailable(MediaFoundationCore.EnumerateTransforms(MFTCategories.AudioDecoder, MFTEnumFlags.All),
-                        CommonAudioDecoder.MP3Decoder);
+                        CommonAudioDecoderGuids.MP3Decoder);
                 }
                 return _issupported.Value;
             }

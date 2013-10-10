@@ -38,11 +38,28 @@ namespace CSCore.Streams
         /// </summary>
         public Dictionary<int, EqFilter> Filters { get; set; }
 
-        public void SetGain(float gain)
+        public double CenterFrequency
+        {
+            get { return (Filters != null && Filters.Count > 0) ? Filters.First().Value.Frequency : 0; }
+        }
+
+        public float GetAvgGainDB()
+        {
+            float t = 0f;
+
+            foreach (var eqFilter in Filters)
+            {
+                t += eqFilter.Value.GainDB;
+            }
+
+            return t / Filters.Count;
+        }
+
+        public void SetGain(float gainDB)
         {
             foreach (var c in Filters)
             {
-                c.Value.Gain = gain;
+                c.Value.GainDB = gainDB;
             }
         }
 

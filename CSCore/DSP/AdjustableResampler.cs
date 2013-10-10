@@ -6,6 +6,7 @@ namespace CSCore.DSP
     public class AdjustableResampler : DmoResampler
     {
         private int _sampleRate;
+        private readonly int _startSampleRate;
 
         public AdjustableResampler(IWaveSource source)
             : this(source, source.WaveFormat.SampleRate)
@@ -16,6 +17,7 @@ namespace CSCore.DSP
             : base(source, sampleRate)
         {
             _sampleRate = sampleRate;
+            _startSampleRate = sampleRate;
         }
 
         public int SampleRate
@@ -24,10 +26,16 @@ namespace CSCore.DSP
             set { SetSampleRate(value); }
         }
 
+        public void Reset()
+        {
+
+            SampleRate = _startSampleRate;
+        }
+
         private void SetSampleRate(int sampleRate)
         {
             if (sampleRate <= 0)
-                throw new ArgumentOutOfRangeException("sampleRate");
+                throw new ArgumentOutOfRangeException("_sampleRate");
 
             if (sampleRate == _sampleRate)
                 return;
@@ -36,7 +44,7 @@ namespace CSCore.DSP
             lock (_lockObj)
             {
                 var format = new WaveFormat(_outputformat, sampleRate);
-                nativeObject.SetOutputType(0, format);
+                _nativeObject.SetOutputType(0, format);
                 _ratio = (double)BaseStream.WaveFormat.BytesPerSecond / (double)format.BytesPerSecond;
             }
         }

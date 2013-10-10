@@ -55,6 +55,11 @@ namespace CSCore
             get { return BitsPerSample / 8; }
         }
 
+        public int BytesPerBlock
+        {
+            get { return BytesPerSample * Channels; }
+        }
+
         public AudioEncoding WaveFormatTag { get { return _encoding; } }
 
         /// <summary>
@@ -83,7 +88,7 @@ namespace CSCore
         public WaveFormat(int sampleRate, int bits, int channels, AudioEncoding encoding, int extraSize)
         {
             if (sampleRate < 1)
-                throw new ArgumentOutOfRangeException("sampleRate");
+                throw new ArgumentOutOfRangeException("_sampleRate");
             if (bits < 0)
                 throw new ArgumentOutOfRangeException("bits");
             if (channels < 1)

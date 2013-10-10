@@ -198,7 +198,7 @@ namespace CSCore.Codecs.FLAC
 #if !DIAGNOSTICS
                     if (_frameIndex == _scan.Frames.Count)
                         return Length;
-                    return _scan.Frames[_frameIndex].SampleOffset * WaveFormat.BlockAlign;
+                    return _scan.Frames[_frameIndex].SampleOffset * WaveFormat.BlockAlign + _overflowOffset;
 #else
                     return _position;
 #endif
@@ -220,7 +220,7 @@ namespace CSCore.Codecs.FLAC
                             _stream.Position = _scan.Frames[i].StreamOffset;
                             _frameIndex = i;
                             if (_stream.Position >= _stream.Length)
-                                throw new EndOfStreamException("Stream got EOF");
+                                throw new EndOfStreamException("Stream got EOF.");
 
 #if DIAGNOSTICS
                             _position = _scan.Frames[i].SampleOffset * WaveFormat.BlockAlign;

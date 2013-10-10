@@ -6,14 +6,15 @@ using System.Text;
 
 namespace CSCore.Streams
 {
-    //todo: add channel support
     public class Equalizer : SampleSourceBase
     {
-        public static Equalizer Create11BandEqualizer(IWaveStream source)
+        public static Equalizer Create10BandEqualizer(IWaveStream source)
         {
-            int sampleRate = source.WaveFormat.SampleRate;
-            float bandWidth = 18;
-            float defaultGain = 0;
+            return new Equalizer(source) { SampleFilters = Create10BandEqFilter(source.WaveFormat.SampleRate, source.WaveFormat.Channels) };
+        }
+
+        public static EqFilterCollection Create10BandEqFilter(int sampleRate, int channelCount, float bandWidth = 18, float defaultGain = 0)
+        {
             var sampleFilters = new EqFilter[] 
             {
                 new EqFilter(sampleRate, 31, bandWidth, defaultGain),
@@ -28,16 +29,17 @@ namespace CSCore.Streams
                 new EqFilter(sampleRate, 16000, bandWidth, defaultGain)
             };
 
-            var e = new Equalizer(source);
-            foreach (var c in sampleFilters)
+            EqFilterCollection filterCollection = new EqFilterCollection(channelCount);
+            foreach (var filter in sampleFilters)
             {
-                e.SampleFilters.Add(c);
+                filterCollection.Add(filter);
             }
-            return e;
+
+            return filterCollection;
         }
 
-        private EqFilterCollection _sampleFilters;
-        public EqFilterCollection SampleFilters
+        private IList<EqFilterEntry> _sampleFilters;
+        public IList<EqFilterEntry> SampleFilters
         {
             get { return _sampleFilters; }
             set { _sampleFilters = value; }

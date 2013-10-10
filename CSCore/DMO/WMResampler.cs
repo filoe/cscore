@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 
 namespace CSCore.DMO
 {
-    public class WMResampler : IDisposable
+    public sealed class WMResampler : IDisposable
     {
         private WMResamplerProps _resamplerprops;
         private IWMResamplerProps _nativeResamplerProps;
@@ -61,7 +61,7 @@ namespace CSCore.DMO
             }
         }
 
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (_resamplerprops != null)
             {

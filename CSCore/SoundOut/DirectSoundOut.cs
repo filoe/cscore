@@ -69,6 +69,7 @@ namespace CSCore.SoundOut
 
         public void Play()
         {
+            CheckForInitialize();
             if (_playbackState == SoundOut.PlaybackState.Stopped)
             {
                 //lock (_lockObj)
@@ -86,6 +87,7 @@ namespace CSCore.SoundOut
 
         public void Pause()
         {
+            CheckForInitialize();
             PlaybackState = SoundOut.PlaybackState.Paused;
         }
 
@@ -96,6 +98,8 @@ namespace CSCore.SoundOut
 
         public void Stop()
         {
+            CheckForInitialize();
+
             if (Monitor.TryEnter(_lockObj, 50))
             {
                 PlaybackState = SoundOut.PlaybackState.Stopped;
@@ -108,7 +112,7 @@ namespace CSCore.SoundOut
                 /*
                  * Will call stop event which will call StopInternal
                  */
-                if (_notifyManager.Stop(Int32.MaxValue) == false)
+                if (_notifyManager.Stop() == false) //if (_notifyManager.Stop(Int32.MaxValue) == false)
                 {
                     _notifyManager.Abort();
                     StopInternal(); //abort manually 
@@ -125,7 +129,8 @@ namespace CSCore.SoundOut
         {
             lock (_lockObj)
             {
-                if (source == null) throw new ArgumentNullException("source");
+                if (source == null) 
+                    throw new ArgumentNullException("source");
                 StopInternal();
 
                 IntPtr handle = DSUtils.GetDesktopWindow();
@@ -158,7 +163,7 @@ namespace CSCore.SoundOut
                 _primaryBuffer = new DirectSoundPrimaryBuffer(_directSound);
                 _secondaryBuffer = new DirectSoundSecondaryBuffer(_directSound, waveFormat, bufferSize, false); //remove true
 
-                _primaryBuffer.Play(DSBPlayFlags.DSBPLAY_LOOPING);
+                _primaryBuffer.Play(DSBPlayFlags.None);
 
                 DSBufferCaps bufferCaps;
                 DirectSoundException.Try(_secondaryBuffer.GetCaps(out bufferCaps), "IDirectSoundBuffer", "GetCaps");
@@ -175,7 +180,7 @@ namespace CSCore.SoundOut
                     };
 
                 _isinitialized = true;
-                Interlocked.Exchange(ref _disposeCount, 0);
+                //Interlocked.Exchange(ref _disposeCount, 0);
 
                 //Debug.WriteLine("DirectSoundOut initialized");
             }
@@ -316,8 +321,6 @@ namespace CSCore.SoundOut
                 throw new InvalidOperationException("DirectSound is not initialized");
         }
 
-        private int _disposeCount = 0;
-
         private volatile bool _disposed;
         public void Dispose()
         {
@@ -327,11 +330,12 @@ namespace CSCore.SoundOut
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!_disposed)
+            if (!_disposed && _isinitialized)
             {
                 Stop();
             }
             _disposed = true;
+            _isinitialized = false;
         }
 
         ~DirectSoundOut()

@@ -18,7 +18,7 @@ namespace CSCore.Codecs.AAC
                 if (_issupported == null)
                 {
                     _issupported = MediaFoundationCore.IsTransformAvailable(MediaFoundationCore.EnumerateTransforms(MFTCategories.AudioDecoder, MFTEnumFlags.All),
-                        CommonAudioDecoder.AACDecoder);
+                        CommonAudioDecoderGuids.AACDecoder);
                 }
                 return _issupported.Value;
             }

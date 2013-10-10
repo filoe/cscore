@@ -109,9 +109,10 @@ namespace CSCore.Codecs.MP3
 
         private void BufferProc(object o)
         {
-            if (_stream == null || _stream.CanRead == false) throw new Exception("Mp3WebStream not initialized");
+            if (_stream == null || _stream.CanRead == false) 
+                throw new Exception("Mp3WebStream not initialized");
 
-            Mp3Frame frame = GetNextFrame(_stream);
+            MP3Frame frame = GetNextFrame(_stream);
 
             int channels = frame.ChannelMode == MP3ChannelMode.Stereo ? 2 : 1;
             AcmConverter converter = new AcmConverter(new MP3Format(frame.SampleRate, frame.ChannelCount, frame.FrameLength, frame.BitRate));
@@ -164,12 +165,12 @@ namespace CSCore.Codecs.MP3
                 converter.Dispose();
         }
 
-        private Mp3Frame GetNextFrame(Stream stream)
+        private MP3Frame GetNextFrame(Stream stream)
         {
-            Mp3Frame frame;
+            MP3Frame frame;
             do
             {
-                frame = Mp3Frame.FromStream(stream, ref _frameBuffer);
+                frame = MP3Frame.FromStream(stream, ref _frameBuffer);
             } while (frame == null);
 
             return frame;
@@ -185,7 +186,7 @@ namespace CSCore.Codecs.MP3
         public int Read(byte[] buffer, int offset, int count)
         {
             int read = 0;
-            Array.Clear(buffer, offset, count);
+            Array.Clear(buffer, offset, count - offset);
 
             if (_buffer.Buffered < _buffer.Length / 2)
                 return count;

@@ -22,22 +22,22 @@ namespace CSCore.DSP
         public FFTAggregator(IWaveSource baseSource, int bands)
             : base(baseSource)
         {
-            Bands = bands;
+            BandCount = bands;
         }
 
-        private int _bands = 1024;
+        private int _bandCount = 1024;
 
-        public int Bands
+        public int BandCount
         {
             get
             {
-                return _bands;
+                return _bandCount;
             }
             set
             {
-                if (CSMath.GetExponent(value, 2) % 1 != 0)
-                    throw new ArgumentException("Bands has to be a value of bands(x) = 2^x");
-                _bands = value;
+                if (CSMath.GetExponent(value, 2) % 1 != 0.0)
+                    throw new ArgumentException("BandCount has to be a value of bands(x) = 2^x");
+                _bandCount = value;
             }
         }
 
@@ -45,7 +45,7 @@ namespace CSCore.DSP
 
         protected Complex[] Complex
         {
-            get { return _complex ?? (_complex = new Complex[_bands]); }
+            get { return _complex ?? (_complex = new Complex[_bandCount]); }
             set { _complex = value; }
         }
 
@@ -61,8 +61,8 @@ namespace CSCore.DSP
                     ppbuffer = pbuffer + (i + 1) * WaveFormat.BytesPerSample;
                     float sample = Utils.Utils.ConvertToSample(ppbuffer, WaveFormat.BitsPerSample, false, true);
 
-                    Complex[_iteratorOffset++].Real = sample * FastFourierTransformation.HammingWindow(_iteratorOffset - 1, _bands);
-                    if (_iteratorOffset >= Bands)
+                    Complex[_iteratorOffset++].Real = (float)(sample * FastFourierTransformation.HammingWindow(_iteratorOffset - 1, _bandCount));
+                    if (_iteratorOffset >= BandCount)
                     {
                         RaiseFFTCalculated(Complex);
                         Reset();
@@ -74,7 +74,7 @@ namespace CSCore.DSP
 
         protected virtual void RaiseFFTCalculated(Complex[] complex)
         {
-            FastFourierTransformation.DoFFT(complex, _bands, true);
+            FastFourierTransformation.FFT1(complex, (int)Math.Log(_bandCount, 2.0), FFTMode.Forward);
             if (FFTCalculated != null)
                 FFTCalculated(this, new FFTCalculatedEventArgs(complex));
         }

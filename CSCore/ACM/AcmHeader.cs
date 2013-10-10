@@ -44,9 +44,9 @@ namespace CSCore.ACM
 
         public void Convert(byte[] sourceBuffer, int count)
         {
-            if (count % _sourceFormat.BlockAlign != 0)
+            if (count % _sourceFormat.BlockAlign != 0 || count == 0)
             {
-                Debug.WriteLine(String.Format("No valid number of bytes to convert. Parameter: count"));
+                Debug.WriteLine("No valid number of bytes to convert. Parameter: count");
                 count -= (count % _sourceFormat.BlockAlign);
             }
 

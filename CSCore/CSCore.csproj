@@ -225,11 +225,12 @@
     <Compile Include="Codecs\MP3\FrameInfoCollection.cs" />
     <Compile Include="Codecs\MP3\MP3FileReader.cs" />
     <Compile Include="Codecs\MP3\MP3Format.cs" />
-    <Compile Include="Codecs\MP3\Mp3Frame.cs" />
+    <Compile Include="Codecs\MP3\MP3Frame.cs" />
     <Compile Include="Codecs\MP3\MP3FrameInfo.cs" />
     <Compile Include="Codecs\MP3\MP3MediafoundationDecoder.cs" />
     <Compile Include="Codecs\MP3\MP3WebStream.cs" />
     <Compile Include="Codecs\MP3\XingHeader.cs" />
+    <Compile Include="Codecs\MP3\XingHeaderFlags.cs" />
     <Compile Include="Codecs\WMA\WMADecoder.cs" />
     <Compile Include="CoreAudioAPI\AudioCaptureClient.cs" />
     <Compile Include="CoreAudioAPI\AudioMeterInformation.cs" />
@@ -238,9 +239,10 @@
     <Compile Include="CoreAudioAPI\DevicePropertyChangedEventArgs.cs" />
     <Compile Include="CoreAudioAPI\DeviceStateEventArgs.cs" />
     <Compile Include="CoreAudioAPI\IMMNotificationClient.cs" />
+    <Compile Include="DMO\MP3DecMediaObject.cs" />
     <Compile Include="DSP\BiQuad.cs" />
     <Compile Include="DSP\ChannelMatrixElement.cs" />
-    <Compile Include="MediaFoundation\CommonAudioDecoder.cs" />
+    <Compile Include="MediaFoundation\CommonAudioDecoderGuids.cs" />
     <Compile Include="MediaFoundation\MediaFoundationAttributes.cs" />
     <Compile Include="MediaFoundation\MediaFoundationCore.cs" />
     <Compile Include="MediaFoundation\MediaFoundationDecoder.cs" />
@@ -259,10 +261,14 @@
     <Compile Include="SoundOut\DirectSound\DSUtils.cs" />
     <Compile Include="SoundOut\MMInterop\WaveCapsFormats.cs" />
     <Compile Include="SoundOut\MMInterop\WaveCapsSupported.cs" />
+    <Compile Include="Streams\WriteableBufferingSource.cs" />
+    <Compile Include="Streams\BufferSource.cs" />
     <Compile Include="Streams\EqFilter.cs" />
     <Compile Include="Streams\EqFilterCollection.cs" />
     <Compile Include="Streams\EqFilterEntry.cs" />
     <Compile Include="Streams\Equalizer.cs" />
+    <Compile Include="Streams\SingleBlockNotificationStream.cs" />
+    <Compile Include="Streams\SingleBlockReadEventArgs.cs" />
     <Compile Include="Win32\ComStream.cs" />
     <Compile Include="Win32\IStream.cs" />
     <Compile Include="Win32\Win32ComException.cs" />
@@ -315,7 +321,6 @@
     <Compile Include="SoundOut\WasapiOut.cs" />
     <Compile Include="Streams\AutoGain.cs" />
     <Compile Include="Streams\BlockReadEventArgs.cs" />
-    <Compile Include="Streams\BufferingSource.cs" />
     <Compile Include="Streams\Effects\Echo.cs" />
     <Compile Include="Streams\FadeInOut.cs" />
     <Compile Include="Streams\GainSource.cs" />
@@ -327,7 +332,7 @@
     <Compile Include="Streams\SampleConverter\SampleToPcm8.cs" />
     <Compile Include="Streams\SimpleNotificationSource.cs" />
     <Compile Include="Streams\VolumeSource.cs" />
-    <Compile Include="Streams\WaveInSource.cs" />
+    <Compile Include="Streams\SoundInSource.cs" />
     <Compile Include="Tags\ID3\Frames\BinaryFrame.cs" />
     <Compile Include="Tags\ID3\Frames\CommentAndLyricsFrame.cs" />
     <Compile Include="Tags\ID3\Frames\CommercialFrame.cs" />

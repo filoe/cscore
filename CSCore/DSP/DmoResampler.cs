@@ -14,7 +14,7 @@ namespace CSCore.DSP
         protected WMResampler _resampler;
         protected MediaBuffer _inputBuffer;
         protected DmoOutputDataBuffer _outputBuffer;
-        protected MediaObject nativeObject;
+        protected MediaObject _nativeObject;
 
         protected double _ratio;
         private int _quality = 30;
@@ -57,19 +57,19 @@ namespace CSCore.DSP
             {
                 var source = BaseStream;
                 _resampler = new WMResampler();
-                nativeObject = new MediaObject(Marshal.GetComInterfaceForObject(_resampler.MediaObject.NativeObject, typeof(IMediaObject)));
+                _nativeObject = new MediaObject(Marshal.GetComInterfaceForObject(_resampler.MediaObject.NativeObject, typeof(IMediaObject)));
 
-                if (!nativeObject.SupportsInputFormat(0, inputformat))
+                if (!_nativeObject.SupportsInputFormat(0, inputformat))
                 {
                     throw new ArgumentException("Not supported source-format");
                 }
-                nativeObject.SetInputType(0, inputformat);
+                _nativeObject.SetInputType(0, inputformat);
 
-                if (!nativeObject.SupportsOutputFormat(0, outputformat))
+                if (!_nativeObject.SupportsOutputFormat(0, outputformat))
                 {
                     throw new ArgumentOutOfRangeException("destSampleRate");
                 }
-                nativeObject.SetOutputType(0, outputformat);
+                _nativeObject.SetOutputType(0, outputformat);
 
                 _inputBuffer = new MediaBuffer(inputformat.BytesPerSecond / 2);
                 _outputBuffer = new DmoOutputDataBuffer(outputformat.BytesPerSecond / 2);
@@ -87,7 +87,7 @@ namespace CSCore.DSP
                 int read = 0;
                 while (read < count)
                 {
-                    if (nativeObject.IsReadyForInput(0))
+                    if (_nativeObject.IsReadyForInput(0))
                     {
                         int bytesToRead = (int)OutputToInput(count - read);
                         byte[] inputData = new byte[bytesToRead];
@@ -102,7 +102,7 @@ namespace CSCore.DSP
                         }
                         _inputBuffer.Write(inputData, 0, bytesRead);
 
-                        nativeObject.ProcessInput(0, _inputBuffer);
+                        _nativeObject.ProcessInput(0, _inputBuffer);
 
                         _outputBuffer.Reset();
                         do
@@ -115,7 +115,7 @@ namespace CSCore.DSP
                             }
                             _outputBuffer.Buffer.SetLength(0);
 
-                            nativeObject.ProcessOutput(ProcessOutputFlags.None, new DmoOutputDataBuffer[] { _outputBuffer }, 1);
+                            _nativeObject.ProcessOutput(ProcessOutputFlags.None, new DmoOutputDataBuffer[] { _outputBuffer }, 1);
 
                             if (_outputBuffer.Length <= 0)
                             {
@@ -209,7 +209,7 @@ namespace CSCore.DSP
             _resampler.Dispose();
             _outputBuffer.Dispose();
             _inputBuffer.Dispose();
-            nativeObject.Dispose();
+            _nativeObject.Dispose();
         }
     }
 }

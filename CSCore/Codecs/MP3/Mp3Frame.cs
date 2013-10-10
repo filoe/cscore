@@ -4,7 +4,7 @@ using System.IO;
 
 namespace CSCore.Codecs.MP3
 {
-    public class Mp3Frame
+    public class MP3Frame
     {
         public const int MaxFrameLength = 0x4000;
 
@@ -25,7 +25,7 @@ namespace CSCore.Codecs.MP3
             }
         };
 
-        private static readonly int[,] _samplesPerFrame = new int[,]
+        private static readonly int[,] SamplesPerFrame = new int[,]
         {
             //Version 1
             {
@@ -41,7 +41,7 @@ namespace CSCore.Codecs.MP3
             }
         };
 
-        private static readonly int[,] _sampleRates = new int[,]
+        private static readonly int[,] SampleRates = new int[,]
         {
             //Version 1
             {
@@ -67,15 +67,15 @@ namespace CSCore.Codecs.MP3
         private long _streamPosition, _dataPosition;
         private byte[] _headerBuffer;
 
-        public static Mp3Frame FromStream(Stream stream)
+        public static MP3Frame FromStream(Stream stream)
         {
-            Mp3Frame frame = new Mp3Frame(stream);
+            MP3Frame frame = new MP3Frame(stream);
             return frame.FindFrame(stream, true) ? frame : null;
         }
 
-        public static Mp3Frame FromStream(Stream stream, ref byte[] data)
+        public static MP3Frame FromStream(Stream stream, ref byte[] data)
         {
-            Mp3Frame frame = new Mp3Frame(stream);
+            MP3Frame frame = new MP3Frame(stream);
             if (frame.FindFrame(stream, false))
             {
                 data = CSCore.Utils.Buffer.BufferUtils.CheckBuffer(data, frame.FrameLength);
@@ -90,7 +90,7 @@ namespace CSCore.Codecs.MP3
             return null;
         }
 
-        private Mp3Frame(Stream stream)
+        private MP3Frame(Stream stream)
         {
             _stream = stream;
         }
@@ -166,14 +166,14 @@ namespace CSCore.Codecs.MP3
         /// </summary>
         private bool ParseFrame(byte[] buffer)
         {
-            if (buffer == null) throw new ArgumentNullException("buffer");
-            if (buffer.Length < 4) throw new ArgumentException("buffer has to bigger than 3");
+            if (buffer == null)
+                throw new ArgumentNullException("buffer");
+            if (buffer.Length < 4) 
+                throw new ArgumentException("buffer has to bigger than 3");
 
             //11111111                    //111
             if ((buffer[0] == 0xFF) && (buffer[1] & 0xE0) == 0xE0 /*11100...*/)
             {
-                //Wenn ersten 11 Bits auf 1 sind
-
                 /*
                  * 2. Byte:
                  * 1111 1111 (1. Byte --> frame sync)
@@ -242,13 +242,13 @@ namespace CSCore.Codecs.MP3
                     return false; //reserved
 
                 if (MPEGVersion == MpegVersion.Version25)
-                    SampleRate = _sampleRates[2, samplingIndex];
+                    SampleRate = SampleRates[2, samplingIndex];
                 else if (MPEGVersion == MpegVersion.Version2)
-                    SampleRate = _sampleRates[1, samplingIndex];
+                    SampleRate = SampleRates[1, samplingIndex];
                 else //version 1
-                    SampleRate = _sampleRates[0, samplingIndex];
+                    SampleRate = SampleRates[0, samplingIndex];
 
-                SampleCount = _samplesPerFrame[MPEGVersion == MpegVersion.Version1 ? 0 : 1, mpegLayerIndex];
+                SampleCount = SamplesPerFrame[MPEGVersion == MpegVersion.Version1 ? 0 : 1, mpegLayerIndex];
 
                 Padding = ((buffer[2] & 0x02) == 0x02);
                 bool privateBit = ((buffer[2] & 0x01) == 0x01);
@@ -264,14 +264,14 @@ namespace CSCore.Codecs.MP3
                  *
                  */
                 ChannelMode = (MP3ChannelMode)((buffer[3] & 0xC0) >> 6);
-                ChannelExtension = ((buffer[3] & 0x30) >> 4); //Leistung sparen
-                CopyRight = (buffer[3] & 0x08) == 0x08; //Leistung sparen
+                ChannelExtension = ((buffer[3] & 0x30) >> 4); 
+                CopyRight = (buffer[3] & 0x08) == 0x08;
                 Original = (buffer[3] & 0x04) == 0x04;
                 Emphasis = (buffer[3] & 0x03);
 
-                int koeffizient = SampleCount / 8; //Coefficient
+                int coef = SampleCount / 8; //Coefficient
                 int tmp = 0;
-                tmp = (koeffizient * BitRate / SampleRate + (Padding ? 1 : 0));
+                tmp = (coef * BitRate / SampleRate + (Padding ? 1 : 0));
                 tmp *= (MPEGLayer == MpegLayer.Layer1) ? 4 : 1;
                 FrameLength = tmp;
 

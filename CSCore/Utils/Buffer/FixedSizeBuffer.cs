@@ -2,6 +2,7 @@
 
 //#define static_buffer_queue
 using System;
+using System.Threading;
 
 namespace CSCore.Utils.Buffer
 {
@@ -41,6 +42,8 @@ namespace CSCore.Utils.Buffer
         public int Buffered { get { return _queue.Count; } }
         public int Length { get { return _bufferSize; } }
 
+
+#error implement clear
         public void Dispose()
         {
             _queue = null;

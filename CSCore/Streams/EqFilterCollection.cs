@@ -5,10 +5,10 @@ using System.Text;
 
 namespace CSCore.Streams
 {
-    public class EqFilterCollection : ICollection<EqFilterEntry>
+    public class EqFilterCollection : IList<EqFilterEntry>
     {
-        private List<EqFilterEntry> _filters = new List<EqFilterEntry>();
-        private int _channelCount;
+        private readonly List<EqFilterEntry> _filters = new List<EqFilterEntry>();
+        private readonly int _channelCount;
 
         public EqFilterCollection(int channelCount)
         {
@@ -21,6 +21,7 @@ namespace CSCore.Streams
         public EqFilterEntry this[int index]
         {
             get { return _filters[index]; }
+            set { _filters[index] = value; }
         }
 
         public void Add(EqFilterEntry item)
@@ -75,6 +76,21 @@ namespace CSCore.Streams
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        public int IndexOf(EqFilterEntry item)
+        {
+            return _filters.IndexOf(item);
+        }
+
+        public void Insert(int index, EqFilterEntry item)
+        {
+            _filters.Insert(index, item);
+        }
+
+        public void RemoveAt(int index)
+        {
+            _filters.RemoveAt(index);
         }
     }
 }

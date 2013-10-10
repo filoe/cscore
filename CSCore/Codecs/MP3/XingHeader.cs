@@ -24,11 +24,12 @@ namespace CSCore.Codecs.MP3
             private set;
         }
 
-        public static XingHeader FromFrame(Mp3Frame frame)
+        public static XingHeader FromFrame(MP3Frame frame)
         {
             XingHeader header = new XingHeader(frame);
             int offset = CalcOffset(frame);
-            if (offset == -1) return null;
+            if (offset == -1) 
+                return null;
 
             if (CheckForValidXingHeader(frame, offset))
             {
@@ -67,7 +68,7 @@ namespace CSCore.Codecs.MP3
             return header;
         }
 
-        private static int CalcOffset(Mp3Frame frame)
+        private static int CalcOffset(MP3Frame frame)
         {
             int offset = 0;
             if (frame.MPEGVersion == MpegVersion.Version1)
@@ -92,7 +93,7 @@ namespace CSCore.Codecs.MP3
             return offset;
         }
 
-        private static bool CheckForValidXingHeader(Mp3Frame frame, int offset)
+        private static bool CheckForValidXingHeader(MP3Frame frame, int offset)
         {
             byte[] data = null;
             if (frame.ReadData(ref data, 0) < 4)
@@ -105,7 +106,7 @@ namespace CSCore.Codecs.MP3
                 return false;
         }
 
-        private static int ReadHeaderFlags(Mp3Frame frame, int offset)
+        private static int ReadHeaderFlags(MP3Frame frame, int offset)
         {
             byte[] data = null;
             if (frame.ReadData(ref data, 0) < 4)
@@ -122,17 +123,8 @@ namespace CSCore.Codecs.MP3
             return i;
         }
 
-        private XingHeader(Mp3Frame frame)
+        private XingHeader(MP3Frame frame)
         {
         }
-    }
-
-    [Flags]
-    public enum XingHeaderFlags
-    {
-        Frames = 1,
-        Bytes = 2,
-        Toc = 4,
-        VbrScale = 8
     }
 }

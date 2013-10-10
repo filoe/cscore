@@ -18,7 +18,7 @@ namespace CSCore.Codecs.DDP
                 if (_issupported == null)
                 {
                     _issupported = MediaFoundationCore.IsTransformAvailable(MediaFoundationCore.EnumerateTransforms(MFTCategories.AudioDecoder, MFTEnumFlags.All),
-                        CommonAudioDecoder.DolbyDigitalPlusDecoder);
+                        CommonAudioDecoderGuids.DolbyDigitalPlusDecoder);
                 }
                 return _issupported.Value;
             }

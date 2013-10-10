@@ -14,8 +14,8 @@ namespace CSCore.Visualization
 
         public int Bands
         {
-            get { return _fftaggregator.Bands; }
-            set { _fftaggregator.Bands = value; }
+            get { return _fftaggregator.BandCount; }
+            set { _fftaggregator.BandCount = value; }
         }
 
         public FFTDataProvider(IWaveSource source)

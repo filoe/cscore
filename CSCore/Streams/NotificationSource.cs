@@ -60,7 +60,7 @@ namespace CSCore.Streams
             int read = base.Read(buffer, offset, count);
             int channels = WaveFormat.Channels;
 
-            for (int i = 0; i < read; )
+            for (int i = offset; i < offset + read; )
             {
                 for (int n = 0; n < channels; n++)
                 {

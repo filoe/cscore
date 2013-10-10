@@ -66,7 +66,7 @@ namespace Recorder
                 _waveIn.Initialize();
                 _waveIn.Start();
 
-                var waveInToSource = new WaveInSource(_waveIn);
+                var waveInToSource = new SoundInSource(_waveIn);
                 var peak = new PeakMeter(waveInToSource);
                 peak.PeakCalculated += OnPeakCalculated;
 
@@ -147,7 +147,7 @@ namespace Recorder
                     {
                         _soundOut = new WaveOutWindow();
                     }
-                    IWaveSource source = new CSCore.Streams.WaveInSource(_waveIn);
+                    IWaveSource source = new CSCore.Streams.SoundInSource(_waveIn);
                     _soundOut.Initialize(source);
                     _soundOut.Play();
                 }

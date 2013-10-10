@@ -18,7 +18,7 @@ namespace CSCore.Codecs.MP2
                 if (_issupported == null)
                 {
                     _issupported = MediaFoundationCore.IsTransformAvailable(MediaFoundationCore.EnumerateTransforms(MFTCategories.AudioDecoder, MFTEnumFlags.All),
-                        CommonAudioDecoder.MPEGAudioDecoder);
+                        CommonAudioDecoderGuids.MPEGAudioDecoder);
                 }
                 return _issupported.Value;
             }

@@ -19,7 +19,7 @@ namespace CSCore.Streams
             set { _enalbeLoop = value; }
         }
 
-        private bool raised = false;
+        private bool _raised = false;
 
         public override int Read(byte[] buffer, int offset, int count)
         {
@@ -29,16 +29,16 @@ namespace CSCore.Streams
                 int r = base.Read(buffer, offset + read, count - read);
                 if (r == 0)
                 {
-                    if (StreamFinished != null && !raised)
+                    if (StreamFinished != null && !_raised)
                     {
                         StreamFinished(this, new EventArgs());
-                        raised = true;
+                        _raised = true;
                     }
                     if (_enalbeLoop)
                         _baseStream.Position = 0;
                     else break;
                 }
-                raised = false;
+                _raised = false;
                 read += r;
             }
             return read;

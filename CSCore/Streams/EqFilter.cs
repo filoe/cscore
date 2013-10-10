@@ -15,7 +15,7 @@ namespace CSCore.Streams
         private  float _bandWidth;
         private float _gain;
 
-        public float Gain
+        public float GainDB
         {
             get { return _gain; }
             set
@@ -80,7 +80,7 @@ namespace CSCore.Streams
 
         public object Clone()
         {
-            return new EqFilter(SampleRate, Frequency, BandWidth, Gain);
+            return new EqFilter(SampleRate, Frequency, BandWidth, GainDB);
         }
     }
 }

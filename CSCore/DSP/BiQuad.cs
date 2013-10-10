@@ -21,6 +21,11 @@ namespace CSCore.DSP
             return res;
         }
 
+        private BiQuad()
+        {
+            
+        }
+
         public float Process(float input)
         {
             double o = input * a0 + z1;

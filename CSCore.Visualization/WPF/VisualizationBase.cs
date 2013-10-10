@@ -42,7 +42,7 @@ namespace CSCore.Visualization.WPF
             bool flag = false;
             if (_timer.Update())
             {
-                Dispatcher.Invoke(new Action(() => flag = EnableRendering));
+                Dispatcher.BeginInvoke(new Action(() => flag = EnableRendering));
             }
             return flag;
         }

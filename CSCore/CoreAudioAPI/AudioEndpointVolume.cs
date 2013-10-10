@@ -17,7 +17,7 @@ namespace CSCore.CoreAudioAPI
         }
 
         private const string c = "IAudioEndpointVolume";
-        private List<IAudioEndpointVolumeCallback> _notifies;
+        private readonly List<IAudioEndpointVolumeCallback> _notifies;
 
         public IEnumerable<IAudioEndpointVolumeCallback> RegisteredCallbacks
         {
@@ -52,7 +52,7 @@ namespace CSCore.CoreAudioAPI
             set { SetMasterVolumeLevelScalar(value, Guid.Empty); }
         }
 
-        private List<AudioEndpointVolumeChannel> _channels;
+        private readonly List<AudioEndpointVolumeChannel> _channels;
 
         public List<AudioEndpointVolumeChannel> Channels
         {

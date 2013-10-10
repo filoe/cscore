@@ -130,10 +130,14 @@ namespace CSCore.SoundOut.DirectSound
             {
                 if (_thread != null)
                 {
-                    if (!_thread.Join(timeout))
+                    if (_thread != Thread.CurrentThread && !_thread.Join(timeout))
                     {
                         Debug.WriteLine(String.Format("DirectSoundNotifyManager stop failed: timeout after {0} ms", timeout));
                         return false;
+                    }
+                    else
+                    {
+                        _thread.Abort();
                     }
                     _thread = null;
                 }

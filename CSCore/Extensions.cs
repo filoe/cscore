@@ -112,7 +112,7 @@ namespace CSCore
             }
         }
 
-        public static void WriteToWaveStream(this IWaveSource source, string filename)
+        public static void WriteToFile(this IWaveSource source, string filename)
         {
             using (var stream = File.OpenWrite(filename))
             {
@@ -145,15 +145,6 @@ namespace CSCore
                 return new T[size];
             }
             return inst;
-        }
-
-        public static IEnumerable<T> Add<T>(this IEnumerable<T> e, T value)
-        {
-            foreach (var cur in e)
-            {
-                yield return cur;
-            }
-            yield return value;
         }
 
         public static bool IsClosed(this Stream stream)
