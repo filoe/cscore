@@ -48,27 +48,39 @@ namespace CSCore.SoundOut.DirectSound
             _buffer = buffer;
             _waveFormat = waveFormat;
             _bufferSize = bufferSize;
+        }
 
-            var notify = buffer.QueryInterface<DirectSoundNotify>();
+        public void Initialize()
+        {
+            lock (_lockObject)
+            {
+                if (_notify != null)
+                {
+                    _notify.Dispose();
+                    _notify = null;
+                }
 
-            var waitHandleNull = new EventWaitHandle(false, EventResetMode.AutoReset);
-            var waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
-            var waitHandleEnd = new EventWaitHandle(false, EventResetMode.AutoReset);
+                var notify = _buffer.QueryInterface<DirectSoundNotify>();
 
-            DSBPositionNotify[] positionNotifies = new DSBPositionNotify[3];
-            positionNotifies[0] = new DSBPositionNotify(0, waitHandleNull.SafeWaitHandle.DangerousGetHandle());
-            positionNotifies[1] = new DSBPositionNotify((uint)bufferSize, waitHandle.SafeWaitHandle.DangerousGetHandle());
-            positionNotifies[2] = new DSBPositionNotify(0xFFFFFFFF, waitHandleEnd.SafeWaitHandle.DangerousGetHandle());
+                var waitHandleNull = new EventWaitHandle(false, EventResetMode.AutoReset);
+                var waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
+                var waitHandleEnd = new EventWaitHandle(false, EventResetMode.AutoReset);
 
-            var result = notify.SetNotificationPositions(positionNotifies);
-            DirectSoundException.Try(result, "IDirectSoundNotify", "SetNotificationPositions");
+                DSBPositionNotify[] positionNotifies = new DSBPositionNotify[3];
+                positionNotifies[0] = new DSBPositionNotify(0, waitHandleNull.SafeWaitHandle.DangerousGetHandle());
+                positionNotifies[1] = new DSBPositionNotify((uint)_bufferSize, waitHandle.SafeWaitHandle.DangerousGetHandle());
+                positionNotifies[2] = new DSBPositionNotify(0xFFFFFFFF, waitHandleEnd.SafeWaitHandle.DangerousGetHandle());
 
-            _positionNotifies = positionNotifies;
-            _waitHandles = new WaitHandle[] { waitHandleNull, waitHandle, waitHandleEnd };
+                var result = notify.SetNotificationPositions(positionNotifies);
+                DirectSoundException.Try(result, "IDirectSoundNotify", "SetNotificationPositions");
 
-            _latency = (int)(_bufferSize / (float)_waveFormat.BytesPerSecond * 1000);
+                _positionNotifies = positionNotifies;
+                _waitHandles = new WaitHandle[] { waitHandleNull, waitHandle, waitHandleEnd };
 
-            _notify = notify;
+                _latency = (int)(_bufferSize / (float)_waveFormat.BytesPerSecond * 1000);
+
+                _notify = notify;
+            }
 
             Debug.WriteLine("DirectSoundNotifyManager initialized.");
         }
@@ -94,6 +106,7 @@ namespace CSCore.SoundOut.DirectSound
             try
             {
                 GotStarted = true;
+                _disposing = false;
                 while (true)
                 {
                     if (_hasToStop(this))
@@ -105,10 +118,11 @@ namespace CSCore.SoundOut.DirectSound
                         break;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                if(Debugger.IsAttached)
-                    throw;
+                Debug.WriteLine("DirectSoundNotifyManager::NotifyProc: " + ex.ToString(), "WasapiOut.PlaybackProc");
+                if (Debugger.IsAttached)
+                    throw new Exception("Unhandled exception in directsound playback proc. See innerexception for details.", ex);
             }
             finally
             {
@@ -120,7 +134,8 @@ namespace CSCore.SoundOut.DirectSound
 
         public bool Stop()
         {
-            return Stop(_waitHandles.Length * _latency);
+            int timeout = 3 * _latency; //_waitHandles.Length??
+            return Stop(timeout);
         }
 
         public bool Stop(int timeout)
@@ -141,6 +156,7 @@ namespace CSCore.SoundOut.DirectSound
                     }
                     _thread = null;
                 }
+                GotStarted = false;
                 return true;
             }
         }
@@ -156,6 +172,7 @@ namespace CSCore.SoundOut.DirectSound
                         _disposing = true;
                         _thread.Abort();
                     }
+                    GotStarted = false;
                     _thread = null;
                 }
             }
@@ -167,7 +184,7 @@ namespace CSCore.SoundOut.DirectSound
             {
                 var e = new DirectSoundNotifyEventArgs(handleIndex, _bufferSize);
                 NotifyAnyRaised(this, e);
-                return !e.StopPlayback;
+                return !e.RequestStopPlayback;
             }
             return false;
         }
@@ -211,6 +228,25 @@ namespace CSCore.SoundOut.DirectSound
             return thread.ManagedThreadId == thread.ManagedThreadId;
         }
 
+        private void Uninitialize()
+        {
+            lock (_lockObject)
+            {
+                if (_notify != null)
+                {
+                    _notify.Dispose();
+                    _notify = null;
+                }
+                /*if (_waitHandles != null)
+                {
+                    foreach (var w in _waitHandles)
+                    {
+                        w.Close();
+                    }
+                }*/
+            }
+        }
+
         private bool _disposed;
         public void Dispose()
         {
@@ -223,11 +259,7 @@ namespace CSCore.SoundOut.DirectSound
             if (!_disposed)
             {
                 Stop();
-                if (_notify != null)
-                {
-                    _notify.Dispose();
-                    _notify = null;
-                }
+                Uninitialize();
             }
             _disposed = true;
         }

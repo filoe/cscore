@@ -258,6 +258,8 @@
     <Compile Include="SoundIn\WasapiCapture.cs" />
     <Compile Include="SoundIn\WasapiLoopbackCapture.cs" />
     <Compile Include="SoundOut\DirectSound\DirectSoundDeviceEnumerator.cs" />
+    <Compile Include="SoundOut\DirectSound\DirectSoundNotifyManager1.cs" />
+    <Compile Include="SoundOut\DirectSound\DSBufferFlags.cs" />
     <Compile Include="SoundOut\DirectSound\DSUtils.cs" />
     <Compile Include="SoundOut\MMInterop\WaveCapsFormats.cs" />
     <Compile Include="SoundOut\MMInterop\WaveCapsSupported.cs" />
@@ -448,7 +450,7 @@
     <Compile Include="SoundOut\DirectSound\3D\DSMode3D.cs" />
     <Compile Include="SoundOut\DirectSound\3D\DirectSoundBuffer3D.cs" />
     <Compile Include="SoundOut\DirectSound\DirectSoundNotify.cs" />
-    <Compile Include="SoundOut\DirectSound\DirectSoundNotifyManager.cs" />
+    <None Include="SoundOut\DirectSound\DirectSoundNotifyManager.cs" />
     <Compile Include="SoundOut\DirectSound\DSBPositionNotify.cs" />
     <Compile Include="SoundOut\DirectSound\DSCapabilitiesFlags.cs" />
     <Compile Include="SoundOut\DirectSound\NativeMethods.cs" />

@@ -18,18 +18,15 @@ namespace CSCore.SoundOut.DirectSound
         /// <summary>
         /// Set this to stop the notification thread
         /// </summary>
-        public bool StopPlayback { get; set; }
+        public bool RequestStopPlayback { get; set; }
 
-        public DirectSoundNotifyEventArgs(int handleIndex, int bufferSize)
+        public DirectSoundNotifyEventArgs(int handleIndex, int sampleOffset, int bufferSize, bool isTimeOut, bool bufferStopped)
         {
             HandleIndex = handleIndex;
-            IsTimeOut = handleIndex == WaitHandle.WaitTimeout;
-            DSoundBufferStopped = handleIndex == 2;
-
+            SampleOffset = sampleOffset;
             BufferSize = bufferSize;
-            handleIndex = (handleIndex == 0) ? 1 : 0;
-            SampleOffset = handleIndex * bufferSize;
-            StopPlayback = false;
+            IsTimeOut = isTimeOut;
+            DSoundBufferStopped = bufferStopped;
         }
     }
 }

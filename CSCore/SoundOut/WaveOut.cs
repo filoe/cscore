@@ -175,7 +175,8 @@ namespace CSCore.SoundOut
 
         protected virtual void Callback(IntPtr handle, WaveMsg msg, UIntPtr user, WaveHeader header, UIntPtr reserved)
         {
-            if (_hWaveOut != handle) return; //message does not belong to this waveout instance
+            if (_hWaveOut != handle) 
+                return; //message does not belong to this waveout instance
             if (msg == WaveMsg.WOM_DONE)
             {
                 GCHandle hBuffer = (GCHandle)header.userData;

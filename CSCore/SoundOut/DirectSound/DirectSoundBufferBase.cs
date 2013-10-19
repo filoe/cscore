@@ -39,6 +39,16 @@ namespace CSCore.SoundOut.DirectSound
             }
         }
 
+        public DSBStatus Status
+        {
+            get
+            {
+                DSBStatus status;
+                DirectSoundException.Try(GetStatus(out status), "IDirectSoundBuffer", "GetStatus");
+                return status;
+            }
+        }
+
         public DSResult GetCaps(out DSBufferCaps bufferCaps)
         {
             bufferCaps = new DSBufferCaps();

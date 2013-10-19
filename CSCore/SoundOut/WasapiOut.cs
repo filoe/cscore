@@ -234,18 +234,18 @@ namespace CSCore.SoundOut
                     _audioClient.Stop();
                     if (_playbackState == SoundOut.PlaybackState.Stopped)
                     {
-                        _audioClient.ResetNative();
+                        _audioClient.Reset();
                     }
                 }
             }
             catch (ThreadAbortException)
             {
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Debug.WriteLine("WasapiOut::PlaybackProc: " + e.ToString(), "WasapiOut.PlaybackProc");
+                Debug.WriteLine("WasapiOut::PlaybackProc: " + ex.ToString(), "WasapiOut.PlaybackProc");
                 if (System.Diagnostics.Debugger.IsAttached)
-                    throw new Exception("Unhandled exception in wasapi playback proc. See innerexception for details.", e);
+                    throw new Exception("Unhandled exception in wasapi playback proc. See innerexception for details.", ex);
             }
             finally
             {

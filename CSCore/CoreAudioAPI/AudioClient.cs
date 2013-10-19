@@ -330,6 +330,11 @@ namespace CSCore.CoreAudioAPI
             return InteropCalls.CallI(_basePtr, ((void**)(*(void**)_basePtr))[12]);
         }
 
+        public void Reset()
+        {
+            CoreAudioAPIException.Try(ResetNative(), c, "Reset");
+        }
+
         /// <summary>
         /// The SetEventHandle method sets the event handle that the system signals when an audio
         /// buffer is ready to be processed by the client.

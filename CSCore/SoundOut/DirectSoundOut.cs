@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -20,6 +21,7 @@ namespace CSCore.SoundOut
         private Guid _device;
         private int _latency;
         private bool _isinitialized;
+        private DSBPlayFlags _playFlags;
         protected object _lockObj;
 
         public event EventHandler Stopped;
@@ -39,6 +41,8 @@ namespace CSCore.SoundOut
                 _latency = value;
             }
         }
+
+        public bool UseLoopingBufferPlayback { get; set; }
 
         public Guid Device
         {
@@ -65,6 +69,7 @@ namespace CSCore.SoundOut
             Latency = latency;
             _lockObj = new Object();
             _syncContext = SynchronizationContext.Current;
+            UseLoopingBufferPlayback = true;
         }
 
         public void Play()
@@ -72,14 +77,18 @@ namespace CSCore.SoundOut
             CheckForInitialize();
             if (_playbackState == SoundOut.PlaybackState.Stopped)
             {
-                //lock (_lockObj)
-                //{
-                    _secondaryBuffer.SetCurrentPosition(0);
-                    _secondaryBuffer.Play(DSBPlayFlags.DSBPLAY_LOOPING);
-                    PlaybackState = SoundOut.PlaybackState.Playing;
-                    _notifyManager.Start();
-                    Debug.WriteLine("DirectSoundOut playback started", "DirectSoundOut.Play()");
-                //}
+                _primaryBuffer.SetCurrentPosition(0);
+                _secondaryBuffer.SetCurrentPosition(0);
+                _notifyManager.Initialize();
+
+                _playFlags = UseLoopingBufferPlayback ? DSBPlayFlags.DSBPLAY_LOOPING : DSBPlayFlags.None;
+                _secondaryBuffer.Play(_playFlags); //todo: need looping because of stopped event handle?
+
+                PlaybackState = SoundOut.PlaybackState.Playing;
+
+                _notifyManager.Start();
+
+                Debug.WriteLine("DirectSoundOut playback started.", "DirectSoundOut.Play()");
             }
 
             PlaybackState = SoundOut.PlaybackState.Playing;
@@ -107,22 +116,15 @@ namespace CSCore.SoundOut
                 return;
             }
 
-            if (_notifyManager != null && _notifyManager.GotStarted)
+            if (_notifyManager != null)
             {
-                /*
-                 * Will call stop event which will call StopInternal
-                 */
-                if (_notifyManager.Stop() == false) //if (_notifyManager.Stop(Int32.MaxValue) == false)
-                {
-                    _notifyManager.Abort();
-                    StopInternal(); //abort manually 
-                }
+                _notifyManager.Stop();
+                Uninitialize();
 
                 _notifyManager.Dispose();
                 _notifyManager = null;
                 PlaybackState = SoundOut.PlaybackState.Stopped;
             }
-            //StopInternal();
         }
 
         public void Initialize(IWaveSource source)
@@ -131,7 +133,8 @@ namespace CSCore.SoundOut
             {
                 if (source == null) 
                     throw new ArgumentNullException("source");
-                StopInternal();
+
+                Uninitialize();
 
                 IntPtr handle = DSUtils.GetDesktopWindow();
 
@@ -163,26 +166,23 @@ namespace CSCore.SoundOut
                 _primaryBuffer = new DirectSoundPrimaryBuffer(_directSound);
                 _secondaryBuffer = new DirectSoundSecondaryBuffer(_directSound, waveFormat, bufferSize, false); //remove true
 
-                _primaryBuffer.Play(DSBPlayFlags.None);
+                _primaryBuffer.Play(DSBPlayFlags.DSBPLAY_LOOPING);
 
                 DSBufferCaps bufferCaps;
                 DirectSoundException.Try(_secondaryBuffer.GetCaps(out bufferCaps), "IDirectSoundBuffer", "GetCaps");
                 _buffer = _buffer.CheckBuffer(bufferCaps.dwBufferBytes); //[bufferCaps.dwBufferBytes];
 
-                _notifyManager = new DirectSoundNotifyManager(_secondaryBuffer, waveFormat, bufferSize);
-                _notifyManager.NotifyAnyRaised += OnNotify;
+                _notifyManager = new DirectSoundNotifyManager(_secondaryBuffer, _latency, bufferSize);//new DirectSoundNotifyManager(_secondaryBuffer, waveFormat, bufferSize);
+                _notifyManager.NotificationReceived += OnNotify;
                 _notifyManager.Stopped += (s, e) =>
                     {
-                        StopInternal();
-                        Debug.WriteLine("Stopped");
+                        StopInternal(); //todo: uninit?
+                        Debug.WriteLine("DSoundOut stopped.");
                         PlaybackState = SoundOut.PlaybackState.Stopped;
                         RaiseStopped();
                     };
 
                 _isinitialized = true;
-                //Interlocked.Exchange(ref _disposeCount, 0);
-
-                //Debug.WriteLine("DirectSoundOut initialized");
             }
         }
 
@@ -190,6 +190,30 @@ namespace CSCore.SoundOut
         {
             lock (_lockObj)
             {
+                if (_secondaryBuffer != null)
+                {
+                    _secondaryBuffer.Stop();
+                }
+                if (_primaryBuffer != null)
+                {
+                    _primaryBuffer.Stop();
+                }
+            }
+        }
+
+        private void Uninitialize()
+        {
+            lock (_lockObj)
+            {
+                if (_notifyManager != null)
+                {
+                    /*if (!_notifyManager.Stop())
+                        _notifyManager.Abort();*/
+                    _notifyManager.Stop();
+                    _notifyManager.Dispose();
+                    _notifyManager = null;
+                }
+
                 if (_secondaryBuffer != null)
                 {
                     _secondaryBuffer.Stop();
@@ -207,6 +231,8 @@ namespace CSCore.SoundOut
                     _directSound.Dispose();
                     _directSound = null;
                 }
+
+                _isinitialized = false;
             }
         }
 
@@ -228,21 +254,31 @@ namespace CSCore.SoundOut
                         {
                             //no more data available
                             StopInternal();
-                            e.StopPlayback = true;
+                            e.RequestStopPlayback = true;
                         }
                     }
                     else
                     {
                         //dsound stopped
-                        StopInternal();
-                        e.StopPlayback = true;
+                        //case of end of buffer or Stop() called: http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.dsbpositionnotify(v=vs.85).aspx
+
+                        //if ((_playFlags & DSBPlayFlags.DSBPLAY_LOOPING) == DSBPlayFlags.DSBPLAY_LOOPING)
+                        if(UseLoopingBufferPlayback)
+                        {
+                            StopInternal();
+                            e.RequestStopPlayback = true;
+                        }
+                        else
+                        {
+                            //do nothing -> experimental
+                        }
                     }
                 }
                 else
                 {
                     //timeout
-                    StopInternal();
-                    e.StopPlayback = true;
+                    Uninitialize();
+                    e.RequestStopPlayback = true;
                 }
             }
         }
@@ -335,7 +371,6 @@ namespace CSCore.SoundOut
                 Stop();
             }
             _disposed = true;
-            _isinitialized = false;
         }
 
         ~DirectSoundOut()
