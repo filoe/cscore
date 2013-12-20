@@ -111,7 +111,6 @@ namespace CSCore.SoundIn
             {
                 //dispose managed
             }
-            //todo: lock
 
             if (_header != null)
             {

@@ -61,7 +61,7 @@ namespace CSCore.SoundIn
 
         public WaveIn(WaveFormat waveFormat)
         {
-            //todo: supported format?
+            //todo: check for supported format
             WaveFormat = waveFormat;
         }
 
@@ -87,10 +87,10 @@ namespace CSCore.SoundIn
             MmException.Try(result, "waveInStart");
             stopped = false;
 
-            OnStart();
+            OnStarted();
         }
 
-        protected virtual void OnStart()
+        protected virtual void OnStarted()
         {
         }
 
@@ -108,11 +108,11 @@ namespace CSCore.SoundIn
                         RaiseDataAvailable(buffer);
                 }
                 //RaiseStopped();
-                OnStop();
+                OnStopped();
             }
         }
 
-        protected virtual void OnStop()
+        protected virtual void OnStopped()
         {
         }
 

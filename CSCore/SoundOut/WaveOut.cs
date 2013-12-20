@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 
 namespace CSCore.SoundOut
 {
+    [Obsolete("Needs to be updated. Use DirectSoundOut or WasapiOut on Vista and above.")]
     public class WaveOut : ISoundOut
     {
         public static int GetDeviceCount()

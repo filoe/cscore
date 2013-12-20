@@ -95,8 +95,8 @@ namespace CSCore.Win32
         {
             lock (_lockObj)
             {
-                if (!disposed)
-                    Debug.Assert(!AssertOnNoDispose(), "ComObject.Dispose not called. Type: " + this.GetType().FullName);
+                //if (!disposed)
+                    //Debug.Assert(!AssertOnNoDispose(), "ComObject.Dispose not called. Type: " + this.GetType().FullName);
                 Dispose(false);
             }
         }

@@ -17,6 +17,12 @@ namespace CSCore.MediaFoundation
             return MediaFoundationCore.CreateMediaType();
         }
 
+        public static MFMediaType FromWaveFormat(WaveFormat waveFormat)
+        {
+            MediaFoundationCore.Startup();
+            return MediaFoundationCore.MediaTypeFromWaveFormat(waveFormat);
+        }
+
         private const string c = "IMFMediaType";
 
         public MFMediaType(IntPtr ptr)

@@ -60,9 +60,10 @@ namespace Visualization3D
         {
             if (_soundOut != null)
             {
+                var source = _soundOut.WaveSource;
                 _soundOut.Stop();
                 _soundOut.Dispose();
-                _soundOut.WaveSource.Dispose();
+                source.Dispose();
 
                 _soundOut = null;
             }

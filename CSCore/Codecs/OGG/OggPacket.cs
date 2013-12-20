@@ -12,7 +12,7 @@ namespace CSCore.Codecs.OGG
         OggPacket _nextPacket;
         Stream _stream;
         long _streamPosition;
-        int _length;
+        int _length = 0;
         int _offset = 0;
 
         byte[] _buffer;

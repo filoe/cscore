@@ -15,9 +15,12 @@ namespace CSCore.Codecs.OGG
 
         public OggPacketReader(Stream stream)
         {
-            if (stream == null) throw new ArgumentNullException("stream");
-            if (stream.CanRead == false) throw new ArgumentException("stream not readable");
-            if (stream.CanSeek == false) throw new ArgumentException("stream not seekable");
+            if (stream == null)               
+                throw new ArgumentNullException("stream");
+            if (stream.CanRead == false) 
+                throw new ArgumentException("stream not readable");
+            if (stream.CanSeek == false) 
+                throw new ArgumentException("stream not seekable");
 
             _stream = stream;
             _packets = new Queue<OggPacket>();

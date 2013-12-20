@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading;
 
 namespace CSCore
 {
@@ -184,6 +185,26 @@ namespace CSCore
         public static Guid GetGuid(this Object obj)
         {
             return obj.GetType().GUID;
+        }
+
+        public static void WaitForExit(this Thread thread)
+        {
+            if (thread == null)
+                return;
+            if (thread == Thread.CurrentThread)
+                throw new InvalidOperationException("Deadlock detected.");
+
+            thread.Join();
+        }
+
+        public static bool WaitForExit(this Thread thread, int timeout)
+        {
+            if (thread == null)
+                return true;
+            if (thread == Thread.CurrentThread)
+                throw new InvalidOperationException("Deadlock detected.");
+
+            return thread.Join(timeout);
         }
     }
 }

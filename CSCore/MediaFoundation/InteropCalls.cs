@@ -183,5 +183,23 @@ namespace CSCore.MediaFoundation
         {
             throw new NotImplementedException();
         }
+
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, void* ptmt, void* psi, void* p)
+        {
+            throw new NotImplementedException();
+        }
+
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, int streamIndex, void* imt, void* ep, void* p)
+        {
+            throw new NotImplementedException();
+        }
+
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, int streamIndex, long timeStamp, void* p)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CSCore.Codecs.WAV
 {
-    public class WaveWriter : IDisposable
+    public class WaveWriter : IDisposable, IWritable
     {
         public static void WriteToFile(string filename, IWaveSource source, bool deleteIfExists, int maxlength = -1)
         {

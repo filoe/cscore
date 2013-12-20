@@ -3,6 +3,10 @@ using System;
 
 namespace CSCore.Streams
 {
+    /// <summary>
+    /// Buffered WaveSource with provides overrides the allocated memory after the buffer got full. 
+    /// To specify the the buffersize, specify the bufferSize parameter in the constructor.
+    /// </summary>
     public class WriteableBufferingSource : IWaveSource
     {
         private WaveFormat _waveFormat;
@@ -11,11 +15,30 @@ namespace CSCore.Streams
 
         public bool FillWithZeros { get; set; }
 
+        /// <summary>
+        /// Creates an new instance of the WriteableBufferingSource class with a default Buffersize of 5 seconds.
+        /// </summary>
+        /// <param name="waveFormat">The WaveFormat of the source.</param>
         public WriteableBufferingSource(WaveFormat waveFormat)
+            : this(waveFormat, waveFormat.BytesPerSecond * 5)
         {
+        }
+
+        /// <summary>
+        /// Creates an new instance of the WriteableBufferingSource class.
+        /// </summary>
+        /// <param name="waveFormat">The WaveFormat of the source.</param>
+        /// <param name="bufferSize">Buffersize in bytes</param>
+        public WriteableBufferingSource(WaveFormat waveFormat, int bufferSize)
+        {
+            if (waveFormat == null)
+                throw new ArgumentNullException("waveFormat");
+            if (bufferSize <= 0 || (bufferSize % waveFormat.BlockAlign) != 0)
+                throw new ArgumentException("Invalid bufferSize.");
+
             _waveFormat = waveFormat;
-            _buffer = new FixedSizeBuffer<byte>(waveFormat.BytesPerSecond * 5);
-            FillWithZeros = true;
+            _buffer = new FixedSizeBuffer<byte>(bufferSize);
+            FillWithZeros = true;   
         }
 
         public int Write(byte[] buffer, int offset, int count)

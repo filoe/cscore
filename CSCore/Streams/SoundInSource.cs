@@ -15,12 +15,37 @@ namespace CSCore.Streams
             get { return _soundIn; }
         }
 
+        /// <summary>
+        /// Creates an new instance of SoundInSource with a default bufferSize of 5 seconds.
+        /// </summary>
+        /// <param name="soundIn">The soundIn which provides recorded data.</param>
+        /// <remarks>
+        /// Note that soundIn has to be already initialized.
+        /// Note that old data ("old" gets specified by the bufferSize) gets overridden. 
+        /// For example, if the bufferSize is about 5 seconds big, data which got recorded 6 seconds ago, won't be available anymore.
+        /// </remarks>
         public SoundInSource(ISoundIn soundIn)
+            : this(soundIn, soundIn.WaveFormat.BytesPerSecond * 5)
+        {
+        }
+
+        /// <summary>
+        /// Creates an new instance of SoundInSource with a default bufferSize of 5 seconds.
+        /// </summary>
+        /// <param name="soundIn">The soundIn which provides recorded data.</param>
+        /// <param name="bufferSize">Size of the buffer in bytes.</param>
+        /// <remarks>
+        /// Note that soundIn has to be already initialized.
+        /// Note that old data ("old" gets specified by the bufferSize) gets overridden. 
+        /// For example, if the bufferSize is about 5 seconds big, data which got recorded 6 seconds ago, won't be available anymore.
+        /// </remarks>
+        public SoundInSource(ISoundIn soundIn, int bufferSize)
         {
             if (soundIn == null)
                 throw new ArgumentNullException("soundIn");
+            //bufferSize gets validated by WriteableBufferingSource
 
-            _buffer = new WriteableBufferingSource(soundIn.WaveFormat);
+            _buffer = new WriteableBufferingSource(soundIn.WaveFormat, bufferSize);
             _buffer.FillWithZeros = false;
             _soundIn = soundIn;
             _soundIn.DataAvailable += OnDataAvailable;

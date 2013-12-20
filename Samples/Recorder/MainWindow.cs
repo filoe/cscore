@@ -29,7 +29,7 @@ namespace Recorder
         private WaveInCaps _selectedDevice;
 
         private WaveIn _waveIn;
-        private WaveWriter _writer;
+        private IWritable _writer;
         private ISoundOut _soundOut;
 
         private IWaveSource _source;
@@ -116,7 +116,8 @@ namespace Recorder
                 _soundOut.Dispose();
 
             _waveIn.Dispose();
-            _writer.Dispose();
+            if(_writer is IDisposable)
+                ((IDisposable)_writer).Dispose();
 
             _waveIn = null;
             _writer = null;

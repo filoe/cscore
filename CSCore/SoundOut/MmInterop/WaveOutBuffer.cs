@@ -94,7 +94,7 @@ namespace CSCore.SoundOut.MMInterop
         {
             lock (_waveOut.LockObj)
             {
-                if (_header == null) 
+                if (_header == null || _waveOut.WaveOutHandle == IntPtr.Zero) 
                     return;
                 try
                 {

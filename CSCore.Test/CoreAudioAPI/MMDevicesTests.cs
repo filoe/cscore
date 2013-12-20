@@ -28,7 +28,7 @@ namespace CSCore.Test.CoreAudioAPI
 
         [TestMethod]
         [TestCategory("CoreAudioAPI")]
-        public void CanAllEnumerateDevices()
+        public void CanEnumerateAllDevices()
         {
             using (var enumerator = new MMDeviceEnumerator())
             using (var collection = enumerator.EnumAudioEndpoints(DataFlow.All, DeviceState.All))

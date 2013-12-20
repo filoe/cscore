@@ -22,28 +22,22 @@ namespace CSCore.SoundOut.DirectSound
         {
         }
 
-        public unsafe DSResult SetNotificationPositions(IEnumerable<DSBPositionNotify> notifies)
+        public void SetNotificationPositions(DSBPositionNotify[] notifies)
         {
-            DSBPositionNotify[] a_notifies = notifies.ToArray();
-            fixed (void* pnotifies = a_notifies)
-            {
-                return InteropCalls.CalliMethodPtr(_basePtr, a_notifies.Length, pnotifies, ((void**)(*(void**)_basePtr))[3]);
-            }
+            DirectSoundException.Try(SetNotificationPositionsNative(notifies), "IDirectSoundNotify", "SetNotificationPositions");
         }
 
-        public DSResult SetNotificationPositions(DSBPositionNotify[] notifies)
+        public unsafe DSResult SetNotificationPositionsNative(DSBPositionNotify[] notifies)
         {
-            return SetNotificationPositions(notifies as IEnumerable<DSBPositionNotify>);
+            fixed (void* pnotifies = notifies)
+            {
+                return InteropCalls.CalliMethodPtr(_basePtr, notifies.Length, pnotifies, ((void**)(*(void**)_basePtr))[3]);
+            }
         }
 
         protected override bool AssertOnNoDispose()
         {
             return false;
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            //base.Dispose(disposing); todo: 
         }
     }
 }

@@ -10,7 +10,29 @@ namespace CSCore.DMO
         public WMResamplerProps(IntPtr ptr)
             : base(ptr)
         {
-            System.Diagnostics.Debug.WriteLine("WMResamplerProps created");
+        }
+
+        /// <summary>
+        /// Specifies the quality of the output.
+        /// </summary>
+        /// <param name="quality">Specifies the quality of the output. The valid range is 1 to 60,
+        /// inclusive.</param>
+        public void SetHalfFilterLength(int quality)
+        {
+            if (quality < 1 || quality > 60)
+                throw new ArgumentOutOfRangeException("quality");
+            DmoException.Try(SetHalfFilterLengthNative(quality), "IWMResamplerProps", "SetHalfFilterLength");
+        }
+
+        /// <summary>
+        /// See http://msdn.microsoft.com/en-us/library/windows/desktop/ff819252(v=vs.85).aspx
+        /// </summary>
+        public void SetUserChannelMtx(float[] channelConversitionMatrix)
+        {
+            if (channelConversitionMatrix == null)
+                throw new ArgumentNullException("channelConversitionMatrix");
+
+            DmoException.Try(SetUserChannelMtxNative(channelConversitionMatrix), "IWMResamplerProps", "SetUserChannelMtxNative");
         }
 
         /// <summary>
@@ -19,18 +41,18 @@ namespace CSCore.DMO
         /// <param name="quality">Specifies the quality of the output. The valid range is 1 to 60,
         /// inclusive.</param>
         /// <returns>HRESULT</returns>
-        public unsafe int SetHalfFilterLength(int quality)
+        public unsafe int SetHalfFilterLengthNative(int quality)
         {
             return InteropCalls.CalliMethodPtr(_basePtr, quality, ((void**)(*(void**)_basePtr))[3]);
         }
 
         /// <summary>
-        /// http: //msdn.microsoft.com/en-us/library/windows/desktop/ff819252(v=vs.85).aspx
+        /// http://msdn.microsoft.com/en-us/library/windows/desktop/ff819252(v=vs.85).aspx
         /// </summary>
         /// <returns>HRESULT</returns>
-        public unsafe int SetUserChannelMtx(float[] channelConverstionMatrix)
+        public unsafe int SetUserChannelMtxNative(float[] channelConversitionMatrix)
         {
-            fixed (void* pccm = &channelConverstionMatrix[0])
+            fixed (void* pccm = &channelConversitionMatrix[0])
             {
                 return InteropCalls.CalliMethodPtr(_basePtr, pccm, ((void**)(*(void**)_basePtr))[4]);
             }

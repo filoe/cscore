@@ -40,16 +40,13 @@ namespace EqualizerTest
             ofn.Filter = CodecFactory.SupportedFilesFilterEN;
             if (ofn.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                if (_soundOut != null)
-                {
-                    _soundOut.Stop();
-                    _soundOut.Dispose();
-                    _eq.Dispose();
-                    _soundOut = null;
-                }
+                Stop();
 
-                _soundOut = new DirectSoundOut();//DirectSoundOut();
+                _soundOut = new WasapiOut();//DirectSoundOut();
                 var source = CodecFactory.Instance.GetCodec(ofn.FileName);
+                source = new LoopStream(source) { EnableLoop = false };
+                (source as LoopStream).StreamFinished += (s, args) => Stop();
+
                 _eq = Equalizer.Create10BandEqualizer(source);
                 _soundOut.Initialize(_eq.ToWaveSource(16));
                 _soundOut.Play();
@@ -58,13 +55,19 @@ namespace EqualizerTest
 
         protected override void OnClosing(CancelEventArgs e)
         {
+            Stop();
+            base.OnClosing(e);
+        }
+
+        private void Stop()
+        {
             if (_soundOut != null)
             {
                 _soundOut.Stop();
                 _soundOut.Dispose();
                 _eq.Dispose();
+                _soundOut = null;
             }
-            base.OnClosing(e);
         }
     }
 }

@@ -116,16 +116,36 @@ namespace CSCore.MediaFoundation
             {
                 try
                 {
+                    if (reader == null)
+                        return 0;
+
                     PropertyVariant value = reader.GetPresentationAttribute(MFInterops.MF_SOURCE_READER_MEDIASOURCE, MediaFoundationAttributes.MF_PD_DURATION);
                     var length = ((value.HValue) * _waveFormat.BytesPerSecond) / 10000000L;
                     value.Dispose();
                     return length;
                 }
-                catch (MediaFoundationException e)
+                catch (Exception)
                 {
-                    if (e.Result == (int)HResult.MF_E_ATTRIBUTENOTFOUND)
-                        return 0;
-                    throw;
+                    //if (e.Result == (int)HResult.MF_E_ATTRIBUTENOTFOUND)
+                    //    return 0;
+                    //throw;
+                    return 0;
+                }
+            }
+        }
+
+        private void SetPosition(long value)
+        {
+            if (CanSeek)
+            {
+                lock (_lockObj)
+                {
+                    long hnsPos = (10000000L * value) / WaveFormat.BytesPerSecond;
+                    var propertyVariant = PropertyVariant.CreateLong(hnsPos);
+                    _reader.SetCurrentPosition(Guid.Empty, propertyVariant);
+                    _decoderBufferCount = 0;
+                    _decoderBufferOffset = 0;
+                    _position = value;
                 }
             }
         }
@@ -248,18 +268,7 @@ namespace CSCore.MediaFoundation
             }
             set
             {
-                if (CanSeek)
-                {
-                    lock (_lockObj)
-                    {
-                        long hnsPos = (10000000L * value) / WaveFormat.BytesPerSecond;
-                        var propertyVariant = PropertyVariant.CreateLong(hnsPos);
-                        _reader.SetCurrentPosition(Guid.Empty, propertyVariant);
-                        _decoderBufferCount = 0;
-                        _decoderBufferOffset = 0;
-                        _position = value;
-                    }
-                }
+                SetPosition(value);
             }
         }
 

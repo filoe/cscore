@@ -7,6 +7,8 @@ namespace CSCore.SoundOut.DirectSound
     [Guid("279AFA84-4981-11CE-A521-0020AF0BE560")]
     public unsafe class DirectSound3DListener : ComObject
     {
+        const string c = "IDirectSound3DListerner";
+
         public static DirectSound3DListener FromBuffer(DirectSoundPrimaryBuffer buffer)
         {
             if (buffer == null) throw new ArgumentNullException("buffer");
@@ -16,6 +18,34 @@ namespace CSCore.SoundOut.DirectSound
         public DirectSound3DListener(IntPtr basePtr)
             : base(basePtr)
         {
+        }
+
+        public DSListener3DSettings AllParameters
+        {
+            get
+            {
+                DSListener3DSettings settings;
+                DirectSoundException.Try(GetAllParameters(out settings), c, "GetAllParameters");
+                return settings;
+            }
+            set
+            {
+                DirectSoundException.Try(SetAllParameters(value), c, "SetAllParameters");
+            }
+        }
+
+        public float DistanceFactor
+        {
+            get
+            {
+                float r;
+                DirectSoundException.Try(GetDistanceFactor(out r), c, "GetDistanceFactor");
+                return r;
+            }
+            set
+            {
+                DirectSoundException.Try(SetDistanceFactor(value), c, "SetDistanceFactor");
+            }
         }
 
         //http://msdn.microsoft.com/de-de/library/windows/desktop/ee418003(v=vs.85).aspx
@@ -75,7 +105,7 @@ namespace CSCore.SoundOut.DirectSound
             }
         }
 
-        public DSResult SetAllParameters(DSBuffer3DSettings settings, DS3DApplyMode applyMode = DS3DApplyMode.Immediate)
+        public DSResult SetAllParameters(DSListener3DSettings settings, DS3DApplyMode applyMode = DS3DApplyMode.Immediate)
         {
             return InteropCalls.CalliMethodPtr(_basePtr, &settings, unchecked((int)applyMode), ((void**)(*(void**)_basePtr))[10]);
         }

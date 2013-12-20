@@ -7,8 +7,8 @@ namespace CSCore.Codecs.OGG
 {
     public class CRC32
     {
-        static uint[] _crcTable;
-        const uint _crcPoly = 0x04C11DB7;
+        private static uint[] _crcTable;
+        private const uint _crcPoly = 0x04C11DB7;
 
         static CRC32()
         {
@@ -24,7 +24,7 @@ namespace CSCore.Codecs.OGG
             }
         }
 
-        uint _crc = 0;
+        private uint _crc = 0;
 
         public uint Value { get { return _crc; } }
 

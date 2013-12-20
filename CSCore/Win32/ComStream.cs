@@ -42,7 +42,9 @@ namespace CSCore.Win32
 
         HResult IStream.Commit(int grfCommitFlags)
         {
-            return HResult.E_NOTIMPL;
+            //ignore flags... just implement this method because MediaSinkWriter throws exceptions on finalize
+            _stream.Flush();
+            return HResult.S_OK;
         }
 
         HResult IStream.CopyTo(IStream pstm, long cb, IntPtr pcbRead, IntPtr pcbWritten)

@@ -307,18 +307,28 @@ namespace CSCore.CoreAudioAPI
         /// The Start method starts the audio stream.
         /// </summary>
         /// <returns>HRESULT</returns>
-        public unsafe int Start()
+        public unsafe int StartNative()
         {
             return InteropCalls.CallI(_basePtr, ((void**)(*(void**)_basePtr))[10]);
+        }
+
+        public void Start()
+        {
+            CoreAudioAPIException.Try(StartNative(), c, "Start");
         }
 
         /// <summary>
         /// The Stop method stops the audio stream.
         /// </summary>
         /// <returns>HRESULT</returns>
-        public unsafe int Stop()
+        public unsafe int StopNative()
         {
             return InteropCalls.CallI(_basePtr, ((void**)(*(void**)_basePtr))[11]);
+        }
+
+        public void Stop()
+        {
+            CoreAudioAPIException.Try(StopNative(), c, "Stop");
         }
 
         /// <summary>
@@ -383,29 +393,5 @@ namespace CSCore.CoreAudioAPI
             CoreAudioAPIException.Try(GetServiceNative(riid, out ptr), c, "GetService");
             return ptr;
         }
-    }
-
-    /// <summary>
-    /// For details see:
-    /// http://msdn.microsoft.com/en-us/library/windows/desktop/dd370791(v=vs.85).aspx and
-    /// http://msdn.microsoft.com/en-us/library/windows/desktop/dd370789(v=vs.85).aspx
-    /// </summary>
-    [Flags]
-    public enum AudioClientStreamFlags
-    {
-        None = 0x0,
-        StreamFlags_CrossProcess = 0x00010000,
-        StreamFlags_Loopback = 0x00020000,
-        StreamFlags_EventCallback = 0x00040000,
-        StreamFlags_NoPersist = 0x00080000,
-
-        /// <summary>
-        /// Supported since Windows 7
-        /// </summary>
-        StreamFlags_RateAdjust = 0x00100000,
-
-        SessionFlags_ExpireWhenUnowned = 0x10000000,
-        SessionFlags_DisplayHide = 0x20000000,
-        SessionFlags_Display_HideWhenExpired = 0x40000000
     }
 }

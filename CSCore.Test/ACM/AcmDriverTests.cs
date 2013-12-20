@@ -7,10 +7,5 @@ namespace CSCore.Test.ACM
     [TestClass]
     public class AcmDriverTests
     {
-        [TestMethod]
-        public void CanEnumerateAcmDrivers()
-        {
-            //todo:
-        }
     }
 }

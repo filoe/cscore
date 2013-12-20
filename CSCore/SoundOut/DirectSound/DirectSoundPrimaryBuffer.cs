@@ -22,10 +22,7 @@ namespace CSCore.SoundOut.DirectSound
             };
             primaryBufferDesc.dwSize = Marshal.SizeOf(primaryBufferDesc);
 
-            IntPtr handle;
-            DSResult result = directSound.CreateSoundBuffer(primaryBufferDesc, out handle, IntPtr.Zero);
-            DirectSoundException.Try(result, "IDirectSound", "CreateSoundBuffer");
-            _basePtr = handle.ToPointer();
+            _basePtr = directSound.CreateSoundBuffer(primaryBufferDesc, IntPtr.Zero).ToPointer();
         }
 
         public DirectSoundPrimaryBuffer(IntPtr basePtr)

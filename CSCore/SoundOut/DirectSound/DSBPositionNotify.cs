@@ -15,6 +15,9 @@ namespace CSCore.SoundOut.DirectSound
     [StructLayout(LayoutKind.Sequential)]
     public struct DSBPositionNotify
     {
+        public const uint OffsetZero = 0x0;
+        public const uint OffsetEnd = 0xFFFFFFFF;
+
         public uint dwOffset;
         public IntPtr hEventNotify;
 

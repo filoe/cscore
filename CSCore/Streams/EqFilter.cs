@@ -6,7 +6,6 @@ using System.Text;
 
 namespace CSCore.Streams
 {
-    //todo: add channel support
     public class EqFilter : ICloneable
     {
         private BiQuad _filter;
@@ -58,7 +57,12 @@ namespace CSCore.Streams
 
         public EqFilter(int sampleRate, double centerFrequency, float bandWidth, float gain)
         {
-            //todo: validation?
+            if (sampleRate <= 0)
+                throw new ArgumentOutOfRangeException("sampleRate");
+            if (centerFrequency <= 0)
+                throw new ArgumentOutOfRangeException("centerFrequency");
+            if (bandWidth <= 0)
+                throw new ArgumentOutOfRangeException("bandWidth");
 
             _sampleRate = sampleRate;
             _centerFrequency = centerFrequency;

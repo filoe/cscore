@@ -1,5 +1,6 @@
 ﻿using CSCore.Win32;
 using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security;
 
@@ -19,6 +20,10 @@ namespace CSCore.SoundOut.DirectSound
         public const uint FrequencyOriginal = 0;
         public const uint FrequencyMin = 100;
         public const uint FrequencyMax = 20000;
+        private const string c = "IDirectSoundBuffer";
+
+        //assume that dv = 10.0
+        private const double MinAttentuation = 9.766E-4; //(1/2)^(100/dv)
 
         public DirectSoundBufferBase()
         {
@@ -34,7 +39,7 @@ namespace CSCore.SoundOut.DirectSound
             get
             {
                 DSBufferCaps caps;
-                DirectSoundException.Try(GetCaps(out caps), "IDirectSoundBuffer", "GetCaps");
+                DirectSoundException.Try(GetCaps(out caps), c, "GetCaps");
                 return caps;
             }
         }
@@ -44,7 +49,7 @@ namespace CSCore.SoundOut.DirectSound
             get
             {
                 DSBStatus status;
-                DirectSoundException.Try(GetStatus(out status), "IDirectSoundBuffer", "GetStatus");
+                DirectSoundException.Try(GetStatus(out status), c, "GetStatus");
                 return status;
             }
         }
@@ -60,17 +65,32 @@ namespace CSCore.SoundOut.DirectSound
             }
         }
 
-        public DSResult Play(DSBPlayFlags flags)
+        public void Play(DSBPlayFlags flags)
+        {
+            DirectSoundException.Try(PlayNative(flags), c, "Play");
+        }
+
+        public DSResult PlayNative(DSBPlayFlags flags)
         {
             return InteropCalls.CalliMethodPtr(_basePtr, 0, 0, unchecked((int)flags), ((void**)(*(void**)_basePtr))[12]);
         }
 
-        public DSResult Stop()
+        public void Stop()
+        {
+            DirectSoundException.Try(StopNative(), c, "Stop");
+        }
+
+        public DSResult StopNative()
         {
             return InteropCalls.CalliMethodPtr(_basePtr, ((void**)(*(void**)_basePtr))[18]);
         }
 
-        public DSResult Restore()
+        public void Restore()
+        {
+            DirectSoundException.Try(RestoreNative(), c, "Restore");
+        }
+
+        public DSResult RestoreNative()
         {
             return InteropCalls.CalliMethodPtr(_basePtr, ((void**)(*(void**)_basePtr))[20]);
         }
@@ -103,7 +123,12 @@ namespace CSCore.SoundOut.DirectSound
             }
         }
 
-        public DSResult SetCurrentPosition(int playPosition)
+        public void SetCurrentPosition(int playPosition)
+        {
+            DirectSoundException.Try(SetCurrentPositionNative(playPosition), c, "SetCurrentPosition");
+        }
+
+        public DSResult SetCurrentPositionNative(int playPosition)
         {
             return InteropCalls.CalliMethodPtr(_basePtr, playPosition, ((void**)(*(void**)_basePtr))[13]);
         }
@@ -170,15 +195,27 @@ namespace CSCore.SoundOut.DirectSound
             return InteropCalls.CalliMethodPtr(_basePtr, volume, ((void**)(*(void**)_basePtr))[15]);
         }
 
-        public DSResult SetVolume(float volume)
+        public void SetVolume(double volume)
         {
-            if (volume == 0)
-                volume = 0.00001f;
-            int dvolume = (int)(20 * Math.Log(volume));
-            dvolume *= 100;
-            dvolume = Math.Max(MinVolume, dvolume);
-            dvolume = Math.Min(MaxVolume, dvolume);
-            return SetVolume(dvolume);
+            DirectSoundException.Try(SetVolumeNative(volume), c, "SetVolume");
+        }
+
+        public DSResult SetVolumeNative(double volume)
+        {
+            int dwvolume = MinVolume;
+            if (volume != 0)
+            {
+                const double dv = 10.0;
+                const double z0 = 0.69314718055994529; //ln(2)
+
+                double attenuation = MinAttentuation + volume * (1 - MinAttentuation);
+                double db = dv * Math.Log(attenuation) / z0;
+                dwvolume = (int)(db * 100);
+
+                dwvolume = Math.Max(MinVolume, Math.Min(dwvolume, MaxVolume));
+            }
+
+            return SetVolume(dwvolume);
         }
 
         public DSResult GetVolume(out int volume)
@@ -189,22 +226,29 @@ namespace CSCore.SoundOut.DirectSound
             }
         }
 
-        public DSResult GetVolume(out float volume)
+        public DSResult GetVolume(out double volume)
         {
-            int dvolume;
-            var result = GetVolume(out dvolume);
-            dvolume /= 100;
-            volume = (float)Math.Pow(10.0, (double)dvolume / 20.0);
-            volume = Math.Min(1, volume);
-            volume = Math.Max(0, volume);
-            if (volume == 0.00001f)
-                volume = 0;
+            int dwvolume;
+            DSResult result = GetVolume(out dwvolume);
+
+            if (result != DSResult.DS_OK)
+            {
+                volume = 0f;
+            }
+            else
+            {
+                const double z1 = 0.001; //(1/100)/(dv)
+                volume = (MinAttentuation - Math.Pow(2, z1 * dwvolume)) / (MinAttentuation - 1);
+
+                volume = Math.Min(1, Math.Max(0, volume));
+            }
+
             return result;
         }
 
-        public float GetVolume()
+        public double GetVolume()
         {
-            float volume;
+            double volume;
             DirectSoundException.Try(GetVolume(out volume), "IDirectSoundBuffer", "GetVolume");
             return volume;
         }

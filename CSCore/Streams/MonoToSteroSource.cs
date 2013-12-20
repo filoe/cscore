@@ -5,9 +5,6 @@ using System.Text;
 
 namespace CSCore.Streams
 {
-    /// <summary>
-    /// Todo: Testing
-    /// </summary>
     public class MonoToStereoSource : SampleSourceBase
     {
         private WaveFormat _waveFormat;

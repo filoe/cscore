@@ -19,7 +19,7 @@ namespace Visualization3D
 {
     public class VisualizationRoot : RenderForm, IDisposable
     {
-        private const int bands = 128 * 4;
+        private const int bands = 64;
 
         private InputManager _input;
         private DeviceManager _deviceManager;
@@ -101,7 +101,7 @@ namespace Visualization3D
             _camera.Update(time);
 
             if (_autoRotate && _camera.EnableMouse == false)
-                view = Matrix.RotationY((_rotation += (time * 0.2f)));
+                view = Matrix.RotationY((_rotation += (time * 1.0f)));
             else
             {
                 _rotation = 0f;

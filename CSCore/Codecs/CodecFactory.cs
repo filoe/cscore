@@ -105,29 +105,39 @@ namespace CSCore.Codecs
 
         public IWaveSource GetCodec(string filename)
         {
+            return GetCodec(new Uri(filename));
+        }
+
+        public IWaveSource GetCodec(Uri uri)
+        {
+            if (uri == null)
+                throw new ArgumentNullException("filename");
+
             try
             {
-                Uri uri = new Uri(filename);
                 if (uri.IsFile)
                 {
-                    var extension = Path.GetExtension(filename).Remove(0, 1);
+                    if (!File.Exists(uri.OriginalString))
+                        throw new FileNotFoundException("File not found.", uri.OriginalString);
+
+                    var extension = Path.GetExtension(uri.OriginalString).Remove(0, 1);
                     foreach (var codecEntry in _codecs)
                     {
                         try
                         {
                             if (codecEntry.Value.FileExtensions.Contains(extension))
-                                return codecEntry.Value.GetCodecAction(File.OpenRead(filename));
+                                return codecEntry.Value.GetCodecAction(File.OpenRead(uri.OriginalString));
                         }
                         catch (Exception)
                         {
                             
                         }
                     }
-                    return Default(filename);
+                    return Default(uri.OriginalString);
                 }
                 else
                 {
-                    return Default(filename);
+                    return Default(uri.OriginalString);
                 }
             }
             catch (IOException)

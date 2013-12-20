@@ -41,5 +41,34 @@ namespace CSCore.MediaFoundation
         public static extern int MFTEnumEx([In] Guid category, [In] MFTEnumFlags enumflags,
             [In] MFTRegisterTypeInfo inputtype, [In] MFTRegisterTypeInfo outputType,
             [Out] out IntPtr pppMftActivate, [Out] out int mftCount);
+
+        [DllImport("mfplat.dll", EntryPoint = "MFCreateAttributes")]
+        public static extern int ExternMFCreateAttributes(
+            [Out, MarshalAs(UnmanagedType.Interface)] out IMFAttributes ppMFAttributes,
+            [In] uint cInitialSize);
+
+        [DllImport("Mfreadwrite.dll", EntryPoint="MFCreateSinkWriterFromURL")]
+        public static extern int ExternMFCreateSinkWriterFromURL(
+            [In, MarshalAs(UnmanagedType.LPWStr)] string pwszOutputURL,
+            [In, MarshalAs(UnmanagedType.Interface)] IMFByteStream pByteStream,
+            [In, MarshalAs(UnmanagedType.Interface)] IMFAttributes pAttributes,
+            [Out] out IntPtr ppSinkWriter);
+
+        [DllImport("mfplat.dll", ExactSpelling = true)]
+        public static extern int MFCreateMemoryBuffer(
+            int cbMaxLength, [Out] out IntPtr ppBuffer);
+
+        [DllImport("mfplat.dll", ExactSpelling = true)]
+        public static extern int MFCreateSample([Out] out IntPtr ppIMFSample);
+
+        [DllImport("mfplat.dll", ExactSpelling = true)]
+        public static extern int MFInitMediaTypeFromWaveFormatEx([In] IntPtr pMFType, [In] WaveFormat pWaveFormat, [In] int cbBufSize);
+
+        [DllImport("mf.dll", ExactSpelling = true)]
+        public static extern int MFTranscodeGetAudioOutputAvailableTypes(
+            [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidSubType,
+            [In] MFTEnumFlags dwMFTFlags,
+            [In] IMFAttributes pCodecConfig,
+            [Out, MarshalAs(UnmanagedType.Interface)] out IMFCollection ppAvailableTypes);
     }
 }

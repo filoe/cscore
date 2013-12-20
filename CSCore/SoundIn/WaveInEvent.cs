@@ -26,14 +26,14 @@ namespace CSCore.SoundIn
             MmException.Try(result, "waveInOpen");
         }
 
-        protected override void OnStart()
+        protected override void OnStarted()
         {
             //ThreadPool.QueueUserWorkItem(new WaitCallback(EventProc));
             _thread = new Thread(new ParameterizedThreadStart(EventProc));
             _thread.Start();
         }
 
-        protected override void OnStop()
+        protected override void OnStopped()
         {
             _event.Set();
         }

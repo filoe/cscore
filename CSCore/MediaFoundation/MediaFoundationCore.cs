@@ -37,6 +37,14 @@ namespace CSCore.MediaFoundation
             Marshal.FreeCoTaskMem(ptr);
         }
 
+        public static MFSinkWriter CreateSinkWriterFromMFByteStream(IMFByteStream byteStream, IMFAttributes attributes)
+        {
+            IntPtr p;
+            int result = MFInterops.ExternMFCreateSinkWriterFromURL(null, byteStream, attributes, out p);
+            MediaFoundationException.Try(result, "Interops", "MFCreateSinkWriterFromURL");
+            return new MFSinkWriter(p);
+        }
+
         public static bool IsTransformAvailable(IEnumerable<MFActivate> transforms, Guid transformGuid)
         {
             foreach (var t in transforms)
@@ -105,6 +113,93 @@ namespace CSCore.MediaFoundation
             IntPtr mediaType;
             MediaFoundationException.Try(MFInterops.MFCreateMediaType(out mediaType), "Interops", "MFCreateMediaType");
             return new MFMediaType(mediaType);
+        }
+
+        public static IMFAttributes CreateEmptyAttributes(uint initialSize)
+        {
+            IMFAttributes attributes;
+            int result = MFInterops.ExternMFCreateAttributes(out attributes, initialSize);
+            if (result < 0)
+            {
+                MediaFoundationException.Try(result, "Interops", "MFCreateAttributes");
+            }
+
+            return attributes;
+        }
+
+        public static IntPtr CreateMemoryBuffer(int length)
+        {
+            IntPtr ptr;
+            MediaFoundationException.Try(MFInterops.MFCreateMemoryBuffer(length, out ptr), "Interops", "MFCreateMemoryBuffer");
+            return ptr;
+        }
+
+        public static IntPtr CreateEmptySample()
+        {
+            IntPtr ptr;
+            MediaFoundationException.Try(MFInterops.MFCreateSample(out ptr), "Interops", "MFCreateSample");
+            return ptr;
+        }
+
+        public static MFMediaType MediaTypeFromWaveFormat(WaveFormat waveFormat)
+        {
+            var mediaType = MFMediaType.CreateEmpty();
+            int result = MFInterops.MFInitMediaTypeFromWaveFormatEx(mediaType.BasePtr, waveFormat, Marshal.SizeOf(waveFormat));
+            MediaFoundationException.Try(result, "Interops", "MFInitMediaTypeFromWaveFormatEx");
+            return mediaType;
+        }
+
+        public static MFMediaType[] GetEncoderMediaTypes(Guid audioSubType)
+        {
+            IMFCollection collection;
+            try
+            {
+                MediaFoundationException.Try(MFInterops.MFTranscodeGetAudioOutputAvailableTypes(audioSubType, MFTEnumFlags.All, null, out collection),
+                    "Interops",
+                    "MFTranscodeGetAudioOutputAvailableTypes");
+
+                int count;
+                MediaFoundationException.Try(collection.GetElementCount(out count), "IMFCollection", "GetElementCount");
+                MFMediaType[] mediaTypes = new MFMediaType[count];
+                for (int i = 0; i < count; i++)
+                {
+                    IntPtr ptr;
+                    MediaFoundationException.Try(collection.GetElement(i, out ptr), "IMFCollection", "GetElement");
+
+                    mediaTypes[i] = new MFMediaType(ptr);
+                }
+
+                Marshal.ReleaseComObject(collection);
+
+                return mediaTypes;
+            }
+            catch (MediaFoundationException ex)
+            {
+                if (ex.ErrorCode == unchecked((int)0xC00D36D5)) // MF_E_NOT_FOUND
+                {
+                    return Enumerable.Empty<MFMediaType>().ToArray();
+                }
+
+                throw;
+            }
+        }
+
+        public static int[] GetEncoderBitrates(Guid audioSubType, int sampleRate, int channels)
+        {
+            var mediaTypes = GetEncoderMediaTypes(audioSubType);
+            List<int> bitRates = new List<int>();
+
+            foreach (var mediaType in mediaTypes)
+            {
+                if (mediaType.SampleRate == sampleRate && mediaType.Channels == channels)
+                {
+                    int t = mediaType.AverageBytesPerSecond * 8;
+                    if (!bitRates.Contains(t))
+                        bitRates.Add(t);
+                }
+            }
+
+            return bitRates.OrderBy(x => x).ToArray();
         }
     }
 }

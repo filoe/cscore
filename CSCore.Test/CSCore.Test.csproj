@@ -198,12 +198,15 @@
     <Compile Include="CoreAudioAPI\MMDevicesTests.cs" />
     <Compile Include="MediaFoundation\BasicMediaFoundationTests.cs" />
     <Compile Include="ACM\AcmDriverTests.cs" />
+    <Compile Include="MediaFoundation\MediafoundationEncoderTests.cs" />
+    <Compile Include="SoundOut\SoundOutBehaviourTest.cs" />
     <Compile Include="Streams\BufferSourceTest.cs" />
     <Compile Include="Utils\BitReaderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DirectSound\DirectSoundTests.cs" />
     <Compile Include="DMO\ResamplerTests.cs" />
     <Compile Include="CoreAudioAPI\AudioClientTests.cs" />
+    <Compile Include="Utils\DisposableSource.cs" />
     <Compile Include="WaveInOut\WaveInTests.cs" />
     <Compile Include="WaveInOut\WaveOutTests.cs" />
   </ItemGroup>

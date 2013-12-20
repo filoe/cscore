@@ -35,7 +35,7 @@ namespace CSCoreDemo.Model
                 _notification.DataRead += OnNotification;
 
                 source = _notification.ToWaveSource(16);
-                source = new BufferSource(source, source.WaveFormat.BytesPerSecond * 2);
+                //source = new BufferSource(source, source.WaveFormat.BytesPerSecond * 2);
 
                 _source = source;
 

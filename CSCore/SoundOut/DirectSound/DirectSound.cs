@@ -60,12 +60,25 @@ namespace CSCore.SoundOut.DirectSound
             return result;
         }
 
-        public DSResult SetCooperativeLevel(IntPtr hWnd, DSCooperativeLevelType level)
+        public void SetCooperativeLevel(IntPtr hWnd, DSCooperativeLevelType level)
+        {
+            DirectSoundException.Try(SetCooperativeLevelNative(hWnd, level), "IDirectSound8", "SetCooperativeLevel");
+        }
+
+        public DSResult SetCooperativeLevelNative(IntPtr hWnd, DSCooperativeLevelType level)
         {
             return InteropCalls.CalliMethodPtr(_basePtr, hWnd.ToPointer(), unchecked((int)level), ((void**)(*(void**)_basePtr))[6]);
         }
 
-        public DSResult CreateSoundBuffer(DSBufferDescription bufferDesc, out IntPtr soundBuffer, IntPtr pUnkOuter)
+        public IntPtr CreateSoundBuffer(DSBufferDescription bufferDesc, IntPtr pUnkOuter)
+        {
+            IntPtr soundBuffer;
+            DirectSoundException.Try(CreateSoundBufferNative(bufferDesc, out soundBuffer, pUnkOuter),
+                "IDirectSound8", "CreateSoundBuffer");
+            return soundBuffer;
+        }
+
+        public DSResult CreateSoundBufferNative(DSBufferDescription bufferDesc, out IntPtr soundBuffer, IntPtr pUnkOuter)
         {
             fixed (void* ptrsoundbuffer = &soundBuffer)
             {

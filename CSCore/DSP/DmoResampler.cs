@@ -95,6 +95,9 @@ namespace CSCore.DSP
                         if (bytesRead <= 0)
                             break;
 
+                        if (_disposed)
+                            break;
+
                         if (_inputBuffer.MaxLength < bytesRead)
                         {
                             _inputBuffer.Dispose();
@@ -203,13 +206,28 @@ namespace CSCore.DSP
             Dispose();
         }
 
+        private bool _disposed = false;
         protected override void Dispose(bool disposing)
         {
+            if (!disposing)
+                DisposeBaseSource = false;
             base.Dispose(disposing);
-            _resampler.Dispose();
+
+            DisposeAndReset(ref _resampler);
             _outputBuffer.Dispose();
-            _inputBuffer.Dispose();
-            _nativeObject.Dispose();
+            DisposeAndReset(ref _inputBuffer);
+            DisposeAndReset(ref _nativeObject);
+
+            _disposed = true;
+        }
+
+        private void DisposeAndReset<T>(ref T obj) where T : class, IDisposable
+        {
+            if (obj != null)
+            {
+                obj.Dispose();
+                obj = null;
+            }
         }
     }
 }

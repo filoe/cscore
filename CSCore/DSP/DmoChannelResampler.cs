@@ -40,7 +40,7 @@ namespace CSCore.DSP
             _outputformat.Channels, WaveFormatExtensible.SubTypeFromWaveFormat(_outputformat), _channelMatrix.OutputMask);
 
             Init(inputformat, outputformat);
-            DmoException.Try(_resampler.ResamplerProps.SetUserChannelMtx(_channelMatrix.GetMatrix()), "IWMResamplerProps", "SetUserChannelMtx");
+            _resampler.ResamplerProps.SetUserChannelMtx(_channelMatrix.GetMatrix());
         }
     }
 }
