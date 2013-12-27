@@ -38,6 +38,11 @@ namespace CSCore.CoreAudioAPI
             }
         }
 
+        public string FriendlyName
+        {
+            get { return PropertyStore[PropertyStore.FriendlyName].ToString(); }
+        }
+
         public DeviceState DeviceState
         {
             get

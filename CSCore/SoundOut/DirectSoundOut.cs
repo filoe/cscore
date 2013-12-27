@@ -100,12 +100,13 @@ namespace CSCore.SoundOut
 
             _playbackThread.WaitForExit();
 
-            if (_isInitialized)
-                throw new InvalidOperationException("DirectSoundOut is already initialized. Call DirectSoundOut::Stop to uninitialize DirectSoundOut.");
+            //if (_isInitialized)
+            //    throw new InvalidOperationException("DirectSoundOut is already initialized. Call DirectSoundOut::Stop to uninitialize DirectSoundOut.");
 
 
             _source = source;
 
+            CleanupRessources();
             InitializeInternal();
             _isInitialized = true;
 
@@ -160,6 +161,10 @@ namespace CSCore.SoundOut
             {
                 _playbackThread.WaitForExit();
                 _playbackThread = null;
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("DirectSoundOut is already stopped.");
             }
         }
 
@@ -319,7 +324,20 @@ namespace CSCore.SoundOut
             }
             finally
             {
-                CleanupRessources();
+                if (_directSoundNotify != null)
+                {
+                    _directSoundNotify.Dispose();
+                    _directSoundNotify = null;
+                }
+                if (_secondaryBuffer != null)
+                {
+                    _secondaryBuffer.Stop();
+                }
+                if (_primaryBuffer != null)
+                {
+                    _primaryBuffer.Stop();
+                }
+                
                 if (waitHandles != null)
                 {
                     foreach (var wh in waitHandles)
@@ -381,6 +399,11 @@ namespace CSCore.SoundOut
 
         private void CleanupRessources()
         {
+            if (_directSoundNotify != null)
+            {
+                _directSoundNotify.Dispose();
+                _directSoundNotify = null;
+            }
             if (_secondaryBuffer != null)
             {
                 _secondaryBuffer.Stop();
@@ -392,11 +415,6 @@ namespace CSCore.SoundOut
                 _primaryBuffer.Stop();
                 _primaryBuffer.Dispose();
                 _primaryBuffer = null;
-            }
-            if (_directSoundNotify != null)
-            {
-                _directSoundNotify.Dispose();
-                _directSoundNotify = null;
             }
 
             if (_directSound != null)

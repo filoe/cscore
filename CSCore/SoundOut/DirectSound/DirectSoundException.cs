@@ -17,7 +17,7 @@ namespace CSCore.SoundOut.DirectSound
         public string Member { get; private set; }
 
         public DirectSoundException(DSResult result, string interfaceName, string member)
-            : base(String.Format("{0}.{1} returned {2}", interfaceName, member, result), (int)result)
+            : base(String.Format("{0}.{1} returned 0x{2:x} ({3})", interfaceName, member, result, result), (int)result)
         {
             Result = result;
             InterfaceName = interfaceName;

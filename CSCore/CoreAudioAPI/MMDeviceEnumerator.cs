@@ -1,5 +1,6 @@
 ﻿using CSCore.Win32;
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace CSCore.CoreAudioAPI

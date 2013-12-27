@@ -10,16 +10,17 @@ namespace CSCore.Test.SoundOut
 {
     /// <summary>
     /// NOTE: All these tests may throw an CoreAudioAPIException with the errorcode AUDCLNT_E_CPUUSAGE_EXCEEDED (0x88890017).
-    /// Why that happens, you can read here: http://msdn.microsoft.com/en-us/library/windows/desktop/dd370875%28v=vs.85%29.aspx
+    /// Read more about it here: http://msdn.microsoft.com/en-us/library/windows/desktop/dd370875%28v=vs.85%29.aspx
     /// TODO: Fix AUDCLNT_E_CPUUSAGE_EXCEEDED
     /// </summary>
     [TestClass]
     public class SoundOutBehaviourTest
     {
-        const int basic_iteration_count = 100;
+        const int basic_iteration_count = 20;
         const int MinuteMilliseconds = 60000;
 
         [TestMethod]
+        [TestCategory("SoundOuts")]
         [Timeout(2 * MinuteMilliseconds)]
         public void CanReinitializeSoundOut()
         {
@@ -30,6 +31,7 @@ namespace CSCore.Test.SoundOut
         }
 
         [TestMethod]
+        [TestCategory("SoundOuts")]
         [Timeout(2 * MinuteMilliseconds)]
         public void CanHandleEOF()
         {
@@ -40,6 +42,17 @@ namespace CSCore.Test.SoundOut
         }
 
         [TestMethod]
+        [TestCategory("SoundOuts")]
+        public void CanHandleEOFOnReplay()
+        {
+            SoundOutTests((soundOut, source) =>
+            {
+                CanHandleEOFOnReplayTestInternal(soundOut, source);
+            });
+        }
+
+        [TestMethod]
+        [TestCategory("SoundOuts")]
         public void PlayPauseResumeBehaviourTest()
         {
             SoundOutTests((soundOut, source) =>
@@ -49,6 +62,7 @@ namespace CSCore.Test.SoundOut
         }
 
         [TestMethod]
+        [TestCategory("SoundOuts")]
         [Timeout(2 * MinuteMilliseconds)]
         public void VolumeResetTest()
         {
@@ -59,6 +73,7 @@ namespace CSCore.Test.SoundOut
         }
 
         [TestMethod]
+        [TestCategory("SoundOuts")]
         [Timeout(2 * MinuteMilliseconds)]
         public void PlaybackStoppedEventTest()
         {
@@ -69,6 +84,7 @@ namespace CSCore.Test.SoundOut
         }
 
         [TestMethod]
+        [TestCategory("SoundOuts")]
         [Timeout(2 * MinuteMilliseconds)]
         [ExpectedException(typeof(ObjectDisposedException))]
         public void ThrowsObjectDisposedException()
@@ -85,6 +101,7 @@ namespace CSCore.Test.SoundOut
         }
 
         [TestMethod]
+        [TestCategory("SoundOuts")]
         [Timeout(2 * MinuteMilliseconds)]
         [ExpectedException(typeof(InvalidOperationException))]
         public void ThrowsInvalidCallerThread()
@@ -120,6 +137,7 @@ namespace CSCore.Test.SoundOut
         }
 
         [TestMethod]
+        [TestCategory("SoundOuts")]
         [Timeout(2 * MinuteMilliseconds)]
         public void SoundOutSourceBehaviour()
         {
@@ -128,12 +146,17 @@ namespace CSCore.Test.SoundOut
                 var source = GetWaveSource();
                 source = new Utils.DisposableSource(source);
 
+                Assert.AreEqual(PlaybackState.Stopped, soundOut.PlaybackState);
                 soundOut.Initialize(source);
+                Assert.AreEqual(PlaybackState.Stopped, soundOut.PlaybackState);
                 soundOut.Play();
+                Assert.AreEqual(PlaybackState.Playing, soundOut.PlaybackState);
                 Thread.Sleep(20);
                 soundOut.Pause();
+                Assert.AreEqual(PlaybackState.Paused, soundOut.PlaybackState);
                 Thread.Sleep(20);
                 soundOut.Resume();
+                Assert.AreEqual(PlaybackState.Playing, soundOut.PlaybackState);
                 Thread.Sleep(20);
                 soundOut.Dispose();
 
@@ -162,12 +185,28 @@ namespace CSCore.Test.SoundOut
 
         private ISoundOut[] GetSoundOuts()
         {
-            return new ISoundOut[]{ new WasapiOut(), new DirectSoundOut() };
+            return new ISoundOut[] { new WasapiOut(), new DirectSoundOut() };
         }
 
         private IWaveSource GetWaveSource()
         {
             return CodecFactory.Instance.GetCodec(@"C:\Temp\200msSin.wav");
+        }
+
+        private void CanHandleEOFOnReplayTestInternal(ISoundOut soundOut, IWaveSource source)
+        {
+            EventWaitHandle waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
+            soundOut.Initialize(source);
+            soundOut.Stopped += (s, e) => waitHandle.Set();
+
+            for (int i = 0; i < basic_iteration_count; i++)
+            {
+                soundOut.Play();
+                waitHandle.WaitOne();
+                Assert.AreEqual(source.Length, source.Position, "Source is not EOF");
+                Assert.AreEqual(PlaybackState.Stopped, soundOut.PlaybackState);
+                source.Position = 0;
+            }
         }
 
         private void CanReinitializeSoundOutTestInternal(ISoundOut soundOut, IWaveSource source)
@@ -188,12 +227,14 @@ namespace CSCore.Test.SoundOut
 
         private void CanHandleEOFTestInternal(ISoundOut soundOut, IWaveSource source)
         {
+            int sourceLength = (int)source.GetLength().TotalMilliseconds;
             for (int i = 0; i < basic_iteration_count; i++)
             {
                 soundOut.Initialize(source);
                 soundOut.Play();
 
-                Thread.Sleep(250);
+                Thread.Sleep(sourceLength + 30);
+                Assert.AreEqual(source.Length, source.Position, "Source is not EOF");
 
                 soundOut.Stop();
                 source.Position = 0;
@@ -201,7 +242,8 @@ namespace CSCore.Test.SoundOut
                 soundOut.Initialize(source);
                 soundOut.Play();
 
-                Thread.Sleep(250);
+                Thread.Sleep(sourceLength + 30);
+                Assert.AreEqual(source.Length, source.Position, "Source is not EOF");
 
                 soundOut.Pause();
                 soundOut.Resume();
@@ -209,6 +251,19 @@ namespace CSCore.Test.SoundOut
                 Thread.Sleep(10);
 
                 soundOut.Stop();
+
+                source.Position = 0;
+                soundOut.Initialize(source);
+                soundOut.Play();
+
+                Thread.Sleep(sourceLength + 50);
+                Assert.AreEqual(source.Length, source.Position, "Source is not EOF");
+
+                source.Position = 0;
+                soundOut.Play();
+
+                Thread.Sleep(sourceLength + 100);
+                Assert.AreEqual(source.Length, source.Position, "Source is not EOF");
             }
         }
 
@@ -268,6 +323,23 @@ namespace CSCore.Test.SoundOut
                 soundOut.Resume();
                 Assert.AreEqual(PlaybackState.Playing, soundOut.PlaybackState);
                 //--
+
+                soundOut.Stop();
+                Assert.AreEqual(PlaybackState.Stopped, soundOut.PlaybackState);
+
+                soundOut.Play();
+                Assert.AreEqual(PlaybackState.Playing, soundOut.PlaybackState);
+
+                Thread.Sleep(10);
+
+                soundOut.Stop();
+                Assert.AreEqual(PlaybackState.Stopped, soundOut.PlaybackState);
+
+                soundOut.Play();
+                Assert.AreEqual(PlaybackState.Playing, soundOut.PlaybackState);
+
+
+                //--
                 soundOut.Stop();
                 Assert.AreEqual(PlaybackState.Stopped, soundOut.PlaybackState);
                 source.Position = 0;
@@ -291,7 +363,7 @@ namespace CSCore.Test.SoundOut
 
         private void PlaybackStoppedEventTestInternal(ISoundOut soundOut, IWaveSource source)
         {
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < basic_iteration_count; i++)
             {
                 bool raised = false;
                 soundOut.Stopped += (s, e) => raised = true;

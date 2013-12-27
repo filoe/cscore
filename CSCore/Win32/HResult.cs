@@ -3,6 +3,7 @@
     public enum HResult : int
     {
         S_OK = 0x0,
+        S_FALSE = 0x1,
         E_ABORT = unchecked((int)0x80004004),
         E_ACCESSDENIED = unchecked((int)0x80070005),
         E_NOINTERFACE = unchecked((int)0x80004002),

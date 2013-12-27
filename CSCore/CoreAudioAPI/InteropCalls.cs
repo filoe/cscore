@@ -210,5 +210,17 @@ namespace CSCore.CoreAudioAPI
         {
             throw new NotImplementedException();
         }
+
+        [CSCalli]
+        internal static unsafe int CallI(void* _basePtr, Guid* guid, int streamFlags, IntPtr* intPtr, void* p)
+        {
+            throw new NotImplementedException();
+        }
+
+        [CSCalli]
+        internal static unsafe int CallI(void* _basePtr, Guid* guid, NativeBool crossProcessSession, IntPtr* intPtr, void* p)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

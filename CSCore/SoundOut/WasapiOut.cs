@@ -128,10 +128,11 @@ namespace CSCore.SoundOut
 
 			_playbackThread.WaitForExit();
 
-            if (_isInitialized)
-                throw new InvalidOperationException("Wasapi is already initialized. Call WasapiOut::Stop to uninitialize Wasapi.");
+            //if (_isInitialized)
+            //    throw new InvalidOperationException("Wasapi is already initialized. Call WasapiOut::Stop to uninitialize Wasapi.");
 
 			_source = source;
+            CleanupResources();
 			InitializeInternal();
             _isInitialized = true;
 		}
@@ -145,11 +146,13 @@ namespace CSCore.SoundOut
 		{
 			CheckForDisposed();
 			CheckForInvalidThreadCall();
+            CheckForIsInitialized();
 
 			if (PlaybackState == SoundOut.PlaybackState.Stopped)
 			{
 				using (var waitHandle = new AutoResetEvent(false))
 				{
+                    _playbackThread.WaitForExit(); //just to be sure that the thread finished already. Should not be necessary because after Stop(), Initialize() has to be called which already waits until the playbackthread stopped.
 					_playbackThread = new Thread(new ParameterizedThreadStart(PlaybackProc))
 					{
 						Name = "WASAPI Playback-Thread; ID = " + DebuggingID,
@@ -185,7 +188,7 @@ namespace CSCore.SoundOut
 				_playbackThread.WaitForExit(); //possible deadlock
 				_playbackThread = null;
 			}
-			else if (_playbackThread != null)
+			else if (_playbackState == SoundOut.PlaybackState.Stopped && _playbackThread != null)
 			{
 				/*
 				 * On EOF playbackstate is Stopped, but thread is not stopped. => 
@@ -208,6 +211,7 @@ namespace CSCore.SoundOut
 		{
 			CheckForDisposed();
 			CheckForInvalidThreadCall();
+            CheckForIsInitialized();
 
             if (_playbackState == SoundOut.PlaybackState.Paused)
             {
@@ -297,6 +301,7 @@ namespace CSCore.SoundOut
 								!(_source is DmoResampler &&
 									((DmoResampler)_source).OutputToInput(framesReadyToFill * frameSize) <= 0)) //avoid conversion errors
 							{
+                                Debug.WriteLine(framesReadyToFill);
 								if (!FeedBuffer(_renderClient, buffer, framesReadyToFill, frameSize))
 								{
 									_playbackState = PlaybackState.Stopped; //TODO: Fire Stopped-event here
@@ -308,12 +313,12 @@ namespace CSCore.SoundOut
 					Thread.Sleep(_latency / 2);
 
 					_audioClient.Stop();
-					_audioClient.Reset();
+                    _audioClient.Reset();
 				}
 			}
 			finally
 			{
-				CleanupResources();
+				//CleanupResources();
 				RaiseStopped();
 			}
 		}
@@ -329,6 +334,12 @@ namespace CSCore.SoundOut
 			if (_disposed)
 				throw new ObjectDisposedException("WasapiOut");
 		}
+
+        private void CheckForIsInitialized()
+        {
+            if (!_isInitialized)
+                throw new InvalidOperationException("WasapiOut is not initialized.");
+        }
 
 		private void InitializeInternal()
 		{
@@ -370,13 +381,32 @@ namespace CSCore.SoundOut
 				_source = null;
 			}
 
-			if (_renderClient != null)
-				_renderClient.Dispose();
-			if (_audioClient != null)
-				_audioClient.Dispose();
-			if (_simpleAudioVolume != null)
-				_simpleAudioVolume = null;
-
+            if (_renderClient != null)
+            {
+                _renderClient.Dispose();
+                _renderClient = null;
+            }
+            if (_audioClient != null)
+            {
+                try
+                {
+                    _audioClient.Reset();
+                }
+                catch (CoreAudioAPIException ex)
+                {
+                    if (ex.ErrorCode != unchecked((int)0x88890001)) //AUDCLNT_E_NOT_INITIALIZED
+                    {
+                        throw;
+                    }
+                }
+                _audioClient.Dispose();
+                _audioClient = null;
+            }
+            if (_simpleAudioVolume != null)
+            {
+                _simpleAudioVolume.Dispose();
+                _simpleAudioVolume = null;
+            }
 			if (_eventWaitHandle != null)
 			{
 				_eventWaitHandle.Close();

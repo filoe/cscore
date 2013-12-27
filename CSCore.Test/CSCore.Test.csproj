@@ -193,6 +193,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="CoreAudioAPI\AudioSessionTests.cs" />
     <Compile Include="CoreAudioAPI\Utils.cs" />
     <Compile Include="CoreAudioAPI\EndpointTests.cs" />
     <Compile Include="CoreAudioAPI\MMDevicesTests.cs" />
@@ -208,7 +209,7 @@
     <Compile Include="CoreAudioAPI\AudioClientTests.cs" />
     <Compile Include="Utils\DisposableSource.cs" />
     <Compile Include="WaveInOut\WaveInTests.cs" />
-    <Compile Include="WaveInOut\WaveOutTests.cs" />
+    <None Include="WaveInOut\WaveOutTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSCore\CSCore.csproj">

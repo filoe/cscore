@@ -84,12 +84,13 @@ namespace CSCore.CoreAudioAPI
         /// </remarks>
         public unsafe int RegisterControlChangeNotifyNative(IAudioEndpointVolumeCallback notify)
         {
+            int result = 0;
             if (!_notifies.Contains(notify))
             {
+                result = InteropCalls.CallI(_basePtr, Marshal.GetComInterfaceForObject(notify, typeof(IAudioEndpointVolumeCallback)), ((void**)(*(void**)_basePtr))[3]);
                 _notifies.Add(notify);
-                return InteropCalls.CallI(_basePtr, Marshal.GetComInterfaceForObject(notify, typeof(IAudioEndpointVolumeCallback)), ((void**)(*(void**)_basePtr))[3]);
             }
-            return 0;
+            return result;
         }
 
         /// <summary>
@@ -116,12 +117,13 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT</returns>
         public unsafe int UnregisterControlChangeNotifyNative(IAudioEndpointVolumeCallback notify)
         {
+            int result = 0;
             if (_notifies.Contains(notify))
             {
+                result = InteropCalls.CallI(_basePtr, Marshal.GetComInterfaceForObject(notify, typeof(IAudioEndpointVolumeCallback)), ((void**)(*(void**)_basePtr))[4]);
                 _notifies.Remove(notify);
-                return InteropCalls.CallI(_basePtr, Marshal.GetComInterfaceForObject(notify, typeof(IAudioEndpointVolumeCallback)), ((void**)(*(void**)_basePtr))[4]);
             }
-            return 0;
+            return result;
         }
 
         /// <summary>

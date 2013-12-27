@@ -9,7 +9,7 @@ using System.Text;
 namespace CSCore.Test.WaveInOut
 {
     [TestClass]
-    internal class WaveInTests
+    public class WaveInTests
     {
         [TestMethod]
         [TestCategory("WaveIn")]
@@ -25,9 +25,11 @@ namespace CSCore.Test.WaveInOut
         [TestCategory("WaveIn")]
         public void CanCreateWaveInDevice()
         {
-            WaveIn waveIn = new WaveIn();
-            waveIn.Initialize();
-            waveIn.Dispose();
+            using (WaveIn waveIn = new WaveIn())
+            {
+                waveIn.Initialize();
+                waveIn.Start();
+            }
         }
     }
 }
