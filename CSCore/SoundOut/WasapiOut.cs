@@ -41,7 +41,7 @@ namespace CSCore.SoundOut
 		public event EventHandler Stopped;
 
 		/// <summary>
-		/// Gets whether Wasapi is supported on the current
+		/// Gets whether Wasapi is supported on the current Platform.
 		/// </summary>
 		public static bool IsSupportedOnCurrentPlatform
 		{
@@ -98,7 +98,7 @@ namespace CSCore.SoundOut
         public WasapiOut(bool eventSync, AudioClientShareMode shareMode, int latency, ThreadPriority playbackThreadPriority, SynchronizationContext eventSyncContext)
         {
             if (!IsSupportedOnCurrentPlatform)
-                throw new PlatformNotSupportedException("Supported since Windows Vista");
+                throw new PlatformNotSupportedException("Wasapi is only supported on Windows Vista and above.");
 
             if (latency <= 0)
                 throw new ArgumentOutOfRangeException("latency");

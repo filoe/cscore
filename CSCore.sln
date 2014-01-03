@@ -28,8 +28,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{41D1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Recorder", "Samples\Recorder\Recorder.csproj", "{637070BF-4FD2-4DF9-838F-1C42E7BDAE74}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Visualization3D", "Samples\Visualization3D\Visualization3D.csproj", "{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFVisualisation", "Samples\WPFVisualization\WPFVisualisation.csproj", "{39CA238F-8843-44F8-9A5B-B80D985623BC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSCoreDemo", "Samples\CSCoreDemo\CSCoreDemo.csproj", "{ADF940CC-4CD2-4751-8DDC-C53342D418F6}"
@@ -38,7 +36,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EqualizerTest", "Samples\Eq
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 11
+		SccNumberOfProjects = 10
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://filoe.visualstudio.com/defaultcollection
 		SccProjectUniqueName0 = Tools\\CSCli\\CSCli.csproj
@@ -92,18 +90,12 @@ Global
 		SccAuxPath8 = https://filoe.visualstudio.com/defaultcollection
 		SccLocalPath8 = Samples\\Recorder
 		SccProvider8 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName9 = Samples\\Visualization3D\\Visualization3D.csproj
+		SccProjectUniqueName9 = Samples\\WPFVisualization\\WPFVisualisation.csproj
 		SccProjectTopLevelParentUniqueName9 = CSCore.sln
-		SccProjectName9 = Samples/Visualization3D
+		SccProjectName9 = Samples/WPFVisualization
 		SccAuxPath9 = https://filoe.visualstudio.com/defaultcollection
-		SccLocalPath9 = Samples\\Visualization3D
+		SccLocalPath9 = Samples\\WPFVisualization
 		SccProvider9 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName10 = Samples\\WPFVisualization\\WPFVisualisation.csproj
-		SccProjectTopLevelParentUniqueName10 = CSCore.sln
-		SccProjectName10 = Samples/WPFVisualization
-		SccAuxPath10 = https://filoe.visualstudio.com/defaultcollection
-		SccLocalPath10 = Samples\\WPFVisualization
-		SccProvider10 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug x64|Any CPU = Debug x64|Any CPU
@@ -338,6 +330,7 @@ Global
 		{A7F6B967-C505-40BD-832A-61CDFB3DDF12}.Debug x86|x86.ActiveCfg = Debug x86|x86
 		{A7F6B967-C505-40BD-832A-61CDFB3DDF12}.Debug x86|x86.Build.0 = Debug x86|x86
 		{A7F6B967-C505-40BD-832A-61CDFB3DDF12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7F6B967-C505-40BD-832A-61CDFB3DDF12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7F6B967-C505-40BD-832A-61CDFB3DDF12}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{A7F6B967-C505-40BD-832A-61CDFB3DDF12}.Debug|Mixed Platforms.Build.0 = Debug|x86
 		{A7F6B967-C505-40BD-832A-61CDFB3DDF12}.Debug|Win32.ActiveCfg = Debug|x86
@@ -554,55 +547,6 @@ Global
 		{637070BF-4FD2-4DF9-838F-1C42E7BDAE74}.Release|x64.Build.0 = Release|x64
 		{637070BF-4FD2-4DF9-838F-1C42E7BDAE74}.Release|x86.ActiveCfg = Release|x86
 		{637070BF-4FD2-4DF9-838F-1C42E7BDAE74}.Release|x86.Build.0 = Release|x86
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Debug x64|Any CPU.ActiveCfg = Debug x64|x64
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Debug x64|Any CPU.Build.0 = Debug x64|x64
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Debug x64|Mixed Platforms.ActiveCfg = Debug x64|x86
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Debug x64|Mixed Platforms.Build.0 = Debug x64|x86
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Debug x64|Win32.ActiveCfg = Debug x64|x86
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Debug x64|Win32.Build.0 = Debug x64|x86
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Debug x64|x64.ActiveCfg = Debug x64|x64
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Debug x64|x64.Build.0 = Debug x64|x64
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Debug x64|x86.ActiveCfg = Debug x64|x86
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Debug x64|x86.Build.0 = Debug x64|x86
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Debug x86|Any CPU.ActiveCfg = Debug x86|x86
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Debug x86|Any CPU.Build.0 = Debug x86|x86
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Debug x86|Mixed Platforms.ActiveCfg = Debug x86|x86
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Debug x86|Mixed Platforms.Build.0 = Debug x86|x86
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Debug x86|Win32.ActiveCfg = Debug x86|x86
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Debug x86|Win32.Build.0 = Debug x86|x86
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Debug x86|x64.ActiveCfg = Debug x86|x64
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Debug x86|x64.Build.0 = Debug x86|x64
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Debug x86|x86.ActiveCfg = Debug x86|x86
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Debug x86|x86.Build.0 = Debug x86|x86
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Debug|Win32.ActiveCfg = Debug|x86
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Debug|Win32.Build.0 = Debug|x86
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Debug|x64.ActiveCfg = Debug|x64
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Debug|x64.Build.0 = Debug|x64
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Debug|x86.ActiveCfg = Debug|x86
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Debug|x86.Build.0 = Debug|x86
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Release x64|Any CPU.ActiveCfg = Release x64|x64
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Release x64|Any CPU.Build.0 = Release x64|x64
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Release x64|Mixed Platforms.ActiveCfg = Release x64|x86
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Release x64|Mixed Platforms.Build.0 = Release x64|x86
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Release x64|Win32.ActiveCfg = Release x64|x86
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Release x64|Win32.Build.0 = Release x64|x86
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Release x64|x64.ActiveCfg = Release x64|x64
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Release x64|x64.Build.0 = Release x64|x64
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Release x64|x86.ActiveCfg = Release x64|x86
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Release x64|x86.Build.0 = Release x64|x86
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Release|Mixed Platforms.Build.0 = Release|x86
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Release|Win32.ActiveCfg = Release|x86
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Release|Win32.Build.0 = Release|x86
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Release|x64.ActiveCfg = Release|x64
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Release|x64.Build.0 = Release|x64
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Release|x86.ActiveCfg = Release|x86
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127}.Release|x86.Build.0 = Release|x86
 		{39CA238F-8843-44F8-9A5B-B80D985623BC}.Debug x64|Any CPU.ActiveCfg = Debug x64|x64
 		{39CA238F-8843-44F8-9A5B-B80D985623BC}.Debug x64|Any CPU.Build.0 = Debug x64|x64
 		{39CA238F-8843-44F8-9A5B-B80D985623BC}.Debug x64|Mixed Platforms.ActiveCfg = Debug x64|x86
@@ -738,7 +682,6 @@ Global
 		{DF810373-9060-4E71-BC91-C69C32D4FDD2} = {2476E2FD-E5EA-4EE4-A0D1-A54547A96831}
 		{9C5B4994-70C3-489D-933C-E2049C0505DB} = {1F24CB15-2CD3-432A-BE46-65CCE8A9DCF3}
 		{637070BF-4FD2-4DF9-838F-1C42E7BDAE74} = {41D1D336-13B2-488B-8A85-C0F744035F8B}
-		{C1B07EA1-8F27-45C7-AD85-80FBE1C76127} = {41D1D336-13B2-488B-8A85-C0F744035F8B}
 		{39CA238F-8843-44F8-9A5B-B80D985623BC} = {41D1D336-13B2-488B-8A85-C0F744035F8B}
 		{ADF940CC-4CD2-4751-8DDC-C53342D418F6} = {41D1D336-13B2-488B-8A85-C0F744035F8B}
 		{84AA94EB-9DAB-4255-A16E-8A8BA7DFB913} = {41D1D336-13B2-488B-8A85-C0F744035F8B}

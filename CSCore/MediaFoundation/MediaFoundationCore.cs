@@ -61,7 +61,7 @@ namespace CSCore.MediaFoundation
             if (stream == null)
                 throw new ArgumentNullException("stream");
             IMFByteStream result;
-            MediaFoundationException.Try(MFInterops.MFCreateMFByteStreamOnStream(stream, out result), "Interops", "MFCreateMFByteStreamOnStreamEx");
+            MediaFoundationException.Try(MFInterops.MFCreateMFByteStreamOnStreamEx(stream, out result), "Interops", "MFCreateMFByteStreamOnStreamEx");
             return result;
         }
 

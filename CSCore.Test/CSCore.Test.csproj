@@ -200,6 +200,7 @@
     <Compile Include="MediaFoundation\BasicMediaFoundationTests.cs" />
     <Compile Include="ACM\AcmDriverTests.cs" />
     <Compile Include="MediaFoundation\MediafoundationEncoderTests.cs" />
+    <Compile Include="SoundIn\SoundInBehaviourTests.cs" />
     <Compile Include="SoundOut\SoundOutBehaviourTest.cs" />
     <Compile Include="Streams\BufferSourceTest.cs" />
     <Compile Include="Utils\BitReaderTests.cs" />

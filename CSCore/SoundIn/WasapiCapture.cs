@@ -10,8 +10,15 @@ using System.Threading;
 namespace CSCore.SoundIn
 {
     //http://msdn.microsoft.com/en-us/library/dd370800(v=vs.85).aspx
+    /// <summary>
+    /// Provides audiocapture through Wasapi.
+    /// Minimum supported OS: Windows Vista (see IsSupportedOnCurrentPlatform property).
+    /// </summary>
     public class WasapiCapture : ISoundRecorder
     {
+        /// <summary>
+        /// Gets whether Wasapi is supported on the current Platform.
+        /// </summary>
         public static bool IsSupportedOnCurrentPlatform
         {
             get { return Environment.OSVersion.Version.Major >= 6; }
@@ -30,19 +37,79 @@ namespace CSCore.SoundIn
         private WaveFormat _waveFormat;
         private EventWaitHandle _eventWaitHandle;
         private Thread _recordThread;
-        private RecordingState _recordingState;
+        private volatile RecordingState _recordingState;
 
         private int _latency;
         private bool _eventSync;
         private bool _disposed;
 
         /// <summary>
+        /// Creates a new WasapiCapture instance.
+        /// CaptureThreadPriority = AboveNormal. 
+        /// DefaultFormat = null. 
+        /// Latency = 100ms. 
+        /// EventSync = true.
+        /// SharedMode = Shared.
         /// </summary>
-        /// <param name="eventSync">Don't use this in combination with exclusive mode.</param>
-        /// <param name="shareMode">Don't use exclusive mode in combination with eventSync.</param>
-        /// <param name="defaultFormat"></param>
-        public WasapiCapture(bool eventSync, AudioClientShareMode shareMode, WaveFormat defaultFormat = null)
+        public WasapiCapture()
+            : this(true, AudioClientShareMode.Shared)
+		{
+		}
+
+        /// <summary>
+        /// Creates a new WasapiCapture instance.
+        /// CaptureThreadPriority = AboveNormal. 
+        /// DefaultFormat = null.
+        /// Latency = 100ms.
+        /// </summary>
+        /// <param name="eventSync">True, to use eventsynchronization instead of a simple loop and sleep behavior. Don't use this in combination with exclusive mode.</param>
+        /// <param name="shareMode">Specifies how to open the audio device. Note that if exclusive mode is used, the device can only be used once on the whole system. Don't use exclusive mode in combination with eventSync.</param>
+        public WasapiCapture(bool eventSync, AudioClientShareMode shareMode)
+            : this(eventSync, shareMode, 100)
+		{
+		}
+
+        /// <summary>
+        /// Creates a new WasapiCapture instance.
+        /// CaptureThreadPriority = AboveNormal. 
+        /// DefaultFormat = null.
+        /// </summary>
+        /// <param name="eventSync">True, to use eventsynchronization instead of a simple loop and sleep behavior. Don't use this in combination with exclusive mode.</param>
+        /// <param name="shareMode">Specifies how to open the audio device. Note that if exclusive mode is used, the device can only be used once on the whole system. Don't use exclusive mode in combination with eventSync.</param>
+        /// <param name="latency">Latency of the capture specified in milliseconds.</param>
+        public WasapiCapture(bool eventSync, AudioClientShareMode shareMode, int latency)
+            : this(eventSync, shareMode, latency, null)
         {
+        }
+
+        /// <summary>
+        /// Creates a new WasapiCapture instance.
+        /// CaptureThreadPriority = AboveNormal.
+        /// </summary>
+        /// <param name="eventSync">True, to use eventsynchronization instead of a simple loop and sleep behavior. Don't use this in combination with exclusive mode.</param>
+        /// <param name="shareMode">Specifies how to open the audio device. Note that if exclusive mode is used, the device can only be used once on the whole system. Don't use exclusive mode in combination with eventSync.</param>
+        /// <param name="latency">Latency of the capture specified in milliseconds.</param>
+        /// <param name="defaultFormat">The default WaveFormat to use for the capture. If this parameter is set to null, the best available format will be chosen automatically.</param>
+        public WasapiCapture(bool eventSync, AudioClientShareMode shareMode, int latency, WaveFormat defaultFormat)
+            : this(eventSync, shareMode, latency, defaultFormat, ThreadPriority.AboveNormal)
+        {
+        }
+
+        /// <summary>
+        /// Creates a new WasapiCapture instance.
+        /// </summary>
+        /// <param name="eventSync">True, to use eventsynchronization instead of a simple loop and sleep behavior. Don't use this in combination with exclusive mode.</param>
+        /// <param name="shareMode">Specifies how to open the audio device. Note that if exclusive mode is used, the device can only be used once on the whole system. Don't use exclusive mode in combination with eventSync.</param>
+        /// <param name="latency">Latency of the capture specified in milliseconds.</param>
+        /// <param name="captureThreadPriority">ThreadPriority of the capturethread which runs in background and provides the audiocapture itself.</param>
+        /// <param name="defaultFormat">The default WaveFormat to use for the capture. If this parameter is set to null, the best available format will be chosen automatically.</param>
+        public WasapiCapture(bool eventSync, AudioClientShareMode shareMode, int latency, WaveFormat defaultFormat, ThreadPriority captureThreadPriority)
+        {
+            if (!IsSupportedOnCurrentPlatform)
+                throw new PlatformNotSupportedException("Wasapi is only supported on Windows Vista and above.");
+            if (eventSync && shareMode == AudioClientShareMode.Exclusive)
+                throw new ArgumentException("Don't use eventSync in combination with exclusive mode.");
+
             _eventSync = eventSync;
             _shareMode = shareMode;
             _waveFormat = defaultFormat;
@@ -52,6 +119,10 @@ namespace CSCore.SoundIn
             _recordingState = SoundIn.RecordingState.Stopped;
         }
 
+        /// <summary>
+        /// Initializes WasapiCapture and prepares all resources for recording.
+        /// Note that properties like Device, etc. won't affect WasapiCapture after calling Initialize.
+        /// </summary>
         public void Initialize()
         {
             UninitializeAudioClients();
@@ -110,6 +181,9 @@ namespace CSCore.SoundIn
             Debug.WriteLine(String.Format("Initialized WasapiCapture[Mode: {0}; Latency: {1}; OutputFormat: {2}]", _shareMode, _latency, _waveFormat));
         }
 
+        /// <summary>
+        /// Start Recording.
+        /// </summary>
         public void Start()
         {
             if (RecordingState != SoundIn.RecordingState.Recording)
@@ -124,6 +198,9 @@ namespace CSCore.SoundIn
             }
         }
 
+        /// <summary>
+        /// Stop Recording.
+        /// </summary>
         public void Stop()
         {
             if (RecordingState != SoundIn.RecordingState.Stopped)
@@ -245,11 +322,18 @@ namespace CSCore.SoundIn
                 Stopped(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Gets the RecordingState.
+        /// </summary>
         public RecordingState RecordingState
         {
             get { return _recordingState; }
         }
 
+        /// <summary>
+        /// Gets or sets the capture device to use.
+        /// Set this property before calling Initialize.
+        /// </summary>
         public MMDevice Device
         {
             get
@@ -264,11 +348,17 @@ namespace CSCore.SoundIn
             }
         }
 
+        /// <summary>
+        /// Gets the OutputFormat.
+        /// </summary>
         public WaveFormat WaveFormat
         {
             get { return _waveFormat; }
         }
 
+        /// <summary>
+        /// Random ID based on internal audioclients memory address for debugging purposes. 
+        /// </summary>
         public long DebuggingID
         {
             get { return _audioCaptureClient != null ? _audioCaptureClient.BasePtr.ToInt64() : -1; }
@@ -364,6 +454,9 @@ namespace CSCore.SoundIn
             return AudioClientStreamFlags.None;
         }
 
+        /// <summary>
+        /// Stops the capture and frees all resources.
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);

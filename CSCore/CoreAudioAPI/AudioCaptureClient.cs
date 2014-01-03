@@ -25,7 +25,7 @@ namespace CSCore.CoreAudioAPI
         }
 
         /// <summary>
-        /// Size of the next packet in frames(blockalign).
+        /// Size of the next packet in frames (the size of one frame equals the blockalign value of the waveformat).
         /// </summary>
         public int NextPacketSize
         {

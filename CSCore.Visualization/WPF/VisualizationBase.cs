@@ -16,11 +16,12 @@ namespace CSCore.Visualization.WPF
         public bool EnableRendering
         {
             get { return (bool)GetValue(EnableRenderingProperty); }
-            set { SetValue(EnableRenderingProperty, value); enableRendering = value; }
+            set { SetValue(EnableRenderingProperty, value);  }
         }
 
         public static readonly DependencyProperty EnableRenderingProperty =
-            DependencyProperty.Register("EnableRendering", typeof(bool), typeof(VisualizationBase), new PropertyMetadata(true));
+            DependencyProperty.Register("EnableRendering", typeof(bool), typeof(VisualizationBase), 
+            new PropertyMetadata(true, new PropertyChangedCallback(OnEnableRenderingPropertyChanged)));
 
         private FPSTimer _timer;
 
@@ -37,14 +38,14 @@ namespace CSCore.Visualization.WPF
             EnableRendering = true;
         }
 
+        private static void OnEnableRenderingPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as VisualizationBase).enableRendering = (bool)e.NewValue;
+        }
+
         protected virtual bool ValidateTimer()
         {
-            bool flag = false;
-            if (_timer.Update())
-            {
-                Dispatcher.BeginInvoke(new Action(() => flag = EnableRendering));
-            }
-            return flag;
+            return _timer.Update() && enableRendering;
         }
     }
 }

@@ -7,7 +7,7 @@ namespace CSCore.DMO
     /// <summary>
     /// http: //msdn.microsoft.com/en-us/library/windows/desktop/dd376684(v=vs.85).aspx
     /// </summary>
-    public class MediaBuffer : IMediaBuffer, IDisposable
+    public class MediaBuffer : IMediaBuffer, IDisposable, IWritable
     {
         private const string n = "IMediaBuffer";
 

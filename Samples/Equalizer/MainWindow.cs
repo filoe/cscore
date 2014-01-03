@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using CSCore.SoundOut;
+﻿using CSCore;
 using CSCore.Codecs;
+using CSCore.SoundOut;
 using CSCore.Streams;
-using CSCore;
+using System;
+using System.ComponentModel;
+using System.Windows.Forms;
 
 namespace EqualizerTest
 {
@@ -21,8 +15,8 @@ namespace EqualizerTest
             InitializeComponent();
         }
 
-        ISoundOut _soundOut;
-        Equalizer _eq;
+        private ISoundOut _soundOut;
+        private Equalizer _eq;
 
         private void trackBar1_ValueChanged(object sender, EventArgs e)
         {
@@ -42,7 +36,14 @@ namespace EqualizerTest
             {
                 Stop();
 
-                _soundOut = new WasapiOut();//DirectSoundOut();
+                if (WasapiOut.IsSupportedOnCurrentPlatform)
+                {
+                    _soundOut = new WasapiOut();
+                }
+                else
+                {
+                    _soundOut = new DirectSoundOut();
+                }
                 var source = CodecFactory.Instance.GetCodec(ofn.FileName);
                 source = new LoopStream(source) { EnableLoop = false };
                 (source as LoopStream).StreamFinished += (s, args) => Stop();

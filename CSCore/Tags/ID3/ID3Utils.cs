@@ -64,21 +64,20 @@ namespace CSCore.Tags.ID3
 
         public static string ReadString(byte[] buffer, int offset, int count, Encoding encoding, out int read)
         {
-            int offset1 = offset;
-
-            int sizeofsymbol = 1;
-            if (encoding == Utf16 || encoding == Utf16Big)
-                sizeofsymbol = 2;
+            int sizeofsymbol = (encoding == Utf16 || encoding == Utf16Big) ? 2 : 1;
 
             if (count == -1)
                 count = buffer.Length;
 
-            offset = SeekPreamble(buffer, offset, count, encoding);
+            int index = SeekPreamble(buffer, offset, count, encoding);
 
             int length = CalculateStringLength(buffer, offset, count, sizeofsymbol);
             string result = encoding.GetString(buffer, offset, length);
 
-            read = offset + length + sizeofsymbol - offset1;
+            read = 0;
+            read += (index - offset); //preamble
+            read += length; //length of string itself
+            read += sizeofsymbol; //escape
 
             return result;
         }

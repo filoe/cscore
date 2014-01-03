@@ -50,13 +50,15 @@ namespace CSCore.Tags.ID3.Frames
             int read;
             if (_version == ID3Version.ID3v2_2)
             {
+                //MimeType = ID3Utils.ReadString(content, offset, 3, ID3Utils.Iso88591, out read);
                 MimeType = ID3Utils.ReadString(content, offset, 3, ID3Utils.Iso88591, out read);
+                offset += 3;
             }
             else
             {
                 MimeType = ID3Utils.ReadString(content, 1, -1, ID3Utils.Iso88591, out read);
+                offset += read;
             }
-            offset += read;
 
             if (content.Length < offset)
                 throw new ID3Exception("Invalid contentlength id=1");

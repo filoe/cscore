@@ -11,7 +11,7 @@ namespace CSCore.Win32
     /// <summary>
     /// see http://msdn.microsoft.com/en-us/library/windows/desktop/ms752876(v=vs.85).aspx
     /// </summary>
-    public class ComStream : Stream, IStream
+    public class ComStream : Stream, IStream, IWritable
     {
         private Stream _stream;
 
@@ -34,8 +34,6 @@ namespace CSCore.Win32
 
         HResult IStream.Clone(out IStream ppstm)
         {
-            //ComStream newstream = new ComStream(_stream, false);
-            //ppstm = newstream;
             ppstm = null;
             return HResult.E_NOTIMPL;
         }
@@ -84,13 +82,29 @@ namespace CSCore.Win32
 
         HResult IStream.SetSize(long libNewSize)
         {
-            return HResult.E_NOTIMPL;
+            SetLength(libNewSize);
+            return HResult.S_OK;
         }
 
         HResult IStream.Stat(out comtypes.STATSTG pstatstg, int grfStatFlag)
         {
-            pstatstg = new comtypes.STATSTG();
-            pstatstg.cbSize = Length;
+            const int STGM_READ = 0x00000000;
+            const int STGM_WRITE = 0x00000001;
+            const int STGM_READWRITE = 0x00000002;
+
+            var tmp = new comtypes.STATSTG();
+            tmp.type = 2; //STGTY_STREAM
+            tmp.cbSize = Length;
+            if (CanWrite && CanRead)
+                tmp.grfMode = STGM_READWRITE;
+            else if (CanRead)
+                tmp.grfMode = STGM_READ;
+            else if (CanWrite)
+                tmp.grfMode = STGM_WRITE;
+            else
+                throw new ObjectDisposedException("Stream");
+
+            pstatstg = tmp;
             return HResult.S_OK;
         }
 

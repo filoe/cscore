@@ -61,6 +61,7 @@ namespace CSCore.MediaFoundation
     [Flags]
     public enum MFByteStreamCapsFlags : int
     {
+        None = 0x0,
         IsReadable = 0x00000001,
         IsWriteable = 0x00000002,
         IsSeekable = 0x00000004,
