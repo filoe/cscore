@@ -61,7 +61,7 @@ namespace CSCore.Codecs.WAV
 
         public void WriteSample(float sample)
         {
-            if (_waveFormat.WaveFormatTag == AudioEncoding.Pcm)
+            if (_waveFormat.IsPCM())
             {
                 switch (_waveFormat.BitsPerSample)
                 {

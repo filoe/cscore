@@ -206,5 +206,25 @@ namespace CSCore
 
             return thread.Join(timeout);
         }
+
+        public static bool IsPCM(this WaveFormat waveFormat)
+        {
+            if (waveFormat == null)
+                throw new ArgumentNullException("waveFormat");
+            if (waveFormat is WaveFormatExtensible)
+                return ((WaveFormatExtensible)waveFormat).SubFormat == DMO.MediaTypes.MEDIASUBTYPE_PCM;
+            else
+                return waveFormat.WaveFormatTag == AudioEncoding.Pcm;
+        }
+
+        public static bool IsIeeeFloat(this WaveFormat waveFormat)
+        {
+            if (waveFormat == null)
+                throw new ArgumentNullException("waveFormat");
+            if (waveFormat is WaveFormatExtensible)
+                return ((WaveFormatExtensible)waveFormat).SubFormat == DMO.MediaTypes.MEDIASUBTYPE_IEEE_FLOAT;
+            else
+                return waveFormat.WaveFormatTag == AudioEncoding.IeeeFloat;
+        }
     }
 }

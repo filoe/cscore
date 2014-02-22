@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace CSCore.SoundIn
 {
+    [Obsolete()]
     public class WaveIn : ISoundRecorder
     {
         internal static readonly WaveFormat DefaultFormat = new WaveFormat(44100, 16, 1, AudioEncoding.Pcm);
@@ -197,7 +198,7 @@ namespace CSCore.SoundIn
 
         protected void RaiseDataAvailable(WaveInBuffer buffer)
         {
-            if (DataAvailable != null)
+            if (DataAvailable != null && buffer.Recorded > 0)
             {
                 DataAvailable(this, new DataAvailableEventArgs(buffer.Buffer, 0, buffer.Recorded, WaveFormat));
             }

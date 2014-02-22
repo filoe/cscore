@@ -258,17 +258,22 @@ namespace CSCore.SoundOut
 				if (!FeedBuffer(_renderClient, buffer, bufferSize, frameSize))
 				{
 					_playbackState = PlaybackState.Stopped;
-					if (playbackStartedEventWaithandle is EventWaitHandle)
-						((EventWaitHandle)playbackStartedEventWaithandle).Set();
+                    if (playbackStartedEventWaithandle is EventWaitHandle)
+                    {
+                        ((EventWaitHandle)playbackStartedEventWaithandle).Set();
+                        playbackStartedEventWaithandle = null;
+                    }
 				}
 				else
 				{
-
 					_audioClient.Start();
 					_playbackState = SoundOut.PlaybackState.Playing;
 
-					if (playbackStartedEventWaithandle is EventWaitHandle)
-						((EventWaitHandle)playbackStartedEventWaithandle).Set();
+                    if (playbackStartedEventWaithandle is EventWaitHandle)
+                    {
+                        ((EventWaitHandle)playbackStartedEventWaithandle).Set();
+                        playbackStartedEventWaithandle = null;
+                    }
 
 					while (PlaybackState != PlaybackState.Stopped)
 					{
@@ -301,7 +306,6 @@ namespace CSCore.SoundOut
 								!(_source is DmoResampler &&
 									((DmoResampler)_source).OutputToInput(framesReadyToFill * frameSize) <= 0)) //avoid conversion errors
 							{
-                                Debug.WriteLine(framesReadyToFill);
 								if (!FeedBuffer(_renderClient, buffer, framesReadyToFill, frameSize))
 								{
 									_playbackState = PlaybackState.Stopped; //TODO: Fire Stopped-event here
@@ -319,6 +323,8 @@ namespace CSCore.SoundOut
 			finally
 			{
 				//CleanupResources();
+                if (playbackStartedEventWaithandle is EventWaitHandle)
+                    ((EventWaitHandle)playbackStartedEventWaithandle).Set();
 				RaiseStopped();
 			}
 		}
@@ -597,6 +603,10 @@ namespace CSCore.SoundOut
         }
 
 		private bool _disposed;
+
+        /// <summary>
+        /// Stops the playback (if playing) and cleans up all used resources. 
+        /// </summary>
 		public void Dispose()
 		{
 			Dispose(true);

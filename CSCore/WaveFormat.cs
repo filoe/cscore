@@ -75,6 +75,9 @@ namespace CSCore
         {
         }
 
+        /// <summary>
+        /// PCM
+        /// </summary>
         public WaveFormat(int sampleRate, int bits, int channels)
             : this(sampleRate, bits, channels, AudioEncoding.Pcm)
         {

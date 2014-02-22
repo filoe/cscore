@@ -45,7 +45,7 @@ namespace CSCore.Tags.ID3.Frames
         {
             int offset = 1;
             if (content.Length < 3)
-                throw new ID3Exception("Invalid contentlength id=0");//id -> for debugging
+                throw new ID3Exception("Invalid contentlength id=0.");//id -> for debugging
 
             int read;
             if (_version == ID3Version.ID3v2_2)
@@ -61,20 +61,20 @@ namespace CSCore.Tags.ID3.Frames
             }
 
             if (content.Length < offset)
-                throw new ID3Exception("Invalid contentlength id=1");
+                throw new ID3Exception("Invalid contentlength id=1.");
 
             if (!Enum.IsDefined(typeof(PictureFormat), content[offset]))
                 throw new ID3Exception("Invalid pictureformat: 0x{0}", content[offset].ToString("x"));
             Format = (PictureFormat)content[offset++];
 
             if (content.Length < offset)
-                throw new ID3Exception("Invalid contentlength id=2");
+                throw new ID3Exception("Invalid contentlength id=2.");
             var descenc = ID3Utils.GetEncoding(content, 0, 2);
             Description = ID3Utils.ReadString(content, offset, -1, descenc, out read);
             offset += read;
 
             if (content.Length < offset)
-                throw new ID3Exception("Invalid contentlength id=3");
+                throw new ID3Exception("Invalid contentlength id=3.");
             RawData = new byte[content.Length - offset];
             Array.Copy(content, offset, RawData, 0, RawData.Length);
         }

@@ -81,22 +81,8 @@ namespace WPFVisualisation
             {
                 openmenu.IsEnabled = false;
                 Stop();
-                var stream = new MP3WebStream(streamSelector.Value, true);
-                stream.ConnectionCreated += (s, args) =>
-                {
-                    if (args.Success)
-                    {
-                        Dispatcher.Invoke(new Action(() =>
-                        {
-                            ShowBufferedIndicator(true);
-                            OpenSource(stream);
-                        }));
-                    }
-                    else
-                        MessageBox.Show("Connecting to server failed.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-
-                    Dispatcher.Invoke(new Action(() => { openmenu.IsEnabled = true; }));
-                };
+                var stream = CodecFactory.Instance.GetCodec(new Uri(streamSelector.Value));
+                OpenSource(stream);
             }
         }
 

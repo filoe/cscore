@@ -10,7 +10,7 @@ namespace CSCore.Streams.SampleConverter
                 throw new ArgumentNullException("source");
 
             int bps = source.WaveFormat.BitsPerSample;
-            if (source.WaveFormat.WaveFormatTag == AudioEncoding.Pcm)
+            if (source.WaveFormat.IsPCM())
             {
                 switch (bps)
                 {
@@ -27,40 +27,9 @@ namespace CSCore.Streams.SampleConverter
                         throw new NotSupportedException("Waveformat is not supported. Invalid BitsPerSample value.");
                 }
             }
-            else if (source.WaveFormat.WaveFormatTag == AudioEncoding.IeeeFloat && bps == 32)
+            else if (source.WaveFormat.IsIeeeFloat() && bps == 32)
             {
                 return new IeeeFloatToSample(source);
-            }
-            else if (source.WaveFormat is WaveFormatExtensible)
-            {
-                WaveFormatExtensible w = source.WaveFormat as WaveFormatExtensible;
-                bps = w.BitsPerSample;
-
-                if (w.WaveFormatTag == AudioEncoding.Pcm)
-                {
-                    switch (bps)
-                    {
-                        case 8:
-                            return new Pcm8BitToSample(source);
-
-                        case 16:
-                            return new Pcm16BitToSample(source);
-
-                        case 24:
-                            return new Pcm24BitToSample(source);
-
-                        default:
-                            throw new NotSupportedException("Waveformat is not supported. Invalid BitsPerSample value.");
-                    }
-                }
-                else if (w.WaveFormatTag == AudioEncoding.IeeeFloat && bps == 32)
-                {
-                    return new IeeeFloatToSample(source);
-                }
-                else
-                {
-                    throw new NotSupportedException("Waveformat is not supported. Invalid WaveformatTag.");
-                }
             }
             else
             {

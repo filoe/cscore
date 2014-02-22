@@ -111,7 +111,7 @@ namespace CSCore.Codecs
         public IWaveSource GetCodec(Uri uri)
         {
             if (uri == null)
-                throw new ArgumentNullException("filename");
+                throw new ArgumentNullException("uri");
 
             try
             {
@@ -157,6 +157,8 @@ namespace CSCore.Codecs
                 CodecFactoryEntry entry;
                 if (_codecs.TryGetValue(key, out entry))
                     return entry.GetCodecAction(stream);
+                else
+                    return Default(stream);
             }
             catch (Exception e)
             {

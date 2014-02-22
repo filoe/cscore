@@ -39,8 +39,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>bin\Release\CSCore.XML</DocumentationFile>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup>
@@ -194,6 +194,7 @@
     <Compile Include="ACM\Interop\AcmDriverDetailsSupport.cs" />
     <Compile Include="ACM\Interop\AcmDriverEnumCallback.cs" />
     <Compile Include="ACM\Interop\AcmDriverEnumFlags.cs" />
+    <Compile Include="Codecs\AAC\AACEncoder.cs" />
     <Compile Include="Codecs\CodecFactoryEntry.cs" />
     <Compile Include="Codecs\AAC\AACDecoder.cs" />
     <Compile Include="Codecs\DDP\DDPDecoder.cs" />
@@ -283,6 +284,10 @@
     <Compile Include="SoundOut\MMInterop\WaveCapsFormats.cs" />
     <Compile Include="SoundOut\MMInterop\WaveCapsSupported.cs" />
     <Compile Include="SoundOut\WasapiOut.cs" />
+    <Compile Include="Streams\PeakEventArgs.cs" />
+    <Compile Include="Streams\PeakMeter.cs" />
+    <None Include="Streams\SoundPool.cs" />
+    <None Include="Streams\SoundPoolItem.cs" />
     <Compile Include="Streams\WriteableBufferingSource.cs" />
     <Compile Include="Streams\BufferSource.cs" />
     <Compile Include="Streams\EqFilter.cs" />
@@ -374,13 +379,6 @@
     <Compile Include="Utils\ReadBlockStream.cs" />
     <Compile Include="Utils\RemoveObjAttribute.cs" />
     <Compile Include="WaveFormatExtensible.cs" />
-    <None Include="Codecs\OGG\CRC32.cs" />
-    <None Include="Codecs\OGG\OggException.cs" />
-    <None Include="Codecs\OGG\OggPacket.cs" />
-    <None Include="Codecs\OGG\OggPacketReader.cs" />
-    <None Include="Codecs\OGG\OggPageType.cs" />
-    <None Include="Codecs\OGG\OggPageHeader.cs" />
-    <None Include="Codecs\OGG\OggReader.cs" />
     <Compile Include="Codecs\WAV\DataChunk.cs" />
     <Compile Include="Codecs\WAV\FMTChunk.cs" />
     <Compile Include="Codecs\WAV\WaveFileChunk.cs" />

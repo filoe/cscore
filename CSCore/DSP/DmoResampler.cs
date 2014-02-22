@@ -22,15 +22,20 @@ namespace CSCore.DSP
         protected object _lockObj;
 
         /// <summary>
-        /// Resampler based on wavesource and new samplerate
+        /// Resampler based on wavesource and new samplerate.
         /// </summary>
-        /// <param name="source">Source which has to get resampled</param>
-        /// <param name="destSampleRate">Samplerate, the stream will be resampled to</param>
+        /// <param name="source">Source which has to get resampled.</param>
+        /// <param name="destSampleRate">Samplerate, the stream will be resampled to.</param>
         public DmoResampler(IWaveSource source, int destSampleRate)
             : this(source, new WaveFormat(source.WaveFormat, destSampleRate))
         {
         }
 
+        /// <summary>
+        /// Resampler based on wavesource and new outputFormat.
+        /// </summary>
+        /// <param name="source">Source which has to get resampled.</param>
+        /// <param name="outputFormat">Waveformat, which specifies the new format. Note, that by far not all formats are supported.</param>
         public DmoResampler(IWaveSource source, WaveFormat outputFormat)
             : base(source)
         {
@@ -77,9 +82,9 @@ namespace CSCore.DSP
         }
 
         /// <summary>
-        /// Read a block of bytes
+        /// Read from the resampled source.
         /// </summary>
-        /// <returns>Read bytes</returns>
+        /// <returns>Amount of read bytes.</returns>
         public override int Read(byte[] buffer, int offset, int count)
         {
             lock (_lockObj)
@@ -141,11 +146,17 @@ namespace CSCore.DSP
             }
         }
 
+        /// <summary>
+        /// Gets the new output format.
+        /// </summary>
         public override WaveFormat WaveFormat
         {
             get { return _outputformat; }
         }
 
+        /// <summary>
+        /// Gets or sets the position of the source. Note that the position gets calculated with the new output format. See <see cref="WaveFormat"/>.
+        /// </summary>
         public override long Position
         {
             get
@@ -158,6 +169,9 @@ namespace CSCore.DSP
             }
         }
 
+        /// <summary>
+        /// Gets the length of the source. Note that the length gets calculated with the new output format. See <see cref="WaveFormat"/>. 
+        /// </summary>
         public override long Length
         {
             get
@@ -200,6 +214,9 @@ namespace CSCore.DSP
             return result;
         }
 
+        /// <summary>
+        /// Disposes the allocated resources of the resampler but does not dispose the unerlying source.
+        /// </summary>
         public void DisposeResamplerOnly()
         {
             DisposeBaseSource = false;

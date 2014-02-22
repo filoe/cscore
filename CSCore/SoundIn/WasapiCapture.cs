@@ -43,6 +43,8 @@ namespace CSCore.SoundIn
         private bool _eventSync;
         private bool _disposed;
 
+        private volatile bool _isInitialized = false;
+
         /// <summary>
         /// Creates a new WasapiCapture instance.
         /// CaptureThreadPriority = AboveNormal. 
@@ -125,8 +127,177 @@ namespace CSCore.SoundIn
         /// </summary>
         public void Initialize()
         {
-            UninitializeAudioClients();
+            CheckForDisposed();
+            CheckForInvalidThreadCall();
 
+            if (RecordingState != SoundIn.RecordingState.Stopped)
+                throw new InvalidOperationException("RecordingState has to be Stopped. Call WasapiCapture::Stop to stop the wasapicapture.");
+
+            _recordThread.WaitForExit();
+
+            UninitializeAudioClients();
+            InitializeInternal();
+            _isInitialized = true;
+
+            Debug.WriteLine(String.Format("Initialized WasapiCapture[Mode: {0}; Latency: {1}; OutputFormat: {2}]", _shareMode, _latency, _waveFormat));
+        }
+
+        /// <summary>
+        /// Start Recording.
+        /// </summary>
+        public void Start()
+        {
+            CheckForDisposed();
+            CheckForInvalidThreadCall();
+            CheckForInitialized();
+
+            if (RecordingState == SoundIn.RecordingState.Stopped)
+            {
+                using (var waitHandle = new AutoResetEvent(false))
+                {
+                    _recordThread = new Thread(new ParameterizedThreadStart(CaptureProc))
+                    {
+                        Name = "WASAPI Capture-Thread; ID = " + DebuggingID,
+                        Priority = ThreadPriority.AboveNormal
+                    };
+                    _recordThread.Start(waitHandle);
+                    waitHandle.WaitOne();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Stop Recording.
+        /// </summary>
+        public void Stop()
+        {
+            CheckForDisposed();
+            CheckForInvalidThreadCall();
+
+            if (RecordingState != SoundIn.RecordingState.Stopped)
+            {
+                _recordingState = SoundIn.RecordingState.Stopped;
+                _recordThread.WaitForExit(); //possible deadlock
+                _recordThread = null;
+            }
+            else if(RecordingState == SoundIn.RecordingState.Stopped && _recordThread != null)
+            {
+                _recordThread.WaitForExit();
+                _recordThread = null;
+            }
+        }
+
+        //based on http://msdn.microsoft.com/en-us/library/windows/desktop/dd370800(v=vs.85).aspx
+        private void CaptureProc(object playbackStartedEventWaitHandle)
+        {
+            try
+            {
+                int bufferSize;
+                int frameSize;
+                long actualDuration;
+                int actualLatency;
+                int sleepDuration;
+                byte[] buffer;
+                int eventWaitHandleIndex;
+                WaitHandle[] eventWaitHandleArray;
+
+                bufferSize = _audioClient.BufferSize;
+                frameSize = WaveFormat.Channels * WaveFormat.BytesPerSample;
+
+                actualDuration = (long)((double)REFTIMES_PER_SEC * bufferSize / WaveFormat.SampleRate);
+                actualLatency = (int)(actualDuration / REFTIMES_PER_MILLISEC);
+                sleepDuration = actualLatency / 8;
+
+                buffer = new byte[bufferSize * frameSize];
+
+                eventWaitHandleIndex = WaitHandle.WaitTimeout;
+                eventWaitHandleArray = new WaitHandle[] { _eventWaitHandle };
+
+                _audioClient.Start();
+                _recordingState = SoundIn.RecordingState.Recording;
+
+                if(playbackStartedEventWaitHandle is EventWaitHandle)
+                {
+                    ((EventWaitHandle)playbackStartedEventWaitHandle).Set();
+                    playbackStartedEventWaitHandle = null;
+                }
+
+                while (RecordingState != SoundIn.RecordingState.Stopped)
+                {
+                    if(_eventSync)
+                    {
+                        eventWaitHandleIndex = WaitHandle.WaitAny(eventWaitHandleArray, actualLatency, false);
+                        if (eventWaitHandleIndex == WaitHandle.WaitTimeout)
+                            continue;
+                    }
+                    else
+                    {
+                        Thread.Sleep(sleepDuration);
+                    }
+
+                    if(RecordingState == SoundIn.RecordingState.Recording)
+                    {
+                        ReadData(buffer, _audioCaptureClient, (uint)frameSize);
+                    }
+                }
+
+                Thread.Sleep(actualLatency / 2);
+
+                _audioClient.Stop();
+                _audioClient.Reset();
+                
+            }
+            finally
+            {
+                if (playbackStartedEventWaitHandle is EventWaitHandle)
+                    ((EventWaitHandle)playbackStartedEventWaitHandle).Set();
+                RaiseStopped();
+            }
+        }
+
+        private void ReadData(byte[] buffer, AudioCaptureClient captureClient, uint frameSize)
+        {
+            uint nextPacketSize = captureClient.GetNextPacketSize();
+            int read = 0;
+            int offset = 0;
+
+            while (nextPacketSize != 0)
+            {
+                uint framesAvailable = 0;
+                AudioClientBufferFlags flags;
+
+                IntPtr nativeBuffer = captureClient.GetBuffer(out framesAvailable, out flags);
+
+                int bytesAvailable = (int)(framesAvailable * frameSize);
+                int bytesToCopy = Math.Min((int)bytesAvailable, buffer.Length);
+
+                if (Math.Max(buffer.Length - read, 0) < bytesAvailable && read > 0)
+                {
+                    RaiseDataAvilable(buffer, 0, read);
+                    read = offset = 0;
+                }
+
+                if ((flags & AudioClientBufferFlags.Silent) == AudioClientBufferFlags.Silent)
+                {
+                    Array.Clear(buffer, offset, bytesToCopy);
+                }
+                else
+                {
+                    Marshal.Copy(nativeBuffer, buffer, offset, bytesToCopy);
+                }
+
+                read += bytesToCopy;
+                offset += bytesToCopy;
+
+                captureClient.ReleaseBuffer(framesAvailable);
+                nextPacketSize = captureClient.GetNextPacketSize();
+            }
+
+            RaiseDataAvilable(buffer, 0, read);
+        }
+
+        private void InitializeInternal()
+        {
             var defaultFormat = _waveFormat;
 
             _audioClient = AudioClient.FromMMDevice(Device);
@@ -178,134 +349,6 @@ namespace CSCore.SoundIn
             }
 
             _audioCaptureClient = AudioCaptureClient.FromAudioClient(_audioClient);
-            Debug.WriteLine(String.Format("Initialized WasapiCapture[Mode: {0}; Latency: {1}; OutputFormat: {2}]", _shareMode, _latency, _waveFormat));
-        }
-
-        /// <summary>
-        /// Start Recording.
-        /// </summary>
-        public void Start()
-        {
-            if (RecordingState != SoundIn.RecordingState.Recording)
-            {
-                if (RecordingState == SoundIn.RecordingState.Stopped && _recordThread == null)
-                {
-                    _recordThread = new Thread(new ThreadStart(CaptureProc));
-                    _recordThread.Name = "WASAPI Capture-Thread; ID = " + DebuggingID;
-                    _recordThread.Priority = ThreadPriority.AboveNormal;
-                    _recordThread.Start();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Stop Recording.
-        /// </summary>
-        public void Stop()
-        {
-            if (RecordingState != SoundIn.RecordingState.Stopped)
-            {
-                _recordingState = SoundIn.RecordingState.Stopped;
-                _recordThread.Join();
-                _recordThread = null;
-            }
-        }
-
-        //based on http://msdn.microsoft.com/en-us/library/windows/desktop/dd370800(v=vs.85).aspx
-        private void CaptureProc()
-        {
-            try
-            {
-                _recordingState = SoundIn.RecordingState.Recording;
-                int bufferSize = _audioClient.BufferSize;
-                int frameSize = _waveFormat.Channels * _waveFormat.BytesPerSample;
-
-                byte[] buffer = new byte[bufferSize * frameSize];
-
-                int eventWaitHandleIndex = WaitHandle.WaitTimeout;
-                WaitHandle[] eventWaitHandleArray = new WaitHandle[] { _eventWaitHandle };
-
-                long actualDuration = (long)((double)REFTIMES_PER_SEC * bufferSize / WaveFormat.SampleRate);
-                int actualLatency = (int)(actualDuration / REFTIMES_PER_MILLISEC);
-                int sleepDuration = actualLatency / 8;
-
-                _audioClient.Start();
-
-                while (RecordingState != SoundIn.RecordingState.Stopped)
-                {
-                    if (_eventSync)
-                    {
-                        eventWaitHandleIndex = WaitHandle.WaitAny(eventWaitHandleArray, actualLatency, false);
-                        if (eventWaitHandleIndex == WaitHandle.WaitTimeout)
-                            continue;
-                    }
-                    else
-                    {
-                        Thread.Sleep(sleepDuration);
-                    }
-
-                    if (RecordingState == SoundIn.RecordingState.Recording)
-                    {
-                        ReadData(buffer, _audioCaptureClient, (uint)frameSize);
-                    }
-                }
-
-                Thread.Sleep(actualLatency / 2);
-                _audioClient.Stop();
-                _audioClient.ResetNative();
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("WasapiCapture::CaptureProc: " + e.ToString());
-                if (System.Diagnostics.Debugger.IsAttached)
-                    throw new Exception("Unhandled exception in wasapi capture proc. See innerexception for details.", e);
-            }
-            finally
-            {
-                Stop();
-                RaiseStopped();
-            }
-        }
-
-        private void ReadData(byte[] buffer, AudioCaptureClient captureClient, uint frameSize)
-        {
-            uint nextPacketSize = captureClient.GetNextPacketSize();
-            int read = 0;
-            int offset = 0;
-
-            while (nextPacketSize != 0)
-            {
-                uint framesAvailable = 0;
-                AudioClientBufferFlags flags;
-
-                IntPtr nativeBuffer = captureClient.GetBuffer(out framesAvailable, out flags);
-
-                int bytesAvailable = (int)(framesAvailable * frameSize);
-                int bytesToCopy = Math.Min((int)bytesAvailable, buffer.Length);
-
-                if (Math.Max(buffer.Length - read, 0) < bytesAvailable && read > 0)
-                {
-                    RaiseDataAvilable(buffer, 0, read);
-                    read = offset = 0;
-                }
-
-                if ((flags & AudioClientBufferFlags.Silent) == AudioClientBufferFlags.Silent)
-                {
-                    Array.Clear(buffer, offset, bytesToCopy);
-                }
-                else
-                {
-                    Marshal.Copy(nativeBuffer, buffer, offset, bytesToCopy);
-                }
-
-                read += bytesToCopy;
-                offset += bytesToCopy;
-
-                captureClient.ReleaseBuffer(framesAvailable);
-                nextPacketSize = captureClient.GetNextPacketSize();
-            }
-
-            RaiseDataAvilable(buffer, 0, read);
         }
 
         private void RaiseDataAvilable(byte[] buffer, int offset, int count)
@@ -442,6 +485,13 @@ namespace CSCore.SoundIn
                 _audioCaptureClient.Dispose();
                 _audioCaptureClient = null;
             }
+            if(_eventWaitHandle != null)
+            {
+                _eventWaitHandle.Close();
+                _eventWaitHandle = null;
+            }
+
+            _isInitialized = false;
         }
 
         protected virtual MMDevice GetDefaultDevice()
@@ -452,6 +502,24 @@ namespace CSCore.SoundIn
         protected virtual AudioClientStreamFlags GetStreamFlags()
         {
             return AudioClientStreamFlags.None;
+        }
+
+        private void CheckForDisposed()
+        {
+            if (_disposed)
+                throw new ObjectDisposedException("WasapiCapture");
+        }
+
+        private void CheckForInitialized()
+        {
+            if (!_isInitialized)
+                throw new InvalidOperationException("Not initialized.");
+        }
+
+        private void CheckForInvalidThreadCall()
+        {
+            if (Thread.CurrentThread == _recordThread)
+                throw new InvalidOperationException("You must not access this method from the CaptureThread.");
         }
 
         /// <summary>

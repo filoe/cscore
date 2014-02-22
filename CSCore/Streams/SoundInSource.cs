@@ -60,8 +60,12 @@ namespace CSCore.Streams
 
         public int Read(byte[] buffer, int offset, int count)
         {
-            int read = _buffer.Read(buffer, 0, count);
-            return read;
+            int read = _buffer.Read(buffer, offset, count);
+
+            if(FillWithZeros && read < count)
+                Array.Clear(buffer, offset + read, count - read);
+
+            return FillWithZeros ? count : read;
         }
 
         public WaveFormat WaveFormat
@@ -85,6 +89,8 @@ namespace CSCore.Streams
         {
             get { return 0; }
         }
+
+        public bool FillWithZeros { get; set; }
 
         private bool _disposed;
         public void Dispose()

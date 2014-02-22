@@ -15,14 +15,6 @@ namespace CSCore.MediaFoundation
     /// </summary>
     public class MediaFoundationEncoder : IDisposable, IWritable
     {
-        private IMFByteStream _targetStream;
-        private MFSinkWriter _sinkWriter;
-        private int _streamIndex;
-
-        private MFMediaType _inputMediaType, _targetMediaType;
-        private int _sourceBytesPerSecond;
-        private long _position = 0;
-
         public static void EncodeWholeSource(MediaFoundationEncoder encoder, IWaveSource source)
         {
             byte[] buffer = new byte[source.WaveFormat.BytesPerSecond * 4];
@@ -105,23 +97,10 @@ namespace CSCore.MediaFoundation
         /// </summary>
         public static MediaFoundationEncoder CreateAACEncoder(WaveFormat sourceFormat, Stream targetStream, int bitRate = 192000)
         {
-            if (sourceFormat == null)
-                throw new ArgumentNullException("sourceFormat");
-            if (targetStream == null)
-                throw new ArgumentNullException("targetStream");
-            if (targetStream.CanWrite != true)
-                throw new ArgumentException("Stream not writeable.", "targetStream");
-
-            var targetMediaType = FindBestMediaType(MediaFoundation.MFMediaTypes.MFAudioFormat_AAC, sourceFormat.SampleRate, sourceFormat.Channels, bitRate);
-            var sourceMediaType = MediaFoundationCore.MediaTypeFromWaveFormat(sourceFormat);
-
-            if (targetMediaType == null)
-                throw new PlatformNotSupportedException("No AAC-Encoder was found.");
-
-            return new MediaFoundationEncoder(targetStream, sourceMediaType, targetMediaType, TranscodeContainerTypes.MFTranscodeContainerType_MPEG4);
+            return new CSCore.Codecs.AAC.AACEncoder(sourceFormat, targetStream, bitRate, TranscodeContainerTypes.MFTranscodeContainerType_MPEG4);
         }
 
-        private static MFMediaType FindBestMediaType(Guid audioSubType, int sampleRate, int channels, int bitRate)
+        protected static MFMediaType FindBestMediaType(Guid audioSubType, int sampleRate, int channels, int bitRate)
         {
             var mediaTypes = MediaFoundationCore.GetEncoderMediaTypes(audioSubType);
             var n = mediaTypes.Where(x => x.SampleRate == sampleRate && x.Channels == channels);
@@ -134,12 +113,18 @@ namespace CSCore.MediaFoundation
             return availableMediaTypes.OrderBy(x => x.dif).Select(x => x.mediaType).FirstOrDefault();
         }
 
-        /// <summary>
-        /// Gets the  OutputMediaType.
-        /// </summary>
-        public MFMediaType OutputMediaType
+        private IMFByteStream _targetStream;
+        private MFSinkWriter _sinkWriter;
+        private int _streamIndex;
+
+        private Stream _targetBaseStream;
+
+        private MFMediaType _inputMediaType, _targetMediaType;
+        private int _sourceBytesPerSecond;
+        private long _position = 0;
+
+        internal MediaFoundationEncoder()
         {
-            get { return _targetMediaType; }
         }
 
         /// <summary>
@@ -166,6 +151,20 @@ namespace CSCore.MediaFoundation
             if (containerType == Guid.Empty)
                 throw new ArgumentException("containerType");
 
+            _targetBaseStream = stream;
+            _inputMediaType = inputMediaType;
+            _targetMediaType = targetMediaType;
+
+            SetTargetStream(stream, inputMediaType, targetMediaType, containerType);
+        }
+
+        public void Initialize()
+        {
+
+        }
+
+        protected void SetTargetStream(Stream stream, MFMediaType inputMediaType, MFMediaType targetMediaType, Guid containerType)
+        {
             IMFAttributes attributes = null;
             try
             {
@@ -207,7 +206,7 @@ namespace CSCore.MediaFoundation
             }
             finally
             {
-                if(attributes != null)
+                if (attributes != null)
                     Marshal.ReleaseComObject(attributes);
             }
         }
@@ -272,6 +271,34 @@ namespace CSCore.MediaFoundation
         public TimeSpan EncodedDuration
         {
             get { return TimeSpan.FromTicks(_position); }
+        }
+
+        /// <summary>
+        /// Gets the underlying stream which operates as encoding target.
+        /// </summary>
+        public Stream TargetBaseStream
+        {
+            get { return _targetBaseStream; }
+        }
+
+        /// <summary>
+        /// Gets the  OutputMediaType.
+        /// </summary>
+        public MFMediaType OutputMediaType
+        {
+            get { return _targetMediaType; }
+        }
+
+        protected MFSinkWriter SinkWriter
+        {
+            get { return _sinkWriter; }
+            set { _sinkWriter = value; }
+        }
+
+        protected IMFByteStream TargetStream
+        {
+            get { return _targetStream; }
+            set { _targetStream = value; }
         }
 
         protected void CheckForDisposed()

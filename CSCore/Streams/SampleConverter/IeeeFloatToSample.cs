@@ -10,7 +10,8 @@ namespace CSCore.Streams.SampleConverter
         {
             if (source == null)
                 throw new ArgumentNullException("source");
-            if (source.WaveFormat.WaveFormatTag != AudioEncoding.IeeeFloat || source.WaveFormat.BitsPerSample != 32)
+            if (!source.WaveFormat.IsIeeeFloat() ||
+                source.WaveFormat.BitsPerSample != 32)
                 throw new InvalidOperationException("Invalid format. Format has to be 32 bit IeeeFloat");
         }
 

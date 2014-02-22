@@ -75,7 +75,7 @@
             this.trackBar1.TabIndex = 1;
             this.trackBar1.Tag = "0";
             this.trackBar1.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.trackBar1.ValueChanged += new System.EventHandler(this.trackBar1_ValueChanged);
+            this.trackBar1.ValueChanged += new System.EventHandler(this.trackBar_ValueChanged);
             // 
             // flowLayoutPanel1
             // 
@@ -106,7 +106,7 @@
             this.trackBar2.TabIndex = 2;
             this.trackBar2.Tag = "1";
             this.trackBar2.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.trackBar2.ValueChanged += new System.EventHandler(this.trackBar1_ValueChanged);
+            this.trackBar2.ValueChanged += new System.EventHandler(this.trackBar_ValueChanged);
             // 
             // trackBar3
             // 
@@ -120,7 +120,7 @@
             this.trackBar3.TabIndex = 3;
             this.trackBar3.Tag = "2";
             this.trackBar3.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.trackBar3.ValueChanged += new System.EventHandler(this.trackBar1_ValueChanged);
+            this.trackBar3.ValueChanged += new System.EventHandler(this.trackBar_ValueChanged);
             // 
             // trackBar4
             // 
@@ -134,7 +134,7 @@
             this.trackBar4.TabIndex = 4;
             this.trackBar4.Tag = "3";
             this.trackBar4.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.trackBar4.ValueChanged += new System.EventHandler(this.trackBar1_ValueChanged);
+            this.trackBar4.ValueChanged += new System.EventHandler(this.trackBar_ValueChanged);
             // 
             // trackBar5
             // 
@@ -148,7 +148,7 @@
             this.trackBar5.TabIndex = 5;
             this.trackBar5.Tag = "4";
             this.trackBar5.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.trackBar5.ValueChanged += new System.EventHandler(this.trackBar1_ValueChanged);
+            this.trackBar5.ValueChanged += new System.EventHandler(this.trackBar_ValueChanged);
             // 
             // trackBar6
             // 
@@ -162,7 +162,7 @@
             this.trackBar6.TabIndex = 6;
             this.trackBar6.Tag = "5";
             this.trackBar6.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.trackBar6.ValueChanged += new System.EventHandler(this.trackBar1_ValueChanged);
+            this.trackBar6.ValueChanged += new System.EventHandler(this.trackBar_ValueChanged);
             // 
             // trackBar7
             // 
@@ -176,7 +176,7 @@
             this.trackBar7.TabIndex = 7;
             this.trackBar7.Tag = "6";
             this.trackBar7.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.trackBar7.ValueChanged += new System.EventHandler(this.trackBar1_ValueChanged);
+            this.trackBar7.ValueChanged += new System.EventHandler(this.trackBar_ValueChanged);
             // 
             // trackBar8
             // 
@@ -190,7 +190,7 @@
             this.trackBar8.TabIndex = 8;
             this.trackBar8.Tag = "7";
             this.trackBar8.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.trackBar8.ValueChanged += new System.EventHandler(this.trackBar1_ValueChanged);
+            this.trackBar8.ValueChanged += new System.EventHandler(this.trackBar_ValueChanged);
             // 
             // trackBar9
             // 
@@ -204,7 +204,7 @@
             this.trackBar9.TabIndex = 9;
             this.trackBar9.Tag = "8";
             this.trackBar9.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.trackBar9.ValueChanged += new System.EventHandler(this.trackBar1_ValueChanged);
+            this.trackBar9.ValueChanged += new System.EventHandler(this.trackBar_ValueChanged);
             // 
             // trackBar10
             // 
@@ -218,7 +218,7 @@
             this.trackBar10.TabIndex = 10;
             this.trackBar10.Tag = "9";
             this.trackBar10.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.trackBar10.ValueChanged += new System.EventHandler(this.trackBar1_ValueChanged);
+            this.trackBar10.ValueChanged += new System.EventHandler(this.trackBar_ValueChanged);
             // 
             // MainWindow
             // 

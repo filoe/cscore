@@ -172,7 +172,7 @@ namespace CSCore.CoreAudioAPI
         /// buffer.
         /// </summary>
         /// <returns>HRESULT</returns>
-        public unsafe int GetCurrentPadding(out UInt32 numPaddingFrames)
+        public unsafe int GetCurrentPaddingNative(out UInt32 numPaddingFrames)
         {
             fixed (void* pndf = &numPaddingFrames)
             {
@@ -180,10 +180,14 @@ namespace CSCore.CoreAudioAPI
             }
         }
 
+        /// <summary>
+        /// The GetCurrentPadding method retrieves the number of frames of padding in the endpoint
+        /// buffer.
+        /// </summary>
         public int GetCurrentPadding()
         {
             uint padding;
-            CoreAudioAPIException.Try(GetCurrentPadding(out padding), c, "GetCurrentPadding");
+            CoreAudioAPIException.Try(GetCurrentPaddingNative(out padding), c, "GetCurrentPadding");
             return (int)padding;
         }
 
@@ -312,6 +316,9 @@ namespace CSCore.CoreAudioAPI
             return InteropCalls.CallI(_basePtr, ((void**)(*(void**)_basePtr))[10]);
         }
 
+        /// <summary>
+        /// The Start method starts the audio stream.
+        /// </summary>
         public void Start()
         {
             CoreAudioAPIException.Try(StartNative(), c, "Start");
@@ -326,6 +333,9 @@ namespace CSCore.CoreAudioAPI
             return InteropCalls.CallI(_basePtr, ((void**)(*(void**)_basePtr))[11]);
         }
 
+        /// <summary>
+        /// The Stop method stops the audio stream.
+        /// </summary>
         public void Stop()
         {
             CoreAudioAPIException.Try(StopNative(), c, "Stop");
@@ -340,6 +350,9 @@ namespace CSCore.CoreAudioAPI
             return InteropCalls.CallI(_basePtr, ((void**)(*(void**)_basePtr))[12]);
         }
 
+        /// <summary>
+        /// The Reset method resets the audio stream.
+        /// </summary>
         public void Reset()
         {
             CoreAudioAPIException.Try(ResetNative(), c, "Reset");

@@ -139,13 +139,11 @@ namespace CSCore.Test.SoundOut
         [TestMethod]
         [TestCategory("SoundOuts")]
         [Timeout(2 * MinuteMilliseconds)]
-        public void SoundOutSourceBehaviour()
+        public void SoundOutBehaviour()
         {
-            foreach (var soundOut in GetSoundOuts())
+            SoundOutTests((soundOut, source) =>
             {
-                var source = GetWaveSource();
                 source = new Utils.DisposableSource(source);
-
                 Assert.AreEqual(PlaybackState.Stopped, soundOut.PlaybackState);
                 soundOut.Initialize(source);
                 Assert.AreEqual(PlaybackState.Stopped, soundOut.PlaybackState);
@@ -161,7 +159,7 @@ namespace CSCore.Test.SoundOut
                 soundOut.Dispose();
 
                 Assert.IsFalse(((Utils.DisposableSource)source).IsDisposed, "{0} disposed source.", soundOut.GetType().FullName);
-            }
+            }, true);
         }
 
         private void SoundOutTests(Action<ISoundOut, IWaveSource> action, bool loopStream = false)
@@ -178,6 +176,7 @@ namespace CSCore.Test.SoundOut
             {
                 action(soundOut, source);
                 soundOut.Dispose();
+                source.Position = 0;
             }
 
             source.Dispose();

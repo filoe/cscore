@@ -18,13 +18,19 @@ namespace EqualizerTest
         private ISoundOut _soundOut;
         private Equalizer _eq;
 
-        private void trackBar1_ValueChanged(object sender, EventArgs e)
+        private void trackBar_ValueChanged(object sender, EventArgs e)
         {
             if (_eq != null)
             {
-                var trackbar = sender as TrackBar;
-                float value = (float)(((double)trackbar.Value / (double)trackbar.Maximum) * 15);
-                _eq.SampleFilters[Int32.Parse((string)trackbar.Tag)].SetGain(value);
+                const double MaxDB = 20;
+
+                var trackbar = sender as TrackBar; //Trackbar welche das Event ausgelöst hat.
+                double perc = ((double)trackbar.Value / (double)trackbar.Maximum); //Prozent der Trackbar
+                float value = (float)(perc * MaxDB); //Prozent der Trackbar mit der maximalen Verstärkung multipliziert 
+
+                int filterIndex = Int32.Parse((string)trackbar.Tag); //Index des Filters. Index wurde im Designer bei der Tag Eigenschaft festgelegt. 
+                EqFilterEntry filter = _eq.SampleFilters[filterIndex];
+                filter.SetGain(value); //neuen dB-Wert setzen
             }
         }
 

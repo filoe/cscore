@@ -10,7 +10,7 @@ namespace CSCore.Streams.SampleConverter
         {
             if (source == null)
                 throw new ArgumentNullException("source");
-            if (source.WaveFormat.WaveFormatTag != AudioEncoding.Pcm && source.WaveFormat.BitsPerSample != 8)
+            if (!source.WaveFormat.IsPCM() && source.WaveFormat.BitsPerSample != 8)
                 throw new InvalidOperationException("Invalid format. Format has to 8 bit Pcm.");
         }
 
