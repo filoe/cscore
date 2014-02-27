@@ -138,7 +138,7 @@ namespace CSCore.DSP
                     }
                     else
                     {
-                        System.Diagnostics.Debug.Assert(false, "Case of not ready for input is not implemented yet."); //todo: .
+                        Debug.WriteLine("Case of not ready for input is not implemented yet."); //todo: .
                     }
                 }
 

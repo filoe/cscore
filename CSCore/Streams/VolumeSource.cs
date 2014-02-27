@@ -10,6 +10,9 @@ namespace CSCore.Streams
     {
         private float _volume = 1f;
 
+        /// <summary>
+        /// Gets or sets the volume specified by a value in the range from 0.0 to 1.0.
+        /// </summary>
         public virtual float Volume
         {
             get

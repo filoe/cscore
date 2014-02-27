@@ -1,4 +1,19 @@
-﻿using System;
+﻿/**********************************************************************
+
+  Audacity: A Digital Audio Editor
+
+  Wahwah.cpp
+
+  Effect programming:
+  Nasca Octavian Paul (Paul Nasca)
+
+  UI programming:
+  Dominic Mazzoni (with the help of wxDesigner)
+  Vaughan Johnson (Preview)
+
+*******************************************************************/
+
+using System;
 
 namespace CSCore.Streams.Effects
 {

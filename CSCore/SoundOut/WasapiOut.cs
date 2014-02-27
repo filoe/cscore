@@ -10,10 +10,10 @@ using System.Threading;
 
 namespace CSCore.SoundOut
 {
-    /// <summary>
-    /// Provides audioplayback through Wasapi.
-    /// Minimum supported OS: Windows Vista (see IsSupportedOnCurrentPlatform property).
-    /// </summary>
+	/// <summary>
+	/// Provides audioplayback through Wasapi.
+	/// Minimum supported OS: Windows Vista (see IsSupportedOnCurrentPlatform property).
+	/// </summary>
 	public class WasapiOut : ISoundOut
 	{
 		private IWaveSource _source;
@@ -49,66 +49,66 @@ namespace CSCore.SoundOut
 		}
 
 		/// <summary>
-        /// Creates a new WasapiOut instance. 
-        /// EventSyncContext = SynchronizationContext.Current. 
-        /// PlaybackThreadPriority = AboveNormal. 
-        /// Latency = 100ms. 
-        /// EventSync = False. 
-        /// ShareMode = Shared. 
+		/// Creates a new WasapiOut instance. 
+		/// EventSyncContext = SynchronizationContext.Current. 
+		/// PlaybackThreadPriority = AboveNormal. 
+		/// Latency = 100ms. 
+		/// EventSync = False. 
+		/// ShareMode = Shared. 
 		/// </summary>
 		public WasapiOut()
 			: this(false, AudioClientShareMode.Shared, 100) //100 ms default
 		{
 		}
 
-        /// <summary>
-        /// Creates a new WasapiOut instance. 
-        /// EventSyncContext = SynchronizationContext.Current. 
-        /// PlaybackThreadPriority = AboveNormal.
-        /// </summary>
-        /// <param name="eventSync">True, to use eventsynchronization instead of a simple loop and sleep behavior.</param>
-        /// <param name="shareMode">Specifies how to open the audio device. Note that if exclusive mode is used, only one single playback for the specified device is possible at once.</param>
-        /// <param name="latency">Latency of the playback specified in milliseconds.</param>
+		/// <summary>
+		/// Creates a new WasapiOut instance. 
+		/// EventSyncContext = SynchronizationContext.Current. 
+		/// PlaybackThreadPriority = AboveNormal.
+		/// </summary>
+		/// <param name="eventSync">True, to use eventsynchronization instead of a simple loop and sleep behavior.</param>
+		/// <param name="shareMode">Specifies how to open the audio device. Note that if exclusive mode is used, only one single playback for the specified device is possible at once.</param>
+		/// <param name="latency">Latency of the playback specified in milliseconds.</param>
 		public WasapiOut(bool eventSync, AudioClientShareMode shareMode, int latency)
 			: this(eventSync, shareMode, 100, ThreadPriority.AboveNormal)
 		{
 		}
 
-        /// <summary>
-        /// Creates a new WasapiOut instance. 
-        /// EventSyncContext = SynchronizationContext.Current.
-        /// </summary>
-        /// <param name="eventSync">True, to use eventsynchronization instead of a simple loop and sleep behavior.</param>
-        /// <param name="shareMode">Specifies how to open the audio device. Note that if exclusive mode is used, only one single playback for the specified device is possible at once.</param>
-        /// <param name="latency">Latency of the playback specified in milliseconds.</param>
-        /// <param name="playbackThreadPriority">ThreadPriority of the playbackthread which runs in background and feeds the device with data.</param>
+		/// <summary>
+		/// Creates a new WasapiOut instance. 
+		/// EventSyncContext = SynchronizationContext.Current.
+		/// </summary>
+		/// <param name="eventSync">True, to use eventsynchronization instead of a simple loop and sleep behavior.</param>
+		/// <param name="shareMode">Specifies how to open the audio device. Note that if exclusive mode is used, only one single playback for the specified device is possible at once.</param>
+		/// <param name="latency">Latency of the playback specified in milliseconds.</param>
+		/// <param name="playbackThreadPriority">ThreadPriority of the playbackthread which runs in background and feeds the device with data.</param>
 		public WasapiOut(bool eventSync, AudioClientShareMode shareMode, int latency, ThreadPriority playbackThreadPriority)
-            : this(eventSync, shareMode, latency, playbackThreadPriority, SynchronizationContext.Current)
+			: this(eventSync, shareMode, latency, playbackThreadPriority, SynchronizationContext.Current)
 		{
 		}
 
-        /// <summary>
-        /// Creates a new WasapiOut instance.
-        /// </summary>
-        /// <param name="eventSync">True, to use eventsynchronization instead of a simple loop and sleep behavior.</param>
-        /// <param name="shareMode">Specifies how to open the audio device. Note that if exclusive mode is used, only one single playback for the specified device is possible at once.</param>
-        /// <param name="latency">Latency of the playback specified in milliseconds.</param>
-        /// <param name="playbackThreadPriority">ThreadPriority of the playbackthread which runs in background and feeds the device with data.</param>
-        /// <param name="eventSyncContext">The synchronizationcontext which is used to raise any events like the "Stopped"-event. If the passed value is not null, the events will be called async through the SynchronizationContext.Post() method.</param>
-        public WasapiOut(bool eventSync, AudioClientShareMode shareMode, int latency, ThreadPriority playbackThreadPriority, SynchronizationContext eventSyncContext)
-        {
-            if (!IsSupportedOnCurrentPlatform)
-                throw new PlatformNotSupportedException("Wasapi is only supported on Windows Vista and above.");
+		/// <summary>
+		/// Creates a new WasapiOut instance.
+		/// </summary>
+		/// <param name="eventSync">True, to use eventsynchronization instead of a simple loop and sleep behavior.</param>
+		/// <param name="shareMode">Specifies how to open the audio device. Note that if exclusive mode is used, only one single playback for the specified device is possible at once.</param>
+		/// <param name="latency">Latency of the playback specified in milliseconds.</param>
+		/// <param name="playbackThreadPriority">ThreadPriority of the playbackthread which runs in background and feeds the device with data.</param>
+		/// <param name="eventSyncContext">The synchronizationcontext which is used to raise any events like the "Stopped"-event. If the passed value is not null, the events will be called async through the SynchronizationContext.Post() method.</param>
+		public WasapiOut(bool eventSync, AudioClientShareMode shareMode, int latency, ThreadPriority playbackThreadPriority, SynchronizationContext eventSyncContext)
+		{
+			if (!IsSupportedOnCurrentPlatform)
+				throw new PlatformNotSupportedException("Wasapi is only supported on Windows Vista and above.");
 
-            if (latency <= 0)
-                throw new ArgumentOutOfRangeException("latency");
+			if (latency <= 0)
+				throw new ArgumentOutOfRangeException("latency");
 
-            _latency = latency;
-            _shareMode = shareMode;
-            _eventSync = eventSync;
-            _playbackThreadPriority = playbackThreadPriority;
-            _syncContext = SynchronizationContext.Current;
-        }
+			_latency = latency;
+			_shareMode = shareMode;
+			_eventSync = eventSync;
+			_playbackThreadPriority = playbackThreadPriority;
+			_syncContext = SynchronizationContext.Current;
+		}
 
 		/// <summary>
 		/// Initializes WasapiOut and prepares all resources for playback.
@@ -128,13 +128,13 @@ namespace CSCore.SoundOut
 
 			_playbackThread.WaitForExit();
 
-            //if (_isInitialized)
-            //    throw new InvalidOperationException("Wasapi is already initialized. Call WasapiOut::Stop to uninitialize Wasapi.");
+			//if (_isInitialized)
+			//    throw new InvalidOperationException("Wasapi is already initialized. Call WasapiOut::Stop to uninitialize Wasapi.");
 
 			_source = source;
-            CleanupResources();
+			CleanupResources();
 			InitializeInternal();
-            _isInitialized = true;
+			_isInitialized = true;
 		}
 
 		/// <summary>
@@ -146,13 +146,13 @@ namespace CSCore.SoundOut
 		{
 			CheckForDisposed();
 			CheckForInvalidThreadCall();
-            CheckForIsInitialized();
+			CheckForIsInitialized();
 
 			if (PlaybackState == SoundOut.PlaybackState.Stopped)
 			{
 				using (var waitHandle = new AutoResetEvent(false))
 				{
-                    _playbackThread.WaitForExit(); //just to be sure that the thread finished already. Should not be necessary because after Stop(), Initialize() has to be called which already waits until the playbackthread stopped.
+					_playbackThread.WaitForExit(); //just to be sure that the thread finished already. Should not be necessary because after Stop(), Initialize() has to be called which already waits until the playbackthread stopped.
 					_playbackThread = new Thread(new ParameterizedThreadStart(PlaybackProc))
 					{
 						Name = "WASAPI Playback-Thread; ID = " + DebuggingID,
@@ -195,7 +195,7 @@ namespace CSCore.SoundOut
 				 * New Session can be started while cleaning up old one => unknown behavior. =>
 				 * Always call Stop() to make sure, you wait until the thread is finished cleaning up.
 				 */
-                _playbackThread.WaitForExit();
+				_playbackThread.WaitForExit();
 				_playbackThread = null;
 			}
 			else
@@ -211,12 +211,12 @@ namespace CSCore.SoundOut
 		{
 			CheckForDisposed();
 			CheckForInvalidThreadCall();
-            CheckForIsInitialized();
+			CheckForIsInitialized();
 
-            if (_playbackState == SoundOut.PlaybackState.Paused)
-            {
-                _playbackState = SoundOut.PlaybackState.Playing;
-            }
+			if (_playbackState == SoundOut.PlaybackState.Paused)
+			{
+				_playbackState = SoundOut.PlaybackState.Playing;
+			}
 		}
 
 		/// <summary>
@@ -258,33 +258,33 @@ namespace CSCore.SoundOut
 				if (!FeedBuffer(_renderClient, buffer, bufferSize, frameSize))
 				{
 					_playbackState = PlaybackState.Stopped;
-                    if (playbackStartedEventWaithandle is EventWaitHandle)
-                    {
-                        ((EventWaitHandle)playbackStartedEventWaithandle).Set();
-                        playbackStartedEventWaithandle = null;
-                    }
+					if (playbackStartedEventWaithandle is EventWaitHandle)
+					{
+						((EventWaitHandle)playbackStartedEventWaithandle).Set();
+						playbackStartedEventWaithandle = null;
+					}
 				}
 				else
 				{
 					_audioClient.Start();
 					_playbackState = SoundOut.PlaybackState.Playing;
 
-                    if (playbackStartedEventWaithandle is EventWaitHandle)
-                    {
-                        ((EventWaitHandle)playbackStartedEventWaithandle).Set();
-                        playbackStartedEventWaithandle = null;
-                    }
+					if (playbackStartedEventWaithandle is EventWaitHandle)
+					{
+						((EventWaitHandle)playbackStartedEventWaithandle).Set();
+						playbackStartedEventWaithandle = null;
+					}
 
 					while (PlaybackState != PlaybackState.Stopped)
 					{
-						if (_eventSync)
+						if (_eventSync) //based on the "RenderSharedEventDriven"-Sample: http://msdn.microsoft.com/en-us/library/dd940520(v=vs.85).aspx
 						{
 							eventWaitHandleIndex = WaitHandle.WaitAny(eventWaitHandleArray, 3 * _latency, false);
 							//3 * latency = see msdn: recommended timeout
 							if (eventWaitHandleIndex == WaitHandle.WaitTimeout)
 								continue;
 						}
-						else
+						else //based on the "RenderSharedTimerDriven"-Sample: http://msdn.microsoft.com/en-us/library/dd940521(v=vs.85).aspx
 						{
 							Thread.Sleep(_latency / 8);
 						}
@@ -317,14 +317,14 @@ namespace CSCore.SoundOut
 					Thread.Sleep(_latency / 2);
 
 					_audioClient.Stop();
-                    _audioClient.Reset();
+					_audioClient.Reset();
 				}
 			}
 			finally
 			{
 				//CleanupResources();
-                if (playbackStartedEventWaithandle is EventWaitHandle)
-                    ((EventWaitHandle)playbackStartedEventWaithandle).Set();
+				if (playbackStartedEventWaithandle is EventWaitHandle)
+					((EventWaitHandle)playbackStartedEventWaithandle).Set();
 				RaiseStopped();
 			}
 		}
@@ -341,11 +341,11 @@ namespace CSCore.SoundOut
 				throw new ObjectDisposedException("WasapiOut");
 		}
 
-        private void CheckForIsInitialized()
-        {
-            if (!_isInitialized)
-                throw new InvalidOperationException("WasapiOut is not initialized.");
-        }
+		private void CheckForIsInitialized()
+		{
+			if (!_isInitialized)
+				throw new InvalidOperationException("WasapiOut is not initialized.");
+		}
 
 		private void InitializeInternal()
 		{
@@ -387,32 +387,32 @@ namespace CSCore.SoundOut
 				_source = null;
 			}
 
-            if (_renderClient != null)
-            {
-                _renderClient.Dispose();
-                _renderClient = null;
-            }
-            if (_audioClient != null)
-            {
-                try
-                {
-                    _audioClient.Reset();
-                }
-                catch (CoreAudioAPIException ex)
-                {
-                    if (ex.ErrorCode != unchecked((int)0x88890001)) //AUDCLNT_E_NOT_INITIALIZED
-                    {
-                        throw;
-                    }
-                }
-                _audioClient.Dispose();
-                _audioClient = null;
-            }
-            if (_simpleAudioVolume != null)
-            {
-                _simpleAudioVolume.Dispose();
-                _simpleAudioVolume = null;
-            }
+			if (_renderClient != null)
+			{
+				_renderClient.Dispose();
+				_renderClient = null;
+			}
+			if (_audioClient != null)
+			{
+				try
+				{
+					_audioClient.Reset();
+				}
+				catch (CoreAudioAPIException ex)
+				{
+					if (ex.ErrorCode != unchecked((int)0x88890001)) //AUDCLNT_E_NOT_INITIALIZED
+					{
+						throw;
+					}
+				}
+				_audioClient.Dispose();
+				_audioClient = null;
+			}
+			if (_simpleAudioVolume != null)
+			{
+				_simpleAudioVolume.Dispose();
+				_simpleAudioVolume = null;
+			}
 			if (_eventWaitHandle != null)
 			{
 				_eventWaitHandle.Close();
@@ -515,9 +515,9 @@ namespace CSCore.SoundOut
 				return;
 
 			if (_syncContext != null)
-			    _syncContext.Post(x => Stopped(this, EventArgs.Empty), null); //maybe post?
+				_syncContext.Post(x => Stopped(this, EventArgs.Empty), null); //maybe post?
 			else
-			    Stopped(this, EventArgs.Empty);
+				Stopped(this, EventArgs.Empty);
 		}
 
 		/// <summary>
@@ -575,38 +575,38 @@ namespace CSCore.SoundOut
 			}
 		}
 
-        /// <summary>
-        /// Latency of the playback specified in milliseconds.
-        /// </summary>
-        public int Latency
-        {
-            get { return _latency; }
-            set
-            {
-                if (value <= 0)
-                    throw new ArgumentOutOfRangeException("value");
-                _latency = value;
-            }
-        }
+		/// <summary>
+		/// Latency of the playback specified in milliseconds.
+		/// </summary>
+		public int Latency
+		{
+			get { return _latency; }
+			set
+			{
+				if (value <= 0)
+					throw new ArgumentOutOfRangeException("value");
+				_latency = value;
+			}
+		}
 
-        /// <summary>
-        /// The currently initialized source.
-        /// To change the WaveSource property, call Initialize().
-        /// </summary>
-        /// <remarks>
-        /// The value of the WaveSource might not be the value which was passed to the Initialize method, because
-        /// WasapiOut (depending on the waveformat of the source) has to use a DmoResampler.
-        /// </remarks>
-        public IWaveSource WaveSource
-        {
-            get { return _source; }
-        }
+		/// <summary>
+		/// The currently initialized source.
+		/// To change the WaveSource property, call Initialize().
+		/// </summary>
+		/// <remarks>
+		/// The value of the WaveSource might not be the value which was passed to the Initialize method, because
+		/// WasapiOut (depending on the waveformat of the source) has to use a DmoResampler.
+		/// </remarks>
+		public IWaveSource WaveSource
+		{
+			get { return _source; }
+		}
 
 		private bool _disposed;
 
-        /// <summary>
-        /// Stops the playback (if playing) and cleans up all used resources. 
-        /// </summary>
+		/// <summary>
+		/// Stops the playback (if playing) and cleans up all used resources. 
+		/// </summary>
 		public void Dispose()
 		{
 			Dispose(true);

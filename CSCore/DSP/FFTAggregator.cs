@@ -59,7 +59,7 @@ namespace CSCore.DSP
                 for (int i = 0; i < read / WaveFormat.BytesPerSample; i += WaveFormat.Channels)
                 {
                     ppbuffer = pbuffer + (i + 1) * WaveFormat.BytesPerSample;
-                    float sample = Utils.Utils.ConvertToSample(ppbuffer, WaveFormat.BitsPerSample, false, true);
+                    float sample = ConvertToSample(ppbuffer, WaveFormat.BitsPerSample, false, true);
 
                     Complex[_iteratorOffset++].Real = (float)(sample * FastFourierTransformation.HammingWindow(_iteratorOffset - 1, _bandCount));
                     if (_iteratorOffset >= BandCount)
@@ -91,6 +91,26 @@ namespace CSCore.DSP
                 Complex = null;
             */
             Complex = null;
+        }
+
+        private unsafe float ConvertToSample(byte* buffer, int bitsPerSample, bool autoIncrementPtr = true, bool mindown = true)
+        {
+            float value;
+            if (bitsPerSample == 8)
+                value = CSMath.Bit8ToFloat(buffer, mindown);
+            else if (bitsPerSample == 16)
+                value = CSMath.Bit16ToFloat(buffer, mindown);
+            else if (bitsPerSample == 24)
+                value = CSMath.Bit24ToFloat(buffer, mindown);
+            else if (bitsPerSample == 32)
+                value = CSMath.Bit32ToFloat(buffer, mindown);
+            else
+                throw new ArgumentOutOfRangeException("bitsPerSample");
+
+            if (autoIncrementPtr)
+                buffer += (bitsPerSample / 8);
+
+            return value;
         }
     }
 }

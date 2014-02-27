@@ -6,6 +6,9 @@ using System.Text;
 
 namespace CSCore.Win32
 {
+    /// <summary>
+    /// Represents a native 4 byte boolean value.
+    /// </summary>
     [Serializable]
     [StructLayout(LayoutKind.Sequential, Size = 4)]
     public struct NativeBool : IEquatable<NativeBool>
@@ -22,7 +25,7 @@ namespace CSCore.Win32
 
         public bool Equals(NativeBool other)
         {
-            return this._value == other._value;
+            return _value == other._value;
         }
 
         public override bool Equals(object obj)

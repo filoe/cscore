@@ -50,7 +50,7 @@ namespace CSCore.Streams
             StartFading(duration, targetVolume, -1, 10);
         }
 
-        public void StartFading(int duration, float targetVolume, float startVolume = -1, int resolution = 10)
+        public void StartFading(int duration, float targetVolume, float startVolume, int resolution)
         {
             if (duration <= 0)
                 throw new ArgumentOutOfRangeException("duration");

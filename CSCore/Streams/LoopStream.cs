@@ -2,6 +2,9 @@
 
 namespace CSCore.Streams
 {
+    /// <summary>
+    /// A Stream which can be used for endless looping.
+    /// </summary>
     public class LoopStream : WaveAggregatorBase
     {
         public event EventHandler StreamFinished;
@@ -13,13 +16,14 @@ namespace CSCore.Streams
 
         private bool _enalbeLoop = true;
 
+        /// <summary>
+        /// Gets or sets whether looping is enabled.
+        /// </summary>
         public bool EnableLoop
         {
             get { return _enalbeLoop; }
             set { _enalbeLoop = value; }
         }
-
-        private bool _raised = false;
 
         public override int Read(byte[] buffer, int offset, int count)
         {
@@ -29,16 +33,19 @@ namespace CSCore.Streams
                 int r = base.Read(buffer, offset + read, count - read);
                 if (r == 0)
                 {
-                    if (StreamFinished != null && !_raised)
+                    if (StreamFinished != null)
                     {
-                        StreamFinished(this, new EventArgs());
-                        _raised = true;
+                        StreamFinished(this, EventArgs.Empty);
                     }
-                    if (_enalbeLoop)
-                        _baseStream.Position = 0;
-                    else break;
+                    if (EnableLoop)
+                    {
+                        Position = 0;
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
-                _raised = false;
                 read += r;
             }
             return read;

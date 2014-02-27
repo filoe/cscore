@@ -286,8 +286,6 @@
     <Compile Include="SoundOut\WasapiOut.cs" />
     <Compile Include="Streams\PeakEventArgs.cs" />
     <Compile Include="Streams\PeakMeter.cs" />
-    <None Include="Streams\SoundPool.cs" />
-    <None Include="Streams\SoundPoolItem.cs" />
     <Compile Include="Streams\WriteableBufferingSource.cs" />
     <Compile Include="Streams\BufferSource.cs" />
     <Compile Include="Streams\EqFilter.cs" />
@@ -542,7 +540,6 @@
     <Compile Include="Utils\CSCalliAttribute.cs" />
     <Compile Include="Utils\CSMath.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="Utils\Memory.cs" />
     <Compile Include="Utils\UintOffsets.cs" />
     <Compile Include="Utils\Utils.cs" />
     <Compile Include="Win32\WaveFormatMarshaler.cs" />

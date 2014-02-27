@@ -5,6 +5,7 @@ using System.Text;
 
 namespace CSCore.DSP
 {
+    //Based on http://www.earlevel.com/main/2011/01/02/biquad-formulas/
     public class BiQuad
     {
         protected double a0, a1, a2, b1, b2;
@@ -44,13 +45,13 @@ namespace CSCore.DSP
 
         public void SetPeakGain(double peakGainDB)
         {
-            this.peakGain = peakGainDB;
+            peakGain = peakGainDB;
             CalcBiquad();
         }
 
         public void SetQ(float q)
         {
-            this.Q = q;
+            Q = q;
             CalcBiquad();
         }
 

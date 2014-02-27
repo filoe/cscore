@@ -50,6 +50,7 @@ namespace EqualizerTest
                 {
                     _soundOut = new DirectSoundOut();
                 }
+
                 var source = CodecFactory.Instance.GetCodec(ofn.FileName);
                 source = new LoopStream(source) { EnableLoop = false };
                 (source as LoopStream).StreamFinished += (s, args) => Stop();

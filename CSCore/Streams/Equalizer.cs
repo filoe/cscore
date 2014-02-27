@@ -63,9 +63,9 @@ namespace CSCore.Streams
                 }
             }
 
-            for (int i = 0; i < buffer.Length; i++)
+            for (int n = offset; n < count; n++)
             {
-                buffer[i] = Math.Max(-1, Math.Min(buffer[i], 1));
+                buffer[n] = Math.Max(-1, Math.Min(buffer[n], 1));
             }
 
             return read;

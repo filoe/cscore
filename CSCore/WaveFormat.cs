@@ -139,6 +139,7 @@ namespace CSCore
         }
     }
 
+    //Copied from NAudio (including a few modifications)
     public enum AudioEncoding : ushort
     {
         Unknown = 0x0000,

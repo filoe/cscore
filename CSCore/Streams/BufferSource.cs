@@ -1,4 +1,5 @@
-﻿using CSCore.Utils.Buffer;
+﻿using CSCore;
+using CSCore.Utils.Buffer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -102,7 +103,7 @@ namespace CSCore.Streams
         protected override void Dispose(bool disposing)
         {
             _disposing = true;
-            _bufferThread.Join(150);
+            _bufferThread.WaitForExit(400);
             base.Dispose(disposing);
         }
     }

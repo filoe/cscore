@@ -72,11 +72,9 @@ namespace CSCore.Streams
             _filter = BiQuad.CreatePeakEQFilter(sampleRate, centerFrequency, bandWidth, gain);
         }
 
-        /// <param name="channel">zero based channel index</param>
-        /// <param name="channelCount"></param>
-        public void Process(float[] input, int offset, int count, int channel, int channelCount)
+        public void Process(float[] input, int offset, int count, int channelIndex, int channelCount)
         {
-            for (int i = channel + offset; i < count + offset; i += channelCount)
+            for (int i = channelIndex + offset; i < count + offset; i += channelCount)
             {
                 input[i] = _filter.Process(input[i]);
             }

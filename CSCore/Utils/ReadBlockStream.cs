@@ -29,7 +29,6 @@ namespace CSCore.Utils
             }
 
             position += read;
-            Debug.Assert(read == count);
             return count;
         }
 

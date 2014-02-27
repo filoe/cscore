@@ -15,7 +15,7 @@ namespace CSCore.Test.SoundIn
             int n = 0;
             SoundInTests((c) =>
             {
-                for (int i = 0; i < 5000; i++)
+                for (int i = 0; i < 500; i++)
                 {
                     var waitHandle = new AutoResetEvent(true);
 
@@ -42,12 +42,71 @@ namespace CSCore.Test.SoundIn
             });
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void ThrowsInvalidCallerThread()
+        {
+            bool flag = true;
+            SoundInTests((c) =>
+            {
+                c.DataAvailable += (s, e) =>
+                {
+                    try
+                    {
+                        c.Stop();
+                        flag = false;
+                    }
+                    catch(InvalidOperationException)
+                    {
+                        Debug.WriteLine("Caught expected exception for " + c.GetType().FullName);
+                    }
+                };
+
+                c.Initialize();
+                c.Start();
+            });
+
+            if (flag)
+                throw new InvalidOperationException();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ObjectDisposedException))]
+        public void ThrowsObjectDisposed()
+        {
+            bool flag = true;
+            foreach (var c in GetSoundIns())
+            {
+                try
+                {
+                    c.Initialize();
+                    c.Start();
+                    Thread.Sleep(200);
+                    c.Dispose();
+                    c.Start();
+                    flag = false;
+                }
+                catch(ObjectDisposedException)
+                {
+                }
+            }
+
+            if (flag)
+                throw new ObjectDisposedException(String.Empty);
+        }
+
         private void SoundInTests(Action<ISoundIn> action)
         {
             foreach (var soundIn in GetSoundIns())
             {
-                action(soundIn);
-                soundIn.Dispose();
+                try
+                {
+                    action(soundIn);
+                }
+                finally
+                {
+                    soundIn.Dispose();
+                }
             }
         }
 

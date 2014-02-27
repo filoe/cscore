@@ -7,14 +7,14 @@ namespace CSCore.Win32
     [StructLayout(LayoutKind.Explicit)]
     public struct PropertyVariant : IDisposable
     {
+        //todo: create interop class
+        [DllImport("ole32.dll")]
+        private static extern int PropVariantClear(ref PropertyVariant propertyVariant);
+
         public static PropertyVariant CreateLong(long value)
         {
             return new PropertyVariant() { HValue = value, DataType = VarEnum.VT_I8 };
         }
-
-        //todo: create interop class
-        [DllImport("ole32.dll")]
-        private static extern int PropVariantClear(ref PropertyVariant propertyVariant);
 
         [FieldOffset(0)]
         public short Vartype; //vt
@@ -142,7 +142,8 @@ namespace CSCore.Win32
 
         public override string ToString()
         {
-            return GetValue().ToString();
+            var value = GetValue();
+            return value == null ? "null" : value.ToString();
         }
     }
 }

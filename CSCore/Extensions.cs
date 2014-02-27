@@ -1,5 +1,6 @@
 ﻿using CSCore.Codecs.MP3;
 using CSCore.Codecs.WAV;
+using CSCore.SoundOut;
 using CSCore.Streams.SampleConverter;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,12 @@ namespace CSCore
 {
     public static class Extensions
     {
+        /// <summary>
+        /// Converts a SampleSource to either a Pcm (8, 16, or 24 bit) or IeeeFloat (32 bit) WaveSource.
+        /// </summary>
+        /// <param name="sampleSource"></param>
+        /// <param name="bits"></param>
+        /// <returns></returns>
         public static IWaveSource ToWaveSource(this ISampleSource sampleSource, int bits)
         {
             if (sampleSource == null)
@@ -28,6 +35,20 @@ namespace CSCore
                 throw new ArgumentOutOfRangeException("bits");
         }
 
+        /// <summary>
+        /// Converts a SampleSource to IeeeFloat (32bit) WaveSource.
+        /// </summary>
+        public static IWaveSource ToWaveSource(this ISampleSource sampleSource)
+        {
+            if (sampleSource == null)
+                throw new ArgumentNullException("sampleSource");
+
+            return new SampleToIeeeFloat32(sampleSource);
+        }
+
+        /// <summary>
+        /// Converts a WaveSource to a SampleSource.
+        /// </summary>
         public static ISampleSource ToSampleSource(this IWaveSource waveSource)
         {
             if (waveSource == null)
@@ -36,16 +57,25 @@ namespace CSCore
             return WaveToSampleBase.CreateConverter(waveSource);
         }
 
+        /// <summary>
+        /// Gets the length of a WaveStream as a TimeSpan.
+        /// </summary>
         public static TimeSpan GetLength(this IWaveStream source)
         {
             return GetTime(source, source.Length);
         }
 
+        /// <summary>
+        /// Gets the position of a WaveStream as a TimeSpan.
+        /// </summary>
         public static TimeSpan GetPosition(this IWaveStream source)
         {
             return GetTime(source, source.Position);
         }
 
+        /// <summary>
+        /// Sets the position of a WaveStream as a TimeSpan.
+        /// </summary>
         public static void SetPosition(this IWaveStream source, TimeSpan position)
         {
             if (source == null)
@@ -225,6 +255,26 @@ namespace CSCore
                 return ((WaveFormatExtensible)waveFormat).SubFormat == DMO.MediaTypes.MEDIASUBTYPE_IEEE_FLOAT;
             else
                 return waveFormat.WaveFormatTag == AudioEncoding.IeeeFloat;
+        }
+
+        public static bool WaitForStopped(this ISoundOut soundOut, int timeout)
+        {
+            if (soundOut == null)
+                throw new ArgumentNullException("soundOut");
+            if (timeout < 0)
+                throw new ArgumentOutOfRangeException("timeout");
+
+            using(var waitHandle = new AutoResetEvent(false))
+            {
+                soundOut.Stopped += (s, e) => waitHandle.Set();
+
+                return waitHandle.WaitOne(timeout);
+            }
+        }
+
+        public static void WaitForStopped(this ISoundOut soundOut)
+        {
+            WaitForStopped(soundOut, Int32.MaxValue);
         }
     }
 }
