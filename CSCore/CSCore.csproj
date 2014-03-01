@@ -254,6 +254,8 @@
     <Compile Include="CoreAudioAPI\IAudioSessionNotification.cs" />
     <Compile Include="CoreAudioAPI\IAudioVolumeDuckNotification.cs" />
     <Compile Include="CoreAudioAPI\IMMNotificationClient.cs" />
+    <Compile Include="DMO\DmoInputStreamInfoFlags.cs" />
+    <Compile Include="DMO\DmoOutputStreamInfoFlags.cs" />
     <Compile Include="DSP\BiQuad.cs" />
     <Compile Include="DSP\ChannelMatrixElement.cs" />
     <Compile Include="IWritable.cs" />
@@ -530,7 +532,6 @@
     <Compile Include="Streams\SampleConverter\Pcm8BitToSample.cs" />
     <Compile Include="Streams\SampleConverter\WaveToSampleBase.cs" />
     <Compile Include="Streams\SineGenerator.cs" />
-    <Compile Include="Utils\Buffer\BufferUtils.cs" />
     <Compile Include="Utils\Buffer\FixedSizeBuffer.cs" />
     <Compile Include="Utils\Buffer\UnsafeBuffer.cs" />
     <Compile Include="Utils\Complex.cs" />

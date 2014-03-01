@@ -257,6 +257,12 @@ namespace CSCore
                 return waveFormat.WaveFormatTag == AudioEncoding.IeeeFloat;
         }
 
+        /// <summary>
+        /// Not tested. This method can be buggy.
+        /// </summary>
+        /// <param name="soundOut"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
         public static bool WaitForStopped(this ISoundOut soundOut, int timeout)
         {
             if (soundOut == null)
@@ -264,14 +270,20 @@ namespace CSCore
             if (timeout < 0)
                 throw new ArgumentOutOfRangeException("timeout");
 
+            if (soundOut.PlaybackState == PlaybackState.Stopped)
+                return true;
+
             using(var waitHandle = new AutoResetEvent(false))
             {
                 soundOut.Stopped += (s, e) => waitHandle.Set();
-
                 return waitHandle.WaitOne(timeout);
             }
         }
 
+        /// <summary>
+        /// Not tested. This method can be buggy.
+        /// </summary>
+        /// <param name="soundOut"></param>
         public static void WaitForStopped(this ISoundOut soundOut)
         {
             WaitForStopped(soundOut, Int32.MaxValue);

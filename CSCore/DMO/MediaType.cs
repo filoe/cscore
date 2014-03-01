@@ -4,6 +4,9 @@ using System.Runtime.InteropServices;
 namespace CSCore.DMO
 {
     //http://msdn.microsoft.com/en-us/library/windows/desktop/dd375504(v=vs.85).aspx
+    /// <summary>
+    /// DMO_MEDIA_TYPE
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct MediaType
     {
@@ -82,6 +85,9 @@ namespace CSCore.DMO
         /// </summary>
         public IntPtr PtrFormat;
 
+        /// <summary>
+        /// Frees the allocated members of a media type structure.
+        /// </summary>
         public void Free()
         {
             NativeMethods.MoFreeMediaType(ref this);

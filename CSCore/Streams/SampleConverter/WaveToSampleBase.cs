@@ -37,6 +37,7 @@ namespace CSCore.Streams.SampleConverter
             }
         }
 
+        [ThreadStatic]
         protected byte[] _buffer;
         protected IWaveSource _source;
         protected double _bpsratio;

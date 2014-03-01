@@ -1,4 +1,5 @@
 ﻿using CSCore.Utils.Buffer;
+using CSCore;
 using System;
 
 namespace CSCore.Streams.SampleConverter
@@ -14,7 +15,7 @@ namespace CSCore.Streams.SampleConverter
 
         public override int Read(byte[] buffer, int offset, int count)
         {
-            _buffer = BufferUtils.CheckBuffer(_buffer, count / 2);
+            _buffer = _buffer.CheckBuffer(count / 2);
 
             int read = _source.Read(_buffer, 0, count / 2);
             int bufferOffset = offset;

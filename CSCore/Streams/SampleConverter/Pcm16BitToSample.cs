@@ -5,6 +5,8 @@ namespace CSCore.Streams.SampleConverter
 {
     public class Pcm16BitToSample : WaveToSampleBase
     {
+        private Object syncLock = new Object();
+
         public Pcm16BitToSample(IWaveSource source)
             : base(source, 16, AudioEncoding.Pcm)
         {
@@ -17,7 +19,7 @@ namespace CSCore.Streams.SampleConverter
         public override int Read(float[] buffer, int offset, int count)
         {
             int bytesToRead = count * 2;
-            _buffer = BufferUtils.CheckBuffer(_buffer, bytesToRead);
+            _buffer = _buffer.CheckBuffer(bytesToRead);
             int read = _source.Read(_buffer, 0, bytesToRead);
 
             int startIndex = offset;

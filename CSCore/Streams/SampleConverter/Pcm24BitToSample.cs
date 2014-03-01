@@ -17,7 +17,7 @@ namespace CSCore.Streams.SampleConverter
         public override int Read(float[] buffer, int offset, int count)
         {
             int bytesToRead = count * 3;
-            _buffer = BufferUtils.CheckBuffer(_buffer, bytesToRead);
+            _buffer = _buffer.CheckBuffer(bytesToRead);
             int read = _source.Read(_buffer, 0, bytesToRead);
             unsafe
             {

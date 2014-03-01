@@ -22,22 +22,102 @@ namespace CSCore.DMO
         {
         }
 
-        public unsafe void SetInputType(int streamIndex, MediaType mediaType, SetTypeFlags flags, out int result)
+        /// <summary>
+        /// Retrieves the number of input and output streams.
+        /// </summary>
+        /// <returns>HRESULT</returns>
+        public unsafe int GetStreamCountNative(out int inputStreams, out int outputStreams)
         {
-            var ptr = ((void**)(*(void**)_basePtr))[8];
-            var ptr1 = mediaType.PtrFormat;
-            byte b = *(byte*)ptr1;
+            inputStreams = outputStreams = 0;
+            fixed(void* i0 = &inputStreams, i1 = &outputStreams)
+            {
+                return InteropCalls.CalliMethodPtr(_basePtr, i0, i1, ((void**)(*(void**)_basePtr))[3]);
+            }
+        }
 
-            result = InteropCalls.CalliMethodPtr(_basePtr, streamIndex,
-                ((void*)(&mediaType)),
-                flags, ptr);
+        /// <summary>
+        /// Retrieves the number of input and output streams.
+        /// </summary>
+        public void GetStreamCount(out int inputStreams, out int outputStreams)
+        {
+            DmoException.Try(GetStreamCountNative(out inputStreams, out outputStreams), n, "GetStreamCount");
+        }
+
+        //--
+
+        /// <summary>
+        /// Retrieves information about a specified input stream.
+        /// </summary>
+        /// <returns>HRESULT</returns>
+        public unsafe int GetInputStreamInfoNative(int inputStreamIndex, out DmoInputStreamInfoFlags flags)
+        {
+            flags = DmoInputStreamInfoFlags.None;
+            fixed(void* p = &flags)
+            {
+                return InteropCalls.CalliMethodPtr(_basePtr, inputStreamIndex, p, ((void**)(*(void**)_basePtr))[4]);
+            }
+        }
+
+        /// <summary>
+        /// Retrieves information about a specified input stream.
+        /// </summary>
+        public DmoInputStreamInfoFlags GetInputStreamInfo(int inputStreamIndex)
+        {
+            DmoInputStreamInfoFlags flags;
+            DmoException.Try(GetInputStreamInfoNative(inputStreamIndex, out flags), n, "GetInputSreamInfo");
+            return flags;
+        }
+
+        //--
+
+        /// <summary>
+        /// Retrieves information about a specified output stream.
+        /// </summary>
+        /// <returns>HRESULT</returns>
+        public unsafe int GetOutputStreamInfoNative(int outputStreamIndex, out DmoOutputStreamInfoFlags flags)
+        {
+            flags = DmoOutputStreamInfoFlags.None;
+            fixed (void* p = &flags)
+            {
+                return InteropCalls.CalliMethodPtr(_basePtr, outputStreamIndex, p, ((void**)(*(void**)_basePtr))[5]);
+            }
+        }
+
+        /// <summary>
+        /// Retrieves information about a specified output stream.
+        /// </summary>
+        public DmoOutputStreamInfoFlags GetOutputStreamInfo(int outputStreamIndex)
+        {
+            DmoOutputStreamInfoFlags flags;
+            DmoException.Try(GetOutputStreamInfoNative(outputStreamIndex, out flags), n, "GetOutputSreamInfo");
+            return flags;
+        }
+
+        //--
+
+        /// <summary>
+        /// Retrieves a preferred media type for a specified input stream.
+        /// </summary>
+        /// <param name="typeIndex">Zero-based index on the set of acceptable media types.</param>
+        /// <param name="mediaType">Can be null to check whether the typeIndex argument is in range. If not, the errorcode will be DMO_E_NO_MORE_ITEMS (0x80040206).</param>
+        /// <returns>RESULT</returns>
+        public unsafe int GetInputTypeNative(int streamIndex, int typeIndex, out MediaType mediaType)
+        {
+            fixed(void* p = &mediaType)
+            {
+                return InteropCalls.CalliMethodPtr(_basePtr, streamIndex, typeIndex, p, ((void**)(*(void**)_basePtr))[6]);
+            }
+        }
+
+        public unsafe int SetInputTypeNative(int streamIndex, MediaType mediaType, SetTypeFlags flags)
+        {
+            return InteropCalls.CalliMethodPtr(_basePtr, 
+                streamIndex, ((void*)(&mediaType)), flags, ((void**)(*(void**)_basePtr))[8]);
         }
 
         public void SetInputType(int streamIndex, MediaType mediaType, SetTypeFlags flags)
         {
-            int result;
-            SetInputType(streamIndex, mediaType, flags, out result);
-            DmoException.Try(result, n, "SetInputType");
+            DmoException.Try(SetInputTypeNative(streamIndex, mediaType, flags), n, "SetInputType");
         }
 
         public void SetInputType(int streamIndex, WaveFormat waveFormat)
@@ -57,9 +137,7 @@ namespace CSCore.DMO
 
         public bool SupportsInputFormat(int streamIndex, MediaType mediaType)
         {
-            int result;
-
-            SetInputType(streamIndex, mediaType, SetTypeFlags.TestOnly, out result);
+            int result = SetInputTypeNative(streamIndex, mediaType, SetTypeFlags.TestOnly);
             switch ((DmoResult)result)
             {
                 case DmoResult.S_OK:

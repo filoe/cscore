@@ -18,7 +18,7 @@ namespace CSCore.Streams.SampleConverter
         public override int Read(byte[] buffer, int offset, int count)
         {
             int sourceCount = count;
-            _buffer = BufferUtils.CheckBuffer(_buffer, sourceCount);
+            _buffer = _buffer.CheckBuffer(sourceCount);
 
             int read = _source.Read(_buffer, 0, sourceCount);
             for (int i = offset; i < read; i++)

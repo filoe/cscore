@@ -1,11 +1,13 @@
 ﻿using CSCore.Utils.Buffer;
 using System;
+using System.Diagnostics;
 
 namespace CSCore.Streams
 {
     public class StereoToMonoSource : SampleSourceBase
     {
         private WaveFormat _waveFormat;
+        //[ThreadStatic]
         private float[] _buffer;
 
         public StereoToMonoSource(IWaveStream source)
@@ -21,9 +23,8 @@ namespace CSCore.Streams
 
         public unsafe override int Read(float[] buffer, int offset, int count)
         {
-            _buffer = BufferUtils.CheckBuffer(buffer, count * 2);
+            _buffer = _buffer.CheckBuffer(count * 2);
             int read = _source.Read(_buffer, 0, count * 2);
-
             fixed (float* pbuffer = buffer)
             {
                 float* ppbuffer = pbuffer + offset;

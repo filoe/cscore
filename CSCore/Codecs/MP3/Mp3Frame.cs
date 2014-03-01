@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using CSCore;
 
 namespace CSCore.Codecs.MP3
 {
@@ -78,7 +79,7 @@ namespace CSCore.Codecs.MP3
             MP3Frame frame = new MP3Frame(stream);
             if (frame.FindFrame(stream, false))
             {
-                data = CSCore.Utils.Buffer.BufferUtils.CheckBuffer(data, frame.FrameLength);
+                data = data.CheckBuffer(frame.FrameLength);
                 Array.Copy(frame._headerBuffer, 0, data, 0, 4);
                 int read = stream.Read(data, 4, frame.FrameLength - 4);
                 if (read != frame.FrameLength - 4)
@@ -150,7 +151,7 @@ namespace CSCore.Codecs.MP3
         {
             long currentPosition = _stream.Position;
 
-            buffer = CSCore.Utils.Buffer.BufferUtils.CheckBuffer(buffer, FrameLength + offset);
+            buffer = buffer.CheckBuffer(FrameLength + offset);
             _stream.Position = _streamPosition;
             int read = _stream.Read(buffer, offset, FrameLength);
 
