@@ -8,7 +8,7 @@ namespace CSCore.DMO
     /// <summary>
     /// Error codes that are specific to Microsoft DirectX Media Objects 
     /// </summary>
-    public enum DmoErrorCodes
+    public enum DmoErrorCodes : int
     {
         /// <summary>
         /// Invalid stream index.

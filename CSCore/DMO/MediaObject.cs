@@ -282,18 +282,18 @@ namespace CSCore.DMO
         public bool SupportsInputFormat(int inputStreamIndex, MediaType mediaType)
         {
             int result = SetInputTypeNative(inputStreamIndex, mediaType, SetTypeFlags.TestOnly);
-            switch ((DmoResult)result)
+            switch ((DmoErrorCodes)result)
             {
-                case DmoResult.S_OK:
+                case (DmoErrorCodes)(HResult.S_OK):
                     return true;
 
-                case DmoResult.DMO_E_INVALIDSTREAMINDEX:
+                case DmoErrorCodes.DMO_E_INVALIDSTREAMINDEX:
                     throw new ArgumentOutOfRangeException("inputStreamIndex");
-                case DmoResult.DMO_E_INVALIDTYPE:
-                case DmoResult.DMO_E_TYPE_NOT_SET:
-                case DmoResult.DMO_E_NOTACCEPTING:
-                case DmoResult.DMO_E_TYPE_NOT_ACCEPTED:
-                case DmoResult.DMO_E_NO_MORE_ITEMS:
+                case DmoErrorCodes.DMO_E_INVALIDTYPE:
+                case DmoErrorCodes.DMO_E_TYPE_NOT_SET:
+                case DmoErrorCodes.DMO_E_NOTACCEPTING:
+                case DmoErrorCodes.DMO_E_TYPE_NOT_ACCEPTED:
+                case DmoErrorCodes.DMO_E_NO_MORE_ITEMS:
                 default:
                     return false;
             }
@@ -370,18 +370,18 @@ namespace CSCore.DMO
         public bool SupportsOutputFormat(int outputStreamIndex, MediaType mediaType)
         {
             int result = SetOutputTypeNative(outputStreamIndex, mediaType, SetTypeFlags.TestOnly);
-            switch ((DmoResult)result)
+            switch ((DmoErrorCodes)result)
             {
-                case DmoResult.S_OK:
+                case (DmoErrorCodes)(HResult.S_OK):
                     return true;
 
-                case DmoResult.DMO_E_INVALIDSTREAMINDEX:
+                case DmoErrorCodes.DMO_E_INVALIDSTREAMINDEX:
                     throw new ArgumentOutOfRangeException("outputStreamIndex");
-                case DmoResult.DMO_E_INVALIDTYPE:
-                case DmoResult.DMO_E_TYPE_NOT_SET:
-                case DmoResult.DMO_E_NOTACCEPTING:
-                case DmoResult.DMO_E_TYPE_NOT_ACCEPTED:
-                case DmoResult.DMO_E_NO_MORE_ITEMS:
+                case DmoErrorCodes.DMO_E_INVALIDTYPE:
+                case DmoErrorCodes.DMO_E_TYPE_NOT_SET:
+                case DmoErrorCodes.DMO_E_NOTACCEPTING:
+                case DmoErrorCodes.DMO_E_TYPE_NOT_ACCEPTED:
+                case DmoErrorCodes.DMO_E_NO_MORE_ITEMS:
                 default:
                     return false;
             }

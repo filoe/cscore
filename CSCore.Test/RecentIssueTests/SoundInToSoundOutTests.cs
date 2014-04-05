@@ -13,7 +13,7 @@ namespace CSCore.Test.RecentIssueTests
         [TestMethod]
         public void SoundInToSoundOutTest_Wasapi()
         {
-            for (int i = 0; i < 500; i++)
+            for (int i = 0; i < 10; i++)
             {
                 var waveIn = new WasapiCapture();
                 waveIn.Initialize();

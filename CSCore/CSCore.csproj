@@ -432,7 +432,6 @@
     <Compile Include="CoreAudioAPI\MMDeviceEnumerator.cs" />
     <Compile Include="DMO\DmoException.cs" />
     <Compile Include="DMO\NativeMethods.cs" />
-    <Compile Include="DMO\DmoResult.cs" />
     <Compile Include="DMO\IMediaObject.cs" />
     <Compile Include="MediaFoundation\IMFAttributes.cs" />
     <Compile Include="MediaFoundation\IMFMediaBuffer.cs" />

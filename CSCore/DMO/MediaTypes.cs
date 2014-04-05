@@ -167,7 +167,7 @@ namespace CSCore.DMO
         {
             var bytes = mediaType.ToByteArray();
             int value = BitConverter.ToInt32(bytes, 0);
-            if (Enum.IsDefined(typeof(AudioEncoding), value))
+            if (Enum.IsDefined(typeof(AudioEncoding), (ushort)value))
                 return (AudioEncoding)value;
 
             throw new ArgumentException("Invalid mediaType.");
@@ -180,7 +180,7 @@ namespace CSCore.DMO
         /// <returns></returns>
         public static Guid MediaTypeFromEncoding(AudioEncoding encoding)
         {
-            if(Enum.IsDefined(typeof(AudioEncoding), (int)encoding))
+            if(Enum.IsDefined(typeof(AudioEncoding), (ushort)encoding))
                 return new Guid((int)encoding, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
 
             throw new ArgumentException("Invalid encoding.");
