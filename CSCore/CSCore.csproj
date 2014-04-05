@@ -256,8 +256,10 @@
     <Compile Include="CoreAudioAPI\IAudioVolumeDuckNotification.cs" />
     <Compile Include="CoreAudioAPI\IMMNotificationClient.cs" />
     <Compile Include="DMO\DmoInputStreamInfoFlags.cs" />
+    <Compile Include="DMO\DmoOutputDataBuffer.cs" />
     <Compile Include="DMO\DmoOutputStreamInfoFlags.cs" />
     <Compile Include="DMO\DmoSizeInfo.cs" />
+    <Compile Include="DMO\IMediaBuffer.cs" />
     <Compile Include="DSP\BiQuad.cs" />
     <Compile Include="DSP\ChannelMatrixElement.cs" />
     <Compile Include="IWritable.cs" />
@@ -416,7 +418,6 @@
     <Compile Include="CoreAudioAPI\MMDeviceEnumerator.cs" />
     <Compile Include="DMO\DmoException.cs" />
     <Compile Include="DMO\NativeMethods.cs" />
-    <Compile Include="DMO\DmoObject.cs" />
     <Compile Include="DMO\DmoResult.cs" />
     <Compile Include="DMO\IMediaObject.cs" />
     <Compile Include="MediaFoundation\IMFAttributes.cs" />

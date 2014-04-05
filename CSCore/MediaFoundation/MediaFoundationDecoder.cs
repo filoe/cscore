@@ -75,7 +75,7 @@ namespace CSCore.MediaFoundation
                 using (var mediaType = MFMediaType.CreateEmpty())
                 {
                     mediaType.MajorType = MediaTypes.MediaTypeAudio;
-                    mediaType.SubType = MediaTypes.MEDIASUBTYPE_PCM; //variable??
+                    mediaType.SubType = MediaTypes.MEDIATYPE_Pcm; //variable??
 
                     reader.SetCurrentMediaType(MFInterops.MF_SOURCE_READER_FIRST_AUDIO_STREAM, mediaType);
                 }
