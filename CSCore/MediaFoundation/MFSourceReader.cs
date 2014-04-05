@@ -51,7 +51,8 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Queries whether a stream is selected. </summary
+        /// Queries whether a stream is selected. 
+        /// </summary>
         public NativeBool GetStreamSelection(int streamIndex)
         {
             NativeBool result;

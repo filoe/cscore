@@ -17,7 +17,7 @@ namespace CSCore.CoreAudioAPI
 
         /// <summary>
         /// The GetAudioSessionControl method retrieves an audio session control.
-        /// </summary
+        /// </summary>
         /// <param name="audioSessionGuid">If the GUID does not identify a session that has been previously opened, the call opens a new but empty session. If the value is Guid.Empty, the method assigns the stream to the default session.</param>
         /// <param name="streamFlags">Specifies the status of the flags for the audio stream.</param>
         /// <returns>HRESULT</returns>
@@ -33,7 +33,7 @@ namespace CSCore.CoreAudioAPI
 
         /// <summary>
         /// The GetAudioSessionControl method retrieves an audio session control.
-        /// </summary
+        /// </summary>
         /// <param name="audioSessionGuid">If the GUID does not identify a session that has been previously opened, the call opens a new but empty session. If the value is Guid.Empty, the method assigns the stream to the default session.</param>
         /// <param name="streamFlags">Specifies the status of the flags for the audio stream.</param>
         public AudioSessionControl GetAudioSessionControl(Guid audioSessionGuid, int streamFlags)

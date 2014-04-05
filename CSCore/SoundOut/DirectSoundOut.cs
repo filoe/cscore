@@ -30,7 +30,7 @@ namespace CSCore.SoundOut
         private Guid _device;
 
         public event EventHandler Stopped;
-        private bool _isInitialized;
+        //private bool _isInitialized;
 
         /// <summary>
         /// Creates an new instance of DirectSoundOut. 
@@ -100,6 +100,7 @@ namespace CSCore.SoundOut
 
             _playbackThread.WaitForExit();
 
+            //todo: implement that. note that _isInitialized = ... has to be uncommented in the whole document.
             //if (_isInitialized)
             //    throw new InvalidOperationException("DirectSoundOut is already initialized. Call DirectSoundOut::Stop to uninitialize DirectSoundOut.");
 
@@ -108,7 +109,7 @@ namespace CSCore.SoundOut
 
             CleanupRessources();
             InitializeInternal();
-            _isInitialized = true;
+            //_isInitialized = true;
 
             Volume = 1.0f;
         }
@@ -423,7 +424,7 @@ namespace CSCore.SoundOut
                 _directSound = null;
             }
 
-            _isInitialized = false;
+            //_isInitialized = false;
         }
 
         private void CheckForInvalidThreadCall()

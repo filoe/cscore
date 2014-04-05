@@ -16,7 +16,7 @@ namespace CSCore.DMO
         }
 
         [CSCalli]
-        internal static unsafe int CalliMethodPtr(void* _basePtr, int streamIndex, IMediaBuffer mediaBuffer, InputdataBufferFlags flags, long timestamp, long timeduration, void* p)
+        internal static unsafe int CalliMethodPtr(void* _basePtr, int streamIndex, IMediaBuffer mediaBuffer, InputDataBufferFlags flags, long timestamp, long timeduration, void* p)
         {
             throw new NotImplementedException();
         }

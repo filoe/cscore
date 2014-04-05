@@ -6,7 +6,9 @@ using System.Text;
 
 namespace CSCore.DMO
 {
-    //http://msdn.microsoft.com/en-us/library/windows/desktop/dd375507(v=vs.85).aspx
+    /// <summary>
+    /// Represents an DmoOutputDataBuffer. Fore more details see http://msdn.microsoft.com/en-us/library/windows/desktop/dd375507(v=vs.85).aspx.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 8)]
     public struct DmoOutputDataBuffer : IDisposable
     {
@@ -36,6 +38,10 @@ namespace CSCore.DMO
         /// </summary>
         public long TimeLength;
 
+        /// <summary>
+        /// Creates a new DmoOutputDataBuffer.
+        /// </summary>
+        /// <param name="bufferSize">The maxlength (in bytes) of the internally used MediaBuffer.</param>
         public DmoOutputDataBuffer(int bufferSize)
         {
             Buffer = new MediaBuffer(bufferSize);
@@ -50,24 +56,35 @@ namespace CSCore.DMO
         }*/
 
         /// <summary>
-        /// Gets the length of the MediaBuffer. See <see cref="MediaBuffer"/>.
+        /// Gets the length of the MediaBuffer. See <see cref="MediaBuffer.Length"/>.
         /// </summary>
         public int Length
         {
             get { return (Buffer as MediaBuffer).Length; }
         }
 
+        /// <summary>
+        /// Reads a sequence of bytes from the MediaBuffer.
+        /// </summary>
+        /// <param name="buffer">Array of bytes to store the read bytes in.</param>
+        /// <param name="offset">Zero-based byte offset in the specified buffer at which to begin storing the data read from the buffer.</param>
         public void Read(byte[] buffer, int offset)
         {
             (Buffer as MediaBuffer).Read(buffer, offset);
         }
 
+        /// <summary>
+        /// Resets the Buffer. Sets the length of the MediaBuffer (see <see cref="MediaBuffer"/>) to zero and sets the <see cref="Status"/> to <see cref="OutputDataBufferFlags.None"/>.
+        /// </summary>
         public void Reset()
         {
             Buffer.SetLength(0);
             Status = OutputDataBufferFlags.None;
         }
 
+        /// <summary>
+        /// Disposes the internally used MediaBuffer.
+        /// </summary>
         public void Dispose()
         {
             if (Buffer != null)

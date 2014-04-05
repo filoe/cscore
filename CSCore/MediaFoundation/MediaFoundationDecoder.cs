@@ -86,9 +86,9 @@ namespace CSCore.MediaFoundation
                         throw new InvalidOperationException(String.Format("Invalid Majortype set on sourcereader: {0}.", currentMediaType.MajorType.ToString()));
 
                     AudioEncoding encoding;
-                    if (currentMediaType.SubType == MediaTypes.MEDIASUBTYPE_PCM)
+                    if (currentMediaType.SubType == MediaTypes.MEDIATYPE_Pcm)
                         encoding = AudioEncoding.Pcm;
-                    else if (currentMediaType.SubType == MediaTypes.MEDIASUBTYPE_IEEE_FLOAT)
+                    else if (currentMediaType.SubType == MediaTypes.MEDIATYPE_IeeeFloat)
                         encoding = AudioEncoding.IeeeFloat;
                     else
                         throw new InvalidOperationException(String.Format("Invalid Subtype set on sourcereader: {0}.", currentMediaType.SubType.ToString()));

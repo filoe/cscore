@@ -420,10 +420,10 @@ namespace CSCore.SoundIn
                     {
                         WaveFormatExtensible[] possibleFormats = new WaveFormatExtensible[]
 						{
-							new WaveFormatExtensible(waveFormat.SampleRate, 32, waveFormat.Channels, DMO.MediaTypes.MEDIASUBTYPE_IEEE_FLOAT),
-							new WaveFormatExtensible(waveFormat.SampleRate, 24, waveFormat.Channels, DMO.MediaTypes.MEDIASUBTYPE_PCM),
-							new WaveFormatExtensible(waveFormat.SampleRate, 16, waveFormat.Channels, DMO.MediaTypes.MEDIASUBTYPE_PCM),
-							new WaveFormatExtensible(waveFormat.SampleRate, 8,  waveFormat.Channels, DMO.MediaTypes.MEDIASUBTYPE_PCM)
+							new WaveFormatExtensible(waveFormat.SampleRate, 32, waveFormat.Channels, DMO.MediaTypes.MEDIATYPE_IeeeFloat),
+							new WaveFormatExtensible(waveFormat.SampleRate, 24, waveFormat.Channels, DMO.MediaTypes.MEDIATYPE_Pcm),
+							new WaveFormatExtensible(waveFormat.SampleRate, 16, waveFormat.Channels, DMO.MediaTypes.MEDIATYPE_Pcm),
+							new WaveFormatExtensible(waveFormat.SampleRate, 8,  waveFormat.Channels, DMO.MediaTypes.MEDIATYPE_Pcm)
 						};
 
                         if (!CheckForSupportedFormat(audioClient, possibleFormats, out mixformat))
@@ -431,14 +431,14 @@ namespace CSCore.SoundIn
                             //no format found...
                             possibleFormats = new WaveFormatExtensible[]
 							{
-								new WaveFormatExtensible(waveFormat.SampleRate, 32, 2, DMO.MediaTypes.MEDIASUBTYPE_IEEE_FLOAT),
-								new WaveFormatExtensible(waveFormat.SampleRate, 24, 2, DMO.MediaTypes.MEDIASUBTYPE_PCM),
-								new WaveFormatExtensible(waveFormat.SampleRate, 16, 2, DMO.MediaTypes.MEDIASUBTYPE_PCM),
-								new WaveFormatExtensible(waveFormat.SampleRate, 8,  2, DMO.MediaTypes.MEDIASUBTYPE_PCM),
-								new WaveFormatExtensible(waveFormat.SampleRate, 32, 1, DMO.MediaTypes.MEDIASUBTYPE_IEEE_FLOAT),
-								new WaveFormatExtensible(waveFormat.SampleRate, 24, 1, DMO.MediaTypes.MEDIASUBTYPE_PCM),
-								new WaveFormatExtensible(waveFormat.SampleRate, 16, 1, DMO.MediaTypes.MEDIASUBTYPE_PCM),
-								new WaveFormatExtensible(waveFormat.SampleRate, 8,  1, DMO.MediaTypes.MEDIASUBTYPE_PCM)
+								new WaveFormatExtensible(waveFormat.SampleRate, 32, 2, DMO.MediaTypes.MEDIATYPE_IeeeFloat),
+								new WaveFormatExtensible(waveFormat.SampleRate, 24, 2, DMO.MediaTypes.MEDIATYPE_Pcm),
+								new WaveFormatExtensible(waveFormat.SampleRate, 16, 2, DMO.MediaTypes.MEDIATYPE_Pcm),
+								new WaveFormatExtensible(waveFormat.SampleRate, 8,  2, DMO.MediaTypes.MEDIATYPE_Pcm),
+								new WaveFormatExtensible(waveFormat.SampleRate, 32, 1, DMO.MediaTypes.MEDIATYPE_IeeeFloat),
+								new WaveFormatExtensible(waveFormat.SampleRate, 24, 1, DMO.MediaTypes.MEDIATYPE_Pcm),
+								new WaveFormatExtensible(waveFormat.SampleRate, 16, 1, DMO.MediaTypes.MEDIATYPE_Pcm),
+								new WaveFormatExtensible(waveFormat.SampleRate, 8,  1, DMO.MediaTypes.MEDIATYPE_Pcm)
 							};
 
                             if (CheckForSupportedFormat(audioClient, possibleFormats, out mixformat))

@@ -27,9 +27,9 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <UseVSHostingProcess>true</UseVSHostingProcess>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>bin\Debug\CSCore.XML</DocumentationFile>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <NoWarn>1591, 1573</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -260,6 +260,13 @@
     <Compile Include="DMO\DmoOutputStreamInfoFlags.cs" />
     <Compile Include="DMO\DmoSizeInfo.cs" />
     <Compile Include="DMO\IMediaBuffer.cs" />
+    <Compile Include="DMO\InputDataBufferFlags.cs" />
+    <Compile Include="DMO\InputStatusFlags.cs" />
+    <Compile Include="DMO\InputStreamInfoFlags.cs" />
+    <Compile Include="DMO\OutputDataBufferFlags.cs" />
+    <Compile Include="DMO\OutputStreamInfoFlags.cs" />
+    <Compile Include="DMO\ProcessOutputFlags.cs" />
+    <Compile Include="DMO\SetTypeFlags.cs" />
     <Compile Include="DSP\BiQuad.cs" />
     <Compile Include="DSP\ChannelMatrixElement.cs" />
     <Compile Include="IWritable.cs" />

@@ -98,8 +98,8 @@ namespace CSCore.MediaFoundation
 
         /// <summary>
         /// Gets the major type of the format.
-        /// </summary <returns>
-        /// HRESULT</returns>
+        /// </summary 
+        /// <returns>HRESULT</returns>
         public unsafe int GetMajorType(out Guid majorType)
         {
             majorType = default(Guid);

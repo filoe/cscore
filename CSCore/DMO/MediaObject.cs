@@ -251,8 +251,7 @@ namespace CSCore.DMO
         /// The SetInputType method sets the media type on an input stream.
         /// </summary>
         /// <param name="inputStreamIndex">Zero-based index of an input stream on the DMO.</param>
-        /// <param name="mediaType">The waveformat which gets converted to the new mediatype.</param>
-        /// <param name="flags">Flags for setting the mediatype.</param>
+        /// <param name="waveFormat">The waveformat which gets converted to the new mediatype.</param>
         public void SetInputType(int inputStreamIndex, WaveFormat waveFormat)
         {
             MediaType mediaType = MediaType.FromWaveFormat(waveFormat);
@@ -340,8 +339,7 @@ namespace CSCore.DMO
         /// The SetOutputType method sets the media type on an output stream, or tests whether a media type is acceptable.
         /// </summary>
         /// <param name="outputStreamIndex">Zero-based index of an output stream on the DMO.</param>
-        /// <param name="mediaType">The new waveformat.</param>
-        /// <param name="flags">Flags for setting the mediatype.</param>
+        /// <param name="waveFormat">The new waveformat.</param>
         public void SetOutputType(int outputStreamIndex, WaveFormat waveFormat)
         {
             MediaType mediaType = MediaType.FromWaveFormat(waveFormat);
@@ -595,8 +593,8 @@ namespace CSCore.DMO
 
         /// <summary>
         /// The AllocateStreamingResources method allocates any resources needed by the DMO. Calling this method is always optional.
+        /// See http://msdn.microsoft.com/en-us/library/windows/desktop/dd406943(v=vs.85).aspx
         /// </summary>
-        /// <see cref="http://msdn.microsoft.com/en-us/library/windows/desktop/dd406943(v=vs.85).aspx"/>
         /// <returns>HRESULT</returns>
         public unsafe int AllocateStreamingResourcesNative()
         {
@@ -605,8 +603,8 @@ namespace CSCore.DMO
 
         /// <summary>
         /// The AllocateStreamingResources method allocates any resources needed by the DMO. Calling this method is always optional.
+        /// See http://msdn.microsoft.com/en-us/library/windows/desktop/dd406943(v=vs.85).aspx
         /// </summary>
-        /// <see cref="http://msdn.microsoft.com/en-us/library/windows/desktop/dd406943(v=vs.85).aspx"/>
         public void AllocateStreamingResources()
         {
             DmoException.Try(AllocateStreamingResourcesNative(), n, "AllocateStreamingResources");
@@ -617,7 +615,7 @@ namespace CSCore.DMO
         /// <summary>
         /// The FreeStreamingResources method frees resources allocated by the DMO. Calling this method is always optional.
         /// </summary>
-        /// <see cref="http://msdn.microsoft.com/en-us/library/windows/desktop/dd406946(v=vs.85).aspx"/>
+        /// See http://msdn.microsoft.com/en-us/library/windows/desktop/dd406946(v=vs.85).aspx
         /// <returns>HREUSLT</returns>
         public unsafe int FreeStreamingResourcesNative()
         {
@@ -626,8 +624,8 @@ namespace CSCore.DMO
 
         /// <summary>
         /// The FreeStreamingResources method frees resources allocated by the DMO. Calling this method is always optional.
+        /// See http://msdn.microsoft.com/en-us/library/windows/desktop/dd406946(v=vs.85).aspx
         /// </summary>
-        /// <see cref="http://msdn.microsoft.com/en-us/library/windows/desktop/dd406946(v=vs.85).aspx"/>
         public void FreeStreamingResources()
         {
             DmoException.Try(FreeStreamingResourcesNative(), n, "FreeStreamingResources");
@@ -637,8 +635,8 @@ namespace CSCore.DMO
 
         /// <summary>
         /// The GetInputStatus method queries whether an input stream can accept more input data.
+        /// See http://msdn.microsoft.com/en-us/library/windows/desktop/dd406950(v=vs.85).aspx
         /// </summary>
-        /// <see cref="http://msdn.microsoft.com/en-us/library/windows/desktop/dd406950(v=vs.85).aspx"/>
         /// <param name="inputStreamIndex">Zero-based index of an input stream on the DMO.</param>
         /// <returns>InputStatusFlags</returns>
         public InputStatusFlags GetInputStatus(int inputStreamIndex)
@@ -651,8 +649,8 @@ namespace CSCore.DMO
 
         /// <summary>
         /// The GetInputStatus method queries whether an input stream can accept more input data.
+        /// See http://msdn.microsoft.com/en-us/library/windows/desktop/dd406950(v=vs.85).aspx
         /// </summary>
-        /// <see cref="http://msdn.microsoft.com/en-us/library/windows/desktop/dd406950(v=vs.85).aspx"/>
         /// <param name="inputStreamIndex">Zero-based index of an input stream on the DMO.</param>
         /// <param name="flags">InputStatusFlags of the inputstream specified by the inputStreamIndex parameter.</param>
         /// <returns>HRESULT</returns>
@@ -685,7 +683,7 @@ namespace CSCore.DMO
         /// <param name="mediaBuffer">The mediabuffer which has to be processed.</param>
         public void ProcessInput(int inputStreamIndex, IMediaBuffer mediaBuffer)
         {
-            ProcessInput(inputStreamIndex, mediaBuffer, InputdataBufferFlags.None, 0, 0);
+            ProcessInput(inputStreamIndex, mediaBuffer, InputDataBufferFlags.None, 0, 0);
         }
 
         /// <summary>
@@ -694,7 +692,7 @@ namespace CSCore.DMO
         /// <param name="inputStreamIndex">Zero-based index of an input stream on the DMO.</param>
         /// <param name="mediaBuffer">The mediabuffer which has to be processed.</param>
         /// <param name="flags">Flags to describe the mediabuffer.</param>
-        public void ProcessInput(int inputStreamIndex, IMediaBuffer mediaBuffer, InputdataBufferFlags flags)
+        public void ProcessInput(int inputStreamIndex, IMediaBuffer mediaBuffer, InputDataBufferFlags flags)
         {
             ProcessInput(inputStreamIndex, mediaBuffer, flags, 0, 0);
         }
@@ -707,7 +705,7 @@ namespace CSCore.DMO
         /// <param name="flags">Flags to describe the mediabuffer.</param>
         /// <param name="timestamp">Time stamp that specifies the start time of the data in the buffer. If the buffer has a valid time stamp, set the Time flag in the flags parameter.</param>
         /// <param name="timeduration">Reference time specifying the duration of the data in the buffer. If the buffer has a valid time stamp, set the TimeLength flag in the flags parameter.</param>
-        public unsafe void ProcessInput(int inputStreamIndex, IMediaBuffer mediaBuffer, InputdataBufferFlags flags, long timestamp, long timeduration)
+        public unsafe void ProcessInput(int inputStreamIndex, IMediaBuffer mediaBuffer, InputDataBufferFlags flags, long timestamp, long timeduration)
         {
             DmoException.Try(ProcessInputNative(inputStreamIndex, mediaBuffer, flags, timestamp, timeduration), n, "ProcessInput");
         }
@@ -721,7 +719,7 @@ namespace CSCore.DMO
         /// <param name="timestamp">Time stamp that specifies the start time of the data in the buffer. If the buffer has a valid time stamp, set the Time flag in the flags parameter.</param>
         /// <param name="timeduration">Reference time specifying the duration of the data in the buffer. If the buffer has a valid time stamp, set the TimeLength flag in the flags parameter.</param>
         /// <returns>HRESULT</returns>
-        public unsafe int ProcessInputNative(int inputStreamIndex, IMediaBuffer mediaBuffer, InputdataBufferFlags flags, long timestamp, long timeduration)
+        public unsafe int ProcessInputNative(int inputStreamIndex, IMediaBuffer mediaBuffer, InputDataBufferFlags flags, long timestamp, long timeduration)
         {
             return InteropCalls.CalliMethodPtr(_basePtr, inputStreamIndex, mediaBuffer, flags, timestamp, timeduration, ((void**)(*(void**)_basePtr))[21]);
         }
