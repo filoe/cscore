@@ -9,53 +9,112 @@ using System.Text;
 
 namespace CSCli
 {
-    internal class Program
+    public class Program
     {
         private static void Main(string[] args)
         {
-            if (args.Length >= 1 && File.Exists(args[0]))
+            string calliAttributeName = "CalliAttribute";
+            string removeTypeAttributeName = "RemoveTypeAttribute";
+            string filename = null;
+            string pdbfile = null;
+
+            MessageIntegration.Info("CSCli started.");
+            MessageIntegration.Info("CSCli was copied from http://www.codeproject.com/Articles/644130/NET-COM-Interop-using-Postbuild.");
+            MessageIntegration.Info(String.Empty); //new line
+
+            MessageIntegration.Info(String.Format("CSCli-Argments: [{0}].", String.Concat(args.Select(x => x + " ")).Trim()));
+
+            /*
+             * Parse parameters
+             */
+            foreach (var a in args)
             {
-                LoadAssembly(args[0]);
+                if (a.StartsWith("-file:"))
+                {
+                    filename = a.Substring("-file:".Length);
+                    MessageIntegration.Info("Filename: " + filename);
+                }
+                else if (a.StartsWith("-c:"))
+                {
+                    calliAttributeName = a.Substring("-c:".Length);
+                }
+                else if (a.StartsWith("-r:"))
+                {
+                    removeTypeAttributeName = a.Substring("-r:".Length);
+                }
+                else if (a.StartsWith("-pdb:"))
+                {
+                    pdbfile = a.Substring("-pdb:".Length);
+                }
+                else
+                {
+                    MessageIntegration.WriteWarning(String.Format("Unknown parameter: \"{0}\".", a));
+                }
             }
-            else
+
+            /*
+             * Load and process assembly
+             */
+            if (!File.Exists(filename))
             {
-                StdOut.Error("Invalid filename.");
+                MessageIntegration.WriteError(String.Format("Could not find file \"{0}\".", filename));
                 Environment.Exit(-1);
             }
-            Environment.Exit(0);
-        }
 
-        private static void LoadAssembly(string fileName)
-        {
             WriterParameters wp = new WriterParameters();
             ReaderParameters rp = new ReaderParameters();
 
-            wp.WriteSymbols = rp.ReadSymbols = File.Exists(Path.ChangeExtension(fileName, "pdb"));
+            //check whether the pdbfile has been passed through application parameters
+            if (pdbfile == null)
+            {
+                //if not use the default pdbfilepath by changing the extension of the assembly to .pdb
+                pdbfile = Path.ChangeExtension(filename, "pdb");
+            }
+
+            //check whether the original pdb-file exists
+            bool generatePdb = File.Exists(pdbfile);
+
+            //if the original pdb-file exists -> prepare for rewriting the symbols file
+            wp.WriteSymbols = generatePdb;
+            rp.ReadSymbols = generatePdb;
             if (rp.ReadSymbols)
             {
                 rp.SymbolReaderProvider = new PdbReaderProvider();
             }
 
-            var assembly = AssemblyDefinition.ReadAssembly(fileName, rp);
-            ((BaseAssemblyResolver)assembly.MainModule.AssemblyResolver).AddSearchDirectory(Path.GetDirectoryName(fileName));
+            MessageIntegration.Info("Generating pdb: " + generatePdb.ToString());
 
-            AssemblyPatcher patcher = new AssemblyPatcher(assembly);
-            if (patcher.Patch())
+            //open assembly
+            var assembly = AssemblyDefinition.ReadAssembly(filename, rp);
+            //add the directory assembly directory as search directory to resolve referenced assemblies
+            ((BaseAssemblyResolver)assembly.MainModule.AssemblyResolver).AddSearchDirectory(Path.GetDirectoryName(filename));
+
+            //path the assembly
+            AssemblyPatcher patcher = new AssemblyPatcher(assembly, calliAttributeName, removeTypeAttributeName);
+            if (patcher.PatchAssembly())
             {
-                var output = fileName;
-                if (File.Exists(output))
-                    File.Delete(output);
+                try
+                {
+                    //if the assembly was patched successfully -> replace the old assembly file with the new, patched assembly file
+                    //the symbols file will be created automatically
+                    File.Delete(filename);
+                    assembly.Write(filename, wp);
+                }
+                catch (Exception ex)
+                {
+                    MessageIntegration.WriteError("Creating new assembly failed: " + ex.ToString());
+                    Environment.Exit(-1);
+                }
 
-                StdOut.Info("Writing assembly [{0}] including symbols file [{1}].", Path.GetFileName(fileName), Path.ChangeExtension(fileName, "pdb"));
-                assembly.Write(output, wp);
-
-                StdOut.Info("CSCli patched assembly [{0}] successfully", Path.GetFileName(fileName));
+                MessageIntegration.Info(String.Format("CSCli patched assembly \"{0}\" successfully.", Path.GetFileName(filename)));
+                Environment.Exit(0);
             }
             else
             {
-                StdOut.Error(String.Format("{0} could not be patched.", fileName));
-                Environment.Exit(-2);
+                MessageIntegration.WriteError(String.Format("\"{0}\" could not be patched.", filename));
+                Environment.Exit(-1);
             }
         }
+
     }
 }

@@ -177,7 +177,7 @@
     <Compile Include="AssemblyPatcher.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StdOut.cs" />
+    <Compile Include="MessageIntegration.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
