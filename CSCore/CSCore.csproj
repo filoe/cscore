@@ -194,6 +194,7 @@
     <Compile Include="ACM\Interop\AcmDriverDetailsSupport.cs" />
     <Compile Include="ACM\Interop\AcmDriverEnumCallback.cs" />
     <Compile Include="ACM\Interop\AcmDriverEnumFlags.cs" />
+    <Compile Include="ChannelMask.cs" />
     <Compile Include="Codecs\AAC\AACEncoder.cs" />
     <Compile Include="Codecs\CodecFactoryEntry.cs" />
     <Compile Include="Codecs\AAC\AACDecoder.cs" />
@@ -256,6 +257,7 @@
     <Compile Include="CoreAudioAPI\IMMNotificationClient.cs" />
     <Compile Include="DMO\DmoInputStreamInfoFlags.cs" />
     <Compile Include="DMO\DmoOutputStreamInfoFlags.cs" />
+    <Compile Include="DMO\DmoSizeInfo.cs" />
     <Compile Include="DSP\BiQuad.cs" />
     <Compile Include="DSP\ChannelMatrixElement.cs" />
     <Compile Include="IWritable.cs" />
@@ -296,6 +298,7 @@
     <Compile Include="Streams\Equalizer.cs" />
     <Compile Include="Streams\SingleBlockNotificationStream.cs" />
     <Compile Include="Streams\SingleBlockReadEventArgs.cs" />
+    <Compile Include="AudioEncoding.cs" />
     <Compile Include="Win32\ComStream.cs" />
     <Compile Include="Win32\IStream.cs" />
     <Compile Include="Win32\Win32ComException.cs" />
@@ -423,7 +426,6 @@
     <Compile Include="MediaFoundation\IMFTransform.cs" />
     <Compile Include="MediaFoundation\IMFMediaEvent.cs" />
     <Compile Include="DMO\IWMResamplerProps.cs" />
-    <Compile Include="DMO\MediaObject2.cs" />
     <Compile Include="MediaFoundation\MFTMessageType.cs" />
     <Compile Include="DMO\WMResampler.cs" />
     <Compile Include="DSP\DmoResampler.cs" />

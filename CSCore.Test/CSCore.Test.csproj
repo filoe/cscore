@@ -204,6 +204,8 @@
     <Compile Include="SoundIn\SoundInBehaviourTests.cs" />
     <Compile Include="SoundOut\SoundOutBehaviourTest.cs" />
     <Compile Include="Streams\BufferSourceTest.cs" />
+    <Compile Include="Streams\StereoToMonoSourceTest.cs" />
+    <Compile Include="Streams\MonoToStereoSourceTest.cs" />
     <Compile Include="Utils\BitReaderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DirectSound\DirectSoundTests.cs" />

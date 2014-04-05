@@ -242,7 +242,7 @@ namespace CSCore
             if (waveFormat == null)
                 throw new ArgumentNullException("waveFormat");
             if (waveFormat is WaveFormatExtensible)
-                return ((WaveFormatExtensible)waveFormat).SubFormat == DMO.MediaTypes.MEDIASUBTYPE_PCM;
+                return ((WaveFormatExtensible)waveFormat).SubFormat == DMO.MediaTypes.MEDIATYPE_Pcm;
             else
                 return waveFormat.WaveFormatTag == AudioEncoding.Pcm;
         }
@@ -252,9 +252,19 @@ namespace CSCore
             if (waveFormat == null)
                 throw new ArgumentNullException("waveFormat");
             if (waveFormat is WaveFormatExtensible)
-                return ((WaveFormatExtensible)waveFormat).SubFormat == DMO.MediaTypes.MEDIASUBTYPE_IEEE_FLOAT;
+                return ((WaveFormatExtensible)waveFormat).SubFormat == DMO.MediaTypes.MEDIATYPE_IeeeFloat;
             else
                 return waveFormat.WaveFormatTag == AudioEncoding.IeeeFloat;
+        }
+
+        public static AudioEncoding GetWaveFormatTag(this WaveFormat waveFormat)
+        {
+            if(waveFormat is WaveFormatExtensible)
+            {
+                return DMO.MediaTypes.EncodingFromMediaType(((WaveFormatExtensible)waveFormat).SubFormat);
+            }
+
+            return waveFormat.WaveFormatTag;
         }
 
         /// <summary>

@@ -9,8 +9,7 @@ namespace CSCore.DMO
     public sealed class WMResampler : IDisposable
     {
         private WMResamplerProps _resamplerprops;
-        private IWMResamplerProps _nativeResamplerProps;
-        private MediaObject2 _mediaObject;
+        private MediaObject _mediaObject;
         private WMResamplerObject _obj;
 
         public WMResamplerProps ResamplerProps
@@ -18,17 +17,18 @@ namespace CSCore.DMO
             get { return _resamplerprops; }
         }
 
-        public MediaObject2 MediaObject
+        public MediaObject MediaObject
         {
             get { return _mediaObject; }
         }
 
         public WMResampler()
         {
+            //create a resampler instance
             var obj = new WMResamplerObject();
-            _mediaObject = new MediaObject2((IMediaObject)obj);
-            _nativeResamplerProps = obj as IWMResamplerProps;
-            _resamplerprops = new WMResamplerProps(Marshal.GetComInterfaceForObject(_nativeResamplerProps, typeof(IWMResamplerProps)));
+
+            _mediaObject = new MediaObject(Marshal.GetComInterfaceForObject((IMediaObject)obj, typeof(IMediaObject)));
+            _resamplerprops = new WMResamplerProps(Marshal.GetComInterfaceForObject(obj as IWMResamplerProps, typeof(IWMResamplerProps)));
 
             _obj = obj;
         }
@@ -52,11 +52,6 @@ namespace CSCore.DMO
             {
                 _resamplerprops.Dispose();
                 _resamplerprops = null;
-            }
-            if (_nativeResamplerProps != null)
-            {
-                Marshal.ReleaseComObject(_nativeResamplerProps);
-                _nativeResamplerProps = null;
             }
             if (_mediaObject != null)
             {

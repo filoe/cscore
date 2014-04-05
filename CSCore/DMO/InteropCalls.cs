@@ -92,5 +92,35 @@ namespace CSCore.DMO
         {
             throw new NotImplementedException();
         }
+
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, int streamIndex, void* p0, void* p1, void* p2, void* p)
+        {
+            throw new NotImplementedException();
+        }
+
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, int streamIndex, void* p0, void* p2, void* p)
+        {
+            throw new NotImplementedException();
+        }
+
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, int streamIndex, long maxLatency, void* p)
+        {
+            throw new NotImplementedException();
+        }
+
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, void* p)
+        {
+            throw new NotImplementedException();
+        }
+
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, long bLock, void* p)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

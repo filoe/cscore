@@ -17,7 +17,7 @@ namespace CSCore.Test.SoundOut
     [TestClass]
     public class SoundOutBehaviourTest
     {
-        const int basic_iteration_count = 20;
+        const int basic_iteration_count = 5;
         const int MinuteMilliseconds = 60000;
 
         [TestMethod]
@@ -244,8 +244,8 @@ namespace CSCore.Test.SoundOut
                 soundOut.Initialize(source);
                 soundOut.Play();
 
-                soundOut.WaitForStopped();
-                //Assert.AreEqual(source.Length, source.Position, "Source is not EOF");
+                Thread.Sleep(sourceLength + 500);
+                Assert.AreEqual(source.Length, source.Position, "Source is not EOF");
 
                 soundOut.Stop();
                 source.Position = 0;
@@ -253,8 +253,8 @@ namespace CSCore.Test.SoundOut
                 soundOut.Initialize(source);
                 soundOut.Play();
 
-                soundOut.WaitForStopped();
-                //Assert.AreEqual(source.Length, source.Position, "Source is not EOF");
+                Thread.Sleep(sourceLength + 500);
+                Assert.AreEqual(source.Length, source.Position, "Source is not EOF");
 
                 soundOut.Pause();
                 soundOut.Resume();
@@ -267,14 +267,14 @@ namespace CSCore.Test.SoundOut
                 soundOut.Initialize(source);
                 soundOut.Play();
 
-                soundOut.WaitForStopped();
-                //Assert.AreEqual(source.Length, source.Position, "Source is not EOF");
+                Thread.Sleep(sourceLength + 500);
+                Assert.AreEqual(source.Length, source.Position, "Source is not EOF");
 
                 source.Position = 0;
                 soundOut.Play();
 
-                soundOut.WaitForStopped();
-                //Assert.AreEqual(source.Length, source.Position, "Source is not EOF");
+                Thread.Sleep(sourceLength + 500);
+                Assert.AreEqual(source.Length, source.Position, "Source is not EOF");
             }
         }
 

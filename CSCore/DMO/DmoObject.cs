@@ -7,12 +7,12 @@ namespace CSCore.DMO
     {
         protected object _comobj;
 
-        private MediaObject2 _mediaObject;
+        //private MediaObject2 _mediaObject;
 
-        public MediaObject2 MediaObject
-        {
-            get { return _mediaObject; }
-        }
+        //public MediaObject2 MediaObject
+        //{
+        //    get { return _mediaObject; }
+        //}
 
         public DmoObject()
         {
@@ -24,7 +24,7 @@ namespace CSCore.DMO
                 throw new ArgumentNullException("comobj");
             _comobj = comobj;
 
-            _mediaObject = new MediaObject2(comobj as IMediaObject);
+            //_mediaObject = new MediaObject2(comobj as IMediaObject);
         }
 
         private bool _disposed;
@@ -38,8 +38,8 @@ namespace CSCore.DMO
         {
             if (!_disposed)
             {
-                _mediaObject.Dispose();
-                _mediaObject = null;
+                //_mediaObject.Dispose();
+                //_mediaObject = null;
                 Marshal.ReleaseComObject(_comobj);
                 _comobj = null;
             }

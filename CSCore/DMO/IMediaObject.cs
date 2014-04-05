@@ -243,9 +243,15 @@ namespace CSCore.DMO
     }
 
     //http://msdn.microsoft.com/en-us/library/windows/desktop/dd375514(v=vs.85).aspx
+    /// <summary>
+    /// The SetTypeFlags enumeration defines flags for setting the media type on a stream.
+    /// </summary>
     [Flags]
     public enum SetTypeFlags
     {
+        /// <summary>
+        /// None
+        /// </summary>
         None = 0x0,
 
         /// <summary>
@@ -267,7 +273,10 @@ namespace CSCore.DMO
         AcceptData = 0x1
     }
 
-    //http://msdn.microsoft.com/en-us/library/windows/desktop/dd375501(v=vs.85).aspx
+    /// <summary>
+    /// Defines flags that describe an input buffer. 
+    /// See http://msdn.microsoft.com/en-us/library/windows/desktop/dd375501(v=vs.85).aspx
+    /// </summary>
     [Flags]
     public enum InputdataBufferFlags
     {
@@ -289,7 +298,10 @@ namespace CSCore.DMO
         TimeLength = 0x4
     }
 
-    //http://msdn.microsoft.com/en-us/library/windows/desktop/dd375511(v=vs.85).aspx
+    /// <summary>
+    /// Defines flags that specify output processing requests. 
+    /// <see cref="http://msdn.microsoft.com/en-us/library/windows/desktop/dd375511(v=vs.85).aspx"/>
+    /// </summary>
     [Flags]
     public enum ProcessOutputFlags
     {

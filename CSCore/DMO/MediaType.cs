@@ -3,15 +3,20 @@ using System.Runtime.InteropServices;
 
 namespace CSCore.DMO
 {
-    //http://msdn.microsoft.com/en-us/library/windows/desktop/dd375504(v=vs.85).aspx
     /// <summary>
-    /// DMO_MEDIA_TYPE
+    /// DMO_MEDIA_TYPE. 
+    /// See http://msdn.microsoft.com/en-us/library/windows/desktop/dd375504(v=vs.85).aspx. 
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct MediaType
     {
         public static readonly Guid FORMAT_WaveFormatEx = new Guid("05589f81-c356-11ce-bf01-00aa0055595a");
 
+        /// <summary>
+        /// Creates a MediaType based on a given WaveFormat. Don't forget to call Free() for the returend MediaType.
+        /// </summary>
+        /// <param name="waveFormat">WaveFormat to create a MediaType from.</param>
+        /// <returns>Dmo MediaType</returns>
         public static MediaType FromWaveFormat(WaveFormat waveFormat)
         {
             if (waveFormat == null)
@@ -22,16 +27,19 @@ namespace CSCore.DMO
 
             mediaType.MajorType = MediaTypes.MediaTypeAudio;
             mediaType.SubType = WaveFormatExtensible.SubTypeFromWaveFormat(waveFormat);
-            mediaType.FixedSizeSamples = (mediaType.SubType == MediaTypes.MEDIASUBTYPE_IEEE_FLOAT || mediaType.SubType == MediaTypes.MEDIASUBTYPE_PCM) ? 1 : 0;
+            mediaType.FixedSizeSamples = (mediaType.SubType == MediaTypes.MEDIATYPE_IeeeFloat || mediaType.SubType == MediaTypes.MEDIATYPE_Pcm) ? 1 : 0;
             mediaType.FormatType = FORMAT_WaveFormatEx;
-            //var hWaveFormat = GCHandle.Alloc(waveFormat, GCHandleType.Pinned);
+
             IntPtr hWaveFormat = Marshal.AllocHGlobal(Marshal.SizeOf(waveFormat));
+            
             Marshal.StructureToPtr(waveFormat, hWaveFormat, false);
+            
             if (hWaveFormat == IntPtr.Zero)
                 throw new InvalidOperationException("hWaveFormat == IntPtr.Zero");
             if (mediaType.CbFormat < Marshal.SizeOf(waveFormat))
                 throw new InvalidOperationException("No memory for Format reserved");
             mediaType.PtrFormat = hWaveFormat;
+
             return mediaType;
         }
 
@@ -66,7 +74,7 @@ namespace CSCore.DMO
 
         /// <summary>
         /// GUID specifying the format type. The pbFormat member points to the corresponding format
-        /// structure.(see http://msdn.microsoft.com/en-us/library/aa929922.aspx)
+        /// structure. (see http://msdn.microsoft.com/en-us/library/aa929922.aspx)
         /// </summary>
         public Guid FormatType;
 
