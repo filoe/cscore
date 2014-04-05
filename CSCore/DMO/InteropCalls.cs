@@ -122,5 +122,11 @@ namespace CSCore.DMO
         {
             throw new NotImplementedException();
         }
+
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* _basePtr, void* p1, void* p2, void* p3, void* p)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

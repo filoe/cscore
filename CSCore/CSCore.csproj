@@ -255,10 +255,17 @@
     <Compile Include="CoreAudioAPI\IAudioSessionNotification.cs" />
     <Compile Include="CoreAudioAPI\IAudioVolumeDuckNotification.cs" />
     <Compile Include="CoreAudioAPI\IMMNotificationClient.cs" />
+    <Compile Include="DMO\DmoEnumeratorCategories.cs" />
+    <Compile Include="DMO\DmoEnumFlags.cs" />
+    <Compile Include="DMO\DmoEnumItem.cs" />
+    <Compile Include="DMO\DmoErrorCodes.cs" />
     <Compile Include="DMO\DmoInputStreamInfoFlags.cs" />
+    <Compile Include="DMO\DmoInterop.cs" />
     <Compile Include="DMO\DmoOutputDataBuffer.cs" />
     <Compile Include="DMO\DmoOutputStreamInfoFlags.cs" />
+    <Compile Include="DMO\DmoPartialMediaType.cs" />
     <Compile Include="DMO\DmoSizeInfo.cs" />
+    <Compile Include="DMO\EnumDMO.cs" />
     <Compile Include="DMO\IMediaBuffer.cs" />
     <Compile Include="DMO\InputDataBufferFlags.cs" />
     <Compile Include="DMO\InputStatusFlags.cs" />
