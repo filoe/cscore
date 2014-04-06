@@ -4,8 +4,7 @@ using System;
 namespace CSCore.Streams
 {
     /// <summary>
-    /// Buffered WaveSource with provides overrides the allocated memory after the buffer got full. 
-    /// To specify the the buffersize, specify the bufferSize parameter in the constructor.
+    /// Buffered WaveSource which overrides the allocated memory after the buffer got full. 
     /// </summary>
     public class WriteableBufferingSource : IWaveSource
     {

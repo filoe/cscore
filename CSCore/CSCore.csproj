@@ -224,7 +224,9 @@
     <Compile Include="Codecs\GetCodecAction.cs" />
     <Compile Include="Codecs\MP1\MP1Decoder.cs" />
     <Compile Include="Codecs\MP2\MP2Decoder.cs" />
+    <Compile Include="Codecs\MP3\DmoMP3Decoder.cs" />
     <Compile Include="Codecs\MP3\FrameInfoCollection.cs" />
+    <Compile Include="Codecs\MP3\MP3Exception.cs" />
     <Compile Include="Codecs\MP3\MP3FileReader.cs" />
     <Compile Include="Codecs\MP3\MP3Format.cs" />
     <Compile Include="Codecs\MP3\MP3Frame.cs" />

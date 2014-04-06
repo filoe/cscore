@@ -31,18 +31,6 @@ namespace CSCore.Codecs.MP3
             _framesPerBlock = 1;
             _codecDelay = 0;
         }
-
-        public override string ToString()
-        {
-            StringBuilder builder = GetInformation();
-            builder.Append("|Mp3FormatID: " + _id);
-            builder.Append("|Mp3FormatFlags: " + _flags);
-            builder.Append("|BlockSize: " + _blockSize);
-            builder.Append("|FramesPerBlock: " + _framesPerBlock);
-            builder.Append("|CodecDelay: " + _codecDelay);
-
-            return builder.ToString();
-        }
     }
 
     /// <summary>
