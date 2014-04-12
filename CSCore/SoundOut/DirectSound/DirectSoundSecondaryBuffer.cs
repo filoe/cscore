@@ -9,7 +9,7 @@ namespace CSCore.SoundOut.DirectSound
     [Guid("6825A449-7524-4D82-920F-50E36AB3AB1E")]
     public unsafe class DirectSoundSecondaryBuffer : DirectSoundBufferBase
     {
-        public DirectSoundSecondaryBuffer(DirectSoundBase directSound, WaveFormat waveFormat, int bufferSize, bool controlEffects = false)
+        public DirectSoundSecondaryBuffer(DirectSoundBase directSound, WaveFormat waveFormat, int bufferSize)
         {
             if (directSound == null) throw new ArgumentNullException("directSound");
 
@@ -23,9 +23,6 @@ namespace CSCore.SoundOut.DirectSound
                 dwReserved = 0,
                 guid3DAlgorithm = Guid.Empty
             };
-
-            if (controlEffects)
-                secondaryBufferDesc.dwFlags |= DSBufferCapsFlags.DSBCAPS_CTRLFX;
 
             secondaryBufferDesc.dwSize = Marshal.SizeOf(secondaryBufferDesc);
             GCHandle hWaveFormat = GCHandle.Alloc(waveFormat, GCHandleType.Pinned);
@@ -56,56 +53,11 @@ namespace CSCore.SoundOut.DirectSound
             _basePtr = directSound.CreateSoundBuffer(bufferDesc, IntPtr.Zero).ToPointer();
         }
 
-        public DSFXResult[] SetFX(params DSEffectDesc[] effects)
-        {
-            DSFXResult[] results;
-            SetFX(effects.Length, effects, out results);
-            return results;
-        }
-
-        public void SetFX(int effectsCount, DSEffectDesc[] effects, out DSFXResult[] results)
-        {
-            if (effectsCount <= 0 || effectsCount > effects.Length)
-                throw new ArgumentOutOfRangeException("effectCount");
-
-            results = new DSFXResult[effectsCount];
-
-            fixed (void* peffects = &effects[0], presults = &results[0])
-            {
-                var result = InteropCalls.CalliMethodPtr(_basePtr, effectsCount, peffects, presults, ((void**)(*(void**)_basePtr))[21]);
-                DirectSoundException.Try(result, "IDirectSoundBuffer8", "SetFX");
-            }
-        }
-
-        public T GetFX<T>(int index) where T : ComObject
-        {
-            DSResult result;
-            var t = GetFX<T>(index, out result);
-            DirectSoundException.Try(result, "IDirectSoundBuffer8", "GetObjectInPath");
-            return t;
-        }
-
-        public T GetFX<T>(int index, out DSResult result) where T : ComObject
-        {
-            IntPtr ptr;
-            result = GetObjectInPath(DSUtils.AllObjects, index, typeof(T).GUID, out ptr);
-            return (T)Activator.CreateInstance(typeof(T), ptr);
-        }
-
         public DSResult GetObjectInPath(Guid guidObject, int index, Guid guidInterface, out IntPtr @object)
         {
             fixed (void* ptrEffect = &@object)
             {
                 return InteropCalls.CalliMethodPtr(_basePtr, &guidObject, index, &guidInterface, ptrEffect, ((void**)(*(void**)_basePtr))[23]);
-            }
-        }
-
-        public DSResult AcquireResources(int flags, int effectsCount, out DSFXResult[] results)
-        {
-            results = new DSFXResult[effectsCount];
-            fixed (void* presults = results)
-            {
-                return InteropCalls.CalliMethodPtr(_basePtr, flags, effectsCount, presults, ((void**)(*(void**)_basePtr))[22]);
             }
         }
     }

@@ -226,7 +226,7 @@ namespace CSCore.SoundOut
             int bufferSize = (int)waveFormat.MillisecondsToBytes(_latency);
 
             _primaryBuffer = new DirectSoundPrimaryBuffer(_directSound);
-            _secondaryBuffer = new DirectSoundSecondaryBuffer(_directSound, waveFormat, bufferSize, false);
+            _secondaryBuffer = new DirectSoundSecondaryBuffer(_directSound, waveFormat, bufferSize);
         }
 
         private void PlaybackProc(object o)

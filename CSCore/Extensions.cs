@@ -5,11 +5,13 @@ using CSCore.Streams.SampleConverter;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 
 namespace CSCore
 {
+    [CLSCompliant(true)]
     public static class Extensions
     {
         /// <summary>
@@ -297,6 +299,11 @@ namespace CSCore
         public static void WaitForStopped(this ISoundOut soundOut)
         {
             WaitForStopped(soundOut, Int32.MaxValue);
+        }
+
+        internal static void SetValueForValueType<T>(this FieldInfo field, ref T item, object value) where T : struct
+        {
+            field.SetValueDirect(__makeref(item), value);
         }
     }
 }

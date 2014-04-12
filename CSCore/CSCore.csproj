@@ -260,7 +260,7 @@
     <Compile Include="CoreAudioAPI\IAudioSessionNotification.cs" />
     <Compile Include="CoreAudioAPI\IAudioVolumeDuckNotification.cs" />
     <Compile Include="CoreAudioAPI\IMMNotificationClient.cs" />
-    <Compile Include="DMO\DmoDecoder.cs" />
+    <Compile Include="DMO\DmoAggregator.cs" />
     <Compile Include="DMO\DmoEnumeratorCategories.cs" />
     <Compile Include="DMO\DmoEnumFlags.cs" />
     <Compile Include="DMO\DmoEnumItem.cs" />
@@ -271,6 +271,10 @@
     <Compile Include="DMO\DmoOutputStreamInfoFlags.cs" />
     <Compile Include="DMO\DmoPartialMediaType.cs" />
     <Compile Include="DMO\DmoSizeInfo.cs" />
+    <Compile Include="DMO\DmoStream.cs" />
+    <Compile Include="DMO\Effects\DirectSoundFXBase.cs" />
+    <Compile Include="DMO\Effects\DirectSoundFXChorus.cs" />
+    <Compile Include="DMO\Effects\DirectSoundFXEcho.cs" />
     <Compile Include="DMO\EnumDMO.cs" />
     <Compile Include="DMO\IMediaBuffer.cs" />
     <Compile Include="DMO\InputDataBufferFlags.cs" />
@@ -310,6 +314,8 @@
     <Compile Include="SoundOut\MMInterop\WaveCapsFormats.cs" />
     <Compile Include="SoundOut\MMInterop\WaveCapsSupported.cs" />
     <Compile Include="SoundOut\WasapiOut.cs" />
+    <Compile Include="Streams\Effects\DmoChorusEffect.cs" />
+    <Compile Include="Streams\Effects\DmoEchoEffect.cs" />
     <Compile Include="Streams\PeakEventArgs.cs" />
     <Compile Include="Streams\PeakMeter.cs" />
     <Compile Include="Streams\WriteableBufferingSource.cs" />
@@ -465,11 +471,7 @@
     <Compile Include="SoundOut\DirectSound\3D\DSListener3DSettings.cs" />
     <Compile Include="SoundOut\DirectSound\3D\DirectSound3DListener.cs" />
     <Compile Include="SoundOut\DirectSound\DirectSoundNotifyEventArgs.cs" />
-    <Compile Include="SoundOut\DirectSound\Effects\DSEffectDesc.cs" />
     <Compile Include="SoundOut\DirectSound\DSEffectFlags.cs" />
-    <Compile Include="SoundOut\DirectSound\Effects\DSEchoEffect.cs" />
-    <Compile Include="SoundOut\DirectSound\Effects\DSEffectBase.cs" />
-    <Compile Include="SoundOut\DirectSound\Effects\DSFXResult.cs" />
     <Compile Include="SoundOut\MMInterop\IWaveCallbackWindow.cs" />
     <Compile Include="SoundOut\MMInterop\WaveWindow.cs" />
     <Compile Include="SoundOut\MMInterop\WaveWindowForm.cs">

@@ -254,6 +254,10 @@ namespace CSCore.DMO
         /// <param name="waveFormat">The waveformat which gets converted to the new mediatype.</param>
         public void SetInputType(int inputStreamIndex, WaveFormat waveFormat)
         {
+            //experimental
+            if (waveFormat is WaveFormatExtensible)
+                waveFormat = (waveFormat as WaveFormatExtensible).ToWaveFormat();
+
             MediaType mediaType = MediaType.FromWaveFormat(waveFormat);
             SetInputType(inputStreamIndex, mediaType, SetTypeFlags.None);
             mediaType.Free();
@@ -267,6 +271,10 @@ namespace CSCore.DMO
         /// <returns>True = supported, False = not supported</returns>
         public bool SupportsInputFormat(int inputStreamIndex, WaveFormat waveFormat)
         {
+            //experimental
+            if (waveFormat is WaveFormatExtensible)
+                waveFormat = (waveFormat as WaveFormatExtensible).ToWaveFormat();
+
             MediaType mediaType = MediaType.FromWaveFormat(waveFormat);
             bool result = SupportsInputFormat(inputStreamIndex, mediaType);
             mediaType.Free();
@@ -342,6 +350,10 @@ namespace CSCore.DMO
         /// <param name="waveFormat">The new waveformat.</param>
         public void SetOutputType(int outputStreamIndex, WaveFormat waveFormat)
         {
+            //experimental
+            if (waveFormat is WaveFormatExtensible)
+                waveFormat = (waveFormat as WaveFormatExtensible).ToWaveFormat();
+
             MediaType mediaType = MediaType.FromWaveFormat(waveFormat);
             SetOutputType(outputStreamIndex, mediaType, SetTypeFlags.None);
             mediaType.Free();
@@ -355,6 +367,10 @@ namespace CSCore.DMO
         /// <returns>True = supported, False = not supported</returns>
         public bool SupportsOutputFormat(int outputStreamIndex, WaveFormat waveFormat)
         {
+            //experimental
+            if (waveFormat is WaveFormatExtensible)
+                waveFormat = (waveFormat as WaveFormatExtensible).ToWaveFormat();
+
             MediaType mediaType = MediaType.FromWaveFormat(waveFormat);
             bool result = SupportsOutputFormat(outputStreamIndex, mediaType);
             mediaType.Free();

@@ -27,6 +27,7 @@ namespace CSCoreDemo.Model
             {
                 var source = CodecFactory.Instance.GetCodec(filename);
                 source = new LoopStream(source);
+                (source as LoopStream).EnableLoop = false;
 
                 if (source.WaveFormat.Channels == 1)
                     source = new MonoToStereoSource(source).ToWaveSource(16);

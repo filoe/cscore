@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSCore", "CSCore\CSCore.csproj", "{C3DCCFE3-DD3F-4EEE-849B-33E355B1E064}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -37,57 +37,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSCore.Visualization", "CSCore.Visualization\CSCore.Visualization.csproj", "{BCAFF0D8-612E-42A9-A9A8-EBA2D276E2CD}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 13
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://filoe.visualstudio.com/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = CSCore\\CSCore.csproj
-		SccProjectName1 = CSCore
-		SccLocalPath1 = CSCore
-		SccProjectUniqueName2 = CSCore.Test\\CSCore.Test.csproj
-		SccProjectName2 = CSCore.Test
-		SccLocalPath2 = CSCore.Test
-		SccProjectUniqueName3 = Tools\\CSCli\\CSCli.csproj
-		SccProjectTopLevelParentUniqueName3 = CSCore.sln
-		SccProjectName3 = Tools/CSCli
-		SccLocalPath3 = Tools\\CSCli
-		SccProjectUniqueName4 = TestProj\\ConsoleTest\\ConsoleTest.csproj
-		SccProjectTopLevelParentUniqueName4 = CSCore.sln
-		SccProjectName4 = TestProj/ConsoleTest
-		SccLocalPath4 = TestProj\\ConsoleTest
-		SccProjectUniqueName5 = TestProj\\CPPTestProject\\CPPTestProject.vcxproj
-		SccProjectTopLevelParentUniqueName5 = CSCore.sln
-		SccProjectName5 = TestProj/CPPTestProject
-		SccLocalPath5 = TestProj\\CPPTestProject
-		SccProjectUniqueName6 = TestProj\\TestProj\\TestProj.csproj
-		SccProjectTopLevelParentUniqueName6 = CSCore.sln
-		SccProjectName6 = TestProj/TestProj
-		SccLocalPath6 = TestProj\\TestProj
-		SccProjectUniqueName7 = TestProj\\VBTestProj\\VBTestProj.vbproj
-		SccProjectTopLevelParentUniqueName7 = CSCore.sln
-		SccProjectName7 = TestProj/VBTestProj
-		SccLocalPath7 = TestProj\\VBTestProj
-		SccProjectUniqueName8 = Samples\\Recorder\\Recorder.csproj
-		SccProjectTopLevelParentUniqueName8 = CSCore.sln
-		SccProjectName8 = Samples/Recorder
-		SccLocalPath8 = Samples\\Recorder
-		SccProjectUniqueName9 = Samples\\WPFVisualization\\WPFVisualisation.csproj
-		SccProjectTopLevelParentUniqueName9 = CSCore.sln
-		SccProjectName9 = Samples/WPFVisualization
-		SccLocalPath9 = Samples\\WPFVisualization
-		SccProjectUniqueName10 = Samples\\CSCoreDemo\\CSCoreDemo.csproj
-		SccProjectTopLevelParentUniqueName10 = CSCore.sln
-		SccProjectName10 = Samples/CSCoreDemo
-		SccLocalPath10 = Samples\\CSCoreDemo
-		SccProjectUniqueName11 = Samples\\Equalizer\\EqualizerTest.csproj
-		SccProjectTopLevelParentUniqueName11 = CSCore.sln
-		SccProjectName11 = Samples/Equalizer
-		SccLocalPath11 = Samples\\Equalizer
-		SccProjectUniqueName12 = CSCore.Visualization\\CSCore.Visualization.csproj
-		SccProjectName12 = CSCore.Visualization
-		SccLocalPath12 = CSCore.Visualization
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug x64|Any CPU = Debug x64|Any CPU
 		Debug x64|Mixed Platforms = Debug x64|Mixed Platforms
@@ -559,6 +508,7 @@ Global
 		{ADF940CC-4CD2-4751-8DDC-C53342D418F6}.Debug x86|x86.ActiveCfg = Debug x86|x86
 		{ADF940CC-4CD2-4751-8DDC-C53342D418F6}.Debug x86|x86.Build.0 = Debug x86|x86
 		{ADF940CC-4CD2-4751-8DDC-C53342D418F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADF940CC-4CD2-4751-8DDC-C53342D418F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADF940CC-4CD2-4751-8DDC-C53342D418F6}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
 		{ADF940CC-4CD2-4751-8DDC-C53342D418F6}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{ADF940CC-4CD2-4751-8DDC-C53342D418F6}.Debug|Win32.ActiveCfg = Debug|Any CPU

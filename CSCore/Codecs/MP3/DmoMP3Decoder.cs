@@ -3,26 +3,44 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 
 namespace CSCore.Codecs.MP3
 {
-    //according to the DMO Demo sapmle: http://msdn.microsoft.com/en-us/library/windows/desktop/dd375495(v=vs.85).aspx
-    public class DmoMP3Decoder : DmoDecoder
+    public class DmoMP3Decoder : DmoStream
     {
+        private Stream _stream;
+
         private DmoMP3DecoderObject _comObj;
         private FrameInfoCollection _frameInfoCollection;
         private MP3Format _inputFormat;
         private long _position;
 
+        private bool _parsedStream = false;
+
         public DmoMP3Decoder(Stream stream)
-            : base(stream)
+            : base()
         {
+            if (stream == null)
+                throw new ArgumentNullException("stream");
+            if (!stream.CanRead)
+                throw new ArgumentException("Stream is not readable.", "stream");
+            if (!stream.CanSeek)
+                throw new ArgumentException("Stream is not seekable.", "stream");
+
+            _stream = stream;
+
+            ParseForMP3Frame(stream);
+            Initialize();
         }
 
         private void ParseForMP3Frame(Stream stream)
         {
+            if (_parsedStream)
+                return;
+
             MP3Frame frame = null;
             long offsetOfFirstFrame = 0;
             
@@ -48,6 +66,8 @@ namespace CSCore.Codecs.MP3
             while (_frameInfoCollection.AddFromMP3Stream(stream)) ;
 
             stream.Position = offsetOfFirstFrame;
+
+            _parsedStream = true;
         }
 
         public override int Read(byte[] buffer, int offset, int count)
@@ -55,12 +75,6 @@ namespace CSCore.Codecs.MP3
             int read = base.Read(buffer, offset, count);
             _position += read;
             return read;
-        }
-
-        protected override void Initialize()
-        {
-            ParseForMP3Frame(_stream);
-            base.Initialize();
         }
 
         protected override MediaObject CreateMediaObject(WaveFormat inputFormat, WaveFormat outputFormat)
@@ -102,6 +116,7 @@ namespace CSCore.Codecs.MP3
             {
                 return _position;
             }
+            [MethodImpl(MethodImplOptions.Synchronized)]
             set
             {
                 SetPosition(value);
