@@ -23,10 +23,11 @@ namespace CSCore.Codecs
             _codecs = new Dictionary<object, CodecFactoryEntry>();
             Register("mp3", new CodecFactoryEntry((s) =>
             {
-                if (MP3.MP3MediafoundationDecoder.IsSupported)
-                    return new MP3.MP3MediafoundationDecoder(s);
-                else
-                    return new MP3.MP3FileReader(s).DataStream;
+                //if (MP3.MP3MediafoundationDecoder.IsSupported)
+                //    return new MP3.MP3MediafoundationDecoder(s);
+                //else
+                //    return new MP3.MP3FileReader(s).DataStream;
+                return new MP3.DmoMP3Decoder(s);
             },
                 "mp3", "mpeg3"));
             Register("wave", new CodecFactoryEntry((s) =>

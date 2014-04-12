@@ -54,8 +54,8 @@ namespace CSCore.DMO
             }
             set
             {
-                if (_length > MaxLength || value <= 0)
-                    throw new ArgumentOutOfRangeException("value", "length can not be less than one or greater than maxlength");
+                if (_length > MaxLength || value < 0)
+                    throw new ArgumentOutOfRangeException("value", "Length can not be less than zero or greater than maxlength.");
                 _length = value;
             }
         }
@@ -95,6 +95,19 @@ namespace CSCore.DMO
                 throw new ArgumentOutOfRangeException("count", "count is greater than MaxLength");
             }
             Marshal.Copy(_buffer, buffer, offset, count);
+        }
+
+        public unsafe void Read(byte[] buffer, int offset, int count, int sourceOffset)
+        {
+            if (count > Length)
+            {
+                throw new ArgumentOutOfRangeException("count", "count is greater than MaxLength");
+            }
+
+            byte* p = (byte*)_buffer.ToPointer();
+            p += sourceOffset;
+
+            Marshal.Copy(new IntPtr(p), buffer, offset, count);
         }
 
         int IMediaBuffer.SetLength(int length)

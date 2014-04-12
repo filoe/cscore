@@ -21,7 +21,7 @@ namespace CSCore.Codecs.MP3
 
         private Thread _bufferThread;
 
-        public event EventHandler<ConnectionCreatedEventArgs> ConnectionCreated;
+        public event EventHandler<ConnectionEstablishedEventArgs> ConnectionCreated;
 
         private Uri _uri;
 
@@ -74,7 +74,7 @@ namespace CSCore.Codecs.MP3
                         success = resetEvent.WaitOne(1000);
                     }
                     if (ConnectionCreated != null && async)
-                        ConnectionCreated(this, new ConnectionCreatedEventArgs(_uri, success));
+                        ConnectionCreated(this, new ConnectionEstablishedEventArgs(_uri, success));
 
                     return success;
                 };

@@ -200,7 +200,7 @@
     <Compile Include="Codecs\AAC\AACDecoder.cs" />
     <Compile Include="Codecs\DDP\DDPDecoder.cs" />
     <Compile Include="Codecs\CodecFactory.cs" />
-    <Compile Include="Codecs\ConnectionCreatedEventArgs.cs" />
+    <Compile Include="Codecs\ConnectionEstablishedEventArgs.cs" />
     <Compile Include="Codecs\FLAC\FlacException.cs" />
     <Compile Include="Codecs\FLAC\FlacChannelMode.cs" />
     <Compile Include="Codecs\FLAC\FlacConstant.cs" />
@@ -226,6 +226,7 @@
     <Compile Include="Codecs\MP2\MP2Decoder.cs" />
     <Compile Include="Codecs\MP3\DmoMP3Decoder.cs" />
     <Compile Include="Codecs\MP3\FrameInfoCollection.cs" />
+    <Compile Include="Codecs\MP3\MP3ChannelMode.cs" />
     <Compile Include="Codecs\MP3\MP3Exception.cs" />
     <Compile Include="Codecs\MP3\MP3FileReader.cs" />
     <Compile Include="Codecs\MP3\MP3Format.cs" />
@@ -233,6 +234,8 @@
     <Compile Include="Codecs\MP3\MP3FrameInfo.cs" />
     <Compile Include="Codecs\MP3\MP3MediafoundationDecoder.cs" />
     <Compile Include="Codecs\MP3\MP3WebStream.cs" />
+    <Compile Include="Codecs\MP3\MpegLayer.cs" />
+    <Compile Include="Codecs\MP3\MpegVersion.cs" />
     <Compile Include="Codecs\MP3\XingHeader.cs" />
     <Compile Include="Codecs\MP3\XingHeaderFlags.cs" />
     <Compile Include="Codecs\WMA\WMADecoder.cs" />
@@ -257,6 +260,7 @@
     <Compile Include="CoreAudioAPI\IAudioSessionNotification.cs" />
     <Compile Include="CoreAudioAPI\IAudioVolumeDuckNotification.cs" />
     <Compile Include="CoreAudioAPI\IMMNotificationClient.cs" />
+    <Compile Include="DMO\DmoDecoder.cs" />
     <Compile Include="DMO\DmoEnumeratorCategories.cs" />
     <Compile Include="DMO\DmoEnumFlags.cs" />
     <Compile Include="DMO\DmoEnumItem.cs" />

@@ -64,13 +64,13 @@ namespace CSCore.DSP
                 MediaObject mediaObject = _resampler.MediaObject;
                 if (!mediaObject.SupportsInputFormat(0, inputformat))
                 {
-                    throw new ArgumentException("Not supported source-format");
+                    throw new NotSupportedException("Inputformat not supported.");
                 }
                 mediaObject.SetInputType(0, inputformat);
 
                 if (!mediaObject.SupportsOutputFormat(0, outputformat))
                 {
-                    throw new ArgumentOutOfRangeException("destSampleRate");
+                    throw new NotSupportedException("Outputformat not supported.");
                 }
                 mediaObject.SetOutputType(0, outputformat);
 

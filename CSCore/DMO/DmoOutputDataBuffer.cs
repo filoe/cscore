@@ -7,7 +7,7 @@ using System.Text;
 namespace CSCore.DMO
 {
     /// <summary>
-    /// Represents an DmoOutputDataBuffer. Fore more details see http://msdn.microsoft.com/en-us/library/windows/desktop/dd375507(v=vs.85).aspx.
+    /// Represents a DmoOutputDataBuffer. Fore more details see http://msdn.microsoft.com/en-us/library/windows/desktop/dd375507(v=vs.85).aspx.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 8)]
     public struct DmoOutputDataBuffer : IDisposable
@@ -71,6 +71,30 @@ namespace CSCore.DMO
         public void Read(byte[] buffer, int offset)
         {
             (Buffer as MediaBuffer).Read(buffer, offset);
+        }
+
+        /// <summary>
+        /// Reads a sequence of bytes from the MediaBuffer.
+        /// </summary>
+        /// <param name="buffer">Array of bytes to store the read bytes in.</param>
+        /// <param name="offset">Zero-based byte offset in the specified buffer at which to begin storing the data read from the buffer.</param>
+        /// <param name="count">The maximum number of bytes to read from the buffer.</param>
+        public int Read(byte[] buffer, int offset, int count)
+        {
+            count = Math.Min(count, Length);
+
+            (Buffer as MediaBuffer).Read(buffer, offset, count);
+
+            return count;
+        }
+
+        public int Read(byte[] buffer, int offset, int count, int sourceOffset)
+        {
+            count = Math.Min(count, Length - sourceOffset);
+
+            (Buffer as MediaBuffer).Read(buffer, offset, count, sourceOffset);
+
+            return count;
         }
 
         /// <summary>

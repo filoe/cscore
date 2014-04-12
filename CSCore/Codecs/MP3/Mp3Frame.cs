@@ -7,7 +7,7 @@ namespace CSCore.Codecs.MP3
 {
     public class MP3Frame
     {
-        public const int MaxFrameLength = 0x4000;
+        public const int MaxFrameLength = 0x4000; //16384
 
         private static readonly int[, ,] BitRates = new int[,,]
         {
@@ -98,8 +98,10 @@ namespace CSCore.Codecs.MP3
 
         private bool FindFrame(Stream stream, bool seek)
         {
-            if (stream == null) throw new ArgumentNullException("stream");
-            if (!stream.CanRead) throw new ArgumentException("stream not readable");
+            if (stream == null) 
+                throw new ArgumentNullException("stream");
+            if (!stream.CanRead) 
+                throw new ArgumentException("Stream not readable.");
 
             byte[] buffer = new byte[4];
             int read;
@@ -322,29 +324,5 @@ namespace CSCore.Codecs.MP3
 
             return 0;
         }
-    }
-
-    public enum MP3ChannelMode
-    {
-        Stereo,
-        JointStereo,
-        DualChannel,
-        Mono
-    }
-
-    public enum MpegVersion
-    {
-        Version25,
-        Reserved,
-        Version2,
-        Version1
-    }
-
-    public enum MpegLayer
-    {
-        Reserved,
-        Layer3,
-        Layer2,
-        Layer1
     }
 }

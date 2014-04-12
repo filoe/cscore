@@ -707,7 +707,11 @@ namespace CSCore.DMO
         /// <param name="timeduration">Reference time specifying the duration of the data in the buffer. If the buffer has a valid time stamp, set the TimeLength flag in the flags parameter.</param>
         public unsafe void ProcessInput(int inputStreamIndex, IMediaBuffer mediaBuffer, InputDataBufferFlags flags, long timestamp, long timeduration)
         {
-            DmoException.Try(ProcessInputNative(inputStreamIndex, mediaBuffer, flags, timestamp, timeduration), n, "ProcessInput");
+            int result = ProcessInputNative(inputStreamIndex, mediaBuffer, flags, timestamp, timeduration);
+            if (result == (int)HResult.S_FALSE)
+                return;
+
+            DmoException.Try(result, n, "ProcessInput");
         }
 
         /// <summary>
@@ -747,6 +751,8 @@ namespace CSCore.DMO
             int status = -1;
 
             int result = ProcessOutputNative(flags, bufferCount, buffers, out status);
+            if (result == (int)HResult.S_FALSE)
+                return;
             DmoException.Try(result, n, "ProcessOutput");
         }
 
