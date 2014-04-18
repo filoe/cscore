@@ -8,9 +8,18 @@ using System.Text;
 
 namespace CSCore.DMO
 {
+    /// <summary>
+    /// Base class for all Dmo based streams.
+    /// </summary>
     public abstract class DmoStream : IWaveSource
     {
+        /// <summary>
+        /// The default inputStreamIndex to use.
+        /// </summary>
         protected readonly int _inputIndex = 0;
+        /// <summary>
+        /// The default outputStreamIndex to use.
+        /// </summary>
         protected readonly int _outputIndex = 0;
 
         private MediaObject mediaObject;
@@ -29,11 +38,36 @@ namespace CSCore.DMO
         private bool _disposed;
         private bool _isInitialized = false;
 
+        /// <summary>
+        /// Gets inputData to feed the Dmo MediaObject with.
+        /// </summary>
+        /// <param name="inputDataBuffer">InputDataBuffer which receives the inputData. 
+        /// If this parameter is null or the length is less than the amount of inputData, a new byte array will be applied. 
+        /// </param>
+        /// <param name="requested">The requested number of bytes.</param>
+        /// <returns>The number of bytes read. The number of actually read bytes does not have to be the number of requested bytes.</returns>
         protected abstract int GetInputData(ref byte[] inputDataBuffer, int requested);
+
+        /// <summary>
+        /// Creates a MediaObjec to use. This can be a decoder, effect, ...
+        /// </summary>
         protected abstract MediaObject CreateMediaObject(WaveFormat inputFormat, WaveFormat outputFormat);
+
+        /// <summary>
+        /// Gets the input format to use.
+        /// </summary>
+        /// <returns></returns>
         protected abstract WaveFormat GetInputFormat();
+
+        /// <summary>
+        /// Gets the output format to use.
+        /// </summary>
+        /// <returns></returns>
         protected abstract WaveFormat GetOutputFormat();
 
+        /// <summary>
+        /// Initializes the DmoStream. Important: This has to be called before using the DmoStream.
+        /// </summary>
         protected void Initialize()
         {
             _inputFormat = GetInputFormat();
@@ -59,6 +93,13 @@ namespace CSCore.DMO
             _isInitialized = true;
         }
 
+        /// <summary>
+        /// Reads a sequence of bytes from the stream.
+        /// </summary>
+        /// <param name="buffer">An array of bytes. When this method returns, the buffer contains the read bytes.</param>
+        /// <param name="offset">The zero-based byte offset in buffer at which to begin storing the data read from the stream.</param>
+        /// <param name="count">The maximum number of bytes to be read from the stream</param>
+        /// <returns>The actual number of read bytes.</returns>
         [MethodImpl(MethodImplOptions.Synchronized)]
         public virtual int Read(byte[] buffer, int offset, int count)
         {
@@ -146,10 +187,21 @@ namespace CSCore.DMO
             return read;
         }
 
+        /// <summary>
+        /// Gets or sets the position of the stream.
+        /// </summary>
         public abstract long Position { get; set; }
 
+        /// <summary>
+        /// Gets the length of the stream.
+        /// </summary>
         public abstract long Length { get; }
 
+        /// <summary>
+        /// Translates a position of the inputstream to the position in the outputstream.
+        /// </summary>
+        /// <param name="position">Any position/offset of the inputstream.</param>
+        /// <returns>Position in the outputstream.</returns>
         protected virtual long InputToOutput(long position)
         {
             //long result = (long)(position * _ratio);
@@ -158,6 +210,11 @@ namespace CSCore.DMO
             return result;
         }
 
+        /// <summary>
+        /// Translates a position of the outputstream to the position in the inputstream.
+        /// </summary>
+        /// <param name="position">Any position/offset of the outputstream.</param>
+        /// <returns>Position in the inputstream.</returns>
         protected virtual long OutputToInput(long position)
         {
             //long result = (long)(position * _ratio);
@@ -166,18 +223,27 @@ namespace CSCore.DMO
             return result;
         }
 
+        /// <summary>
+        /// Resets the overflowbuffer.
+        /// </summary>
         protected void ResetOverflowBuffer()
         {
             outputDataBufferOverflows = 0;
             outputDataBufferOffset = 0;
         }
 
+        /// <summary>
+        /// Disposes the <see cref="DmoStream"/>.
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Disposes the <see cref="DmoStream"/>.
+        /// </summary>
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposed)
@@ -217,11 +283,17 @@ namespace CSCore.DMO
             }
         }
 
+        /// <summary>
+        /// Gets the output format of the <see cref="DmoStream"/>.
+        /// </summary>
         public WaveFormat WaveFormat
         {
             get { return _outputFormat; }
         }
 
+        /// <summary>
+        /// Gets the input format of the <see cref="DmoStream"/>.
+        /// </summary>
         public WaveFormat InputFormat
         {
             get { return _inputFormat; }

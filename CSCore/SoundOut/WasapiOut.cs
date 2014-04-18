@@ -255,7 +255,7 @@ namespace CSCore.SoundOut
 				eventWaitHandleIndex = WaitHandle.WaitTimeout;
 				eventWaitHandleArray = new WaitHandle[] { _eventWaitHandle };
 
-				if (!FeedBuffer(_renderClient, buffer, bufferSize, frameSize))
+				if (!FeedBuffer(_renderClient, buffer, bufferSize, frameSize)) //todo: might cause a deadlock: play() is waiting on eventhandle but FeedBuffer got already called
 				{
 					_playbackState = PlaybackState.Stopped;
 					if (playbackStartedEventWaithandle is EventWaitHandle)
@@ -269,7 +269,7 @@ namespace CSCore.SoundOut
 					_audioClient.Start();
 					_playbackState = SoundOut.PlaybackState.Playing;
 
-					if (playbackStartedEventWaithandle is EventWaitHandle)
+					if (playbackStartedEventWaithandle is EventWaitHandle) 
 					{
 						((EventWaitHandle)playbackStartedEventWaithandle).Set();
 						playbackStartedEventWaithandle = null;

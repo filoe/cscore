@@ -274,7 +274,12 @@
     <Compile Include="DMO\DmoStream.cs" />
     <Compile Include="DMO\Effects\DirectSoundFXBase.cs" />
     <Compile Include="DMO\Effects\DirectSoundFXChorus.cs" />
+    <Compile Include="DMO\Effects\DirectSoundFXCompressor.cs" />
+    <Compile Include="DMO\Effects\DirectSoundFXDistortion.cs" />
     <Compile Include="DMO\Effects\DirectSoundFXEcho.cs" />
+    <Compile Include="DMO\Effects\DirectSoundFXFlanger.cs" />
+    <Compile Include="DMO\Effects\DirectSoundFXGargle.cs" />
+    <Compile Include="DMO\Effects\DirectSoundFXWavesReverb.cs" />
     <Compile Include="DMO\EnumDMO.cs" />
     <Compile Include="DMO\IMediaBuffer.cs" />
     <Compile Include="DMO\InputDataBufferFlags.cs" />
@@ -315,7 +320,13 @@
     <Compile Include="SoundOut\MMInterop\WaveCapsSupported.cs" />
     <Compile Include="SoundOut\WasapiOut.cs" />
     <Compile Include="Streams\Effects\DmoChorusEffect.cs" />
+    <Compile Include="Streams\Effects\DmoCompressorEffect.cs" />
+    <Compile Include="Streams\Effects\DmoDistortionEffect.cs" />
     <Compile Include="Streams\Effects\DmoEchoEffect.cs" />
+    <Compile Include="Streams\Effects\DmoEffectBase.cs" />
+    <Compile Include="Streams\Effects\DmoFlangerEffect.cs" />
+    <Compile Include="Streams\Effects\DmoGargleEffect.cs" />
+    <Compile Include="Streams\Effects\DmoWavesReverbEffect.cs" />
     <Compile Include="Streams\PeakEventArgs.cs" />
     <Compile Include="Streams\PeakMeter.cs" />
     <Compile Include="Streams\WriteableBufferingSource.cs" />
@@ -330,6 +341,7 @@
     <Compile Include="Win32\ComStream.cs" />
     <Compile Include="Win32\IStream.cs" />
     <Compile Include="Win32\Win32ComException.cs" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="Codecs\VORBIS\Packet.cs" />
     <None Include="Codecs\VORBIS\IdentificationPacket.cs" />
     <None Include="Codecs\VORBIS\VorbisException.cs" />
@@ -457,7 +469,6 @@
     <Compile Include="DSP\DmoResampler.cs" />
     <Compile Include="DSP\FFTAggregator.cs" />
     <Compile Include="DSP\FFTCalculatedEventArgs.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ISampleSource.cs" />
     <Compile Include="IWaveAggregator.cs" />
     <Compile Include="IWaveSource.cs" />

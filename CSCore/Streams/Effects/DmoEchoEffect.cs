@@ -9,48 +9,28 @@ using System.Text;
 namespace CSCore.Streams.Effects
 {
     /// <summary>
-    /// Wrapper of the DirectX Echo Effect.
+    /// Echo Effect.
     /// </summary>
-    public sealed class DmoEchoEffect : DmoAggregator
+    public sealed class DmoEchoEffect : DmoEffectBase<DirectSoundFXEcho, EchoParameters>
     {
-        private DmoEchoEffectObject _comObj;
-        private DirectSoundFXEcho _effect;
-
+        /// <summary>
+        /// Creates a new instance of the <see cref="DmoEchoEffect"/> class.
+        /// </summary>
+        /// <param name="source">The base source, which feeds the effect with data.</param>
         public DmoEchoEffect(IWaveSource source)
             : base(source)
         {
-            Initialize();
         }
 
-        protected override MediaObject CreateMediaObject(WaveFormat inputFormat, WaveFormat outputFormat)
+        protected override object CreateComObject()
         {
-            _comObj = new DmoEchoEffectObject();
-            var mediaObject = new MediaObject(Marshal.GetComInterfaceForObject(_comObj, typeof(IMediaObject)));
-            _effect = mediaObject.QueryInterface<DirectSoundFXEcho>();
-
-            return mediaObject;
-        }
-
-        protected override WaveFormat GetOutputFormat()
-        {
-            return GetInputFormat();
-        }
-
-        private DirectSoundFXEcho Effect
-        {
-            get { return _effect; }
+            return new DmoEchoEffectObject();
         }
 
         [ComImport]
         [Guid("ef3e932c-d40b-4f51-8ccf-3f98f1b29d5d")]
         private sealed class DmoEchoEffectObject
         {
-        }
-        private void SetValue<T>(string fieldname, T value) where T : struct
-        {
-            var p = Effect.Parameters;
-            p.GetType().GetField(fieldname).SetValueForValueType(ref p, value);
-            Effect.Parameters = p;
         }
 
         #region Properties

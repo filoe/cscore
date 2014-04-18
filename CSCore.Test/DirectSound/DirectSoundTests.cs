@@ -139,31 +139,22 @@ namespace CSCore.Test.DirectSound
                 dsound.SetCooperativeLevel(DSUtils.GetDesktopWindow(), DSCooperativeLevelType.DSSCL_NORMAL);
                 WaveFormat waveFormat = new WaveFormat(44100, 16, 2);
                 using (var primaryBuffer = new DirectSoundPrimaryBuffer(dsound))
-                using (var secondaryBuffer = new DirectSoundSecondaryBuffer(dsound, waveFormat, (int)waveFormat.MillisecondsToBytes(10000), true))
+                using (var secondaryBuffer = new DirectSoundSecondaryBuffer(dsound, waveFormat, (int)waveFormat.MillisecondsToBytes(10000)))
                 {
                     primaryBuffer.Play(DSBPlayFlags.DSBPLAY_LOOPING);
                     var caps = secondaryBuffer.BufferCaps;
 
                     var data = GenerateData(caps.dwBufferBytes / 2, waveFormat);
 
-                    //try to set an echo effect
-                    secondaryBuffer.SetFX(DSEchoEffect.GetDefaultDescription());
-                    using (var echo = secondaryBuffer.GetFX<DSEchoEffect>(0))
+                    if (secondaryBuffer.Write(data, 0, data.Length))
                     {
-                        echo.Feedback = DSEchoEffect.FeedbackMax;
-                        echo.LeftDelay = 1000;
-                        echo.RightDelay = 500;
-
-                        if (secondaryBuffer.Write(data, 0, data.Length))
-                        {
-                            secondaryBuffer.Play(DSBPlayFlags.DSBPLAY_LOOPING);
-                        }
-                        else
-                        {
-                            Assert.Fail("Could not write data.");
-                        }
-                        Thread.Sleep(1);
+                        secondaryBuffer.Play(DSBPlayFlags.DSBPLAY_LOOPING);
                     }
+                    else
+                    {
+                        Assert.Fail("Could not write data.");
+                    }
+                    Thread.Sleep(1);
                 }
             }
         }

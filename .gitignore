@@ -57,3 +57,7 @@ $tf/
 commit.bat
 remove.bat
 *.opensdf
+
+# others #
+##########
+*.cd

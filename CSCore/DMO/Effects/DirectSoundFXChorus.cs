@@ -29,7 +29,8 @@ namespace CSCore.DMO.Effects
             get { return "IDirectSoundFXChorus"; }
         }
     }
-
+    
+    [StructLayout(LayoutKind.Sequential)]
     public struct ChorusParameters
     {
         public float WetDryMix;

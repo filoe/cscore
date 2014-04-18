@@ -1,0 +1,3188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Alphabetical">
+  <Class Name="CSCore.ACM.AcmBufferConverter" BaseTypeListCollapsed="true">
+    <Position X="100.75" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAGAEAEAAAIAAAAAAAAAAAABAAAAAAIAAAAA=</HashCode>
+      <FileName>ACM\AcmBufferConverter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.ACM.AcmConverter" BaseTypeListCollapsed="true">
+    <Position X="102.5" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAEAAAAAIAAAAAAAEAAQAQAAAAAAAAAAAA=</HashCode>
+      <FileName>ACM\AcmConverter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.ACM.AcmDriver">
+    <Position X="104.25" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGAAACAAAAAAAA=</HashCode>
+      <FileName>ACM\AcmDriver.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.ACM.AcmException">
+    <Position X="12.5" Y="21" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>ACM\AcmException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.ACM.AcmHeader" BaseTypeListCollapsed="true">
+    <Position X="106" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAGAEAEAAAMCAhAAIAEAAAAAQBAAAAEBAAAA=</HashCode>
+      <FileName>ACM\AcmHeader.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.ACM.AcmResult">
+    <Position X="109.5" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAAAAAAAAAAQAAAAAAIAAAAAAAAgAA=</HashCode>
+      <FileName>ACM\AcmResult.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.ACM.AcmWaveFilter">
+    <Position X="111.25" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAEAAAAAAAAAAAAAAAAAACAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>ACM\Interop\AcmWaveFilter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.ACM.NativeAcmHeader">
+    <Position X="84.75" Y="53" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAoAAAAACAAQBAAAAAAAAQAAYACAAAAAAACAAQAAAAA=</HashCode>
+      <FileName>ACM\Interop\NativeAcmHeader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.ACM.AcmInterop">
+    <Position X="107.75" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAYEQEACAAAAAAEAAAAAAAEAEAAAAAAAAAA=</HashCode>
+      <FileName>ACM\Interop\NativeMethods.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Extensions">
+    <Position X="113" Y="50" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQCCCAAAYCAAAAAIJAAAAAAAwBIAIkIEAkQAAAAAAAA=</HashCode>
+      <FileName>Extensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.MmException">
+    <Position X="12.5" Y="18.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACQAAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>MmException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.SampleSourceBase">
+    <Position X="15.25" Y="21.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAGAEAAAgAAAAAABgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SampleSourceBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CSCore.WaveAggregatorBase">
+    <Position X="47.25" Y="37.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAEACAACAAIAAgAAAAAABggAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>WaveAggregatorBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CSCore.WaveFormat">
+    <Position X="41.75" Y="45.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>REAAAAAAAEAAAAQEIAEAAIACACCAQgAgAAAgAIAAGAA=</HashCode>
+      <FileName>WaveFormat.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.WaveFormatExtensible">
+    <Position X="40.5" Y="51.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EEAAAAgAAAAAAAIAIBAAAAAAAAAAAAAAAAgJAAAEAAA=</HashCode>
+      <FileName>WaveFormatExtensible.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.AAC.AACDecoder">
+    <Position X="24.75" Y="42.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Codecs\AAC\AACDecoder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.AAC.AACEncoder">
+    <Position X="27.5" Y="37.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAAACAAAAQAABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Codecs\AAC\AACEncoder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.CodecFactory">
+    <Position X="114.75" Y="36.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAEAAACAAgAAAAAAAAAIAAAAAABAAAAQAAAAAAAEBA=</HashCode>
+      <FileName>Codecs\CodecFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.CodecFactoryEntry">
+    <Position X="116.5" Y="36.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Codecs\CodecFactoryEntry.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.ConnectionEstablishedEventArgs">
+    <Position X="102.5" Y="41.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Codecs\ConnectionEstablishedEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.DDP.DDPDecoder">
+    <Position X="27" Y="42.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Codecs\DDP\DDPDecoder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.FLAC.FlacConstant">
+    <Position X="100.75" Y="56" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEACAAAAAAJQACABAAAACAQAEAAAAAAAAgAAAgGAE=</HashCode>
+      <FileName>Codecs\FLAC\FlacConstant.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.FLAC.FlacException">
+    <Position X="102.5" Y="56" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Codecs\FLAC\FlacException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.FLAC.FlacFile" BaseTypeListCollapsed="true">
+    <Position X="104.25" Y="56" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAgAiBAIAAgAAAAAABwAABAAAAAACIAgAAEIDE=</HashCode>
+      <FileName>Codecs\FLAC\FlacFile.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.Codecs.FLAC.FlacFrame">
+    <Position X="106" Y="56" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAQACAAABAAAAEAAAAAgAAAYBAgQAAAIAQBAQAkAQBA=</HashCode>
+      <FileName>Codecs\FLAC\FlacFrame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.FLAC.FlacSubFrameData">
+    <Position X="81.25" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAgAAAAABAAAgAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Codecs\FLAC\FlacFrame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.FLAC.FlacFrameHeader">
+    <Position X="107.75" Y="56" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAACEAAAAAAQdAAAABAAAAAAAHAgAIABAAACCAEAA=</HashCode>
+      <FileName>Codecs\FLAC\FlacFrameHeader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.FLAC.FlacPartitionedRice">
+    <Position X="109.5" Y="56" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAgAAAAAAAAARAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Codecs\FLAC\FlacPartitionedRice.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.FLAC.FlacPartitionedRiceContent">
+    <Position X="111.25" Y="56" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAIAAAgAgAAAAAAAAACAAAA=</HashCode>
+      <FileName>Codecs\FLAC\FlacPartitionedRiceContent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.FLAC.FlacPreScan">
+    <Position X="113" Y="56" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAIAAABAAAAKAAAgAoAAAAAAAAAAAAAAAACAAAAAADU=</HashCode>
+      <FileName>Codecs\FLAC\FlacPreScan.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.FLAC.FlacPreScanFinishedEventArgs">
+    <Position X="114.75" Y="56" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Codecs\FLAC\FlacPreScan.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.FLAC.FlacMetadata">
+    <Position X="18.75" Y="34.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAIAAAAAAAAABAAAAAAAACAABAAAAAAAA=</HashCode>
+      <FileName>Codecs\FLAC\Metadata\FlacMetadata.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.FLAC.FlacMetadataSeekTable">
+    <Position X="17.5" Y="37.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAACAAAAAAAAAAAAAAACAAAAAgAAAA=</HashCode>
+      <FileName>Codecs\FLAC\Metadata\FlacMetadataSeekTable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.FLAC.FlacMetadataStreamInfo">
+    <Position X="19.75" Y="37.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BACCAAAAIAAAAAggAAAAAAAAAAAAAgAAAAAAAAAAEAA=</HashCode>
+      <FileName>Codecs\FLAC\Metadata\FlacMetadataStreamInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.FLAC.FlacSeekPoint">
+    <Position X="118.25" Y="56" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEACAAAAAAAAAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>Codecs\FLAC\Metadata\FlacSeekPoint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.FLAC.FlacResidual">
+    <Position X="116.5" Y="56" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>Codecs\FLAC\SubFrames\FlacResidual.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.FLAC.FlacSubFrameBase">
+    <Position X="36" Y="40.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAEAAABAAkAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Codecs\FLAC\SubFrames\FlacSubFrameBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.FLAC.FlacSubFrameConstant">
+    <Position X="32.75" Y="43.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Codecs\FLAC\SubFrames\FlacSubFrameConstant.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.FLAC.FlacSubFrameFixed">
+    <Position X="35" Y="43.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>Codecs\FLAC\SubFrames\FlacSubFrameFixed.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.FLAC.FlacSubFrameLPC">
+    <Position X="37.25" Y="43.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAgAAAAAACIgAAAAQQIBQAAAAAAEAAABA=</HashCode>
+      <FileName>Codecs\FLAC\SubFrames\FlacSubFrameLPC.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.FLAC.FlacSubFrameVerbatim">
+    <Position X="39.5" Y="43.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Codecs\FLAC\SubFrames\FlacSubFrameVerbatim.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.FLAC.FlacBitReader">
+    <Position X="13.5" Y="15.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAIIAAAAAAAAAAAAAAEEAAA=</HashCode>
+      <FileName>Utils\FlacBitReader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.MP1.MP1Decoder">
+    <Position X="18" Y="42.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Codecs\MP1\MP1Decoder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.MP2.MP2Decoder">
+    <Position X="20.25" Y="42.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Codecs\MP2\MP2Decoder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.MP3.DmoMP3Decoder">
+    <Position X="14.5" Y="39.75" Width="1.5" />
+    <NestedTypes>
+      <Class Name="CSCore.Codecs.MP3.DmoMP3Decoder.DmoMP3DecoderObject" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Codecs\MP3\DmoMP3Decoder.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAEAgECAAgAhgAABAAhAIAAAAgAAAEBA=</HashCode>
+      <FileName>Codecs\MP3\DmoMP3Decoder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.MP3.FrameInfoCollection" BaseTypeListCollapsed="true">
+    <Position X="88.25" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACCAEAAggAAAAAAAAAAAAAAAAAAgAAQAAAAA=</HashCode>
+      <FileName>Codecs\MP3\FrameInfoCollection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.Codecs.MP3.MP3Exception">
+    <Position X="93.5" Y="44" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Codecs\MP3\MP3Exception.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.MP3.MP3FileReader" BaseTypeListCollapsed="true">
+    <Position X="95.25" Y="44" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAABAAAAAAAgAAAAAAAAAAAgAAAAI=</HashCode>
+      <FileName>Codecs\MP3\MP3FileReader.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.Codecs.MP3.MP3Format">
+    <Position X="42.75" Y="51.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAACAAAAABAAAAABAAgAAAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Codecs\MP3\MP3Format.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.MP3.MP3Frame">
+    <Position X="97" Y="44" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>DACGAAgAyAFBAACAAAAIQAAAAAEkAAAhIAJCAAACABQ=</HashCode>
+      <FileName>Codecs\MP3\MP3Frame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.MP3.MP3FrameInfo">
+    <Position X="98.75" Y="44" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAEAAAAEAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>Codecs\MP3\MP3FrameInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.MP3.MP3MediafoundationDecoder">
+    <Position X="29.25" Y="42.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Codecs\MP3\MP3MediafoundationDecoder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.MP3.MP3Stream" BaseTypeListCollapsed="true">
+    <Position X="81.25" Y="53" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABCEAAGCCAAMCAgIQAoAABgAABgAAAAAAIIoQAAEDA=</HashCode>
+      <FileName>Codecs\MP3\MP3Stream.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.Codecs.MP3.MP3WebStream" BaseTypeListCollapsed="true">
+    <Position X="83" Y="53" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAgACAEACAgCgAjAAJoACAAAAAAAAoAAgABAJA=</HashCode>
+      <FileName>Codecs\MP3\MP3WebStream.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.Codecs.MP3.XingHeader">
+    <Position X="98.75" Y="38.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAEAEAAAAAIAAAAACCAAAAAQAAiAACAAEAAAAA=</HashCode>
+      <FileName>Codecs\MP3\XingHeader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.RAW.RawDataReader" BaseTypeListCollapsed="true">
+    <Position X="91.75" Y="53" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAACAEAAAgAAAAAABgAAAAAABAAAIAAAAAABA=</HashCode>
+      <FileName>Codecs\RAW\RawDataReader.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.Codecs.WAV.DataChunk">
+    <Position X="0.5" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Codecs\WAV\DataChunk.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.WAV.FMTChunk">
+    <Position X="2.75" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Codecs\WAV\FMTChunk.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.WAV.WaveFileChunk">
+    <Position X="1.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAEAAA=</HashCode>
+      <FileName>Codecs\WAV\WaveFileChunk.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Codecs.WAV.WaveFileReader" BaseTypeListCollapsed="true">
+    <Position X="75.75" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAEEAAACAEAAAiAAAAQABgAAAAAAAAAAIAABIAABA=</HashCode>
+      <FileName>Codecs\WAV\WaveFileReader.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.Codecs.WAV.WaveWriter" BaseTypeListCollapsed="true">
+    <Position X="68.75" Y="36.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAIAAACAEAAACAAAAAAAAAAAAAAAEAAIgIAEACJA=</HashCode>
+      <FileName>Codecs\WAV\WaveWriter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.Codecs.WMA.WMADecoder">
+    <Position X="22.5" Y="42.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAIAgAAAAEAAACAAAAEAAAAAAAAgAAA=</HashCode>
+      <FileName>Codecs\WMA\WMADecoder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.AudioCaptureClient">
+    <Position X="33.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAQAAAQCIAAIAAAAAAAAACQAAAAgAAACAA=</HashCode>
+      <FileName>CoreAudioAPI\AudioCaptureClient.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.AudioClient">
+    <Position X="35.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gCAAQAIkQjAABQAECCoAEQBAACgAAACAIACQAAQABEA=</HashCode>
+      <FileName>CoreAudioAPI\AudioClient.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.AudioEndpointVolume">
+    <Position X="44.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEGAAAIoiCAAAMQAAIAACAAcCgCAAEK4FQEBgQAhGNA=</HashCode>
+      <FileName>CoreAudioAPI\AudioEndpointVolume.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.AudioEndpointVolumeCallback" BaseTypeListCollapsed="true">
+    <Position X="113" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CoreAudioAPI\AudioEndpointVolumeCallback.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.AudioEndpointVolumeCallbackEventArgs">
+    <Position X="114.75" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAQAAAAAAAAAEgAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>CoreAudioAPI\AudioEndpointVolumeCallbackEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.AudioEndpointVolumeChannel">
+    <Position X="116.5" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAIAAAAAAAAAAAAAAAAAAEQAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>CoreAudioAPI\AudioEndpointVolumeChannel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.AudioMeterInformation">
+    <Position X="67" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAABAIAAAIgAASACAAAAAAQAAAAAACAAAAAAAAJCAQ=</HashCode>
+      <FileName>CoreAudioAPI\AudioMeterInformation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.AudioRenderClient">
+    <Position X="73.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAIAQAAAAAAAAIAAAACAAAACAAAAAAAAAAAA=</HashCode>
+      <FileName>CoreAudioAPI\AudioRenderClient.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.AudioSessionControl">
+    <Position X="6.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAQAQAAMAAABAAAABFAAAAAiCAAAEAAAAQNA=</HashCode>
+      <FileName>CoreAudioAPI\AudioSessionControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.AudioSessionControl2">
+    <Position X="6.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAEQAAAAAAAAIAAoACAAAAAAAAEACUQAAABAAAAAA=</HashCode>
+      <FileName>CoreAudioAPI\AudioSessionControl2.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.AudioSessionEnumerator">
+    <Position X="15.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAABAACAAAAAQQAAAAAQCAAAAAAAAEAAA=</HashCode>
+      <FileName>CoreAudioAPI\AudioSessionEnumerator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.AudioSessionEvents" BaseTypeListCollapsed="true">
+    <Position X="100.75" Y="36.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EgACAAAAAAAAUAAAAAEgAAAAQAAgCAAAIAAIAAAAQCA=</HashCode>
+      <FileName>CoreAudioAPI\AudioSessionEvents.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.AudioSessionEventContextEventArgs">
+    <Position X="5.25" Y="16.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CoreAudioAPI\AudioSessionEvents.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.AudioSessionDisplayNameChangedEventArgs">
+    <Position X="0.75" Y="18.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>CoreAudioAPI\AudioSessionEvents.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.AudioSessionIconPathChangedEventArgs">
+    <Position X="3" Y="18.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>CoreAudioAPI\AudioSessionEvents.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.AudioSessionSimpleVolumeChangedEventArgs">
+    <Position X="5.25" Y="18.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>CoreAudioAPI\AudioSessionEvents.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.AudioSessionChannelVolumeChangedEventArgs">
+    <Position X="7.5" Y="18.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAACAAAAAAAEAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>CoreAudioAPI\AudioSessionEvents.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.AudioSessionGroupingParamChangedEventArgs">
+    <Position X="9.75" Y="18.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>CoreAudioAPI\AudioSessionEvents.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.AudioSessionStateChangedEventArgs">
+    <Position X="104.25" Y="36.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CoreAudioAPI\AudioSessionEvents.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.AudioSessionDisconnectedEventArgs">
+    <Position X="118.25" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CoreAudioAPI\AudioSessionEvents.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.AudioSessionManager">
+    <Position X="40" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAACAAABAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>CoreAudioAPI\AudioSessionManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.AudioSessionManager2">
+    <Position X="40" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAwAAkAQAgAAAAAgAACAAAABAACAAAEAMAAAEBA=</HashCode>
+      <FileName>CoreAudioAPI\AudioSessionManager2.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.AudioSessionNotification" BaseTypeListCollapsed="true">
+    <Position X="102.5" Y="36.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CoreAudioAPI\AudioSessionNotification.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.SessionCreatedEventArgs">
+    <Position X="97" Y="53" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CoreAudioAPI\AudioSessionNotification.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.AudioVolumeDuckNotification" BaseTypeListCollapsed="true">
+    <Position X="106" Y="36.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAABAAAAAAAABAAAAAAAAAAAACAAA=</HashCode>
+      <FileName>CoreAudioAPI\AudioVolumeDuckNotification.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.VolumeDuckNotificationEventArgs">
+    <Position X="72.25" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CoreAudioAPI\AudioVolumeDuckNotification.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.CoreAudioAPIException">
+    <Position X="104.25" Y="41.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAQAAAAIAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>CoreAudioAPI\CoreAudioAPIException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.DefaultDeviceChangedEventArgs">
+    <Position X="0.75" Y="34.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>CoreAudioAPI\DefaultDeviceChangedEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.DeviceNotificationEventArgs">
+    <Position X="3" Y="32.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>CoreAudioAPI\DeviceNotificationEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.DevicePropertyChangedEventArgs">
+    <Position X="3" Y="34.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CoreAudioAPI\DevicePropertyChangedEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.DeviceStateChangedEventArgs">
+    <Position X="5.25" Y="34.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CoreAudioAPI\DeviceStateEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.InteropCalls">
+    <Position X="86.5" Y="38.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>CoreAudioAPI\InteropCalls.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.MMDevice">
+    <Position X="69.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAACEAAJBEAAAAQCAAAAAAAACAAAAUEAARAAA=</HashCode>
+      <FileName>CoreAudioAPI\MMDevice.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.MMDeviceCollection">
+    <Position X="76" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACQAAAAAAAEAABAACAACAAQAgAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>CoreAudioAPI\MMDeviceCollection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.MMDeviceEnumerator">
+    <Position X="4" Y="4.75" Width="1.5" />
+    <NestedTypes>
+      <Class Name="CSCore.CoreAudioAPI.MMDeviceEnumerator.MMDeviceEnumeratorObject" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>CoreAudioAPI\MMDeviceEnumerator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>gRAAACAAAAEgAAgACCAAAAAAACAAAAiEAAAAAAAAAAA=</HashCode>
+      <FileName>CoreAudioAPI\MMDeviceEnumerator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.MMNotificationClient" BaseTypeListCollapsed="true">
+    <Position X="91.75" Y="44" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAQAAAABACAEAQAAAQAAAAJAAKAAAAGAAAAAAAAAEAA=</HashCode>
+      <FileName>CoreAudioAPI\MMNotificationClient.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.CoreAudioAPI.SimpleAudioVolume">
+    <Position X="13" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAACAAAAQAAAAgIgAAAAAAAACAAAACAAAAABA=</HashCode>
+      <FileName>CoreAudioAPI\SimpleAudioVolume.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.DMO.DmoAggregator">
+    <Position X="6.75" Y="39.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAgEAAAAABAgAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>DMO\DmoAggregator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CSCore.DMO.DmoEnumeratorCategories">
+    <Position X="100.75" Y="50" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAEAAAAAAAAAAACAAAAAIAAAIAAAAAAAAA=</HashCode>
+      <FileName>DMO\DmoEnumeratorCategories.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.DMO.DmoException">
+    <Position X="102.5" Y="50" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAQAAABIAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>DMO\DmoException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.DMO.DmoInterop">
+    <Position X="104.25" Y="50" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>DMO\DmoInterop.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.DMO.DmoSizeInfo">
+    <Position X="16.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DMO\DmoSizeInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.DMO.DmoInputSizeInfo">
+    <Position X="16.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>DMO\DmoSizeInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.DMO.DmoStream">
+    <Position X="7.75" Y="32.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAgEAAUACAECQggMAACiABgAAAAABAIAAAQABmAAAA=</HashCode>
+      <FileName>DMO\DmoStream.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CSCore.DMO.EnumDMO">
+    <Position X="71.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgACAAAAAAAABAAAAEAAAAAAAAAAAAAAEAABAAQAEBA=</HashCode>
+      <FileName>DMO\EnumDMO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.DMO.InteropCalls">
+    <Position X="88.25" Y="38.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DMO\InteropCalls.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.DMO.MediaBuffer" BaseTypeListCollapsed="true">
+    <Position X="91.75" Y="38.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgACEAAAAgAAAAAABgAAAAAAAAFAEQAAEAAAA=</HashCode>
+      <FileName>DMO\MediaBuffer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.DMO.MediaObject">
+    <Position X="26.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ICAehGCDAAJAAIgAAhgFAAAAgIJhJggBEhjAAUCoEAA=</HashCode>
+      <FileName>DMO\MediaObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.DMO.MediaTypes">
+    <Position X="120.75" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>C26xBIp2VINR1AI51JpCADyw3gKVQqxzCwOO0cukFRg=</HashCode>
+      <FileName>DMO\MediaTypes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.DMO.NativeMethods">
+    <Position X="86.5" Y="53" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAEAAAAAAAAA=</HashCode>
+      <FileName>DMO\NativeMethods.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.DMO.WMResampler" BaseTypeListCollapsed="true">
+    <Position X="72.25" Y="36.5" Width="1.5" />
+    <NestedTypes>
+      <Class Name="CSCore.DMO.WMResampler.WMResamplerObject" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>DMO\WMResampler.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>BAAAAIAAACAEAAAIAAAAAAAAAAQAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>DMO\WMResampler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.DMO.WMResamplerProps">
+    <Position X="51.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAABACAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>DMO\WMResamplerProps.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.DMO.Effects.DirectSoundFXBase&lt;T&gt;">
+    <Position X="59.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABABAAAAAAAAAAAAAAEAAAAAAAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>DMO\Effects\DirectSoundFXBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.DMO.Effects.DirectSoundFXChorus">
+    <Position X="62.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DMO\Effects\DirectSoundFXChorus.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.DMO.Effects.DirectSoundFXCompressor">
+    <Position X="64.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DMO\Effects\DirectSoundFXCompressor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.DMO.Effects.DirectSoundFXDistortion">
+    <Position X="53.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DMO\Effects\DirectSoundFXDistortion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.DMO.Effects.DirectSoundFXEcho">
+    <Position X="55.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DMO\Effects\DirectSoundFXEcho.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.DMO.Effects.DirectSoundFXFlanger">
+    <Position X="58" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DMO\Effects\DirectSoundFXFlanger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.DMO.Effects.DirectSoundFXGargle">
+    <Position X="60.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DMO\Effects\DirectSoundFXGargle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.DSP.AdjustableResampler">
+    <Position X="47.25" Y="47.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BACAQAAAAAAABAAAIAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DSP\AdjustableResampler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.DSP.BiQuad">
+    <Position X="107.75" Y="36.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAACCgACAABgAAJBAgAwAAAgAQAgAAA=</HashCode>
+      <FileName>DSP\BiQuad.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.DSP.ChannelMatrix">
+    <Position X="111.25" Y="36.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgBEAAAFAAAABIACAACGECABEAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>DSP\ChannelMatrix.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.DSP.ChannelMatrixElement">
+    <Position X="113" Y="36.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQABAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>DSP\ChannelMatrixElement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.DSP.DmoChannelResampler">
+    <Position X="49.5" Y="47.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DSP\DmoChannelResampler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.DSP.DmoResampler">
+    <Position X="48.5" Y="41.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIGAAEACAEEABgAAAAABhwACAAAAAAAAACABCAAAg=</HashCode>
+      <FileName>DSP\DmoResampler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.DSP.FFTAggregator">
+    <Position X="51.75" Y="41.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAABAAgAAEAIAAoAAAAAAAAAAgAAAAABgA=</HashCode>
+      <FileName>DSP\FFTAggregator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.DSP.FFTCalculatedEventArgs">
+    <Position X="116.5" Y="50" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>DSP\FFTCalculatedEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.MediaFoundation.CommonAudioDecoderGuids">
+    <Position X="118.25" Y="36.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAEEAAAAAAAAAABAVAAEAAIAAAAACCACAAA=</HashCode>
+      <FileName>MediaFoundation\CommonAudioDecoderGuids.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.MediaFoundation.InteropCalls">
+    <Position X="90" Y="38.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MediaFoundation\InteropCalls.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.MediaFoundation.MediaFoundationAttributes">
+    <Position X="93.5" Y="38.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAgAAAAAAAAACAEAAQAIAJAAAQAIAAAAAAAABA=</HashCode>
+      <FileName>MediaFoundation\MediaFoundationAttributes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.MediaFoundation.MediaFoundationCore">
+    <Position X="95.25" Y="38.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAJAIEAJICAEBABIAQAACAAAIAAACAAoACBAgAI=</HashCode>
+      <FileName>MediaFoundation\MediaFoundationCore.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.MediaFoundation.MediaFoundationDecoder">
+    <Position X="23.5" Y="36.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAkAEAAAACAEERAgBAAQAABgACAAAgAABAIAgACAADA=</HashCode>
+      <FileName>MediaFoundation\MediaFoundationDecoder.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CSCore.MediaFoundation.MediaFoundationEncoder">
+    <Position X="27.5" Y="30.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAQAYACAEQQAkEwEIABAAABAAAAAAEIICgRFIAAA=</HashCode>
+      <FileName>MediaFoundation\MediaFoundationEncoder.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CSCore.MediaFoundation.MediaFoundationException">
+    <Position X="97" Y="38.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAQAAAAIAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>MediaFoundation\MediaFoundationException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.MediaFoundation.MFActivate">
+    <Position X="17.5" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAIAAEAAAAAAIACAAAAEAAAAACAAAACAAAAAAA=</HashCode>
+      <FileName>MediaFoundation\MFActivate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.MediaFoundation.MFAttribute&lt;TValue&gt;">
+    <Position X="81.25" Y="44" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>MediaFoundation\MFAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.MediaFoundation.MFAttributes">
+    <Position X="19.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AMQEABYgQAAABEBBHUAAjAQAAAAAAADAIEREQkAEQAE=</HashCode>
+      <FileName>MediaFoundation\MFAttributes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.MediaFoundation.MFInterops">
+    <Position X="83" Y="44" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEJASAABABACEAHgAIAAAAAAAAAAABBAAI=</HashCode>
+      <FileName>MediaFoundation\MFInterops.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.MediaFoundation.MFMediaBuffer">
+    <Position X="28.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAQEAAAAAQAAAAAEBAAABAAAQAAAACAABAQAAAgAAE=</HashCode>
+      <FileName>MediaFoundation\MFMediaBuffer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.MediaFoundation.MFMediaType">
+    <Position X="19.75" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>FBAAAAAAAAAQAgAAAQMEAAAAAAAAQgCAAAgACAAkEAA=</HashCode>
+      <FileName>MediaFoundation\MFMediaType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.MediaFoundation.MFMediaTypes">
+    <Position X="84.75" Y="44" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAEgABABAAASAgBAAgIACAAEAABBEAQAAAAAMkACAE=</HashCode>
+      <FileName>MediaFoundation\MFMediaTypes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.MediaFoundation.MFSample">
+    <Position X="22" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QCAgAAEAAAAggCEIAABEFAQAAQACCACBsQAgAgQCBIA=</HashCode>
+      <FileName>MediaFoundation\MFSample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.MediaFoundation.MFSinkWriter">
+    <Position X="37.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAABGAAQAAIIAACQCCAACAAACAACJAEAIABAoCEA=</HashCode>
+      <FileName>MediaFoundation\MFSinkWriter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.MediaFoundation.MFSourceReader">
+    <Position X="46.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>DAAAAAEAACAAoIACAASAKAAAAAAAAACKAAAAgACIYCA=</HashCode>
+      <FileName>MediaFoundation\MFSourceReader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.MediaFoundation.MFTCategories">
+    <Position X="86.5" Y="44" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAABABAAAAAAAAAAAAAiAAACAAAAAIAAAAAASAAAAAE=</HashCode>
+      <FileName>MediaFoundation\MFTCategories.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.MediaFoundation.MFTRegisterTypeInfo">
+    <Position X="88.25" Y="44" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MediaFoundation\MFTRegisterTypeInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.MediaFoundation.TranscodeContainerTypes">
+    <Position X="65.25" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAABAAAAQAAAAAAQAAAAgAABAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>MediaFoundation\TranscodeContainerTypes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.SoundIn.DataAvailableEventArgs">
+    <Position X="109.5" Y="41.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAAAAAAAAgAABAAAAAAAAAAgAA=</HashCode>
+      <FileName>SoundIn\DataAvailableEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.SoundIn.WasapiCapture">
+    <Position X="33.5" Y="45.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIJQXAAUAiMFAwBAAgQAAAAgAACIgCAAqAIgAEAAAAA=</HashCode>
+      <FileName>SoundIn\WasapiCapture.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CSCore.SoundIn.WasapiLoopbackCapture">
+    <Position X="33.5" Y="54.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>SoundIn\WasapiLoopbackCapture.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.SoundIn.WaveIn">
+    <Position X="16.75" Y="45.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACIAEAAAACIAA4BDAABCCEAAQEAAgCIRIBICAAAAQAA=</HashCode>
+      <FileName>SoundIn\WaveIn.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CSCore.SoundIn.WaveInBuffer" BaseTypeListCollapsed="true">
+    <Position X="61.75" Y="36.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gABgACAgACAARUAACAACAAAAAQDgAAAAAAAAAAAAYIA=</HashCode>
+      <FileName>SoundIn\WaveInBuffer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.SoundIn.WaveInEvent">
+    <Position X="15.5" Y="53.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAAAAQAABBAAAAAAAAACABAAAAAAAAAAg=</HashCode>
+      <FileName>SoundIn\WaveInEvent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.SoundIn.WaveInWindow">
+    <Position X="17.75" Y="53.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAiABAAAAAAAAAAAAAAAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>SoundIn\WaveInWindow.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.SoundOut.DirectSound.DirectSound3DListener">
+    <Position X="42.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAGAEACCEQgAAAAAAAAAMBAAQAmGAAAAAAgAAQAA=</HashCode>
+      <FileName>SoundOut\DirectSound\3D\DirectSound3DListener.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.SoundOut.DirectSound.DirectSoundBuffer3D">
+    <Position X="49" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAKEAEIiAAAgACAAAAAAAABBAAAkEAUAAEAwAAAAA=</HashCode>
+      <FileName>SoundOut\DirectSound\3D\DirectSoundBuffer3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.SoundOut.DirectSound.DirectSoundBase">
+    <Position X="78.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABACAAAACQRAAAAAAABCAAAgAEAQAABAgIAAAAA=</HashCode>
+      <FileName>SoundOut\DirectSound\DirectSound.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.SoundOut.DirectSound.DirectSound8">
+    <Position X="78.25" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SoundOut\DirectSound\DirectSound8.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.SoundOut.DirectSound.DirectSoundBufferBase">
+    <Position X="9.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAJQAAAFEgggAQACCEACIAAHIqiACACAoAoAAAGAAgA=</HashCode>
+      <FileName>SoundOut\DirectSound\DirectSoundBufferBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.SoundOut.DirectSound.DirectSoundDevice">
+    <Position X="111.25" Y="41.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAgAAAEBAAAAAAAAAAABAAABAIACAAAAAA=</HashCode>
+      <FileName>SoundOut\DirectSound\DirectSoundDevice.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.SoundOut.DirectSound.DirectSoundDeviceEnumerator">
+    <Position X="113" Y="41.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAAAAAAAAAQAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>SoundOut\DirectSound\DirectSoundDeviceEnumerator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.SoundOut.DirectSound.DirectSoundException">
+    <Position X="114.75" Y="41.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAQAAAAIAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>SoundOut\DirectSound\DirectSoundException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.SoundOut.DirectSound.DirectSoundNotify">
+    <Position X="24.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAMAAAAAAAAAAAAAACAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>SoundOut\DirectSound\DirectSoundNotify.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.SoundOut.DirectSound.DirectSoundNotifyEventArgs">
+    <Position X="116.5" Y="41.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAGAAAAAAAAAACAAAAAAAAAAAAAAAACACAAAAAAA=</HashCode>
+      <FileName>SoundOut\DirectSound\DirectSoundNotifyEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.SoundOut.DirectSound.DirectSoundPrimaryBuffer">
+    <Position X="8.5" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SoundOut\DirectSound\DirectSoundPrimaryBuffer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.SoundOut.DirectSound.DirectSoundSecondaryBuffer">
+    <Position X="10.75" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAgAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>SoundOut\DirectSound\DirectSoundSecondaryBuffer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.SoundOut.DirectSound.DSUtils">
+    <Position X="106" Y="50" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAIAAAQAAAAACAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SoundOut\DirectSound\DSUtils.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.SoundOut.DirectSound.InteropCalls">
+    <Position X="84.75" Y="38.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SoundOut\DirectSound\InteropCalls.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.SoundOut.DirectSound.NativeMethods">
+    <Position X="88.25" Y="53" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAIAAAQAAAAAEAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SoundOut\DirectSound\NativeMethods.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.SoundOut.DirectSoundOut" BaseTypeListCollapsed="true">
+    <Position X="118.25" Y="41.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIgDAAyAGIAA4AAAQQAAACAACAEgAgAoAIgBlgBAAA=</HashCode>
+      <FileName>SoundOut\DirectSoundOut.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.SoundOut.WasapiOut" BaseTypeListCollapsed="true">
+    <Position X="79.25" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIgTAA2AmIEAwBAA4wCAAAgACCIgAgAoAIgAhgBAAA=</HashCode>
+      <FileName>SoundOut\WasapiOut.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.SoundOut.WaveOut">
+    <Position X="10.5" Y="30.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QgJgAAQoAOIAIwAAAQQABAAAACBAgAgAoAIAAggAQAA=</HashCode>
+      <FileName>SoundOut\WaveOut.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CSCore.SoundOut.WaveOutWindow">
+    <Position X="10.5" Y="38.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAiABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SoundOut\WaveOutWindow.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.SoundOut.MMInterop.MMInterops">
+    <Position X="90" Y="44" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="CSCore.SoundOut.MMInterop.MMInterops.WaveInOutOpenFlags" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>SoundOut\MMInterop\MMInterop.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Delegate Name="CSCore.SoundOut.MMInterop.MMInterops.WaveCallback" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>SoundOut\MMInterop\MMInterop.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>QgAIAAQggABAEJAAAIMAgAQIAhihCAKgAAAGEAIZgIg=</HashCode>
+      <FileName>SoundOut\MMInterop\MMInterop.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.SoundOut.MMInterop.WaveHeader">
+    <Position X="74" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BBgAAAAAAAAAAAAIAAAAAAAAAACABAAAAAAAAAIAAAQ=</HashCode>
+      <FileName>SoundOut\MMInterop\WaveHeader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.SoundOut.MMInterop.WaveOutBuffer" BaseTypeListCollapsed="true">
+    <Position X="63.5" Y="36.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAgACAEAUAAAAAAAQAAAADgAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>SoundOut\MMInterop\WaveOutBuffer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.SoundOut.MMInterop.WaveWindow" BaseTypeListCollapsed="true">
+    <Position X="65.25" Y="36.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAACAAAEAAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>SoundOut\MMInterop\WaveWindow.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.SoundOut.MMInterop.WaveWindowForm" BaseTypeListCollapsed="true">
+    <Position X="67" Y="36.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAACAAAEAAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>SoundOut\MMInterop\WaveWindowForm.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.Streams.AutoGain">
+    <Position X="10.75" Y="27.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Streams\AutoGain.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.BlockReadEventArgs&lt;T&gt;">
+    <Position X="109.5" Y="36.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAABAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Streams\BlockReadEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.BufferSource">
+    <Position X="42.75" Y="41.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAgACAAAAAgAAAAAAAoAECAAAAAAAgAAAABAAA=</HashCode>
+      <FileName>Streams\BufferSource.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.EqFilter" BaseTypeListCollapsed="true">
+    <Position X="107.75" Y="50" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAACAAAEAAAAAAAAIgAAAAAAAIAABJAAAAEAAAAAABA=</HashCode>
+      <FileName>Streams\EqFilter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.Streams.EqFilterCollection" BaseTypeListCollapsed="true">
+    <Position X="109.5" Y="50" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AGIAAEAAAAEAABAQCAAABAQAAAAAAAAACAAAAABQIAQ=</HashCode>
+      <FileName>Streams\EqFilterCollection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.Streams.EqFilterEntry" BaseTypeListCollapsed="true">
+    <Position X="111.25" Y="50" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACIAAAAAAAAAABEAAIAAAAAAAAAAAAAAAQAAAAAAABA=</HashCode>
+      <FileName>Streams\EqFilterEntry.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.Streams.Equalizer">
+    <Position X="8.5" Y="25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAABIAAAAAgAAEAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Streams\Equalizer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.FadeInOut">
+    <Position X="6.25" Y="27.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAIAAAABACAAAAABAACAAgAAAAAAAAUAIASAAAABA=</HashCode>
+      <FileName>Streams\FadeInOut.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.GainSource">
+    <Position X="10.75" Y="25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAggAABAAAABAAAAAAAAAA=</HashCode>
+      <FileName>Streams\GainSource.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CSCore.Streams.LoopStream">
+    <Position X="45" Y="41.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAABAAACAAAAAgAAAAAA=</HashCode>
+      <FileName>Streams\LoopStream.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.MonoToStereoSource">
+    <Position X="13" Y="25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAgACAAAAAgAAAAAABgAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Streams\MonoToSteroSource.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.NotificationSource">
+    <Position X="15.25" Y="25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAAIABAAAgAAAAAAAAEAAAAABAAAA=</HashCode>
+      <FileName>Streams\NotificationSource.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.PanSource">
+    <Position X="17.5" Y="25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAgAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Streams\PanSource.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.PeakEventArgs">
+    <Position X="90" Y="53" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Streams\PeakEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.PeakMeter">
+    <Position X="19.75" Y="25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAABAAAAAABACAAAAAEAAgAAAAAAAAABAEAAAAAAA=</HashCode>
+      <FileName>Streams\PeakMeter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.SimpleNotificationSource">
+    <Position X="22" Y="25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAIAAAAoABAAAgAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Streams\SimpleNotificationSource.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.SineGenerator" BaseTypeListCollapsed="true">
+    <Position X="98.75" Y="53" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAACAAAAAgAAAQAABgAAAAAAICAAIAAAAAAAA=</HashCode>
+      <FileName>Streams\SineGenerator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.Streams.SingleBlockNotificationStream">
+    <Position X="1.75" Y="25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Streams\SingleBlockNotificationStream.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.SingleBlockReadEventArgs">
+    <Position X="61.75" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgCACAAAAAAAA=</HashCode>
+      <FileName>Streams\SingleBlockReadEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.SoundInSource" BaseTypeListCollapsed="true">
+    <Position X="63.5" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAEAAgACAEAAAgAAAEAABgEAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Streams\SoundInSource.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.Streams.StereoToMonoSource">
+    <Position X="4" Y="25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAgACAAAAAgAAAAAABgAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Streams\StereoToMonoSource.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.VolumeSource">
+    <Position X="6.25" Y="25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAIAAACAAAA=</HashCode>
+      <FileName>Streams\VolumeSource.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.WriteableBufferingSource" BaseTypeListCollapsed="true">
+    <Position X="74" Y="36.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAgACAEAAAgAAAEAABgAAAACAAAAAIAAAEAAAA=</HashCode>
+      <FileName>Streams\WriteableBufferingSource.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.Streams.Effects.DmoChorusEffect">
+    <Position X="1" Y="46.25" Width="1.5" />
+    <NestedTypes>
+      <Class Name="CSCore.Streams.Effects.DmoChorusEffect.DmoChorusEffectObject" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Streams\Effects\DmoChorusEffect.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAhAEBADARgAiAFCAAICJwQggCAADACAAjwQ=</HashCode>
+      <FileName>Streams\Effects\DmoChorusEffect.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.Effects.DmoCompressorEffect">
+    <Position X="3.25" Y="46.25" Width="1.5" />
+    <NestedTypes>
+      <Class Name="CSCore.Streams.Effects.DmoCompressorEffect.DmoCompressorEffectObject" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Streams\Effects\DmoCompressorEffect.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAiAAAAACAMCAAABAgAAEIABCCCAJGAqABAAAkA=</HashCode>
+      <FileName>Streams\Effects\DmoCompressorEffect.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.Effects.DmoDistortionEffect">
+    <Position X="5.5" Y="46.25" Width="1.5" />
+    <NestedTypes>
+      <Class Name="CSCore.Streams.Effects.DmoDistortionEffect.DmoDistortionEffectObject" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Streams\Effects\DmoDistortionEffect.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAACKAAAAAgAAAABRAAAgAEEQBBADQgAECAgAAAgA=</HashCode>
+      <FileName>Streams\Effects\DmoDistortionEffect.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.Effects.DmoEchoEffect">
+    <Position X="7.75" Y="46.25" Width="1.5" />
+    <NestedTypes>
+      <Class Name="CSCore.Streams.Effects.DmoEchoEffect.DmoEchoEffectObject" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Streams\Effects\DmoEchoEffect.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAQkAAAAAABADBAAACAAABAAIAAQEACIHBAAAAAwQ=</HashCode>
+      <FileName>Streams\Effects\DmoEchoEffect.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.Effects.DmoEffectBase&lt;TDXEffect, TDXEffectStruct&gt;">
+    <Position X="6.75" Y="42.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAkAAEAAAgAAAAAAAAAAAAgAAAAAAAgA=</HashCode>
+      <FileName>Streams\Effects\DmoEffectBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.Effects.DmoFlangerEffect">
+    <Position X="10" Y="46.25" Width="1.5" />
+    <NestedTypes>
+      <Class Name="CSCore.Streams.Effects.DmoFlangerEffect.DmoFlangerEffectObject" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Streams\Effects\DmoFlangerEffect.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAhAAAADARAACAFAAAICIgQAgCAADAAAABwQ=</HashCode>
+      <FileName>Streams\Effects\DmoFlangerEffect.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.Effects.DmoGargleEffect">
+    <Position X="12.25" Y="46.25" Width="1.5" />
+    <NestedTypes>
+      <Class Name="CSCore.Streams.Effects.DmoGargleEffect.DmoGargleEffectObject" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Streams\Effects\DmoGargleEffect.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAEIAAAEgAAAAgAAAAAAABAAAAAAAAACAAAACAgA=</HashCode>
+      <FileName>Streams\Effects\DmoGargleEffect.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.Effects.Echo">
+    <Position X="26.5" Y="27.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAAAgAAAAgAAAgAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Streams\Effects\Echo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.Effects.EffectBase">
+    <Position X="26.5" Y="25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Streams\Effects\EffectBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.Effects.MockEffect">
+    <Position X="28.75" Y="27.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Streams\Effects\EffectBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.Effects.WahWah">
+    <Position X="24.25" Y="27.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ADAABiAAAAAAAAAAggIAAAAgAQBAAgAiAAAgIQBAAAA=</HashCode>
+      <FileName>Streams\Effects\WahWah.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.SampleConverter.IeeeFloatToSample">
+    <Position X="13.75" Y="32.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Streams\SampleConverter\IeeeFloatToSample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.SampleConverter.Pcm16BitToSample">
+    <Position X="16" Y="32.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAggAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Streams\SampleConverter\Pcm16BitToSample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.SampleConverter.Pcm24BitToSample">
+    <Position X="18.25" Y="32.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Streams\SampleConverter\Pcm24BitToSample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.SampleConverter.Pcm8BitToSample">
+    <Position X="20.5" Y="32.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Streams\SampleConverter\Pcm8BitToSample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.SampleConverter.SampleToIeeeFloat32">
+    <Position X="31.75" Y="28.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Streams\SampleConverter\SampleToIeeeFloat32.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.SampleConverter.SampleToPcm16">
+    <Position X="34" Y="28.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgACAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Streams\SampleConverter\SampleToPcm16.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.SampleConverter.SampleToPcm24">
+    <Position X="36.25" Y="28.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgACAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Streams\SampleConverter\SampleToPcm24.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.SampleConverter.SampleToPcm8">
+    <Position X="38.5" Y="28.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgACAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Streams\SampleConverter\SampleToPcm8.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Streams.SampleConverter.SampleToWaveBase">
+    <Position X="35" Y="24.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAGAEAAAgAAAAAABgAAAAAAAAAAIAABAAAAA=</HashCode>
+      <FileName>Streams\SampleConverter\SampleToWaveBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CSCore.Streams.SampleConverter.WaveToSampleBase">
+    <Position X="17" Y="28.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAEAAiAGAAAAAgAAAAAABgAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Streams\SampleConverter\WaveToSampleBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CSCore.Tags.ID3.Frames.BinaryFrame">
+    <Position X="46.25" Y="32.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAQAAAAAA=</HashCode>
+      <FileName>Tags\ID3\Frames\BinaryFrame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Tags.ID3.Frames.CommentAndLyricsFrame">
+    <Position X="48.5" Y="32.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAgAAAAAAAAAAAAAAAAAAAAAAAASAAAAAA=</HashCode>
+      <FileName>Tags\ID3\Frames\CommentAndLyricsFrame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Tags.ID3.Frames.CommercialFrame">
+    <Position X="50.75" Y="32.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAQAhAAAAIAAAAAAAAAAAABAAAAAAQCAAAAA=</HashCode>
+      <FileName>Tags\ID3\Frames\CommercialFrame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Tags.ID3.Frames.DataFrame">
+    <Position X="53" Y="32.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAQAAAAAA=</HashCode>
+      <FileName>Tags\ID3\Frames\DataFrame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Tags.ID3.Frames.Frame">
+    <Position X="41.75" Y="29.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAACAAAAAAAAAACEAAAAAAAAAAAAABAQAAAAAA=</HashCode>
+      <FileName>Tags\ID3\Frames\Frame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Tags.ID3.Frames.FrameFactory">
+    <Position X="83" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEEAAAQAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Tags\ID3\Frames\FrameFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Tags.ID3.Frames.FrameHeader">
+    <Position X="84.75" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgBAAAAAAQEAQAAAACEAAQAAAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>Tags\ID3\Frames\FrameHeader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Tags.ID3.Frames.FrameIDFactory2">
+    <Position X="86.5" Y="32" Width="1.5" />
+    <NestedTypes>
+      <Class Name="CSCore.Tags.ID3.Frames.FrameIDFactory2.ID3v2FrameEntry" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Tags\ID3\Frames\FrameIDFactory2.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAgAAAAAEAAAAAgAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Tags\ID3\Frames\FrameIDFactory2.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Tags.ID3.Frames.MultiStringTextFrame">
+    <Position X="36.25" Y="34.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAASAAAAAA=</HashCode>
+      <FileName>Tags\ID3\Frames\MultiStringTextFrame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Tags.ID3.Frames.NumericTextFrame">
+    <Position X="35" Y="37.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Tags\ID3\Frames\NumericTextFrame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Tags.ID3.Frames.OwnershipFrame">
+    <Position X="39.5" Y="34.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAAIAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Tags\ID3\Frames\OwnershipFrame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Tags.ID3.Frames.PictureFrame">
+    <Position X="30.5" Y="32.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAIAAAgIAQAAAAAAAAAAAgAQBAAAAAAUAAAAAA=</HashCode>
+      <FileName>Tags\ID3\Frames\PictureFrame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Tags.ID3.Frames.Popularimeter">
+    <Position X="32.75" Y="32.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAAAAAEAAAAASAAAAAA=</HashCode>
+      <FileName>Tags\ID3\Frames\Popularimeter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Tags.ID3.Frames.TermsOfUseFrame">
+    <Position X="41.75" Y="34.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Tags\ID3\Frames\TermsOfUseFrame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Tags.ID3.Frames.TextFrame">
+    <Position X="39.5" Y="32.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASAAAAAA=</HashCode>
+      <FileName>Tags\ID3\Frames\TextFrame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Tags.ID3.Frames.TimestampTextFrame">
+    <Position X="37.25" Y="37.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAAAAAAAAAQAAAAAQAACAAA=</HashCode>
+      <FileName>Tags\ID3\Frames\TimestampTextFrame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Tags.ID3.Frames.UserDefiniedTextFrame">
+    <Position X="44" Y="34.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Tags\ID3\Frames\UserDefiniedTextFrame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Tags.ID3.ID3Exception">
+    <Position X="90" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Tags\ID3\ID3Exception.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Tags.ID3.ID3Utils">
+    <Position X="91.75" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAACIEAQAAAAAAAAAAAgAAEAAQABKAAAEAAAAAI=</HashCode>
+      <FileName>Tags\ID3\ID3Utils.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Tags.ID3.ID3v1">
+    <Position X="93.5" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEBAAAAkAAAAIAQAAAAIAAAAAEAABACAAAAAA=</HashCode>
+      <FileName>Tags\ID3\ID3v1.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Tags.ID3.ID3v2" BaseTypeListCollapsed="true">
+    <Position X="95.25" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BCAgAAAQAAQBAFABCAAEAAAAAAAAAAAFAABABAhEABA=</HashCode>
+      <FileName>Tags\ID3\ID3v2.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.Tags.ID3.ID3v2ExtendedHeader">
+    <Position X="97" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAQgBAAAgAAAAAAEAEAAAABECACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Tags\ID3\ID3v2ExtendedHeader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Tags.ID3.ID3v2Footer">
+    <Position X="98.75" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAABAAAAAAQQAAAAAACAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Tags\ID3\ID3v2Footer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Tags.ID3.ID3v2Header">
+    <Position X="81.25" Y="38.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IABABAAAAAAQAAAEAAACAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Tags\ID3\ID3v2Header.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Tags.ID3.ID3v2QuickInfo">
+    <Position X="83" Y="38.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAABAAAAGAAAAIAACAAAoAAABAAAAAACAAAIAA=</HashCode>
+      <FileName>Tags\ID3\ID3v2QuickInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Tags.ID3.UnsyncStream">
+    <Position X="68.75" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAgGAAAAAFgAAAAAEAAAAAAAAEIADA=</HashCode>
+      <FileName>Tags\ID3\UnsyncStream.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Utils.BitReader">
+    <Position X="13.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAQyALAgkAAgAAAAAAAAAAAiAAABBEARwggIQAA=</HashCode>
+      <FileName>Utils\BitReader.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CSCore.Utils.CSMath">
+    <Position X="107.75" Y="41.75" Width="1.5" />
+    <NestedTypes>
+      <Class Name="CSCore.Utils.CSMath.CRC16" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Utils\CRC16.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="CSCore.Utils.CSMath.CRC8" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Utils\CRC8.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="CSCore.Utils.CSMath.CRCBase&lt;T&gt;" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Utils\CRCBase.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>kAEAAAAQAAAAIAIAAAABAAAAAAAAQQAEQAAABAAAAwA=</HashCode>
+      <FileName>Utils\CRC16.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Utils.CSCalliAttribute">
+    <Position X="106" Y="41.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utils\CSCalliAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Utils.FastFourierTransformation">
+    <Position X="114.75" Y="50" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAQAABAAAAIAAAAkAAABAAAAAEgAAAAAAAo=</HashCode>
+      <FileName>Utils\FastFourierTransformation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Utils.ReadBlockStream">
+    <Position X="93.5" Y="53" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAgGAAAIABgAAAAAAAAAAAAAAEIADA=</HashCode>
+      <FileName>Utils\ReadBlockStream.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Utils.RemoveObjAttribute">
+    <Position X="95.25" Y="53" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utils\RemoveObjAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Utils.Utils">
+    <Position X="70.5" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utils\Utils.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Utils.Buffer.FixedSizeBuffer&lt;T&gt;" BaseTypeListCollapsed="true">
+    <Position X="118.25" Y="50" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAACgACAEAAAAAAAAAABgACAAAQAAAAAAAAFAAAI=</HashCode>
+      <FileName>Utils\Buffer\FixedSizeBuffer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.Utils.Buffer.UnsafeBuffer">
+    <Position X="67" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAwAAIIAAAAAAAABAgAAAAAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>Utils\Buffer\UnsafeBuffer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSCore.Win32.ComObject">
+    <Position X="41.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAACEAIAAAAAAAAUAQACAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Win32\ComObject.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CSCore.Win32.ComStream" BaseTypeListCollapsed="true">
+    <Position X="100.75" Y="41.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAQgAgGAAkAQBgAAAEQADAACAAAAEYCDA=</HashCode>
+      <FileName>Win32\ComStream.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.Win32.PropertyStore">
+    <Position X="31" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ICQEACAAIBEAAhAACAAAAMQAABIAAACAAAAQAAAAAAA=</HashCode>
+      <FileName>Win32\PropertyStore.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="CSCore.Win32.WaveFormatMarshaler" BaseTypeListCollapsed="true">
+    <Position X="77.5" Y="32" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAAAAAIBABQAAAAAIAAIAAIAAQ=</HashCode>
+      <FileName>Win32\WaveFormatMarshaler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CSCore.Win32.Win32ComException">
+    <Position X="70.5" Y="36.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAQAAAAIAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Win32\Win32ComException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="CSCore.ACM.AcmDriverDetails">
+    <Position X="153" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAEAgAABAAEABBAAAAEBAAEAAAgAAoCAAAAAAAAAAQA=</HashCode>
+      <FileName>ACM\Interop\AcmDriverDetails.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CSCore.Codecs.FLAC.FlacFrameInformation">
+    <Position X="165.25" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAEACAAAAAAA=</HashCode>
+      <FileName>Codecs\FLAC\FlacPreScan.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CSCore.CoreAudioAPI.AudioVolumeNotificationData">
+    <Position X="154.75" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAQAAAAIAAAAEgAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>CoreAudioAPI\AudioVolumeNotificationData.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CSCore.DMO.DmoEnumItem">
+    <Position X="168.75" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DMO\DmoEnumItem.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CSCore.DMO.DmoOutputDataBuffer" BaseTypeListCollapsed="true">
+    <Position X="170.5" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEACAABCAAAAACAABgAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>DMO\DmoOutputDataBuffer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="CSCore.DMO.DmoPartialMediaType">
+    <Position X="153" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>DMO\DmoPartialMediaType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CSCore.DMO.MediaType">
+    <Position X="154.75" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EBAIBAAEAAIACAAAAAAQAAAAAAAAAAAAAEAACgAAAAI=</HashCode>
+      <FileName>DMO\MediaType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CSCore.DMO.Effects.ChorusParameters">
+    <Position X="158.25" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAACAAAAAIAIAAAgAAABAAAABAA=</HashCode>
+      <FileName>DMO\Effects\DirectSoundFXChorus.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CSCore.DMO.Effects.CompressorParameters">
+    <Position X="161.75" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAACAAAAAAAAAIABACAAAAAgABAAAAA=</HashCode>
+      <FileName>DMO\Effects\DirectSoundFXCompressor.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CSCore.DMO.Effects.DistortionParameters">
+    <Position X="167" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAQBBAAQAAAAAAAAAAA=</HashCode>
+      <FileName>DMO\Effects\DirectSoundFXDistortion.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CSCore.DMO.Effects.EchoParameters">
+    <Position X="163.5" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABABBAAACAAAAAAIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DMO\Effects\DirectSoundFXEcho.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CSCore.DMO.Effects.FlangerParameters">
+    <Position X="167" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAACAAAAAIAIAAAgAAABAAAABAA=</HashCode>
+      <FileName>DMO\Effects\DirectSoundFXFlanger.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CSCore.DMO.Effects.GargleParameters">
+    <Position X="168.75" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAABAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DMO\Effects\DirectSoundFXGargle.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CSCore.MediaFoundation.MFTOutputDataBuffer">
+    <Position X="161.75" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAAAAAAAABAAgAAAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>MediaFoundation\IMFTransform.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CSCore.MediaFoundation.MFInputStreamInfo">
+    <Position X="156.5" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAgBAgAAAAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MediaFoundation\IMFTransform.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CSCore.MediaFoundation.MFOutputStreamInfo">
+    <Position X="158.25" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAgAAgAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MediaFoundation\IMFTransform.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CSCore.MediaFoundation.MFSinkWriterStatistics">
+    <Position X="160" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAACAAIIAAEAAAIAAgAgKCAAAAIEAAAACAQAAAA=</HashCode>
+      <FileName>MediaFoundation\MFSinkWriterStatistics.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CSCore.SoundIn.WaveInCaps">
+    <Position X="170.5" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIgAAQAAAAAAAEAAAEAgQCQAAAAAAAACAAgAAAEEA=</HashCode>
+      <FileName>SoundIn\WaveInCaps.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CSCore.SoundOut.DirectSound.D3DVector">
+    <Position X="163.5" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAE=</HashCode>
+      <FileName>SoundOut\DirectSound\3D\D3DVector.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CSCore.SoundOut.DirectSound.DSBuffer3DSettings">
+    <Position X="156.5" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAKAAgAAgAIAAAAAACAAgAAAAAAAAAAAEAAE=</HashCode>
+      <FileName>SoundOut\DirectSound\3D\DSBuffer3DSettings.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CSCore.SoundOut.DirectSound.DSListener3DSettings">
+    <Position X="161.75" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAIBgAAAAAAAIAQAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>SoundOut\DirectSound\3D\DSListener3DSettings.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CSCore.SoundOut.DirectSound.DirectSoundCapabilities">
+    <Position X="165.25" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAABAhAACoAiICgAAQEIgAAAAAAAEAAQAABQABAAAA=</HashCode>
+      <FileName>SoundOut\DirectSound\DirectSoundCapabilities.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CSCore.SoundOut.DirectSound.DSBPositionNotify">
+    <Position X="154.75" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAAAAAAAQAAAAAAAAQAAAAAAAAAAg=</HashCode>
+      <FileName>SoundOut\DirectSound\DSBPositionNotify.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CSCore.SoundOut.DirectSound.DSBufferCaps">
+    <Position X="158.25" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAQAAAAAgAAAAAACAABA=</HashCode>
+      <FileName>SoundOut\DirectSound\DSBufferCaps.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CSCore.SoundOut.DirectSound.DSBufferDescription">
+    <Position X="160" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAACABAQAAAAAgIAAAAAAAAAA=</HashCode>
+      <FileName>SoundOut\DirectSound\DSBufferDescription.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CSCore.SoundOut.WaveOutCaps">
+    <Position X="153" Y="23" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIgAAAAAAAAAAEAAAgAgAAQAAAAAAAACAAgAAAAEA=</HashCode>
+      <FileName>SoundOut\MMInterop\WaveOutCaps.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CSCore.SoundOut.MMInterop.MMTime">
+    <Position X="163.5" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEBAAAAAAAAgIAAKABAAAIAAgAQAAAAAUABAAAAAA=</HashCode>
+      <FileName>SoundOut\MMInterop\MMTime.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CSCore.Utils.Complex">
+    <Position X="160" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAIAACAEAQAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Utils\Complex.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CSCore.Utils.HightLowConverterInt32">
+    <Position X="170.5" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAgAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Utils\UintOffsets.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CSCore.Utils.HightLowConverterUInt32">
+    <Position X="153" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAgAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Utils\UintOffsets.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CSCore.Win32.Blob">
+    <Position X="156.5" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAABABAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Win32\Blob.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CSCore.Win32.NativeBool" BaseTypeListCollapsed="true">
+    <Position X="165.25" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAACAAAAEgAAAAAAAAAAAQIABAAgAAAAAAiA=</HashCode>
+      <FileName>Win32\NativeBool.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Struct Name="CSCore.Win32.PropertyKey">
+    <Position X="167" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Win32\PropertyKey.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="CSCore.Win32.PropertyVariant" BaseTypeListCollapsed="true">
+    <Position X="168.75" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAABABICIAAAAEGgSACwAgAAIAIkABAAEQgAAQAEA=</HashCode>
+      <FileName>Win32\PropertyVariant.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Struct>
+  <Interface Name="CSCore.ISampleSource">
+    <Position X="0.5" Y="39.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ISampleSource.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSCore.IWaveAggregator">
+    <Position X="2.75" Y="41.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IWaveAggregator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSCore.IWaveSource">
+    <Position X="2.75" Y="39.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IWaveSource.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSCore.IWaveStream">
+    <Position X="1.75" Y="37.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAgAAAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IWaveStream.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSCore.IWritable">
+    <Position X="155" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>IWritable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSCore.CoreAudioAPI.IAudioEndpointVolumeCallback">
+    <Position X="153.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>CoreAudioAPI\IAudioEndpointVolumeCallback.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSCore.CoreAudioAPI.IAudioSessionEvents">
+    <Position X="155" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAABAAAIAAAAAgAAAAAAQAAAAEAAAACAAAAAAA=</HashCode>
+      <FileName>CoreAudioAPI\IAudioSessionEvents.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSCore.CoreAudioAPI.IAudioSessionNotification">
+    <Position X="156.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CoreAudioAPI\IAudioSessionNotification.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSCore.CoreAudioAPI.IAudioVolumeDuckNotification">
+    <Position X="158.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>CoreAudioAPI\IAudioVolumeDuckNotification.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSCore.CoreAudioAPI.IMMDevice">
+    <Position X="36.75" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAIBAAA=</HashCode>
+      <FileName>CoreAudioAPI\IMMDevice.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSCore.CoreAudioAPI.IMMDeviceCollection">
+    <Position X="39" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CoreAudioAPI\IMMDeviceCollection.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSCore.CoreAudioAPI.IMMDeviceEnumerator">
+    <Position X="41.25" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ARAAAAAAAAAgAAgAAAAAAAAAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>CoreAudioAPI\IMMDeviceEnumerator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSCore.CoreAudioAPI.IMMNotificationClient">
+    <Position X="165.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAgBAAIAgAAEAAAAAAAA=</HashCode>
+      <FileName>CoreAudioAPI\IMMNotificationClient.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSCore.DMO.IMediaBuffer">
+    <Position X="160.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAQAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DMO\IMediaBuffer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSCore.DMO.IMediaObject">
+    <Position X="30" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAQhGACAAIAAAAAABAAAAAAAAJgBgAAAAiAAQAoEAA=</HashCode>
+      <FileName>DMO\IMediaObject.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSCore.DMO.IWMResamplerProps">
+    <Position X="153.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABACAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DMO\IWMResamplerProps.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSCore.MediaFoundation.IMFAttributes">
+    <Position X="28" Y="45.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AMQEABYgQAAABEAAEUAAjAAAAAAAAADAIABEAkQAQAE=</HashCode>
+      <FileName>MediaFoundation\IMFAttributes.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSCore.MediaFoundation.IMFByteStream">
+    <Position X="43.5" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAgQQAASDAAAAAAgAAAAAAAAAAAAAAGIQQA=</HashCode>
+      <FileName>MediaFoundation\IMFByteStream.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSCore.MediaFoundation.IMFMediaBuffer">
+    <Position X="163.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAQAAAAAAAAAAAAEBAAAAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>MediaFoundation\IMFMediaBuffer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSCore.MediaFoundation.IMFMediaEvent">
+    <Position X="25.75" Y="53" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAABAAAAAAAEAAAAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>MediaFoundation\IMFMediaEvent.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSCore.MediaFoundation.IMFMediaType">
+    <Position X="28" Y="53" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AMQEABYgQAAQBEAAEUEAjAAAAAAAQADAIABEAkQgQAE=</HashCode>
+      <FileName>MediaFoundation\IMFMediaType.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSCore.MediaFoundation.IMFSample">
+    <Position X="30.25" Y="53" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QCAgAAEAAAAAgAIAAAAAAAAAAAACCAABEAAAAAQCBIA=</HashCode>
+      <FileName>MediaFoundation\IMFSample.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSCore.MediaFoundation.IMFTransform">
+    <Position X="34.5" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAEpGAAAAIAAAACABQAAAAAABAkAAAAAAgAEBCgEUA=</HashCode>
+      <FileName>MediaFoundation\IMFTransform.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSCore.MediaFoundation.IMFCollection">
+    <Position X="162" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAACAAAIABAAAAAAAAAAAAAAACAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>MediaFoundation\IMFTransform.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSCore.SoundIn.ISoundIn">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAACIAAQAAAAAAAAAAAAAAACAAIAAAAAAAAAA=</HashCode>
+      <FileName>SoundIn\ISoundIn.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSCore.SoundIn.ISoundRecorder">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SoundIn\ISoundRecorder.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSCore.SoundOut.ISoundOut">
+    <Position X="167.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAIAAQAAAQAAAAAAACAAAAAAoAIAAAgAAAA=</HashCode>
+      <FileName>SoundOut\ISoundOut.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSCore.SoundOut.MMInterop.IWaveCallbackWindow">
+    <Position X="170.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>SoundOut\MMInterop\IWaveCallbackWindow.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSCore.Win32.IPropertyStore">
+    <Position X="32.25" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAEAAIAAAAgAAAAAAAAAAAAIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Win32\IPropertyStore.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSCore.Win32.IStream">
+    <Position X="169" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAACQAMAAAgAAAAAAAAAAIAAAEQIBA=</HashCode>
+      <FileName>Win32\IStream.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSCore.Win32.IUnknown">
+    <Position X="36.75" Y="15.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAgAAAAAAAABAAAAA=</HashCode>
+      <FileName>Win32\IUnknown.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="CSCore.ACM.AcmConvertFlags">
+    <Position X="122.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAIAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>ACM\Interop\AcmConvertFlags.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.ACM.AcmDriverDetailsSupport">
+    <Position X="124" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQQAAIAAAAACAAAAAABBAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>ACM\Interop\AcmDriverDetailsSupport.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.ACM.AcmDriverEnumFlags">
+    <Position X="125.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAACAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>ACM\Interop\AcmDriverEnumFlags.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.ACM.AcmFormatSuggestFlags">
+    <Position X="127.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAAAAAAAAAAAgAAABAAAAAAkAA=</HashCode>
+      <FileName>ACM\Interop\AcmFormatSuggestFlags.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.ACM.AcmHeaderSate">
+    <Position X="129.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAACAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ACM\Interop\AcmHeaderState.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.ACM.AcmStreamOpenFlags">
+    <Position X="131" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAEAAAAADAIAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>ACM\Interop\AcmStreamOpenFlags.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.ACM.AcmStreamSizeFlags">
+    <Position X="132.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAIAAAAEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ACM\Interop\AcmStreamSizeFlags.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.AudioEncoding">
+    <Position X="139.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>V1pqsCEIp6GqnDxsphGeAhRkMxM9Hx8QhwSCVAD1iHI=</HashCode>
+      <FileName>AudioEncoding.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.ChannelMask">
+    <Position X="127.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEgCAIAAAIAAAAgIIIABgCQQAAAACAAAABAAAAAAkA=</HashCode>
+      <FileName>ChannelMask.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.MmResult">
+    <Position X="104.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>MQACAAACAAAAiQAIgAnAhACAQDAAAgAQBACAAACKAAA=</HashCode>
+      <FileName>SoundOut\MMInterop\MmResult.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Codecs.AAC.AACAudioProfileLevelIndication">
+    <Position X="120.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAADAAwAAAAAAAAAAAAQAAAAAIAgBABAAAIA=</HashCode>
+      <FileName>Codecs\AAC\AACEncoder.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Codecs.FLAC.FlacChannelMode">
+    <Position X="131" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAgEAAAAAAAAAAAAAACAgAAAAAAAEAAAAAA=</HashCode>
+      <FileName>Codecs\FLAC\FlacChannelMode.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Codecs.FLAC.FlacEntropyCoding">
+    <Position X="132.75" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAABAAEAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Codecs\FLAC\FlacEntropyCoding.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Codecs.FLAC.FlacLayer">
+    <Position X="134.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAEEAAE=</HashCode>
+      <FileName>Codecs\FLAC\FlacException.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Codecs.FLAC.FlacNumberType">
+    <Position X="138" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAACAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Codecs\FLAC\FlacFrameHeader.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Codecs.FLAC.ChannelAssignment">
+    <Position X="125.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAEAAAAAQAAAAAAAACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Codecs\FLAC\FlacFrameHeader.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Codecs.FLAC.FlacPreScanMethodMode">
+    <Position X="120.5" Y="20" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAIAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Codecs\FLAC\FlacPreScan.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Codecs.FLAC.FlacMetaDataType">
+    <Position X="136.25" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABQAgAAAABAAAAAAAAAAAAAAAAAAAAAAAAOAAAAAIAA=</HashCode>
+      <FileName>Codecs\FLAC\Metadata\FlacMetadata.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Codecs.MP3.MP3ChannelMode">
+    <Position X="108.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAIAAAAAAAAAQAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Codecs\MP3\MP3ChannelMode.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Codecs.MP3.Mp3PaddingFlags">
+    <Position X="111.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAAAACAAAAAAAAQAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Codecs\MP3\MP3Format.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Codecs.MP3.Mp3FormatId">
+    <Position X="110" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAIAAAAAAAABA=</HashCode>
+      <FileName>Codecs\MP3\MP3Format.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Codecs.MP3.MpegLayer">
+    <Position X="113.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Codecs\MP3\MpegLayer.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Codecs.MP3.MpegVersion">
+    <Position X="115.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAgAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Codecs\MP3\MpegVersion.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Codecs.MP3.XingHeaderFlags">
+    <Position X="120.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAACAAAAAAAIAAAAAAAIAAAAAAE=</HashCode>
+      <FileName>Codecs\MP3\XingHeaderFlags.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.CoreAudioAPI.AudioClientShareMode">
+    <Position X="136.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CoreAudioAPI\AudioClientShareMode.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.CoreAudioAPI.AudioClientStreamFlags">
+    <Position X="138" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAIAAAAABAAAABACAAAAAAAAAAAAIAAAACACEAAAA=</HashCode>
+      <FileName>CoreAudioAPI\AudioClientStreamFlags.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.CoreAudioAPI.AudioClientBufferFlags">
+    <Position X="134.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAACAAAAAAAAAAAAAAAACAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>CoreAudioAPI\AudioRenderClient.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.CoreAudioAPI.AudioSessionDisconnectReason">
+    <Position X="122.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEBAAAAAAgCAAAAAAABAAAAAEAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CoreAudioAPI\AudioSessionDisconnectReason.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.CoreAudioAPI.AudioSessionState">
+    <Position X="124" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAEA=</HashCode>
+      <FileName>CoreAudioAPI\AudioSessionState.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.CoreAudioAPI.DataFlow">
+    <Position X="132.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAJAAAAAAAAA=</HashCode>
+      <FileName>CoreAudioAPI\DataFlow.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.CoreAudioAPI.DeviceState">
+    <Position X="134.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAACAAAAAAAAAAAAgAIAAAAAgAAA=</HashCode>
+      <FileName>CoreAudioAPI\DeviceState.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.CoreAudioAPI.EndpointHardwareSupport">
+    <Position X="125.75" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAgAIAAAAAAAA=</HashCode>
+      <FileName>CoreAudioAPI\EndpointHardwareSupport.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.CoreAudioAPI.ExecutionContext">
+    <Position X="127.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gACAAAAgCgAAAeBDQCECUBAAAAAAAAgAQEABBAACAAI=</HashCode>
+      <FileName>CoreAudioAPI\ExecutionContext.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.CoreAudioAPI.Role">
+    <Position X="110" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAQAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CoreAudioAPI\Role.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.CoreAudioAPI.StorageAccess">
+    <Position X="113.5" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAgAAAAAAAAEAAAA=</HashCode>
+      <FileName>CoreAudioAPI\StorageAccess.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.DMO.DmoEnumFlags">
+    <Position X="136.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>DMO\DmoEnumFlags.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.DMO.DmoErrorCodes">
+    <Position X="138" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAIEAABAAAAAAAABAAAAAAABAAA=</HashCode>
+      <FileName>DMO\DmoErrorCodes.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.DMO.DmoInputStreamInfoFlags">
+    <Position X="120.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAIAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAEAAEAAAA=</HashCode>
+      <FileName>DMO\DmoInputStreamInfoFlags.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.DMO.DmoOutputStreamInfoFlags">
+    <Position X="122.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAJAAAAAAAAAAAQAAAAAAAAAAAAAIAAAAAAAAEAAAA=</HashCode>
+      <FileName>DMO\DmoOutputStreamInfoFlags.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.DMO.InputDataBufferFlags">
+    <Position X="110" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAAAAAAEAAAAAAEAAQA=</HashCode>
+      <FileName>DMO\InputDataBufferFlags.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.DMO.InputStatusFlags">
+    <Position X="111.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>DMO\InputStatusFlags.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.DMO.InputStreamInfoFlags">
+    <Position X="113.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAIAEAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>DMO\InputStreamInfoFlags.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.DMO.OutputDataBufferFlags">
+    <Position X="117" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAgAAAAAAAAAAAAAAEAAAAAAEAAQA=</HashCode>
+      <FileName>DMO\OutputDataBufferFlags.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.DMO.OutputStreamInfoFlags">
+    <Position X="118.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAJAAAAAAAAAAAQAAAAAAAAAAAAAIAAAAAAAAEAAAA=</HashCode>
+      <FileName>DMO\OutputStreamInfoFlags.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.DMO.ProcessOutputFlags">
+    <Position X="104.75" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAE=</HashCode>
+      <FileName>DMO\ProcessOutputFlags.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.DMO.SetTypeFlags">
+    <Position X="111.75" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFCAAA=</HashCode>
+      <FileName>DMO\SetTypeFlags.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.MediaFoundation.MFByteStreamCapsFlags">
+    <Position X="103" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQBAAEAAAAAAAAAQAQAAAAIAAAAAAAAAIAQEAAAA=</HashCode>
+      <FileName>MediaFoundation\IMFByteStream.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.MediaFoundation.MediaEventType">
+    <Position X="145" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>bTqEgBEECI6kekJSkgUAEUiHABmbIAbJJWmCJAEBhR0=</HashCode>
+      <FileName>MediaFoundation\IMFMediaEvent.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.MediaFoundation.MFTProcessOutputStatus">
+    <Position X="117" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>MediaFoundation\IMFTransform.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.MediaFoundation.MFTransformStatusFlags">
+    <Position X="101.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MediaFoundation\IMFTransform.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.MediaFoundation.MFTransformSetTypeFlags">
+    <Position X="118.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAACAAA=</HashCode>
+      <FileName>MediaFoundation\IMFTransform.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.MediaFoundation.MFInputStreamInfoFlags">
+    <Position X="104.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAJAEAAgAAAAAAQAAAAAAAAAQAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>MediaFoundation\IMFTransform.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.MediaFoundation.MFOutputStreamInfoFlags">
+    <Position X="108.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAJAAAAAAAACAAQAAAAABAAAAAAAIAAAAAAARAAAAA=</HashCode>
+      <FileName>MediaFoundation\IMFTransform.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.MediaFoundation.MediaTypeEqualFlags">
+    <Position X="117" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAABAIAAAAABAAAAAAAAEIAAA=</HashCode>
+      <FileName>MediaFoundation\MediaTypeEqualFlags.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.MediaFoundation.MFAttributeMatchType">
+    <Position X="118.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAEAAAAIAAAAAAQAAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MediaFoundation\MFAttributeMatchType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.MediaFoundation.MFAttributeType">
+    <Position X="101.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QkAAAAAAAAAAAAAAQAAAAAEAAAACBAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MediaFoundation\MFAttributeType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.MediaFoundation.MFMediaSourceCharacteristics">
+    <Position X="106.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAACBAAAAAICBAAAAAAAAAAAAgAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>MediaFoundation\MFMediaSourceCharacteristics.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.MediaFoundation.MFSampleFlags">
+    <Position X="110" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>MediaFoundation\MFSample.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.MediaFoundation.MFSourceReaderFlag">
+    <Position X="111.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAIAAAAAAAARAAAAAAAAAAgAAABQAAAAAAAAEAAAA=</HashCode>
+      <FileName>MediaFoundation\MFSourceReaderFlag.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.MediaFoundation.MFTEnumFlags">
+    <Position X="113.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAIABAAAAAAAAAACAAAAAAAAABAAACIAAAAEIAAA=</HashCode>
+      <FileName>MediaFoundation\MFTEnumFlags.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.MediaFoundation.MFTMessageType">
+    <Position X="115.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgABAAAAAAIBEAEAABAAAAAAAAQAAAEAAgAAAAAAA=</HashCode>
+      <FileName>MediaFoundation\MFTMessageType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.MediaFoundation.MFWaveFormatExConvertFlags">
+    <Position X="103" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MediaFoundation\MFWaveFormatExConvertFlags.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.SoundIn.RecordingState">
+    <Position X="108.25" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SoundIn\RecordingState.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.SoundOut.DirectSound.DS3DApplyMode">
+    <Position X="124" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SoundOut\DirectSound\3D\DS3DApplyMode.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.SoundOut.DirectSound.DSMode3D">
+    <Position X="122.25" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAAAAAIAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>SoundOut\DirectSound\3D\DSMode3D.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.SoundOut.DirectSound.DSBLock">
+    <Position X="125.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>SoundOut\DirectSound\DSBLockFlags.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.SoundOut.DirectSound.DSBPlayFlags">
+    <Position X="127.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAIAAAQIAAAABAAAAAAAAAAAAAAAAAAAAAEAAIA=</HashCode>
+      <FileName>SoundOut\DirectSound\DSBPlayFlags.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.SoundOut.DirectSound.DSBStatus">
+    <Position X="129.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAIAAAAAAAAIAAAAAAEGAA=</HashCode>
+      <FileName>SoundOut\DirectSound\DSBStatus.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.SoundOut.DirectSound.DSBufferCapsFlags">
+    <Position X="131" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAUAAAAAAkAAAAAAAUgCABAAAQAAAAAAQAAAAAKAI=</HashCode>
+      <FileName>SoundOut\DirectSound\DSBufferCapsFlags.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.SoundOut.DirectSound.DSBufferFlags">
+    <Position X="132.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAUQAAAAEIEAgAAACAAACAAEAAAJAEQAAAAAEIAAQ=</HashCode>
+      <FileName>SoundOut\DirectSound\DSBufferFlags.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.SoundOut.DirectSound.DSCapabilitiesFlags">
+    <Position X="134.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACIQgBAQAAAAACAAAEAAAAEBAAAECAAA=</HashCode>
+      <FileName>SoundOut\DirectSound\DSCapabilitiesFlags.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.SoundOut.DirectSound.DSCertification">
+    <Position X="136.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>SoundOut\DirectSound\DSCertification.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.SoundOut.DirectSound.DSCooperativeLevelType">
+    <Position X="138" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAAAAAAAAAABAAAAAAAAAAAACIAAAAA=</HashCode>
+      <FileName>SoundOut\DirectSound\DSCooperativeLevelType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.SoundOut.DirectSound.DSEffectFlags">
+    <Position X="120.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAIAAAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>SoundOut\DirectSound\DSEffectFlags.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.SoundOut.DirectSound.DSResult">
+    <Position X="124" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BEAIAA0AAAAAAAAAFAAgFAQAAgAAkAIAERAIAAIAYAA=</HashCode>
+      <FileName>SoundOut\DirectSound\DSResult.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.SoundOut.PlaybackState">
+    <Position X="103" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAIAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SoundOut\PlaybackState.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.SoundOut.MMInterop.MMTimeType">
+    <Position X="106.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAAEAAABQAAAAAAAAAAAAAAAAAAIAIA=</HashCode>
+      <FileName>SoundOut\MMInterop\MMTime.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.SoundOut.MMInterop.WaveCapsFormats">
+    <Position X="115.25" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAQIIAAABAAFQAAAAAAAAAAAAIAgAAIAAAIgKIBAABA=</HashCode>
+      <FileName>SoundOut\MMInterop\WaveCapsFormats.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.SoundOut.MMInterop.WaveCapsSupported">
+    <Position X="117" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAABgAAAQAIAAQAAAAAAAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>SoundOut\MMInterop\WaveCapsSupported.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.SoundOut.MMInterop.WaveHeaderFlags">
+    <Position X="118.75" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAAAAAANCAAAAAAAAAAA=</HashCode>
+      <FileName>SoundOut\MMInterop\WaveHeader.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.SoundOut.MMInterop.WaveMsg">
+    <Position X="115.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAICAAQAAAAAAAAAAEBAAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>SoundOut\MMInterop\WaveMsg.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Streams.Effects.ChorusPhase">
+    <Position X="129.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEBAAAAAAgAAAAAAAAAAgAAAAAACAAAAA=</HashCode>
+      <FileName>Streams\Effects\DmoChorusEffect.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Streams.Effects.ChorusWaveform">
+    <Position X="131" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAACAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Streams\Effects\DmoChorusEffect.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Streams.Effects.FlangerWaveform">
+    <Position X="124" Y="20" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Streams\Effects\DmoFlangerEffect.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Streams.Effects.FlangerPhase">
+    <Position X="122.25" Y="20" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEBAAAAAAgAAAAAAAAAAgAAAAAACAAAAA=</HashCode>
+      <FileName>Streams\Effects\DmoFlangerEffect.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Streams.Effects.GargleWaveShape">
+    <Position X="127.5" Y="20" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Streams\Effects\DmoGargleEffect.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Tags.ID3.Frames.ReceivedType">
+    <Position X="106.5" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAACAAQAABAgAAAAAAAAgAIAgAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>Tags\ID3\Frames\CommercialFrame.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Tags.ID3.Frames.FrameFlags">
+    <Position X="125.75" Y="20" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAQAAAAAAAAAAAAAAQAAAAEBAAAAEIAIEAAAA=</HashCode>
+      <FileName>Tags\ID3\Frames\FrameFlags.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Tags.ID3.Frames.FrameID">
+    <Position X="143.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>FRHQg8AAHGCB0ugnSAACAwbA1oAAAEEBgiA4HEWVoQA=</HashCode>
+      <FileName>Tags\ID3\Frames\FrameID.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Tags.ID3.Frames.PictureFormat">
+    <Position X="101.25" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQIAAAAABAAAQQAABSABAYCAAMAAAQAgAEECgAQ=</HashCode>
+      <FileName>Tags\ID3\Frames\PictureFrame.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Tags.ID3.ID3Genre">
+    <Position X="141.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>7EdEeCtjpJAQ2gEQQHAL+XcUVFqIFBAAkKuSJFYhBIg=</HashCode>
+      <FileName>Tags\ID3\ID3Genre.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Tags.ID3.ID3v2ExtendedHeaderFlags">
+    <Position X="131" Y="20" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAABAAAAAGAAAA=</HashCode>
+      <FileName>Tags\ID3\ID3v2ExtendedHeaderFlags.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Tags.ID3.ID3v2HeaderFlags">
+    <Position X="132.75" Y="20" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAEACAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Tags\ID3\ID3v2HeaderFlags.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Tags.ID3.ID3v2ImageEncodingRestriction">
+    <Position X="134.5" Y="20" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Tags\ID3\ID3v2ImageEncodingRestriction.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Tags.ID3.ID3v2ImageSizeRestriction">
+    <Position X="101.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAQBAAAAAEAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Tags\ID3\ID3v2ImageSizeRestriction.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Tags.ID3.ID3v2TagSizeRestriction">
+    <Position X="103" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAEAAAAAAAEAAAAAAAAAAAAAAAAAAAACAAA=</HashCode>
+      <FileName>Tags\ID3\ID3v2TagSizeRestriction.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Tags.ID3.ID3v2TextEncodingRestriction">
+    <Position X="104.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Tags\ID3\ID3v2TextEncodingRestriction.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Tags.ID3.ID3v2TextFieldSizeRestriction">
+    <Position X="106.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAgAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Tags\ID3\ID3v2TextFieldSizeRestriction.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Tags.ID3.ID3Version">
+    <Position X="108.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAIAwAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Tags\ID3\ID3Version.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Utils.FFTMode">
+    <Position X="129.25" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Utils\FastFourierTransformation.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="CSCore.Win32.HResult">
+    <Position X="129.25" Y="20" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QQIAAAMAQAAAAAAAAggBAQAAAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>Win32\HResult.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Delegate Name="CSCore.ACM.AcmDriverEnumCallback">
+    <Position X="81.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>ACM\Interop\AcmDriverEnumCallback.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="CSCore.Codecs.GetCodecAction">
+    <Position X="85.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Codecs\GetCodecAction.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="CSCore.SoundOut.DirectSound.DSEnumCallback">
+    <Position X="83.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>SoundOut\DirectSound\DSEnumCallback.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

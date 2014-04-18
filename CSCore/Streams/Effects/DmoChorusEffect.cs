@@ -9,36 +9,22 @@ using System.Text;
 namespace CSCore.Streams.Effects
 {
     /// <summary>
-    /// Wrapper of the DirectX Chorus Effect.
+    /// Chorus Effect.
     /// </summary>
-    public sealed class DmoChorusEffect : DmoAggregator
+    public sealed class DmoChorusEffect : DmoEffectBase<DirectSoundFXChorus, ChorusParameters>
     {
-        private DmoChorusEffectObject _comObj;
-        private DirectSoundFXChorus _effect;
-
+        /// <summary>
+        /// Creates a new instance of the <see cref="DmoChorusEffect"/> class.
+        /// </summary>
+        /// <param name="source">The base source, which feeds the effect with data.</param>
         public DmoChorusEffect(IWaveSource source)
             : base(source)
         {
-            Initialize();
         }
 
-        protected override MediaObject CreateMediaObject(WaveFormat inputFormat, WaveFormat outputFormat)
+        protected override object CreateComObject()
         {
-            _comObj = new DmoChorusEffectObject();
-            var mediaObject = new MediaObject(Marshal.GetComInterfaceForObject(_comObj, typeof(IMediaObject)));
-            _effect = mediaObject.QueryInterface<DirectSoundFXChorus>();
-
-            return mediaObject;
-        }
-
-        protected override WaveFormat GetOutputFormat()
-        {
-            return GetInputFormat();
-        }
-
-        private DirectSoundFXChorus Effect
-        {
-            get { return _effect; }
+            return new DmoChorusEffectObject();
         }
 
         [ComImport]
@@ -107,9 +93,9 @@ namespace CSCore.Streams.Effects
         /// <summary>
         /// Waveform shape of the LFO. By default, the waveform is a sine.
         /// </summary>
-        public Waveform Waveform
+        public ChorusWaveform Waveform
         {
-            get { return (Waveform)Effect.Parameters.Waveform; }
+            get { return (ChorusWaveform)Effect.Parameters.Waveform; }
             set
             {
                 SetValue("Waveform", (int)value);
@@ -119,9 +105,9 @@ namespace CSCore.Streams.Effects
         /// <summary>
         /// Phase differential between left and right LFOs. The default value is Phase90.
         /// </summary>
-        public Phase Phase
+        public ChorusPhase Phase
         {
-            get { return (Phase)Effect.Parameters.Phase; }
+            get { return (ChorusPhase)Effect.Parameters.Phase; }
             set
             {
                 SetValue("Phase", (int)value);
@@ -142,12 +128,6 @@ namespace CSCore.Streams.Effects
             }
         }
 
-        private void SetValue<T>(string fieldname, T value) where T : struct
-        {
-            var p = Effect.Parameters;
-            p.GetType().GetField(fieldname).SetValueForValueType(ref p, value);
-            Effect.Parameters = p;
-        }
         #endregion
 
         #region contants
@@ -181,27 +161,41 @@ namespace CSCore.Streams.Effects
     }
 
     /// <summary>
-    /// Default value is Phase90.
+    /// Default value is Phase90 (used for <see cref="DmoChorusEffect.Phase"/>).
     /// </summary>
-    public enum Phase : int
+    public enum ChorusPhase : int
     {
+        /// <summary>
+        /// 180° Phase.
+        /// </summary>
         Phase180 = 4,
         /// <summary>
-        /// Default
+        /// 90° Phase. 
+        /// Default value for <see cref="DmoChorusEffect.Phase"/>. 
         /// </summary>
         Phase90 = 3,
+        /// <summary>
+        /// 0° Phase.
+        /// </summary>
         PhaseZero = 2,
+        /// <summary>
+        /// -90° Phase.
+        /// </summary>
         PhaseNegative90 = 1,
+        /// <summary>
+        /// -180° Phase.
+        /// </summary>
         PhaseNegative180 = 0,
     }
 
     /// <summary>
-    /// Default value is WaveformSin.
+    /// Default value is WaveformSin (used for <see cref="DmoChorusEffect.Waveform"/>).
     /// </summary>
-    public enum Waveform : int
+    public enum ChorusWaveform : int
     {
         /// <summary>
-        /// Default
+        /// Sine 
+        /// Default value for <see cref="DmoChorusEffect.Waveform"/>.
         /// </summary>
         WaveformSin = 1,
         WaveformTriangle = 0

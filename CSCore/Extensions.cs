@@ -11,7 +11,7 @@ using System.Threading;
 
 namespace CSCore
 {
-    [CLSCompliant(true)]
+    //[CLSCompliant(true)]
     public static class Extensions
     {
         /// <summary>
@@ -301,6 +301,7 @@ namespace CSCore
             WaitForStopped(soundOut, Int32.MaxValue);
         }
 
+        //copied from http://stackoverflow.com/questions/9927590/can-i-set-a-value-on-a-struct-through-reflection-without-boxing
         internal static void SetValueForValueType<T>(this FieldInfo field, ref T item, object value) where T : struct
         {
             field.SetValueDirect(__makeref(item), value);
