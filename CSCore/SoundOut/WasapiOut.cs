@@ -255,7 +255,8 @@ namespace CSCore.SoundOut
 				eventWaitHandleIndex = WaitHandle.WaitTimeout;
 				eventWaitHandleArray = new WaitHandle[] { _eventWaitHandle };
 
-				if (!FeedBuffer(_renderClient, buffer, bufferSize, frameSize)) //todo: might cause a deadlock: play() is waiting on eventhandle but FeedBuffer got already called
+                //001
+				/*if (!FeedBuffer(_renderClient, buffer, bufferSize, frameSize)) //todo: might cause a deadlock: play() is waiting on eventhandle but FeedBuffer got already called
 				{
 					_playbackState = PlaybackState.Stopped;
 					if (playbackStartedEventWaithandle is EventWaitHandle)
@@ -265,7 +266,7 @@ namespace CSCore.SoundOut
 					}
 				}
 				else
-				{
+				{*/
 					_audioClient.Start();
 					_playbackState = SoundOut.PlaybackState.Playing;
 
@@ -308,7 +309,7 @@ namespace CSCore.SoundOut
 							{
 								if (!FeedBuffer(_renderClient, buffer, framesReadyToFill, frameSize))
 								{
-									_playbackState = PlaybackState.Stopped; //TODO: Fire Stopped-event here
+									_playbackState = PlaybackState.Stopped; //TODO: Fire Stopped-event here?
 								}
 							}
 						}
@@ -318,7 +319,7 @@ namespace CSCore.SoundOut
 
 					_audioClient.Stop();
 					_audioClient.Reset();
-				}
+				//}
 			}
 			finally
 			{

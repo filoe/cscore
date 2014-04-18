@@ -236,15 +236,17 @@ namespace CSCore.SoundOut
 
             try
             {
-                bool flag = true;
+                //004
+                //bool flag = true;
                 int bufferSize = _secondaryBuffer.BufferCaps.dwBufferBytes;
                 int latencyBytes = (int)_source.WaveFormat.MillisecondsToBytes(_latency);
                 byte[] buffer = new byte[bufferSize];
 
                 _primaryBuffer.Play(DSBPlayFlags.DSBPLAY_LOOPING); //default flags: looping
 
-                if (flag) //could refill buffer
-                {
+                //003
+                /*if (flag) //could refill buffer
+                {*/
                     /*
                      * Setup notify
                      */
@@ -276,11 +278,14 @@ namespace CSCore.SoundOut
                     _directSoundNotify.SetNotificationPositions(positionNotifies);
                     int waitHandleTimeout = waitHandles.Length * _latency;
 
-                    if (PlaybackState == SoundOut.PlaybackState.Stopped)
+                    //001
+                    /*if (PlaybackState == SoundOut.PlaybackState.Stopped)
                     {
                         _secondaryBuffer.SetCurrentPosition(0);
                         flag = RefillBuffer(buffer, 0, bufferSize);
-                    }
+                    }*/
+                    //002
+                    _secondaryBuffer.SetCurrentPosition(0);
 
                     _secondaryBuffer.Play(DSBPlayFlags.DSBPLAY_LOOPING); //default flags: looping
 
@@ -317,11 +322,11 @@ namespace CSCore.SoundOut
                             _playbackState = SoundOut.PlaybackState.Stopped;
                         }
                     }
-                }
+                /*}
                 else
                 {
                     _playbackState = SoundOut.PlaybackState.Stopped;
-                }
+                }*/
             }
             finally
             {

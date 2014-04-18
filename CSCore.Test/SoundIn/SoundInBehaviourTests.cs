@@ -10,6 +10,7 @@ namespace CSCore.Test.SoundIn
     public class SoundInBehaviourTests
     {
         [TestMethod]
+        [TestCategory("SoundIns")]
         public void CanCaptureAudio()
         {
             int n = 0;
@@ -43,6 +44,7 @@ namespace CSCore.Test.SoundIn
         }
 
         [TestMethod]
+        [TestCategory("SoundIns")]
         [ExpectedException(typeof(InvalidOperationException))]
         public void ThrowsInvalidCallerThread()
         {
@@ -71,6 +73,7 @@ namespace CSCore.Test.SoundIn
         }
 
         [TestMethod]
+        [TestCategory("SoundIns")]
         [ExpectedException(typeof(ObjectDisposedException))]
         public void ThrowsObjectDisposed()
         {

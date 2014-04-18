@@ -18,7 +18,7 @@ namespace CSCore.Test.SoundOut
     public class SoundOutBehaviourTest
     {
         const int basic_iteration_count = 5;
-        const int MinuteMilliseconds = 60000;
+        const int MinuteMilliseconds = 60000 * 300;
 
         [TestMethod]
         [TestCategory("SoundOuts")]
@@ -171,6 +171,17 @@ namespace CSCore.Test.SoundOut
                 soundOut.Dispose();
 
                 Assert.IsFalse(((Utils.DisposableSource)source).IsDisposed, "{0} disposed source.", soundOut.GetType().FullName);
+            }, true);
+        }
+
+        [TestMethod]
+        [TestCategory("SoundOuts")]
+        [Timeout(2 * MinuteMilliseconds)]
+        public void FastPlayStopSoundOutTest()
+        {
+            SoundOutTests((soundOut, source) =>
+            {
+                PlayStopTestInternal(soundOut, source);
             }, true);
         }
 
@@ -397,6 +408,33 @@ namespace CSCore.Test.SoundOut
                 soundOut.Stop();
 
                 Assert.IsTrue(raised);
+            }
+        }
+
+        private void PlayStopTestInternal(ISoundOut soundOut, IWaveSource source)
+        {
+            for (int i = 0; i < basic_iteration_count; i++)
+            {
+                soundOut.Initialize(source);
+                soundOut.Play();
+                soundOut.Stop();
+                soundOut.Initialize(source);
+                soundOut.Play();
+                soundOut.Stop();
+
+                soundOut.Initialize(source);
+                soundOut.Play();
+                soundOut.Stop();
+                soundOut.Initialize(source);
+                soundOut.Play();
+                soundOut.Stop();
+
+                soundOut.Initialize(source);
+                soundOut.Play();
+                soundOut.Stop();
+                soundOut.Initialize(source);
+                soundOut.Play();
+                soundOut.Stop();
             }
         }
     }

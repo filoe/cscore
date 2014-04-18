@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CSCore.Streams.Effects
 {
+    [Obsolete("Use DmoEchoEffect instead.")]
     public class Echo : EffectBase
     {
         private const float maxdelay = 10f;
