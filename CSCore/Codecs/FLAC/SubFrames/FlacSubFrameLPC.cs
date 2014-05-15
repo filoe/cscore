@@ -6,10 +6,10 @@ namespace CSCore.Codecs.FLAC
 {
     public sealed class FlacSubFrameLPC : FlacSubFrameBase
     {
-        private int[] _warmup;
-        private int[] _qlpCoeffs;
-        private int _lpcShiftNeeded;
-        private int _qlpCoeffPrecision;
+        private readonly int[] _warmup;
+        private readonly int[] _qlpCoeffs;
+        private readonly int _lpcShiftNeeded;
+        private readonly int _qlpCoeffPrecision;
 
         public int QLPCoeffPrecision { get { return _qlpCoeffPrecision; } }
 
@@ -26,27 +26,27 @@ namespace CSCore.Codecs.FLAC
         {
 
             //warmup
-            _warmup = new int[FlacConstant.MAX_LPC_ORDER];
+            _warmup = new int[FlacConstant.MaxLpcOrder];
             for (int i = 0; i < order; i++)
             {
-                _warmup[i] = data.residualBuffer[i] = reader.ReadBitsSigned(bps);
+                _warmup[i] = data.ResidualBuffer[i] = reader.ReadBitsSigned(bps);
             }
 
             //header
-            int u32 = (int)reader.ReadBits(FlacConstant.SUBFRAME_LPC_QLP_COEFF_PRECISION_LEN);
-            if (u32 == (1 << FlacConstant.SUBFRAME_LPC_QLP_COEFF_PRECISION_LEN) - 1)
+            int u32 = (int)reader.ReadBits(FlacConstant.SubframeLpcQlpCoeffPrecisionLen);
+            if (u32 == (1 << FlacConstant.SubframeLpcQlpCoeffPrecisionLen) - 1)
             {
                 Debug.WriteLine("Invalid FlacLPC qlp coeff precision.");
                 return; //return false;
             }
             _qlpCoeffPrecision = u32 + 1;
 
-            int level = reader.ReadBitsSigned(FlacConstant.SUBFRAME_LPC_QLP_SHIFT_LEN);
+            int level = reader.ReadBitsSigned(FlacConstant.SubframeLpcQlpShiftLen);
             if (level < 0)
                 throw new Exception("negative shift");
             _lpcShiftNeeded = level;
 
-            _qlpCoeffs = new int[FlacConstant.MAX_LPC_ORDER];
+            _qlpCoeffs = new int[FlacConstant.MaxLpcOrder];
 
             //qlp coeffs
             for (int i = 0; i < order; i++)
@@ -54,28 +54,24 @@ namespace CSCore.Codecs.FLAC
                 _qlpCoeffs[i] = reader.ReadBitsSigned(_qlpCoeffPrecision);
             }
 
-            //QLPCoeffs = coeffs;
-
             Residual = new FlacResidual(reader, header, data, order);
 
             for (int i = 0; i < order; i++)
             {
-                data.destBuffer[i] = data.residualBuffer[i];
+                data.DestBuffer[i] = data.ResidualBuffer[i];
             }
 
             if (bps + _qlpCoeffPrecision + CSMath.ILog(order) <= 32)
             {
                 if (bps <= 16 && _qlpCoeffPrecision <= 16)
-                    RestoreLPCSignal(data.residualBuffer + order, data.destBuffer + order, header.BlockSize - order, order); //Restore(data.residualBuffer + order, data.destBuffer, Header.BlockSize - order, order, order);
+                    RestoreLPCSignal(data.ResidualBuffer + order, data.DestBuffer + order, header.BlockSize - order, order); //Restore(data.residualBuffer + order, data.destBuffer, Header.BlockSize - order, order, order);
                 else
-                    RestoreLPCSignal(data.residualBuffer + order, data.destBuffer + order, header.BlockSize - order, order);
+                    RestoreLPCSignal(data.ResidualBuffer + order, data.DestBuffer + order, header.BlockSize - order, order);
             }
             else
             {
-                RestoreLPCSignalWide(data.residualBuffer + order, data.destBuffer + order, header.BlockSize - order, order);//RestoreWide(data.residualBuffer + order, data.destBuffer, Header.BlockSize - order, order, order);
+                RestoreLPCSignalWide(data.ResidualBuffer + order, data.DestBuffer + order, header.BlockSize - order, order);//RestoreWide(data.residualBuffer + order, data.destBuffer, Header.BlockSize - order, order, order);
             }
-
-            //Warmup = warmup;
         }
 
         private unsafe void Restore(int* residual, int* dest, int length, int predictorOrder, int destOffset)

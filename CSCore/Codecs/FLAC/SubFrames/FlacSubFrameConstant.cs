@@ -13,7 +13,7 @@
             {
                 for (int i = 0; i < header.BlockSize; i++)
                 {
-                    int* ptr = data.destBuffer;
+                    int* ptr = data.DestBuffer;
                     *ptr++ = Value;
                 }
             }

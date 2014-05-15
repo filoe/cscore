@@ -7,8 +7,8 @@ namespace CSCore.Codecs.FLAC
 {
     public class FlacFrameHeader
     {
-        private int blocksize_hint = 0; //if bsindex == 6 || 7
-        private int sampleRate_hint = 0; //if sampleRateIndex == 12 || 13 || 14
+        private int _blocksizeHint = 0; //if bsindex == 6 || 7
+        private int _sampleRateHint = 0; //if sampleRateIndex == 12 || 13 || 14
 
         public int BlockSize { get; set; }
 
@@ -35,7 +35,7 @@ namespace CSCore.Codecs.FLAC
 
         public long StreamPosition { get; private set; }
 
-        internal bool printErrors = true;
+        internal bool PrintErrors = true;
 
         public FlacFrameHeader(Stream stream)
             : this(stream, null, true)
@@ -67,7 +67,7 @@ namespace CSCore.Codecs.FLAC
 
         internal unsafe FlacFrameHeader(ref byte* buffer, FlacMetadataStreamInfo streamInfo, bool doCrc, bool logError)
         {
-            printErrors = logError; //optimized for prescan
+            PrintErrors = logError; //optimized for prescan
 
             DoCRC = doCrc;
             StreamPosition = -1;
@@ -75,7 +75,7 @@ namespace CSCore.Codecs.FLAC
             HasError = !ParseHeader(ref buffer, streamInfo);
         }
 
-        protected unsafe virtual bool ParseHeader(Stream stream, FlacMetadataStreamInfo streamInfo)
+        protected unsafe  bool ParseHeader(Stream stream, FlacMetadataStreamInfo streamInfo)
         {
             const string loggerLocation = "FlacFrameHeader.ParseHeader(Stream, FlacMetadataStreamInfo)";
 
@@ -130,7 +130,7 @@ namespace CSCore.Codecs.FLAC
                 else if (x >= 2 && x <= 5)
                     blocksize = 576 << (x - 2);
                 else if (x == 6 || x == 7)
-                    blocksize_hint = x;
+                    _blocksizeHint = x;
                 else if (x >= 8 && x <= 15)
                     blocksize = 256 << (x - 8);
                 else
@@ -161,7 +161,7 @@ namespace CSCore.Codecs.FLAC
                 else if (x >= 1 && x <= 11)
                     sampleRate = FlacConstant.SampleRateTable[x];
                 else if (x >= 12 && x <= 14)
-                    sampleRate_hint = x;
+                    _sampleRateHint = x;
                 else
                 {
                     Error("Invalid SampleRate value: " + x, loggerLocation);
@@ -271,10 +271,10 @@ namespace CSCore.Codecs.FLAC
                 #region read hints
 
                 //blocksize am ende des frameheaders
-                if (blocksize_hint != 0)
+                if (_blocksizeHint != 0)
                 {
                     x = (int)reader.ReadBits(8);
-                    if (blocksize_hint == 7)
+                    if (_blocksizeHint == 7)
                     {
                         x = (x << 8) | (int)reader.ReadBits(8);
                     }
@@ -282,16 +282,16 @@ namespace CSCore.Codecs.FLAC
                 }
 
                 //samplerate am ende des frameheaders
-                if (sampleRate_hint != 0)
+                if (_sampleRateHint != 0)
                 {
                     x = (int)reader.ReadBits(8);
-                    if (sampleRate_hint != 12)
+                    if (_sampleRateHint != 12)
                     {
                         x = (x << 8) | (int)reader.ReadBits(8);
                     }
-                    if (sampleRate_hint == 12)
+                    if (_sampleRateHint == 12)
                         SampleRate = x * 1000;
-                    else if (sampleRate_hint == 13)
+                    else if (_sampleRateHint == 13)
                         SampleRate = x;
                     else
                         SampleRate = x * 10;
@@ -323,7 +323,7 @@ namespace CSCore.Codecs.FLAC
 
         internal void Error(string msg, string location)
         {
-            if (printErrors)
+            if (PrintErrors)
                 Debug.WriteLine(location + msg);
         }
 

@@ -25,22 +25,22 @@ namespace CSCore.Codecs.FLAC
             FlacEntropyCoding codingMethod = CodingMethod;
 
             int psize = header.BlockSize >> porder;
-            int res_cnt = psize - order;
+            int resCnt = psize - order;
 
             int ricelength = 4 + (int)codingMethod; //4bit = RICE I | 5bit = RICE II
 
             //residual
             int j = order;
-            int* r = data.residualBuffer + j;
+            int* r = data.ResidualBuffer + j;
 
             int partitioncount = 1 << porder;
 
             for (int p = 0; p < partitioncount; p++)
             {
-                if (p == 1) res_cnt = psize;
-                int n = Math.Min(res_cnt, header.BlockSize - j);
+                if (p == 1) resCnt = psize;
+                int n = Math.Min(resCnt, header.BlockSize - j);
 
-                int k = Content.parameters[p] = (int)reader.ReadBits(ricelength);
+                int k = Content.Parameters[p] = (int)reader.ReadBits(ricelength);
                 if (k == (1 << ricelength) - 1)
                 {
                     k = (int)reader.ReadBits(5);

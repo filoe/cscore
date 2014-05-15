@@ -10,12 +10,11 @@
 
         public FlacResidual(FlacBitReader reader, FlacFrameHeader header, FlacSubFrameData data, int order)
         {
-            FlacEntropyCoding codingMethod = (FlacEntropyCoding)reader.ReadBits(FlacConstant.ENTROPY_CODING_METHOD_TYPE_LEN); // 2 Bit
-            int riceOrder = -1;
+            FlacEntropyCoding codingMethod = (FlacEntropyCoding)reader.ReadBits(FlacConstant.EntropyCodingMethodTypeLen); // 2 Bit
 
             if (codingMethod == FlacEntropyCoding.PartitionedRice || codingMethod == FlacEntropyCoding.PartitionedRice2)
             {
-                riceOrder = (int)reader.ReadBits(FlacConstant.ENTROPY_CODING_METHOD_PARTITIONED_RICE_ORDER_LEN); // 4 Bit
+                int riceOrder = (int)reader.ReadBits(FlacConstant.EntropyCodingMethodPartitionedRiceOrderLen);
 
                 FlacPartitionedRice rice = new FlacPartitionedRice(riceOrder, codingMethod, data.Content);
 
@@ -24,9 +23,12 @@
                     throw new FlacException("Decoding Flac Residual failed.", FlacLayer.SubFrame);
                 }
 
+#if DEBUG
                 CodingMethod = codingMethod;
                 RiceOrder = riceOrder;
                 Rice = rice;
+#endif
+
             }
             else
             {

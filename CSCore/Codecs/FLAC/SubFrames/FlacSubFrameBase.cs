@@ -5,19 +5,17 @@ namespace CSCore.Codecs.FLAC
     {
         public unsafe static FlacSubFrameBase GetSubFrame(FlacBitReader reader, FlacSubFrameData data, FlacFrameHeader header, int bps)
         {
-            uint x;
-            int wastedBits = 0, totalBits = 0, order = 0;
+            int wastedBits = 0, order = 0;
 
-            x = reader.ReadBits(8);
-            bool haswastedBits = (x & 1) != 0;
+            uint x = reader.ReadBits(8);
+            bool hasWastedBits = (x & 1) != 0;
             x &= 0xFE; //1111 1110
 
-            if (haswastedBits)
+            if (hasWastedBits)
             {
                 int u = (int)reader.ReadUnary();
                 wastedBits = u + 1;
                 bps -= wastedBits;
-                totalBits = bps;
             }
 
             if ((x & 0x80) != 0)
@@ -26,7 +24,7 @@ namespace CSCore.Codecs.FLAC
                 return null;
             }
 
-            FlacSubFrameBase subFrame = null;
+            FlacSubFrameBase subFrame;
 
             if ((x > 2 && x < 16) ||
                  (x > 24 && x < 64))
@@ -34,7 +32,8 @@ namespace CSCore.Codecs.FLAC
                 Debug.WriteLine("Invalid FlacSubFrameHeader. [" + x.ToString("x") + "]");
                 return null;
             }
-            else if (x == 0)
+
+            if (x == 0)
             {
                 subFrame = new FlacSubFrameConstant(reader, header, data, bps);
             }
@@ -61,9 +60,9 @@ namespace CSCore.Codecs.FLAC
                 return null;
             }
 
-            if (haswastedBits)
+            if (hasWastedBits)
             {
-                int* ptrDest = data.destBuffer;
+                int* ptrDest = data.DestBuffer;
                 for (int i = 0; i < header.BlockSize; i++)
                 {
                     *(ptrDest++) <<= wastedBits;
@@ -72,29 +71,15 @@ namespace CSCore.Codecs.FLAC
 
             //System.Diagnostics.Debug.WriteLine(subFrame.GetType().Name);
 
-            if (subFrame != null)
-                subFrame.WastedBits = wastedBits;
-            else
-                Debug.WriteLine("Unknown error while reading FlacSubFrameHeader");
+            //check null removed
+            subFrame.WastedBits = wastedBits;
 
             return subFrame;
         }
 
-        protected int _wastedBits;
+        public int WastedBits { get; protected set; }
 
-        public int WastedBits
-        {
-            get { return _wastedBits; }
-            protected set { _wastedBits = value; }
-        }
-
-        protected FlacFrameHeader _header;
-
-        public FlacFrameHeader Header
-        {
-            get { return _header; }
-            protected set { _header = value; }
-        }
+        public FlacFrameHeader Header { get; protected set; }
 
         protected FlacSubFrameBase(FlacFrameHeader header)
         {

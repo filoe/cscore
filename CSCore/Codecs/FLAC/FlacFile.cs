@@ -12,10 +12,11 @@ namespace CSCore.Codecs.FLAC
     public class FlacFile : IWaveSource
     {
         private Stream _stream;
-        private FlacMetadataStreamInfo _streamInfo;
-        private FlacPreScan _scan;
+        private readonly WaveFormat _waveFormat;
+        private readonly FlacMetadataStreamInfo _streamInfo;
+        private readonly FlacPreScan _scan;
 
-        private object _bufferLock = new object();
+        private readonly object _bufferLock = new object();
 
         //overflow:
         private byte[] _overflowBuffer;
@@ -30,8 +31,6 @@ namespace CSCore.Codecs.FLAC
             get;
             protected set;
         }
-
-        private WaveFormat _waveFormat;
 
         public WaveFormat WaveFormat
         {
@@ -96,9 +95,9 @@ namespace CSCore.Codecs.FLAC
                     throw new FlacException("No Metadata found.", FlacLayer.Metadata);
                 }
 
-                FlacMetadataStreamInfo streamInfo = metadata.Where(x => x.MetaDataType == FlacMetaDataType.StreamInfo).First() as FlacMetadataStreamInfo;
+                FlacMetadataStreamInfo streamInfo = metadata.First(x => x.MetaDataType == FlacMetaDataType.StreamInfo) as FlacMetadataStreamInfo;
                 if (streamInfo == null)
-                    new FlacException("No StreamInfo-Metadata found.", FlacLayer.Metadata);
+                    throw new FlacException("No StreamInfo-Metadata found.", FlacLayer.Metadata);
 
                 _streamInfo = streamInfo;
                 _waveFormat = new WaveFormat(streamInfo.SampleRate, (short)streamInfo.BitsPerSample, (short)streamInfo.Channels, AudioEncoding.Pcm);

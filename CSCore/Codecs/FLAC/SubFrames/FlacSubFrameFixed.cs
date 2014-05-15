@@ -10,18 +10,18 @@ namespace CSCore.Codecs.FLAC
         {
             for (int i = 0; i < order; i++)
             {
-                data.residualBuffer[i] = data.destBuffer[i] = reader.ReadBitsSigned(bps);
+                data.ResidualBuffer[i] = data.DestBuffer[i] = reader.ReadBitsSigned(bps);
             }
 
-            Residual = new FlacResidual(reader, header, data, order);
+            Residual = new FlacResidual(reader, header, data, order); //necessary for decoding
             RestoreSignal(data, header.BlockSize - order, order);
         }
 
         //http://www.hpl.hp.com/techreports/1999/HPL-1999-144.pdf
         private unsafe bool RestoreSignal(FlacSubFrameData subframeData, int length, int predictorOrder)
         {
-            int* residual = subframeData.residualBuffer + predictorOrder;
-            int* data = subframeData.destBuffer + predictorOrder;
+            int* residual = subframeData.ResidualBuffer + predictorOrder;
+            int* data = subframeData.DestBuffer + predictorOrder;
 
             int t0, t1, t2; //temp
 

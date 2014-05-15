@@ -8,9 +8,9 @@ namespace CSCore.Codecs.FLAC
 {
     public class FlacPreScan
     {
-        private const int bufferSize = 50000;
-        private Stream _stream;
-        private bool _isRunning = false;
+        private const int BufferSize = 50000;
+        private readonly Stream _stream;
+        private bool _isRunning;
 
         public event EventHandler<FlacPreScanFinishedEventArgs> ScanFinished;
 
@@ -96,7 +96,7 @@ namespace CSCore.Codecs.FLAC
             //if (!(stream is BufferedStream))
             //    stream = new BufferedStream(stream);
 
-            byte[] buffer = new byte[bufferSize];
+            byte[] buffer = new byte[BufferSize];
             int read = 0;
             stream.Position = 4; //fLaC
 

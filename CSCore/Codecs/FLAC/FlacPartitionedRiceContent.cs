@@ -2,20 +2,20 @@
 {
     public unsafe class FlacPartitionedRiceContent
     {
-        public int[] parameters;
-        public int[] raw_bits;
+        public int[] Parameters;
+        public int[] RawBits;
 
-        private int capByOrder = -1;
+        private int _capByOrder = -1;
 
         public void UpdateSize(int po)
         {
-            if (capByOrder < po)
+            if (_capByOrder < po)
             {
                 int size = 1 << po;
-                parameters = new int[size];
-                raw_bits = new int[size];
+                Parameters = new int[size];
+                RawBits = new int[size];
 
-                capByOrder = po;
+                _capByOrder = po;
             }
         }
     }

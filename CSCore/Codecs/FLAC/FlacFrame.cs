@@ -12,9 +12,9 @@ namespace CSCore.Codecs.FLAC
         private Stream _stream;
         private FlacMetadataStreamInfo _streamInfo;
 
-        private GCHandle handle1, handle2;
-        private int[] destBuffer;
-        private int[] residualBuffer;
+        private GCHandle _handle1, _handle2;
+        private int[] _destBuffer;
+        private int[] _residualBuffer;
 
         private FlacFrameHeader _header;
 
@@ -24,7 +24,7 @@ namespace CSCore.Codecs.FLAC
             private set { _header = value; }
         }
 
-        public ushort CRC16 { get; private set; }
+        public ushort Crc16 { get; private set; }
 
         public bool HasError { get; private set; }
 
@@ -109,7 +109,7 @@ namespace CSCore.Codecs.FLAC
                 }
 
                 reader.Flush();
-                CRC16 = (ushort)reader.ReadBits(16);
+                Crc16 = (ushort)reader.ReadBits(16);
 
                 _stream.Position -= read - reader.Position;
 
@@ -125,28 +125,27 @@ namespace CSCore.Codecs.FLAC
             {
                 for (int i = 0; i < Header.BlockSize; i++)
                 {
-                    data[1].destBuffer[i] = data[0].destBuffer[i] - data[1].destBuffer[i];
+                    data[1].DestBuffer[i] = data[0].DestBuffer[i] - data[1].DestBuffer[i];
                 }
             }
             else if (Header.ChannelAssignment == ChannelAssignment.RightSide)
             {
                 for (int i = 0; i < Header.BlockSize; i++)
                 {
-                    data[0].destBuffer[i] += data[1].destBuffer[i];
+                    data[0].DestBuffer[i] += data[1].DestBuffer[i];
                 }
             }
             else if (Header.ChannelAssignment == ChannelAssignment.MidSide)
             {
-                int mid, side;
                 for (int i = 0; i < Header.BlockSize; i++)
                 {
-                    mid = data[0].destBuffer[i] << 1;
-                    side = data[1].destBuffer[i];
+                    int mid = data[0].DestBuffer[i] << 1;
+                    int side = data[1].DestBuffer[i];
 
                     mid |= (side & 1);
 
-                    data[0].destBuffer[i] = (mid + side) >> 1;
-                    data[1].destBuffer[i] = (mid - side) >> 1;
+                    data[0].DestBuffer[i] = (mid + side) >> 1;
+                    data[1].DestBuffer[i] = (mid - side) >> 1;
                 }
             }
         }
@@ -167,7 +166,7 @@ namespace CSCore.Codecs.FLAC
                     {
                         for (int c = 0; c < Header.Channels; c++)
                         {
-                            *(ptr++) = (byte)(_data[c].destBuffer[i] + 0x80);
+                            *(ptr++) = (byte)(_data[c].DestBuffer[i] + 0x80);
                         }
                     }
                 }
@@ -177,7 +176,7 @@ namespace CSCore.Codecs.FLAC
                     {
                         for (int c = 0; c < Header.Channels; c++)
                         {
-                            short val = (short)(_data[c].destBuffer[i]); //remove
+                            short val = (short)(_data[c].DestBuffer[i]); //remove
                             *(ptr++) = (byte)(val & 0xFF);
                             *(ptr++) = (byte)((val >> 8) & 0xFF);
                         }
@@ -189,7 +188,7 @@ namespace CSCore.Codecs.FLAC
                     {
                         for (int c = 0; c < Header.Channels; c++)
                         {
-                            int val = (_data[c].destBuffer[i]);
+                            int val = (_data[c].DestBuffer[i]);
                             *(ptr++) = (byte)(val & 0xFF);
                             *(ptr++) = (byte)((val >> 8) & 0xFF);
                             *(ptr++) = (byte)((val >> 16) & 0xFF);
@@ -209,23 +208,23 @@ namespace CSCore.Codecs.FLAC
 
         private unsafe List<FlacSubFrameData> AllocOuputMemory()
         {
-            if (destBuffer == null || destBuffer.Length < (Header.Channels * Header.BlockSize))
-                destBuffer = new int[Header.Channels * Header.BlockSize];
-            if (residualBuffer == null || residualBuffer.Length < (Header.Channels * Header.BlockSize))
-                residualBuffer = new int[Header.Channels * Header.BlockSize];
+            if (_destBuffer == null || _destBuffer.Length < (Header.Channels * Header.BlockSize))
+                _destBuffer = new int[Header.Channels * Header.BlockSize];
+            if (_residualBuffer == null || _residualBuffer.Length < (Header.Channels * Header.BlockSize))
+                _residualBuffer = new int[Header.Channels * Header.BlockSize];
 
             List<FlacSubFrameData> output = new List<FlacSubFrameData>();
 
             for (int c = 0; c < Header.Channels; c++)
             {
-                fixed (int* ptrDestBuffer = destBuffer, ptrResidualBuffer = residualBuffer)
+                fixed (int* ptrDestBuffer = _destBuffer, ptrResidualBuffer = _residualBuffer)
                 {
-                    handle1 = GCHandle.Alloc(destBuffer, GCHandleType.Pinned);
-                    handle2 = GCHandle.Alloc(residualBuffer, GCHandleType.Pinned);
+                    _handle1 = GCHandle.Alloc(_destBuffer, GCHandleType.Pinned);
+                    _handle2 = GCHandle.Alloc(_residualBuffer, GCHandleType.Pinned);
 
                     FlacSubFrameData data = new FlacSubFrameData();
-                    data.destBuffer = (ptrDestBuffer + c * Header.BlockSize);
-                    data.residualBuffer = (ptrResidualBuffer + c * Header.BlockSize);
+                    data.DestBuffer = (ptrDestBuffer + c * Header.BlockSize);
+                    data.ResidualBuffer = (ptrResidualBuffer + c * Header.BlockSize);
                     output.Add(data);
                 }
             }
@@ -235,17 +234,17 @@ namespace CSCore.Codecs.FLAC
 
         public void FreeBuffers()
         {
-            if (handle1 != null && handle1.IsAllocated)
-                handle1.Free();
-            if (handle2 != null && handle2.IsAllocated)
-                handle2.Free();
+            if (_handle1.IsAllocated)
+                _handle1.Free();
+            if (_handle2.IsAllocated)
+                _handle2.Free();
         }
     }
 
     public unsafe class FlacSubFrameData
     {
-        public int* destBuffer;
-        public int* residualBuffer;
+        public int* DestBuffer;
+        public int* ResidualBuffer;
 
         private FlacPartitionedRiceContent _content;
 
