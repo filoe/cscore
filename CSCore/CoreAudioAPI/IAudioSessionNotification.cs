@@ -13,6 +13,7 @@ namespace CSCore.CoreAudioAPI
     [SuppressUnmanagedCodeSecurity]
     public interface IAudioSessionNotification
     {
-        int OnSessionCreated(IntPtr newSession); //newSession is a pointer to an IAudioSessionControl interface
+        [PreserveSig]
+        int OnSessionCreated([In] IntPtr newSession); //newSession is a pointer to an IAudioSessionControl interface
     }
 }

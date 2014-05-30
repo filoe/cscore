@@ -1,4 +1,5 @@
-﻿using CSCore.Win32;
+﻿using System.Threading;
+using CSCore.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,8 +68,10 @@ namespace CSCore.CoreAudioAPI
             int result = 0;
             if (!_sessionNotifications.Contains(sessionNotification))
             {
-                IntPtr ptr = sessionNotification != null ? Marshal.GetComInterfaceForObject(sessionNotification, typeof(IAudioSessionNotification)) : IntPtr.Zero;
-                result = InteropCalls.CallI(_basePtr, (void*)ptr, ((void**)(*(void**)_basePtr))[6]);
+                result = InteropCalls.CallI(
+                    _basePtr, 
+                    sessionNotification != null ? Marshal.GetComInterfaceForObject(sessionNotification, typeof(IAudioSessionNotification)) : IntPtr.Zero, 
+                    ((void**)(*(void**)_basePtr))[6]);
                 _sessionNotifications.Add(sessionNotification);
             }
             return result;
@@ -76,9 +79,12 @@ namespace CSCore.CoreAudioAPI
 
         /// <summary>
         /// The RegisterSessionNotification method registers the application to receive a notification when a session is created.
+        /// IMPORTANT: Make sure to call this method from an MTA-Thread.
         /// </summary>
         public void RegisterSessionNotification(IAudioSessionNotification sessionNotification)
         {
+            if(Thread.CurrentThread.GetApartmentState() != ApartmentState.MTA)
+                throw new InvalidOperationException("RegisterSessionNotification has to be called from an MTA-Thread.");
             CoreAudioAPIException.Try(RegisterSessionNotificationNative(sessionNotification), c, "RegisterSessionNotification");
         }
 
@@ -91,8 +97,10 @@ namespace CSCore.CoreAudioAPI
             int result = 0;
             if (_sessionNotifications.Contains(sessionNotification))
             {
-                IntPtr ptr = sessionNotification != null ? Marshal.GetComInterfaceForObject(sessionNotification, typeof(IAudioSessionNotification)) : IntPtr.Zero;
-                result = InteropCalls.CallI(_basePtr, (void*)ptr, ((void**)(*(void**)_basePtr))[7]);
+                result = InteropCalls.CallI(
+                    _basePtr,
+                    sessionNotification != null ? Marshal.GetComInterfaceForObject(sessionNotification, typeof(IAudioSessionNotification)) : IntPtr.Zero, 
+                    ((void**)(*(void**)_basePtr))[7]);
                 _sessionNotifications.Remove(sessionNotification);
             }
             return result;
