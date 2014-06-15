@@ -1,0 +1,28 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ output extension=".cs" #>
+
+using System.Runtime.InteropServices;
+
+namespace CSCore.XAudio2
+{
+	[StructLayout(LayoutKind.Sequential, Pack = 1)]
+	public partial struct DeviceDetails
+	{
+<#
+for (int i = 0; i < 256; i++)
+{
+	WriteLine("\t\tprivate char _internalDeviceIdField{0};", i);					
+}
+#>
+<#
+for (int i = 0; i < 256; i++)
+{
+	WriteLine("\t\tprivate char _internalDisplayNameField{0};", i);					
+}
+#>
+
+	private XAudio2DeviceRole _role;
+	private WaveFormatExtensible _outputFormat;
+	}
+}
