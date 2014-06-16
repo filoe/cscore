@@ -174,7 +174,20 @@ namespace CSCore.XAudio2
             throw new NotImplementedException();
         }
 
+        [CSCalli]
         internal static unsafe int CallI(void* _basePtr, int flags, XAudio2Processor processor, void* p)
+        {
+            throw new NotImplementedException();
+        }
+
+        [CSCalli]
+        internal static unsafe int CallI(void* _basePtr, void* ptr, int inputChannels, int inputSampleRate, int flags, void* p1, void* p2, void* p3)
+        {
+            throw new NotImplementedException();
+        }
+
+        [CSCalli]
+        internal static unsafe int CallI(void* _basePtr, void* ptr, int inputChannels, int inputSampleRate, int flags, int device, void* p1, void* p2)
         {
             throw new NotImplementedException();
         }

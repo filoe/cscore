@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using CSCore.Win32;
 
 namespace CSCore.XAudio2
 {
@@ -11,7 +13,7 @@ namespace CSCore.XAudio2
     /// </summary>
     [Guid("8bcf1f58-9fe7-4583-8ac6-e2adc465c8bb")]
 // ReSharper disable once InconsistentNaming
-    public class XAudio2_7 : XAudio2<int>
+    public class XAudio2_7 : XAudio2
     {
         public new const int QuantumDenominator = 100;
         public new const int MinimumSampleRate = 1000;
@@ -53,16 +55,20 @@ namespace CSCore.XAudio2
         /// <remarks>This constructor already calls <see cref="Initialize"/>. Don't call it a second time.</remarks>
         public XAudio2_7(bool debug, XAudio2Processor processor)
         {
-            object obj;
-            if (debug)
-                obj = new XAudio2ClassDebug();
-            else
-                obj = new XAudio2Class();
+            Guid guid = debug ? new Guid("db05ea35-0329-4d4b-a53a-6dead03d3852") : new Guid("5a508685-a254-4fba-9b82-9a24b00306af");
 
-            IntPtr ptr = Marshal.GetComInterfaceForObject(obj, obj.GetType());
-            BasePtr = ptr;
+            IntPtr ptr0;
+            var result = InteropFunctions.CoCreateInstance(guid,
+                IntPtr.Zero, InteropFunctions.CLSCTX.CLSCTX_INPROC_SERVER, typeof (XAudio2_7).GUID, out ptr0);
+
+            if(result != HResult.S_OK)
+                throw new Win32Exception((int)result, "Could not create XAudio2.7 instance.");
+
+
+            BasePtr = ptr0;
             Initialize(0, processor);
         }
+
 
         /// <summary>
         /// Returns the number of available audio output devices.
@@ -257,14 +263,16 @@ namespace CSCore.XAudio2
         /// <param name="flags">Flags that specify the behavior of the mastering voice. Must be 0.</param>
         /// <param name="deviceId">Identifier of the device to receive the output audio. Specifying the default value of NULL causes XAudio2 to select the global default audio device.</param>
         /// <param name="effectChain"><see cref="EffectChain"/> structure that describes an effect chain to use in the mastering voice, or NULL to use no effects.</param>
-        /// <param name="streamCategory">The audio stream category to use for this mastering voice.</param>
+        /// <param name="streamCategory">Not valid for XAudio 2.7.</param>
         /// <returns>HRESULT</returns>
         public override unsafe int CreateMasteringVoiceNative(out IntPtr pMasteringVoice, int inputChannels, int inputSampleRate, int flags,
-            int deviceId, EffectChain? effectChain, AudioStreamCategory streamCategory)
+            object deviceId, EffectChain? effectChain, AudioStreamCategory streamCategory)
         {
-            IntPtr pdeviceId = IntPtr.Zero;
+            if(!(deviceId is int))
+                throw new ArgumentException("DeviceId has to be an integer.", "deviceId");
+            var device = (int) deviceId;
+
             var value1 = effectChain.HasValue ? effectChain.Value : new EffectChain();
-            pdeviceId = new IntPtr(&deviceId);
 
             fixed (void* ptr = &pMasteringVoice)
             {
@@ -274,8 +282,9 @@ namespace CSCore.XAudio2
                     inputChannels,
                     inputSampleRate,
                     flags,
-                    (void*)pdeviceId,
-                    effectChain.HasValue ? &value1 : (void*)IntPtr.Zero, streamCategory,
+                    device,
+                    effectChain.HasValue ? &value1 : (void*)IntPtr.Zero, 
+                    //streamCategory,
                     ((void**)(*(void**)_basePtr))[10]);
             }
         }
@@ -332,16 +341,9 @@ namespace CSCore.XAudio2
             InteropCalls.CallI4(_basePtr, &debugConfiguration, reserved.ToPointer(), ((void**)(*(void**)_basePtr))[15]);
         }
 
-        [ComImport]
-        [Guid("5a508685-a254-4fba-9b82-9a24b00306af")]
-        private class XAudio2Class
+        protected override object GetDefaultDevice()
         {
-        }
-
-        [ComImport]
-        [Guid("db05ea35-0329-4d4b-a53a-6dead03d3852")]
-        private class XAudio2ClassDebug
-        {
+            return 0;
         }
     }
 }

@@ -11,9 +11,9 @@ namespace CSCore.XAudio2
         /// <summary>
         /// Gets the <see cref="DisplayName"/> of the Device.
         /// </summary>
-        public string DisplayName
+        public unsafe string DisplayName
         {
-            unsafe get
+            get
             {
                 fixed (void* p = &_internalDisplayNameField0)
                 {
@@ -25,9 +25,9 @@ namespace CSCore.XAudio2
         /// <summary>
         /// Gets the <see cref="DeviceId"/> of the Device.
         /// </summary>
-        public string DeviceId
+        public unsafe string DeviceId
         {
-            unsafe get
+            get
             {
                 fixed (void* p = &_internalDeviceIdField0)
                 {

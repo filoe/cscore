@@ -8,7 +8,7 @@ namespace CSCore.XAudio2
     /// </summary>
     [Guid("60d8dac8-5aa1-4e8e-b597-2f5e2883d484")]
 // ReSharper disable once InconsistentNaming
-    public class XAudio2_8 : XAudio2<string>
+    public class XAudio2_8 : XAudio2
     {
         public new const int QuantumDenominator = 100;
         public new const int MinimumSampleRate = 1000;
@@ -172,14 +172,18 @@ namespace CSCore.XAudio2
         /// <param name="streamCategory">The audio stream category to use for this mastering voice.</param>
         /// <returns>HRESULT</returns>
         public override unsafe int CreateMasteringVoiceNative(out IntPtr pMasteringVoice, int inputChannels, int inputSampleRate, int flags,
-            string deviceId, EffectChain? effectChain, AudioStreamCategory streamCategory)
+            object deviceId, EffectChain? effectChain, AudioStreamCategory streamCategory)
         {
+            if (deviceId != null && !(deviceId is string))
+                throw new ArgumentException("DeviceId has to be a string.", "deviceId");
+
+            var device = deviceId as string;
             IntPtr pdeviceId = IntPtr.Zero;
             try
             {
                 var value1 = effectChain.HasValue ? effectChain.Value : new EffectChain();
-                if (deviceId != null)
-                    pdeviceId = Marshal.StringToHGlobalUni(deviceId);
+                if(device != null)
+                    pdeviceId = Marshal.StringToHGlobalUni(device);
 
                 fixed (void* ptr = &pMasteringVoice)
                 {
@@ -251,6 +255,11 @@ namespace CSCore.XAudio2
         public override unsafe void SetDebugConfigurationNative(DebugConfiguration debugConfiguration, IntPtr reserved)
         {
             InteropCalls.CallI4(_basePtr, &debugConfiguration, reserved.ToPointer(), ((void**)(*(void**)_basePtr))[12]);
+        }
+
+        protected override object GetDefaultDevice()
+        {
+            return null;
         }
     }
 }

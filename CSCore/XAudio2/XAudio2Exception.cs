@@ -7,7 +7,7 @@ namespace CSCore.XAudio2
     /// <summary>
     /// XAudio2-COMException.
     /// </summary>
-    public class XAudio2Exception : COMException
+    public class XAudio2Exception : Win32ComException
     {
         /// <summary>
         /// Throws an <see cref="XAudio2Exception"/> if the <see cref="result"/> is not <see cref="HResult.S_OK"/>.
@@ -15,7 +15,7 @@ namespace CSCore.XAudio2
         /// <param name="result">Errorcode.</param>
         /// <param name="interfaceName">Name of the interface which contains the COM-function which returned the specified <see cref="result"/>.</param>
         /// <param name="member">Name of the COM-function which returned the specified <see cref="result"/>.</param>
-        public static void Try(int result, string interfaceName, string member)
+        public new static void Try(int result, string interfaceName, string member)
         {
             if (result != (int)Win32.HResult.S_OK)
                 throw new XAudio2Exception(result, interfaceName, member);
@@ -28,7 +28,7 @@ namespace CSCore.XAudio2
         /// <param name="interfaceName">Name of the interface which contains the COM-function which returned the specified <see cref="result"/>.</param>
         /// <param name="member">Name of the COM-function which returned the specified <see cref="result"/>.</param>
         public XAudio2Exception(int result, string interfaceName, string member)
-            : base(String.Format("{0}::{1} returned 0x{2}", interfaceName, member, result.ToString("x")), result)
+            : base(result, interfaceName, member)
         {
         }
     }
