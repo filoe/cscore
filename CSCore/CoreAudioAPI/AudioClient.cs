@@ -5,8 +5,8 @@ using System.Runtime.InteropServices;
 namespace CSCore.CoreAudioAPI
 {
     /// <summary>
-    /// Wrapper of the IAudioClient-Interface. For more details see
-    /// http://msdn.microsoft.com/en-us/library/windows/desktop/dd370865(v=vs.85).aspx
+    /// Enables a client to create and initialize an audio stream between an audio application and the audio engine (for a shared-mode stream) or the hardware buffer of an audio endpoint device (for an exclusive-mode stream). For more details see
+    /// <see href="http://msdn.microsoft.com/en-us/library/windows/desktop/dd370865(v=vs.85).aspx"/>.
     /// </summary>
     [Guid("1CB9AD4C-DBFA-4c32-B178-C2F568A703B2")]
     public class AudioClient : ComObject
@@ -14,62 +14,94 @@ namespace CSCore.CoreAudioAPI
         /// <summary>
         /// IID of the IAudioClient-interface.
         /// </summary>
+// ReSharper disable once InconsistentNaming
         public static readonly Guid IID_IAudioClient = new Guid("1CB9AD4C-DBFA-4c32-B178-C2F568A703B2");
 
-        private const string c = "IAudioClient";
+        private const string InterfaceName = "IAudioClient";
 
+        /// <summary>
+        /// Creates a new <see cref="AudioClient"/> instance.
+        /// </summary>
+        /// <param name="device">Device which should be used to create the <see cref="AudioClient"/> instance.</param>
+        /// <returns><see cref="AudioClient"/> instance.</returns>
+// ReSharper disable once InconsistentNaming
         public static AudioClient FromMMDevice(MMDevice device)
         {
             if (device == null)
                 throw new ArgumentNullException("device");
 
             IntPtr ptr;
-            int result = device.ActivateNative(IID_IAudioClient, ExecutionContext.CLSCTX_ALL, IntPtr.Zero, out ptr);
+            int result = device.ActivateNative(IID_IAudioClient, CLSCTX.CLSCTX_ALL, IntPtr.Zero, out ptr);
             CoreAudioAPIException.Try(result, "IMMDevice", "Activate");
 
             return new AudioClient(ptr);
         }
 
+        /// <summary>
+        /// Gets the default interval between periodic processing passes by the audio engine. The time is expressed in 100-nanosecond units.
+        /// </summary>
         public long DefaultDevicePeriod
         {
             get
             {
                 long n0, n1;
-                CoreAudioAPIException.Try(GetDevicePeriod(out n0, out n1), c, "GetDevicePeriod");
+                CoreAudioAPIException.Try(GetDevicePeriod(out n0, out n1), InterfaceName, "GetDevicePeriod");
                 return n0;
             }
         }
 
+        /// <summary>
+        /// Gets the minimum interval between periodic processing passes by the audio endpoint device. The time is expressed in 100-nanosecond units.
+        /// </summary>
         public long MinimumDevicePeriod
         {
             get
             {
                 long n0, n1;
-                CoreAudioAPIException.Try(GetDevicePeriod(out n0, out n1), c, "GetDevicePeriod");
+                CoreAudioAPIException.Try(GetDevicePeriod(out n0, out n1), InterfaceName, "GetDevicePeriod");
                 return n1;
             }
         }
 
+        /// <summary>
+        /// Gets the maximum capacity of the endpoint buffer.
+        /// </summary>
         public int BufferSize
         {
             get { return GetBufferSize(); }
         }
 
+        /// <summary>
+        /// Gets the number of frames of padding in the endpoint buffer.
+        /// </summary>
         public int CurrentPadding
         {
             get { return GetCurrentPadding(); }
         }
 
+        /// <summary>
+        /// Gets the stream format that the audio engine uses for its
+        /// internal processing of shared-mode streams.
+        /// </summary>
         public WaveFormat MixFormat
         {
             get { return GetMixFormat(); }
         }
 
+        /// <summary>
+        /// Gets the maximum latency for the current stream and can
+        /// be called any time after the stream has been initialized.
+        /// </summary>
         public long StreamLatency
         {
             get { return GetStreamLatency(); }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AudioClient"/> class.
+        /// </summary>
+        /// <param name="ptr">Native pointer.</param>
+        /// <remarks>Use the <see cref="FromMMDevice"/> method to create a new <see cref="AudioClient"/> instance.</remarks>
         public AudioClient(IntPtr ptr)
             : base(ptr)
         {
@@ -83,7 +115,7 @@ namespace CSCore.CoreAudioAPI
         {
             var hWaveFormat = GCHandle.Alloc(waveFormat, GCHandleType.Pinned);
             int result = -1;
-            result = InteropCalls.CallI(_basePtr, shareMode, streamFlags, hnsBufferDuration, hnsPeriodicity, hWaveFormat.AddrOfPinnedObject().ToPointer(), audioSessionGuid, ((void**)(*(void**)_basePtr))[3]);
+            result = InteropCalls.CallI(UnsafeBasePtr, shareMode, streamFlags, hnsBufferDuration, hnsPeriodicity, hWaveFormat.AddrOfPinnedObject().ToPointer(), audioSessionGuid, ((void**)(*(void**)UnsafeBasePtr))[3]);
             hWaveFormat.Free();
             return result;
         }
@@ -93,7 +125,7 @@ namespace CSCore.CoreAudioAPI
         /// </summary>
         public void Initialize(AudioClientShareMode shareMode, AudioClientStreamFlags streamFlags, long hnsBufferDuration, long hnsPeriodicity, WaveFormat waveFormat, Guid audioSessionGuid)
         {
-            CoreAudioAPIException.Try(InitializeNative(shareMode, streamFlags, hnsBufferDuration, hnsPeriodicity, waveFormat, audioSessionGuid), c, "Initialize");
+            CoreAudioAPIException.Try(InitializeNative(shareMode, streamFlags, hnsBufferDuration, hnsPeriodicity, waveFormat, audioSessionGuid), InterfaceName, "Initialize");
         }
 
         /// <summary>
@@ -110,7 +142,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* pbfc = &bufferFramesCount)
             {
-                return InteropCalls.CallI(_basePtr, pbfc, ((void**)(*(void**)_basePtr))[4]);
+                return InteropCalls.CallI(UnsafeBasePtr, pbfc, ((void**)(*(void**)UnsafeBasePtr))[4]);
             }
         }
 
@@ -127,7 +159,7 @@ namespace CSCore.CoreAudioAPI
         public int GetBufferSize()
         {
             uint bufferSize;
-            CoreAudioAPIException.Try(GetBufferSize(out bufferSize), c, "GetBufferSize");
+            CoreAudioAPIException.Try(GetBufferSize(out bufferSize), InterfaceName, "GetBufferSize");
             return (int)bufferSize;
         }
 
@@ -146,7 +178,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* pl = &hnsLatency)
             {
-                return InteropCalls.CallI(_basePtr, pl, ((void**)(*(void**)_basePtr))[5]);
+                return InteropCalls.CallI(UnsafeBasePtr, pl, ((void**)(*(void**)UnsafeBasePtr))[5]);
             }
         }
 
@@ -163,7 +195,7 @@ namespace CSCore.CoreAudioAPI
         public long GetStreamLatency()
         {
             long latency = -1;
-            CoreAudioAPIException.Try(GetStreamLatency(out latency), c, "GetStreamLatency");
+            CoreAudioAPIException.Try(GetStreamLatency(out latency), InterfaceName, "GetStreamLatency");
             return latency;
         }
 
@@ -176,7 +208,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* pndf = &numPaddingFrames)
             {
-                return InteropCalls.CallI(_basePtr, pndf, ((void**)(*(void**)_basePtr))[6]);
+                return InteropCalls.CallI(UnsafeBasePtr, pndf, ((void**)(*(void**)UnsafeBasePtr))[6]);
             }
         }
 
@@ -187,7 +219,7 @@ namespace CSCore.CoreAudioAPI
         public int GetCurrentPadding()
         {
             uint padding;
-            CoreAudioAPIException.Try(GetCurrentPaddingNative(out padding), c, "GetCurrentPadding");
+            CoreAudioAPIException.Try(GetCurrentPaddingNative(out padding), InterfaceName, "GetCurrentPadding");
             return (int)padding;
         }
 
@@ -206,19 +238,32 @@ namespace CSCore.CoreAudioAPI
         /// returns S_FALSE. If the audio engine does not support the caller-specified format or any
         /// similar format, the method sets *ppClosestMatch to NULL and returns
         /// AUDCLNT_E_UNSUPPORTED_FORMAT.</returns>
-        public unsafe int IsFormatSupportedNative(AudioClientShareMode shareMode, WaveFormat waveFormat, out WaveFormatExtensible closestMatch)
+        public unsafe int IsFormatSupportedNative(AudioClientShareMode shareMode, WaveFormat waveFormat, out WaveFormat closestMatch)
         {
             closestMatch = null;
-            var hClosestMatch = GCHandle.Alloc(closestMatch, GCHandleType.Pinned);
+            IntPtr pclosestMatch = IntPtr.Zero;
             var hWaveFormat = GCHandle.Alloc(waveFormat, GCHandleType.Pinned);
+            int result;
+            try
+            {
+                result = InteropCalls.CallI(UnsafeBasePtr, shareMode, hWaveFormat.AddrOfPinnedObject().ToPointer(),
+                    shareMode == AudioClientShareMode.Shared ? &pclosestMatch : IntPtr.Zero.ToPointer(),
+                    ((void**) (*(void**) UnsafeBasePtr))[7]);
 
-            IntPtr pclosestmatch = hClosestMatch.AddrOfPinnedObject();
-
-            var result = InteropCalls.CallI(_basePtr, shareMode, hWaveFormat.AddrOfPinnedObject().ToPointer(),
-                &pclosestmatch, ((void**)(*(void**)_basePtr))[7]);
-
-            hWaveFormat.Free();
-            hClosestMatch.Free();
+                if (pclosestMatch != IntPtr.Zero)
+                {
+                    closestMatch = (WaveFormat) Marshal.PtrToStructure(pclosestMatch, typeof (WaveFormat));
+                    if (closestMatch.ExtraSize == WaveFormatExtensible.WaveFormatExtensibleExtraSize)
+                        closestMatch =
+                            (WaveFormatExtensible) Marshal.PtrToStructure(pclosestMatch, typeof (WaveFormatExtensible));
+                }
+            }
+            finally
+            {
+                hWaveFormat.Free();
+                if(pclosestMatch != IntPtr.Zero)
+                    Marshal.FreeCoTaskMem(pclosestMatch);
+            }
 
             return result;
         }
@@ -226,7 +271,7 @@ namespace CSCore.CoreAudioAPI
         /// <summary>
         /// Checks whether the audio endpoint device supports a particular stream format.
         /// </summary>
-        public bool IsFormatSupported(AudioClientShareMode shareMode, WaveFormat waveFormat, out WaveFormatExtensible closestMatch)
+        public bool IsFormatSupported(AudioClientShareMode shareMode, WaveFormat waveFormat, out WaveFormat closestMatch)
         {
             int result = IsFormatSupportedNative(shareMode, waveFormat, out closestMatch);
             switch (result)
@@ -239,7 +284,7 @@ namespace CSCore.CoreAudioAPI
                     return false;
 
                 default:
-                    CoreAudioAPIException.Try(result, c, "IsFormatSupported");
+                    CoreAudioAPIException.Try(result, InterfaceName, "IsFormatSupported");
                     return false;
             }
         }
@@ -252,7 +297,7 @@ namespace CSCore.CoreAudioAPI
         /// <returns></returns>
         public bool IsFormatSupported(AudioClientShareMode shareMode, WaveFormat waveFormat)
         {
-            WaveFormatExtensible tmp;
+            WaveFormat tmp;
             return IsFormatSupported(shareMode, waveFormat, out tmp);
         }
 
@@ -267,7 +312,7 @@ namespace CSCore.CoreAudioAPI
         {
             IntPtr pdeviceFormat = IntPtr.Zero;
             int result = -1;
-            if ((result = InteropCalls.CallI(_basePtr, &pdeviceFormat, ((void**)(*(void**)_basePtr))[8])) == 0 && pdeviceFormat != IntPtr.Zero)
+            if ((result = InteropCalls.CallI(UnsafeBasePtr, &pdeviceFormat, ((void**)(*(void**)UnsafeBasePtr))[8])) == 0 && pdeviceFormat != IntPtr.Zero)
             {
                 deviceFormat = Marshal.PtrToStructure(pdeviceFormat, typeof(WaveFormat)) as WaveFormat;
                 if (deviceFormat != null && deviceFormat.WaveFormatTag == AudioEncoding.Extensible)
@@ -290,7 +335,7 @@ namespace CSCore.CoreAudioAPI
         public WaveFormat GetMixFormat()
         {
             WaveFormat waveFormat;
-            CoreAudioAPIException.Try(GetMixFormat(out waveFormat), c, "GetMixFormat");
+            CoreAudioAPIException.Try(GetMixFormat(out waveFormat), InterfaceName, "GetMixFormat");
             return waveFormat;
         }
 
@@ -303,7 +348,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* ddp = &hnsDefaultDevicePeriod, mdp = &hnsMinimumDevicePeriod)
             {
-                return InteropCalls.CallI(_basePtr, ddp, mdp, ((void**)(*(void**)_basePtr))[9]);
+                return InteropCalls.CallI(UnsafeBasePtr, ddp, mdp, ((void**)(*(void**)UnsafeBasePtr))[9]);
             }
         }
 
@@ -313,7 +358,7 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT</returns>
         public unsafe int StartNative()
         {
-            return InteropCalls.CallI(_basePtr, ((void**)(*(void**)_basePtr))[10]);
+            return InteropCalls.CallI(UnsafeBasePtr, ((void**)(*(void**)UnsafeBasePtr))[10]);
         }
 
         /// <summary>
@@ -321,7 +366,7 @@ namespace CSCore.CoreAudioAPI
         /// </summary>
         public void Start()
         {
-            CoreAudioAPIException.Try(StartNative(), c, "Start");
+            CoreAudioAPIException.Try(StartNative(), InterfaceName, "Start");
         }
 
         /// <summary>
@@ -330,7 +375,7 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT</returns>
         public unsafe int StopNative()
         {
-            return InteropCalls.CallI(_basePtr, ((void**)(*(void**)_basePtr))[11]);
+            return InteropCalls.CallI(UnsafeBasePtr, ((void**)(*(void**)UnsafeBasePtr))[11]);
         }
 
         /// <summary>
@@ -338,7 +383,7 @@ namespace CSCore.CoreAudioAPI
         /// </summary>
         public void Stop()
         {
-            CoreAudioAPIException.Try(StopNative(), c, "Stop");
+            CoreAudioAPIException.Try(StopNative(), InterfaceName, "Stop");
         }
 
         /// <summary>
@@ -347,7 +392,7 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT</returns>
         public unsafe int ResetNative()
         {
-            return InteropCalls.CallI(_basePtr, ((void**)(*(void**)_basePtr))[12]);
+            return InteropCalls.CallI(UnsafeBasePtr, ((void**)(*(void**)UnsafeBasePtr))[12]);
         }
 
         /// <summary>
@@ -355,7 +400,7 @@ namespace CSCore.CoreAudioAPI
         /// </summary>
         public void Reset()
         {
-            CoreAudioAPIException.Try(ResetNative(), c, "Reset");
+            CoreAudioAPIException.Try(ResetNative(), InterfaceName, "Reset");
         }
 
         /// <summary>
@@ -365,7 +410,7 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT</returns>
         public unsafe int SetEventHandleNative(IntPtr handle)
         {
-            return InteropCalls.CallI(_basePtr, handle.ToPointer(), ((void**)(*(void**)_basePtr))[13]);
+            return InteropCalls.CallI(UnsafeBasePtr, handle.ToPointer(), ((void**)(*(void**)UnsafeBasePtr))[13]);
         }
 
         /// <summary>
@@ -374,7 +419,7 @@ namespace CSCore.CoreAudioAPI
         /// </summary>
         public void SetEventHandle(IntPtr handle)
         {
-            CoreAudioAPIException.Try(SetEventHandleNative(handle), c, "SetEventHandle");
+            CoreAudioAPIException.Try(SetEventHandleNative(handle), InterfaceName, "SetEventHandle");
         }
 
         /// <summary>
@@ -387,7 +432,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* pppv = &ppv)
             {
-                return InteropCalls.CallI(_basePtr, ((void*)&riid), pppv, ((void**)(*(void**)_basePtr))[14]);
+                return InteropCalls.CallI(UnsafeBasePtr, ((void*)&riid), pppv, ((void**)(*(void**)UnsafeBasePtr))[14]);
             }
         }
 
@@ -403,7 +448,7 @@ namespace CSCore.CoreAudioAPI
         public IntPtr GetService(Guid riid)
         {
             IntPtr ptr;
-            CoreAudioAPIException.Try(GetServiceNative(riid, out ptr), c, "GetService");
+            CoreAudioAPIException.Try(GetServiceNative(riid, out ptr), InterfaceName, "GetService");
             return ptr;
         }
     }
