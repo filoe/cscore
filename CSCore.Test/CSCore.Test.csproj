@@ -199,6 +199,7 @@
     <Compile Include="CoreAudioAPI\MMDevicesTests.cs" />
     <Compile Include="DMO\DmoEffectsTests.cs" />
     <Compile Include="DMO\DmoEnumeratorTests.cs" />
+    <Compile Include="GlobalTestConfig.cs" />
     <Compile Include="MediaFoundation\BasicMediaFoundationTests.cs" />
     <Compile Include="ACM\AcmDriverTests.cs" />
     <Compile Include="MediaFoundation\MediafoundationEncoderTests.cs" />
@@ -215,6 +216,7 @@
     <Compile Include="CoreAudioAPI\AudioClientTests.cs" />
     <Compile Include="Utils\DisposableSource.cs" />
     <Compile Include="WaveInOut\WaveInTests.cs" />
+    <Compile Include="XAudio2\XAudio2Tests.cs" />
     <None Include="WaveInOut\WaveOutTests.cs" />
   </ItemGroup>
   <ItemGroup>

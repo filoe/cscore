@@ -1,35 +1,55 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace CSCore.Win32
 {
-    //((void**)(*(void**)_basePtr))[3]
+    /// <summary>
+    /// Represents a native COM object.
+    /// </summary>
     public unsafe class ComObject : IUnknown, IDisposable
     {
-        protected volatile void* _basePtr;
+        /// <summary>
+        /// Unsafe native pointer to the COM object.
+        /// </summary>
+        protected volatile void* UnsafeBasePtr;
+        private readonly object _lockObj = new object();
+        private bool _disposed = false;
 
+        /// <summary>
+        /// Native pointer to the COM object.
+        /// </summary>
         public IntPtr BasePtr
         {
-            get { return new IntPtr(_basePtr); }
-            protected set { _basePtr = value.ToPointer(); }
+            get { return new IntPtr(UnsafeBasePtr); }
+            protected set { UnsafeBasePtr = value.ToPointer(); }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ComObject"/> class.
+        /// </summary>
         public ComObject()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ComObject"/> class.
+        /// </summary>
+        /// <param name="ptr">The native pointer of the COM object.</param>
         public ComObject(IntPtr ptr)
         {
             if (ptr == IntPtr.Zero)
-                throw new ArgumentException("ptr is IntPtr.Zero");
-            _basePtr = ptr.ToPointer();
+                throw new ArgumentException("Ptr must not be IntPtr.Zero.", "ptr");
+            UnsafeBasePtr = ptr.ToPointer();
         }
 
+        /// <summary>
+        /// Queries supported interfaces/objects on a <see cref="ComObject"/>.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="ComObject"/> being requested.</typeparam>
+        /// <returns></returns>
         public T QueryInterface<T>() where T : ComObject
         {
-            return (T)Activator.CreateInstance(typeof(T), QueryInterface(typeof(T)));
+            return QueryInterface1<T>();
         }
 
         internal T QueryInterface1<T>()
@@ -37,6 +57,11 @@ namespace CSCore.Win32
             return (T)Activator.CreateInstance(typeof(T), QueryInterface(typeof(T)));
         }
 
+        /// <summary>
+        /// Retrieves a pointer to the supported interface on an object.
+        /// </summary>
+        /// <param name="type">Type of the requested <see cref="ComObject"/>.</param>
+        /// <returns></returns>
         public IntPtr QueryInterface(Type type)
         {
             IntPtr ptr;
@@ -45,58 +70,68 @@ namespace CSCore.Win32
             return ptr;
         }
 
-        int IUnknown.QueryInterface(ref Guid giid, out IntPtr ppvObject)
+        /// <summary>
+        /// Retrieves pointers to the supported interfaces on an object.
+        /// </summary>
+        /// <param name="riid">The identifier of the interface being requested.</param>
+        /// <param name="ppvObject">The address of a pointer variable that receives the interface pointer requested in the <paramref name="riid"/> parameter.</param>
+        /// <returns>This method returns S_OK if the interface is supported, and E_NOINTERFACE otherwise. If ppvObject is NULL, this method returns E_POINTER.</returns>
+        int IUnknown.QueryInterface(ref Guid riid, out IntPtr ppvObject)
         {
-            return Marshal.QueryInterface(BasePtr, ref giid, out ppvObject);
+            return Marshal.QueryInterface(BasePtr, ref riid, out ppvObject);
         }
 
+        /// <summary>
+        /// Increments the reference count for an interface on an object. This method should be called for every new copy of a pointer to an interface on an object.
+        /// </summary>
+        /// <returns>The method returns the new reference count. This value is intended to be used only for test purposes.</returns>
         int IUnknown.AddRef()
         {
             return Marshal.AddRef(BasePtr);
         }
 
+        /// <summary>
+        /// Decrements the reference count for an interface on an object.
+        /// </summary>
+        /// <returns>The method returns the new reference count. This value is intended to be used only for test purposes.</returns>
         int IUnknown.Release()
         {
             return Marshal.Release(BasePtr);
         }
 
-        private object _lockObj = new object();
-
-        private bool disposed = false;
-
+        /// <summary>
+        /// Releases the COM object.
+        /// </summary>
         public void Dispose()
         {
             lock (_lockObj)
             {
-                if (!disposed)
+                if (!_disposed)
                 {
-                    disposed = true;
+                    _disposed = true;
                     Dispose(true);
                     GC.SuppressFinalize(this);
                 }
             }
         }
 
+        /// <summary>
+        /// Releases the COM object.
+        /// </summary>
+        /// <param name="disposing">True to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (BasePtr != IntPtr.Zero)
             {
                 ((IUnknown)this).Release();
-                _basePtr = IntPtr.Zero.ToPointer();
+                UnsafeBasePtr = IntPtr.Zero.ToPointer();
             }
-        }
-
-        protected virtual bool AssertOnNoDispose()
-        {
-            return true;
         }
 
         ~ComObject()
         {
             lock (_lockObj)
             {
-                //if (!disposed)
-                    //Debug.Assert(!AssertOnNoDispose(), "ComObject.Dispose not called. Type: " + this.GetType().FullName);
                 Dispose(false);
             }
         }

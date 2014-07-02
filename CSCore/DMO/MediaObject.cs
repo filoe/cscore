@@ -1,12 +1,11 @@
-﻿using CSCore.Utils;
-using CSCore.Win32;
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
+using CSCore.Win32;
 
 namespace CSCore.DMO
 {
     /// <summary>
-    /// Represents a DMO MediaObject.
+    ///     Represents a DMO MediaObject.
     /// </summary>
     [Guid("d8ad0f58-5494-4102-97c5-ec798e59bcf4")]
     public class MediaObject : ComObject
@@ -14,22 +13,16 @@ namespace CSCore.DMO
         private const string n = "MediaObject";
 
         /// <summary>
-        /// Creates a MediaObject from any ComObjects which derives from MediaObject.
+        ///     Creates a MediaObject from its pointer.
         /// </summary>
-        /// <remarks>
-        /// Internally they IUnknown::QueryInterface method of the passed COM Object gets called.
-        /// </remarks>
-        /// <param name="comObj">ComObjects which has to get casted to a MediaObject.</param>
-        /// <returns>MediaObject</returns>
-        public static MediaObject FromComObject(ComObject comObj)
+        /// <param name="ptr">Pointer of a MediaObject.</param>
+        public MediaObject(IntPtr ptr)
+            : base(ptr)
         {
-            if (comObj == null)
-                throw new ArgumentNullException("comObj");
-            return comObj.QueryInterface<MediaObject>();
         }
 
         /// <summary>
-        /// Gets the number of input streams.
+        ///     Gets the number of input streams.
         /// </summary>
         public int InputStreamCount
         {
@@ -42,7 +35,7 @@ namespace CSCore.DMO
         }
 
         /// <summary>
-        /// Gets the number of output streams.
+        ///     Gets the number of output streams.
         /// </summary>
         public int OutputStreamCount
         {
@@ -55,29 +48,35 @@ namespace CSCore.DMO
         }
 
         /// <summary>
-        /// Creates a MediaObject from its pointer.
+        ///     Creates a MediaObject from any ComObjects which derives from MediaObject.
         /// </summary>
-        /// <param name="ptr">Pointer of a MediaObject.</param>
-        public MediaObject(IntPtr ptr)
-            : base(ptr)
+        /// <remarks>
+        ///     Internally they IUnknown::QueryInterface method of the passed COM Object gets called.
+        /// </remarks>
+        /// <param name="comObj">ComObjects which has to get casted to a MediaObject.</param>
+        /// <returns>MediaObject</returns>
+        public static MediaObject FromComObject(ComObject comObj)
         {
+            if (comObj == null)
+                throw new ArgumentNullException("comObj");
+            return comObj.QueryInterface<MediaObject>();
         }
 
         /// <summary>
-        /// Retrieves the number of input and output streams.
+        ///     Retrieves the number of input and output streams.
         /// </summary>
         /// <returns>HRESULT</returns>
         public unsafe int GetStreamCountNative(out int inputStreams, out int outputStreams)
         {
             inputStreams = outputStreams = 0;
-            fixed(void* i0 = &inputStreams, i1 = &outputStreams)
+            fixed (void* i0 = &inputStreams, i1 = &outputStreams)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, i0, i1, ((void**)(*(void**)_basePtr))[3]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, i0, i1, ((void**) (*(void**) UnsafeBasePtr))[3]);
             }
         }
 
         /// <summary>
-        /// Retrieves the number of input and output streams.
+        ///     Retrieves the number of input and output streams.
         /// </summary>
         public void GetStreamCount(out int inputStreams, out int outputStreams)
         {
@@ -87,21 +86,22 @@ namespace CSCore.DMO
         //--
 
         /// <summary>
-        /// Retrieves information about a specified input stream.
+        ///     Retrieves information about a specified input stream.
         /// </summary>
         /// <param name="inputStreamIndex">Zero-based index of an input stream on the DMO.</param>
+        /// <param name="flags">Bitwise combination of zero or more <see cref="DmoInputStreamInfoFlags" /> flags.</param>
         /// <returns>HRESULT</returns>
         public unsafe int GetInputStreamInfoNative(int inputStreamIndex, out DmoInputStreamInfoFlags flags)
         {
             flags = DmoInputStreamInfoFlags.None;
-            fixed(void* p = &flags)
+            fixed (void* p = &flags)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, inputStreamIndex, p, ((void**)(*(void**)_basePtr))[4]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, inputStreamIndex, p, ((void**) (*(void**) UnsafeBasePtr))[4]);
             }
         }
 
         /// <summary>
-        /// Retrieves information about a specified input stream.
+        ///     Retrieves information about a specified input stream.
         /// </summary>
         /// <param name="inputStreamIndex">Zero-based index of an input stream on the DMO.</param>
         public DmoInputStreamInfoFlags GetInputStreamInfo(int inputStreamIndex)
@@ -114,21 +114,22 @@ namespace CSCore.DMO
         //--
 
         /// <summary>
-        /// Retrieves information about a specified output stream.
+        ///     Retrieves information about a specified output stream.
         /// </summary>
         /// <param name="outputStreamIndex">Zero-based index of an output stream on the DMO.</param>
+        /// <param name="flags">Bitwise combination of zero or more <see cref="DmoOutputStreamInfoFlags" /> flags.</param>
         /// <returns>HRESULT</returns>
         public unsafe int GetOutputStreamInfoNative(int outputStreamIndex, out DmoOutputStreamInfoFlags flags)
         {
             flags = DmoOutputStreamInfoFlags.None;
             fixed (void* p = &flags)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, outputStreamIndex, p, ((void**)(*(void**)_basePtr))[5]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, outputStreamIndex, p, ((void**) (*(void**) UnsafeBasePtr))[5]);
             }
         }
 
         /// <summary>
-        /// Retrieves information about a specified output stream.
+        ///     Retrieves information about a specified output stream.
         /// </summary>
         /// <param name="outputStreamIndex">Zero-based index of an output stream on the DMO.</param>
         public DmoOutputStreamInfoFlags GetOutputStreamInfo(int outputStreamIndex)
@@ -141,21 +142,25 @@ namespace CSCore.DMO
         //--
 
         /// <summary>
-        /// Retrieves a preferred media type for a specified input stream.
+        ///     Retrieves a preferred media type for a specified input stream.
         /// </summary>
         /// <param name="typeIndex">Zero-based index on the set of acceptable media types.</param>
-        /// <param name="mediaType">Can be null to check whether the typeIndex argument is in range. If not, the errorcode will be DMO_E_NO_MORE_ITEMS (0x80040206).</param>
+        /// <param name="mediaType">
+        ///     Can be null to check whether the typeIndex argument is in range. If not, the errorcode will be
+        ///     DMO_E_NO_MORE_ITEMS (0x80040206).
+        /// </param>
         /// <param name="inputStreamIndex">Zero-based index of an input stream on the DMO.</param>
         /// <returns>HRESULT</returns>
         public unsafe int GetInputTypeNative(int inputStreamIndex, int typeIndex, ref MediaType? mediaType)
         {
-            void* ptr = (void*)IntPtr.Zero;
-            MediaType mt = new MediaType();
+            var ptr = (void*) IntPtr.Zero;
+            var mt = new MediaType();
 
-            if(mediaType != null)
+            if (mediaType != null)
                 ptr = &mt;
 
-            int result = InteropCalls.CalliMethodPtr(_basePtr, inputStreamIndex, typeIndex, ptr, ((void**)(*(void**)_basePtr))[6]);
+            int result = InteropCalls.CalliMethodPtr(UnsafeBasePtr, inputStreamIndex, typeIndex, ptr,
+                ((void**) (*(void**) UnsafeBasePtr))[6]);
 
             if (mediaType != null)
                 mediaType = mt;
@@ -164,7 +169,7 @@ namespace CSCore.DMO
         }
 
         /// <summary>
-        /// Retrieves a preferred media type for a specified input stream.
+        ///     Retrieves a preferred media type for a specified input stream.
         /// </summary>
         /// <param name="typeIndex">Zero-based index on the set of acceptable media types.</param>
         /// <param name="inputStreamIndex">Zero-based index of an input stream on the DMO.</param>
@@ -178,21 +183,25 @@ namespace CSCore.DMO
         //--
 
         /// <summary>
-        /// Retrieves a preferred media type for a specified output stream.
+        ///     Retrieves a preferred media type for a specified output stream.
         /// </summary>
         /// <param name="typeIndex">Zero-based index on the set of acceptable media types.</param>
-        /// <param name="mediaType">Can be null to check whether the typeIndex argument is in range. If not, the errorcode will be DMO_E_NO_MORE_ITEMS (0x80040206).</param>
+        /// <param name="mediaType">
+        ///     Can be null to check whether the typeIndex argument is in range. If not, the errorcode will be
+        ///     DMO_E_NO_MORE_ITEMS (0x80040206).
+        /// </param>
         /// <param name="outputStreamIndex">Zero-based index of an output stream on the DMO.</param>
         /// <returns>HRESULT</returns>
         public unsafe int GetOutputTypeNative(int outputStreamIndex, int typeIndex, ref MediaType? mediaType)
         {
-            void* ptr = (void*)IntPtr.Zero;
-            MediaType mt = new MediaType();
+            var ptr = (void*) IntPtr.Zero;
+            var mt = new MediaType();
 
             if (mediaType != null)
                 ptr = &mt;
 
-            int result = InteropCalls.CalliMethodPtr(_basePtr, outputStreamIndex, typeIndex, ptr, ((void**)(*(void**)_basePtr))[7]);
+            int result = InteropCalls.CalliMethodPtr(UnsafeBasePtr, outputStreamIndex, typeIndex, ptr,
+                ((void**) (*(void**) UnsafeBasePtr))[7]);
 
             if (mediaType != null)
                 mediaType = mt;
@@ -201,7 +210,7 @@ namespace CSCore.DMO
         }
 
         /// <summary>
-        /// Retrieves a preferred media type for a specified output stream.
+        ///     Retrieves a preferred media type for a specified output stream.
         /// </summary>
         /// <param name="typeIndex">Zero-based index on the set of acceptable media types.</param>
         /// <param name="outputStreamIndex">Zero-based index of an output stream on the DMO.</param>
@@ -215,7 +224,7 @@ namespace CSCore.DMO
         //--
 
         /// <summary>
-        /// The SetInputType method sets the media type on an input stream, or tests whether a media type is acceptable.
+        ///     The SetInputType method sets the media type on an input stream, or tests whether a media type is acceptable.
         /// </summary>
         /// <param name="inputStreamIndex">Zero-based index of an input stream on the DMO.</param>
         /// <param name="mediaType">The new mediatype.</param>
@@ -223,21 +232,23 @@ namespace CSCore.DMO
         /// <returns>HRESULT</returns>
         public unsafe int SetInputTypeNative(int inputStreamIndex, MediaType mediaType, SetTypeFlags flags)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr,
-                inputStreamIndex, ((void*)(&mediaType)), flags, ((void**)(*(void**)_basePtr))[8]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr,
+                inputStreamIndex, &mediaType, flags, ((void**) (*(void**) UnsafeBasePtr))[8]);
         }
 
         /// <summary>
-        /// Clears the inputtype for a specific inputStreamIndex.
+        ///     Clears the inputtype for a specific inputStreamIndex.
         /// </summary>
         /// <param name="inputStreamIndex">Zero-based index of an input stream on the DMO.</param>
         public unsafe void ClearInputType(int inputStreamIndex)
         {
-            DmoException.Try(InteropCalls.CalliMethodPtr(_basePtr, inputStreamIndex, IntPtr.Zero.ToPointer(), SetTypeFlags.Clear, ((void**)(*(void**)_basePtr))[8]), n, "SetInputType");
+            DmoException.Try(
+                InteropCalls.CalliMethodPtr(UnsafeBasePtr, inputStreamIndex, IntPtr.Zero.ToPointer(), SetTypeFlags.Clear,
+                    ((void**) (*(void**) UnsafeBasePtr))[8]), n, "SetInputType");
         }
 
         /// <summary>
-        /// The SetInputType method sets the media type on an input stream.
+        ///     The SetInputType method sets the media type on an input stream.
         /// </summary>
         /// <param name="inputStreamIndex">Zero-based index of an input stream on the DMO.</param>
         /// <param name="mediaType">The new mediatype.</param>
@@ -248,7 +259,7 @@ namespace CSCore.DMO
         }
 
         /// <summary>
-        /// The SetInputType method sets the media type on an input stream.
+        ///     The SetInputType method sets the media type on an input stream.
         /// </summary>
         /// <param name="inputStreamIndex">Zero-based index of an input stream on the DMO.</param>
         /// <param name="waveFormat">The waveformat which gets converted to the new mediatype.</param>
@@ -264,7 +275,7 @@ namespace CSCore.DMO
         }
 
         /// <summary>
-        /// Tests whether the given waveformat is supported.
+        ///     Tests whether the given waveformat is supported.
         /// </summary>
         /// <param name="inputStreamIndex">Zero-based index of an input stream on the DMO.</param>
         /// <param name="waveFormat">Waveformat</param>
@@ -282,7 +293,7 @@ namespace CSCore.DMO
         }
 
         /// <summary>
-        /// Tests whehter the given mediatype is supported.
+        ///     Tests whehter the given mediatype is supported.
         /// </summary>
         /// <param name="inputStreamIndex">Zero-based index of an input stream on the DMO.</param>
         /// <param name="mediaType">Mediatype</param>
@@ -290,9 +301,9 @@ namespace CSCore.DMO
         public bool SupportsInputFormat(int inputStreamIndex, MediaType mediaType)
         {
             int result = SetInputTypeNative(inputStreamIndex, mediaType, SetTypeFlags.TestOnly);
-            switch ((DmoErrorCodes)result)
+            switch ((DmoErrorCodes) result)
             {
-                case (DmoErrorCodes)(HResult.S_OK):
+                case (DmoErrorCodes) (HResult.S_OK):
                     return true;
 
                 case DmoErrorCodes.DMO_E_INVALIDSTREAMINDEX:
@@ -310,7 +321,7 @@ namespace CSCore.DMO
         //----
 
         /// <summary>
-        /// The SetOutputType method sets the media type on an output stream, or tests whether a media type is acceptable.
+        ///     The SetOutputType method sets the media type on an output stream, or tests whether a media type is acceptable.
         /// </summary>
         /// <param name="outputStreamIndex">Zero-based index of an output stream on the DMO.</param>
         /// <param name="mediaType">The new mediatype.</param>
@@ -318,20 +329,23 @@ namespace CSCore.DMO
         /// <returns>HRESULT</returns>
         public unsafe int SetOutputTypeNative(int outputStreamIndex, MediaType mediaType, SetTypeFlags flags)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, outputStreamIndex, (void*)&mediaType, flags, ((void**)(*(void**)_basePtr))[9]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, outputStreamIndex, &mediaType, flags,
+                ((void**) (*(void**) UnsafeBasePtr))[9]);
         }
 
         /// <summary>
-        /// Clears the outputtype for a specific mediatype
+        ///     Clears the outputtype for a specific mediatype
         /// </summary>
         /// <param name="outputStreamIndex">Zero-based index of an output stream on the DMO.</param>
         public unsafe void ClearOutputType(int outputStreamIndex)
         {
-            DmoException.Try(InteropCalls.CalliMethodPtr(_basePtr, outputStreamIndex, IntPtr.Zero.ToPointer(), SetTypeFlags.Clear, ((void**)(*(void**)_basePtr))[9]), n, "SetOutputType");
+            DmoException.Try(
+                InteropCalls.CalliMethodPtr(UnsafeBasePtr, outputStreamIndex, IntPtr.Zero.ToPointer(), SetTypeFlags.Clear,
+                    ((void**) (*(void**) UnsafeBasePtr))[9]), n, "SetOutputType");
         }
 
         /// <summary>
-        /// The SetOutputType method sets the media type on an output stream, or tests whether a media type is acceptable.
+        ///     The SetOutputType method sets the media type on an output stream, or tests whether a media type is acceptable.
         /// </summary>
         /// <param name="outputStreamIndex">Zero-based index of an output stream on the DMO.</param>
         /// <param name="mediaType">The new mediatype.</param>
@@ -344,7 +358,7 @@ namespace CSCore.DMO
         }
 
         /// <summary>
-        /// The SetOutputType method sets the media type on an output stream, or tests whether a media type is acceptable.
+        ///     The SetOutputType method sets the media type on an output stream, or tests whether a media type is acceptable.
         /// </summary>
         /// <param name="outputStreamIndex">Zero-based index of an output stream on the DMO.</param>
         /// <param name="waveFormat">The new waveformat.</param>
@@ -360,7 +374,7 @@ namespace CSCore.DMO
         }
 
         /// <summary>
-        /// Tests whether the given WaveFormat is supported as OutputFormat.
+        ///     Tests whether the given WaveFormat is supported as OutputFormat.
         /// </summary>
         /// <param name="outputStreamIndex">Zero-based index of an output stream on the DMO.</param>
         /// <param name="waveFormat">WaveFormat</param>
@@ -378,7 +392,7 @@ namespace CSCore.DMO
         }
 
         /// <summary>
-        /// Tests whether the given MediaType is supported as OutputFormat.
+        ///     Tests whether the given MediaType is supported as OutputFormat.
         /// </summary>
         /// <param name="outputStreamIndex">Zero-based index of an output stream on the DMO.</param>
         /// <param name="mediaType">MediaType</param>
@@ -386,9 +400,9 @@ namespace CSCore.DMO
         public bool SupportsOutputFormat(int outputStreamIndex, MediaType mediaType)
         {
             int result = SetOutputTypeNative(outputStreamIndex, mediaType, SetTypeFlags.TestOnly);
-            switch ((DmoErrorCodes)result)
+            switch ((DmoErrorCodes) result)
             {
-                case (DmoErrorCodes)(HResult.S_OK):
+                case (DmoErrorCodes) (HResult.S_OK):
                     return true;
 
                 case DmoErrorCodes.DMO_E_INVALIDSTREAMINDEX:
@@ -406,21 +420,21 @@ namespace CSCore.DMO
         //---
 
         /// <summary>
-        /// The GetInputCurrentType method retrieves the media type that was set for an input stream, if any.
+        ///     The GetInputCurrentType method retrieves the media type that was set for an input stream, if any.
         /// </summary>
         /// <param name="inputStreamIndex">Zero-based index of an input stream on the DMO.</param>
         /// <param name="mediaType">MediaType</param>
         /// <returns>HRESULT</returns>
         public unsafe int GetInputCurrentType(int inputStreamIndex, out MediaType mediaType)
         {
-            fixed(void* p = &mediaType)
+            fixed (void* p = &mediaType)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, inputStreamIndex, p, ((void**)(*(void**)_basePtr))[10]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, inputStreamIndex, p, ((void**) (*(void**) UnsafeBasePtr))[10]);
             }
         }
 
         /// <summary>
-        /// The GetInputCurrentType method retrieves the media type that was set for an input stream, if any.
+        ///     The GetInputCurrentType method retrieves the media type that was set for an input stream, if any.
         /// </summary>
         /// <param name="inputStreamIndex">Zero-based index of an input stream on the DMO.</param>
         public MediaType GetInputCurrentType(int inputStreamIndex)
@@ -433,7 +447,7 @@ namespace CSCore.DMO
         //---
 
         /// <summary>
-        /// The GetOutputCurrentType method retrieves the media type that was set for an output stream, if any.
+        ///     The GetOutputCurrentType method retrieves the media type that was set for an output stream, if any.
         /// </summary>
         /// <param name="outputStreamIndex">Zero-based index of an output stream on the DMO.</param>
         /// <param name="mediaType">MediaType</param>
@@ -442,12 +456,12 @@ namespace CSCore.DMO
         {
             fixed (void* p = &mediaType)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, outputStreamIndex, p, ((void**)(*(void**)_basePtr))[11]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, outputStreamIndex, p, ((void**) (*(void**) UnsafeBasePtr))[11]);
             }
         }
 
         /// <summary>
-        /// The GetOutputCurrentType method retrieves the media type that was set for an output stream, if any.
+        ///     The GetOutputCurrentType method retrieves the media type that was set for an output stream, if any.
         /// </summary>
         /// <param name="outputStreamIndex">Zero-based index of an output stream on the DMO.</param>
         public MediaType GetOutputCurrentType(int outputStreamIndex)
@@ -460,23 +474,31 @@ namespace CSCore.DMO
         //---
 
         /// <summary>
-        /// This method retrieves the buffer requirements for a specified input stream.
+        ///     This method retrieves the buffer requirements for a specified input stream.
         /// </summary>
         /// <param name="inputStreamIndex">Zero-based index of an input stream on the DMO.</param>
         /// <param name="minSize">Minimum size of an input buffer for this stream, in bytes.</param>
-        /// <param name="maxLookahead">The maximum amount of data that the DMO will hold for a lookahead, in bytes. If the DMO does not perform a lookahead on the stream, the value is zero.</param>
-        /// <param name="alignment">The required buffer alignment, in bytes. If the input stream has no alignment requirement, the value is 1.</param>
+        /// <param name="maxLookahead">
+        ///     The maximum amount of data that the DMO will hold for a lookahead, in bytes. If the DMO does
+        ///     not perform a lookahead on the stream, the value is zero.
+        /// </param>
+        /// <param name="alignment">
+        ///     The required buffer alignment, in bytes. If the input stream has no alignment requirement, the
+        ///     value is 1.
+        /// </param>
         /// <returns>HRESULT</returns>
-        public unsafe int GetInputSizeInfoNative(int inputStreamIndex, out int minSize, out int maxLookahead, out int alignment)
+        public unsafe int GetInputSizeInfoNative(int inputStreamIndex, out int minSize, out int maxLookahead,
+            out int alignment)
         {
-            fixed(void* p0 = &minSize, p1 = &maxLookahead, p2 = &alignment)
+            fixed (void* p0 = &minSize, p1 = &maxLookahead, p2 = &alignment)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, inputStreamIndex, p0, p1, p2, ((void**)(*(void**)_basePtr))[12]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, inputStreamIndex, p0, p1, p2,
+                    ((void**) (*(void**) UnsafeBasePtr))[12]);
             }
         }
 
         /// <summary>
-        /// This method retrieves the buffer requirements for a specified input stream.
+        ///     This method retrieves the buffer requirements for a specified input stream.
         /// </summary>
         /// <param name="inputStreamIndex">Zero-based index of an input stream on the DMO.</param>
         public DmoInputSizeInfo GetInputSizeInfo(int inputStreamIndex)
@@ -489,22 +511,26 @@ namespace CSCore.DMO
         //---
 
         /// <summary>
-        /// This method retrieves the buffer requirements for a specified output stream.
+        ///     This method retrieves the buffer requirements for a specified output stream.
         /// </summary>
         /// <param name="outputStreamIndex">Zero-based index of an output stream on the DMO.</param>
         /// <param name="minSize">Minimum size of an output buffer for this stream, in bytes.</param>
-        /// <param name="alignment">The required buffer alignment, in bytes. If the output stream has no alignment requirement, the value is 1.</param>
+        /// <param name="alignment">
+        ///     The required buffer alignment, in bytes. If the output stream has no alignment requirement, the
+        ///     value is 1.
+        /// </param>
         /// <returns>HRESULT</returns>
         public unsafe int GetOutputSizeInfoNative(int outputStreamIndex, out int minSize, out int alignment)
         {
             fixed (void* p0 = &minSize, p2 = &alignment)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, outputStreamIndex, p0, p2, ((void**)(*(void**)_basePtr))[13]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, outputStreamIndex, p0, p2,
+                    ((void**) (*(void**) UnsafeBasePtr))[13]);
             }
         }
 
         /// <summary>
-        /// This method retrieves the buffer requirements for a specified output stream.
+        ///     This method retrieves the buffer requirements for a specified output stream.
         /// </summary>
         /// <param name="outputStreamIndex">Zero-based index of an output stream on the DMO.</param>
         public DmoSizeInfo GetOutputSizeInfo(int outputStreamIndex)
@@ -517,21 +543,21 @@ namespace CSCore.DMO
         //---
 
         /// <summary>
-        /// Retrieves the maximum latency on a specified input stream.
+        ///     Retrieves the maximum latency on a specified input stream.
         /// </summary>
         /// <param name="inputStreamIndex">Zero-based index of an input stream on the DMO.</param>
         /// <param name="maxLatency">Receives the maximum latency. Unit = REFERENCE_TIME = 100 nanoseconds</param>
         /// <returns>HRESULT</returns>
         public unsafe int GetInputMaxLatencyNative(int inputStreamIndex, out long maxLatency)
         {
-            fixed(void* p = &maxLatency)
+            fixed (void* p = &maxLatency)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, inputStreamIndex, p, ((void**)(*(void**)_basePtr))[14]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, inputStreamIndex, p, ((void**) (*(void**) UnsafeBasePtr))[14]);
             }
         }
 
         /// <summary>
-        /// Retrieves the maximum latency on a specified input stream.
+        ///     Retrieves the maximum latency on a specified input stream.
         /// </summary>
         /// <param name="inputStreamIndex">Zero-based index of an input stream on the DMO.</param>
         /// <returns>Maximum latency. Unit = REFERENCE_TIME = 100 nanoseconds</returns>
@@ -545,18 +571,21 @@ namespace CSCore.DMO
         //---
 
         /// <summary>
-        /// Sets the maximum latency on a specified input stream. For the definition of maximum latency, see IMediaObject::GetInputMaxLatency.
+        ///     Sets the maximum latency on a specified input stream. For the definition of maximum latency, see
+        ///     IMediaObject::GetInputMaxLatency.
         /// </summary>
         /// <param name="inputStreamIndex">Zero-based index of an input stream on the DMO.</param>
         /// <param name="maxLatency">Maximum latency. Unit = REFERENCE_TIME = 100 nanoseconds</param>
         /// <returns>HRESULT</returns>
         public unsafe int SetInputMaxLatencyNative(int inputStreamIndex, long maxLatency)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, inputStreamIndex, maxLatency, ((void**)(*(void**)_basePtr))[15]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, inputStreamIndex, maxLatency,
+                ((void**) (*(void**) UnsafeBasePtr))[15]);
         }
 
         /// <summary>
-        /// Sets the maximum latency on a specified input stream. For the definition of maximum latency, see IMediaObject::GetInputMaxLatency.
+        ///     Sets the maximum latency on a specified input stream. For the definition of maximum latency, see
+        ///     IMediaObject::GetInputMaxLatency.
         /// </summary>
         /// <param name="inputStreamIndex">Zero-based index of an input stream on the DMO.</param>
         /// <param name="maxLatency">Maximum latency. Unit = REFERENCE_TIME = 100 nanoseconds</param>
@@ -568,16 +597,16 @@ namespace CSCore.DMO
         //---
 
         /// <summary>
-        /// This method flushes all internally buffered data.
+        ///     This method flushes all internally buffered data.
         /// </summary>
         /// <returns>HRESULT</returns>
         public unsafe int FlushNative()
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, ((void**)(*(void**)_basePtr))[16]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[16]);
         }
 
         /// <summary>
-        /// This method flushes all internally buffered data.
+        ///     This method flushes all internally buffered data.
         /// </summary>
         public void Flush()
         {
@@ -587,17 +616,17 @@ namespace CSCore.DMO
         //---
 
         /// <summary>
-        /// The Discontinuity method signals a discontinuity on the specified input stream.
+        ///     The Discontinuity method signals a discontinuity on the specified input stream.
         /// </summary>
         /// <param name="inputStreamIndex">Zero-based index of an input stream on the DMO.</param>
         /// <returns>HRESULT</returns>
         public unsafe int DiscontinuityNative(int inputStreamIndex)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, inputStreamIndex, ((void**)(*(void**)_basePtr))[17]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, inputStreamIndex, ((void**) (*(void**) UnsafeBasePtr))[17]);
         }
 
         /// <summary>
-        /// The Discontinuity method signals a discontinuity on the specified input stream.
+        ///     The Discontinuity method signals a discontinuity on the specified input stream.
         /// </summary>
         /// <param name="inputStreamIndex">Zero-based index of an input stream on the DMO.</param>
         public void Discontinuity(int inputStreamIndex)
@@ -608,18 +637,20 @@ namespace CSCore.DMO
         //---
 
         /// <summary>
-        /// The AllocateStreamingResources method allocates any resources needed by the DMO. Calling this method is always optional.
-        /// See http://msdn.microsoft.com/en-us/library/windows/desktop/dd406943(v=vs.85).aspx
+        ///     The AllocateStreamingResources method allocates any resources needed by the DMO. Calling this method is always
+        ///     optional.
+        ///     See http://msdn.microsoft.com/en-us/library/windows/desktop/dd406943(v=vs.85).aspx
         /// </summary>
         /// <returns>HRESULT</returns>
         public unsafe int AllocateStreamingResourcesNative()
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, ((void**)(*(void**)_basePtr))[18]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[18]);
         }
 
         /// <summary>
-        /// The AllocateStreamingResources method allocates any resources needed by the DMO. Calling this method is always optional.
-        /// See http://msdn.microsoft.com/en-us/library/windows/desktop/dd406943(v=vs.85).aspx
+        ///     The AllocateStreamingResources method allocates any resources needed by the DMO. Calling this method is always
+        ///     optional.
+        ///     See http://msdn.microsoft.com/en-us/library/windows/desktop/dd406943(v=vs.85).aspx
         /// </summary>
         public void AllocateStreamingResources()
         {
@@ -629,18 +660,18 @@ namespace CSCore.DMO
         //---
 
         /// <summary>
-        /// The FreeStreamingResources method frees resources allocated by the DMO. Calling this method is always optional.
+        ///     The FreeStreamingResources method frees resources allocated by the DMO. Calling this method is always optional.
         /// </summary>
         /// See http://msdn.microsoft.com/en-us/library/windows/desktop/dd406946(v=vs.85).aspx
         /// <returns>HREUSLT</returns>
         public unsafe int FreeStreamingResourcesNative()
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, ((void**)(*(void**)_basePtr))[19]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ((void**) (*(void**) UnsafeBasePtr))[19]);
         }
 
         /// <summary>
-        /// The FreeStreamingResources method frees resources allocated by the DMO. Calling this method is always optional.
-        /// See http://msdn.microsoft.com/en-us/library/windows/desktop/dd406946(v=vs.85).aspx
+        ///     The FreeStreamingResources method frees resources allocated by the DMO. Calling this method is always optional.
+        ///     See http://msdn.microsoft.com/en-us/library/windows/desktop/dd406946(v=vs.85).aspx
         /// </summary>
         public void FreeStreamingResources()
         {
@@ -650,8 +681,8 @@ namespace CSCore.DMO
         //---
 
         /// <summary>
-        /// The GetInputStatus method queries whether an input stream can accept more input data.
-        /// See http://msdn.microsoft.com/en-us/library/windows/desktop/dd406950(v=vs.85).aspx
+        ///     The GetInputStatus method queries whether an input stream can accept more input data.
+        ///     See http://msdn.microsoft.com/en-us/library/windows/desktop/dd406950(v=vs.85).aspx
         /// </summary>
         /// <param name="inputStreamIndex">Zero-based index of an input stream on the DMO.</param>
         /// <returns>InputStatusFlags</returns>
@@ -664,8 +695,8 @@ namespace CSCore.DMO
         }
 
         /// <summary>
-        /// The GetInputStatus method queries whether an input stream can accept more input data.
-        /// See http://msdn.microsoft.com/en-us/library/windows/desktop/dd406950(v=vs.85).aspx
+        ///     The GetInputStatus method queries whether an input stream can accept more input data.
+        ///     See http://msdn.microsoft.com/en-us/library/windows/desktop/dd406950(v=vs.85).aspx
         /// </summary>
         /// <param name="inputStreamIndex">Zero-based index of an input stream on the DMO.</param>
         /// <param name="flags">InputStatusFlags of the inputstream specified by the inputStreamIndex parameter.</param>
@@ -674,14 +705,15 @@ namespace CSCore.DMO
         {
             fixed (void* pflags = &flags)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, inputStreamIndex, pflags, ((void**)(*(void**)_basePtr))[20]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, inputStreamIndex, pflags,
+                    ((void**) (*(void**) UnsafeBasePtr))[20]);
             }
         }
 
         //---
 
         /// <summary>
-        /// Queries whether an input stream can accept more input data.
+        ///     Queries whether an input stream can accept more input data.
         /// </summary>
         /// <param name="inputStreamIndex">Zero-based index of an input stream on the DMO.</param>
         /// <returns>If the return value is True, the input stream can accept more input data.</returns>
@@ -693,7 +725,7 @@ namespace CSCore.DMO
         //----
 
         /// <summary>
-        /// Delivers a buffer to the specified input stream.
+        ///     Delivers a buffer to the specified input stream.
         /// </summary>
         /// <param name="inputStreamIndex">Zero-based index of an input stream on the DMO.</param>
         /// <param name="mediaBuffer">The mediabuffer which has to be processed.</param>
@@ -703,7 +735,7 @@ namespace CSCore.DMO
         }
 
         /// <summary>
-        /// Delivers a buffer to the specified input stream.
+        ///     Delivers a buffer to the specified input stream.
         /// </summary>
         /// <param name="inputStreamIndex">Zero-based index of an input stream on the DMO.</param>
         /// <param name="mediaBuffer">The mediabuffer which has to be processed.</param>
@@ -714,40 +746,55 @@ namespace CSCore.DMO
         }
 
         /// <summary>
-        /// Delivers a buffer to the specified input stream.
+        ///     Delivers a buffer to the specified input stream.
         /// </summary>
         /// <param name="inputStreamIndex">Zero-based index of an input stream on the DMO.</param>
         /// <param name="mediaBuffer">The mediabuffer which has to be processed.</param>
         /// <param name="flags">Flags to describe the mediabuffer.</param>
-        /// <param name="timestamp">Time stamp that specifies the start time of the data in the buffer. If the buffer has a valid time stamp, set the Time flag in the flags parameter.</param>
-        /// <param name="timeduration">Reference time specifying the duration of the data in the buffer. If the buffer has a valid time stamp, set the TimeLength flag in the flags parameter.</param>
-        public unsafe void ProcessInput(int inputStreamIndex, IMediaBuffer mediaBuffer, InputDataBufferFlags flags, long timestamp, long timeduration)
+        /// <param name="timestamp">
+        ///     Time stamp that specifies the start time of the data in the buffer. If the buffer has a valid
+        ///     time stamp, set the Time flag in the flags parameter.
+        /// </param>
+        /// <param name="timeduration">
+        ///     Reference time specifying the duration of the data in the buffer. If the buffer has a valid
+        ///     time stamp, set the TimeLength flag in the flags parameter.
+        /// </param>
+        public void ProcessInput(int inputStreamIndex, IMediaBuffer mediaBuffer, InputDataBufferFlags flags,
+            long timestamp, long timeduration)
         {
             int result = ProcessInputNative(inputStreamIndex, mediaBuffer, flags, timestamp, timeduration);
-            if (result == (int)HResult.S_FALSE)
+            if (result == (int) HResult.S_FALSE)
                 return;
 
             DmoException.Try(result, n, "ProcessInput");
         }
 
         /// <summary>
-        /// Delivers a buffer to the specified input stream.
+        ///     Delivers a buffer to the specified input stream.
         /// </summary>
         /// <param name="inputStreamIndex">Zero-based index of an input stream on the DMO.</param>
         /// <param name="mediaBuffer">The mediabuffer which has to be processed.</param>
         /// <param name="flags">Flags to describe the mediabuffer.</param>
-        /// <param name="timestamp">Time stamp that specifies the start time of the data in the buffer. If the buffer has a valid time stamp, set the Time flag in the flags parameter.</param>
-        /// <param name="timeduration">Reference time specifying the duration of the data in the buffer. If the buffer has a valid time stamp, set the TimeLength flag in the flags parameter.</param>
+        /// <param name="timestamp">
+        ///     Time stamp that specifies the start time of the data in the buffer. If the buffer has a valid
+        ///     time stamp, set the Time flag in the flags parameter.
+        /// </param>
+        /// <param name="timeduration">
+        ///     Reference time specifying the duration of the data in the buffer. If the buffer has a valid
+        ///     time stamp, set the TimeLength flag in the flags parameter.
+        /// </param>
         /// <returns>HRESULT</returns>
-        public unsafe int ProcessInputNative(int inputStreamIndex, IMediaBuffer mediaBuffer, InputDataBufferFlags flags, long timestamp, long timeduration)
+        public unsafe int ProcessInputNative(int inputStreamIndex, IMediaBuffer mediaBuffer, InputDataBufferFlags flags,
+            long timestamp, long timeduration)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, inputStreamIndex, mediaBuffer, flags, timestamp, timeduration, ((void**)(*(void**)_basePtr))[21]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, inputStreamIndex, mediaBuffer, flags, timestamp, timeduration,
+                ((void**) (*(void**) UnsafeBasePtr))[21]);
         }
 
         //---
 
         /// <summary>
-        /// Generates output from the current input data.
+        ///     Generates output from the current input data.
         /// </summary>
         /// <param name="flags">Flags that specify output processing requests</param>
         /// <param name="buffers">Array which contains the output buffers.</param>
@@ -757,52 +804,63 @@ namespace CSCore.DMO
         }
 
         /// <summary>
-        /// Generates output from the current input data.
+        ///     Generates output from the current input data.
         /// </summary>
         /// <param name="flags">Flags that specify output processing requests</param>
         /// <param name="buffers">Array which contains the output buffers.</param>
         /// <param name="bufferCount">Number of output buffers.</param>
-        public unsafe void ProcessOutput(ProcessOutputFlags flags, DmoOutputDataBuffer[] buffers, int bufferCount)
+        public void ProcessOutput(ProcessOutputFlags flags, DmoOutputDataBuffer[] buffers, int bufferCount)
         {
-            int status = -1;
+            int status;
 
             int result = ProcessOutputNative(flags, bufferCount, buffers, out status);
-            if (result == (int)HResult.S_FALSE)
+            if (result == (int) HResult.S_FALSE)
                 return;
             DmoException.Try(result, n, "ProcessOutput");
         }
 
         /// <summary>
-        /// Generates output from the current input data.
+        ///     Generates output from the current input data.
         /// </summary>
         /// <param name="flags">Flags that specify output processing requests</param>
         /// <param name="buffers">Array which contains the output buffers.</param>
         /// <param name="bufferCount">Number of output buffers.</param>
+        /// <param name="status">Receives a reserved value (zero). The application should ignore this value.</param>
         /// <returns>HREUSLT</returns>
-        public unsafe int ProcessOutputNative(ProcessOutputFlags flags, int bufferCount, DmoOutputDataBuffer[] buffers, out int status)
+        public unsafe int ProcessOutputNative(ProcessOutputFlags flags, int bufferCount, DmoOutputDataBuffer[] buffers,
+            out int status)
         {
             fixed (void* pstatus = &status)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, flags, bufferCount, buffers, pstatus, ((void**)(*(void**)_basePtr))[22]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, flags, bufferCount, buffers, pstatus,
+                    ((void**) (*(void**) UnsafeBasePtr))[22]);
             }
         }
 
         //---
 
         /// <summary>
-        /// acquires or releases a lock on the DMO. Call this method to keep the DMO serialized when performing multiple operations.
+        ///     acquires or releases a lock on the DMO. Call this method to keep the DMO serialized when performing multiple
+        ///     operations.
         /// </summary>
-        /// <param name="bLock">Value that specifies whether to acquire or release the lock. If the value is non-zero, a lock is acquired. If the value is zero, the lock is released.</param>
+        /// <param name="bLock">
+        ///     Value that specifies whether to acquire or release the lock. If the value is non-zero, a lock is
+        ///     acquired. If the value is zero, the lock is released.
+        /// </param>
         /// <returns>HRESULT</returns>
         public unsafe int LockNative(long bLock)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, bLock, ((void**)(*(void**)_basePtr))[23]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, bLock, ((void**) (*(void**) UnsafeBasePtr))[23]);
         }
 
         /// <summary>
-        /// acquires or releases a lock on the DMO. Call this method to keep the DMO serialized when performing multiple operations.
+        ///     acquires or releases a lock on the DMO. Call this method to keep the DMO serialized when performing multiple
+        ///     operations.
         /// </summary>
-        /// <param name="bLock">Value that specifies whether to acquire or release the lock. If the value is non-zero, a lock is acquired. If the value is zero, the lock is released.</param>
+        /// <param name="bLock">
+        ///     Value that specifies whether to acquire or release the lock. If the value is non-zero, a lock is
+        ///     acquired. If the value is zero, the lock is released.
+        /// </param>
         public void Lock(long bLock)
         {
             DmoException.Try(LockNative(bLock), n, "Lock");

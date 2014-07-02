@@ -1,16 +1,16 @@
 ﻿#define static_buffer_array
 
-//#define static_buffer_queue
+//define static_buffer_queue
 using System;
-using System.Threading;
+using System.Collections.Generic;
 
 namespace CSCore.Utils.Buffer
 {
-    public class FixedSizeBuffer<T> : IDisposable //optional auch von System.IO.Stream ableiten
+    public class FixedSizeBuffer<T> : IDisposable
     {
 #if static_buffer_queue
-        int _bufferSize;
-        Queue<T> _queue;
+        private readonly int _bufferSize;
+        private Queue<T> _queue;
         public FixedSizeBuffer(int bufferSize)
         {
             _queue = new Queue<T>();
@@ -50,11 +50,11 @@ namespace CSCore.Utils.Buffer
         }
 #endif
 #if static_buffer_array
-        private T[] _buffer; //buffer welcher immer wieder überschrieben wird
-        private int _bufferedBytes = 0; //anzahl der vorhandenen Bytes
-        private int _writeOffset = 0; //Schreibeoffset im Buffer
-        private int _readOffset = 0; //Leseoffset im Buffer
-        private object _lockObj = new object();
+        private T[] _buffer; 
+        private int _bufferedBytes;
+        private int _writeOffset;
+        private int _readOffset;
+        private readonly object _lockObj = new object();
 
         public FixedSizeBuffer(int bufferSize)
         {

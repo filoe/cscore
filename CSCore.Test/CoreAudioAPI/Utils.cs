@@ -40,6 +40,14 @@ namespace CSCore.Test.CoreAudioAPI
             }
         }
 
+        public static MMDevice GetDefaultCaptureDevice()
+        {
+            using (var enumerator = new MMDeviceEnumerator())
+            {
+                return enumerator.GetDefaultAudioEndpoint(DataFlow.Capture, Role.Console);
+            }
+        }
+
         public static AudioClient CreateDefaultRenderClient()
         {
             using (var enumerator = new MMDeviceEnumerator())

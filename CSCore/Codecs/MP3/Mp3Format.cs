@@ -4,50 +4,64 @@ using System.Text;
 
 namespace CSCore.Codecs.MP3
 {
+    /// <summary>
+    /// The <see cref="Mp3Format"/> class describes an MPEG Audio Layer-3 (MP3) audio format. 
+    /// </summary>
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 2)]
-    public class MP3Format : WaveFormat
+    public class Mp3Format : WaveFormat
     {
-        public Mp3FormatId _id;
-        public Mp3PaddingFlags _flags;
-        public ushort _blockSize;
-        public ushort _framesPerBlock;
-        public ushort _codecDelay;
+        /// <summary>
+        /// Set this member to <see cref="Mp3FormatId.Mpeg"/>.
+        /// </summary>
+        public Mp3FormatId Id;
 
+        /// <summary>
+        /// Indicates whether padding is used to adjust the average bitrate to the sampling rate. 
+        /// </summary>
+        public Mp3PaddingFlags Flags;
+
+        /// <summary>
+        /// Block size in bytes. This value equals the frame length in bytes x <see cref="FramesPerBlock"/>. For MP3 audio, the frame length is calculated as follows: 144 x (bitrate / sample rate) + padding.
+        /// </summary>
+        public ushort BlockSize;
+
+        /// <summary>
+        /// Number of audio frames per block.
+        /// </summary>
+        public ushort FramesPerBlock;
+
+        /// <summary>
+        /// Encoder delay in samples. If you do not know this value, set this structure member to zero.
+        /// </summary>
+        public ushort CodecDelay;
+
+        /// <summary>
+        /// MPEGLAYER3_WFX_EXTRA_BYTES
+        /// </summary>
         private const int Mp3WaveFormatExtraBytes = 12;
 
-        public MP3Format(int sampleRate, int channels, int blockSize, int bitRate)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Mp3Format"/> class.
+        /// </summary>
+        /// <param name="sampleRate">Sample rate in Hz.</param>
+        /// <param name="channels">Number of channels.</param>
+        /// <param name="blockSize">Block size in bytes. This value equals the frame length in bytes x <see cref="FramesPerBlock"/>. For MP3 audio, the frame length is calculated as follows: 144 x (bitrate / sample rate) + padding.</param>
+        /// <param name="bitRate">Bitrate.</param>
+        public Mp3Format(int sampleRate, int channels, int blockSize, int bitRate)
             : base(sampleRate, 0, channels, AudioEncoding.MpegLayer3, Mp3WaveFormatExtraBytes)
         {
             if (bitRate < 0)
                 throw new ArgumentOutOfRangeException("bitRate");
 
-            _bytesPerSecond = bitRate / 8;
-            blockAlign = 1; // must be 1
+            BytesPerSecond = bitRate / 8;
+            BlockAlign = 1; // must be 1
 
-            extraSize = Mp3WaveFormatExtraBytes;
-            _id = Mp3FormatId.Mpeg;
-            _flags = Mp3PaddingFlags.PaddingIso;
-            blockSize = (ushort)blockSize;
-            _framesPerBlock = 1;
-            _codecDelay = 0;
+            ExtraSize = Mp3WaveFormatExtraBytes;
+            Id = Mp3FormatId.Mpeg;
+            Flags = Mp3PaddingFlags.PaddingIso;
+            BlockSize = (ushort)blockSize;
+            FramesPerBlock = 1;
+            CodecDelay = 0;
         }
-    }
-
-    /// <summary>
-    /// Padding Flags
-    /// </summary>
-    [Flags]
-    public enum Mp3PaddingFlags
-    {
-        PaddingIso = 0,
-        PaddingOn = 1,
-        PaddingOff = 2,
-    }
-
-    public enum Mp3FormatId : ushort
-    {
-        Unknown = 0,
-        Mpeg = 1,
-        ConstFrameSize = 2
     }
 }

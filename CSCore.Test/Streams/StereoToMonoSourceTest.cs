@@ -10,7 +10,7 @@ namespace CSCore.Test.Streams
     [TestClass]
     public class StereoToMonoSourceTest
     {
-        const string testfile = @"C:\Temp\test.mp3";
+        const string testfile = GlobalTestConfig.testMP3;
 
         [TestMethod]
         [TestCategory("Streams")]
@@ -33,7 +33,7 @@ namespace CSCore.Test.Streams
             soundOut.Initialize(monoSource.ToWaveSource(16));
             soundOut.Play();
 
-            Thread.Sleep((int)Math.Min(source.GetMilliseconds(source.Length), 60000));
+            Thread.Sleep((int)Math.Min(source.GetMilliseconds(source.Length), 20000));
 
             soundOut.Dispose();
         }

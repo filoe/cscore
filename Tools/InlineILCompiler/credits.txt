@@ -1,0 +1,2 @@
+Thanks to roylawliet and Mike Stall.
+See http://www.codeproject.com/Articles/438868/Inline-MSIL-in-Csharp-VB-NET-and-Generic-Pointers

@@ -1,27 +1,39 @@
 ﻿using CSCore.MediaFoundation;
-using CSCore.Win32;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace CSCore.Codecs.AAC
 {
-    public class AACEncoder : MediaFoundationEncoder
+    /// <summary>
+    /// Provides an encoder for encoding raw waveform-audio data to the AAC (Advanced Audio Codec) format.
+    /// </summary>
+    public class AacEncoder : MediaFoundationEncoder
     {
+// ReSharper disable once InconsistentNaming
         private static readonly Guid MF_MT_AAC_AUDIO_PROFILE_LEVEL_INDICATION = new Guid("7632F0E6-9538-4d61-ACDA-EA29C8C14456");
-        private MFAttributes outputTypeAttributes;
+        private MFAttributes _outputTypeAttributes;
 
-        public AACEncoder(Stream targetStream, WaveFormat sourceFormat)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AacEncoder"/> class.
+        /// </summary>
+        /// <param name="sourceFormat"><see cref="WaveFormat"/> of the audio data which gets encoded.</param>
+        /// <param name="targetStream"><see cref="Stream"/> which should be used to save the encoded data in.</param>
+        public AacEncoder(WaveFormat sourceFormat, Stream targetStream)
             : this(sourceFormat, targetStream, 192000, TranscodeContainerTypes.MFTranscodeContainerType_MPEG4)
         {
         }
 
-        public AACEncoder(WaveFormat sourceFormat, Stream targetStream, int defaultBitrate, Guid containerType)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AacEncoder"/> class.
+        /// </summary>
+        /// <param name="sourceFormat"><see cref="WaveFormat"/> of the audio data which gets encoded.</param>
+        /// <param name="targetStream"><see cref="Stream"/> which should be used to save the encoded data in.</param>
+        /// <param name="defaultBitrate">Default samplerate. Use 192000 as the default value.</param>
+        /// <param name="containerType">Guid of the container type. Use <see cref="TranscodeContainerTypes.MFTranscodeContainerType_MPEG4"/> as the default container.</param>
+        public AacEncoder(WaveFormat sourceFormat, Stream targetStream, int defaultBitrate, Guid containerType)
         {
             if (sourceFormat == null)
-                throw new ArgumentNullException("sourceForamt");
+                throw new ArgumentNullException("sourceFormat");
 
             if (targetStream == null)
                 throw new ArgumentNullException("targetStream");
@@ -49,51 +61,34 @@ namespace CSCore.Codecs.AAC
         {
             get
             {
-                if (outputTypeAttributes == null && OutputMediaType != null)
+                if (_outputTypeAttributes == null && OutputMediaType != null)
                 {
-                    outputTypeAttributes = OutputMediaType.QueryInterface<MFAttributes>();
+                    _outputTypeAttributes = OutputMediaType.QueryInterface<MFAttributes>();
                 }
                 else if (OutputMediaType == null)
                 {
                     throw new InvalidOperationException("No set outputmediatype.");
                 }
-                return outputTypeAttributes;
+                return _outputTypeAttributes;
             }
         }
 
-        public AACAudioProfileLevelIndication AudioProfileLevelIndication
+        /// <summary>
+        /// Gets or sets the audio profile and level of an Advanced Audio Coding (AAC) stream.
+        /// </summary>
+        /// <remarks>
+        /// This attribute contains the value of the audioProfileLevelIndication field, as defined by ISO/IEC 14496-3.
+        /// </remarks>
+        public AacAudioProfileLevelIndication AudioProfileLevelIndication
         {
             get
             {
-                return (AACAudioProfileLevelIndication)OutputTypeAttributes.GetUINT32(MF_MT_AAC_AUDIO_PROFILE_LEVEL_INDICATION);
+                return (AacAudioProfileLevelIndication)OutputTypeAttributes.GetUINT32(MF_MT_AAC_AUDIO_PROFILE_LEVEL_INDICATION);
             }
             set
             {
-                OutputTypeAttributes.Set<int>(MF_MT_AAC_AUDIO_PROFILE_LEVEL_INDICATION, (int)value);
+                OutputTypeAttributes.Set(MF_MT_AAC_AUDIO_PROFILE_LEVEL_INDICATION, (int)value);
             }
         }
-    }
-
-    /// <summary>
-    /// Specifies the audio profile and level of an Advanced Audio Coding (AAC) stream.
-    /// AACProfile_L2_0x29 is the default setting.
-    /// http://msdn.microsoft.com/en-us/library/windows/desktop/dd319560(v=vs.85).aspx
-    /// </summary>
-    public enum AACAudioProfileLevelIndication
-    {
-        /// <summary>
-        /// Default
-        /// </summary>
-        AACProfile_L2_0x29 = 0x29,
-        AACProfile_L4_0x2A = 0x2A,
-        AACProfile_L5_0x2B = 0x2B,
-        HighEfficiencyAACProfile_L2_0x2C = 0x2C,
-        HighEfficiencyAACProfile_L3_0x2D = 0x2D,
-        HighEfficiencyAACProfile_L4_0x2E = 0x2E,
-        HighEfficiencyAACProfile_L5_0x2F = 0x2F,
-        ReservedForIsoUse_0x30 = 0x30,
-        ReservedForIsoUse_0x31 = 0x31,
-        ReservedForIsoUse_0x32 = 0x32,
-        ReservedForIsoUse_0x33 = 0x33
     }
 }

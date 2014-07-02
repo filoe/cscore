@@ -52,7 +52,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* p = &count)
             {
-                return InteropCalls.CallI(_basePtr, p, ((void**)(*(void**)_basePtr))[3]);
+                return InteropCalls.CallI(UnsafeBasePtr, p, ((void**)(*(void**)UnsafeBasePtr))[3]);
             }
         }
 
@@ -60,15 +60,13 @@ namespace CSCore.CoreAudioAPI
         /// The GetSession method gets the audio session specified by an audio session number.
         /// </summary>
         /// <param name="index">The session number. If there are n sessions, the sessions are numbered from 0 to n – 1. To get the number of sessions, call the GetCount method.</param>
+        /// <param name="session">The <see cref="AudioSessionControl"/> of the specified session number.</param>
         /// <returns>HRESULT</returns>
         public unsafe int GetSessionNative(int index, out AudioSessionControl session)
         {
             IntPtr ptr = IntPtr.Zero;    
-            int result =  InteropCalls.CallI(_basePtr, index, &ptr, ((void**)(*(void**)_basePtr))[4]);
-            if (ptr == IntPtr.Zero)
-                session = null;
-            else
-                session = new AudioSessionControl(ptr);
+            int result =  InteropCalls.CallI(UnsafeBasePtr, index, &ptr, ((void**)(*(void**)UnsafeBasePtr))[4]);
+            session = ptr == IntPtr.Zero ? null : new AudioSessionControl(ptr);
             return result;
         }
 

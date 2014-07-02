@@ -8,14 +8,13 @@ using System.Threading;
 
 namespace CSCore.Streams
 {
-    [Obsolete("Still experimental.")]
     public class BufferSource : WaveAggregatorBase
     {
         private readonly int _bufferSize;
         private readonly Thread _bufferThread;
         private readonly Object _lockObject;
 
-        private FixedSizeBuffer<byte> _buffer;
+        private readonly FixedSizeBuffer<byte> _buffer;
         private bool _disposing = false;
 
         /// <param name="source"></param>

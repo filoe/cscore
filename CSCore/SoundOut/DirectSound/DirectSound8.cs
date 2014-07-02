@@ -18,7 +18,7 @@ namespace CSCore.SoundOut.DirectSound
             certified = DSCertification.Uncertified;
             fixed (void* pcertified = &certified)
             {
-                var result = InteropCalls.CalliMethodPtr(_basePtr, pcertified, ((void**)(*(void**)_basePtr))[11]);
+                var result = InteropCalls.CalliMethodPtr(UnsafeBasePtr, pcertified, ((void**)(*(void**)UnsafeBasePtr))[11]);
                 return result;
             }
         }

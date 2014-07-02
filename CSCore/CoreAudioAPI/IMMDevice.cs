@@ -10,7 +10,7 @@ namespace CSCore.CoreAudioAPI
     public interface IMMDevice : IUnknown
     {
         //http://msdn.microsoft.com/en-us/library/windows/desktop/dd371405(v=vs.85).aspx
-        int Activate(Guid iid, ExecutionContext clsctx, IntPtr activationParams/*zero*/, [Out]out IntPtr pinterface);
+        int Activate(Guid iid, CLSCTX clsctx, IntPtr activationParams/*zero*/, [Out]out IntPtr pinterface);
 
         int OpenPropertyStore(StorageAccess access, [Out] out IPropertyStore propertystore);
 

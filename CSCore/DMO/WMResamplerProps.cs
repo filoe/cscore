@@ -1,6 +1,6 @@
-﻿using CSCore.Win32;
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
+using CSCore.Win32;
 
 namespace CSCore.DMO
 {
@@ -13,10 +13,12 @@ namespace CSCore.DMO
         }
 
         /// <summary>
-        /// Specifies the quality of the output.
+        ///     Specifies the quality of the output.
         /// </summary>
-        /// <param name="quality">Specifies the quality of the output. The valid range is 1 to 60,
-        /// inclusive.</param>
+        /// <param name="quality">
+        ///     Specifies the quality of the output. The valid range is 1 to 60,
+        ///     inclusive.
+        /// </param>
         public void SetHalfFilterLength(int quality)
         {
             if (quality < 1 || quality > 60)
@@ -25,36 +27,39 @@ namespace CSCore.DMO
         }
 
         /// <summary>
-        /// See http://msdn.microsoft.com/en-us/library/windows/desktop/ff819252(v=vs.85).aspx
+        ///     See http://msdn.microsoft.com/en-us/library/windows/desktop/ff819252(v=vs.85).aspx
         /// </summary>
         public void SetUserChannelMtx(float[] channelConversitionMatrix)
         {
             if (channelConversitionMatrix == null)
                 throw new ArgumentNullException("channelConversitionMatrix");
 
-            DmoException.Try(SetUserChannelMtxNative(channelConversitionMatrix), "IWMResamplerProps", "SetUserChannelMtxNative");
+            DmoException.Try(SetUserChannelMtxNative(channelConversitionMatrix), "IWMResamplerProps",
+                "SetUserChannelMtxNative");
         }
 
         /// <summary>
-        /// Specifies the quality of the output.
+        ///     Specifies the quality of the output.
         /// </summary>
-        /// <param name="quality">Specifies the quality of the output. The valid range is 1 to 60,
-        /// inclusive.</param>
+        /// <param name="quality">
+        ///     Specifies the quality of the output. The valid range is 1 to 60,
+        ///     inclusive.
+        /// </param>
         /// <returns>HRESULT</returns>
         public unsafe int SetHalfFilterLengthNative(int quality)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, quality, ((void**)(*(void**)_basePtr))[3]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, quality, ((void**) (*(void**) UnsafeBasePtr))[3]);
         }
 
         /// <summary>
-        /// http://msdn.microsoft.com/en-us/library/windows/desktop/ff819252(v=vs.85).aspx
+        ///     http://msdn.microsoft.com/en-us/library/windows/desktop/ff819252(v=vs.85).aspx
         /// </summary>
         /// <returns>HRESULT</returns>
         public unsafe int SetUserChannelMtxNative(float[] channelConversitionMatrix)
         {
             fixed (void* pccm = &channelConversitionMatrix[0])
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, pccm, ((void**)(*(void**)_basePtr))[4]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, pccm, ((void**) (*(void**) UnsafeBasePtr))[4]);
             }
         }
     }

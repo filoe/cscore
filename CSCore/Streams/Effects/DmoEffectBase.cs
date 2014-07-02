@@ -18,13 +18,13 @@ namespace CSCore.Streams.Effects
     {
         private Object _comObj;
         private TDXEffect _effect;
-        private bool _isEnabled;
+        private bool _isEnabled = true;
 
         /// <summary>
         /// Creates a new instance of <see cref="DmoEffectBase{TDXEffect,TDXEffectStruct}"/> class.
         /// </summary>
         /// <param name="source">The base source, which feeds the effect with data.</param>
-        public DmoEffectBase(IWaveSource source)
+        protected DmoEffectBase(IWaveSource source)
             : base(source)
         {
             Initialize();
@@ -99,8 +99,7 @@ namespace CSCore.Streams.Effects
         {
             if (IsEnabled)
                 return base.Read(buffer, offset, count);
-            else
-                return BaseStream.Read(buffer, offset, count);
+            return BaseStream.Read(buffer, offset, count);
         }
     }
 }

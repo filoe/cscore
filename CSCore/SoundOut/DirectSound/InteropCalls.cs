@@ -1,4 +1,6 @@
-﻿using CSCore.Utils;
+﻿#pragma warning disable 1591
+
+using CSCore.Utils;
 using System;
 
 namespace CSCore.SoundOut.DirectSound
@@ -121,3 +123,5 @@ namespace CSCore.SoundOut.DirectSound
         }
     }
 }
+
+#pragma warning restore 1591

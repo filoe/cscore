@@ -1,3 +1,5 @@
+#pragma warning disable 1591
+
 using System;
 using CSCore.Utils;
 
@@ -31,7 +33,8 @@ namespace CSCore.XAudio2
         }
 
         [CSCalli]
-        internal static unsafe int CallI(void* _basePtr, int effectIndex, IntPtr pParamters, int parametersByteSize, int operationSet, void* p)
+        internal static unsafe int CallI(void* _basePtr, int effectIndex, IntPtr pParamters, int parametersByteSize,
+            int operationSet, void* p)
         {
             throw new NotImplementedException();
         }
@@ -49,7 +52,8 @@ namespace CSCore.XAudio2
         }
 
         [CSCalli]
-        internal static unsafe int CallI(void* _basePtr, void* p1, FilterParameters* filterParameters, int operationSet, void* p2)
+        internal static unsafe int CallI(void* _basePtr, void* p1, FilterParameters* filterParameters, int operationSet,
+            void* p2)
         {
             throw new NotImplementedException();
         }
@@ -67,13 +71,15 @@ namespace CSCore.XAudio2
         }
 
         [CSCalli]
-        internal static unsafe int CallI(void* _basePtr, void* p1, int sourceChannels, int destinationChannels, void* p2, int operationSet, void* p3)
+        internal static unsafe int CallI(void* _basePtr, void* p1, int sourceChannels, int destinationChannels, void* p2,
+            int operationSet, void* p3)
         {
             throw new NotImplementedException();
         }
 
         [CSCalli]
-        internal static unsafe int CallI(void* _basePtr, void* p1, int sourceChannels, int destinationChannels, void* p2, void* p3)
+        internal static unsafe int CallI(void* _basePtr, void* p1, int sourceChannels, int destinationChannels, void* p2,
+            void* p3)
         {
             throw new NotImplementedException();
         }
@@ -97,31 +103,36 @@ namespace CSCore.XAudio2
         }
 
         [CSCalli]
-        internal static unsafe int CallI(void* _basePtr, void* ptr, VoiceFlags flags, float maxFrequencyRatio, void* p1, void* p2, void* p3, void* p4)
+        internal static unsafe int CallI(void* _basePtr, void* ptr, VoiceFlags flags, float maxFrequencyRatio, void* p1,
+            void* p2, void* p3, void* p4)
         {
             throw new NotImplementedException();
         }
 
         [CSCalli]
-        internal static unsafe int CallI(void* _basePtr, void* ptr, IntPtr sourceFormat, VoiceFlags flags, float maxFrequencyRatio, void* p1, void* p2, void* p3, void* p4)
+        internal static unsafe int CallI(void* _basePtr, void* ptr, IntPtr sourceFormat, VoiceFlags flags,
+            float maxFrequencyRatio, void* p1, void* p2, void* p3, void* p4)
         {
             throw new NotImplementedException();
         }
 
         [CSCalli]
-        internal static unsafe int CallI(void* _basePtr, void* ptr, IntPtr sourceFormat, VoiceFlags flags, float maxFrequencyRatio, IXAudio2VoiceCallback voiceCallback, void* p1, void* p2, void* p3)
+        internal static unsafe int CallI(void* _basePtr, void* ptr, IntPtr sourceFormat, VoiceFlags flags,
+            float maxFrequencyRatio, IXAudio2VoiceCallback voiceCallback, void* p1, void* p2, void* p3)
         {
             throw new NotImplementedException();
         }
 
         [CSCalli]
-        public static unsafe int CallI(void* basePtr, void* filterParameters, int sourceChannels, int parametersByteSize, VoiceFlags maxFrequencyRatio, int processingStage, void* p3, void* p4, void* p5)
+        public static unsafe int CallI(void* basePtr, void* filterParameters, int sourceChannels, int parametersByteSize,
+            VoiceFlags maxFrequencyRatio, int processingStage, void* p3, void* p4, void* p5)
         {
             throw new NotImplementedException();
         }
 
         [CSCalli]
-        internal static unsafe int CallI(void* _basePtr, void* ptr, int inputChannels, int inputSampleRate, int flags, void* p1, void* p2, AudioStreamCategory streamCategory, void* p3)
+        internal static unsafe int CallI(void* _basePtr, void* ptr, int inputChannels, int inputSampleRate, int flags,
+            void* p1, void* p2, AudioStreamCategory streamCategory, void* p3)
         {
             throw new NotImplementedException();
         }
@@ -181,15 +192,19 @@ namespace CSCore.XAudio2
         }
 
         [CSCalli]
-        internal static unsafe int CallI(void* _basePtr, void* ptr, int inputChannels, int inputSampleRate, int flags, void* p1, void* p2, void* p3)
+        internal static unsafe int CallI(void* _basePtr, void* ptr, int inputChannels, int inputSampleRate, int flags,
+            void* p1, void* p2, void* p3)
         {
             throw new NotImplementedException();
         }
 
         [CSCalli]
-        internal static unsafe int CallI(void* _basePtr, void* ptr, int inputChannels, int inputSampleRate, int flags, int device, void* p1, void* p2)
+        internal static unsafe int CallI(void* _basePtr, void* ptr, int inputChannels, int inputSampleRate, int flags,
+            int device, void* p1, void* p2)
         {
             throw new NotImplementedException();
         }
     }
 }
+
+#pragma warning restore 1591

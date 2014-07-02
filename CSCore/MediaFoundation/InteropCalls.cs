@@ -1,9 +1,8 @@
-﻿using CSCore.Utils;
+﻿#pragma warning disable 1591
+
+using CSCore.Utils;
 using CSCore.Win32;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSCore.MediaFoundation
 {
@@ -203,3 +202,4 @@ namespace CSCore.MediaFoundation
         }
     }
 }
+#pragma warning restore 1591

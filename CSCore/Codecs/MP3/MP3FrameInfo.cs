@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CSCore.Codecs.MP3
 {
-    public class MP3FrameInfo
+    internal class Mp3FrameInfo
     {
         public long StreamPosition;
         public int SampleIndex;

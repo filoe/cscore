@@ -5,27 +5,22 @@ namespace CSCore.Utils
 {
     public unsafe class BitReader : IDisposable
     {
-        private GCHandle _hBuffer;
-        private byte* _buffer, _storedBuffer;
+        private readonly byte* _storedBuffer;
         private int _bitoffset;
+        private byte* _buffer;
         private uint _cache;
+        private GCHandle _hBuffer;
         private int _position;
-
-        protected internal uint Cache { get { return _cache; } }
-
-        public byte* Buffer { get { return _storedBuffer; } }
-
-        public int Position { get { return _position; } }
 
         public BitReader(byte[] buffer, int offset)
         {
-            if (buffer != null || buffer.Length <= 0)
+            if (buffer == null || buffer.Length <= 0)
                 throw new ArgumentException("buffer is null or has no elements", "buffer");
             if (offset < 0)
                 throw new ArgumentOutOfRangeException("offset");
 
             _hBuffer = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-            _buffer = _storedBuffer = (byte*)_hBuffer.AddrOfPinnedObject().ToPointer() + offset;
+            _buffer = _storedBuffer = (byte*) _hBuffer.AddrOfPinnedObject().ToPointer() + offset;
 
             _cache = PeekCache();
         }
@@ -47,6 +42,27 @@ namespace CSCore.Utils
             _bitoffset = offset % 8;
 
             _cache = PeekCache();
+        }
+
+        protected internal uint Cache
+        {
+            get { return _cache; }
+        }
+
+        public byte* Buffer
+        {
+            get { return _storedBuffer; }
+        }
+
+        public int Position
+        {
+            get { return _position; }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         private uint PeekCache()
@@ -109,7 +125,7 @@ namespace CSCore.Utils
             if (bits <= 0 || bits > 32)
                 throw new ArgumentOutOfRangeException("bits", "bits has to be a value between 1 and 32");
 
-            int result = (int)ReadBits(bits);
+            var result = (int) ReadBits(bits);
             result <<= (32 - bits);
             result >>= (32 - bits);
             return result;
@@ -138,7 +154,7 @@ namespace CSCore.Utils
             if (bits <= 0 || bits > 64)
                 throw new ArgumentOutOfRangeException("bits", "bits has to be a value between 1 and 32");
 
-            long result = (long)ReadBits64(bits);
+            var result = (long) ReadBits64(bits);
             result <<= (64 - bits);
             result >>= (64 - bits);
             return result;
@@ -146,12 +162,12 @@ namespace CSCore.Utils
 
         public Int16 ReadInt16()
         {
-            return (Int16)ReadBitsSigned(16);
+            return (Int16) ReadBitsSigned(16);
         }
 
         public UInt16 ReadUInt16()
         {
-            return (UInt16)ReadBits(16);
+            return (UInt16) ReadBits(16);
         }
 
         public Int32 ReadInt32()
@@ -183,19 +199,13 @@ namespace CSCore.Utils
         {
             uint result = _cache >> 31;
             SeekBits(1);
-            return (int)result;
+            return (int) result;
         }
 
         public void Flush()
         {
             if (_bitoffset > 0 && _bitoffset <= 8)
                 SeekBits(8 - _bitoffset);
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)

@@ -3,64 +3,66 @@ using System;
 namespace CSCore.XAudio2
 {
     /// <summary>
-    /// Specifies values for the <see cref="DebugConfiguration.TraceMask"/> and <see cref="DebugConfiguration.BreakMask"/>.
+    ///     Specifies values for the <see cref="DebugConfiguration.TraceMask" /> and
+    ///     <see cref="DebugConfiguration.BreakMask" />.
     /// </summary>
     [Flags]
     public enum LogMask
     {
         /// <summary>
-        /// Log nothing.
+        ///     Log nothing.
         /// </summary>
         LogNothing = 0x0000,
 
         /// <summary>
-        /// Log error messages. 
+        ///     Log error messages.
         /// </summary>
-        LogErrors =     0x0001,
+        LogErrors = 0x0001,
 
         /// <summary>
-        /// Log warning messages. Note: Enabling <see cref="LogWarnings"/> also enables <see cref="LogErrors"/>.
+        ///     Log warning messages. Note: Enabling <see cref="LogWarnings" /> also enables <see cref="LogErrors" />.
         /// </summary>
-        LogWarnings =    0x0002,
+        LogWarnings = 0x0002,
 
         /// <summary>
-        /// Log informational messages. 
+        ///     Log informational messages.
         /// </summary>
-        LogInfo =       0x0004,
+        LogInfo = 0x0004,
 
         /// <summary>
-        /// Log detailed informational messages. Note: Enabling <see cref="LogDetail"/> also enables <see cref="LogInfo"/>.
+        ///     Log detailed informational messages. Note: Enabling <see cref="LogDetail" /> also enables <see cref="LogInfo" />.
         /// </summary>
-        LogDetail =     0x0008,
+        LogDetail = 0x0008,
 
         /// <summary>
-        /// Log public API function entries and exits. 
+        ///     Log public API function entries and exits.
         /// </summary>
-        LogApiCalls =   0x0010,
+        LogApiCalls = 0x0010,
 
         /// <summary>
-        /// Log internal function entries and exits. Note: Enabling <see cref="LogFuncCalls"/> also enables <see cref="LogApiCalls"/>.
+        ///     Log internal function entries and exits. Note: Enabling <see cref="LogFuncCalls" /> also enables
+        ///     <see cref="LogApiCalls" />.
         /// </summary>
-        LogFuncCalls =  0x0020,
+        LogFuncCalls = 0x0020,
 
         /// <summary>
-        /// Log delays detected and other timing data. 
+        ///     Log delays detected and other timing data.
         /// </summary>
-        LogTiming =     0x0040,
+        LogTiming = 0x0040,
 
         /// <summary>
-        /// Log usage of critical sections and mutexes. 
+        ///     Log usage of critical sections and mutexes.
         /// </summary>
-        LogLocks =      0x0080,
+        LogLocks = 0x0080,
 
         /// <summary>
-        /// Log memory heap usage information. 
+        ///     Log memory heap usage information.
         /// </summary>
-        LogMemory =     0x0100,
+        LogMemory = 0x0100,
 
         /// <summary>
-        /// Log audio streaming information. 
+        ///     Log audio streaming information.
         /// </summary>
-        LogStreaming =  0x1000
+        LogStreaming = 0x1000
     }
 }

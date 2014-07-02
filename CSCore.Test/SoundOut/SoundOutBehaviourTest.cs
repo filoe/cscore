@@ -69,8 +69,9 @@ namespace CSCore.Test.SoundOut
         {
             SoundOutTests((soundOut, source) =>
             {
-                VolumeResetTestInternal(soundOut, source);
-            });
+                for (int i = 0; i < basic_iteration_count; i++ )
+                    VolumeResetTestInternal(soundOut, source);
+            }, true);
         }
 
         [TestMethod]
@@ -121,8 +122,8 @@ namespace CSCore.Test.SoundOut
             bool flag = true;
             foreach (var soundOut in GetSoundOuts())
             {
-                var source = new DSP.FFTAggregator(new SineGenerator().ToWaveSource(16));
-                source.FFTCalculated += (s, e) =>
+                var source = new CSCore.Streams.NotificationSource(new SineGenerator().ToWaveSource());
+                source.BlockRead += (s, e) =>
                 {
                     try
                     {
@@ -131,7 +132,7 @@ namespace CSCore.Test.SoundOut
                     catch (InvalidOperationException)
                     {
                         Debug.WriteLine("Invalid behaviour in {0}.", soundOut.GetType().FullName);
-                        flag &= false;
+                        flag = false;
                     }
                 };
                 soundOut.Initialize(source);
@@ -370,8 +371,6 @@ namespace CSCore.Test.SoundOut
 
         private void VolumeResetTestInternal(ISoundOut soundOut, IWaveSource source)
         {
-            source = new CSCore.Streams.LoopStream(source);
-
             soundOut.Initialize(source);
             soundOut.Play();
             soundOut.Volume = 0.5f;
@@ -381,6 +380,7 @@ namespace CSCore.Test.SoundOut
             soundOut.Initialize(source);
             soundOut.Play();
             Assert.AreEqual(1.0f, soundOut.Volume);
+            soundOut.Stop();
         }
 
         private void PlaybackStoppedEventTestInternal(ISoundOut soundOut, IWaveSource source)

@@ -51,17 +51,4 @@ namespace CSCore.SoundOut.MMInterop
         [FieldOffset(4)]
         public UInt32 midiSongPtrPos;
     }
-
-    /// <summary>
-    /// http: //s1.directupload.net/images/111012/2iwfeto3.png
-    /// </summary>
-    public enum MMTimeType : uint
-    {
-        TIME_MS = 0x0001,
-        TIME_SAMPLES = 0x0002,
-        TIME_BYTES = 0x0004,
-        TIME_SMPTE = 0x0008,
-        TIME_MIDI = 0x0016,
-        TIME_TICKS = 0x0032
-    }
 }

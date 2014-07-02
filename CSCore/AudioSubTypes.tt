@@ -1,0 +1,82 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ output extension=".cs" #>
+using System;
+
+namespace CSCore
+{
+	/// <summary>
+    /// Contains defined MediaTypes and provides methods to convert between AudioEncoding and MediaType.
+    /// </summary>
+	public static class AudioSubTypes
+	{
+
+		/// <summary>
+        /// Converts a Mediatype-value to a AudioEncoding-value.
+        /// </summary>
+        /// <param name="mediaType"></param>
+        /// <returns></returns>
+        public static AudioEncoding EncodingFromMediaType(Guid mediaType)
+        {
+            var bytes = mediaType.ToByteArray();
+            int value = BitConverter.ToInt32(bytes, 0);
+            if (Enum.IsDefined(typeof(AudioEncoding), (ushort)value))
+                return (AudioEncoding)value;
+
+            throw new ArgumentException("Invalid mediaType.");
+        }
+
+        /// <summary>
+        /// Converts a AudioEncoding-value to a Mediatype-value.
+        /// </summary>
+        /// <param name="encoding"></param>
+        /// <returns></returns>
+        public static Guid MediaTypeFromEncoding(AudioEncoding encoding)
+        {
+            if(Enum.IsDefined(typeof(AudioEncoding), (ushort)encoding))
+                return new Guid((int)encoding, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
+
+            throw new ArgumentException("Invalid encoding.");
+        }
+
+		/// <summary>
+        /// Major Type: Audio.
+        /// </summary>
+		public static readonly Guid MediaTypeAudio = new Guid("73647561-0000-0010-8000-00AA00389B71");
+
+// ReSharper disable InconsistentNaming
+
+<#
+	const string tab = "\t\t";
+	const string enumPattern = @".*enum\s+(\S+).*\s+{\s*([^\}]+?)\s*\}\s*";
+	var audioEncodingFile = Host.ResolvePath("AudioEncoding.cs");
+	var text = File.ReadAllText(audioEncodingFile);
+
+    var match = Regex.Match(text, enumPattern, RegexOptions.Multiline);
+    var enumName = match.Groups[1].Value;
+    var enumContent = match.Groups[2].Value;
+
+    var lines = enumContent.Split(new string[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries);
+
+	foreach (var line in lines)
+	{
+		var trimedLine = line.Trim();
+		if (trimedLine.StartsWith("//") || String.IsNullOrWhiteSpace(trimedLine))
+		{
+			WriteLine(tab + trimedLine);
+		}
+		else
+		{
+			var splittedLine = line.Split('=');
+
+			WriteLine("{3}public static readonly Guid {0} = new Guid((int){2}.{1}, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);",
+				splittedLine[0].Trim(), splittedLine[0].Trim(), enumName, tab);
+		}
+	}
+#>
+
+// ReSharper restore InconsistentNaming
+	}
+}

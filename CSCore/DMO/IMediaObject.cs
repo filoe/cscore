@@ -1,7 +1,6 @@
-﻿using CSCore.Win32;
-using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Security;
+using CSCore.Win32;
 
 namespace CSCore.DMO
 {
@@ -51,7 +50,8 @@ namespace CSCore.DMO
         [PreserveSig]
         int GetInputStatus(int inputStreamIndex, out InputStatusFlags flags);
 
-        int ProcessInput(int inputStreamIndex, [In] IMediaBuffer mediaBuffer, InputDataBufferFlags flags, long referenceTimeTimestamp, long referenceTimeDuration);
+        int ProcessInput(int inputStreamIndex, [In] IMediaBuffer mediaBuffer, InputDataBufferFlags flags,
+            long referenceTimeTimestamp, long referenceTimeDuration);
 
         int ProcessOutput(ProcessOutputFlags flags,
             int outputBufferCount,

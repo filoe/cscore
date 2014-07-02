@@ -1,31 +1,42 @@
-﻿using System;
+﻿using CSCore.Win32;
 
 namespace CSCore.DMO
 {
-    public class DmoException : System.Runtime.InteropServices.COMException
+    /// <summary>
+    ///     DirectX Media Object COM Exception
+    /// </summary>
+    public class DmoException : Win32ComException
     {
-        public static void Try(int result, string interfaceName, string member)
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="DmoException" /> class.
+        /// </summary>
+        /// <param name="result">Errorcode.</param>
+        /// <param name="interfaceName">
+        ///     Name of the interface which contains the COM-function which returned the specified
+        ///     <paramref name="result" />.
+        /// </param>
+        /// <param name="member">Name of the COM-function which returned the specified <paramref name="result" />.</param>
+        public DmoException(int result, string interfaceName, string member)
+            : base(result, interfaceName, member)
+        {
+        }
+
+        /// <summary>
+        ///     Throws an <see cref="DmoException" /> if the <paramref name="result" /> is not <see cref="HResult.S_OK" />.
+        /// </summary>
+        /// <param name="result">Errorcode.</param>
+        /// <param name="interfaceName">
+        ///     Name of the interface which contains the COM-function which returned the specified
+        ///     <paramref name="result" />.
+        /// </param>
+        /// <param name="member">Name of the COM-function which returned the specified <paramref name="result" />.</param>
+        public new static void Try(int result, string interfaceName, string member)
         {
             if (result != 0)
                 throw new DmoException(result, interfaceName, member);
         }
 
-        public int Result { get; private set; }
-
-        public string InterfaceName { get; private set; }
-
-        public string Member { get; private set; }
-
-        public DmoException(int result, string interfaceName, string member)
-            : base(String.Format("{0}::{1} returned 0x{2}{3}.", interfaceName, member, result.ToString("x"), TryGetFriendlyName(result)), 
-                    result)
-        {
-            Result = result;
-            InterfaceName = interfaceName;
-            Member = member;
-        }
-
-        private static string TryGetFriendlyName(int result)
+        /*private static string TryGetFriendlyName(int result)
         {
             if (Enum.IsDefined(typeof(DmoErrorCodes), result))
                 return String.Format(" ({0})", Enum.GetName(typeof(DmoErrorCodes), result));
@@ -33,6 +44,6 @@ namespace CSCore.DMO
                 return String.Format(" ({0})", Enum.GetName(typeof(Win32.HResult), result));
             else
                 return String.Empty;
-        }
+        }*/
     }
 }

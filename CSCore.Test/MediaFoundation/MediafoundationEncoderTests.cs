@@ -9,7 +9,7 @@ namespace CSCore.Test.MediaFoundation
     [TestClass]
     public class MediafoundationEncoderTests
     {
-        const string testfile = @"C:\Temp\test.mp3";
+        const string testfile = GlobalTestConfig.testMP3;
 
         [TestMethod]
         [TestCategory("MediaFoundation")]
@@ -27,6 +27,9 @@ namespace CSCore.Test.MediaFoundation
                     //Thread.Sleep(5000);
                 }
             }
+
+            //cleanup
+            File.Delete(targetfilename);
         }
 
         [TestMethod]
@@ -44,9 +47,12 @@ namespace CSCore.Test.MediaFoundation
                     MediaFoundationEncoder.EncodeWholeSource(encoder, source);
                 }
             }
+
+            //cleanup
+            File.Delete(targetfilename);
         }
 
-        //TODO: Why does this work, but crashes test-executionengine??
+        //Bug: Why does this work, but crashes the test-executionengine??
         //[TestMethod]
         //[TestCategory("MediaFoundation")]
         //public void CanEncodeToWMA()

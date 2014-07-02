@@ -5,9 +5,16 @@ using System.Text;
 
 namespace CSCore.Codecs.MP3
 {
-    public class MP3Exception : Exception
+    /// <summary>
+    /// Exception which can occur while working with MP3 data.
+    /// </summary>
+    public class Mp3Exception : Exception
     {
-        public MP3Exception(String message)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Mp3Exception"/> class.
+        /// </summary>
+        /// <param name="message">Message of the <see cref="Mp3Exception"/>.</param>
+        public Mp3Exception(String message)
             : base(message)
         {
         }

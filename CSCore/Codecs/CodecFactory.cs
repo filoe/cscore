@@ -1,100 +1,114 @@
-﻿using CSCore.MediaFoundation;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using CSCore.Codecs.AAC;
+using CSCore.Codecs.DDP;
+using CSCore.Codecs.FLAC;
+using CSCore.Codecs.MP1;
+using CSCore.Codecs.MP2;
+using CSCore.Codecs.MP3;
+using CSCore.Codecs.WAV;
+using CSCore.Codecs.WMA;
+using CSCore.MediaFoundation;
 
 namespace CSCore.Codecs
 {
+    /// <summary>
+    ///     Helps to choose the right decoder for different codecs.
+    /// </summary>
     public class CodecFactory
     {
         private static CodecFactory _instance;
 
-        public static CodecFactory Instance
-        {
-            get { return _instance ?? (_instance = new CodecFactory()); }
-        }
-
-        private Dictionary<object, CodecFactoryEntry> _codecs;
+        private readonly Dictionary<object, CodecFactoryEntry> _codecs;
 
         private CodecFactory()
         {
             _codecs = new Dictionary<object, CodecFactoryEntry>();
-            Register("mp3", new CodecFactoryEntry((s) =>
+            Register("mp3", new CodecFactoryEntry(s =>
             {
-                //if (MP3.MP3MediafoundationDecoder.IsSupported)
-                //    return new MP3.MP3MediafoundationDecoder(s);
-                //else
-                //    return new MP3.MP3FileReader(s).DataStream;
-                return new MP3.DmoMP3Decoder(s);
+                if (Mp3MediafoundationDecoder.IsSupported)
+                    return new Mp3MediafoundationDecoder(s);
+                return new DmoMp3Decoder(s);
             },
                 "mp3", "mpeg3"));
-            Register("wave", new CodecFactoryEntry((s) =>
+            Register("wave", new CodecFactoryEntry(s =>
             {
-                IWaveSource res = new WAV.WaveFileReader(s);
+                IWaveSource res = new WaveFileReader(s);
                 if (res.WaveFormat.WaveFormatTag != AudioEncoding.Pcm &&
                     res.WaveFormat.WaveFormatTag != AudioEncoding.IeeeFloat &&
                     res.WaveFormat.WaveFormatTag != AudioEncoding.Extensible)
                 {
                     res.Dispose();
-                    res = new MediaFoundation.MediaFoundationDecoder(s);
+                    res = new MediaFoundationDecoder(s);
                 }
                 return res;
             },
                 "wav", "wave"));
-            Register("flac", new CodecFactoryEntry((s) =>
-            {
-                return new FLAC.FlacFile(s);
-            },
+            Register("flac", new CodecFactoryEntry(s => new FlacFile(s),
                 "flac", "fla"));
 
-            if (AAC.AACDecoder.IsSupported)
+            if (AacDecoder.IsSupported)
             {
-                Register("aac", new CodecFactoryEntry((s) =>
-                {
-                    return new AAC.AACDecoder(s);
-                },
-                    "aac", "adt", "adts", "m2ts", "mp2", "3g2", "3gp2", "3gp", "3gpp", "m4a", "m4v", "mp4v", "mp4", "mov"));
+                Register("aac", new CodecFactoryEntry(s => new AacDecoder(s),
+                    "aac", "adt", "adts", "m2ts", "mp2", "3g2", "3gp2", "3gp", "3gpp", "m4a", "m4v", "mp4v", "mp4",
+                    "mov"));
             }
 
-            if (WMA.WMADecoder.IsSupported)
+            if (WmaDecoder.IsSupported)
             {
-                Register("wma", new CodecFactoryEntry((s) =>
-                {
-                    return new WMA.WMADecoder(s);
-                },
+                Register("wma", new CodecFactoryEntry(s => new WmaDecoder(s),
                     "asf", "wm", "wmv", "wma"));
             }
 
-            if (MP1.MP1Decoder.IsSupported)
+            if (Mp1Decoder.IsSupported)
             {
-                Register("mp1", new CodecFactoryEntry((s) =>
-                {
-                    return new MP1.MP1Decoder(s);
-                },
+                Register("mp1", new CodecFactoryEntry(s => new Mp1Decoder(s),
                     "mp1", "m2ts"));
             }
 
-            if (MP2.MP2Decoder.IsSupported)
+            if (Mp2Decoder.IsSupported)
             {
-                Register("mp2", new CodecFactoryEntry((s) =>
-                {
-                    return new MP1.MP1Decoder(s);
-                },
+                Register("mp2", new CodecFactoryEntry(s => new Mp1Decoder(s),
                     "mp2", "m2ts"));
             }
 
-            if (DDP.DDPDecoder.IsSupported)
+            if (DDPDecoder.IsSupported)
             {
-                Register("ddp", new CodecFactoryEntry((s) =>
-                {
-                    return new DDP.DDPDecoder(s);
-                },
+                Register("ddp", new CodecFactoryEntry(s => new DDPDecoder(s),
                     "mp2", "m2ts", "m4a", "m4v", "mp4v", "mp4", "mov", "asf", "wm", "wmv", "wma", "avi", "ac3", "ec3"));
             }
         }
 
+        /// <summary>
+        ///     Gets the default singleton instance of the <see cref="CodecFactory" /> class.
+        /// </summary>
+        /// <remarks>Singleton implementation is not threadsafe.</remarks>
+        public static CodecFactory Instance
+        {
+            get { return _instance ?? (_instance = new CodecFactory()); }
+        }
+
+        /// <summary>
+        ///     Gets the file filter in English. This filter can be used e.g. in combination with an OpenFileDialog.
+        /// </summary>
+        public static string SupportedFilesFilterEn
+        {
+            get { return Instance.GenerateFilter(); }
+        }
+
+        /// <summary>
+        ///     Registers a new codec.
+        /// </summary>
+        /// <param name="key">
+        ///     The key which gets used internally to save the <paramref name="codec" /> in a
+        ///     <see cref="Dictionary{TKey,TValue}" />. This is typically the associated file extension. For example: the mp3 codec
+        ///     uses the string "mp3" as its key.
+        /// </param>
+        /// <param name="codec"><see cref="CodecFactoryEntry" /> which provides information about the codec.</param>
         public void Register(object key, CodecFactoryEntry codec)
         {
             if (key is string)
@@ -104,11 +118,47 @@ namespace CSCore.Codecs
                 _codecs.Add(key, codec);
         }
 
+        /// <summary>
+        ///     Returns a fully initialized <see cref="IWaveSource" /> instance which is able to decode the specified file. If the
+        ///     specified file can not be decoded, this method throws an <see cref="NotSupportedException" />.
+        /// </summary>
+        /// <param name="filename">Filename of the specified file.</param>
+        /// <returns>Fully initialized <see cref="IWaveSource" /> instance which is able to decode the specified file.</returns>
+        /// <exception cref="NotSupportedException">The codec of the specified file is not supported.</exception>
         public IWaveSource GetCodec(string filename)
         {
-            return GetCodec(new Uri(filename));
+            if(String.IsNullOrEmpty(filename))
+                throw new ArgumentNullException("filename");
+
+            if (!File.Exists(filename))
+                throw new FileNotFoundException("File not found.", filename);
+
+            string extension = Path.GetExtension(filename).Remove(0, 1); //get the extension without the "dot".
+            //remove the dot in front of the file extension.
+            foreach (var codecEntry in _codecs)
+            {
+                try
+                {
+                    if (codecEntry.Value.FileExtensions.Contains(extension))
+                        return codecEntry.Value.GetCodecAction(File.OpenRead(filename));
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.ToString());
+                }
+            }
+
+            return Default(filename);
         }
 
+        /// <summary>
+        ///     Returns a fully initialized <see cref="IWaveSource" /> instance which is able to decode the audio source behind the
+        ///     specified <paramref name="uri" />.
+        ///     If the specified audio source can not be decoded, this method throws an <see cref="NotSupportedException" />.
+        /// </summary>
+        /// <param name="uri">Uri which points to an audio source.</param>
+        /// <returns>Fully initialized <see cref="IWaveSource" /> instance which is able to decode the specified audio source.</returns>
+        /// <exception cref="NotSupportedException">The codec of the specified audio source is not supported.</exception>
         public IWaveSource GetCodec(Uri uri)
         {
             if (uri == null)
@@ -118,28 +168,10 @@ namespace CSCore.Codecs
             {
                 if (uri.IsFile)
                 {
-                    if (!File.Exists(uri.OriginalString))
-                        throw new FileNotFoundException("File not found.", uri.OriginalString);
+                    return GetCodec(uri.LocalPath);
+                }
 
-                    var extension = Path.GetExtension(uri.OriginalString).Remove(0, 1);
-                    foreach (var codecEntry in _codecs)
-                    {
-                        try
-                        {
-                            if (codecEntry.Value.FileExtensions.Contains(extension))
-                                return codecEntry.Value.GetCodecAction(File.OpenRead(uri.OriginalString));
-                        }
-                        catch (Exception)
-                        {
-                            
-                        }
-                    }
-                    return Default(uri.OriginalString);
-                }
-                else
-                {
-                    return Default(uri.OriginalString);
-                }
+                return Default(uri.ToString());
             }
             catch (IOException)
             {
@@ -151,39 +183,24 @@ namespace CSCore.Codecs
             }
         }
 
-        public IWaveSource GetCodec(object key, Stream stream)
-        {
-            try
-            {
-                CodecFactoryEntry entry;
-                if (_codecs.TryGetValue(key, out entry))
-                    return entry.GetCodecAction(stream);
-                else
-                    return Default(stream);
-            }
-            catch (Exception e)
-            {
-                throw new NotSupportedException("Codec not supported.", e);
-            }
-            throw new NotSupportedException("Codec not supported");
-        }
-
         private IWaveSource Default(string url)
         {
-            return new MediaFoundation.MediaFoundationDecoder(url);
+            return new MediaFoundationDecoder(url);
         }
 
-        private IWaveSource Default(Stream stream)
-        {
-            return new MediaFoundation.MediaFoundationDecoder(stream);
-        }
-
+        /// <summary>
+        ///     Returns all the common file extensions of all supported codecs. Note that some of these file extensions belong to
+        ///     more than one codec.
+        ///     That means that it can be possible that some files with the file extension abc can be decoded but other a few files
+        ///     with the file extension abc can't be decoded.
+        /// </summary>
+        /// <returns></returns>
         public string[] GetSupportedFileExtensions()
         {
-            List<string> extensions = new List<string>();
-            foreach (var item in _codecs.Select(x => x.Value))
+            var extensions = new List<string>();
+            foreach (CodecFactoryEntry item in _codecs.Select(x => x.Value))
             {
-                foreach (var e in item.FileExtensions)
+                foreach (string e in item.FileExtensions)
                 {
                     if (!extensions.Contains(e))
                         extensions.Add(e);
@@ -192,18 +209,13 @@ namespace CSCore.Codecs
             return extensions.ToArray();
         }
 
-        public string GenerateFilter()
+        private string GenerateFilter()
         {
-            StringBuilder result = new StringBuilder();
-            result.Append("Supported Files|");
-            result.Append(String.Concat(GetSupportedFileExtensions().Select(x => "*." + x + ";").ToArray()));
-            result.Remove(result.Length - 1, 1);
-            return result.ToString();
-        }
-
-        public static string SupportedFilesFilterEN
-        {
-            get { return Instance.GenerateFilter(); }
+            var stringBuilder = new StringBuilder();
+            stringBuilder.Append("Supported Files|");
+            stringBuilder.Append(String.Concat(GetSupportedFileExtensions().Select(x => "*." + x + ";").ToArray()));
+            stringBuilder.Remove(stringBuilder.Length - 1, 1);
+            return stringBuilder.ToString();
         }
     }
 }

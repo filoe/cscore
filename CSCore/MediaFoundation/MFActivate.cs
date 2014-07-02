@@ -23,7 +23,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (void* pptr = &ptr)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, &riid, pptr, ((void**)(*(void**)_basePtr))[33]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, &riid, pptr, ((void**)(*(void**)UnsafeBasePtr))[33]);
             }
         }
 
@@ -55,7 +55,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int ShutdownObjectNative()
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, ((void**)(*(void**)_basePtr))[34]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ((void**)(*(void**)UnsafeBasePtr))[34]);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int DetachObjectNative()
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, ((void**)(*(void**)_basePtr))[35]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ((void**)(*(void**)UnsafeBasePtr))[35]);
         }
 
         /// <summary>
@@ -81,11 +81,6 @@ namespace CSCore.MediaFoundation
         public void DetachObject()
         {
             MediaFoundationException.Try(DetachObjectNative(), c, "DetachObject");
-        }
-
-        protected override bool AssertOnNoDispose()
-        {
-            return false;
         }
     }
 }

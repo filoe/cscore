@@ -1,30 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using CSCore.Win32;
 
 namespace CSCore.MediaFoundation
 {
-    public class MediaFoundationException : System.Runtime.InteropServices.COMException
+    /// <summary>
+    /// Mediafoundation COM Exception
+    /// </summary>
+    public class MediaFoundationException : Win32ComException
     {
-        public static void Try(int result, string interfaceName, string member)
+        /// <summary>
+        /// Throws an <see cref="MediaFoundationException"/> if the <paramref name="result"/> is not <see cref="HResult.S_OK"/>.
+        /// </summary>
+        /// <param name="result">Errorcode.</param>
+        /// <param name="interfaceName">Name of the interface which contains the COM-function which returned the specified <paramref name="result"/>.</param>
+        /// <param name="member">Name of the COM-function which returned the specified <paramref name="result"/>.</param>
+        public new static void Try(int result, string interfaceName, string member)
         {
             if (result != 0)
                 throw new MediaFoundationException(result, interfaceName, member);
         }
 
-        public int Result { get; private set; }
-
-        public string InterfaceName { get; private set; }
-
-        public string Member { get; private set; }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MediaFoundationException"/> class.
+        /// </summary>
+        /// <param name="result">Errorcode.</param>
+        /// <param name="interfaceName">Name of the interface which contains the COM-function which returned the specified <paramref name="result"/>.</param>
+        /// <param name="member">Name of the COM-function which returned the specified <paramref name="result"/>.</param>
         public MediaFoundationException(int result, string interfaceName, string member)
-            : base(String.Format("{0}::{1} returned 0x{2}", interfaceName, member, result.ToString("x")), (int)result)
+            : base(result, interfaceName, member)
         {
-            Result = result;
-            InterfaceName = interfaceName;
-            Member = member;
         }
     }
 }

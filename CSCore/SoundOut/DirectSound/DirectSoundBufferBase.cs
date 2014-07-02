@@ -31,7 +31,7 @@ namespace CSCore.SoundOut.DirectSound
 
         public DirectSoundBufferBase(IntPtr basePtr)
         {
-            _basePtr = basePtr.ToPointer();
+            UnsafeBasePtr = basePtr.ToPointer();
         }
 
         public DSBufferCaps BufferCaps
@@ -60,7 +60,7 @@ namespace CSCore.SoundOut.DirectSound
             bufferCaps.dwSize = Marshal.SizeOf(bufferCaps);
             fixed (void* ptrbuffercaps = &bufferCaps)
             {
-                var result = InteropCalls.CalliMethodPtr(_basePtr, ptrbuffercaps, ((void**)(*(void**)_basePtr))[3]);
+                var result = InteropCalls.CalliMethodPtr(UnsafeBasePtr, ptrbuffercaps, ((void**)(*(void**)UnsafeBasePtr))[3]);
                 return result;
             }
         }
@@ -72,7 +72,7 @@ namespace CSCore.SoundOut.DirectSound
 
         public DSResult PlayNative(DSBPlayFlags flags)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, 0, 0, unchecked((int)flags), ((void**)(*(void**)_basePtr))[12]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, 0, 0, unchecked((int)flags), ((void**)(*(void**)UnsafeBasePtr))[12]);
         }
 
         public void Stop()
@@ -82,7 +82,7 @@ namespace CSCore.SoundOut.DirectSound
 
         public DSResult StopNative()
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, ((void**)(*(void**)_basePtr))[18]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ((void**)(*(void**)UnsafeBasePtr))[18]);
         }
 
         public void Restore()
@@ -92,7 +92,7 @@ namespace CSCore.SoundOut.DirectSound
 
         public DSResult RestoreNative()
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, ((void**)(*(void**)_basePtr))[20]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ((void**)(*(void**)UnsafeBasePtr))[20]);
         }
 
         public DSResult Lock(int offset, int bytes, out IntPtr audioPtr1, out int audioBytes1,
@@ -102,9 +102,9 @@ namespace CSCore.SoundOut.DirectSound
             {
                 fixed (void* pAudioBytes1 = &audioBytes1, pAudioBytes2 = &audioBytes2)
                 {
-                    var result = InteropCalls.CalliMethodPtr(_basePtr, offset, bytes,
+                    var result = InteropCalls.CalliMethodPtr(UnsafeBasePtr, offset, bytes,
                                         pAudioPtr1, pAudioBytes1, pAudioPtr2, pAudioBytes2, unchecked((int)lockFlags),
-                                        ((void**)(*(void**)_basePtr))[11]);
+                                        ((void**)(*(void**)UnsafeBasePtr))[11]);
                     return result;
                 }
             }
@@ -112,14 +112,14 @@ namespace CSCore.SoundOut.DirectSound
 
         public DSResult Unlock(IntPtr audioPtr1, int audioBytes1, IntPtr audioPtr2, int audioBytes2)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, (void*)audioPtr1, audioBytes1, (void*)audioPtr2, audioBytes2, ((void**)(*(void**)_basePtr))[19]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, (void*)audioPtr1, audioBytes1, (void*)audioPtr2, audioBytes2, ((void**)(*(void**)UnsafeBasePtr))[19]);
         }
 
         public DSResult GetCurrentPosition(out int playCursorPosition, out int writeCursorPosition)
         {
             fixed (void* pplaypos = &playCursorPosition, pwritepos = &writeCursorPosition)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, pplaypos, pwritepos, ((void**)(*(void**)_basePtr))[4]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, pplaypos, pwritepos, ((void**)(*(void**)UnsafeBasePtr))[4]);
             }
         }
 
@@ -130,12 +130,12 @@ namespace CSCore.SoundOut.DirectSound
 
         public DSResult SetCurrentPositionNative(int playPosition)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, playPosition, ((void**)(*(void**)_basePtr))[13]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, playPosition, ((void**)(*(void**)UnsafeBasePtr))[13]);
         }
 
         public DSResult Initialize(DirectSoundBase directSound, DSBufferDescription bufferDesc)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, directSound.BasePtr.ToPointer(), &bufferDesc, ((void**)(*(void**)_basePtr))[10]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, directSound.BasePtr.ToPointer(), &bufferDesc, ((void**)(*(void**)UnsafeBasePtr))[10]);
         }
 
         public DSResult GetStatus(out DSBStatus status)
@@ -144,7 +144,7 @@ namespace CSCore.SoundOut.DirectSound
             //void* pistatus = &istatus;
             fixed (void* pstatus = &status)
             {
-                var result = InteropCalls.CalliMethodPtr(_basePtr, pstatus, ((void**)(*(void**)_basePtr))[9]);
+                var result = InteropCalls.CalliMethodPtr(UnsafeBasePtr, pstatus, ((void**)(*(void**)UnsafeBasePtr))[9]);
                 return result;
             }
             //status = (DSBStatus)istatus;
@@ -152,20 +152,20 @@ namespace CSCore.SoundOut.DirectSound
 
         public DSResult SetFrequency(int frequency)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, frequency, ((void**)(*(void**)_basePtr))[17]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, frequency, ((void**)(*(void**)UnsafeBasePtr))[17]);
         }
 
         public DSResult GetFrequency(out int frequency)
         {
             fixed (void* pfrequency = &frequency)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, pfrequency, ((void**)(*(void**)_basePtr))[8]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, pfrequency, ((void**)(*(void**)UnsafeBasePtr))[8]);
             }
         }
 
         public DSResult SetPan(int pan)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, pan, ((void**)(*(void**)_basePtr))[16]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, pan, ((void**)(*(void**)UnsafeBasePtr))[16]);
         }
 
         public DSResult SetPan(float pan)
@@ -178,7 +178,7 @@ namespace CSCore.SoundOut.DirectSound
         {
             fixed (void* ppan = &pan)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, ppan, ((void**)(*(void**)_basePtr))[7]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ppan, ((void**)(*(void**)UnsafeBasePtr))[7]);
             }
         }
 
@@ -192,7 +192,7 @@ namespace CSCore.SoundOut.DirectSound
 
         public DSResult SetVolume(int volume)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, volume, ((void**)(*(void**)_basePtr))[15]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, volume, ((void**)(*(void**)UnsafeBasePtr))[15]);
         }
 
         public void SetVolume(double volume)
@@ -222,7 +222,7 @@ namespace CSCore.SoundOut.DirectSound
         {
             fixed (void* pvolume = &volume)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, pvolume, ((void**)(*(void**)_basePtr))[6]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, pvolume, ((void**)(*(void**)UnsafeBasePtr))[6]);
             }
         }
 
@@ -257,8 +257,8 @@ namespace CSCore.SoundOut.DirectSound
         {
             waveFormat = new WaveFormat();
             GCHandle hWaveFormat = GCHandle.Alloc(waveFormat, GCHandleType.Pinned);
-            var result = InteropCalls.CalliMethodPtr(_basePtr, hWaveFormat.AddrOfPinnedObject().ToPointer(),
-                            Marshal.SizeOf(waveFormat), IntPtr.Zero.ToPointer(), ((void**)(*(void**)_basePtr))[5]);
+            var result = InteropCalls.CalliMethodPtr(UnsafeBasePtr, hWaveFormat.AddrOfPinnedObject().ToPointer(),
+                            Marshal.SizeOf(waveFormat), IntPtr.Zero.ToPointer(), ((void**)(*(void**)UnsafeBasePtr))[5]);
             hWaveFormat.Free();
             return result;
         }
@@ -266,7 +266,7 @@ namespace CSCore.SoundOut.DirectSound
         public DSResult SetFormat(WaveFormat waveFormat)
         {
             GCHandle hWaveFormat = GCHandle.Alloc(waveFormat, GCHandleType.Pinned);
-            var result = InteropCalls.CalliMethodPtr(_basePtr, hWaveFormat.AddrOfPinnedObject().ToPointer(), ((void**)(*(void**)_basePtr))[14]);
+            var result = InteropCalls.CalliMethodPtr(UnsafeBasePtr, hWaveFormat.AddrOfPinnedObject().ToPointer(), ((void**)(*(void**)UnsafeBasePtr))[14]);
             hWaveFormat.Free();
             return result;
         }

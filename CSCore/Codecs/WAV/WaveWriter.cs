@@ -5,18 +5,86 @@ using System.Text;
 
 namespace CSCore.Codecs.WAV
 {
-    public class WaveWriter : IDisposable, IWritable
+    /// <summary>
+    ///     Encoder for wave files.
+    /// </summary>
+    public class WaveWriter : IDisposable, IWriteable
     {
-        public static void WriteToFile(string filename, IWaveSource source, bool deleteIfExists, int maxlength = -1)
+        private readonly WaveFormat _waveFormat;
+
+        private readonly long _waveStartPosition;
+        private int _dataLength;
+        private bool _disposed;
+        private Stream _stream;
+        private BinaryWriter _writer;
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="WaveWriter" /> class.
+        /// </summary>
+        /// <param name="fileName">Filename of the destination file. This filename should typically end with the .wav extension.</param>
+        /// <param name="waveFormat">
+        ///     Format of the waveform-audio data. Note that the <see cref="WaveWriter" /> won't convert any
+        ///     data.
+        /// </param>
+        public WaveWriter(string fileName, WaveFormat waveFormat)
+            : this(File.OpenWrite(fileName), waveFormat)
         {
-            if (deleteIfExists && File.Exists(filename))
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="WaveWriter" /> class.
+        /// </summary>
+        /// <param name="stream">Destination stream which should be used to store the</param>
+        /// <param name="waveFormat">
+        ///     Format of the waveform-audio data. Note that the <see cref="WaveWriter" /> won't convert any
+        ///     data.
+        /// </param>
+        public WaveWriter(Stream stream, WaveFormat waveFormat)
+        {
+            if (stream == null)
+                throw new ArgumentNullException("stream");
+            if (!stream.CanWrite)
+                throw new ArgumentException("Stream not writeable.", "stream");
+            if (!stream.CanSeek)
+                throw new ArgumentException("Stream not seekable.", "stream");
+
+            _stream = stream;
+            _waveStartPosition = stream.Position;
+            _writer = new BinaryWriter(stream);
+            for (int i = 0; i < 44; i++)
+            {
+                _writer.Write((byte) 0);
+            }
+            _waveFormat = waveFormat;
+
+            WriteHeader();
+        }
+
+        /// <summary>
+        ///     Disposes the <see cref="WaveWriter" /> and writes down the wave header.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        ///     Writes down all audio data of the <see cref="IWaveSource" /> to a file.
+        /// </summary>
+        /// <remarks>This method is obsolete. Use the <see cref="Extensions.WriteToWaveStream" /> extension instead.</remarks>
+        [Obsolete("Use the Extensions.WriteToWaveStream extension instead.")]
+        public static void WriteToFile(string filename, IWaveSource source, bool deleteFileIfAlreadyExists,
+            int maxlength = -1)
+        {
+            if (deleteFileIfAlreadyExists && File.Exists(filename))
                 File.Delete(filename);
 
-            int read = 0;
             int r = 0;
-            byte[] buffer = new byte[source.WaveFormat.BytesPerSecond];
+            var buffer = new byte[source.WaveFormat.BytesPerSecond];
             using (var w = new WaveWriter(filename, source.WaveFormat))
             {
+                int read = 0;
                 while ((read = source.Read(buffer, 0, buffer.Length)) > 0)
                 {
                     w.Write(buffer, 0, read);
@@ -26,39 +94,11 @@ namespace CSCore.Codecs.WAV
                 }
             }
         }
-            
 
-        private Stream _stream;
-        private BinaryWriter _writer;
-
-        private WaveFormat _waveFormat;
-
-        private long _waveStartPosition;
-        private int _dataLength;
-
-        public WaveWriter(string fileName, WaveFormat waveFormat)
-            : this(File.OpenWrite(fileName), waveFormat)
-        {
-        }
-
-        public WaveWriter(Stream stream, WaveFormat waveFormat)
-        {
-            if (stream == null) throw new ArgumentNullException("stream");
-            if (!stream.CanWrite) throw new ArgumentException("stream not writeable");
-            if (!stream.CanSeek) throw new ArgumentException("stream not seekable");
-
-            _stream = stream;
-            _waveStartPosition = stream.Position;
-            _writer = new BinaryWriter(stream);
-            for (int i = 0; i < 44; i++)
-            {
-                _writer.Write((byte)0);
-            }
-            _waveFormat = waveFormat;
-
-            WriteHeader();
-        }
-
+        /// <summary>
+        ///     Encodes a single sample.
+        /// </summary>
+        /// <param name="sample">The sample to encode.</param>
         public void WriteSample(float sample)
         {
             if (_waveFormat.IsPCM())
@@ -66,62 +106,92 @@ namespace CSCore.Codecs.WAV
                 switch (_waveFormat.BitsPerSample)
                 {
                     case 8:
-                        Write((byte)(byte.MaxValue * sample)); break;
+                        Write((byte) (byte.MaxValue * sample));
+                        break;
                     case 16:
-                        Write((short)sample); break;
+                        Write((short) sample);
+                        break;
                     case 24:
-                        byte[] buffer = BitConverter.GetBytes((int)(int.MaxValue * sample));
-                        Write(new byte[] { buffer[0], buffer[1], buffer[2] }, 0, 3);
+                        byte[] buffer = BitConverter.GetBytes((int) (int.MaxValue * sample));
+                        Write(new[] {buffer[0], buffer[1], buffer[2]}, 0, 3);
                         break;
 
                     default:
-                        throw new InvalidOperationException("Invalid Waveformat", new InvalidOperationException("Invalid BitsPerSample while using PCM encoding."));
+                        throw new InvalidOperationException("Invalid Waveformat",
+                            new InvalidOperationException("Invalid BitsPerSample while using PCM encoding."));
                 }
             }
             else if (_waveFormat.WaveFormatTag == AudioEncoding.Extensible && _waveFormat.BitsPerSample == 32)
-            {
-                Write(UInt16.MaxValue * (int)sample);
-            }
+                Write(UInt16.MaxValue * (int) sample);
             else if (_waveFormat.WaveFormatTag == AudioEncoding.IeeeFloat)
-            {
                 Write(sample);
-            }
             else
             {
-                throw new InvalidOperationException("Invalid Waveformat: Waveformat has to be PCM[8, 16, 24, 32];IeeeFloat[32]");
+                throw new InvalidOperationException(
+                    "Invalid Waveformat: Waveformat has to be PCM[8, 16, 24, 32] or IeeeFloat[32]");
             }
         }
 
+        /// <summary>
+        ///     Encodes multiple samples.
+        /// </summary>
+        /// <param name="samples">Float array which contains the samples to encode.</param>
+        /// <param name="offset">Zero-based offset in the <paramref name="samples" /> array.</param>
+        /// <param name="count">Number of samples to encode.</param>
         public void WriteSamples(float[] samples, int offset, int count)
         {
             for (int i = offset; i < offset + count; i++)
+            {
                 WriteSample(samples[i]);
+            }
         }
 
+        /// <summary>
+        ///     Encodes raw data in the form of a byte array.
+        /// </summary>
+        /// <param name="buffer">Byte array which contains the data to encode.</param>
+        /// <param name="offset">Zero-based offset in the <paramref name="buffer" />.</param>
+        /// <param name="count">Number of bytes to encode.</param>
         public void Write(byte[] buffer, int offset, int count)
         {
             _stream.Write(buffer, offset, count);
             _dataLength += count;
         }
 
+        /// <summary>
+        ///     Writes down a single byte.
+        /// </summary>
+        /// <param name="value">Byte to write down.</param>
         public void Write(byte value)
         {
             _writer.Write(value);
             _dataLength++;
         }
 
+        /// <summary>
+        ///     Writes down a single 16 bit integer value.
+        /// </summary>
+        /// <param name="value">Value to write down.</param>
         public void Write(short value)
         {
             _writer.Write(value);
             _dataLength += 2;
         }
 
+        /// <summary>
+        ///     Writes down a single 32 bit integer value.
+        /// </summary>
+        /// <param name="value">Value to write down.</param>
         public void Write(int value)
         {
             _writer.Write(value);
             _dataLength += 4;
         }
 
+        /// <summary>
+        ///     Writes down a single 32 bit float value.
+        /// </summary>
+        /// <param name="value">Value to write down.</param>
         public void Write(float value)
         {
             _writer.Write(value);
@@ -136,8 +206,10 @@ namespace CSCore.Codecs.WAV
             _stream.Position = _waveStartPosition;
 
             WriteRiffHeader();
-            WriteFMTChunk();
+            WriteFmtChunk();
             WriteDataChunk();
+
+            _writer.Flush();
 
             _stream.Position = currentPosition;
         }
@@ -145,26 +217,24 @@ namespace CSCore.Codecs.WAV
         private void WriteRiffHeader()
         {
             _writer.Write(Encoding.UTF8.GetBytes("RIFF"));
-            _writer.Write((int)(_stream.Length - 8));
+            _writer.Write((int) (_stream.Length - 8));
             _writer.Write(Encoding.UTF8.GetBytes("WAVE"));
         }
 
-        private void WriteFMTChunk()
+        private void WriteFmtChunk()
         {
-            var tag = _waveFormat.WaveFormatTag;
-            if (tag == AudioEncoding.Extensible)
-            {
-                tag = DMO.MediaTypes.EncodingFromMediaType((_waveFormat as WaveFormatExtensible).SubFormat);
-            }
+            AudioEncoding tag = _waveFormat.WaveFormatTag;
+            if (tag == AudioEncoding.Extensible && _waveFormat is WaveFormatExtensible)
+                tag = AudioSubTypes.EncodingFromMediaType((_waveFormat as WaveFormatExtensible).SubFormat);
 
             _writer.Write(Encoding.UTF8.GetBytes("fmt "));
-            _writer.Write(16);
-            _writer.Write((short)tag);
-            _writer.Write(_waveFormat.Channels);
-            _writer.Write(_waveFormat.SampleRate);
-            _writer.Write(_waveFormat.BytesPerSecond);
-            _writer.Write((short)_waveFormat.BlockAlign);
-            _writer.Write(_waveFormat.BitsPerSample);
+            _writer.Write((int)16);
+            _writer.Write((short) tag);
+            _writer.Write((short)_waveFormat.Channels);
+            _writer.Write((int)_waveFormat.SampleRate);
+            _writer.Write((int)_waveFormat.BytesPerSecond);
+            _writer.Write((short) _waveFormat.BlockAlign);
+            _writer.Write((short)_waveFormat.BitsPerSample);
         }
 
         private void WriteDataChunk()
@@ -173,13 +243,13 @@ namespace CSCore.Codecs.WAV
             _writer.Write(_dataLength);
         }
 
-        private bool _disposed;
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
+        /// <summary>
+        ///     Disposes the <see cref="WaveWriter" /> and writes down the wave header.
+        /// </summary>
+        /// <param name="disposing">
+        ///     True to release both managed and unmanaged resources; false to release only unmanaged
+        ///     resources.
+        /// </param>
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposed)
@@ -190,7 +260,7 @@ namespace CSCore.Codecs.WAV
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine("WaveWriter::Dispose: " + ex.ToString());
+                    Debug.WriteLine("WaveWriter::Dispose: " + ex);
                 }
                 finally
                 {
@@ -202,6 +272,9 @@ namespace CSCore.Codecs.WAV
             _disposed = true;
         }
 
+        /// <summary>
+        ///     Destructor of the <see cref="WaveWriter" /> which calls the <see cref="Dispose(bool)" /> method.
+        /// </summary>
         ~WaveWriter()
         {
             Dispose(false);

@@ -61,7 +61,13 @@ namespace CSCore.Codecs.FLAC
                 data.DestBuffer[i] = data.ResidualBuffer[i];
             }
 
-            if (bps + _qlpCoeffPrecision + CSMath.ILog(order) <= 32)
+            int i1 = order;
+            int result = 0;
+            while ((i1 >>= 1) != 0)
+            {
+                result++;
+            }
+            if (bps + _qlpCoeffPrecision + result <= 32)
             {
                 if (bps <= 16 && _qlpCoeffPrecision <= 16)
                     RestoreLPCSignal(data.ResidualBuffer + order, data.DestBuffer + order, header.BlockSize - order, order); //Restore(data.residualBuffer + order, data.destBuffer, Header.BlockSize - order, order, order);

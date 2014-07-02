@@ -53,7 +53,7 @@ namespace CSCore.SoundOut.DirectSound
         {
             fixed (void* psettings = &dsListener3DSettings)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, psettings, ((void**)(*(void**)_basePtr))[3]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, psettings, ((void**)(*(void**)UnsafeBasePtr))[3]);
             }
         }
 
@@ -61,7 +61,7 @@ namespace CSCore.SoundOut.DirectSound
         {
             fixed (void* pdistanceFactor = &distanceFactor)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, pdistanceFactor, ((void**)(*(void**)_basePtr))[4]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, pdistanceFactor, ((void**)(*(void**)UnsafeBasePtr))[4]);
             }
         }
 
@@ -69,7 +69,7 @@ namespace CSCore.SoundOut.DirectSound
         {
             fixed (void* pdopplerFactor = &dopplerFactor)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, pdopplerFactor, ((void**)(*(void**)_basePtr))[5]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, pdopplerFactor, ((void**)(*(void**)UnsafeBasePtr))[5]);
             }
         }
 
@@ -77,7 +77,7 @@ namespace CSCore.SoundOut.DirectSound
         {
             fixed (void* porientfront = &orientFrontRef, porienttop = &orientTopRef)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, porientfront, porienttop, ((void**)(*(void**)_basePtr))[6]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, porientfront, porienttop, ((void**)(*(void**)UnsafeBasePtr))[6]);
             }
         }
 
@@ -85,7 +85,7 @@ namespace CSCore.SoundOut.DirectSound
         {
             fixed (void* pposition = &position)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, pposition, ((void**)(*(void**)_basePtr))[7]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, pposition, ((void**)(*(void**)UnsafeBasePtr))[7]);
             }
         }
 
@@ -93,7 +93,7 @@ namespace CSCore.SoundOut.DirectSound
         {
             fixed (void* prolloffFactor = &rolloffFactor)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, prolloffFactor, ((void**)(*(void**)_basePtr))[8]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, prolloffFactor, ((void**)(*(void**)UnsafeBasePtr))[8]);
             }
         }
 
@@ -101,28 +101,28 @@ namespace CSCore.SoundOut.DirectSound
         {
             fixed (void* pvelocity = &velocity)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, pvelocity, ((void**)(*(void**)_basePtr))[9]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, pvelocity, ((void**)(*(void**)UnsafeBasePtr))[9]);
             }
         }
 
         public DSResult SetAllParameters(DSListener3DSettings settings, DS3DApplyMode applyMode = DS3DApplyMode.Immediate)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, &settings, unchecked((int)applyMode), ((void**)(*(void**)_basePtr))[10]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, &settings, unchecked((int)applyMode), ((void**)(*(void**)UnsafeBasePtr))[10]);
         }
 
         public DSResult SetDistanceFactor(float distanceFactor, DS3DApplyMode applyMode = DS3DApplyMode.Immediate)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, distanceFactor, unchecked((int)applyMode), ((void**)(*(void**)_basePtr))[11]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, distanceFactor, unchecked((int)applyMode), ((void**)(*(void**)UnsafeBasePtr))[11]);
         }
 
         public DSResult SetDopplerFactor(float dopplerFactor, DS3DApplyMode applyMode = DS3DApplyMode.Immediate)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, dopplerFactor, unchecked((int)applyMode), ((void**)(*(void**)_basePtr))[12]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, dopplerFactor, unchecked((int)applyMode), ((void**)(*(void**)UnsafeBasePtr))[12]);
         }
 
         public DSResult SetOrientation(float xFront, float yFront, float zFront, float xTop, float yTop, float zTop, DS3DApplyMode applyMode = DS3DApplyMode.Immediate)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, xFront, yFront, zFront, xTop, yTop, zTop, unchecked((int)applyMode), ((void**)(*(void**)_basePtr))[13]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, xFront, yFront, zFront, xTop, yTop, zTop, unchecked((int)applyMode), ((void**)(*(void**)UnsafeBasePtr))[13]);
         }
 
         public DSResult SetOrientation(D3DVector front, D3DVector top, DS3DApplyMode applyMode = DS3DApplyMode.Immediate)
@@ -137,12 +137,12 @@ namespace CSCore.SoundOut.DirectSound
 
         public DSResult SetPosition(float x, float y, float z, DS3DApplyMode applyMode = DS3DApplyMode.Immediate)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, x, y, z, unchecked((int)applyMode), ((void**)(*(void**)_basePtr))[14]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, x, y, z, unchecked((int)applyMode), ((void**)(*(void**)UnsafeBasePtr))[14]);
         }
 
         public DSResult SetRolloffFactor(float rolloffFactor, DS3DApplyMode applyMode = DS3DApplyMode.Immediate)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, rolloffFactor, unchecked((int)applyMode), ((void**)(*(void**)_basePtr))[15]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, rolloffFactor, unchecked((int)applyMode), ((void**)(*(void**)UnsafeBasePtr))[15]);
         }
 
         public DSResult SetVelocity(D3DVector velocity, DS3DApplyMode applyMode = DS3DApplyMode.Immediate)
@@ -152,12 +152,12 @@ namespace CSCore.SoundOut.DirectSound
 
         public DSResult SetVelocity(float x, float y, float z, DS3DApplyMode applyMode = DS3DApplyMode.Immediate)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, x, y, z, unchecked((int)applyMode), ((void**)(*(void**)_basePtr))[16]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, x, y, z, unchecked((int)applyMode), ((void**)(*(void**)UnsafeBasePtr))[16]);
         }
 
         public DSResult CommitDeferredSettings()
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, ((void**)(*(void**)_basePtr))[17]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ((void**)(*(void**)UnsafeBasePtr))[17]);
         }
     }
 }

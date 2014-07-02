@@ -31,13 +31,8 @@ namespace CSCore.SoundOut.DirectSound
         {
             fixed (void* pnotifies = notifies)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, notifies.Length, pnotifies, ((void**)(*(void**)_basePtr))[3]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, notifies.Length, pnotifies, ((void**)(*(void**)UnsafeBasePtr))[3]);
             }
-        }
-
-        protected override bool AssertOnNoDispose()
-        {
-            return false;
         }
     }
 }

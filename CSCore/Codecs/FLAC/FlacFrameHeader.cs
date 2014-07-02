@@ -47,7 +47,7 @@ namespace CSCore.Codecs.FLAC
         {
         }
 
-        /// <param name="streamInfo">Can be null</param>
+        //streamInfo can be null
         public FlacFrameHeader(Stream stream, FlacMetadataStreamInfo streamInfo, bool doCrc)
         {
             if (stream == null) throw new ArgumentNullException("stream");
@@ -75,7 +75,7 @@ namespace CSCore.Codecs.FLAC
             HasError = !ParseHeader(ref buffer, streamInfo);
         }
 
-        protected unsafe  bool ParseHeader(Stream stream, FlacMetadataStreamInfo streamInfo)
+        protected unsafe bool ParseHeader(Stream stream, FlacMetadataStreamInfo streamInfo)
         {
             const string loggerLocation = "FlacFrameHeader.ParseHeader(Stream, FlacMetadataStreamInfo)";
 
@@ -304,7 +304,7 @@ namespace CSCore.Codecs.FLAC
 
                 if (DoCRC)
                 {
-                    var crc8 = CSMath.CRC8.Instance.CalcCheckSum(reader.Buffer, 0, reader.Position);
+                    var crc8 = Utils.CRC8.Instance.CalcCheckSum(reader.Buffer, 0, reader.Position);
                     CRC8 = (byte)reader.ReadBits(8);
                     if (CRC8 != crc8)
                     {
@@ -333,19 +333,5 @@ namespace CSCore.Codecs.FLAC
                     Channels == header.Channels &&
                     SampleRate == header.SampleRate);
         }
-    }
-
-    public enum FlacNumberType
-    {
-        SampleNumber,
-        FrameNumber
-    }
-
-    public enum ChannelAssignment
-    {
-        Independent = 0,
-        LeftSide = 1,
-        RightSide = 2,
-        MidSide = 3,
     }
 }

@@ -10,16 +10,16 @@ namespace CSCore.XAudio2
 	public partial struct DeviceDetails
 	{
 <#
-for (int i = 0; i < 256; i++)
-{
-	WriteLine("\t\tprivate char _internalDeviceIdField{0};", i);					
-}
+    for (int i = 0; i < 256; i++)
+    {
+        WriteLine("\t\tprivate char _internalDeviceIdField{0};", i);
+    }
 #>
 <#
-for (int i = 0; i < 256; i++)
-{
-	WriteLine("\t\tprivate char _internalDisplayNameField{0};", i);					
-}
+    for (int i = 0; i < 256; i++)
+    {
+        WriteLine("\t\tprivate char _internalDisplayNameField{0};", i);
+    }
 #>
 
 	private XAudio2DeviceRole _role;

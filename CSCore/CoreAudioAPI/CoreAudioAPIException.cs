@@ -1,27 +1,34 @@
-﻿using System;
+﻿using CSCore.Win32;
 
 namespace CSCore.CoreAudioAPI
 {
-    public class CoreAudioAPIException : System.Runtime.InteropServices.COMException
+    /// <summary>
+    /// CoreAudioAPI COM Exception
+    /// </summary>
+// ReSharper disable once InconsistentNaming
+    public class CoreAudioAPIException : Win32ComException
     {
-        public static void Try(int result, string interfaceName, string member)
+        /// <summary>
+        /// Throws an <see cref="CoreAudioAPIException"/> if the <paramref name="result"/> is not <see cref="HResult.S_OK"/>.
+        /// </summary>
+        /// <param name="result">Errorcode.</param>
+        /// <param name="interfaceName">Name of the interface which contains the COM-function which returned the specified <paramref name="result"/>.</param>
+        /// <param name="member">Name of the COM-function which returned the specified <paramref name="result"/>.</param>
+        public new static void Try(int result, string interfaceName, string member)
         {
             if (result != 0)
                 throw new CoreAudioAPIException(result, interfaceName, member);
         }
 
-        public int Result { get; private set; }
-
-        public string InterfaceName { get; private set; }
-
-        public string Member { get; private set; }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CoreAudioAPIException"/> class.
+        /// </summary>
+        /// <param name="result">Errorcode.</param>
+        /// <param name="interfaceName">Name of the interface which contains the COM-function which returned the specified <paramref name="result"/>.</param>
+        /// <param name="member">Name of the COM-function which returned the specified <paramref name="result"/>.</param>
         public CoreAudioAPIException(int result, string interfaceName, string member)
-            : base(String.Format("{0}::{1} returned 0x{2}", interfaceName, member, result.ToString("x")), (int)result)
+            : base(result, interfaceName, member)
         {
-            Result = result;
-            InterfaceName = interfaceName;
-            Member = member;
         }
     }
 }

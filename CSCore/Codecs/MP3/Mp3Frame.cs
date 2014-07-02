@@ -1,15 +1,20 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using CSCore;
 
 namespace CSCore.Codecs.MP3
 {
-    public class MP3Frame
+    /// <summary>
+    /// Represents an MP3 Frame.
+    /// </summary>
+    public class Mp3Frame
     {
+        /// <summary>
+        /// Maximum length of one single <see cref="Mp3Frame"/> in bytes.
+        /// </summary>
         public const int MaxFrameLength = 0x4000; //16384
 
-        private static readonly int[, ,] BitRates = new int[,,]
+        private static readonly int[, ,] BitRates =
         {
             {
                 // Version 1
@@ -22,11 +27,11 @@ namespace CSCore.Codecs.MP3
                 { 0, 32, 48, 56, 64, 80, 96, 112, 128, 144, 160, 176, 192, 224, 256 },      // Layer 1
                 { 0, 8, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 144, 160 },           // Layer 2
                 { 0, 8, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 144, 160 },           // Layer 3 (same as
-                                                                                            // layer 2)
+                // layer 2)
             }
         };
 
-        private static readonly int[,] SamplesPerFrame = new int[,]
+        private static readonly int[,] SamplesPerFrame =
         {
             //Version 1
             {
@@ -42,7 +47,7 @@ namespace CSCore.Codecs.MP3
             }
         };
 
-        private static readonly int[,] SampleRates = new int[,]
+        private static readonly int[,] SampleRates =
         {
             //Version 1
             {
@@ -64,19 +69,28 @@ namespace CSCore.Codecs.MP3
             }
         };
 
-        private Stream _stream;
+        private readonly Stream _stream;
         private long _streamPosition, _dataPosition;
         private byte[] _headerBuffer;
 
-        public static MP3Frame FromStream(Stream stream)
+        /// <summary>
+        /// Creates a new instance of the <see cref="Mp3Frame"/> class based on a <see cref="Stream"/>.
+        /// </summary>
+        /// <param name="stream"><see cref="Stream"/> which provides MP3 data.</param>
+        public static Mp3Frame FromStream(Stream stream)
         {
-            MP3Frame frame = new MP3Frame(stream);
+            Mp3Frame frame = new Mp3Frame(stream);
             return frame.FindFrame(stream, true) ? frame : null;
         }
 
-        public static MP3Frame FromStream(Stream stream, ref byte[] data)
+        /// <summary>
+        /// Creates a new instance of the <see cref="Mp3Frame"/> class based on a <see cref="Stream"/>.
+        /// </summary>
+        /// <param name="stream"><see cref="Stream"/> which provides MP3 data.</param>
+        /// <param name="data">Byte array which recieves the content of the <see cref="Mp3Frame"/>.</param>
+        public static Mp3Frame FromStream(Stream stream, ref byte[] data)
         {
-            MP3Frame frame = new MP3Frame(stream);
+            Mp3Frame frame = new Mp3Frame(stream);
             if (frame.FindFrame(stream, false))
             {
                 data = data.CheckBuffer(frame.FrameLength);
@@ -91,7 +105,7 @@ namespace CSCore.Codecs.MP3
             return null;
         }
 
-        private MP3Frame(Stream stream)
+        private Mp3Frame(Stream stream)
         {
             _stream = stream;
         }
@@ -104,15 +118,14 @@ namespace CSCore.Codecs.MP3
                 throw new ArgumentException("Stream not readable.");
 
             byte[] buffer = new byte[4];
-            int read;
 
-            if ((read = stream.Read(buffer, 0, buffer.Length)) < 4)
+            if ((stream.Read(buffer, 0, buffer.Length)) < 4)
             {
                 Debug.WriteLine("Stream is EOF.");
                 return false;
             }
 
-            int totalRead = 0;
+            //int totalRead = 0;
 
             _streamPosition = stream.Position;
 
@@ -121,14 +134,14 @@ namespace CSCore.Codecs.MP3
                 for (int i = 0; i < 3; i++)
                     buffer[i] = buffer[i + 1];
 
-                if ((read = stream.Read(buffer, 3, 1)) < 1)
+                if ((stream.Read(buffer, 3, 1)) < 1)
                 {
                     Debug.WriteLine("Mp3Frame::FindFrame: Stream EOF.");
                     return false;
                 }
 
-                totalRead += read;
-                /*if (totalRead > MaxFrameLength)
+                /*totalRead += read;
+                if (totalRead > MaxFrameLength)
                 {
                     Context.Current.Logger.Error("Could not find a MP3 Frame.", loggerLocation);
                     return false;
@@ -149,6 +162,12 @@ namespace CSCore.Codecs.MP3
             return true;
         }
 
+        /// <summary>
+        /// Reads data from the <see cref="Mp3Frame"/>.
+        /// </summary>
+        /// <param name="buffer">Buffer which will receive the read data.</param>
+        /// <param name="offset">Zero-based index at which to begin storing data within the <paramref name="buffer"/>.</param>
+        /// <returns></returns>
         public int ReadData(ref byte[] buffer, int offset)
         {
             long currentPosition = _stream.Position;
@@ -162,11 +181,7 @@ namespace CSCore.Codecs.MP3
             return read;
         }
 
-        /// <summary>
-        /// <remarks>
-        /// http://mpgedit.org/mpgedit/mpeg_format/mpeghdr.htm
-        /// </remarks>
-        /// </summary>
+        //see http://mpgedit.org/mpgedit/mpeg_format/mpeghdr.htm
         private bool ParseFrame(byte[] buffer)
         {
             if (buffer == null)
@@ -230,11 +245,10 @@ namespace CSCore.Codecs.MP3
                     //Reserved --> 1111
                     return false;
                 }
-                else
-                {
-                    BitRate = BitRates[(MPEGVersion == MpegVersion.Version1) ? 0 : 1, mpegLayerIndex, bitrateIndex] * 1000;
-                    if (BitRate == 0) return false;
-                }
+
+                BitRate = BitRates[(MPEGVersion == MpegVersion.Version1) ? 0 : 1, mpegLayerIndex, bitrateIndex] * 1000;
+                if (BitRate == 0) 
+                    return false;
 
                 /*
                  * SamplingFrequenzy
@@ -266,7 +280,7 @@ namespace CSCore.Codecs.MP3
                  * 0000 0011 = Emphasis --> 0x3 >> nothing
                  *
                  */
-                ChannelMode = (MP3ChannelMode)((buffer[3] & 0xC0) >> 6);
+                ChannelMode = (Mp3ChannelMode)((buffer[3] & 0xC0) >> 6);
                 ChannelExtension = ((buffer[3] & 0x30) >> 4); 
                 CopyRight = (buffer[3] & 0x08) == 0x08;
                 Original = (buffer[3] & 0x04) == 0x04;
@@ -283,43 +297,85 @@ namespace CSCore.Codecs.MP3
             return false;
         }
 
+        /// <summary>
+        /// Gets the Mpeg Version.
+        /// </summary>
         public MpegVersion MPEGVersion { get; private set; }
 
+        /// <summary>
+        /// Gets the Mpeg Layer.
+        /// </summary>
         public MpegLayer MPEGLayer { get; private set; }
 
+        /// <summary>
+        /// Gets the bit rate.
+        /// </summary>
         public int BitRate { get; private set; }
 
+        /// <summary>
+        /// Gets the sample rate.
+        /// </summary>
         public int SampleRate { get; private set; }
 
-        public MP3ChannelMode ChannelMode { get; private set; }
+        /// <summary>
+        /// Gets the channel mode.
+        /// </summary>
+        public Mp3ChannelMode ChannelMode { get; private set; }
 
+        /// <summary>
+        /// Gets the number of channels.
+        /// </summary>
         public short ChannelCount { get { return GetChannelCount(ChannelMode); }}
 
+        /// <summary>
+        /// Gets the number of samples
+        /// </summary>
         public int SampleCount { get; private set; }
 
+        /// <summary>
+        /// Gets the length of the frame.
+        /// </summary>
         public int FrameLength { get; private set; }
 
+        /// <summary>
+        /// Gets the channel extension.
+        /// </summary>
         public int ChannelExtension { get; private set; }
 
+        /// <summary>
+        /// Gets a value which indicates whether the copyright flag is set (true means that the copyright flag is set).
+        /// </summary>
         public bool CopyRight { get; private set; }
 
+        /// <summary>
+        /// Gets a value which indicates whether the original flag is set (true means that the original flag is set).
+        /// </summary>
         public bool Original { get; private set; }
 
+        /// <summary>
+        /// Gets the emphasis.
+        /// </summary>
         public int Emphasis { get; private set; }
 
+        /// <summary>
+        /// Gets the padding.
+        /// </summary>
         public bool Padding { get; private set; }
 
+        /// <summary>
+        /// Gets a value which indicates whether the crc flag is set (true means that the crc flag is set).
+        /// </summary>
         public bool CrcEnabled { get; private set; }
 
-        private short GetChannelCount(MP3ChannelMode channelsMode)
+        private short GetChannelCount(Mp3ChannelMode channelsMode)
         {
-            if (channelsMode == MP3ChannelMode.Mono)
+            if (channelsMode == Mp3ChannelMode.Mono)
                 return 1;
-            else if (channelsMode == MP3ChannelMode.Stereo)
+            if (channelsMode == Mp3ChannelMode.Stereo)
                 return 2;
-            else if (channelsMode == MP3ChannelMode.JointStereo)
+            if (channelsMode == Mp3ChannelMode.JointStereo)
                 return 2;
-            else if (channelsMode == MP3ChannelMode.DualChannel)
+            if (channelsMode == Mp3ChannelMode.DualChannel)
                 return 2;
 
             return 0;

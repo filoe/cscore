@@ -1,25 +1,26 @@
-﻿using CSCore.ACM;
+﻿#pragma warning disable 1591
+
+using CSCore.ACM;
 using System;
 using System.Diagnostics;
 using System.IO;
 
 namespace CSCore.Codecs.MP3
 {
-    public class MP3Stream : IWaveSource, IDisposable
+    [Obsolete("Use the DmoMp3Decoder or the MP3MediafoundationDecoder instead.")]
+    public class Mp3Stream : IWaveSource, IDisposable
     {
-        private MP3Frame _frame = null;
+        private Mp3Frame _frame = null;
         private FrameInfoCollection _frameInfoCollection;
         private AcmConverter _converter;
         private Stream _stream;
-        private object _lockObject = new object();
+        private readonly object _lockObject = new object();
 
         private int _overflows;
         private int _bufferoffset;
 
-        private int _sampleRate = 0;
-        private long _dataStartIndex = 0;
-        private long _dataLength = 0;
-        private double _bitRate = 0.0;
+        private readonly long _dataStartIndex = 0;
+        private readonly double _bitRate = 0.0;
 
         private long _position;
 
@@ -29,12 +30,12 @@ namespace CSCore.Codecs.MP3
 
         private const short SamplesPerFrame = 1152;
 
-        public MP3Stream(Stream stream, bool scanStream)
+        public Mp3Stream(Stream stream, bool scanStream)
             : this(stream, scanStream, 0)
         {
         }
 
-        public MP3Stream(Stream stream, bool scanStream, int lengthOffset)
+        public Mp3Stream(Stream stream, bool scanStream, int lengthOffset)
         {
             int frameLength = 0;
             if (scanStream)
@@ -45,13 +46,14 @@ namespace CSCore.Codecs.MP3
             _dataStartIndex = stream.Position;
             do
             {
-                _frame = MP3Frame.FromStream(stream);
-                if (_frame == null && stream.IsEndOfStream())
-                    throw new FormatException("Stream is no MP3-stream. No MP3-Frame was found.");
+                _frame = Mp3Frame.FromStream(stream);
             } while (_frame == null && !stream.IsEndOfStream());
 
+            if(_frame == null)
+                throw new FormatException("Stream is no MP3-stream. No MP3-Frame was found.");
+
             frameLength = _frame.FrameLength;
-            _sampleRate = _frame.SampleRate;
+            int sampleRate = _frame.SampleRate;
             XingHeader = XingHeader.FromFrame(_frame); //The first frame can contain a Xingheader
             if (XingHeader != null)
             {
@@ -59,7 +61,7 @@ namespace CSCore.Codecs.MP3
                 _dataStartIndex = stream.Position;
             }
 
-            _dataLength = stream.Length - _dataStartIndex - lengthOffset;
+            long dataLength = stream.Length - _dataStartIndex - lengthOffset;
 
             if (scanStream)
             {
@@ -79,13 +81,13 @@ namespace CSCore.Codecs.MP3
              */
             if (scanStream)
             {
-                _bitRate = ((_dataLength * 8.0) / ((double)_frameInfoCollection.TotalSamples / (double)_sampleRate));
+                _bitRate = ((dataLength * 8.0) / ((double)_frameInfoCollection.TotalSamples / sampleRate));
             }
             else
             {
-                _bitRate = ((_frame.BitRate) / 1);
+                _bitRate = (_frame.BitRate / 1);
             }
-            MP3Format = new MP3Format(_sampleRate, _frame.ChannelCount, frameLength, (int)Math.Round(_bitRate));
+            MP3Format = new Mp3Format(sampleRate, _frame.ChannelCount, frameLength, (int)Math.Round(_bitRate));
             _converter = new AcmConverter(MP3Format);
             WaveFormat = _converter.DestinationFormat;
 
@@ -138,7 +140,7 @@ namespace CSCore.Codecs.MP3
                         catch (Exception ex)
                         {
                             Debugger.Break();
-                            Debug.WriteLine("Mp3Stream::Read: " + ex.ToString());
+                            Debug.WriteLine("Mp3Stream::Read: " + ex);
                         }
                     }
 
@@ -168,15 +170,12 @@ namespace CSCore.Codecs.MP3
 
                 return result;
             }
-            else
-            {
-                return 0;
-            }
+            return 0;
         }
 
-        private MP3Frame ReadNextMP3Frame()
+        private Mp3Frame ReadNextMP3Frame()
         {
-            MP3Frame frame = MP3Frame.FromStream(_stream, ref _frameBuffer);
+            Mp3Frame frame = Mp3Frame.FromStream(_stream, ref _frameBuffer);
             if (frame != null && _frameInfoCollection != null)
                 _frameInfoCollection.PlaybackIndex++;
 
@@ -217,8 +216,6 @@ namespace CSCore.Codecs.MP3
                     value = Math.Min(value, Length);
                     value = (value > 0) ? value : 0;
 
-                    long n = value / WaveFormat.BytesPerBlock;
-
                     for (int i = 0; i < _frameInfoCollection.Count; i++)
                     {
                         if ((value / WaveFormat.BytesPerBlock) <= _frameInfoCollection[i].SampleIndex)
@@ -243,14 +240,16 @@ namespace CSCore.Codecs.MP3
 
         private void PreScanFile(Stream stream)
         {
-            while (_frameInfoCollection.AddFromMP3Stream(stream)) ;
+            while (_frameInfoCollection.AddFromMp3Stream(stream))
+            {
+            }
         }
 
         public XingHeader XingHeader { get; private set; }
 
         public Boolean CanSeek { get; private set; }
 
-        public MP3Format MP3Format { get; private set; }
+        public Mp3Format MP3Format { get; private set; }
 
         public WaveFormat WaveFormat { get; private set; }
 
@@ -301,9 +300,11 @@ namespace CSCore.Codecs.MP3
             }
         }
 
-        ~MP3Stream()
+        ~Mp3Stream()
         {
             Dispose(false);
         }
     }
 }
+
+#pragma warning restore 1591

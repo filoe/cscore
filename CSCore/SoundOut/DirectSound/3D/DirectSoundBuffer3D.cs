@@ -24,7 +24,7 @@ namespace CSCore.SoundOut.DirectSound
         {
             fixed (void* psettings = &dsBuffer3DSettings)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, psettings, ((void**)(*(void**)_basePtr))[3]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, psettings, ((void**)(*(void**)UnsafeBasePtr))[3]);
             }
         }
 
@@ -32,7 +32,7 @@ namespace CSCore.SoundOut.DirectSound
         {
             fixed (void* pinside = &insideConeAngle, poutside = &outsideConeAngle)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, pinside, poutside, ((void**)(*(void**)_basePtr))[4]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, pinside, poutside, ((void**)(*(void**)UnsafeBasePtr))[4]);
             }
         }
 
@@ -40,7 +40,7 @@ namespace CSCore.SoundOut.DirectSound
         {
             fixed (void* porientation = &orientation)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, porientation, ((void**)(*(void**)_basePtr))[5]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, porientation, ((void**)(*(void**)UnsafeBasePtr))[5]);
             }
         }
 
@@ -48,7 +48,7 @@ namespace CSCore.SoundOut.DirectSound
         {
             fixed (void* pconeOutsideVolume = &coneOutsideVolume)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, pconeOutsideVolume, ((void**)(*(void**)_basePtr))[6]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, pconeOutsideVolume, ((void**)(*(void**)UnsafeBasePtr))[6]);
             }
         }
 
@@ -56,7 +56,7 @@ namespace CSCore.SoundOut.DirectSound
         {
             fixed (void* pmaxDistance = &maxDistance)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, pmaxDistance, ((void**)(*(void**)_basePtr))[7]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, pmaxDistance, ((void**)(*(void**)UnsafeBasePtr))[7]);
             }
         }
 
@@ -64,7 +64,7 @@ namespace CSCore.SoundOut.DirectSound
         {
             fixed (void* pminDistance = &mixDistance)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, pminDistance, ((void**)(*(void**)_basePtr))[8]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, pminDistance, ((void**)(*(void**)UnsafeBasePtr))[8]);
             }
         }
 
@@ -72,7 +72,7 @@ namespace CSCore.SoundOut.DirectSound
         {
             fixed (void* pmode = &mode)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, pmode, ((void**)(*(void**)_basePtr))[9]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, pmode, ((void**)(*(void**)UnsafeBasePtr))[9]);
             }
         }
 
@@ -80,7 +80,7 @@ namespace CSCore.SoundOut.DirectSound
         {
             fixed (void* pposition = &position)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, pposition, ((void**)(*(void**)_basePtr))[10]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, pposition, ((void**)(*(void**)UnsafeBasePtr))[10]);
             }
         }
 
@@ -88,18 +88,18 @@ namespace CSCore.SoundOut.DirectSound
         {
             fixed (void* pvelocity = &velocity)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, pvelocity, ((void**)(*(void**)_basePtr))[11]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, pvelocity, ((void**)(*(void**)UnsafeBasePtr))[11]);
             }
         }
 
         public DSResult SetAllParameters(DSBuffer3DSettings settings, DS3DApplyMode applyMode = DS3DApplyMode.Immediate)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, &settings, unchecked((int)applyMode), ((void**)(*(void**)_basePtr))[12]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, &settings, unchecked((int)applyMode), ((void**)(*(void**)UnsafeBasePtr))[12]);
         }
 
         public DSResult SetConeAngles(int insideConeAngle, int outsideConeAngle, DS3DApplyMode applyMode = DS3DApplyMode.Immediate)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, insideConeAngle, outsideConeAngle, unchecked((int)applyMode), ((void**)(*(void**)_basePtr))[13]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, insideConeAngle, outsideConeAngle, unchecked((int)applyMode), ((void**)(*(void**)UnsafeBasePtr))[13]);
         }
 
         public DSResult SetConeOrientation(D3DVector coneOrientation, DS3DApplyMode applyMode = DS3DApplyMode.Immediate)
@@ -109,27 +109,27 @@ namespace CSCore.SoundOut.DirectSound
 
         public DSResult SetConeOrientation(float x, float y, float z, DS3DApplyMode applyMode = DS3DApplyMode.Immediate)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, x, y, z, unchecked((int)applyMode), ((void**)(*(void**)_basePtr))[14]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, x, y, z, unchecked((int)applyMode), ((void**)(*(void**)UnsafeBasePtr))[14]);
         }
 
         public DSResult SetConeOutsideVolume(int coneOutsideVolume, DS3DApplyMode applyMode = DS3DApplyMode.Immediate)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, coneOutsideVolume, unchecked((int)applyMode), ((void**)(*(void**)_basePtr))[15]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, coneOutsideVolume, unchecked((int)applyMode), ((void**)(*(void**)UnsafeBasePtr))[15]);
         }
 
         public DSResult SetMaxDistance(float maxDistance, DS3DApplyMode applyMode = DS3DApplyMode.Immediate)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, maxDistance, unchecked((int)applyMode), ((void**)(*(void**)_basePtr))[16]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, maxDistance, unchecked((int)applyMode), ((void**)(*(void**)UnsafeBasePtr))[16]);
         }
 
         public DSResult SetMinDistance(float minDistance, DS3DApplyMode applyMode = DS3DApplyMode.Immediate)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, minDistance, unchecked((int)applyMode), ((void**)(*(void**)_basePtr))[17]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, minDistance, unchecked((int)applyMode), ((void**)(*(void**)UnsafeBasePtr))[17]);
         }
 
         public DSResult SetMode(DSMode3D mode, DS3DApplyMode applyMode = DS3DApplyMode.Immediate)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, unchecked((int)mode), unchecked((int)applyMode), ((void**)(*(void**)_basePtr))[18]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, unchecked((int)mode), unchecked((int)applyMode), ((void**)(*(void**)UnsafeBasePtr))[18]);
         }
 
         public DSResult SetPosition(D3DVector position, DS3DApplyMode applyMode = DS3DApplyMode.Immediate)
@@ -139,7 +139,7 @@ namespace CSCore.SoundOut.DirectSound
 
         public DSResult SetPosition(float x, float y, float z, DS3DApplyMode applyMode = DS3DApplyMode.Immediate)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, x, y, z, unchecked((int)applyMode), ((void**)(*(void**)_basePtr))[19]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, x, y, z, unchecked((int)applyMode), ((void**)(*(void**)UnsafeBasePtr))[19]);
         }
 
         public DSResult SetVelocity(D3DVector velocity, DS3DApplyMode applyMode = DS3DApplyMode.Immediate)
@@ -149,7 +149,7 @@ namespace CSCore.SoundOut.DirectSound
 
         public DSResult SetVelocity(float x, float y, float z, DS3DApplyMode applyMode = DS3DApplyMode.Immediate)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, x, y, z, unchecked((int)applyMode), ((void**)(*(void**)_basePtr))[20]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, x, y, z, unchecked((int)applyMode), ((void**)(*(void**)UnsafeBasePtr))[20]);
         }
     }
 }

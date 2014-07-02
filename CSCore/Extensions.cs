@@ -1,25 +1,24 @@
-﻿using CSCore.Codecs.MP3;
+﻿using System;
+using System.IO;
+using System.Reflection;
+using System.Threading;
 using CSCore.Codecs.WAV;
 using CSCore.SoundOut;
 using CSCore.Streams.SampleConverter;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-using System.Text;
-using System.Threading;
 
 namespace CSCore
 {
-    //[CLSCompliant(true)]
+    /// <summary>
+    ///     Provides a few basic extensions.
+    /// </summary>
     public static class Extensions
     {
         /// <summary>
-        /// Converts a SampleSource to either a Pcm (8, 16, or 24 bit) or IeeeFloat (32 bit) WaveSource.
+        ///     Converts a SampleSource to either a Pcm (8, 16, or 24 bit) or IeeeFloat (32 bit) WaveSource.
         /// </summary>
-        /// <param name="sampleSource"></param>
-        /// <param name="bits"></param>
-        /// <returns></returns>
+        /// <param name="sampleSource">Sample source to convert to a wave source.</param>
+        /// <param name="bits">Bits per sample.</param>
+        /// <returns>Wave source</returns>
         public static IWaveSource ToWaveSource(this ISampleSource sampleSource, int bits)
         {
             if (sampleSource == null)
@@ -33,12 +32,11 @@ namespace CSCore
                 return new SampleToPcm24(sampleSource);
             if (bits == 32)
                 return new SampleToIeeeFloat32(sampleSource);
-            else
-                throw new ArgumentOutOfRangeException("bits");
+            throw new ArgumentOutOfRangeException("bits");
         }
 
         /// <summary>
-        /// Converts a SampleSource to IeeeFloat (32bit) WaveSource.
+        ///     Converts a SampleSource to IeeeFloat (32bit) WaveSource.
         /// </summary>
         public static IWaveSource ToWaveSource(this ISampleSource sampleSource)
         {
@@ -49,7 +47,7 @@ namespace CSCore
         }
 
         /// <summary>
-        /// Converts a WaveSource to a SampleSource.
+        ///     Converts a WaveSource to a SampleSource.
         /// </summary>
         public static ISampleSource ToSampleSource(this IWaveSource waveSource)
         {
@@ -60,7 +58,7 @@ namespace CSCore
         }
 
         /// <summary>
-        /// Gets the length of a WaveStream as a TimeSpan.
+        ///     Gets the length of a WaveStream as a TimeSpan.
         /// </summary>
         public static TimeSpan GetLength(this IWaveStream source)
         {
@@ -68,7 +66,7 @@ namespace CSCore
         }
 
         /// <summary>
-        /// Gets the position of a WaveStream as a TimeSpan.
+        ///     Gets the position of a WaveStream as a TimeSpan.
         /// </summary>
         public static TimeSpan GetPosition(this IWaveStream source)
         {
@@ -76,7 +74,7 @@ namespace CSCore
         }
 
         /// <summary>
-        /// Sets the position of a WaveStream as a TimeSpan.
+        ///     Sets the position of a WaveStream as a TimeSpan.
         /// </summary>
         public static void SetPosition(this IWaveStream source, TimeSpan position)
         {
@@ -85,10 +83,19 @@ namespace CSCore
             if (position.TotalMilliseconds < 0)
                 throw new ArgumentOutOfRangeException("position");
 
-            var bytes = GetBytes(source, (long)position.TotalMilliseconds);
+            long bytes = GetBytes(source, (long) position.TotalMilliseconds);
             source.Position = bytes;
         }
 
+        /// <summary>
+        ///     Converts a duration in bytes to a <see cref="TimeSpan" />.
+        /// </summary>
+        /// <param name="source">
+        ///     <see cref="IWaveSource" /> instance which provides the <see cref="WaveFormat" /> used to convert
+        ///     the duration in bytes to a <see cref="TimeSpan" />.
+        /// </param>
+        /// <param name="bytes">Duration in bytes to convert to a <see cref="TimeSpan" />.</param>
+        /// <returns>Duration as a <see cref="TimeSpan" />.</returns>
         public static TimeSpan GetTime(this IWaveStream source, long bytes)
         {
             if (source == null)
@@ -98,6 +105,15 @@ namespace CSCore
             return TimeSpan.FromMilliseconds(GetMilliseconds(source, bytes));
         }
 
+        /// <summary>
+        ///     Converts a duration in bytes to a duration in milliseconds.
+        /// </summary>
+        /// <param name="source">
+        ///     <see cref="IWaveSource" /> instance which provides the <see cref="WaveFormat" /> used to convert
+        ///     the duration in bytes to a duration in milliseconds.
+        /// </param>
+        /// <param name="bytes">Duration in bytes to convert to a duration in milliseconds.</param>
+        /// <returns>Duration in milliseconds.</returns>
         public static long GetMilliseconds(this IWaveStream source, long bytes)
         {
             if (source == null)
@@ -106,24 +122,35 @@ namespace CSCore
                 throw new ArgumentOutOfRangeException("bytes");
 
             if (source is IWaveSource)
-            {
                 return source.WaveFormat.BytesToMilliseconds(bytes);
-            }
-            else if (source is ISampleSource)
-            {
+            if (source is ISampleSource)
                 return source.WaveFormat.BytesToMilliseconds(bytes * 4);
-            }
-            else
-            {
-                throw new NotSupportedException("IWaveStream-Subtype is not supported");
-            }
+            throw new NotSupportedException("IWaveStream-Subtype is not supported");
         }
 
+        /// <summary>
+        ///     Converts a duration as a <see cref="TimeSpan" /> to a duration in bytes.
+        /// </summary>
+        /// <param name="source">
+        ///     <see cref="IWaveSource" /> instance which provides the <see cref="WaveFormat" /> used to convert
+        ///     the duration as a <see cref="TimeSpan" /> to a duration in bytes.
+        /// </param>
+        /// <param name="timespan">Duration as a <see cref="TimeSpan" /> to convert to a duration in bytes.</param>
+        /// <returns>Duration in bytes.</returns>
         public static long GetBytes(this IWaveStream source, TimeSpan timespan)
         {
-            return GetBytes(source, (long)timespan.TotalMilliseconds);
+            return GetBytes(source, (long) timespan.TotalMilliseconds);
         }
 
+        /// <summary>
+        ///     Converts a duration in milliseconds to a duration in bytes.
+        /// </summary>
+        /// <param name="source">
+        ///     <see cref="IWaveSource" /> instance which provides the <see cref="WaveFormat" /> used to convert
+        ///     the duration in milliseconds to a duration in bytes.
+        /// </param>
+        /// <param name="milliseconds">Duration in milliseconds to convert to a duration in bytes.</param>
+        /// <returns>Duration in bytes.</returns>
         public static long GetBytes(this IWaveStream source, long milliseconds)
         {
             if (source == null)
@@ -132,27 +159,30 @@ namespace CSCore
                 throw new ArgumentOutOfRangeException("milliseconds");
 
             if (source is IWaveSource)
-            {
                 return source.WaveFormat.MillisecondsToBytes(milliseconds);
-            }
-            else if (source is ISampleSource)
-            {
+            if (source is ISampleSource)
                 return source.WaveFormat.MillisecondsToBytes(milliseconds / 4);
-            }
-            else
-            {
-                throw new NotSupportedException("IWaveStream-Subtype is not supported");
-            }
+            throw new NotSupportedException("IWaveStream-Subtype is not supported");
         }
 
+        /// <summary>
+        ///     Writes down all audio data of the <paramref name="source" /> to a file.
+        /// </summary>
+        /// <param name="source">Source which provides the audio data to write down to the file.</param>
+        /// <param name="filename">Filename which specifies the file to use.</param>
         public static void WriteToFile(this IWaveSource source, string filename)
         {
-            using (var stream = File.OpenWrite(filename))
+            using (FileStream stream = File.OpenWrite(filename))
             {
                 WriteToWaveStream(source, stream);
             }
         }
 
+        /// <summary>
+        ///     Writes down all audio data of the <paramref name="source" /> to a <see cref="Stream" />.
+        /// </summary>
+        /// <param name="source">Source which provides the audio data to write down to the <see cref="Stream" />.</param>
+        /// <param name="stream"><see cref="Stream" /> to store the audio data in.</param>
         public static void WriteToWaveStream(this IWaveSource source, Stream stream)
         {
             if (stream == null)
@@ -162,64 +192,86 @@ namespace CSCore
 
             using (var writer = new WaveWriter(stream, source.WaveFormat))
             {
-                int read = 0;
-                byte[] buffer = new byte[source.WaveFormat.BytesPerSecond];
-                while((read = source.Read(buffer, 0, buffer.Length)) > 0)
+                int read;
+                var buffer = new byte[source.WaveFormat.BytesPerSecond];
+                while ((read = source.Read(buffer, 0, buffer.Length)) > 0)
                 {
                     writer.Write(buffer, 0, read);
                 }
             }
         }
 
+        /// <summary>
+        /// Checks the length of an array.
+        /// </summary>
+        /// <typeparam name="T">Type of the array.</typeparam>
+        /// <param name="inst">The array to check. This parameter can be null.</param>
+        /// <param name="size">The target length of the array.</param>
+        /// <param name="exactSize">A value which indicates whether the length of the array has to fit exactly the specified <paramref name="size"/>.</param>
+        /// <returns>Array which fits the specified requirements. Note that if a new array got created, the content of the old array won't get copied to the return value.</returns>
         public static T[] CheckBuffer<T>(this T[] inst, long size, bool exactSize = false)
         {
             if (inst == null || (!exactSize && inst.Length < size) || (exactSize && inst.Length != size))
-            {
                 return new T[size];
-            }
             return inst;
         }
 
-        public static bool IsClosed(this Stream stream)
+        internal static bool IsClosed(this Stream stream)
         {
             return stream.CanRead || stream.CanWrite;
         }
 
-        public static bool IsEndOfStream(this Stream stream)
+        internal static bool IsEndOfStream(this Stream stream)
         {
             return stream.Position == stream.Length;
         }
 
-        public static int LowWord(this int number)
-        { return number & 0x0000FFFF; }
+        internal static int LowWord(this int number)
+        {
+            return number & 0x0000FFFF;
+        }
 
-        public static int LowWord(this int number, int newValue)
-        { return (int)((number & 0xFFFF0000) + (newValue & 0x0000FFFF)); }
+        internal static int LowWord(this int number, int newValue)
+        {
+            return (int) ((number & 0xFFFF0000) + (newValue & 0x0000FFFF));
+        }
 
-        public static int HighWord(this int number)
-        { return (int)(number & 0xFFFF0000); }
+        internal static int HighWord(this int number)
+        {
+            return (int) (number & 0xFFFF0000);
+        }
 
-        public static int HighWord(this int number, int newValue)
-        { return (number & 0x0000FFFF) + (newValue << 16); }
+        internal static int HighWord(this int number, int newValue)
+        {
+            return (number & 0x0000FFFF) + (newValue << 16);
+        }
 
-        public static uint LowWord(this uint number)
-        { return number & 0x0000FFFF; }
+        internal static uint LowWord(this uint number)
+        {
+            return number & 0x0000FFFF;
+        }
 
-        public static uint LowWord(this uint number, int newValue)
-        { return (uint)((number & 0xFFFF0000) + (newValue & 0x0000FFFF)); }
+        internal static uint LowWord(this uint number, int newValue)
+        {
+            return (uint) ((number & 0xFFFF0000) + (newValue & 0x0000FFFF));
+        }
 
-        public static uint HighWord(this uint number)
-        { return (uint)(number & 0xFFFF0000); }
+        internal static uint HighWord(this uint number)
+        {
+            return number & 0xFFFF0000;
+        }
 
-        public static uint HighWord(this uint number, int newValue)
-        { return (uint)((number & 0x0000FFFF) + (newValue << 16)); }
+        internal static uint HighWord(this uint number, int newValue)
+        {
+            return (uint) ((number & 0x0000FFFF) + (newValue << 16));
+        }
 
-        public static Guid GetGuid(this Object obj)
+        internal static Guid GetGuid(this Object obj)
         {
             return obj.GetType().GUID;
         }
 
-        public static void WaitForExit(this Thread thread)
+        internal static void WaitForExit(this Thread thread)
         {
             if (thread == null)
                 return;
@@ -229,7 +281,7 @@ namespace CSCore
             thread.Join();
         }
 
-        public static bool WaitForExit(this Thread thread, int timeout)
+        internal static bool WaitForExit(this Thread thread, int timeout)
         {
             if (thread == null)
                 return true;
@@ -239,38 +291,35 @@ namespace CSCore
             return thread.Join(timeout);
         }
 
-        public static bool IsPCM(this WaveFormat waveFormat)
+// ReSharper disable once InconsistentNaming
+        internal static bool IsPCM(this WaveFormat waveFormat)
         {
             if (waveFormat == null)
                 throw new ArgumentNullException("waveFormat");
             if (waveFormat is WaveFormatExtensible)
-                return ((WaveFormatExtensible)waveFormat).SubFormat == DMO.MediaTypes.MEDIATYPE_Pcm;
-            else
-                return waveFormat.WaveFormatTag == AudioEncoding.Pcm;
+                return ((WaveFormatExtensible) waveFormat).SubFormat == AudioSubTypes.Pcm;
+            return waveFormat.WaveFormatTag == AudioEncoding.Pcm;
         }
 
-        public static bool IsIeeeFloat(this WaveFormat waveFormat)
+        internal static bool IsIeeeFloat(this WaveFormat waveFormat)
         {
             if (waveFormat == null)
                 throw new ArgumentNullException("waveFormat");
             if (waveFormat is WaveFormatExtensible)
-                return ((WaveFormatExtensible)waveFormat).SubFormat == DMO.MediaTypes.MEDIATYPE_IeeeFloat;
-            else
-                return waveFormat.WaveFormatTag == AudioEncoding.IeeeFloat;
+                return ((WaveFormatExtensible) waveFormat).SubFormat == AudioSubTypes.IeeeFloat;
+            return waveFormat.WaveFormatTag == AudioEncoding.IeeeFloat;
         }
 
-        public static AudioEncoding GetWaveFormatTag(this WaveFormat waveFormat)
+        internal static AudioEncoding GetWaveFormatTag(this WaveFormat waveFormat)
         {
-            if(waveFormat is WaveFormatExtensible)
-            {
-                return DMO.MediaTypes.EncodingFromMediaType(((WaveFormatExtensible)waveFormat).SubFormat);
-            }
+            if (waveFormat is WaveFormatExtensible)
+                return AudioSubTypes.EncodingFromMediaType(((WaveFormatExtensible) waveFormat).SubFormat);
 
             return waveFormat.WaveFormatTag;
         }
 
         /// <summary>
-        /// Not tested. This method can be buggy.
+        ///     Not tested. This method can be buggy.
         /// </summary>
         /// <param name="soundOut"></param>
         /// <param name="timeout"></param>
@@ -285,15 +334,16 @@ namespace CSCore
             if (soundOut.PlaybackState == PlaybackState.Stopped)
                 return true;
 
-            using(var waitHandle = new AutoResetEvent(false))
+            using (var waitHandle = new AutoResetEvent(false))
             {
+// ReSharper disable once AccessToDisposedClosure
                 soundOut.Stopped += (s, e) => waitHandle.Set();
                 return waitHandle.WaitOne(timeout);
             }
         }
 
         /// <summary>
-        /// Not tested. This method can be buggy.
+        ///     Not tested. This method can be buggy.
         /// </summary>
         /// <param name="soundOut"></param>
         public static void WaitForStopped(this ISoundOut soundOut)

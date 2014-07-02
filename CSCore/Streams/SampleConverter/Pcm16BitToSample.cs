@@ -25,7 +25,7 @@ namespace CSCore.Streams.SampleConverter
             int startIndex = offset;
             for (int i = 0; i < read; i += 2)
             {
-                buffer[startIndex] = CSCore.Utils.CSMath.Bit16ToFloat(_buffer, i, true);
+                buffer[startIndex] = BitConverter.ToInt16(_buffer, i) / (true ? 32768f : 1.0f);
                 startIndex++;
             }
 

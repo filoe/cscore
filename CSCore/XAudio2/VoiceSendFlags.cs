@@ -1,16 +1,17 @@
 namespace CSCore.XAudio2
 {
     /// <summary>
-    /// VoiceSendFlags
+    ///     VoiceSendFlags
     /// </summary>
     public enum VoiceSendFlags
     {
         /// <summary>
-        /// None.
+        ///     None.
         /// </summary>
         None = 0,
+
         /// <summary>
-        /// Indicates a filter should be used on a voice send.
+        ///     Indicates a filter should be used on a voice send.
         /// </summary>
         UseFilter = 8
     }

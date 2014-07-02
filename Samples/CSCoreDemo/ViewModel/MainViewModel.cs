@@ -165,12 +165,12 @@ namespace CSCoreDemo.ViewModel
             get { return AudioPlayer.Length; }
         }
 
-        private bool updatePosition = true;
+        private bool _updatePosition = true;
 
         public bool UpdatePosition
         {
-            get { return updatePosition; }
-            set { SetProperty(value, ref updatePosition, () => UpdatePosition); }
+            get { return _updatePosition; }
+            set { SetProperty(value, ref _updatePosition, () => UpdatePosition); }
         }
 
         public MainViewModel()
@@ -181,7 +181,7 @@ namespace CSCoreDemo.ViewModel
         public void OpenFile()
         {
             var ofn = new Microsoft.Win32.OpenFileDialog();
-            ofn.Filter = CodecFactory.Instance.GenerateFilter();
+            ofn.Filter = CodecFactory.SupportedFilesFilterEn;
             if (ofn.ShowDialog().Value)
             {
                 if (AudioPlayer.OpenFile(ofn.FileName, (s) => VisualizationViewModel.InitializeVisualization(s)))

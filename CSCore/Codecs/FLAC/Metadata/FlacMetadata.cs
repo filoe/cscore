@@ -35,35 +35,32 @@ namespace CSCore.Codecs.FLAC
             long streamStartPosition = stream.Position;
             if ((int)type < 0 || (int)type > 6)
                 return null;
-            else
+
+            switch (type)
             {
-                switch (type)
-                {
-                    case FlacMetaDataType.StreamInfo:
-                        data = new FlacMetadataStreamInfo(stream, length, lastBlock);
-                        break;
+                case FlacMetaDataType.StreamInfo:
+                    data = new FlacMetadataStreamInfo(stream, length, lastBlock);
+                    break;
 
-                    case FlacMetaDataType.Seektable:
-                        data = new FlacMetadataSeekTable(stream, length, lastBlock);
-                        break;
+                case FlacMetaDataType.Seektable:
+                    data = new FlacMetadataSeekTable(stream, length, lastBlock);
+                    break;
 
-                    default:
-                        data = new FlacMetadata(type, lastBlock, length);
-                        break;
-                }
+                default:
+                    data = new FlacMetadata(type, lastBlock, length);
+                    break;
             }
 
             stream.Seek(length - (stream.Position - streamStartPosition), SeekOrigin.Current);
             return data;
         }
 
-        public static List<FlacMetadata> AllDataFromStream(Stream stream)
+        public static List<FlacMetadata> ReadAllMetadataFromStream(Stream stream)
         {
             List<FlacMetadata> metaDataCollection = new List<FlacMetadata>();
-            FlacMetadata data;
             while (true)
             {
-                data = FromStream(stream);
+                FlacMetadata data = FromStream(stream);
                 if (data != null)
                     metaDataCollection.Add(data);
 
@@ -84,17 +81,5 @@ namespace CSCore.Codecs.FLAC
         public Boolean IsLastMetaBlock { get; private set; }
 
         public Int32 Length { get; private set; }
-    }
-
-    public enum FlacMetaDataType : int
-    {
-        StreamInfo = 0,
-        Padding = 1,
-        Application = 2,
-        Seektable = 3,
-        VorbisComment = 4,
-        CUESheet = 5,
-        Picture = 6,
-        Undef = 7
     }
 }

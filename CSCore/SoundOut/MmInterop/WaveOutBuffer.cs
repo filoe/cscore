@@ -5,8 +5,10 @@ namespace CSCore.SoundOut.MMInterop
 {
     public class WaveOutBuffer : IDisposable
     {
-        private WaveOut _waveOut;
-        private int _bufferSize;
+#pragma warning disable 618
+        private readonly WaveOut _waveOut;
+#pragma warning restore 618
+        private readonly int _bufferSize;
 
         private byte[] _buffer;
 
@@ -22,7 +24,9 @@ namespace CSCore.SoundOut.MMInterop
             } 
         }
 
+#pragma warning disable 618
         public WaveOutBuffer(WaveOut waveOut, int bufferSize)
+#pragma warning restore 618
         {
             if (waveOut == null)
                 throw new ArgumentNullException("waveOut");

@@ -1,27 +1,39 @@
-﻿using CSCore.DMO;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Text;
+using CSCore.DMO;
+using CSCore.Win32;
 
 namespace CSCore.Codecs.MP3
 {
-    public class DmoMP3Decoder : DmoStream
+    /// <summary>
+    /// DirectX Media Object MP3 Decoder wrapper.
+    /// </summary>
+    public class DmoMp3Decoder : DmoStream
     {
-        private Stream _stream;
+        private readonly Stream _stream;
 
         private DmoMP3DecoderObject _comObj;
         private FrameInfoCollection _frameInfoCollection;
-        private MP3Format _inputFormat;
+        private Mp3Format _inputFormat;
+
         private long _position;
 
-        private bool _parsedStream = false;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DmoMp3Decoder"/> class.
+        /// </summary>
+        /// <param name="filename">File which contains raw MP3 data.</param>
+        public DmoMp3Decoder(string filename)
+            : this(File.OpenRead(filename))
+        {
+        }
 
-        public DmoMP3Decoder(Stream stream)
-            : base()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DmoMp3Decoder"/> class.
+        /// </summary>
+        /// <param name="stream">Stream which contains raw MP3 data.</param>
+        public DmoMp3Decoder(Stream stream)
         {
             if (stream == null)
                 throw new ArgumentNullException("stream");
@@ -32,44 +44,65 @@ namespace CSCore.Codecs.MP3
 
             _stream = stream;
 
-            ParseForMP3Frame(stream);
+            ParseForMp3Frame(stream);
             Initialize();
         }
 
-        private void ParseForMP3Frame(Stream stream)
+        /// <summary>
+        /// Gets or sets the position of the <see cref="DmoMp3Decoder"/> in bytes.
+        /// </summary>
+        public override long Position
         {
-            if (_parsedStream)
-                return;
+            get { return _position; }
+            [MethodImpl(MethodImplOptions.Synchronized)] 
+            set { SetPosition(value); }
+        }
 
-            MP3Frame frame = null;
+        /// <summary>
+        /// Gets the length of the <see cref="DmoMp3Decoder"/> in bytes.
+        /// </summary>
+        public override long Length
+        {
+            get { return _frameInfoCollection.TotalSamples * WaveFormat.BytesPerBlock; }
+        }
+
+        private void ParseForMp3Frame(Stream stream)
+        {
+            Mp3Frame frame = null;
             long offsetOfFirstFrame = 0;
-            
-            while(frame == null && !stream.IsEndOfStream())
+
+            while (frame == null && !stream.IsEndOfStream())
             {
                 offsetOfFirstFrame = stream.Position;
-                frame = MP3Frame.FromStream(stream);
+                frame = Mp3Frame.FromStream(stream);
             }
 
             if (frame == null)
-                throw new MP3Exception("Could not find any MP3-Frames in the stream.");
+                throw new Mp3Exception("Could not find any MP3-Frames in the stream.");
 
             XingHeader xingHeader = XingHeader.FromFrame(frame);
-            if(xingHeader != null)
-            {
+            if (xingHeader != null)
                 offsetOfFirstFrame = stream.Position;
-            }
 
-            _inputFormat = new MP3Format(frame.SampleRate, frame.ChannelCount, frame.FrameLength, frame.BitRate); //implement VBR?
+            _inputFormat = new Mp3Format(frame.SampleRate, frame.ChannelCount, frame.FrameLength, frame.BitRate);
+            //todo: implement VBR
 
             //Prescan stream
             _frameInfoCollection = new FrameInfoCollection();
-            while (_frameInfoCollection.AddFromMP3Stream(stream)) ;
+            while (_frameInfoCollection.AddFromMp3Stream(stream))
+            {
+            }
 
             stream.Position = offsetOfFirstFrame;
-
-            _parsedStream = true;
         }
 
+        /// <summary>
+        ///     Reads a sequence of bytes from the stream.
+        /// </summary>
+        /// <param name="buffer">An array of bytes. When this method returns, the buffer contains the read bytes.</param>
+        /// <param name="offset">The zero-based byte offset in buffer at which to begin storing the data read from the stream.</param>
+        /// <param name="count">The maximum number of bytes to be read from the stream</param>
+        /// <returns>The actual number of read bytes.</returns>
         public override int Read(byte[] buffer, int offset, int count)
         {
             int read = base.Read(buffer, offset, count);
@@ -77,27 +110,52 @@ namespace CSCore.Codecs.MP3
             return read;
         }
 
+        /// <summary>
+        /// Returns a <see cref="MediaObject"/> to decode the mp3 data.
+        /// </summary>
+        /// <param name="inputFormat">Format of the mp3 data to decode.</param>
+        /// <param name="outputFormat">Output format.</param>
+        /// <returns><see cref="MediaObject"/> to decode the mp3 data.</returns>
         protected override MediaObject CreateMediaObject(WaveFormat inputFormat, WaveFormat outputFormat)
         {
-            _comObj = new DmoMP3DecoderObject();
-            var mediaObject = new MediaObject(Marshal.GetComInterfaceForObject(_comObj, typeof(IMediaObject)));
+            //this can be experimental. We maybe have to switch to the CoCreateInstance method.
+            //IntPtr ptr = IntPtr.Zero;
+            //InteropFunctions.CoCreateInstance(new Guid("bbeea841-0a63-4f52-a7ab-a9b3a84ed38a"), IntPtr.Zero,
+            //    InteropFunctions.CLSCTX.CLSCTX_INPROC_SERVER, typeof (MediaObject).GUID, out ptr);
 
-            return mediaObject;
+            _comObj = new DmoMP3DecoderObject();
+            var ptr = Marshal.GetComInterfaceForObject(_comObj, typeof (IMediaObject));
+
+            return new MediaObject(ptr);
         }
 
+        /// <summary>
+        /// Returns the input format.
+        /// </summary>
+        /// <returns>Input format.</returns>
         protected override WaveFormat GetInputFormat()
         {
-            return _inputFormat;   
+            return _inputFormat;
         }
 
+        /// <summary>
+        /// Returns the output format.
+        /// </summary>
+        /// <returns>Output format.</returns>
         protected override WaveFormat GetOutputFormat()
         {
             return new WaveFormat(_inputFormat.SampleRate, 16, _inputFormat.Channels);
         }
 
+        /// <summary>
+        /// Gets raw mp3 data to decode.
+        /// </summary>
+        /// <param name="inputDataBuffer">Byte array which will hold the raw mp3 data to decode.</param>
+        /// <param name="requested">Number of requested bytes.</param>
+        /// <returns>Total amount of read bytes.</returns>
         protected override int GetInputData(ref byte[] inputDataBuffer, int requested)
         {
-            MP3Frame frame = ReadNextMP3Frame(ref inputDataBuffer);
+            Mp3Frame frame = ReadNextMP3Frame(ref inputDataBuffer);
             if (frame == null)
             {
                 inputDataBuffer = new byte[0];
@@ -108,24 +166,6 @@ namespace CSCore.Codecs.MP3
                 Array.Clear(inputDataBuffer, frame.FrameLength, inputDataBuffer.Length - frame.FrameLength);
 
             return frame.FrameLength;
-        }
-
-        public override long Position
-        {
-            get
-            {
-                return _position;
-            }
-            [MethodImpl(MethodImplOptions.Synchronized)]
-            set
-            {
-                SetPosition(value);
-            }
-        }
-
-        public override long Length
-        {
-            get { return _frameInfoCollection.TotalSamples * WaveFormat.BytesPerBlock; }
         }
 
         private void SetPosition(long value)
@@ -151,19 +191,24 @@ namespace CSCore.Codecs.MP3
             ResetOverflowBuffer();
         }
 
-        private MP3Frame ReadNextMP3Frame(ref byte[] frameBuffer)
+// ReSharper disable once InconsistentNaming
+        private Mp3Frame ReadNextMP3Frame(ref byte[] frameBuffer)
         {
-            MP3Frame frame = MP3Frame.FromStream(_stream, ref frameBuffer);
+            Mp3Frame frame = Mp3Frame.FromStream(_stream, ref frameBuffer);
             if (frame != null && _frameInfoCollection != null)
                 _frameInfoCollection.PlaybackIndex++;
 
             return frame;
         }
 
+        /// <summary>
+        /// Disposes the <see cref="DmoMp3Decoder"/>.
+        /// </summary>
+        /// <param name="disposing">True to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
-            if(_comObj != null)
+            if (_comObj != null)
             {
                 Marshal.ReleaseComObject(_comObj);
                 _comObj = null;

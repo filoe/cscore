@@ -1,21 +1,46 @@
-﻿using CSCore.Win32;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Runtime.InteropServices;
-using System.Text;
+using CSCore.Win32;
 
 namespace CSCore.CoreAudioAPI
 {
     /// <summary>
-    /// http: //msdn.microsoft.com/en-us/library/dd370858(v=vs.85).aspx
+    ///     Enables a client to read input data from a capture endpoint buffer. See:
+    ///     <see href="http://msdn.microsoft.com/en-us/library/dd370858(v=vs.85).aspx" />.
     /// </summary>
     [Guid("C8ADBD64-E71E-48a0-A4DE-185C395CD317")]
     public class AudioCaptureClient : ComObject
     {
-        public static readonly Guid IID_IAudioCaptureClient = new Guid("C8ADBD64-E71E-48a0-A4DE-185C395CD317");
-        private const string c = "IAudioCaptureClient";
+// ReSharper disable once InconsistentNaming
+        private const string InterfaceName = "IAudioCaptureClient";
+        private static readonly Guid IID_IAudioCaptureClient = new Guid("C8ADBD64-E71E-48a0-A4DE-185C395CD317");
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="AudioCaptureClient" /> class.
+        /// </summary>
+        /// <param name="ptr">The native pointer of the IAudioCaptureClient COM object.</param>
+        public AudioCaptureClient(IntPtr ptr)
+            : base(ptr)
+        {
+        }
+
+        /// <summary>
+        ///     Gets the size of the next packet in frames (the size of one frame equals the blockalign value of the waveformat).
+        /// </summary>
+        public int NextPacketSize
+        {
+            get { return (int) GetNextPacketSize(); }
+        }
+
+        /// <summary>
+        ///     Creates a new <see cref="AudioCaptureClient" /> by calling the <see cref="AudioClient.GetService" /> method of the
+        ///     specified <paramref name="audioClient" />.
+        /// </summary>
+        /// <param name="audioClient">
+        ///     <see cref="AudioClient" /> which should be used to create the <see cref="AudioCaptureClient" />-instance
+        ///     with.
+        /// </param>
+        /// <returns></returns>
         public static AudioCaptureClient FromAudioClient(AudioClient audioClient)
         {
             if (audioClient == null)
@@ -25,53 +50,79 @@ namespace CSCore.CoreAudioAPI
         }
 
         /// <summary>
-        /// Size of the next packet in frames (the size of one frame equals the blockalign value of the waveformat).
+        ///     Retrieves a pointer to the next available packet of data in the capture endpoint buffer.
+        ///     http: //msdn.microsoft.com/en-us/library/dd370859(v=vs.85).aspx
         /// </summary>
-        public int NextPacketSize
-        {
-            get { return (int)GetNextPacketSize(); }
-        }
-
-        public AudioCaptureClient(IntPtr ptr)
-            : base(ptr)
-        {
-        }
-
-        /// <summary>
-        /// Retrieves a pointer to the next available packet of data in the capture endpoint buffer.
-        /// http: //msdn.microsoft.com/en-us/library/dd370859(v=vs.85).aspx
-        /// </summary>
+        /// <param name="ppData">
+        ///     Pointer to a pointer variable into which the method writes the starting address of the next data
+        ///     packet that is available for the client to read.
+        /// </param>
+        /// <param name="pNumFramesRead">
+        ///     Variable into which the method writes the frame count (the number of audio frames
+        ///     available in the data packet). The client should either read the entire data packet or none of it.
+        /// </param>
+        /// <param name="flags">Variable into which the method writes the buffer-status flags.</param>
+        /// <param name="devicePosition">
+        ///     Variable into which the method writes the device position of the first audio frame in the
+        ///     data packet. The device position is expressed as the number of audio frames from the start of the stream.
+        /// </param>
+        /// <param name="qpcPosition">
+        ///     Variable into which the method writes the value of the performance counter at the time that
+        ///     the audio endpoint device recorded the device position of the first audio frame in the data packet.
+        /// </param>
         /// <returns>HRESULT</returns>
-        public unsafe int GetBufferNative(out IntPtr ppData, out UInt32 pNumFramesRead, out AudioClientBufferFlags flags, out UInt64 devicePosition, out UInt64 qpcPosition)
+        public unsafe int GetBufferNative(out IntPtr ppData, out UInt32 pNumFramesRead, out AudioClientBufferFlags flags,
+            out UInt64 devicePosition, out UInt64 qpcPosition)
         {
             fixed (void* d = &ppData, p0 = &pNumFramesRead, p1 = &flags)
-            fixed (void* p2 = &devicePosition, p3 = &qpcPosition)
             {
-                return InteropCalls.CallI(_basePtr, d, p0, p1, p2, p3, ((void**)(*(void**)_basePtr))[3]);
+                fixed (void* p2 = &devicePosition, p3 = &qpcPosition)
+                {
+                    return InteropCalls.CallI(UnsafeBasePtr, d, p0, p1, p2, p3, ((void**) (*(void**) UnsafeBasePtr))[3]);
+                }
             }
         }
 
         /// <summary>
-        /// Retrieves a pointer to the next available packet of data in the capture endpoint buffer.
-        /// http: //msdn.microsoft.com/en-us/library/dd370859(v=vs.85).aspx
+        ///     Retrieves a pointer to the next available packet of data in the capture endpoint buffer.
+        ///     For more information see
+        ///     <see href="http://msdn.microsoft.com/en-us/library/windows/desktop/dd370859%28v=vs.85%29.aspx" />.
         /// </summary>
+        /// <param name="framesRead">
+        ///     Variable into which the method writes the frame count (the number of audio frames available in
+        ///     the data packet). The client should either read the entire data packet or none of it.
+        /// </param>
+        /// <param name="flags">Variable into which the method writes the buffer-status flags.</param>
+        /// <param name="devicePosition">
+        ///     Variable into which the method writes the device position of the first audio frame in the
+        ///     data packet. The device position is expressed as the number of audio frames from the start of the stream.
+        /// </param>
+        /// <param name="qpcPosition">
+        ///     Variable into which the method writes the value of the performance counter at the time that
+        ///     the audio endpoint device recorded the device position of the first audio frame in the data packet.
+        /// </param>
+        /// <returns>
+        ///     Pointer to a variable which stores the starting address of the next data packet that is available for the
+        ///     client to read.
+        /// </returns>
         /// <remarks>
-        /// Use Marshal.Copy to convert the pointer to the buffer into an array.
+        ///     Use Marshal.Copy to convert the pointer to the buffer into an array.
         /// </remarks>
-        public IntPtr GetBuffer(out UInt32 framesRead, out AudioClientBufferFlags flags, out UInt64 devicePosition, out UInt64 qpcPosition)
+        public IntPtr GetBuffer(out UInt32 framesRead, out AudioClientBufferFlags flags, out UInt64 devicePosition,
+            out UInt64 qpcPosition)
         {
             IntPtr data;
             int result = GetBufferNative(out data, out framesRead, out flags, out devicePosition, out qpcPosition);
-            CoreAudioAPIException.Try(result, c, "GetBuffer");
+            CoreAudioAPIException.Try(result, InterfaceName, "GetBuffer");
             return data;
         }
 
         /// <summary>
-        /// Retrieves a pointer to the next available packet of data in the capture endpoint buffer.
-        /// http: //msdn.microsoft.com/en-us/library/dd370859(v=vs.85).aspx
+        ///     Retrieves a pointer to the next available packet of data in the capture endpoint buffer.
+        ///     http: //msdn.microsoft.com/en-us/library/dd370859(v=vs.85).aspx
         /// </summary>
         /// <remarks>
-        /// Use Marshal.Copy to convert the pointer to the buffer into an array.
+        ///     Use Marshal.Copy to convert the pointer to the buffer into an array.
         /// </remarks>
         public IntPtr GetBuffer(out UInt32 framesRead, out AudioClientBufferFlags flags)
         {
@@ -80,53 +131,62 @@ namespace CSCore.CoreAudioAPI
         }
 
         /// <summary>
-        /// The ReleaseBuffer method releases the buffer.
-        /// http: //msdn.microsoft.com/en-us/library/dd370861(v=vs.85).aspx
+        ///     The ReleaseBuffer method releases the buffer.
+        ///     http: //msdn.microsoft.com/en-us/library/dd370861(v=vs.85).aspx
         /// </summary>
-        /// <param name="framesRead">The number of audio frames that the client read from the
-        /// capture buffer. This parameter must be either equal to the number of frames in the
-        /// previously acquired data packet or 0.</param>
+        /// <param name="framesRead">
+        ///     The number of audio frames that the client read from the
+        ///     capture buffer. This parameter must be either equal to the number of frames in the
+        ///     previously acquired data packet or 0.
+        /// </param>
         /// <returns>HRESULT</returns>
         public unsafe int ReleaseBufferNative(UInt32 framesRead)
         {
-            return InteropCalls.CallI(_basePtr, framesRead, ((void**)(*(void**)_basePtr))[4]);
+            return InteropCalls.CallI(UnsafeBasePtr, framesRead, ((void**) (*(void**) UnsafeBasePtr))[4]);
         }
 
         /// <summary>
-        /// The ReleaseBuffer method releases the buffer.
-        /// http: //msdn.microsoft.com/en-us/library/dd370861(v=vs.85).aspx
+        ///     The ReleaseBuffer method releases the buffer.
+        ///     http: //msdn.microsoft.com/en-us/library/dd370861(v=vs.85).aspx
         /// </summary>
-        /// <param name="framesRead">The number of audio frames that the client read from the
-        /// capture buffer. This parameter must be either equal to the number of frames in the
-        /// previously acquired data packet or 0.</param>
+        /// <param name="framesRead">
+        ///     The number of audio frames that the client read from the
+        ///     capture buffer. This parameter must be either equal to the number of frames in the
+        ///     previously acquired data packet or 0.
+        /// </param>
         public void ReleaseBuffer(UInt32 framesRead)
         {
-            CoreAudioAPIException.Try(ReleaseBufferNative(framesRead), c, "ReleaseBuffer");
+            CoreAudioAPIException.Try(ReleaseBufferNative(framesRead), InterfaceName, "ReleaseBuffer");
         }
 
         /// <summary>
-        /// The GetNextPacketSize method retrieves the number of frames in the next data packet in
-        /// the capture endpoint buffer.
-        /// http: //msdn.microsoft.com/en-us/library/dd370860(v=vs.85).aspx
+        ///     The GetNextPacketSize method retrieves the number of frames in the next data packet in
+        ///     the capture endpoint buffer.
+        ///     http: //msdn.microsoft.com/en-us/library/dd370860(v=vs.85).aspx
         /// </summary>
+        /// <param name="numFramesInNextPacket">
+        ///     Variable into which the method writes the frame count (the number of audio
+        ///     frames in the next capture packet).
+        /// </param>
         /// <returns>HRESULT</returns>
         public unsafe int GetNextPacketSizeNative(out UInt32 numFramesInNextPacket)
         {
             fixed (void* p = &numFramesInNextPacket)
             {
-                return InteropCalls.CallI(_basePtr, p, ((void**)(*(void**)_basePtr))[5]);
+                return InteropCalls.CallI(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[5]);
             }
         }
 
         /// <summary>
-        /// The GetNextPacketSize method retrieves the number of frames in the next data packet in
-        /// the capture endpoint buffer.
-        /// http: //msdn.microsoft.com/en-us/library/dd370860(v=vs.85).aspx
+        ///     The GetNextPacketSize method retrieves the number of frames in the next data packet in
+        ///     the capture endpoint buffer.
+        ///     See <see href="http://msdn.microsoft.com/en-us/library/dd370860(v=vs.85).aspx" />.
         /// </summary>
+        /// <returns>The number of the audio frames in the next capture packet.</returns>
         public uint GetNextPacketSize()
         {
             uint t;
-            CoreAudioAPIException.Try(GetNextPacketSizeNative(out t), c, "GetNextPacketSize");
+            CoreAudioAPIException.Try(GetNextPacketSizeNative(out t), InterfaceName, "GetNextPacketSize");
             return t;
         }
     }

@@ -24,7 +24,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (void* ptr = &sampleFlags)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, ptr, ((void**)(*(void**)_basePtr))[33]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ptr, ((void**)(*(void**)UnsafeBasePtr))[33]);
             }
         }
 
@@ -49,7 +49,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int SetSampleFlagsNative(MFSampleFlags flags)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, flags, ((void**)(*(void**)_basePtr))[34]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, flags, ((void**)(*(void**)UnsafeBasePtr))[34]);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (void* ptr = &hnsSampleTime)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, ptr, ((void**)(*(void**)_basePtr))[35]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ptr, ((void**)(*(void**)UnsafeBasePtr))[35]);
             }
         }
 
@@ -89,7 +89,7 @@ namespace CSCore.MediaFoundation
 
         public unsafe int SetSampleTimeNative(long hnsSampleTime)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, hnsSampleTime, ((void**)(*(void**)_basePtr))[36]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, hnsSampleTime, ((void**)(*(void**)UnsafeBasePtr))[36]);
         }
 
         public void SetSampleTime(long hnsSampleTime)
@@ -101,7 +101,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (void* ptr = &hnsSampleDuration)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, ptr, ((void**)(*(void**)_basePtr))[37]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ptr, ((void**)(*(void**)UnsafeBasePtr))[37]);
             }
         }
 
@@ -114,7 +114,7 @@ namespace CSCore.MediaFoundation
 
         public unsafe int SetSampleDurationNative(long hnsSampleDuration)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, hnsSampleDuration, ((void**)(*(void**)_basePtr))[38]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, hnsSampleDuration, ((void**)(*(void**)UnsafeBasePtr))[38]);
         }
 
         public void SetSampleDuration(long hnsSampleDuration)
@@ -126,7 +126,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (void* ptr = &bufferCount)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, ptr, ((void**)(*(void**)_basePtr))[39]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ptr, ((void**)(*(void**)UnsafeBasePtr))[39]);
             }
         }
 
@@ -140,7 +140,7 @@ namespace CSCore.MediaFoundation
         public unsafe int GetBufferByIndexNative(int index, out MFMediaBuffer buffer)
         {
             IntPtr ptr = IntPtr.Zero;
-            int result = InteropCalls.CalliMethodPtr(_basePtr, index, &ptr, ((void**)(*(void**)_basePtr))[40]);
+            int result = InteropCalls.CalliMethodPtr(UnsafeBasePtr, index, &ptr, ((void**)(*(void**)UnsafeBasePtr))[40]);
             buffer = ptr == IntPtr.Zero ? null : new MFMediaBuffer(ptr);
             return result;
         }
@@ -155,7 +155,7 @@ namespace CSCore.MediaFoundation
         public unsafe int ConvertToContinousBufferNative(out MFMediaBuffer buffer)
         {
             IntPtr ptr = IntPtr.Zero;
-            int result = InteropCalls.CalliMethodPtr(_basePtr, &ptr, ((void**)(*(void**)_basePtr))[41]);
+            int result = InteropCalls.CalliMethodPtr(UnsafeBasePtr, &ptr, ((void**)(*(void**)UnsafeBasePtr))[41]);
             buffer = ptr == IntPtr.Zero ? null : new MFMediaBuffer(ptr);
             return result;
         }
@@ -169,7 +169,7 @@ namespace CSCore.MediaFoundation
 
         public unsafe int AddBufferNative(MFMediaBuffer buffer)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, (void*)((buffer == null) ? IntPtr.Zero : buffer.BasePtr), ((void**)(*(void**)_basePtr))[42]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, (void*)((buffer == null) ? IntPtr.Zero : buffer.BasePtr), ((void**)(*(void**)UnsafeBasePtr))[42]);
         }
 
         public void AddBuffer(MFMediaBuffer buffer)
@@ -179,7 +179,7 @@ namespace CSCore.MediaFoundation
 
         public unsafe int RemoveBufferByIndexNative(int index)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, index, ((void**)(*(void**)_basePtr))[43]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, index, ((void**)(*(void**)UnsafeBasePtr))[43]);
         }
 
         public void RemoveBufferByIndex(int index)
@@ -189,7 +189,7 @@ namespace CSCore.MediaFoundation
 
         public unsafe int RemoveAllBuffersNative()
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, ((void**)(*(void**)_basePtr))[44]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ((void**)(*(void**)UnsafeBasePtr))[44]);
         }
 
         public void RemoveAllBuffers()
@@ -201,7 +201,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (void* ptr = &totalLength)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, ptr, ((void**)(*(void**)_basePtr))[45]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ptr, ((void**)(*(void**)UnsafeBasePtr))[45]);
             }
         }
 
@@ -214,20 +214,12 @@ namespace CSCore.MediaFoundation
 
         public unsafe int CopyToBufferNative(MFMediaBuffer buffer)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, (void*)((buffer == null) ? IntPtr.Zero : buffer.BasePtr), ((void**)(*(void**)_basePtr))[46]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, (void*)((buffer == null) ? IntPtr.Zero : buffer.BasePtr), ((void**)(*(void**)UnsafeBasePtr))[46]);
         }
 
         public void CopyToBuffer(MFMediaBuffer buffer)
         {
             MediaFoundationException.Try(CopyToBufferNative(buffer), c, "CopyToBuffer");
         }
-    }
-
-    /// <summary>
-    /// Currently no flags are defined.
-    /// </summary>
-    public enum MFSampleFlags
-    {
-        None = 0x0
     }
 }

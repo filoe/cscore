@@ -15,7 +15,9 @@ namespace CSCore.Test.WaveInOut
         [TestCategory("WaveIn")]
         public void CanEnumerateWaveInDevices()
         {
+#pragma warning disable 612
             foreach (var device in WaveIn.Devices)
+#pragma warning restore 612
             {
                 Debug.WriteLine("{0};{1};{2}", device.Name, device.Channels, device.DriverVersion);
             }
@@ -25,7 +27,9 @@ namespace CSCore.Test.WaveInOut
         [TestCategory("WaveIn")]
         public void CanCreateWaveInDevice()
         {
+#pragma warning disable 612
             using (WaveIn waveIn = new WaveIn())
+#pragma warning restore 612
             {
                 waveIn.Initialize();
                 waveIn.Start();

@@ -188,7 +188,7 @@ namespace CSCore.Test.CoreAudioAPI
                     foreach (var b in bps)
                     {
                         waveFormats.Add(new WaveFormat(s, b, c));
-                        waveFormats.Add(new WaveFormatExtensible(s, b, c, b == 32 ? MediaTypes.MEDIATYPE_IeeeFloat : MediaTypes.MEDIATYPE_Pcm));
+                        waveFormats.Add(new WaveFormatExtensible(s, b, c, b == 32 ? AudioSubTypes.IeeeFloat : AudioSubTypes.Pcm));
                     }
                 }
             }
@@ -222,7 +222,7 @@ namespace CSCore.Test.CoreAudioAPI
                     foreach (var b in bps)
                     {
                         waveFormats.Add(new WaveFormat(s, b, c));
-                        waveFormats.Add(new WaveFormatExtensible(s, b, c, b == 32 ? MediaTypes.MEDIATYPE_IeeeFloat : MediaTypes.MEDIATYPE_Pcm));
+                        waveFormats.Add(new WaveFormatExtensible(s, b, c, b == 32 ? AudioSubTypes.IeeeFloat : AudioSubTypes.Pcm));
                     }
                 }
             }

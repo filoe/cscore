@@ -4,9 +4,11 @@ using System.Threading;
 
 namespace CSCore.SoundIn
 {
+#pragma warning disable 612
     public class WaveInEvent : WaveIn
+#pragma warning restore 612
     {
-        private AutoResetEvent _event;
+        private readonly AutoResetEvent _event;
         private Thread _thread;
 
         public WaveInEvent()
@@ -29,7 +31,7 @@ namespace CSCore.SoundIn
         protected override void OnStarted()
         {
             //ThreadPool.QueueUserWorkItem(new WaitCallback(EventProc));
-            _thread = new Thread(new ParameterizedThreadStart(EventProc));
+            _thread = new Thread(EventProc);
             _thread.Start();
         }
 

@@ -32,7 +32,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (void* pbuffer = &buffer, pmaxlength = &maxLength, pcurrentlength = &currentLength)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, pbuffer, pmaxlength, pcurrentlength, ((void**)(*(void**)_basePtr))[3]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, pbuffer, pmaxlength, pcurrentlength, ((void**)(*(void**)UnsafeBasePtr))[3]);
             }
         }
 
@@ -45,7 +45,7 @@ namespace CSCore.MediaFoundation
 
         public unsafe int UnlockNative()
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, ((void**)(*(void**)_basePtr))[4]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ((void**)(*(void**)UnsafeBasePtr))[4]);
         }
 
         public void Unlock()
@@ -57,7 +57,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (void* ptr = &currentLength)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, ptr, ((void**)(*(void**)_basePtr))[5]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ptr, ((void**)(*(void**)UnsafeBasePtr))[5]);
             }
         }
 
@@ -70,7 +70,7 @@ namespace CSCore.MediaFoundation
 
         public unsafe int SetCurrentLengthNative(int currentLength)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, currentLength, ((void**)(*(void**)_basePtr))[6]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, currentLength, ((void**)(*(void**)UnsafeBasePtr))[6]);
         }
 
         public void SetCurrentLength(int currentLength)
@@ -82,7 +82,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (void* ptr = &maxlength)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, ptr, ((void**)(*(void**)_basePtr))[7]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, ptr, ((void**)(*(void**)UnsafeBasePtr))[7]);
             }
         }
 

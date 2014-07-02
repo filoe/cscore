@@ -45,7 +45,9 @@ namespace CSCore.SoundIn
             get { return (_header.flags & WaveHeaderFlags.WHDR_DONE) == WaveHeaderFlags.WHDR_DONE; }
         }
 
+#pragma warning disable 612
         public WaveInBuffer(WaveIn waveIn, int bufferSize)
+#pragma warning restore 612
         {
             if (waveIn == null) throw new ArgumentNullException("waveOut");
             if (bufferSize <= 0) throw new ArgumentOutOfRangeException("bufferSize");

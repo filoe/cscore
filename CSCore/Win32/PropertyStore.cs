@@ -97,7 +97,7 @@ namespace CSCore.Win32
         {
             fixed (void* ppc = &propertyCount)
             {
-                return InteropCalls.CallI(_basePtr, ppc, ((void**)(*(void**)_basePtr))[3]);
+                return InteropCalls.CallI(UnsafeBasePtr, ppc, ((void**)(*(void**)UnsafeBasePtr))[3]);
             }
         }
 
@@ -106,7 +106,7 @@ namespace CSCore.Win32
             propertyKey = new PropertyKey();
             fixed (void* ppk = &propertyKey)
             {
-                return InteropCalls.CallI(_basePtr, propertyIndex, ppk, ((void**)(*(void**)_basePtr))[4]);
+                return InteropCalls.CallI(UnsafeBasePtr, propertyIndex, ppk, ((void**)(*(void**)UnsafeBasePtr))[4]);
             }
         }
 
@@ -114,18 +114,18 @@ namespace CSCore.Win32
         {
             fixed (void* pvalue = &value)
             {
-                return InteropCalls.CallI(_basePtr, &key, pvalue, ((void**)(*(void**)_basePtr))[5]);
+                return InteropCalls.CallI(UnsafeBasePtr, &key, pvalue, ((void**)(*(void**)UnsafeBasePtr))[5]);
             }
         }
 
         private unsafe int SetValueInternal(PropertyKey key, PropertyVariant value)
         {
-            return InteropCalls.CallI(_basePtr, &key, &value, ((void**)(*(void**)_basePtr))[6]);
+            return InteropCalls.CallI(UnsafeBasePtr, &key, &value, ((void**)(*(void**)UnsafeBasePtr))[6]);
         }
 
         private unsafe int CommitInternal()
         {
-            return InteropCalls.CallI(_basePtr, ((void**)(*(void**)_basePtr))[7]);
+            return InteropCalls.CallI(UnsafeBasePtr, ((void**)(*(void**)UnsafeBasePtr))[7]);
         }
 
         private int GetCount()
@@ -147,11 +147,6 @@ namespace CSCore.Win32
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
-        }
-
-        protected override bool AssertOnNoDispose()
-        {
-            return false;
         }
     }
 }

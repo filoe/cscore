@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CSCore.CoreAudioAPI;
 using System.Diagnostics;
@@ -36,7 +38,9 @@ namespace CSCore.Test.CoreAudioAPI
             using (var sessionManager = GetDefaultAudioSessionManager2(DataFlow.Render))
             {
                 AudioSessionNotification notification = new AudioSessionNotification();
-                sessionManager.RegisterSessionNotification(notification);
+                
+                RegisterSessionNotification(sessionManager, notification);
+
                 sessionManager.UnregisterSessionNotification(notification);
             }
         }
@@ -209,6 +213,38 @@ namespace CSCore.Test.CoreAudioAPI
                     return sessionManager;
                 }
             }
+        }
+
+        private void RegisterSessionNotification(AudioSessionManager2 audioSessionManager2,
+            IAudioSessionNotification audioSessionNotification)
+        {
+            if (Thread.CurrentThread.GetApartmentState() == ApartmentState.MTA)
+            {
+                audioSessionManager2.RegisterSessionNotification(audioSessionNotification);
+            }
+            else
+            {
+                using (ManualResetEvent waitHandle = new ManualResetEvent(false))
+                {
+                    ThreadPool.QueueUserWorkItem(
+                        (o) =>
+                        {
+                            try
+                            {
+                                audioSessionManager2.RegisterSessionNotification(audioSessionNotification);
+                            }
+                            finally
+                            {
+// ReSharper disable once AccessToDisposedClosure
+                                waitHandle.Set();
+                            }
+                        });
+                    waitHandle.WaitOne();
+                }
+            }
+
+// ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+            audioSessionManager2.GetSessionEnumerator().ToArray(); //necessary to make it work
         }
     }
 }

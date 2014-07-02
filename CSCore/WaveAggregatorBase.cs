@@ -2,79 +2,113 @@
 
 namespace CSCore
 {
+    /// <summary>
+    ///     Base class for all wave aggregators.
+    /// </summary>
     public abstract class WaveAggregatorBase : IWaveAggregator
     {
-        protected IWaveSource _baseStream;
+        private IWaveSource _baseStream;
+        private bool _disposeBaseSource = true;
+        private bool _disposed;
 
-        public WaveAggregatorBase()
+        /// <summary>
+        ///     Creates a new instance of WaveAggregatorBase.
+        /// </summary>
+        protected WaveAggregatorBase()
         {
         }
 
-        public WaveAggregatorBase(IWaveSource baseStream)
+        /// <summary>
+        ///     Creates a new instance of WaveAggregatorBase.
+        /// </summary>
+        /// <param name="baseStream">Underlying base stream.</param>
+        protected WaveAggregatorBase(IWaveSource baseStream)
             : this()
         {
-            BaseStream = baseStream;
+            if (baseStream == null)
+                throw new ArgumentNullException("baseStream");
+
+            _baseStream = baseStream;
         }
 
+        /// <summary>
+        ///     Gets or sets a value whether to dispose the <see cref="BaseStream" />
+        ///     on calling <see cref="Dispose(bool)" />.
+        /// </summary>
+        protected bool DisposeBaseSource
+        {
+            get { return _disposeBaseSource; }
+            set { _disposeBaseSource = value; }
+        }
+
+        /// <summary>
+        ///     Gets or sets the underlying base stream of the WaveAggregator.
+        /// </summary>
         public virtual IWaveSource BaseStream
         {
-            get
-            {
-                return _baseStream;
-            }
+            get { return _baseStream; }
             set
             {
                 if (value == null)
-                    throw new ArgumentNullException("BaseStream must not be null");
+                    throw new ArgumentNullException("value", "BaseStream must not be null.");
                 _baseStream = value;
             }
         }
 
+        /// <summary>
+        ///     Gets the output WaveFormat.
+        /// </summary>
         public virtual WaveFormat WaveFormat
         {
             get { return BaseStream.WaveFormat; }
         }
 
+        /// <summary>
+        ///     Reads from the underlying <see cref="BaseStream" />.
+        /// </summary>
+        /// <param name="buffer">Buffer which receives the read data.</param>
+        /// <param name="offset">Zero-based offset offset in the <paramref name="buffer" /> at which to begin storing data.</param>
+        /// <param name="count">The maximum number of bytes to read.</param>
+        /// <returns>Actual number of read bytes.</returns>
         public virtual int Read(byte[] buffer, int offset, int count)
         {
             return BaseStream.Read(buffer, offset, count);
         }
 
+        /// <summary>
+        ///     Gets or sets the position of the source.
+        /// </summary>
         public virtual long Position
         {
-            get
-            {
-                return BaseStream.Position;
-            }
-            set
-            {
-                BaseStream.Position = value;
-            }
+            get { return BaseStream.Position; }
+            set { BaseStream.Position = value; }
         }
 
+        /// <summary>
+        ///     Gets the length of the source.
+        /// </summary>
         public virtual long Length
         {
             get { return BaseStream.Length; }
         }
 
+        /// <summary>
+        ///     Disposes the source and releases all allocated resources.
+        /// </summary>
         public void Dispose()
         {
-            if (!disposed)
+            if (!_disposed)
             {
-                disposed = true;
+                _disposed = true;
                 Dispose(true);
                 GC.SuppressFinalize(this);
             }
         }
 
-        private bool disposed = false;
-        private bool disposeBaseSource = true;
-        protected bool DisposeBaseSource
-        {
-            get { return disposeBaseSource; }
-            set { disposeBaseSource = value; }
-        }
-
+        /// <summary>
+        ///     Disposes the <see cref="BaseStream" /> and releases all allocated resources.
+        /// </summary>
+        /// <param name="disposing"></param>
         protected virtual void Dispose(bool disposing)
         {
             if (DisposeBaseSource)
@@ -85,6 +119,9 @@ namespace CSCore
             }
         }
 
+        /// <summary>
+        ///     Destructor which calls <see cref="Dispose(bool)" />.
+        /// </summary>
         ~WaveAggregatorBase()
         {
             Dispose(false);

@@ -1,4 +1,6 @@
-﻿using CSCore.Utils;
+﻿#pragma warning disable 1591
+
+using CSCore.Utils;
 using CSCore.Win32;
 using System;
 
@@ -32,7 +34,7 @@ namespace CSCore.CoreAudioAPI
         }
 
         /*[CSCalli]
-        internal static unsafe int CallI(void* _basePtr, void* pdeviceCount, void* p)
+        internal static unsafe int CallI(void* UnsafeBasePtr, void* pdeviceCount, void* p)
         {
             throw new NotImplementedException();
         }*/
@@ -44,7 +46,7 @@ namespace CSCore.CoreAudioAPI
         }
 
         [CSCalli]
-        internal static unsafe int CallI(void* _basePtr, Guid iid, ExecutionContext executionContext, void* ppinterface, void* p)
+        internal static unsafe int CallI(void* _basePtr, Guid iid, uint executionContext, void* ppinterface, void* p)
         {
             throw new NotImplementedException();
         }
@@ -80,7 +82,7 @@ namespace CSCore.CoreAudioAPI
         }
 
         [CSCalli]
-        internal static unsafe int CallI(void* _basePtr, Guid iid, ExecutionContext context, IntPtr activationParams, void* ppinterface, void* p)
+        internal static unsafe int CallI(void* _basePtr, Guid iid, uint context, IntPtr activationParams, void* ppinterface, void* p)
         {
             throw new NotImplementedException();
         }
@@ -116,25 +118,25 @@ namespace CSCore.CoreAudioAPI
         }
 
         [CSCalli]
-        internal static unsafe int CallI(void* _basePtr, Guid iid, ExecutionContext context, void* p1, void* ppinterface, void* p2)
+        internal static unsafe int CallI(void* _basePtr, Guid iid, uint context, void* p1, void* ppinterface, void* p2)
         {
             throw new NotImplementedException();
         }
 
         [CSCalli]
-        internal static unsafe int CallI(void* _basePtr, Guid iid, ExecutionContext context, IntPtr activationParams, IntPtr intPtr, void* p)
+        internal static unsafe int CallI(void* _basePtr, Guid iid, uint context, IntPtr activationParams, IntPtr intPtr, void* p)
         {
             throw new NotImplementedException();
         }
 
         [CSCalli]
-        internal static unsafe int CallI(void* _basePtr, IntPtr intPtr1, ExecutionContext context, IntPtr activationParams, IntPtr intPtr2, void* p)
+        internal static unsafe int CallI(void* _basePtr, IntPtr intPtr1, uint context, IntPtr activationParams, IntPtr intPtr2, void* p)
         {
             throw new NotImplementedException();
         }
 
         [CSCalli]
-        internal static unsafe int CallI(void* _basePtr, void* p1, ExecutionContext context, IntPtr activationParams, IntPtr intPtr, void* p2)
+        internal static unsafe int CallI(void* _basePtr, void* p1, uint context, IntPtr activationParams, IntPtr intPtr, void* p2)
         {
             throw new NotImplementedException();
         }
@@ -224,3 +226,4 @@ namespace CSCore.CoreAudioAPI
         }
     }
 }
+#pragma warning restore 1591

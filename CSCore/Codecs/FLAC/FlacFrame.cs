@@ -16,13 +16,7 @@ namespace CSCore.Codecs.FLAC
         private int[] _destBuffer;
         private int[] _residualBuffer;
 
-        private FlacFrameHeader _header;
-
-        public FlacFrameHeader Header
-        {
-            get { return _header; }
-            private set { _header = value; }
-        }
+        public FlacFrameHeader Header { get; private set; }
 
         public ushort Crc16 { get; private set; }
 
@@ -75,7 +69,7 @@ namespace CSCore.Codecs.FLAC
             }
         }
 
-        private unsafe int ReadSubFrames()
+        private unsafe void ReadSubFrames()
         {
             List<FlacSubFrameBase> subFrames = new List<FlacSubFrameBase>();
 
@@ -94,7 +88,6 @@ namespace CSCore.Codecs.FLAC
             fixed (byte* ptrBuffer = buffer)
             {
                 FlacBitReader reader = new FlacBitReader(ptrBuffer, 0);
-                ChannelAssignment channelAssignment = Header.ChannelAssignment;
                 for (int c = 0; c < Header.Channels; c++)
                 {
                     int bps = Header.BitsPerSample;
@@ -115,7 +108,7 @@ namespace CSCore.Codecs.FLAC
 
                 SamplesToBytes(_data);
 
-                return reader.Position;
+                //return reader.Position;
             }
         }
 
@@ -197,7 +190,7 @@ namespace CSCore.Codecs.FLAC
                 }
                 else
                 {
-                    string error = "FlacFrame::GetBuffer: Invalid Flac-BitsPerSample: " + Header.BitsPerSample.ToString() + ".";
+                    string error = "FlacFrame::GetBuffer: Invalid Flac-BitsPerSample: " + Header.BitsPerSample + ".";
                     Debug.WriteLine(error);
                     throw new FlacException(error, FlacLayer.Frame);
                 }
@@ -222,9 +215,11 @@ namespace CSCore.Codecs.FLAC
                     _handle1 = GCHandle.Alloc(_destBuffer, GCHandleType.Pinned);
                     _handle2 = GCHandle.Alloc(_residualBuffer, GCHandleType.Pinned);
 
-                    FlacSubFrameData data = new FlacSubFrameData();
-                    data.DestBuffer = (ptrDestBuffer + c * Header.BlockSize);
-                    data.ResidualBuffer = (ptrResidualBuffer + c * Header.BlockSize);
+                    FlacSubFrameData data = new FlacSubFrameData
+                    {
+                        DestBuffer = (ptrDestBuffer + c * Header.BlockSize),
+                        ResidualBuffer = (ptrResidualBuffer + c * Header.BlockSize)
+                    };
                     output.Add(data);
                 }
             }
@@ -239,23 +234,10 @@ namespace CSCore.Codecs.FLAC
             if (_handle2.IsAllocated)
                 _handle2.Free();
         }
-    }
 
-    public unsafe class FlacSubFrameData
-    {
-        public int* DestBuffer;
-        public int* ResidualBuffer;
-
-        private FlacPartitionedRiceContent _content;
-
-        public FlacPartitionedRiceContent Content
+        ~FlacFrame()
         {
-            get { return _content ?? (_content = new FlacPartitionedRiceContent()); }
-            set { _content = value; }
-        }
-
-        public FlacSubFrameData()
-        {
+            FreeBuffers();
         }
     }
 }

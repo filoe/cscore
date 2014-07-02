@@ -22,7 +22,7 @@ namespace CSCore.SoundOut.DirectSound
             };
             primaryBufferDesc.dwSize = Marshal.SizeOf(primaryBufferDesc);
 
-            _basePtr = directSound.CreateSoundBuffer(primaryBufferDesc, IntPtr.Zero).ToPointer();
+            UnsafeBasePtr = directSound.CreateSoundBuffer(primaryBufferDesc, IntPtr.Zero).ToPointer();
         }
 
         public DirectSoundPrimaryBuffer(IntPtr basePtr)

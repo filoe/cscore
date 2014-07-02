@@ -79,7 +79,7 @@ namespace CSCore.Tags.ID3
         {
             get
             {
-                return _frames.Where((o) => o.FrameID == id).FirstOrDefault();
+                return _frames.Where((o) => o.FrameId == id).FirstOrDefault();
             }
         }
 

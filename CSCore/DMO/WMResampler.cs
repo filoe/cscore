@@ -1,16 +1,27 @@
-﻿using CSCore.CoreAudioAPI;
-using CSCore.MediaFoundation;
-using CSCore.Win32;
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 
 namespace CSCore.DMO
 {
     public sealed class WMResampler : IDisposable
     {
-        private WMResamplerProps _resamplerprops;
+        private bool _disposed;
         private MediaObject _mediaObject;
         private WMResamplerObject _obj;
+        private WMResamplerProps _resamplerprops;
+
+        public WMResampler()
+        {
+            //create a resampler instance
+            var obj = new WMResamplerObject();
+
+            _mediaObject = new MediaObject(Marshal.GetComInterfaceForObject((IMediaObject) obj, typeof (IMediaObject)));
+            _resamplerprops =
+                new WMResamplerProps(Marshal.GetComInterfaceForObject(obj as IWMResamplerProps,
+                    typeof (IWMResamplerProps)));
+
+            _obj = obj;
+        }
 
         public WMResamplerProps ResamplerProps
         {
@@ -21,19 +32,6 @@ namespace CSCore.DMO
         {
             get { return _mediaObject; }
         }
-
-        public WMResampler()
-        {
-            //create a resampler instance
-            var obj = new WMResamplerObject();
-
-            _mediaObject = new MediaObject(Marshal.GetComInterfaceForObject((IMediaObject)obj, typeof(IMediaObject)));
-            _resamplerprops = new WMResamplerProps(Marshal.GetComInterfaceForObject(obj as IWMResamplerProps, typeof(IWMResamplerProps)));
-
-            _obj = obj;
-        }
-
-        private bool _disposed;
 
         public void Dispose()
         {

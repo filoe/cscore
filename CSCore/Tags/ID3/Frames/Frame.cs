@@ -9,22 +9,20 @@ namespace CSCore.Tags.ID3.Frames
         {
             bool result = false;
             FrameHeader header = new FrameHeader(stream, tag.Header.Version);
-            //Console.WriteLine(header.FrameID);
             long streamPosition = stream.Position + header.FrameSize;
             var frame = FrameFactory.Instance.TryGetFrame(header, tag.Header.Version, stream, out result);
-            if (stream.Position != streamPosition)
-                stream.Position = streamPosition;
+            stream.Position = streamPosition;
 
             return frame;
         }
 
         public FrameHeader Header { get; private set; }
 
-        public string FrameID { get { return Header.FrameID; } }
+        public string FrameId { get { return Header.FrameID; } }
 
         public int FrameSize { get { return Header.FrameSize; } }
 
-        public Frame(FrameHeader header)
+        protected Frame(FrameHeader header)
         {
             Header = header;
         }

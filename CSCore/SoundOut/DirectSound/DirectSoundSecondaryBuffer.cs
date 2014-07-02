@@ -50,14 +50,14 @@ namespace CSCore.SoundOut.DirectSound
             if ((bufferDesc.dwFlags & DSBufferCapsFlags.DSBCAPS_PRIMARYBUFFER) == DSBufferCapsFlags.DSBCAPS_PRIMARYBUFFER)
                 throw new ArgumentException("Don t set the PRIMARYBUFFER flag for creating a secondarybuffer.", "bufferDesc");
 
-            _basePtr = directSound.CreateSoundBuffer(bufferDesc, IntPtr.Zero).ToPointer();
+            UnsafeBasePtr = directSound.CreateSoundBuffer(bufferDesc, IntPtr.Zero).ToPointer();
         }
 
         public DSResult GetObjectInPath(Guid guidObject, int index, Guid guidInterface, out IntPtr @object)
         {
             fixed (void* ptrEffect = &@object)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, &guidObject, index, &guidInterface, ptrEffect, ((void**)(*(void**)_basePtr))[23]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, &guidObject, index, &guidInterface, ptrEffect, ((void**)(*(void**)UnsafeBasePtr))[23]);
             }
         }
     }

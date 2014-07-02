@@ -4,12 +4,12 @@ using System.Runtime.InteropServices;
 namespace CSCore.XAudio2
 {
     /// <summary>
-    /// Provides information about an audio device. 
+    ///     Provides information about an audio device.
     /// </summary>
     public partial struct DeviceDetails
     {
         /// <summary>
-        /// Gets the <see cref="DisplayName"/> of the Device.
+        ///     Gets the <see cref="DisplayName" /> of the Device.
         /// </summary>
         public unsafe string DisplayName
         {
@@ -23,7 +23,7 @@ namespace CSCore.XAudio2
         }
 
         /// <summary>
-        /// Gets the <see cref="DeviceId"/> of the Device.
+        ///     Gets the <see cref="DeviceId" /> of the Device.
         /// </summary>
         public unsafe string DeviceId
         {
@@ -37,7 +37,7 @@ namespace CSCore.XAudio2
         }
 
         /// <summary>
-        /// Gets the <see cref="XAudio2DeviceRole"/> of the Device.
+        ///     Gets the <see cref="XAudio2DeviceRole" /> of the Device.
         /// </summary>
         public XAudio2DeviceRole Role
         {
@@ -45,7 +45,7 @@ namespace CSCore.XAudio2
         }
 
         /// <summary>
-        /// Gets the <see cref="OutputFormat"/> of the Device.
+        ///     Gets the <see cref="OutputFormat" /> of the Device.
         /// </summary>
         public WaveFormatExtensible OutputFormat
         {

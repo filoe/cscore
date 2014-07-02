@@ -4,7 +4,9 @@ using System.Windows.Forms;
 
 namespace CSCore.SoundOut
 {
+#pragma warning disable 618
     public class WaveOutWindow : WaveOut
+#pragma warning restore 618
     {
         private IWaveCallbackWindow _window;
 
@@ -20,7 +22,7 @@ namespace CSCore.SoundOut
 
         public WaveOutWindow()
         {
-            _window = new WaveWindowForm(new MMInterops.WaveCallback(Callback));
+            _window = new WaveWindowForm(Callback);
             ((Form)_window).CreateControl();
         }
 

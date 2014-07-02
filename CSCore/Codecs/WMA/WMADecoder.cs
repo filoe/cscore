@@ -1,26 +1,31 @@
 ﻿using CSCore.MediaFoundation;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace CSCore.Codecs.WMA
 {
-    public class WMADecoder : MediaFoundationDecoder
+    /// <summary>
+    /// Mediafoundation WMA decoder.
+    /// </summary>
+    public class WmaDecoder : MediaFoundationDecoder
     {
         private static bool? _isspeechsupported;
         private static bool? _iswmasupported;
         private static bool? _iswmaprosupported;
 
+        /// <summary>
+        /// Gets a value which indicates whether the Mediafoundation WMA, WMA-Speech and WMA-Professional decoder is supported on the current platform.
+        /// </summary>
         public static bool IsSupported
         {
             get
             {
-                return IsSpeechSupported || IsWMAProfessionalSupported || IsWMASupported;
+                return IsSpeechSupported || IsWmaProfessionalSupported || IsWmaSupported;
             }
         }
 
+        /// <summary>
+        /// Gets a value which indicates whether the Mediafoundation WMA-Speech decoder is supported on the current platform.
+        /// </summary>
         public static bool IsSpeechSupported
         {
             get
@@ -28,44 +33,58 @@ namespace CSCore.Codecs.WMA
                 if (_isspeechsupported == null)
                 {
                     _isspeechsupported = MediaFoundationCore.IsTransformAvailable(MediaFoundationCore.EnumerateTransforms(MFTCategories.AudioDecoder, MFTEnumFlags.All),
-                        CommonAudioDecoderGuids.WMSpeechDecoder);
+                        CommonAudioDecoderGuids.WmSpeechDecoder);
                 }
                 return _isspeechsupported.Value;
             }
         }
 
-        public static bool IsWMAProfessionalSupported
+        /// <summary>
+        /// Gets a value which indicates whether the Mediafoundation WMA-Professional decoder is supported on the current platform.
+        /// </summary>
+        public static bool IsWmaProfessionalSupported
         {
             get
             {
                 if (_iswmaprosupported == null)
                 {
                     _iswmaprosupported = MediaFoundationCore.IsTransformAvailable(MediaFoundationCore.EnumerateTransforms(MFTCategories.AudioDecoder, MFTEnumFlags.All),
-                        CommonAudioDecoderGuids.WMAProDecoder);
+                        CommonAudioDecoderGuids.WmaProDecoder);
                 }
                 return _iswmaprosupported.Value;
             }
         }
 
-        public static bool IsWMASupported
+        /// <summary>
+        /// Gets a value which indicates whether the Mediafoundation WMA decoder is supported on the current platform.
+        /// </summary>
+        public static bool IsWmaSupported
         {
             get
             {
                 if (_iswmasupported == null)
                 {
                     _iswmasupported = MediaFoundationCore.IsTransformAvailable(MediaFoundationCore.EnumerateTransforms(MFTCategories.AudioDecoder, MFTEnumFlags.All),
-                        CommonAudioDecoderGuids.WMAudioDecoder);
+                        CommonAudioDecoderGuids.WmAudioDecoder);
                 }
                 return _iswmasupported.Value;
             }
         }
 
-        public WMADecoder(string url)
-            : base(url)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WmaDecoder"/> class.
+        /// </summary>
+        /// <param name="uri">Url which points to a data source which provides WMA data. This is typically a filename.</param>
+        public WmaDecoder(string uri)
+            : base(uri)
         {
         }
 
-        public WMADecoder(Stream stream)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WmaDecoder"/> class.
+        /// </summary>
+        /// <param name="stream">Stream which contains WMA data.</param>
+        public WmaDecoder(Stream stream)
             : base(stream)
         {
         }

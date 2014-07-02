@@ -35,7 +35,7 @@ namespace CSCore.DSP
         private void SetSampleRate(int sampleRate)
         {
             if (sampleRate <= 0)
-                throw new ArgumentOutOfRangeException("_sampleRate");
+                throw new ArgumentOutOfRangeException("sampleRate");
 
             if (sampleRate == _sampleRate)
                 return;
@@ -43,9 +43,9 @@ namespace CSCore.DSP
 
             lock (_lockObj)
             {
-                var format = new WaveFormat(_outputformat, sampleRate);
+                var format = new WaveFormat(sampleRate, _outputformat.BitsPerSample, _outputformat.Channels, _outputformat.WaveFormatTag, _outputformat.ExtraSize);
                 _resampler.MediaObject.SetOutputType(0, format);
-                _ratio = (double)BaseStream.WaveFormat.BytesPerSecond / (double)format.BytesPerSecond;
+                _ratio = BaseStream.WaveFormat.BytesPerSecond / (double)format.BytesPerSecond;
             }
         }
     }

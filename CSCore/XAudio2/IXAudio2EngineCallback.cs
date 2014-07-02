@@ -4,7 +4,8 @@ using System.Security;
 namespace CSCore.XAudio2
 {
     /// <summary>
-    /// Internal used IXAudio2EngineCallback-wrapper. The default implementation of this interface is <see cref="XAudio2EngineCallback"/>.
+    ///     Internal used IXAudio2EngineCallback-wrapper. The default implementation of this interface is
+    ///     <see cref="XAudio2EngineCallback" />.
     /// </summary>
     [ComVisible(true)]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -12,17 +13,17 @@ namespace CSCore.XAudio2
     public interface IXAudio2EngineCallback
     {
         /// <summary>
-        /// OnProcessingPassStart
+        ///     OnProcessingPassStart
         /// </summary>
         void OnProcessingPassStart();
 
         /// <summary>
-        /// OnProcessingPassEnd
+        ///     OnProcessingPassEnd
         /// </summary>
         void OnProcessingPassEnd();
 
         /// <summary>
-        /// OnCriticalError
+        ///     OnCriticalError
         /// </summary>
         /// <param name="error">Errorcode</param>
         void OnCriticalError(int error);

@@ -18,9 +18,21 @@ namespace CSCore.MediaFoundation
 
         public const int MF_SOURCE_READER_MEDIASOURCE = unchecked((int)0xFFFFFFFF); //pass this to mfattributes streamindex arguments
 
-        /// <summary>
-        /// </summary>
-        /// <param name="category">See CSCore.MediaFoundation.MFTCategories</param>
+        public static bool IsSupported { get; private set; }
+
+        static MediaFoundationCore()
+        {
+            try
+            {
+                Startup();
+                IsSupported = true;
+            }
+            catch (Exception)
+            {
+                IsSupported = false;
+            }
+        }
+
         public static IEnumerable<MFActivate> EnumerateTransforms(Guid category, MFTEnumFlags flags)
         {
             IntPtr ptr;
@@ -47,11 +59,18 @@ namespace CSCore.MediaFoundation
 
         public static bool IsTransformAvailable(IEnumerable<MFActivate> transforms, Guid transformGuid)
         {
-            foreach (var t in transforms)
+            try
             {
-                var value = (Guid)t[MediaFoundationAttributes.MFT_TRANSFORM_CLSID_Attribute];
-                if (value == transformGuid)
-                    return true;
+                foreach (var t in transforms)
+                {
+                    var value = (Guid) t[MediaFoundationAttributes.MFT_TRANSFORM_CLSID_Attribute];
+                    if (value == transformGuid)
+                        return true;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
             }
             return false;
         }
@@ -88,7 +107,7 @@ namespace CSCore.MediaFoundation
             return new MFSourceReader(ptr);
         }
 
-        private static bool _isstarted = false;
+        private static bool _isstarted;
 
         public static void Startup()
         {

@@ -26,35 +26,53 @@ namespace CSCore.Streams
         /// </summary>
         public float[] ChannelPeakValues { get; private set; }
 
+        [Obsolete("Replaced by the Interval property.")]
+        public int BlocksToProcess
+        {
+            get { return _blocksToProcess; }
+            set { _blocksToProcess = value; }
+        }
+
         /// <summary>
-        /// 
+        /// Gets or sets the interval at which to raise the <see cref="PeakCalculated"/> event. 
+        /// The interval is specified in milliseconds. 
         /// </summary>
-        public int BlocksToProcess { get; set; }
+        public int Interval
+        {
+            get { return (int)((1000.0 * _blocksProcessed) / WaveFormat.SampleRate); }
+            set { _blocksProcessed = (int)((value / 1000.0) * WaveFormat.SampleRate); }
+        }
 
         /// <summary>
         /// Event which gets raised when a new peak value is available. 
         /// </summary>
         public event EventHandler<PeakEventArgs> PeakCalculated;
 
+        private int _blocksToProcess = 0;
         private int _blocksProcessed = 0;
 
         /// <summary>
         /// Creates a new instance of the <see cref="PeakMeter"/> class.
         /// </summary>
-        /// <param name="source"></param>
         public PeakMeter(IWaveStream source)
             : base(source)
         {
-            ChannelPeakValues = new float[WaveFormat.Channels];
-            BlocksToProcess = source.WaveFormat.SampleRate / 4;
+            ChannelPeakValues = new float[source.WaveFormat.Channels];
+            Interval = 250;
         }
 
+        /// <summary>
+        /// Reads data from the base source. 
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
         public override int Read(float[] buffer, int offset, int count)
         {
-            //todo: throw exception or subtract it?
-            if (count % WaveFormat.BlockAlign != 0)
+            if (count % WaveFormat.Channels != 0)
                 throw new ArgumentOutOfRangeException("count");
-            if (offset % WaveFormat.BlockAlign != 0)
+            if (offset % WaveFormat.Channels != 0)
                 throw new ArgumentOutOfRangeException("offset");
 
             int read = base.Read(buffer, offset, count);
@@ -67,7 +85,7 @@ namespace CSCore.Streams
 
                 if (channel == channels - 1)
                     _blocksProcessed++;
-                if(_blocksProcessed == BlocksToProcess)
+                if(_blocksProcessed == _blocksToProcess)
                 {
                     RaisePeakCalculated();
                     Reset();

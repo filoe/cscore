@@ -3,7 +3,9 @@ using System;
 
 namespace CSCore.SoundIn
 {
+#pragma warning disable 612
     public class WaveInWindow : WaveIn
+#pragma warning restore 612
     {
         private IWaveCallbackWindow _window;
 

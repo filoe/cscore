@@ -1,9 +1,6 @@
 ﻿using CSCore.Win32;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace CSCore.CoreAudioAPI
 {
@@ -13,7 +10,7 @@ namespace CSCore.CoreAudioAPI
     [Guid("C02216F6-8C67-4B5B-9D00-D008E73E0064")]
     public class AudioMeterInformation : ComObject
     {
-        private const string c = "IAudioMeterInformation";
+        private const string InterfaceName = "IAudioMeterInformation";
 
         /// <summary>
         /// Creates a new AudioMeterInformation instance for the given device.
@@ -24,10 +21,14 @@ namespace CSCore.CoreAudioAPI
             if (device == null)
                 throw new ArgumentNullException("device");
 
-            var ptr = device.Activate(new Guid("C02216F6-8C67-4B5B-9D00-D008E73E0064"), ExecutionContext.CLSCTX_ALL, IntPtr.Zero);
+            var ptr = device.Activate(new Guid("C02216F6-8C67-4B5B-9D00-D008E73E0064"), CLSCTX.CLSCTX_ALL, IntPtr.Zero);
             return new AudioMeterInformation(ptr);
         }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="AudioMeterInformation"/> class.
+        /// </summary>
+        /// <param name="ptr">The native pointer.</param>
         public AudioMeterInformation(IntPtr ptr)
             : base(ptr)
         {
@@ -80,7 +81,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* ptr = &peak)
             {
-                return InteropCalls.CallI(_basePtr, ptr, ((void**)(*(void**)_basePtr))[3]);
+                return InteropCalls.CallI(UnsafeBasePtr, ptr, ((void**)(*(void**)UnsafeBasePtr))[3]);
             }
         }
 
@@ -90,7 +91,7 @@ namespace CSCore.CoreAudioAPI
         public float GetPeakValue()
         {
             float peak;
-            CoreAudioAPIException.Try(GetPeakValueNative(out peak), c, "GetPeakValue");
+            CoreAudioAPIException.Try(GetPeakValueNative(out peak), InterfaceName, "GetPeakValue");
             return peak;
         }
 
@@ -103,7 +104,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* ptr = &channelCount)
             {
-                return InteropCalls.CallI(_basePtr, ptr, ((void**)(*(void**)_basePtr))[4]);
+                return InteropCalls.CallI(UnsafeBasePtr, ptr, ((void**)(*(void**)UnsafeBasePtr))[4]);
             }
         }
 
@@ -114,7 +115,7 @@ namespace CSCore.CoreAudioAPI
         public int GetMeteringChannelCount()
         {
             int channelCount;
-            CoreAudioAPIException.Try(GetMeteringChannelCountNative(out channelCount), c, "GetMeteringChannelCount");
+            CoreAudioAPIException.Try(GetMeteringChannelCountNative(out channelCount), InterfaceName, "GetMeteringChannelCount");
             return channelCount;
         }
 
@@ -128,7 +129,7 @@ namespace CSCore.CoreAudioAPI
             peakValues = new float[channelCount];
             fixed (void* ptr = &peakValues[0])
             {
-                return InteropCalls.CallI(_basePtr, channelCount, ptr, ((void**)(*(void**)_basePtr))[5]);
+                return InteropCalls.CallI(UnsafeBasePtr, channelCount, ptr, ((void**)(*(void**)UnsafeBasePtr))[5]);
             }
         }
 
@@ -139,7 +140,7 @@ namespace CSCore.CoreAudioAPI
         public float[] GetChannelsPeakValues(int channelCount)
         {
             float[] val;
-            CoreAudioAPIException.Try(GetChannelsPeakValuesNative(channelCount, out val), c, "GetChannelsPeakValues");
+            CoreAudioAPIException.Try(GetChannelsPeakValuesNative(channelCount, out val), InterfaceName, "GetChannelsPeakValues");
             return val;
         }
 
@@ -161,7 +162,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* ptr = &hardwareSupportMask)
             {
-                return InteropCalls.CallI(_basePtr, ptr, ((void**)(*(void**)_basePtr))[6]);
+                return InteropCalls.CallI(UnsafeBasePtr, ptr, ((void**)(*(void**)UnsafeBasePtr))[6]);
             }
         }
 
@@ -172,7 +173,7 @@ namespace CSCore.CoreAudioAPI
         public EndpointHardwareSupport QueryHardwareSupport()
         {
             EndpointHardwareSupport res;
-            CoreAudioAPIException.Try(QueryHardwareSupportNative(out res), c, "QueryHardwareSupport");
+            CoreAudioAPIException.Try(QueryHardwareSupportNative(out res), InterfaceName, "QueryHardwareSupport");
             return res;
         }
     }

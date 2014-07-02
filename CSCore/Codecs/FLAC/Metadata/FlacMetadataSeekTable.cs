@@ -1,11 +1,12 @@
 ﻿using System;
 using System.IO;
 
+// ReSharper disable once CheckNamespace
 namespace CSCore.Codecs.FLAC
 {
     public class FlacMetadataSeekTable : FlacMetadata
     {
-        private FlacSeekPoint[] seekPoints;
+        private readonly FlacSeekPoint[] seekPoints;
 
         public FlacMetadataSeekTable(Stream stream, Int32 length, bool lastBlock)
             : base(FlacMetaDataType.Seektable, lastBlock, length)

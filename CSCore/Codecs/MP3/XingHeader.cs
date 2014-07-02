@@ -7,21 +7,29 @@ namespace CSCore.Codecs.MP3
     /// </summary>
     public class XingHeader
     {
-        private int startIndex;
-        private int endIndex;
+        private int _startIndex;
+        private int _endIndex;
 
-        private int vbrScale = -1;
-        private int tocOffset = -1;
-        private int framesOffset = -1;
-        private int bytesOffset = -1;
+        private int _qualityIndicator = -1;
+        private int _tocOffset = -1;
+        private int _framesOffset = -1;
+        private int _bytesOffset = -1;
 
+        /// <summary>
+        /// Gets the header flags of the <see cref="XingHeader"/>.
+        /// </summary>
         public XingHeaderFlags HeaderFlags
         {
             get;
             private set;
         }
 
-        public static XingHeader FromFrame(MP3Frame frame)
+        /// <summary>
+        /// Gets the <see cref="XingHeader"/> of a <see cref="Mp3Frame"/>. If the <paramref name="frame"/> does not has an <see cref="XingHeader"/> the return value will be null.
+        /// </summary>
+        /// <param name="frame"><see cref="Mp3Frame"/> which should get checked whether it contains a <see cref="XingHeader"/>.</param>
+        /// <returns><see cref="XingHeader"/> of the specified <paramref name="frame"/> or null.</returns>
+        public static XingHeader FromFrame(Mp3Frame frame)
         {
             XingHeader header = new XingHeader();
             int offset = CalcOffset(frame);
@@ -30,7 +38,7 @@ namespace CSCore.Codecs.MP3
 
             if (CheckForValidXingHeader(frame, offset))
             {
-                header.startIndex = offset;
+                header._startIndex = offset;
                 offset = offset + 4;
             }
             else
@@ -43,41 +51,41 @@ namespace CSCore.Codecs.MP3
 
             if ((header.HeaderFlags & XingHeaderFlags.Frames) != 0)
             {
-                header.framesOffset = offset;
+                header._framesOffset = offset;
                 offset += 4;
             }
             if ((header.HeaderFlags & XingHeaderFlags.Bytes) != 0)
             {
-                header.bytesOffset = offset;
+                header._bytesOffset = offset;
                 offset += 4;
             }
             if ((header.HeaderFlags & XingHeaderFlags.Toc) != 0)
             {
-                header.tocOffset = offset;
+                header._tocOffset = offset;
                 offset += 100;
             }
-            if ((header.HeaderFlags & XingHeaderFlags.VbrScale) != 0)
+            if ((header.HeaderFlags & XingHeaderFlags.QualityIndicator) != 0)
             {
-                header.vbrScale = ReadHeaderFlags(frame, offset);
+                header._qualityIndicator = ReadHeaderFlags(frame, offset);
                 offset += 4;
             }
-            header.endIndex = offset;
+            header._endIndex = offset;
             return header;
         }
 
-        private static int CalcOffset(MP3Frame frame)
+        private static int CalcOffset(Mp3Frame frame)
         {
             int offset = 0;
             if (frame.MPEGVersion == MpegVersion.Version1)
             {
-                if (frame.ChannelMode != MP3ChannelMode.Mono)
+                if (frame.ChannelMode != Mp3ChannelMode.Mono)
                     offset = 32 + 4;
                 else
                     offset = 17 + 4;
             }
             else if (frame.MPEGVersion == MpegVersion.Version2)
             {
-                if (frame.ChannelMode != MP3ChannelMode.Mono)
+                if (frame.ChannelMode != Mp3ChannelMode.Mono)
                     offset = 17 + 4;
                 else
                     offset = 9 + 4;
@@ -90,7 +98,7 @@ namespace CSCore.Codecs.MP3
             return offset;
         }
 
-        private static bool CheckForValidXingHeader(MP3Frame frame, int offset)
+        private static bool CheckForValidXingHeader(Mp3Frame frame, int offset)
         {
             byte[] data = null;
             if (frame.ReadData(ref data, 0) < 4)
@@ -103,19 +111,17 @@ namespace CSCore.Codecs.MP3
                 return false;
         }
 
-        private static int ReadHeaderFlags(MP3Frame frame, int offset)
+        private static int ReadHeaderFlags(Mp3Frame frame, int offset)
         {
             byte[] data = null;
             if (frame.ReadData(ref data, 0) < 4)
                 throw new System.IO.EndOfStreamException();
             int i = 0;
-            i = data[offset + 0];
-            i <<= 8;
-            i |= data[offset + 1];
-            i <<= 8;
-            i |= data[offset + 2];
-            i <<= 8;
-            i |= data[offset + 3];
+            for (int j = 0; j <= 3; j++)
+            {
+                i = data[offset + j];
+                i <<= 8;
+            }
 
             return i;
         }

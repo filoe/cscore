@@ -1,22 +1,31 @@
 ﻿using CSCore.Win32;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Text;
 
 namespace CSCore.MediaFoundation
 {
+    /// <summary>
+    /// Represents a description of a media format. 
+    /// </summary>
     [Guid("44ae0fa8-ea31-4109-8d2e-4cae4997c555")]
     public class MFMediaType : MFAttributes
     {
+        /// <summary>
+        /// Creates an empty <see cref="MFMediaType"/>.
+        /// </summary>
+        /// <returns>Returns an empty <see cref="MFMediaType"/>.</returns>
         public static MFMediaType CreateEmpty()
         {
             MediaFoundationCore.Startup();
             return MediaFoundationCore.CreateMediaType();
         }
 
+        /// <summary>
+        /// Creates a new <see cref="MFMediaType"/> based on a specified <paramref name="waveFormat"/>.
+        /// </summary>
+        /// <param name="waveFormat"><see cref="WaveFormat"/> which should be "converted" to a <see cref="MFMediaType"/>.</param>
+        /// <returns>Returns a new <see cref="MFMediaType"/>.</returns>
         public static MFMediaType FromWaveFormat(WaveFormat waveFormat)
         {
             MediaFoundationCore.Startup();
@@ -25,6 +34,10 @@ namespace CSCore.MediaFoundation
 
         private const string c = "IMFMediaType";
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MFMediaType"/> class.
+        /// </summary>
+        /// <param name="ptr">The native pointer.</param>
         public MFMediaType(IntPtr ptr)
             : base(ptr)
         {
@@ -105,7 +118,7 @@ namespace CSCore.MediaFoundation
             majorType = default(Guid);
             fixed (void* ptr = &majorType)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, new IntPtr(ptr), ((void**)(*(void**)_basePtr))[33]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, new IntPtr(ptr), ((void**)(*(void**)UnsafeBasePtr))[33]);
             }
         }
 
@@ -129,7 +142,7 @@ namespace CSCore.MediaFoundation
             iscompressed = default(NativeBool);
             fixed (void* ptr = &iscompressed)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, new IntPtr(ptr), ((void**)(*(void**)_basePtr))[34]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, new IntPtr(ptr), ((void**)(*(void**)UnsafeBasePtr))[34]);
             }
         }
 
@@ -153,7 +166,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (void* ptr = &flags)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, (void*)((mediaType == null) ? IntPtr.Zero : mediaType.BasePtr), new IntPtr(ptr), ((void**)(*(void**)_basePtr))[35]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, (void*)((mediaType == null) ? IntPtr.Zero : mediaType.BasePtr), new IntPtr(ptr), ((void**)(*(void**)UnsafeBasePtr))[35]);
             }
         }
 
@@ -177,7 +190,7 @@ namespace CSCore.MediaFoundation
         {
             fixed (void* ptr = &representation)
             {
-                return InteropCalls.CalliMethodPtr(_basePtr, guidRepresenation, new IntPtr(ptr), ((void**)(*(void**)_basePtr))[36]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, guidRepresenation, new IntPtr(ptr), ((void**)(*(void**)UnsafeBasePtr))[36]);
             }
         }
 
@@ -198,7 +211,7 @@ namespace CSCore.MediaFoundation
         /// <returns>HRESULT</returns>
         public unsafe int FreeRepresentationNative(Guid guidRepresentation, IntPtr representation)
         {
-            return InteropCalls.CalliMethodPtr(_basePtr, guidRepresentation, representation, ((void**)(*(void**)_basePtr))[37]);
+            return InteropCalls.CalliMethodPtr(UnsafeBasePtr, guidRepresentation, representation, ((void**)(*(void**)UnsafeBasePtr))[37]);
         }
 
         /// <summary>
@@ -209,14 +222,18 @@ namespace CSCore.MediaFoundation
             MediaFoundationException.Try(FreeRepresentationNative(guidRepresentation, representation), c, "FreeRepresentation");
         }
 
-        public unsafe WaveFormat ToWaveFormat(out int bufferSize, MFWaveFormatExConvertFlags flags)
+        /// <summary>
+        /// Converts the <see cref="MFMediaType"/> to a <see cref="WaveFormat"/>.
+        /// </summary>
+        /// <param name="flags">Contains a flag from the <see cref="MFWaveFormatExConvertFlags"/> enumeration.</param>
+        /// <returns>The <see cref="WaveFormat"/> which got created based on the <see cref="MFMediaType"/>.</returns>
+        public unsafe WaveFormat ToWaveFormat(MFWaveFormatExConvertFlags flags)
         {
             IntPtr pointer = IntPtr.Zero;
-            fixed (void* ptr = &bufferSize)
-            {
-                MediaFoundationException.Try(MFCreateWaveFormatExFromMFMediaType(BasePtr.ToPointer(), (void*)(&pointer), (void*)(ptr), (int)flags), "interop", "MFCreateWaveFormatExFromMFMediaType");
-            }
-            var waveformat = (WaveFormat)Marshal.PtrToStructure(pointer, typeof(WaveFormat)); //todo:
+            int cbSize;
+            MediaFoundationException.Try(MFCreateWaveFormatExFromMFMediaType(BasePtr.ToPointer(), &pointer, &cbSize, (int)flags), "Interop", "MFCreateWaveFormatExFromMFMediaType");
+            
+            var waveformat = (WaveFormat)Marshal.PtrToStructure(pointer, typeof(WaveFormat));
             if (waveformat.WaveFormatTag == AudioEncoding.Extensible)
                 waveformat = (WaveFormatExtensible)Marshal.PtrToStructure(pointer, typeof(WaveFormatExtensible));
             return waveformat;

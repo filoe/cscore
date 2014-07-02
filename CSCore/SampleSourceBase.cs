@@ -1,25 +1,51 @@
-﻿using CSCore.Streams.SampleConverter;
-using CSCore.Utils.Buffer;
-using System;
+﻿using System;
+using CSCore.Streams.SampleConverter;
 
 namespace CSCore
 {
+    /// <summary>
+    ///     Base class for most of the sample sources.
+    /// </summary>
     public class SampleSourceBase : ISampleSource
     {
-        protected ISampleSource _source;
+        /// <summary>
+        ///     Underlying sample source.
+        /// </summary>
+        protected ISampleSource Source;
 
+        private bool _disposed;
+
+        /// <summary>
+        ///     Creates a new instance of the <see cref="SampleSourceBase" /> class.
+        /// </summary>
+        /// <param name="source">Underlying base source which provides audio data.</param>
         public SampleSourceBase(IWaveStream source)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null)
+                throw new ArgumentNullException("source");
 
             if (source is ISampleSource)
-                _source = (source as ISampleSource);
+                Source = (source as ISampleSource);
             else
-            {
-                _source = WaveToSampleBase.CreateConverter(source as IWaveSource);
-            }
+                Source = WaveToSampleBase.CreateConverter(source as IWaveSource);
         }
 
+        /// <summary>
+        ///     Reads a sequence of samples from the <see cref="SampleSourceBase" /> and advances the position within the stream by
+        ///     the
+        ///     number of samples read.
+        /// </summary>
+        /// <param name="buffer">
+        ///     An array of floats. When this method returns, the <paramref name="buffer" /> contains the specified
+        ///     float array with the values between <paramref name="offset" /> and (<paramref name="offset" /> +
+        ///     <paramref name="count" /> - 1) replaced by the floats read from the current source.
+        /// </param>
+        /// <param name="offset">
+        ///     The zero-based offset in the <paramref name="buffer" /> at which to begin storing the data
+        ///     read from the current stream.
+        /// </param>
+        /// <param name="count">The maximum number of samples to read from the current source.</param>
+        /// <returns>The total number of samples read into the buffer.</returns>
         public virtual int Read(float[] buffer, int offset, int count)
         {
             if (offset % WaveFormat.Channels != 0)
@@ -27,40 +53,37 @@ namespace CSCore
             if (count % WaveFormat.Channels != 0)
                 throw new ArgumentOutOfRangeException("count");
 
-            return _source.Read(buffer, offset, count);
+            return Source.Read(buffer, offset, count);
         }
 
-        public virtual int Read(byte[] buffer, int offset, int count)
-        {
-            UnsafeBuffer ubuffer = new UnsafeBuffer(buffer);
-            int read = Read(ubuffer.FloatBuffer, offset / 4, count / 4);
-            return read * 4;
-        }
-
+        /// <summary>
+        ///     Gets the <see cref="IWaveStream.WaveFormat" /> of the waveform-audio data.
+        /// </summary>
         public virtual WaveFormat WaveFormat
         {
-            get { return _source.WaveFormat; }
+            get { return Source.WaveFormat; }
         }
 
+        /// <summary>
+        ///     Gets or sets the position in samples.
+        /// </summary>
         public virtual long Position
         {
-            get
-            {
-                return _source.Position;
-            }
-            set
-            {
-                _source.Position = value;
-            }
+            get { return Source.Position; }
+            set { Source.Position = value; }
         }
 
+        /// <summary>
+        ///     Gets the length in samples.
+        /// </summary>
         public virtual long Length
         {
-            get { return _source.Length; }
+            get { return Source.Length; }
         }
 
-        private bool _disposed;
-
+        /// <summary>
+        ///     Disposes the <see cref="SampleSourceBase" /> and the underlying <see cref="Source" />.
+        /// </summary>
         public void Dispose()
         {
             if (!_disposed)
@@ -72,11 +95,21 @@ namespace CSCore
             }
         }
 
+        /// <summary>
+        ///     Disposes the <see cref="SampleSourceBase" /> and the underlying <see cref="Source" />.
+        /// </summary>
+        /// <param name="disposing">
+        ///     True to release both managed and unmanaged resources; false to release only unmanaged
+        ///     resources.
+        /// </param>
         protected virtual void Dispose(bool disposing)
         {
-            _source.Dispose();
+            Source.Dispose();
         }
 
+        /// <summary>
+        ///     Destructor which calls <see cref="Dispose(bool)" />.
+        /// </summary>
         ~SampleSourceBase()
         {
             Dispose(false);

@@ -24,7 +24,7 @@ namespace CSCore.Streams
         public unsafe override int Read(float[] buffer, int offset, int count)
         {
             _buffer = _buffer.CheckBuffer(count * 2);
-            int read = _source.Read(_buffer, 0, count * 2);
+            int read = Source.Read(_buffer, 0, count * 2);
             fixed (float* pbuffer = buffer)
             {
                 float* ppbuffer = pbuffer + offset;
@@ -46,17 +46,17 @@ namespace CSCore.Streams
         {
             get
             {
-                return _source.Position / 2;
+                return Source.Position / 2;
             }
             set
             {
-                _source.Position = value * 2;
+                Source.Position = value * 2;
             }
         }
 
         public override long Length
         {
-            get { return _source.Length / 2; }
+            get { return Source.Length / 2; }
         }
 
         protected override void Dispose(bool disposing)

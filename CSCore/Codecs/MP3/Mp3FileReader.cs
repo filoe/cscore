@@ -1,41 +1,43 @@
-﻿using CSCore.Tags.ID3;
+﻿#pragma warning disable 1591 //since this class is obsolete
+
+using CSCore.Tags.ID3;
 using System;
 using System.IO;
 
 namespace CSCore.Codecs.MP3
 {
-    public class MP3FileReader : IDisposable
+    [Obsolete("Use the DmoMp3Decoder or the MP3MediafoundationDecoder instead.")]
+    public class Mp3FileReader : IDisposable
     {
-        private long dataStartIndex;
-        private long dataLength;
-        private MP3Stream dataStream;
+        private long _dataLength;
+        private readonly Mp3Stream dataStream;
 
-        public MP3FileReader(string fileName)
+        public Mp3FileReader(string fileName)
             : this(File.OpenRead(fileName))
         {
         }
 
-        public MP3FileReader(Stream stream)
+        public Mp3FileReader(Stream stream)
         {
-            CSCore.Tags.ID3.ID3v2.SkipTag(stream);
-            dataStartIndex = stream.Position;
+            ID3v2.SkipTag(stream);
+            long dataStartIndex = stream.Position;
 
             var id3v1Tag = ID3v1.FromStream(stream);
             if (id3v1Tag != null)
             {
-                dataLength = stream.Length - dataStartIndex - 128; //128 = id3v1 length
+                _dataLength = stream.Length - dataStartIndex - 128; //128 = id3v1 length
             }
             else
             {
-                dataLength = stream.Length - dataStartIndex;
+                _dataLength = stream.Length - dataStartIndex;
             }
 
             stream.Position = dataStartIndex;
 
-            dataStream = new MP3Stream(stream, true, id3v1Tag != null ? 128 : 0);
+            dataStream = new Mp3Stream(stream, true, id3v1Tag != null ? 128 : 0);
         }
 
-        public MP3Stream DataStream
+        public Mp3Stream DataStream
         {
             get { return dataStream; }
         }
@@ -58,9 +60,11 @@ namespace CSCore.Codecs.MP3
             }
         }
 
-        ~MP3FileReader()
+        ~Mp3FileReader()
         {
             Dispose(false);
         }
     }
 }
+
+#pragma warning restore 1591

@@ -126,7 +126,7 @@ namespace CSCore.CoreAudioAPI
         {
             sessionID = null;
             IntPtr ptr = IntPtr.Zero;
-            int result = InteropCalls.CallI(_basePtr, &ptr, ((void**)(*(void**)_basePtr))[12]);
+            int result = InteropCalls.CallI(UnsafeBasePtr, &ptr, ((void**)(*(void**)UnsafeBasePtr))[12]);
             if (result == 0 && ptr != IntPtr.Zero)
             {
                 sessionID = Marshal.PtrToStringUni(ptr);
@@ -145,7 +145,7 @@ namespace CSCore.CoreAudioAPI
         {
             sessionID = null;
             IntPtr ptr = IntPtr.Zero;
-            int result = InteropCalls.CallI(_basePtr, &ptr, ((void**)(*(void**)_basePtr))[13]);
+            int result = InteropCalls.CallI(UnsafeBasePtr, &ptr, ((void**)(*(void**)UnsafeBasePtr))[13]);
             if (result == 0 && ptr != IntPtr.Zero)
             {
                 sessionID = Marshal.PtrToStringUni(ptr);
@@ -163,7 +163,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* p = &processID)
             {
-                return InteropCalls.CallI(_basePtr, p, ((void**)(*(void**)_basePtr))[14]);
+                return InteropCalls.CallI(UnsafeBasePtr, p, ((void**)(*(void**)UnsafeBasePtr))[14]);
             }
         }
 
@@ -173,7 +173,7 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT; S_OK = true, S_FALSE = false</returns>
         public unsafe int IsSystemSoundSessionNative()
         {
-            return InteropCalls.CallI(_basePtr, ((void**)(*(void**)_basePtr))[15]);
+            return InteropCalls.CallI(UnsafeBasePtr, ((void**)(*(void**)UnsafeBasePtr))[15]);
         }
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT</returns>
         public unsafe int SetDuckingPreferenceNative(NativeBool enableSystemAutoDucking)
         {
-            return InteropCalls.CallI(_basePtr, enableSystemAutoDucking, ((void**)(*(void**)_basePtr))[16]);
+            return InteropCalls.CallI(UnsafeBasePtr, enableSystemAutoDucking, ((void**)(*(void**)UnsafeBasePtr))[16]);
         }
 
         /// <summary>

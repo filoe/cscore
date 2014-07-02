@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace CSCore.Codecs.FLAC
 {
-    public class FlacPreScan
+    internal sealed class FlacPreScan
     {
         private const int BufferSize = 50000;
         private readonly Stream _stream;
@@ -28,10 +28,10 @@ namespace CSCore.Codecs.FLAC
             _stream = stream;
         }
 
-        public void ScanStream(FlacMetadataStreamInfo streamInfo, FlacPreScanMethodMode method)
+        public void ScanStream(FlacMetadataStreamInfo streamInfo, FlacPreScanMethodMode mode)
         {
             long saveOffset = _stream.Position;
-            StartScan(streamInfo, method);
+            StartScan(streamInfo, mode);
             _stream.Position = saveOffset;
 
             long totalLength = 0, totalsamples = 0;
@@ -44,7 +44,7 @@ namespace CSCore.Codecs.FLAC
             TotalSamples = totalsamples;
         }
 
-        protected void StartScan(FlacMetadataStreamInfo streamInfo, FlacPreScanMethodMode method)
+        private void StartScan(FlacMetadataStreamInfo streamInfo, FlacPreScanMethodMode method)
         {
             if (_isRunning)
                 throw new Exception("Scan is already running.");
@@ -53,20 +53,20 @@ namespace CSCore.Codecs.FLAC
 
             if (method == FlacPreScanMethodMode.Async)
             {
-                new Thread((o) =>
+                ThreadPool.QueueUserWorkItem(o =>
                 {
                     Frames = RunScan(streamInfo);
                     _isRunning = false;
-                }).Start();
+                });
             }
             else
             {
-                Frames = ScanThisShit(streamInfo);
+                Frames = RunScan(streamInfo);
                 _isRunning = false;
             }
         }
 
-        protected virtual List<FlacFrameInformation> RunScan(FlacMetadataStreamInfo streamInfo)
+        private List<FlacFrameInformation> RunScan(FlacMetadataStreamInfo streamInfo)
         {
 #if DEBUG
             Stopwatch watch = new Stopwatch();
@@ -77,13 +77,13 @@ namespace CSCore.Codecs.FLAC
 #if DEBUG
             watch.Stop();
             Debug.WriteLine(String.Format("FlacPreScan finished: {0} Bytes processed in {1} ms.",
-                _stream.Length.ToString(), watch.ElapsedMilliseconds.ToString()));
+                _stream.Length, watch.ElapsedMilliseconds));
 #endif
             RaiseScanFinished(result);
             return result;
         }
 
-        protected virtual void RaiseScanFinished(List<FlacFrameInformation> frames)
+        private void RaiseScanFinished(List<FlacFrameInformation> frames)
         {
             if (ScanFinished != null)
                 ScanFinished(this, new FlacPreScanFinishedEventArgs(frames));
@@ -100,14 +100,12 @@ namespace CSCore.Codecs.FLAC
             int read = 0;
             stream.Position = 4; //fLaC
 
-            FlacMetadata.AllDataFromStream(stream);
+            FlacMetadata.ReadAllMetadataFromStream(stream);
 
             List<FlacFrameInformation> frames = new List<FlacFrameInformation>();
             FlacFrameInformation frameInfo = new FlacFrameInformation();
             frameInfo.IsFirstFrame = true;
 
-            FlacFrameHeader header;
-            FlacFrameHeader tmp = null;
             FlacFrameHeader baseHeader = null;
 
             while (true)
@@ -119,17 +117,17 @@ namespace CSCore.Codecs.FLAC
                 fixed (byte* bufferPtr = buffer)
                 {
                     byte* ptr = bufferPtr;
-                    byte* ptrSafe;
                     //for (int i = 0; i < read - FlacConstant.FrameHeaderSize; i++)
                     while ((bufferPtr + read - FlacConstant.FrameHeaderSize) > ptr)
                     {
                         if ((*ptr++ & 0xFF) == 0xFF && (*ptr & 0xF8) == 0xF8) //check sync
                         {
-                            ptrSafe = ptr;
+                            byte* ptrSafe = ptr;
                             ptr--;
+                            FlacFrameHeader tmp = null;
                             if (IsFrame(ref ptr, streamInfo, baseHeader, out tmp))
                             {
-                                header = tmp;
+                                FlacFrameHeader header = tmp;
                                 if (frameInfo.IsFirstFrame)
                                 {
                                     baseHeader = header;
@@ -168,39 +166,6 @@ namespace CSCore.Codecs.FLAC
         {
             header = new FlacFrameHeader(ref buffer, streamInfo, true, false);
             return !header.HasError;
-        }
-    }
-
-    [System.Diagnostics.DebuggerDisplay("StreamOffset: {StreamOffset}")]
-    public struct FlacFrameInformation
-    {
-        public FlacFrameHeader Header { get; set; }
-
-        public Boolean IsFirstFrame { get; set; }
-
-        public long StreamOffset { get; set; }
-
-        public long SampleOffset { get; set; }
-    }
-
-    public enum FlacPreScanMethodMode
-    {
-        Default,
-
-        /// <summary>
-        /// Scan async BUT don't use the stream while scan is running because the stream position
-        /// will change while scanning. If you playback the stream, it will cause an error!
-        /// </summary>
-        Async
-    }
-
-    public class FlacPreScanFinishedEventArgs : EventArgs
-    {
-        public List<FlacFrameInformation> Frames { get; private set; }
-
-        public FlacPreScanFinishedEventArgs(List<FlacFrameInformation> frames)
-        {
-            Frames = frames;
         }
     }
 }

@@ -14,18 +14,18 @@ namespace CSCore.CoreAudioAPI
     public enum AudioClientStreamFlags
     {
         None = 0x0,
-        StreamFlags_CrossProcess = 0x00010000,
-        StreamFlags_Loopback = 0x00020000,
-        StreamFlags_EventCallback = 0x00040000,
-        StreamFlags_NoPersist = 0x00080000,
+        StreamFlagsCrossProcess = 0x00010000,
+        StreamFlagsLoopback = 0x00020000,
+        StreamFlagsEventCallback = 0x00040000,
+        StreamFlagsNoPersist = 0x00080000,
 
         /// <summary>
         /// Supported since Windows 7
         /// </summary>
-        StreamFlags_RateAdjust = 0x00100000,
+        StreamFlagsRateAdjust = 0x00100000,
 
-        SessionFlags_ExpireWhenUnowned = 0x10000000,
-        SessionFlags_DisplayHide = 0x20000000,
-        SessionFlags_Display_HideWhenExpired = 0x40000000
+        SessionFlagsExpireWhenUnowned = 0x10000000,
+        SessionFlagsDisplayHide = 0x20000000,
+        SessionFlagsDisplayHideWhenExpired = 0x40000000
     }
 }
