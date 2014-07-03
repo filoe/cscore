@@ -219,6 +219,7 @@
     <Compile Include="Codecs\FLAC\FlacFrame.cs" />
     <Compile Include="Codecs\FLAC\FlacFrameHeader.cs" />
     <Compile Include="Codecs\FLAC\FlacFrameInformation.cs" />
+    <Compile Include="Codecs\FLAC\FlacLayer.cs" />
     <Compile Include="Codecs\FLAC\FlacNumberType.cs" />
     <Compile Include="Codecs\FLAC\FlacPreScan.cs" />
     <Compile Include="Codecs\FLAC\FlacPreScanFinishedEventArgs.cs" />

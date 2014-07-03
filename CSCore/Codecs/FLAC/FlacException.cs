@@ -25,12 +25,4 @@ namespace CSCore.Codecs.FLAC
             info.AddValue("Layer", Layer);
         }
     }
-
-    public enum FlacLayer
-    {
-        Top,
-        Metadata,
-        Frame,
-        SubFrame
-    }
 }

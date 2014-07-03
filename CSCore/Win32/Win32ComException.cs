@@ -7,6 +7,7 @@ namespace CSCore.Win32
     /// <summary>
     /// Exception for Com Exceptions.
     /// </summary>
+    [Serializable]
     public class Win32ComException : COMException
     {
         /// <summary>
