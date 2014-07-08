@@ -25,7 +25,7 @@ namespace CSCore.MediaFoundation
         public static extern int MFShutdown();
 
         [DllImport("mfplat.dll")]
-        public static extern int MFCreateMFByteStreamOnStreamEx(IStream stream, out IMFByteStream byteStream);
+        public static extern int MFCreateMFByteStreamOnStream(IStream stream, out IMFByteStream byteStream);
 
         [DllImport("mfreadwrite.dll")]
         public static extern int MFCreateSourceReaderFromByteStream(IntPtr byteStream, IntPtr attributes, out IntPtr sourceReader);
