@@ -13,9 +13,9 @@ namespace CSCore.SoundIn
         event EventHandler<DataAvailableEventArgs> DataAvailable;
 
         /// <summary>
-        /// Occurs when capturing stopped.
+        /// Occurs when the recording stopped.
         /// </summary>
-        event EventHandler Stopped;
+        event EventHandler<RecordingStoppedEventArgs> Stopped;
 
         /// <summary>
         /// Gets the OutputFormat.

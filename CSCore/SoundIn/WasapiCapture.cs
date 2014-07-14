@@ -39,7 +39,7 @@ namespace CSCore.SoundIn
         /// <summary>
         /// Occurs when capturing stopped.
         /// </summary>
-        public event EventHandler Stopped;
+        public event EventHandler<RecordingStoppedEventArgs> Stopped;
 
         private AudioClient _audioClient;
         private AudioCaptureClient _audioCaptureClient;
@@ -205,23 +205,24 @@ namespace CSCore.SoundIn
         {
             var playbackStartedEventWaitHandle = param as EventWaitHandle;
 
+            Exception exception = null;
             try
             {
                 int bufferSize = _audioClient.BufferSize;
                 int frameSize = WaveFormat.Channels * WaveFormat.BytesPerSample;
 
-                long actualDuration = (long)((double)ReftimesPerSecond * bufferSize / WaveFormat.SampleRate);
-                int actualLatency = (int)(actualDuration / ReftimesPerMillisecond);
+                long actualDuration = (long) ((double) ReftimesPerSecond * bufferSize / WaveFormat.SampleRate);
+                int actualLatency = (int) (actualDuration / ReftimesPerMillisecond);
                 int sleepDuration = actualLatency / 8;
 
                 byte[] buffer = new byte[bufferSize * frameSize];
 
-                WaitHandle[] eventWaitHandleArray = { _eventWaitHandle };
+                WaitHandle[] eventWaitHandleArray = {_eventWaitHandle};
 
                 _audioClient.Start();
                 _recordingState = RecordingState.Recording;
 
-                if(playbackStartedEventWaitHandle != null)
+                if (playbackStartedEventWaitHandle != null)
                 {
                     playbackStartedEventWaitHandle.Set();
                     playbackStartedEventWaitHandle = null;
@@ -229,7 +230,7 @@ namespace CSCore.SoundIn
 
                 while (RecordingState != RecordingState.Stopped)
                 {
-                    if(_eventSync)
+                    if (_eventSync)
                     {
                         int eventWaitHandleIndex = WaitHandle.WaitAny(eventWaitHandleArray, actualLatency, false);
                         if (eventWaitHandleIndex == WaitHandle.WaitTimeout)
@@ -240,9 +241,9 @@ namespace CSCore.SoundIn
                         Thread.Sleep(sleepDuration);
                     }
 
-                    if(RecordingState == RecordingState.Recording)
+                    if (RecordingState == RecordingState.Recording)
                     {
-                        ReadData(buffer, _audioCaptureClient, (uint)frameSize);
+                        ReadData(buffer, _audioCaptureClient, (uint) frameSize);
                     }
                 }
 
@@ -250,13 +251,17 @@ namespace CSCore.SoundIn
 
                 _audioClient.Stop();
                 _audioClient.Reset();
-                
+
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
             }
             finally
             {
                 if (playbackStartedEventWaitHandle != null)
                     playbackStartedEventWaitHandle.Set();
-                RaiseStopped();
+                RaiseStopped(exception);
             }
         }
 
@@ -365,10 +370,10 @@ namespace CSCore.SoundIn
                 DataAvailable(this, new DataAvailableEventArgs(buffer, offset, count, WaveFormat));
         }
 
-        private void RaiseStopped()
+        private void RaiseStopped(Exception exception)
         {
             if (Stopped != null)
-                Stopped(this, EventArgs.Empty);
+                Stopped(this, new RecordingStoppedEventArgs(exception));
         }
 
         /// <summary>

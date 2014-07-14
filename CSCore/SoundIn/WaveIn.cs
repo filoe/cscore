@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace CSCore.SoundIn
 {
-    [Obsolete()]
+    [Obsolete("Use the WasapiCapture class instead.")]
     public class WaveIn : ISoundRecorder
     {
         internal static readonly WaveFormat DefaultFormat = new WaveFormat(44100, 16, 1, AudioEncoding.Pcm);
@@ -16,7 +16,7 @@ namespace CSCore.SoundIn
 
         public event EventHandler<DataAvailableEventArgs> DataAvailable;
 
-        public event EventHandler Stopped;
+        public event EventHandler<RecordingStoppedEventArgs> Stopped;
 
         protected IntPtr handle;
         protected MMInterops.WaveCallback _callback;
@@ -204,11 +204,11 @@ namespace CSCore.SoundIn
             }
         }
 
-        protected void RaiseStopped()
+        protected void RaiseStopped() //todo: add possibility to add exceptions.
         {
             if (Stopped != null)
             {
-                Stopped(this, new EventArgs());
+                Stopped(this, new RecordingStoppedEventArgs(null));
             }
         }
 

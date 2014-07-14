@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
 using CSCore.CoreAudioAPI;
-using CSCore.DMO;
 using CSCore.DSP;
 
 namespace CSCore.SoundOut
@@ -174,7 +173,7 @@ namespace CSCore.SoundOut
         /// <summary>
         ///     Occurs when the playback stops.
         /// </summary>
-        public event EventHandler Stopped;
+        public event EventHandler<PlaybackStoppedEventArgs> Stopped;
 
         /// <summary>
         ///     Initializes WasapiOut and prepares all resources for playback.
@@ -340,6 +339,7 @@ namespace CSCore.SoundOut
 
         private void PlaybackProc(object playbackStartedEventWaithandle)
         {
+            Exception exception = null;
             try
             {
                 int bufferSize = _audioClient.BufferSize;
@@ -372,11 +372,11 @@ namespace CSCore.SoundOut
 
                 while (PlaybackState != PlaybackState.Stopped)
                 {
+                    //based on the "RenderSharedEventDriven"-Sample: http://msdn.microsoft.com/en-us/library/dd940520(v=vs.85).aspx
                     if (_eventSync)
-                        //based on the "RenderSharedEventDriven"-Sample: http://msdn.microsoft.com/en-us/library/dd940520(v=vs.85).aspx
                     {
-                        int eventWaitHandleIndex = WaitHandle.WaitAny(eventWaitHandleArray, 3 * _latency, false);
                         //3 * latency = see msdn: recommended timeout
+                        int eventWaitHandleIndex = WaitHandle.WaitAny(eventWaitHandleArray, 3 * _latency, false);
                         if (eventWaitHandleIndex == WaitHandle.WaitTimeout)
                             continue;
                     }
@@ -393,10 +393,10 @@ namespace CSCore.SoundOut
                             padding = _audioClient.GetCurrentPadding();
 
                         int framesReadyToFill = bufferSize - padding;
+                        //avoid conversion errors
                         if (framesReadyToFill > 5 &&
                             !(_source is DmoResampler &&
                               ((DmoResampler) _source).OutputToInput(framesReadyToFill * frameSize) <= 0))
-                            //avoid conversion errors
                         {
                             if (!FeedBuffer(_renderClient, buffer, framesReadyToFill, frameSize))
                                 _playbackState = PlaybackState.Stopped; //TODO: Fire Stopped-event here?
@@ -410,12 +410,16 @@ namespace CSCore.SoundOut
                 _audioClient.Reset();
                 //}
             }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
             finally
             {
                 //CleanupResources();
                 if (playbackStartedEventWaithandle is EventWaitHandle)
                     ((EventWaitHandle) playbackStartedEventWaithandle).Set();
-                RaiseStopped();
+                RaiseStopped(exception);
             }
         }
 
@@ -605,15 +609,16 @@ namespace CSCore.SoundOut
             return read > 0;
         }
 
-        private void RaiseStopped()
+        private void RaiseStopped(Exception exception)
         {
             if (Stopped == null)
                 return;
 
             if (_syncContext != null)
-                _syncContext.Post(x => Stopped(this, EventArgs.Empty), null); //maybe send?
+                //since Send could cause deadlocks better use Post instead
+                _syncContext.Post(x => Stopped(this, new PlaybackStoppedEventArgs(exception)), null);
             else
-                Stopped(this, EventArgs.Empty);
+                Stopped(this, new PlaybackStoppedEventArgs(exception));
         }
 
         /// <summary>
