@@ -30,13 +30,13 @@ namespace CSCore.XAudio2
         NotchFilter = 3,
 
         /// <summary>
-        ///     Attenuates frequencies above the cutoff frequency. This is a one-pole filter, and
+        ///     <b>XAudio2.8 only:</b> Attenuates frequencies above the cutoff frequency. This is a one-pole filter, and
         ///     <see cref="FilterParameters.OneOverQ" /> has no effect.
         /// </summary>
         LowPassOnePoleFilter = 4,
 
         /// <summary>
-        ///     Attenuates frequencies below the cutoff frequency. This is a one-pole filter, and
+        ///     <b>XAudio2.8 only:</b> Attenuates frequencies below the cutoff frequency. This is a one-pole filter, and
         ///     <see cref="FilterParameters.OneOverQ" /> has no effect.
         /// </summary>
         HighPassOnePoleFilter = 5

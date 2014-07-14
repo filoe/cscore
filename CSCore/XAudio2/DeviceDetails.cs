@@ -1,37 +1,48 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace CSCore.XAudio2
 {
     /// <summary>
     ///     Provides information about an audio device.
     /// </summary>
-    public partial struct DeviceDetails
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public unsafe struct DeviceDetails
     {
+        // ReSharper disable FieldCanBeMadeReadOnly.Local
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 256)]
+        private short[] _internalDeviceIdField;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 256)]
+        private short[] _internalDisplayNameField;
+        private XAudio2DeviceRole _role;
+        private WaveFormatExtensible _outputFormat;
+
+        // ReSharper restore FieldCanBeMadeReadOnly.Local
+
         /// <summary>
-        ///     Gets the <see cref="DisplayName" /> of the Device.
+        ///     Gets the <see cref="DeviceId" /> of the Device.
         /// </summary>
-        public unsafe string DisplayName
+        public string DeviceId
         {
             get
             {
-                fixed (void* p = &_internalDisplayNameField0)
+                fixed (void* p = &_internalDeviceIdField[0])
                 {
-                    return Marshal.PtrToStringUni(new IntPtr(p), 256).TrimEnd();
+                    return new string((char*)p);
                 }
             }
         }
 
         /// <summary>
-        ///     Gets the <see cref="DeviceId" /> of the Device.
+        ///     Gets the <see cref="DisplayName" /> of the Device.
         /// </summary>
-        public unsafe string DeviceId
+        public string DisplayName
         {
             get
             {
-                fixed (void* p = &_internalDeviceIdField0)
+                fixed (void* p = &_internalDisplayNameField[0])
                 {
-                    return Marshal.PtrToStringUni(new IntPtr(p), 256).TrimEnd();
+                    return new string((char*)p);
                 }
             }
         }

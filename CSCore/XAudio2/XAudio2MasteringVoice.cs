@@ -11,13 +11,14 @@ namespace CSCore.XAudio2
         ///     Initializes a new instance of the <see cref="XAudio2MasteringVoice" /> class.
         /// </summary>
         /// <param name="ptr">Native pointer of the <see cref="XAudio2MasteringVoice" /> object.</param>
-        public XAudio2MasteringVoice(IntPtr ptr)
-            : base(ptr)
+        /// <param name="version">The <see cref="XAudio2Version"/> to use.</param>        
+        public XAudio2MasteringVoice(IntPtr ptr, XAudio2Version version)
+            : base(ptr, version)
         {
         }
 
         /// <summary>
-        ///     Gets the channel mask for this voice.
+        ///     <b>XAudio2.8 only:</b> Gets the channel mask for this voice.
         /// </summary>
         public ChannelMask ChannelMask
         {
@@ -30,7 +31,7 @@ namespace CSCore.XAudio2
         }
 
         /// <summary>
-        ///     Returns the channel mask for this voice.
+        ///     <b>XAudio2.8 only:</b> Returns the channel mask for this voice.
         /// </summary>
         /// <param name="channelMask">
         ///     Returns the channel mask for this voice. This corresponds to the
@@ -39,9 +40,12 @@ namespace CSCore.XAudio2
         /// <returns>HRESULT</returns>
         public unsafe int GetChannelMaskNative(out ChannelMask channelMask)
         {
+            if(Version != XAudio2Version.XAudio2_8)
+                throw new InvalidOperationException("The Channelmask of a mastering voice is only available using XAudio2.8.");
+
             fixed (void* p = &channelMask)
             {
-                return InteropCalls.CallI(UnsafeBasePtr, p, ((void**) (*(void**) UnsafeBasePtr))[19]);
+                return InteropCalls.CallI(UnsafeBasePtr, p, ((void**)(*(void**)UnsafeBasePtr))[19]);
             }
         }
     }

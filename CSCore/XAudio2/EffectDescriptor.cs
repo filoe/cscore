@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Runtime.InteropServices;
+using CSCore.Win32;
 
 namespace CSCore.XAudio2
 {
     /// <summary>
     ///     Contains information about an XAPO for use in an effect chain.
     /// </summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct EffectDescriptor
     {
         /// <summary>
@@ -16,7 +19,7 @@ namespace CSCore.XAudio2
         /// <summary>
         ///     TRUE if the effect should begin in the enabled state. Otherwise, FALSE.
         /// </summary>
-        public bool InitialState;
+        public NativeBool InitialState;
 
         /// <summary>
         ///     Number of output channels the effect should produce.
