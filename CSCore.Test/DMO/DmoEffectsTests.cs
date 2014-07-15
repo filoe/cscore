@@ -33,9 +33,9 @@ namespace CSCore.Test.DMO
                             property.SetValue(effect, value, null);
                             Console.WriteLine(" - SUCCESSFUL: {0}.", property.Name);
                         }
-                        catch(Exception)
+                        catch(Exception ex)
                         {
-                            Console.WriteLine(" - FAILED: {0}.", property.Name);
+                            Console.WriteLine(" - FAILED: {0}. -> {1}", property.Name, ex);
                             flag = false;
                         }
                     }

@@ -122,7 +122,7 @@ namespace CSCore.Test.SoundOut
             bool flag = true;
             foreach (var soundOut in GetSoundOuts())
             {
-                var source = new CSCore.Streams.NotificationSource(new SineGenerator().ToWaveSource());
+                var source = new CSCore.Streams.NotificationSource(new SineGenerator());
                 source.BlockRead += (s, e) =>
                 {
                     try
@@ -135,7 +135,7 @@ namespace CSCore.Test.SoundOut
                         flag = false;
                     }
                 };
-                soundOut.Initialize(source);
+                soundOut.Initialize(source.ToWaveSource());
                 soundOut.Play();
 
                 Thread.Sleep(200);
@@ -213,7 +213,7 @@ namespace CSCore.Test.SoundOut
 
         private IWaveSource GetWaveSource()
         {
-            return CodecFactory.Instance.GetCodec(@"C:\Temp\200msSin.wav");
+            return CodecFactory.Instance.GetCodec(GlobalTestConfig.testWav2s);
         }
 
         private void CanHandleEOFOnReplayTestInternal(ISoundOut soundOut, IWaveSource source)

@@ -187,13 +187,16 @@ namespace CSCore.Test.XAudio2
                     xaudio2.StartEngine();
 
                     using (var masteringVoice = xaudio2.CreateMasteringVoice())
-                    using (var source = CodecFactory.Instance.GetCodec(@"C:\Temp\test_2s.wav"))
+                    using (var source = CodecFactory.Instance.GetCodec(GlobalTestConfig.testWav2s))
                     using (var pool = new StreamingSourceVoiceListener())
                     using (var streamingSourceVoice = StreamingSourceVoice.Create(xaudio2, source))
                     {
                         var stoppedEvent = new ManualResetEvent(false);
                         streamingSourceVoice.Stopped += (s, e) =>
                             stoppedEvent.Set();
+
+                        streamingSourceVoice.Start();
+
                         pool.Add(streamingSourceVoice);
 
                         Debug.WriteLine("All queued.");
@@ -213,13 +216,13 @@ namespace CSCore.Test.XAudio2
         [TestMethod]
         public void CanSetEffect()
         {
-            throw new NotImplementedException();
+            //TODO: Implement
         }
 
         [TestMethod]
         public void CanGetEffect()
         {
-            throw new NotImplementedException();
+            //TODO: Implement
         }
 
         protected abstract CSCore.XAudio2.XAudio2 CreateXAudio2();
