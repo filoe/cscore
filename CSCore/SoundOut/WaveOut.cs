@@ -30,7 +30,7 @@ namespace CSCore.SoundOut
             return caps;
         }
 
-        public event EventHandler Stopped;
+        public event EventHandler<PlaybackStoppedEventArgs> Stopped;
 
         private int _device = 0;
         protected volatile IntPtr _hWaveOut;
@@ -155,7 +155,7 @@ namespace CSCore.SoundOut
                     MmException.Try(result, "waveOutReset");
                 }
 
-                RaiseStopped();
+                RaiseStopped(null);
             }
         }
 
@@ -185,7 +185,7 @@ namespace CSCore.SoundOut
                 System.Threading.Interlocked.Decrement(ref _activeBuffers);
 
                 if (buffer == null) return;
-                if (_playbackState != SoundOut.PlaybackState.Stopped)
+                if (_playbackState != PlaybackState.Stopped)
                 {
                     lock (_lockObj)
                     {
@@ -196,8 +196,8 @@ namespace CSCore.SoundOut
 
                 if (_activeBuffers == 0)
                 {
-                    _playbackState = SoundOut.PlaybackState.Stopped;
-                    RaiseStopped();
+                    _playbackState = PlaybackState.Stopped;
+                    RaiseStopped(null);
                 }
             }
             else if (msg == WaveMsg.WOM_CLOSE)
@@ -205,7 +205,7 @@ namespace CSCore.SoundOut
                 var state = _playbackState;
                 _playbackState = SoundOut.PlaybackState.Stopped;
                 if (state != SoundOut.PlaybackState.Stopped)
-                    RaiseStopped();
+                    RaiseStopped(null);
                 Debug.WriteLine("WaveOut::Callback: Closing WaveOut.");
             }
         }
@@ -223,18 +223,18 @@ namespace CSCore.SoundOut
                     else
                     {
                         _playbackState = SoundOut.PlaybackState.Stopped;
-                        RaiseStopped();
+                        RaiseStopped(null);
                         break;
                     }
                 }
             }
         }
 
-        protected void RaiseStopped()
+        protected void RaiseStopped(Exception exception)
         {
             if (Stopped != null)
             {
-                Stopped(this, new EventArgs());
+                Stopped(this, new PlaybackStoppedEventArgs(exception));
             }
         }
 

@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading;
 using CSCore.Codecs.WAV;
 using CSCore.SoundOut;
+using CSCore.Streams;
 using CSCore.Streams.SampleConverter;
 
 namespace CSCore
@@ -216,9 +217,25 @@ namespace CSCore
             return inst;
         }
 
+        /// <summary>
+        /// Creates a thread-safe (synchronized) wrapper around the specified <see cref="TWaveSource"/> object.
+        /// </summary>
+        /// <param name="waveSource">The <see cref="TWaveSource"/> object to synchronize.</param>
+        /// <typeparam name="TWaveSource">Type of the <paramref name="waveSource"/> argument.</typeparam>
+        /// <returns>A thread-safe wrapper around the specified <see cref="TWaveSource"/> object.</returns>
+        /// <exception cref="ArgumentNullException">The <paramref name="waveSource"/> is null.</exception>
+        public static SynchronizedWaveSource<TWaveSource> Synchronized<TWaveSource>(this TWaveSource waveSource)
+            where TWaveSource : class, IWaveSource
+        {
+            if(waveSource == null)
+                throw new ArgumentNullException("waveSource");
+
+            return new SynchronizedWaveSource<TWaveSource>(waveSource);
+        }
+
         internal static bool IsClosed(this Stream stream)
         {
-            return stream.CanRead || stream.CanWrite;
+            return !stream.CanRead && !stream.CanWrite;
         }
 
         internal static bool IsEndOfStream(this Stream stream)

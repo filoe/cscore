@@ -9,7 +9,17 @@ namespace CSCore.XAudio2
     /// </summary>
     public class XAudio2Voice : ComObject
     {
-        private const string n = "IXAudio2Voice";
+        private readonly XAudio2Version _version;
+        private const string InterfaceName = "IXAudio2Voice";
+
+        /// <summary>
+        /// Gets the XAudio2 Version.
+        /// </summary>
+        public XAudio2Version Version
+        {
+            get { return _version; }
+        }
+
 
         internal XAudio2Voice()
         {
@@ -19,9 +29,11 @@ namespace CSCore.XAudio2
         ///     Initializes a new instance of the <see cref="XAudio2Voice" /> class.
         /// </summary>
         /// <param name="ptr">Native pointer of the <see cref="XAudio2Voice" /> object.</param>
-        public XAudio2Voice(IntPtr ptr)
+        /// <param name="version">The <see cref="XAudio2Version"/> to use.</param>
+        public XAudio2Voice(IntPtr ptr, XAudio2Version version)
             : base(ptr)
         {
+            _version = version;
         }
 
         /// <summary>
@@ -34,7 +46,7 @@ namespace CSCore.XAudio2
             get
             {
                 VoiceDetails value;
-                XAudio2Exception.Try(GetVoiceDetailsNative(out value), n, "GetVoiceDetails");
+                XAudio2Exception.Try(GetVoiceDetailsNative(out value), InterfaceName, "GetVoiceDetails");
                 return value;
             }
         }
@@ -75,10 +87,25 @@ namespace CSCore.XAudio2
         public unsafe int GetVoiceDetailsNative(out VoiceDetails voiceDetails)
         {
             voiceDetails = default(VoiceDetails);
-            fixed (void* ptr = &voiceDetails)
+            int result;
+            if (_version == XAudio2Version.XAudio2_7)
             {
-                return InteropCalls.CallI(UnsafeBasePtr, ptr, ((void**) (*(void**) UnsafeBasePtr))[0]);
+                var t = new VoiceDetails.VoiceDetails27();
+                result = InteropCalls.CallI(UnsafeBasePtr, &t, ((void**) (*(void**) UnsafeBasePtr))[0]);
+                voiceDetails = VoiceDetails.FromNativeVoiceDetailsObject(t);
             }
+            else if (_version == XAudio2Version.XAudio2_8)
+            {
+                var t = new VoiceDetails.VoiceDetails28();
+                result = InteropCalls.CallI(UnsafeBasePtr, &t, ((void**) (*(void**) UnsafeBasePtr))[0]);
+                voiceDetails = VoiceDetails.FromNativeVoiceDetailsObject(t);
+            }
+            else
+            {
+                throw new Exception("Invalid XAudio2 version.");
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -111,7 +138,7 @@ namespace CSCore.XAudio2
         {
             if (voiceSendDescriptors == null)
             {
-                XAudio2Exception.Try(SetOutputVoicesNative(null), n, "SetOutputVoices");
+                XAudio2Exception.Try(SetOutputVoicesNative(null), InterfaceName, "SetOutputVoices");
             }
             else
             {
@@ -122,7 +149,7 @@ namespace CSCore.XAudio2
                         SendCount = voiceSendDescriptors.Length,
                         SendsPtr = new IntPtr(ptr)
                     };
-                    XAudio2Exception.Try(SetOutputVoicesNative(p), n, "SetOutputVoices");
+                    XAudio2Exception.Try(SetOutputVoicesNative(p), InterfaceName, "SetOutputVoices");
                 }
             }
         }
@@ -203,7 +230,7 @@ namespace CSCore.XAudio2
         /// </param>
         public void EnableEffect(int effectIndex, int operationSet)
         {
-            XAudio2Exception.Try(EnableEffectNative(effectIndex, operationSet), n, "EnableEffect");
+            XAudio2Exception.Try(EnableEffectNative(effectIndex, operationSet), InterfaceName, "EnableEffect");
         }
 
         /// <summary>
@@ -239,7 +266,7 @@ namespace CSCore.XAudio2
         /// </param>
         public void DisableEffect(int effectIndex, int operationSet)
         {
-            XAudio2Exception.Try(DisableEffectNative(effectIndex, operationSet), n, "DisableEffect");
+            XAudio2Exception.Try(DisableEffectNative(effectIndex, operationSet), InterfaceName, "DisableEffect");
         }
 
         /// <summary>
@@ -323,7 +350,7 @@ namespace CSCore.XAudio2
 
             Utils.ILUtils.WriteToMemory(new IntPtr(ptr), ref effectParameters);
             XAudio2Exception.Try(SetEffectParametersNative(effectIndex, new IntPtr(ptr), parameterSize, operationSet),
-                n, "SetEffectParameters");
+                InterfaceName, "SetEffectParameters");
         }
 
         /// <summary>
@@ -351,7 +378,7 @@ namespace CSCore.XAudio2
             void* ptr = stackalloc byte[parameterSize];
 
             XAudio2Exception.Try(GetEffectParametersNative(effectIndex, (IntPtr) ptr, parameterSize),
-                n, "GetEffectParameters");
+                InterfaceName, "GetEffectParameters");
 
             return Utils.ILUtils.Read<T>((IntPtr) ptr);
         }
@@ -386,7 +413,7 @@ namespace CSCore.XAudio2
         /// </param>
         public void SetFilterParameters(FilterParameters filterParameters, int operationSet)
         {
-            XAudio2Exception.Try(SetFilterParametersNative(filterParameters, operationSet), n, "SetFilterParameters");
+            XAudio2Exception.Try(SetFilterParametersNative(filterParameters, operationSet), InterfaceName, "SetFilterParameters");
         }
 
         /// <summary>
@@ -413,7 +440,7 @@ namespace CSCore.XAudio2
         public FilterParameters GetFilterParameters()
         {
             FilterParameters r;
-            XAudio2Exception.Try(GetFilterParametersNative(out r), n, "GetFilterParameters");
+            XAudio2Exception.Try(GetFilterParametersNative(out r), InterfaceName, "GetFilterParameters");
             return r;
         }
 
@@ -454,7 +481,7 @@ namespace CSCore.XAudio2
         public void SetOutputFilterParameters(XAudio2Voice destinationVoice, FilterParameters filterParameters,
             int operationSet)
         {
-            XAudio2Exception.Try(SetOutputFilterParametersNative(destinationVoice, filterParameters, operationSet), n,
+            XAudio2Exception.Try(SetOutputFilterParametersNative(destinationVoice, filterParameters, operationSet), InterfaceName,
                 "SetOutputFilterParameters");
         }
 
@@ -500,7 +527,7 @@ namespace CSCore.XAudio2
         public FilterParameters GetOutputFilterParameters(XAudio2Voice destinationVoice)
         {
             FilterParameters value;
-            XAudio2Exception.Try(GetOutputFilterParametersNative(destinationVoice, out value), n,
+            XAudio2Exception.Try(GetOutputFilterParametersNative(destinationVoice, out value), InterfaceName,
                 "GetOutputFilterParameters");
             return value;
         }
@@ -549,7 +576,7 @@ namespace CSCore.XAudio2
         /// </remarks>
         public void SetVolume(float volume, int operationSet)
         {
-            XAudio2Exception.Try(SetVolumeNative(volume, operationSet), n, "SetVolume");
+            XAudio2Exception.Try(SetVolumeNative(volume, operationSet), InterfaceName, "SetVolume");
         }
 
         /// <summary>
@@ -595,7 +622,7 @@ namespace CSCore.XAudio2
         public float GetVolume()
         {
             float v;
-            XAudio2Exception.Try(GetVolumeNative(out v), n, "GetVolume");
+            XAudio2Exception.Try(GetVolumeNative(out v), InterfaceName, "GetVolume");
             return v;
         }
 
@@ -661,7 +688,7 @@ namespace CSCore.XAudio2
             if (volumes.Length != channelCount)
                 throw new ArgumentException(
                     "The length of the volumes argument has to be equal to the channelCount argument.");
-            XAudio2Exception.Try(SetChannelVolumesNative(volumes.Length, volumes, operationSet), n, "SetChannelVolumes");
+            XAudio2Exception.Try(SetChannelVolumesNative(volumes.Length, volumes, operationSet), InterfaceName, "SetChannelVolumes");
         }
 
         /// <summary>
@@ -744,7 +771,7 @@ namespace CSCore.XAudio2
             if (channelCount <= 0)
                 throw new ArgumentOutOfRangeException("channelCount");
             var volumes = new float[channelCount];
-            XAudio2Exception.Try(GetChannelVolumesNative(channelCount, volumes), n, "GetChannelVolumes");
+            XAudio2Exception.Try(GetChannelVolumesNative(channelCount, volumes), InterfaceName, "GetChannelVolumes");
             return volumes;
         }
 
@@ -815,7 +842,7 @@ namespace CSCore.XAudio2
         {
             int result = SetOutputMatrixNative(destinationVoice, sourceChannels, destinationChannels, levelMatrix,
                 operationSet);
-            XAudio2Exception.Try(result, n, "SetOutputMatrix");
+            XAudio2Exception.Try(result, InterfaceName, "SetOutputMatrix");
         }
 
         /// <summary>
@@ -895,7 +922,7 @@ namespace CSCore.XAudio2
             int destinationChannels, float[] levelMatrix)
         {
             int result = GetOutputMatrixNative(destinationVoice, sourceChannels, destinationChannels, levelMatrix);
-            XAudio2Exception.Try(result, n, "GetOutputMatrix");
+            XAudio2Exception.Try(result, InterfaceName, "GetOutputMatrix");
         }
 
         /// <summary>

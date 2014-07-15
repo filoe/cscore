@@ -51,6 +51,6 @@ namespace CSCore.SoundOut
         /// <summary>
         /// Occurs when the playback stops. 
         /// </summary>
-        event EventHandler Stopped;
+        event EventHandler<PlaybackStoppedEventArgs> Stopped;
     }
 }

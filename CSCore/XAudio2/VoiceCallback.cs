@@ -48,7 +48,6 @@ namespace CSCore.XAudio2
 
         void IXAudio2VoiceCallback.OnVoiceError(IntPtr bufferContextPtr, int error)
         {
-            Debug.Assert(false, String.Format("OnVoiceError: BufferContext=\"{0}\"; HRESULT=\"{1}\"", bufferContextPtr, error));
             if (VoiceError != null)
                 VoiceError(bufferContextPtr, error);
         }

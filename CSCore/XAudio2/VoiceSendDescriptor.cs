@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.InteropServices;
 
 namespace CSCore.XAudio2
 {
@@ -6,6 +7,7 @@ namespace CSCore.XAudio2
     ///     Defines a destination voice that is the target of a send from another voice and specifies whether a filter should
     ///     be used.
     /// </summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct VoiceSendDescriptor
     {
         /// <summary>
@@ -16,7 +18,7 @@ namespace CSCore.XAudio2
         /// <summary>
         ///     This send's destination voice.
         /// </summary>
-        private IntPtr _outputVoicePtr;
+        public IntPtr OutputVoicePtr;
 
         /// <summary>
         ///     Creates a new instance of the <see cref="VoiceSendDescriptor" /> structure.
@@ -24,17 +26,16 @@ namespace CSCore.XAudio2
         public VoiceSendDescriptor(VoiceSendFlags flags, XAudio2Voice outputVoice)
         {
             Flags = flags;
-            _outputVoicePtr = IntPtr.Zero;
-            OutputVoice = outputVoice;
+            OutputVoicePtr = outputVoice.BasePtr;
         }
 
         /// <summary>
-        ///     This send's destination voice.
+        ///     Creates a new instance of the <see cref="VoiceSendDescriptor" /> structure.
         /// </summary>
-        public XAudio2Voice OutputVoice
+        public VoiceSendDescriptor(VoiceSendFlags flags, IntPtr outputVoicePtr)
         {
-            get { return _outputVoicePtr == IntPtr.Zero ? null : new XAudio2Voice(_outputVoicePtr); }
-            set { _outputVoicePtr = value == null ? IntPtr.Zero : value.BasePtr; }
+            Flags = flags;
+            OutputVoicePtr = outputVoicePtr;
         }
     }
 }

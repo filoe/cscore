@@ -10,6 +10,14 @@ namespace CSCore.XAudio2
     {
         private const string N = "IXAudio2SourceVoice";
 
+        /// <summary>
+        /// Gets the <see cref="VoiceState"/> of the source voice.
+        /// </summary>
+        public VoiceState State
+        {
+            get { return GetState(); }
+        }
+
         internal XAudio2SourceVoice()
         {
         }
@@ -18,8 +26,9 @@ namespace CSCore.XAudio2
         ///     Initializes a new instance of the <see cref="XAudio2SourceVoice" /> class.
         /// </summary>
         /// <param name="ptr">Native pointer of the <see cref="XAudio2SourceVoice" /> object.</param>
-        public XAudio2SourceVoice(IntPtr ptr)
-            : base(ptr)
+        /// <param name="version">The <see cref="XAudio2Version"/> to use.</param>        
+        public XAudio2SourceVoice(IntPtr ptr, XAudio2Version version)
+            : base(ptr, version)
         {
         }
 
@@ -81,6 +90,14 @@ namespace CSCore.XAudio2
         /// <summary>
         ///     Stops consumption of audio by the current voice.
         /// </summary>
+        public void Stop()
+        {
+            Stop(SourceVoiceStopFlags.None, XAudio2.CommitNow);
+        }
+
+        /// <summary>
+        ///     Stops consumption of audio by the current voice.
+        /// </summary>
         /// <param name="flags">
         ///     Flags that control how the voice is stopped. Can be <see cref="SourceVoiceStopFlags.None" /> or
         ///     <see cref="SourceVoiceStopFlags.PlayTails" />.
@@ -106,7 +123,8 @@ namespace CSCore.XAudio2
         /// </remarks>
         public unsafe int SubmitSourceBufferNative(IntPtr buffer, IntPtr bufferWma)
         {
-            return InteropCalls.CallI(UnsafeBasePtr, (void*) buffer, (void*) bufferWma, ((void**) (*(void**) UnsafeBasePtr))[21]);
+            return InteropCalls.CallI(UnsafeBasePtr, (void*) buffer, (void*) bufferWma,
+                ((void**) (*(void**) UnsafeBasePtr))[21]);
         }
 
         /// <summary>
@@ -202,8 +220,17 @@ namespace CSCore.XAudio2
         /// <summary>
         ///     Returns the voice's current cursor position data.
         /// </summary>
+        /// <returns><see cref="VoiceState" /> structure containing the state of the voice.</returns>
+        public VoiceState GetState()
+        {
+            return GetState(GetVoiceStateFlags.Default);
+        }
+
+        /// <summary>
+        ///     Returns the voice's current cursor position data.
+        /// </summary>
         /// <param name="flags">
-        ///     Flags controlling which voice state data should be returned.
+        ///     <b>XAudio2.8 only:</b> Flags controlling which voice state data should be returned.
         ///     Valid values are <see cref="GetVoiceStateFlags.Default" /> or <see cref="GetVoiceStateFlags.NoSamplesPlayed" />.
         ///     The default value is <see cref="GetVoiceStateFlags.Default" />. If you specify
         ///     <see cref="GetVoiceStateFlags.NoSamplesPlayed" />, GetState
@@ -212,20 +239,23 @@ namespace CSCore.XAudio2
         ///     <see cref="GetVoiceStateFlags.NoSamplesPlayed" />.
         /// </param>
         /// <returns><see cref="VoiceState" /> structure containing the state of the voice.</returns>
+        /// <remarks>If the <see cref="XAudio2Voice.Version"/> is not <see cref="XAudio2Version.XAudio2_8"/> the <paramref name="flags"/> parameter will be ignored.</remarks>
         public unsafe VoiceState GetState(GetVoiceStateFlags flags)
         {
-            VoiceState voiceState = default(VoiceState);
-            InteropCalls.CallI1(UnsafeBasePtr, &voiceState, flags, ((void**) (*(void**) UnsafeBasePtr))[25]);
-            return voiceState;
-        }
+            if (Version == XAudio2Version.XAudio2_7)
+            {
+                VoiceState voiceState = default(VoiceState);
+                InteropCalls.CallI1(UnsafeBasePtr, &voiceState, ((void**)(*(void**)UnsafeBasePtr))[25]);
+                return voiceState;
+            }
+            if (Version == XAudio2Version.XAudio2_8)
+            {
+                VoiceState voiceState = default(VoiceState);
+                InteropCalls.CallI1(UnsafeBasePtr, &voiceState, flags, ((void**)(*(void**)UnsafeBasePtr))[25]);
+                return voiceState;
+            }
 
-        /// <summary>
-        ///     Returns the voice's current cursor position data.
-        /// </summary>
-        /// <returns><see cref="VoiceState" /> structure containing the state of the voice.</returns>
-        public VoiceState GetState()
-        {
-            return GetState(GetVoiceStateFlags.Default);
+            throw new Exception("Invalid XAudio2 Version.");
         }
 
         /// <summary>

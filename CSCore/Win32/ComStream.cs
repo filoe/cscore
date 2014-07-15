@@ -296,10 +296,22 @@ namespace CSCore.Win32
         /// <param name="disposing">True to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
-            if (_stream == null)
-                return;
-            _stream.Dispose();
-            _stream = null;
+            base.Dispose(disposing);
+            if (_stream != null)
+            {
+                _stream.Dispose();
+                _stream = null;
+            }
+        }
+
+        public override void Close()
+        {
+            base.Close();
+            if (_stream != null)
+            {
+                _stream.Close();
+                _stream = null;
+            }
         }
     }
 }

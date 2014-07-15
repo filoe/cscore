@@ -11,8 +11,9 @@ namespace CSCore.XAudio2
         ///     Initializes a new instance of the <see cref="XAudio2SubmixVoice" /> class.
         /// </summary>
         /// <param name="ptr">Native pointer of the <see cref="XAudio2SubmixVoice" /> object.</param>
-        public XAudio2SubmixVoice(IntPtr ptr)
-            : base(ptr)
+        /// <param name="version">The <see cref="XAudio2Version"/> to use.</param>
+        public XAudio2SubmixVoice(IntPtr ptr, XAudio2Version version)
+            : base(ptr, version)
         {
         }
     }

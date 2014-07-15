@@ -171,8 +171,13 @@
         Xaudio2AnyProcessor = unchecked((int) 0xffffffff),
 
         /// <summary>
-        ///     Default processor, which is defined as processor 1.
+        ///     Default processor for XAudio2.7, which is defined as <see cref="Xaudio2AnyProcessor"/>.
         /// </summary>
-        Xaudio2DefaultProcessor = Processor1
+        Xaudio27DefaultProcessor = Xaudio2AnyProcessor,
+
+        /// <summary>
+        ///     Default processor for XAudio2.8, which is defined as <see cref="Processor1"/>.
+        /// </summary>
+        Xaudio28DefaultProcessor = Processor1
     }
 }

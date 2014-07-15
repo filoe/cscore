@@ -74,7 +74,7 @@ namespace CSCore.XAudio2
         /// </summary>
         /// <remarks>This constructor already calls <see cref="Initialize" />. Don't call it a second time.</remarks>
         public XAudio2_7()
-            : this(false, XAudio2Processor.Xaudio2DefaultProcessor)
+            : this(false, XAudio2Processor.Xaudio27DefaultProcessor)
         {
         }
 
@@ -105,6 +105,7 @@ namespace CSCore.XAudio2
 
 
             BasePtr = ptr0;
+            Version = XAudio2Version.XAudio2_7;
             Initialize(0, processor);
         }
 
@@ -144,17 +145,19 @@ namespace CSCore.XAudio2
         /// <returns>HRESULT</returns>
         public unsafe int GetDeviceDetailsNative(int deviceIndex, out DeviceDetails deviceDetails)
         {
-            IntPtr ptr = Marshal.AllocCoTaskMem(Marshal.SizeOf(typeof (DeviceDetails)));
+            var ptr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof (DeviceDetails)));
             try
             {
+                deviceDetails = default(DeviceDetails);
                 int result = InteropCalls.CallI(UnsafeBasePtr, deviceIndex, ptr.ToPointer(),
                     ((void**) (*(void**) UnsafeBasePtr))[4]);
+
                 deviceDetails = (DeviceDetails) Marshal.PtrToStructure(ptr, typeof (DeviceDetails));
                 return result;
             }
             finally
             {
-                Marshal.FreeCoTaskMem(ptr);
+                Marshal.FreeHGlobal(ptr);
             }
         }
 
@@ -380,14 +383,14 @@ namespace CSCore.XAudio2
         /// </param>
         /// <param name="flags">Flags that specify the behavior of the mastering voice. Must be 0.</param>
         /// <param name="deviceId">
-        ///     Identifier of the device to receive the output audio. Specifying the default value of NULL
+        ///     Identifier of the device to receive the output audio. Specifying the default value of 0 (zero)
         ///     causes XAudio2 to select the global default audio device.
         /// </param>
         /// <param name="effectChain">
         ///     <see cref="EffectChain" /> structure that describes an effect chain to use in the mastering
         ///     voice, or NULL to use no effects.
         /// </param>
-        /// <param name="streamCategory">Not valid for XAudio 2.7.</param>
+        /// <param name="streamCategory"><b>Not valid for XAudio 2.7.</b></param>
         /// <returns>HRESULT</returns>
         public override unsafe int CreateMasteringVoiceNative(out IntPtr pMasteringVoice, int inputChannels,
             int inputSampleRate, int flags,

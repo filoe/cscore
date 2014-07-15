@@ -204,6 +204,12 @@ namespace CSCore.XAudio2
         {
             throw new NotImplementedException();
         }
+
+        [CSCalli]
+        internal static unsafe void CallI1(void* UnsafeBasePtr, VoiceState* voiceState, void* p)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

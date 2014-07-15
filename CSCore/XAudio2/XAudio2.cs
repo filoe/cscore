@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using CSCore.Win32;
 
@@ -11,51 +12,62 @@ namespace CSCore.XAudio2
     [Guid("60d8dac8-5aa1-4e8e-b597-2f5e2883d484")]
     public abstract class XAudio2 : ComObject
     {
+        private XAudio2Version _version;
         private const string N = "IXAudio2";
 
         /// <summary>
-        /// The denominator of a quantum unit. In 10ms chunks (= 1/100 seconds). 
+        ///     The denominator of a quantum unit. In 10ms chunks (= 1/100 seconds).
         /// </summary>
         public const int QuantumDenominator = 100;
+
         /// <summary>
-        /// Minimum sample rate is 1000 Hz.
+        ///     Minimum sample rate is 1000 Hz.
         /// </summary>
         public const int MinimumSampleRate = 1000;
+
         /// <summary>
-        /// Maximum sample rate is 200 kHz.
+        ///     Maximum sample rate is 200 kHz.
         /// </summary>
         public const int MaximumSampleRate = 200000;
+
         /// <summary>
-        /// The minimum frequency ratio is 1/1024.
+        ///     The minimum frequency ratio is 1/1024.
         /// </summary>
         public const float MinFrequencyRatio = (1 / 1024.0f);
+
         /// <summary>
-        /// Maximum frequency ratio is 1024.
+        ///     Maximum frequency ratio is 1024.
         /// </summary>
         public const float MaxFrequencyRatio = 1024.0f;
+
         /// <summary>
-        /// The default value for the frequency ratio is 4.
+        ///     The default value for the frequency ratio is 4.
         /// </summary>
         public const float DefaultFrequencyRatio = 4.0f;
+
         /// <summary>
-        /// The maximum number of supported channels is 64.
+        ///     The maximum number of supported channels is 64.
         /// </summary>
         public const int MaxAudioChannels = 64;
+
         /// <summary>
-        /// Value which indicates that the default number of channels should be used.
+        ///     Value which indicates that the default number of channels should be used.
         /// </summary>
         public const int DefaultChannels = 0;
+
         /// <summary>
-        /// Values which indicates that the default sample rate should be used.
+        ///     Values which indicates that the default sample rate should be used.
         /// </summary>
         public const int DefaultSampleRate = 0;
 
         /// <summary>
-        /// Value which can be used in combination with the <see cref="XAudio2.CommitChanges(int)"/> method to commit all changes.
+        ///     Value which can be used in combination with the <see cref="XAudio2.CommitChanges(int)" /> method to commit all
+        ///     changes.
         /// </summary>
         public const int CommitAll = 0;
+
         /// <summary>
-        /// Values which indicates that the made changes should be commited instantly.
+        ///     Values which indicates that the made changes should be commited instantly.
         /// </summary>
         public const int CommitNow = 0;
 
@@ -70,9 +82,11 @@ namespace CSCore.XAudio2
         ///     Initializes a new instance of the <see cref="XAudio2" /> class.
         /// </summary>
         /// <param name="ptr">Native pointer of the <see cref="XAudio2Voice" /> object.</param>
-        protected XAudio2(IntPtr ptr)
+        /// <param name="version">The XAudio2 subversion to use.</param>
+        protected XAudio2(IntPtr ptr, XAudio2Version version)
             : base(ptr)
         {
+            _version = version;
         }
 
         /// <summary>
@@ -85,6 +99,56 @@ namespace CSCore.XAudio2
                 PerformanceData performanceData;
                 GetPerformanceDataNative(out performanceData);
                 return performanceData;
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="XAudio2Version"/> of the XAudio2 object.
+        /// </summary>
+        public XAudio2Version Version
+        {
+            get { return _version; }
+            protected set { _version = value; }
+        }
+
+        /// <summary>
+        ///     Creates a new instance of the <see cref="XAudio2" /> class.
+        ///     If no supported XAudio2 version is available, the CreateXAudio2 method throws an
+        ///     <see cref="NotSupportedException" />.
+        /// </summary>
+        /// <returns>A new <see cref="XAudio2" /> instance.</returns>
+        public static XAudio2 CreateXAudio2()
+        {
+            return CreateXAudio2(null);
+        }
+
+        /// <summary>
+        ///     Creates a new instance of the <see cref="XAudio2" /> class.
+        ///     If no supported XAudio2 version is available, the CreateXAudio2 method throws an
+        ///     <see cref="NotSupportedException" />.
+        /// </summary>
+        /// <param name="processor">The <see cref="XAudio2Processor" /> to use.</param>
+        /// <returns>A new <see cref="XAudio2" /> instance.</returns>
+        public static XAudio2 CreateXAudio2(XAudio2Processor? processor)
+        {
+            try
+            {
+                if(processor.HasValue)
+                    return new XAudio2_8(processor.Value);
+                return new XAudio2_8();
+            }
+            catch (Exception)
+            {
+                try
+                {
+                    if(processor.HasValue)
+                        return new XAudio2_7(false, processor.Value);
+                    return new XAudio2_7();
+                }
+                catch (Exception)
+                {
+                    throw new NotSupportedException("No supported XAudio2 version is installed.");
+                }
             }
         }
 
@@ -152,7 +216,8 @@ namespace CSCore.XAudio2
         /// </param>
         /// <param name="sendList">
         ///     List of <see cref="VoiceSends" /> structures that describe the set of destination voices for the
-        ///     source voice. If <paramref name="sendList" /> is NULL, the send list defaults to a single output to the first mastering
+        ///     source voice. If <paramref name="sendList" /> is NULL, the send list defaults to a single output to the first
+        ///     mastering
         ///     voice created.
         /// </param>
         /// <param name="effectChain">
@@ -203,7 +268,8 @@ namespace CSCore.XAudio2
         /// </param>
         /// <param name="sendList">
         ///     List of <see cref="VoiceSends" /> structures that describe the set of destination voices for the
-        ///     source voice. If <paramref name="sendList" /> is NULL, the send list defaults to a single output to the first mastering
+        ///     source voice. If <paramref name="sendList" /> is NULL, the send list defaults to a single output to the first
+        ///     mastering
         ///     voice created.
         /// </param>
         /// <param name="effectChain">
@@ -215,7 +281,7 @@ namespace CSCore.XAudio2
             IXAudio2VoiceCallback voiceCallback, VoiceSends? sendList, EffectChain? effectChain)
         {
             GCHandle hWaveFormat = GCHandle.Alloc(sourceFormat, GCHandleType.Pinned);
-                //todo: do we really need to use GCHandle?
+            //todo: do we really need to use GCHandle?
             try
             {
                 IntPtr ptr;
@@ -270,7 +336,8 @@ namespace CSCore.XAudio2
         /// </param>
         /// <param name="sendList">
         ///     List of <see cref="VoiceSends" /> structures that describe the set of destination voices for the
-        ///     source voice. If <paramref name="sendList" /> is NULL, the send list defaults to a single output to the first mastering
+        ///     source voice. If <paramref name="sendList" /> is NULL, the send list defaults to a single output to the first
+        ///     mastering
         ///     voice created.
         /// </param>
         /// <param name="effectChain">
@@ -283,7 +350,7 @@ namespace CSCore.XAudio2
         {
             IntPtr ptr = CreateSourceVoicePtr(sourceFormat, flags, maxFrequencyRatio, voiceCallback, sendList,
                 effectChain);
-            return new XAudio2SourceVoice(ptr);
+            return new XAudio2SourceVoice(ptr, _version);
         }
 
         /// <summary>
@@ -356,7 +423,8 @@ namespace CSCore.XAudio2
         ///     An arbitrary number that specifies when this voice is processed with respect to other
         ///     submix voices, if the XAudio2 engine is running other submix voices. The voice is processed after all other voices
         ///     that include a smaller <paramref name="processingStage" /> value and before all other voices that include a larger
-        ///     <paramref name="processingStage" /> value. Voices that include the same <paramref name="processingStage" /> value are
+        ///     <paramref name="processingStage" /> value. Voices that include the same <paramref name="processingStage" /> value
+        ///     are
         ///     processed in any order. A submix voice cannot send to another submix voice with a lower or equal
         ///     <paramref name="processingStage" /> value. This prevents audio being lost due to a submix cycle.
         /// </param>
@@ -394,7 +462,8 @@ namespace CSCore.XAudio2
         ///     An arbitrary number that specifies when this voice is processed with respect to other
         ///     submix voices, if the XAudio2 engine is running other submix voices. The voice is processed after all other voices
         ///     that include a smaller <paramref name="processingStage" /> value and before all other voices that include a larger
-        ///     <paramref name="processingStage" /> value. Voices that include the same <paramref name="processingStage" /> value are
+        ///     <paramref name="processingStage" /> value. Voices that include the same <paramref name="processingStage" /> value
+        ///     are
         ///     processed in any order. A submix voice cannot send to another submix voice with a lower or equal
         ///     <paramref name="processingStage" /> value. This prevents audio being lost due to a submix cycle.
         /// </param>
@@ -439,7 +508,8 @@ namespace CSCore.XAudio2
         ///     An arbitrary number that specifies when this voice is processed with respect to other
         ///     submix voices, if the XAudio2 engine is running other submix voices. The voice is processed after all other voices
         ///     that include a smaller <paramref name="processingStage" /> value and before all other voices that include a larger
-        ///     <paramref name="processingStage" /> value. Voices that include the same <paramref name="processingStage" /> value are
+        ///     <paramref name="processingStage" /> value. Voices that include the same <paramref name="processingStage" /> value
+        ///     are
         ///     processed in any order. A submix voice cannot send to another submix voice with a lower or equal
         ///     <paramref name="processingStage" /> value. This prevents audio being lost due to a submix cycle.
         /// </param>
@@ -458,7 +528,7 @@ namespace CSCore.XAudio2
         {
             IntPtr ptr = CreateSubmixVoicePtr(inputChannels, inputSampleRate, flags, processingStage, sendList,
                 effectChain);
-            return new XAudio2SubmixVoice(ptr);
+            return new XAudio2SubmixVoice(ptr, _version);
         }
 
         /// <summary>
@@ -481,7 +551,7 @@ namespace CSCore.XAudio2
         public XAudio2SubmixVoice CreateSubmixVoice(int inputChannels, int inputSampleRate, VoiceFlags flags)
         {
             IntPtr ptr = CreateSubmixVoicePtr(inputChannels, inputSampleRate, flags, 0, null, null);
-            return new XAudio2SubmixVoice(ptr);
+            return new XAudio2SubmixVoice(ptr, _version);
         }
 
         /// <summary>
@@ -489,21 +559,23 @@ namespace CSCore.XAudio2
         /// </summary>
         /// <param name="pMasteringVoice">If successful, returns a pointer to the new <see cref="XAudio2MasteringVoice" /> object.</param>
         /// <param name="inputChannels">
-        ///     Number of channels the mastering voice expects in its input audio. <paramref name="inputChannels" /> must be less than
+        ///     Number of channels the mastering voice expects in its input audio. <paramref name="inputChannels" /> must be less
+        ///     than
         ///     or equal to <see cref="MaxAudioChannels" />.
         ///     You can set InputChannels to <see cref="DefaultChannels" />, which causes XAudio2 to try to detect the system
         ///     speaker configuration setup.
         /// </param>
         /// <param name="inputSampleRate">
         ///     Sample rate of the input audio data of the mastering voice. This rate must be a multiple of
-        ///     <see cref="QuantumDenominator" />. <paramref name="inputSampleRate" /> must be between <see cref="MinimumSampleRate" />
+        ///     <see cref="QuantumDenominator" />. <paramref name="inputSampleRate" /> must be between
+        ///     <see cref="MinimumSampleRate" />
         ///     and <see cref="MaximumSampleRate" />.
         ///     You can set InputSampleRate to <see cref="DefaultSampleRate" />, with the default being determined by the current
         ///     platform.
         /// </param>
         /// <param name="flags">Flags that specify the behavior of the mastering voice. Must be 0.</param>
         /// <param name="device">
-        ///     Identifier of the device to receive the output audio. Specifying the default value of NULL causes
+        ///     Identifier of the device to receive the output audio. Specifying the default value of NULL (for XAudio2.8) or 0 (for XAudio2.7) causes
         ///     XAudio2 to select the global default audio device.
         /// </param>
         /// <param name="effectChain">
@@ -521,21 +593,23 @@ namespace CSCore.XAudio2
         ///     Creates and configures a mastering voice.
         /// </summary>
         /// <param name="inputChannels">
-        ///     Number of channels the mastering voice expects in its input audio. <paramref name="inputChannels" /> must be less than
+        ///     Number of channels the mastering voice expects in its input audio. <paramref name="inputChannels" /> must be less
+        ///     than
         ///     or equal to <see cref="MaxAudioChannels" />.
         ///     You can set InputChannels to <see cref="DefaultChannels" />, which causes XAudio2 to try to detect the system
         ///     speaker configuration setup.
         /// </param>
         /// <param name="inputSampleRate">
         ///     Sample rate of the input audio data of the mastering voice. This rate must be a multiple of
-        ///     <see cref="QuantumDenominator" />. <paramref name="inputSampleRate" /> must be between <see cref="MinimumSampleRate" />
+        ///     <see cref="QuantumDenominator" />. <paramref name="inputSampleRate" /> must be between
+        ///     <see cref="MinimumSampleRate" />
         ///     and <see cref="MaximumSampleRate" />.
         ///     You can set InputSampleRate to <see cref="DefaultSampleRate" />, with the default being determined by the current
         ///     platform.
         /// </param>
         /// <param name="flags">Flags that specify the behavior of the mastering voice. Must be 0.</param>
         /// <param name="device">
-        ///     Identifier of the device to receive the output audio. Specifying the default value of NULL causes
+        ///     Identifier of the device to receive the output audio. Specifying the default value of NULL (for XAudio2.8) or 0 (for XAudio2.7) causes
         ///     XAudio2 to select the global default audio device.
         /// </param>
         /// <param name="effectChain">
@@ -558,54 +632,58 @@ namespace CSCore.XAudio2
         ///     Creates and configures a mastering voice.
         /// </summary>
         /// <param name="inputChannels">
-        ///     Number of channels the mastering voice expects in its input audio. <paramref name="inputChannels" /> must be less than
+        ///     Number of channels the mastering voice expects in its input audio. <paramref name="inputChannels" /> must be less
+        ///     than
         ///     or equal to <see cref="MaxAudioChannels" />.
         ///     You can set InputChannels to <see cref="DefaultChannels" />, which causes XAudio2 to try to detect the system
         ///     speaker configuration setup.
         /// </param>
         /// <param name="inputSampleRate">
         ///     Sample rate of the input audio data of the mastering voice. This rate must be a multiple of
-        ///     <see cref="QuantumDenominator" />. <paramref name="inputSampleRate" /> must be between <see cref="MinimumSampleRate" />
+        ///     <see cref="QuantumDenominator" />. <paramref name="inputSampleRate" /> must be between
+        ///     <see cref="MinimumSampleRate" />
         ///     and <see cref="MaximumSampleRate" />.
         ///     You can set InputSampleRate to <see cref="DefaultSampleRate" />, with the default being determined by the current
         ///     platform.
         /// </param>
         /// <param name="device">
-        ///     Identifier of the device to receive the output audio. Specifying the default value of NULL causes
+        ///     Identifier of the device to receive the output audio. Specifying the default value of NULL (for XAudio2.8) or 0 (for XAudio2.7) causes
         ///     XAudio2 to select the global default audio device.
         /// </param>
         /// <param name="effectChain">
         ///     <see cref="EffectChain" /> structure that describes an effect chain to use in the mastering
         ///     voice, or NULL to use no effects.
         /// </param>
-        /// <param name="streamCategory">The audio stream category to use for this mastering voice.</param>
+        /// <param name="streamCategory"><b>XAudio2.8 only:</b> The audio stream category to use for this mastering voice.</param>
         /// <returns>If successful, returns a new <see cref="XAudio2MasteringVoice" /> object.</returns>
         public XAudio2MasteringVoice CreateMasteringVoice(int inputChannels, int inputSampleRate,
             object device, EffectChain? effectChain, AudioStreamCategory streamCategory)
         {
             return
                 new XAudio2MasteringVoice(CreateMasteringVoicePtr(inputChannels, inputSampleRate, 0, device, effectChain,
-                    streamCategory));
+                    streamCategory), _version);
         }
 
         /// <summary>
         ///     Creates and configures a mastering voice.
         /// </summary>
         /// <param name="inputChannels">
-        ///     Number of channels the mastering voice expects in its input audio. <paramref name="inputChannels" /> must be less than
+        ///     Number of channels the mastering voice expects in its input audio. <paramref name="inputChannels" /> must be less
+        ///     than
         ///     or equal to <see cref="MaxAudioChannels" />.
         ///     You can set InputChannels to <see cref="DefaultChannels" />, which causes XAudio2 to try to detect the system
         ///     speaker configuration setup.
         /// </param>
         /// <param name="inputSampleRate">
         ///     Sample rate of the input audio data of the mastering voice. This rate must be a multiple of
-        ///     <see cref="QuantumDenominator" />. <paramref name="inputSampleRate" /> must be between <see cref="MinimumSampleRate" />
+        ///     <see cref="QuantumDenominator" />. <paramref name="inputSampleRate" /> must be between
+        ///     <see cref="MinimumSampleRate" />
         ///     and <see cref="MaximumSampleRate" />.
         ///     You can set InputSampleRate to <see cref="DefaultSampleRate" />, with the default being determined by the current
         ///     platform.
         /// </param>
         /// <param name="device">
-        ///     Identifier of the device to receive the output audio. Specifying the default value of NULL causes
+        ///     Identifier of the device to receive the output audio. Specifying the default value of NULL (for XAudio2.8) or 0 (for XAudio2.7) causes
         ///     XAudio2 to select the global default audio device.
         /// </param>
         /// <returns>If successful, returns a new <see cref="XAudio2MasteringVoice" /> object.</returns>
@@ -614,21 +692,23 @@ namespace CSCore.XAudio2
         {
             return
                 new XAudio2MasteringVoice(CreateMasteringVoicePtr(inputChannels, inputSampleRate, 0, device, null,
-                    AudioStreamCategory.GameEffects));
+                    AudioStreamCategory.GameEffects), _version);
         }
 
         /// <summary>
         ///     Creates and configures a mastering voice.
         /// </summary>
         /// <param name="inputChannels">
-        ///     Number of channels the mastering voice expects in its input audio. <paramref name="inputChannels" /> must be less than
+        ///     Number of channels the mastering voice expects in its input audio. <paramref name="inputChannels" /> must be less
+        ///     than
         ///     or equal to <see cref="MaxAudioChannels" />.
         ///     You can set InputChannels to <see cref="DefaultChannels" />, which causes XAudio2 to try to detect the system
         ///     speaker configuration setup.
         /// </param>
         /// <param name="inputSampleRate">
         ///     Sample rate of the input audio data of the mastering voice. This rate must be a multiple of
-        ///     <see cref="QuantumDenominator" />. <paramref name="inputSampleRate" /> must be between <see cref="MinimumSampleRate" />
+        ///     <see cref="QuantumDenominator" />. <paramref name="inputSampleRate" /> must be between
+        ///     <see cref="MinimumSampleRate" />
         ///     and <see cref="MaximumSampleRate" />.
         ///     You can set InputSampleRate to <see cref="DefaultSampleRate" />, with the default being determined by the current
         ///     platform.
@@ -638,7 +718,7 @@ namespace CSCore.XAudio2
         {
             return
                 new XAudio2MasteringVoice(CreateMasteringVoicePtr(inputChannels, inputSampleRate, 0, GetDefaultDevice(),
-                    null, AudioStreamCategory.GameEffects));
+                    null, AudioStreamCategory.GameEffects), _version);
         }
 
         /// <summary>
@@ -727,7 +807,7 @@ namespace CSCore.XAudio2
         }
 
         /// <summary>
-        /// Returns the default device.
+        ///     Returns the default device.
         /// </summary>
         /// <returns>The default device.</returns>
         protected abstract object GetDefaultDevice();

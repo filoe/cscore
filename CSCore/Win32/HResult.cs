@@ -1,5 +1,8 @@
 ﻿namespace CSCore.Win32
 {
+    /// <summary>
+    /// Defines common HRESULT error codes.
+    /// </summary>
     public enum HResult : int
     {
         S_OK = 0x0,

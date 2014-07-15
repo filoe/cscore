@@ -27,7 +27,7 @@ namespace CSCore.SoundOut
         private IWaveSource _source;
 
         /// <summary>
-        ///     Initializes an new instance of <see cref="DirectSoundOut"/> class.
+        ///     Initializes an new instance of <see cref="DirectSoundOut" /> class.
         ///     Latency = 100.
         ///     EventSyncContext = SynchronizationContext.Current.
         ///     PlaybackThreadPriority = AboveNormal.
@@ -38,7 +38,7 @@ namespace CSCore.SoundOut
         }
 
         /// <summary>
-        ///     Initializes an new instance of <see cref="DirectSoundOut"/> class.
+        ///     Initializes an new instance of <see cref="DirectSoundOut" /> class.
         ///     EventSyncContext = SynchronizationContext.Current.
         ///     PlaybackThreadPriority = AboveNormal.
         /// </summary>
@@ -49,7 +49,7 @@ namespace CSCore.SoundOut
         }
 
         /// <summary>
-        ///     Initializes an new instance of <see cref="DirectSoundOut"/> class.
+        ///     Initializes an new instance of <see cref="DirectSoundOut" /> class.
         ///     EventSyncContext = SynchronizationContext.Current.
         /// </summary>
         /// <param name="latency">Latency of the playback specified in milliseconds.</param>
@@ -63,7 +63,7 @@ namespace CSCore.SoundOut
         }
 
         /// <summary>
-        ///     Initializes an new instance of <see cref="DirectSoundOut"/> class.
+        ///     Initializes an new instance of <see cref="DirectSoundOut" /> class.
         /// </summary>
         /// <param name="latency">Latency of the playback specified in milliseconds.</param>
         /// <param name="playbackThreadPriority">
@@ -109,7 +109,8 @@ namespace CSCore.SoundOut
         }
 
         /// <summary>
-        /// Gets or sets the device to use for the playing the waveform-audio data. Note that the <see cref="Initialize"/> method has to get called
+        ///     Gets or sets the device to use for the playing the waveform-audio data. Note that the <see cref="Initialize" />
+        ///     method has to get called
         /// </summary>
         public Guid Device
         {
@@ -120,11 +121,12 @@ namespace CSCore.SoundOut
         /// <summary>
         ///     Occurs when the playback gets stopped.
         /// </summary>
-        public event EventHandler Stopped;
+        public event EventHandler<PlaybackStoppedEventArgs> Stopped;
 
         /// <summary>
-        ///     Initializes <see cref="DirectSoundOut"/> and prepares all resources for playback.
-        ///     Note that all properties like <see cref="Device"/>, <see cref="Latency"/>,... won't affect <see cref="DirectSoundOut"/> after calling <see cref="Initialize"/>.
+        ///     Initializes <see cref="DirectSoundOut" /> and prepares all resources for playback.
+        ///     Note that all properties like <see cref="Device" />, <see cref="Latency" />,... won't affect
+        ///     <see cref="DirectSoundOut" /> after calling <see cref="Initialize" />.
         /// </summary>
         /// <param name="source">The source to prepare for playback.</param>
         public void Initialize(IWaveSource source)
@@ -159,7 +161,7 @@ namespace CSCore.SoundOut
 
         /// <summary>
         ///     Starts the playback.
-        ///     Note: <see cref="Initialize"/> has to get called before calling Play.
+        ///     Note: <see cref="Initialize" /> has to get called before calling Play.
         ///     If PlaybackState is Paused, Resume() will be called automatically.
         /// </summary>
         public void Play()
@@ -186,7 +188,8 @@ namespace CSCore.SoundOut
 
         /// <summary>
         ///     Stops the playback and frees all allocated resources.
-        ///     After calling <see cref="Stop"/> the caller has to call <see cref="Initialize"/> again before another playback can be started.
+        ///     After calling <see cref="Stop" /> the caller has to call <see cref="Initialize" /> again before another playback
+        ///     can be started.
         /// </summary>
         public void Stop()
         {
@@ -233,7 +236,7 @@ namespace CSCore.SoundOut
         }
 
         /// <summary>
-        ///     Gets the current <see cref="SoundOut.PlaybackState"/> of the playback.
+        ///     Gets the current <see cref="SoundOut.PlaybackState" /> of the playback.
         /// </summary>
         public PlaybackState PlaybackState
         {
@@ -266,7 +269,7 @@ namespace CSCore.SoundOut
 
         /// <summary>
         ///     The currently initialized source.
-        ///     To change the WaveSource property, call <see cref="Initialize"/>.
+        ///     To change the WaveSource property, call <see cref="Initialize" />.
         /// </summary>
         public IWaveSource WaveSource
         {
@@ -274,7 +277,7 @@ namespace CSCore.SoundOut
         }
 
         /// <summary>
-        /// Disposes the <see cref="DirectSoundOut"/> instance and stops the playbacks.
+        ///     Disposes the <see cref="DirectSoundOut" /> instance and stops the playbacks.
         /// </summary>
         public void Dispose()
         {
@@ -330,6 +333,7 @@ namespace CSCore.SoundOut
             var waitHandle = o as EventWaitHandle;
             WaitHandle[] waitHandles = null;
 
+            Exception exception = null;
             try
             {
                 //004
@@ -420,6 +424,10 @@ namespace CSCore.SoundOut
                     _playbackState = SoundOut.PlaybackState.Stopped;
                 }*/
             }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
             finally
             {
                 if (_directSoundNotify != null)
@@ -434,14 +442,14 @@ namespace CSCore.SoundOut
 
                 if (waitHandles != null)
                 {
-                    foreach (var waitHandle1 in waitHandles)
+                    foreach (WaitHandle waitHandle1 in waitHandles)
                     {
                         var wh = (EventWaitHandle) waitHandle1;
                         wh.Close();
                     }
                 }
 
-                RaiseStopped();
+                RaiseStopped(exception);
             }
         }
 
@@ -470,15 +478,15 @@ namespace CSCore.SoundOut
             return false;
         }
 
-        private void RaiseStopped()
+        private void RaiseStopped(Exception exception)
         {
             if (Stopped == null)
                 return;
 
             if (_syncContext != null)
-                _syncContext.Post(x => Stopped(this, EventArgs.Empty), null); //maybe post?
+                _syncContext.Post(x => Stopped(this, new PlaybackStoppedEventArgs(exception)), null);
             else
-                Stopped(this, EventArgs.Empty);
+                Stopped(this, new PlaybackStoppedEventArgs(exception));
         }
 
         private void CleanupRessources()
@@ -523,9 +531,12 @@ namespace CSCore.SoundOut
         }
 
         /// <summary>
-        /// Disposes and stops the <see cref="DirectSoundOut"/> instance.
+        ///     Disposes and stops the <see cref="DirectSoundOut" /> instance.
         /// </summary>
-        /// <param name="disposing">True to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
+        /// <param name="disposing">
+        ///     True to release both managed and unmanaged resources; false to release only unmanaged
+        ///     resources.
+        /// </param>
         protected virtual void Dispose(bool disposing)
         {
             if (!_isDisposed)
@@ -537,7 +548,7 @@ namespace CSCore.SoundOut
         }
 
         /// <summary>
-        /// Destructor which calls the <see cref="Dispose(bool)"/> method.
+        ///     Destructor which calls the <see cref="Dispose(bool)" /> method.
         /// </summary>
         ~DirectSoundOut()
         {

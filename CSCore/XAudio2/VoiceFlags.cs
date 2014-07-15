@@ -29,8 +29,13 @@ namespace CSCore.XAudio2
         UseFilter = 8,
 
         /// <summary>
-        ///     Not supported on Windows.
+        ///     <b>XAudio2.8 only:</b> Not supported on Windows.
         /// </summary>
-        Music = 16
+        Music = 16,
+
+        /// <summary>
+        ///     <b>XAudio2.7 only:</b> Indicates that no samples were played.
+        /// </summary>
+        NoSamplesPlayed = 256
     }
 }

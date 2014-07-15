@@ -17,10 +17,10 @@ namespace CSCore
     {
         internal const int WaveFormatExtensibleExtraSize = 22; //2(WORD) + 4(DWORD) + 16(GUID)
 
-        private readonly short _samplesUnion;
+        private short _samplesUnion;
 
-        private readonly ChannelMask _channelMask;
-        private readonly Guid _subFormat;
+        private ChannelMask _channelMask;
+        private Guid _subFormat;
 
 
         /// <summary>
@@ -49,6 +49,7 @@ namespace CSCore
         public int ValidBitsPerSample
         {
             get { return _samplesUnion; }
+            internal protected set { _samplesUnion = (short) value; }
         }
 
         /// <summary>
@@ -60,6 +61,7 @@ namespace CSCore
         public int SamplesPerBlock
         {
             get { return _samplesUnion; }
+            internal protected set { _samplesUnion = (short) value; }
         }
 
         /// <summary>
@@ -68,6 +70,7 @@ namespace CSCore
         public ChannelMask ChannelMask
         {
             get { return _channelMask; }
+            internal protected set { _channelMask = value; }
         }
 
         /// <summary>
@@ -77,6 +80,7 @@ namespace CSCore
         public Guid SubFormat
         {
             get { return _subFormat; }
+            internal protected set { _subFormat = value; }
         }
 
         internal WaveFormatExtensible()

@@ -56,8 +56,8 @@ namespace CSCore.Streams.Effects
             get { return Effect.Parameters.ReverbMix; }
             set
             {
-                if (value < ReverbMixMin || value > ReverbMixMax)
-                    throw new ArgumentOutOfRangeException("value");
+                //if (value < ReverbMixMax || value > ReverbMixMin) -> for some reason these values are incorrect...
+                //    throw new ArgumentOutOfRangeException("value");
                 SetValue("ReverbMix", value);
             }
         }
@@ -70,8 +70,8 @@ namespace CSCore.Streams.Effects
             get { return Effect.Parameters.ReverbTime; }
             set
             {
-                if (value < ReverbTimeMin || value > ReverbTimeMax)
-                    throw new ArgumentOutOfRangeException("value");
+                //if (value < ReverbTimeMin || value > ReverbTimeMax)
+                //    throw new ArgumentOutOfRangeException("value");
                 SetValue("ReverbTime", value);
             }
         }
@@ -84,8 +84,8 @@ namespace CSCore.Streams.Effects
             get { return Effect.Parameters.HighFreqRTRatio; }
             set
             {
-                if (value < HighFrequencyRTRatioMin || value > HighFrequencyRTRatioMax)
-                    throw new ArgumentOutOfRangeException("value");
+                //if (value < HighFrequencyRTRatioMin || value > HighFrequencyRTRatioMax) -> for some reason these values are incorrect...
+                //    throw new ArgumentOutOfRangeException("value");
                 SetValue("HighFreqRTRatio", value);
             }
         }

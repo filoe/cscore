@@ -108,7 +108,7 @@ namespace CSCore
         /// <summary>
         ///     Disposes the <see cref="BaseStream" /> and releases all allocated resources.
         /// </summary>
-        /// <param name="disposing"></param>
+        /// <param name="disposing">True to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (DisposeBaseSource)

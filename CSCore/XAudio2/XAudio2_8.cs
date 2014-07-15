@@ -62,7 +62,7 @@ namespace CSCore.XAudio2
         /// </summary>
         /// <param name="ptr">Native pointer of the <see cref="XAudio2_8" /> object.</param>
         public XAudio2_8(IntPtr ptr)
-            : base(ptr)
+            : base(ptr, XAudio2Version.XAudio2_8)
         {
         }
 
@@ -70,7 +70,7 @@ namespace CSCore.XAudio2
         ///     Initializes a new instance of the <see cref="XAudio2_8" /> class.
         /// </summary>
         public XAudio2_8()
-            : this(XAudio2Processor.Xaudio2DefaultProcessor)
+            : this(XAudio2Processor.Xaudio28DefaultProcessor)
         {
         }
 
@@ -78,7 +78,7 @@ namespace CSCore.XAudio2
         ///     Initializes a new instance of the <see cref="XAudio2_8" /> class.
         /// </summary>
         /// <param name="processor">
-        ///     Specifies which CPU to use. Use <see cref="XAudio2Processor.Xaudio2DefaultProcessor" /> as
+        ///     Specifies which CPU to use. Use <see cref="XAudio2Processor.Xaudio28DefaultProcessor" /> as
         ///     default value.
         /// </param>
         public unsafe XAudio2_8(XAudio2Processor processor)
@@ -88,6 +88,7 @@ namespace CSCore.XAudio2
             int result = XAudio2Interop.XAudio2Create(pptr, 0, processor);
             XAudio2Exception.Try(result, "Interop", "XAudio2Create");
 
+            Version = XAudio2Version.XAudio2_8;
             BasePtr = ptr;
         }
 
@@ -304,7 +305,8 @@ namespace CSCore.XAudio2
                         inputSampleRate,
                         flags,
                         (void*) pdeviceId,
-                        effectChain.HasValue ? &value1 : (void*) IntPtr.Zero, streamCategory,
+                        effectChain.HasValue ? &value1 : (void*) IntPtr.Zero, 
+                        streamCategory,
                         ((void**) (*(void**) UnsafeBasePtr))[7]);
                 }
             }

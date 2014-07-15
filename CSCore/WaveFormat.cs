@@ -10,7 +10,7 @@ namespace CSCore
     ///     Defines the format of waveform-audio data.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 2)]
-    public class WaveFormat
+    public class WaveFormat : ICloneable
     {
         private AudioEncoding _encoding;
         private short _channels;
@@ -28,7 +28,7 @@ namespace CSCore
         public int Channels
         {
             get { return _channels; }
-            protected set { _channels = (short) value; }
+            internal protected set { _channels = (short) value; }
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace CSCore
         public int SampleRate
         {
             get { return _sampleRate; }
-            protected set { _sampleRate = value; }
+            internal protected set { _sampleRate = value; }
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace CSCore
         public int BytesPerSecond
         {
             get { return _bytesPerSecond; }
-            protected set { _bytesPerSecond = value; }
+            internal protected set { _bytesPerSecond = value; }
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace CSCore
         public int BlockAlign
         {
             get { return _blockAlign; }
-            protected set { _blockAlign = (short) value; }
+            internal protected set { _blockAlign = (short)value; }
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace CSCore
         public int BitsPerSample
         {
             get { return _bitsPerSample; }
-            protected set { _bitsPerSample = (short) value; }
+            internal protected set { _bitsPerSample = (short)value; }
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace CSCore
         public int ExtraSize
         {
             get { return _extraSize; }
-            protected internal set { _extraSize = (short) value; }
+            internal protected set{ _extraSize = (short) value; }
         }
 
         /// <summary>
@@ -195,6 +195,15 @@ namespace CSCore
         public override string ToString()
         {
             return GetInformation().ToString();
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="WaveFormat"/> object that is a copy of the current instance.
+        /// </summary>
+        /// <returns>A copy of the current instance.</returns>
+        public virtual object Clone()
+        {
+            return MemberwiseClone(); //since there are value types MemberWiseClone is enough.
         }
 
         [DebuggerStepThrough]

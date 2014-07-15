@@ -365,6 +365,7 @@
     <Compile Include="MediaFoundation\TranscodeContainerTypes.cs" />
     <Compile Include="SoundIn\ISoundRecorder.cs" />
     <Compile Include="SoundIn\RecordingState.cs" />
+    <Compile Include="SoundIn\RecordingStoppedEventArgs.cs" />
     <Compile Include="SoundIn\WasapiCapture.cs" />
     <Compile Include="SoundIn\WasapiLoopbackCapture.cs" />
     <Compile Include="SoundOut\DirectSoundOut.cs" />
@@ -375,7 +376,9 @@
     <Compile Include="SoundOut\MMInterop\WaveCapsFormats.cs" />
     <Compile Include="SoundOut\MMInterop\WaveCapsSupported.cs" />
     <Compile Include="SoundOut\MMInterop\WaveHeaderFlags.cs" />
+    <Compile Include="SoundOut\PlaybackStoppedEventArgs.cs" />
     <Compile Include="SoundOut\WasapiOut.cs" />
+    <Compile Include="StoppedEventArgs.cs" />
     <Compile Include="Streams\CachedSoundSource.cs" />
     <Compile Include="Streams\Effects\ChorusPhase.cs" />
     <Compile Include="Streams\Effects\ChorusWaveform.cs" />
@@ -392,6 +395,7 @@
     <Compile Include="Streams\Effects\GargleWaveShape.cs" />
     <Compile Include="Streams\PeakEventArgs.cs" />
     <Compile Include="Streams\PeakMeter.cs" />
+    <Compile Include="Streams\SynchronizedWaveSource.cs" />
     <Compile Include="Streams\WriteableBufferingSource.cs" />
     <Compile Include="Streams\BufferSource.cs" />
     <Compile Include="Streams\EqFilter.cs" />
@@ -404,6 +408,7 @@
     <Compile Include="Tags\ID3\Frames\PictureFormat.cs" />
     <Compile Include="Tags\ID3\Frames\ReceivedType.cs" />
     <Compile Include="Utils\Utils.cs" />
+    <Compile Include="Utils\Vector3.cs" />
     <Compile Include="Win32\CLSCTX.cs" />
     <Compile Include="Win32\ComStream.cs" />
     <Compile Include="Win32\InteropFunctions.cs" />
@@ -412,11 +417,6 @@
     <Compile Include="XAudio2\AudioStreamCategory.cs" />
     <Compile Include="XAudio2\DebugConfiguration.cs" />
     <Compile Include="XAudio2\DeviceDetails.cs" />
-    <Compile Include="XAudio2\DeviceDetailsTemplate.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DeviceDetailsTemplate.tt</DependentUpon>
-    </Compile>
     <Compile Include="XAudio2\EffectChain.cs" />
     <Compile Include="XAudio2\EffectDescriptor.cs" />
     <Compile Include="XAudio2\FilterParameters.cs" />
@@ -437,6 +437,14 @@
     <Compile Include="XAudio2\VoiceSendFlags.cs" />
     <Compile Include="XAudio2\VoiceSends.cs" />
     <Compile Include="XAudio2\VoiceState.cs" />
+    <Compile Include="XAudio2\X3DAudio\CalculateFlags.cs" />
+    <Compile Include="XAudio2\X3DAudio\Cone.cs" />
+    <Compile Include="XAudio2\X3DAudio\CurveNative.cs" />
+    <Compile Include="XAudio2\X3DAudio\CurvePoint.cs" />
+    <Compile Include="XAudio2\X3DAudio\DspSettings.cs" />
+    <Compile Include="XAudio2\X3DAudio\Emitter.cs" />
+    <Compile Include="XAudio2\X3DAudio\Listener.cs" />
+    <Compile Include="XAudio2\X3DAudio\X3DAudioCore.cs" />
     <Compile Include="XAudio2\XAudio2.cs" />
     <Compile Include="XAudio2\XAudio2Buffer.cs" />
     <Compile Include="XAudio2\XAudio2BufferFlags.cs" />
@@ -449,6 +457,7 @@
     <Compile Include="XAudio2\XAudio2Processor.cs" />
     <Compile Include="XAudio2\XAudio2SourceVoice.cs" />
     <Compile Include="XAudio2\XAudio2SubmixVoice.cs" />
+    <Compile Include="XAudio2\XAudio2Version.cs" />
     <Compile Include="XAudio2\XAudio2Voice.cs" />
     <Compile Include="XAudio2\XAudio2_7.cs" />
     <Compile Include="XAudio2\XAudio2_8.cs" />
@@ -685,10 +694,6 @@
     <None Include="AudioSubTypes.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>AudioSubTypes.cs</LastGenOutput>
-    </None>
-    <None Include="XAudio2\DeviceDetailsTemplate.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DeviceDetailsTemplate.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>

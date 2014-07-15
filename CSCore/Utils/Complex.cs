@@ -54,7 +54,7 @@ namespace CSCore.Utils
         }
 
         /// <summary>
-        ///     Defines an implicit conversion of a single-precision floating-point number to a complex number.
+        ///     Defines an implicit conversion of a complex number to a single-precision floating-point number.
         /// </summary>
         /// <param name="complex">Complex number.</param>
         /// <returns>The absolute value of the <paramref name="complex" />.</returns>
@@ -64,7 +64,7 @@ namespace CSCore.Utils
         }
 
         /// <summary>
-        ///     Defines an implicit conversion of a double-precision floating-point number to a complex number.
+        ///     Defines an implicit conversion of a complex number to a double-precision floating-point number.
         /// </summary>
         /// <param name="complex">Complex number.</param>
         /// <returns>The absolute value of the <paramref name="complex" />.</returns>
