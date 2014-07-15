@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace CSCore.XAudio2
 {
@@ -10,53 +8,42 @@ namespace CSCore.XAudio2
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public unsafe struct DeviceDetails
     {
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 256)]
-        private short[] internalDeviceIdField;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 256)]
-        private short[] internalDisplayNameField;
+        // ReSharper disable FieldCanBeMadeReadOnly.Local
 
-        
-        //private string internalDeviceIdField;
-        //private string internalDisplayNameField;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 256)]
+        private short[] _internalDeviceIdField;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 256)]
+        private short[] _internalDisplayNameField;
         private XAudio2DeviceRole _role;
         private WaveFormatExtensible _outputFormat;
+
+        // ReSharper restore FieldCanBeMadeReadOnly.Local
 
         /// <summary>
         ///     Gets the <see cref="DeviceId" /> of the Device.
         /// </summary>
-        public unsafe string DeviceId
+        public string DeviceId
         {
             get
             {
-                /*fixed (void* p = &_internalDeviceIdField0)
-                {
-                    return Marshal.PtrToStringUni(new IntPtr(p), 256).TrimEnd();
-                }*/
-                fixed (void* p = &internalDeviceIdField[0])
+                fixed (void* p = &_internalDeviceIdField[0])
                 {
                     return new string((char*)p);
                 }
-                //return internalDisplayNameField;
             }
         }
 
         /// <summary>
         ///     Gets the <see cref="DisplayName" /> of the Device.
         /// </summary>
-        public unsafe string DisplayName
+        public string DisplayName
         {
             get
             {
-                /*fixed (void* p = &_internalDisplayNameField0)
-                {
-                    return Marshal.PtrToStringUni(new IntPtr(p), 256).TrimEnd();
-                }*/
-                fixed (void* p = &internalDisplayNameField[0])
+                fixed (void* p = &_internalDisplayNameField[0])
                 {
                     return new string((char*)p);
                 }
-                //return new string(internalDisplayNameField);
-                //return internalDeviceIdField;
             }
         }
 
