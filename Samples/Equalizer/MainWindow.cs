@@ -1,62 +1,62 @@
-﻿using CSCore;
+﻿using System;
+using System.ComponentModel;
+using System.Windows.Forms;
+using CSCore;
 using CSCore.Codecs;
 using CSCore.SoundOut;
 using CSCore.Streams;
-using System;
-using System.ComponentModel;
-using System.Windows.Forms;
 
 namespace EqualizerTest
 {
     public partial class MainWindow : Form
     {
+        private const double MaxDB = 20;
+
+        private Equalizer _equalizer;
+        private ISoundOut _soundOut;
+
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        private ISoundOut _soundOut;
-        private Equalizer _eq;
-
         private void trackBar_ValueChanged(object sender, EventArgs e)
         {
-            if (_eq != null)
+            var trackbar = sender as TrackBar;
+            if (_equalizer != null && trackbar != null)
             {
-                const double MaxDB = 20;
+                double perc = (trackbar.Value / (double) trackbar.Maximum);
+                var value = (float) (perc * MaxDB);
 
-                var trackbar = sender as TrackBar; //Trackbar welche das Event ausgelöst hat.
-                double perc = ((double)trackbar.Value / (double)trackbar.Maximum); //Prozent der Trackbar
-                float value = (float)(perc * MaxDB); //Prozent der Trackbar mit der maximalen Verstärkung multipliziert 
-
-                int filterIndex = Int32.Parse((string)trackbar.Tag); //Index des Filters. Index wurde im Designer bei der Tag Eigenschaft festgelegt. 
-                EqFilterEntry filter = _eq.SampleFilters[filterIndex];
-                filter.SetGain(value); //neuen dB-Wert setzen
+                //the tag of the trackbar contains the index of the filter
+                int filterIndex = Int32.Parse((string) trackbar.Tag);
+                EqFilterEntry filter = _equalizer.SampleFilters[filterIndex];
+                filter.SetGain(value);
             }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             var ofn = new OpenFileDialog();
-            ofn.Filter = CodecFactory.SupportedFilesFilterEN;
-            if (ofn.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            ofn.Filter = CodecFactory.SupportedFilesFilterEn;
+            if (ofn.ShowDialog() == DialogResult.OK)
             {
                 Stop();
 
                 if (WasapiOut.IsSupportedOnCurrentPlatform)
-                {
                     _soundOut = new WasapiOut();
-                }
                 else
-                {
                     _soundOut = new DirectSoundOut();
-                }
 
-                var source = CodecFactory.Instance.GetCodec(ofn.FileName);
-                source = new LoopStream(source) { EnableLoop = false };
-                (source as LoopStream).StreamFinished += (s, args) => Stop();
+                LoopStream loopStream;
+                var source = CodecFactory.Instance.GetCodec(ofn.FileName)
+                    .AppendSource(out loopStream, x => new LoopStream(x) {EnableLoop = false})
+                    .AppendSource(out _equalizer, Equalizer.Create10BandEqualizer)
+                    .ToWaveSource(16);
 
-                _eq = Equalizer.Create10BandEqualizer(source);
-                _soundOut.Initialize(_eq.ToWaveSource(16));
+                loopStream.StreamFinished += (s, args) => Stop();
+
+                _soundOut.Initialize(source);
                 _soundOut.Play();
             }
         }
@@ -73,7 +73,7 @@ namespace EqualizerTest
             {
                 _soundOut.Stop();
                 _soundOut.Dispose();
-                _eq.Dispose();
+                _equalizer.Dispose();
                 _soundOut = null;
             }
         }
