@@ -103,6 +103,15 @@ namespace CSCore.XAudio2
         }
 
         /// <summary>
+        /// Gets the default device which can be used to create a mastering voice.
+        /// </summary>
+        /// <value>Using XAudio2.7 the default device is 0 (as an integer). Using XAudio2.8 the default device is null.</value>
+        public object DefaultDevice
+        {
+            get { return GetDefaultDevice(); }
+        }
+
+        /// <summary>
         /// Gets the <see cref="XAudio2Version"/> of the XAudio2 object.
         /// </summary>
         public XAudio2Version Version

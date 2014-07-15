@@ -85,6 +85,9 @@ namespace CSCore.XAudio2.X3DAudio
             if ((int) flags == 0)
                 throw new ArgumentOutOfRangeException("flags");
 
+            if(emitter.ChannelCount > 1 && emitter.ChannelAzimuths == null)
+                throw new ArgumentException("No ChannelAzimuths set for the specified emitter. The ChannelAzimuths property must not be null if the ChannelCount of the emitter is bigger than 1.");
+
             DspSettings.DspSettingsNative nativeSettings = settings.NativeInstance;
             Listener.ListenerNative nativeListener = listener.NativeInstance;
             Emitter.EmitterNative nativeEmitter = emitter.NativeInstance;

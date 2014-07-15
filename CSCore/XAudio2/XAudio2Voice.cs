@@ -941,7 +941,7 @@ namespace CSCore.XAudio2
         /// <param name="disposing">True to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
-            if (_disposed)
+            if (!_disposed)
             {
                 _disposed = true;
                 DestroyVoice();
