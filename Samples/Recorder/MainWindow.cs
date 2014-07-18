@@ -29,7 +29,7 @@ namespace Recorder
         private WaveInCaps _selectedDevice;
 
         private WaveIn _waveIn;
-        private IWritable _writer;
+        private IWriteable _writer;
         private ISoundOut _soundOut;
 
         private IWaveSource _source;

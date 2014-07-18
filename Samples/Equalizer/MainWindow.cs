@@ -50,8 +50,8 @@ namespace EqualizerTest
 
                 LoopStream loopStream;
                 var source = CodecFactory.Instance.GetCodec(ofn.FileName)
-                    .AppendSource(out loopStream, x => new LoopStream(x) {EnableLoop = false})
-                    .AppendSource(out _equalizer, Equalizer.Create10BandEqualizer)
+                    .AppendSource(x => new LoopStream(x) { EnableLoop = false }, out loopStream)
+                    .AppendSource(Equalizer.Create10BandEqualizer, out _equalizer)
                     .ToWaveSource(16);
 
                 loopStream.StreamFinished += (s, args) => Stop();
