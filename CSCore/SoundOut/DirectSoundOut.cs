@@ -17,7 +17,7 @@ namespace CSCore.SoundOut
         private DirectSound8 _directSound;
 
         private DirectSoundNotify _directSoundNotify;
-        private bool _isDisposed;
+        private bool _disposed;
 
         private int _latency;
         private volatile PlaybackState _playbackState;
@@ -25,6 +25,9 @@ namespace CSCore.SoundOut
         private DirectSoundPrimaryBuffer _primaryBuffer;
         private DirectSoundSecondaryBuffer _secondaryBuffer;
         private IWaveSource _source;
+
+        private readonly object _lockObj = new object();
+        private bool _isInitialized = false;
 
         /// <summary>
         ///     Initializes an new instance of <see cref="DirectSoundOut" /> class.
@@ -131,32 +134,34 @@ namespace CSCore.SoundOut
         /// <param name="source">The source to prepare for playback.</param>
         public void Initialize(IWaveSource source)
         {
-            CheckForDisposed();
             CheckForInvalidThreadCall();
 
-            if (source == null)
-                throw new ArgumentNullException("source");
-
-            if (_playbackState != PlaybackState.Stopped)
+            lock (_lockObj)
             {
-                throw new InvalidOperationException(
-                    "PlaybackState has to be Stopped. Call DirectSoundOut::Stop to stop the playback.");
+                CheckForDisposed();
+
+                if (source == null)
+                    throw new ArgumentNullException("source");
+
+                if (_playbackState != PlaybackState.Stopped)
+                {
+                    throw new InvalidOperationException(
+                        "PlaybackState has to be Stopped. Call DirectSoundOut::Stop to stop the playback.");
+                }
+
+                _playbackThread.WaitForExit();
+
+                //if (_isInitialized)
+                //    throw new InvalidOperationException("DirectSoundOut is already initialized. Call DirectSoundOut::Stop to uninitialize DirectSoundOut.");
+
+                _source = source;
+
+                CleanupResources();
+                InitializeInternal();
+                _isInitialized = true;
+
+                Volume = 1.0f;
             }
-
-            _playbackThread.WaitForExit();
-
-            //todo: implement _isInitialized behaviour. note that _isInitialized = ... has to be uncommented in the whole document.
-            //if (_isInitialized)
-            //    throw new InvalidOperationException("DirectSoundOut is already initialized. Call DirectSoundOut::Stop to uninitialize DirectSoundOut.");
-
-
-            _source = source;
-
-            CleanupRessources();
-            InitializeInternal();
-            //_isInitialized = true;
-
-            Volume = 1.0f;
         }
 
         /// <summary>
@@ -166,24 +171,31 @@ namespace CSCore.SoundOut
         /// </summary>
         public void Play()
         {
-            CheckForDisposed();
             CheckForInvalidThreadCall();
 
-            if (PlaybackState == PlaybackState.Stopped)
+            lock (_lockObj)
             {
-                using (var waitHandle = new AutoResetEvent(false))
+                CheckForDisposed();
+                CheckForIsInitialized();
+
+                if (PlaybackState == PlaybackState.Stopped)
                 {
-                    _playbackThread = new Thread(PlaybackProc)
+                    using (var waitHandle = new AutoResetEvent(false))
                     {
-                        Name = "DirectSound Playback-Thread; ID = " + DebuggingId,
-                        Priority = _playbackThreadPriority
-                    };
-                    _playbackThread.Start(waitHandle);
-                    waitHandle.WaitOne();
+                        _playbackThread = new Thread(PlaybackProc)
+                        {
+                            Name = "DirectSound Playback-Thread; ID = " + DebuggingId,
+                            Priority = _playbackThreadPriority
+                        };
+                        _playbackThread.Start(waitHandle);
+                        waitHandle.WaitOne();
+                    }
+                }
+                else if (PlaybackState == PlaybackState.Paused)
+                {
+                    Resume();
                 }
             }
-            else if (PlaybackState == PlaybackState.Paused)
-                Resume();
         }
 
         /// <summary>
@@ -193,22 +205,27 @@ namespace CSCore.SoundOut
         /// </summary>
         public void Stop()
         {
-            CheckForDisposed();
             CheckForInvalidThreadCall();
 
-            if (_playbackState != PlaybackState.Stopped)
+            lock (_lockObj)
             {
-                _playbackState = PlaybackState.Stopped;
-                _playbackThread.WaitForExit();
-                _playbackThread = null;
+                CheckForDisposed();
+                //don't check for IsInitialized
+
+                if (_playbackState != PlaybackState.Stopped)
+                {
+                    _playbackState = PlaybackState.Stopped;
+                    _playbackThread.WaitForExit();
+                    _playbackThread = null;
+                }
+                else if (_playbackThread != null)
+                {
+                    _playbackThread.WaitForExit();
+                    _playbackThread = null;
+                }
+                else
+                    Debug.WriteLine("DirectSoundOut is already stopped.");
             }
-            else if (_playbackThread != null)
-            {
-                _playbackThread.WaitForExit();
-                _playbackThread = null;
-            }
-            else
-                Debug.WriteLine("DirectSoundOut is already stopped.");
         }
 
         /// <summary>
@@ -216,11 +233,16 @@ namespace CSCore.SoundOut
         /// </summary>
         public void Resume()
         {
-            CheckForDisposed();
             CheckForInvalidThreadCall();
 
-            if (_playbackState == PlaybackState.Paused)
-                _playbackState = PlaybackState.Playing;
+            lock (_lockObj)
+            {
+                CheckForDisposed();
+                CheckForIsInitialized();
+
+                if (_playbackState == PlaybackState.Paused)
+                    _playbackState = PlaybackState.Playing;
+            }
         }
 
         /// <summary>
@@ -228,11 +250,16 @@ namespace CSCore.SoundOut
         /// </summary>
         public void Pause()
         {
-            CheckForDisposed();
             CheckForInvalidThreadCall();
 
-            if (PlaybackState == PlaybackState.Playing)
-                _playbackState = PlaybackState.Paused;
+            lock (_lockObj)
+            {
+                CheckForDisposed();
+                CheckForIsInitialized();
+
+                if (PlaybackState == PlaybackState.Playing)
+                    _playbackState = PlaybackState.Paused;
+            }
         }
 
         /// <summary>
@@ -489,7 +516,7 @@ namespace CSCore.SoundOut
                 Stopped(this, new PlaybackStoppedEventArgs(exception));
         }
 
-        private void CleanupRessources()
+        private void CleanupResources()
         {
             if (_directSoundNotify != null)
             {
@@ -515,7 +542,7 @@ namespace CSCore.SoundOut
                 _directSound = null;
             }
 
-            //_isInitialized = false;
+            _isInitialized = false;
         }
 
         private void CheckForInvalidThreadCall()
@@ -526,8 +553,14 @@ namespace CSCore.SoundOut
 
         private void CheckForDisposed()
         {
-            if (_isDisposed)
+            if (_disposed)
                 throw new ObjectDisposedException("WasapiOut");
+        }
+
+        private void CheckForIsInitialized()
+        {
+            if(_isInitialized)
+                throw new InvalidOperationException("DirectSoundOut is not initialized.");
         }
 
         /// <summary>
@@ -539,12 +572,17 @@ namespace CSCore.SoundOut
         /// </param>
         protected virtual void Dispose(bool disposing)
         {
-            if (!_isDisposed)
+            CheckForInvalidThreadCall();
+
+            lock (_lockObj)
             {
-                Stop();
-                CleanupRessources();
+                if (!_disposed)
+                {
+                    Stop();
+                    CleanupResources();
+                }
+                _disposed = true;
             }
-            _isDisposed = true;
         }
 
         /// <summary>

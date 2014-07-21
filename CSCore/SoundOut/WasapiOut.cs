@@ -23,7 +23,7 @@ namespace CSCore.SoundOut
         private MMDevice _device;
         private bool _disposed;
         private EventWaitHandle _eventWaitHandle;
-        private bool _isInitialized;
+        private bool _isInitialized = false;
 
         private int _latency;
         private WaveFormat _outputFormat;
@@ -32,6 +32,8 @@ namespace CSCore.SoundOut
         private AudioRenderClient _renderClient;
         private SimpleAudioVolume _simpleAudioVolume;
         private IWaveSource _source;
+
+        private readonly object _lockObj = new object();
 
         /// <summary>
         ///     Initializes an new instance of <see cref="WasapiOut" /> class.
@@ -183,27 +185,31 @@ namespace CSCore.SoundOut
         /// <param name="source">The source to prepare for playback.</param>
         public void Initialize(IWaveSource source)
         {
-            CheckForDisposed();
             CheckForInvalidThreadCall();
 
-            if (source == null)
-                throw new ArgumentNullException("source");
-
-            if (_playbackState != PlaybackState.Stopped)
+            lock (_lockObj)
             {
-                throw new InvalidOperationException(
-                    "PlaybackState has to be Stopped. Call WasapiOut::Stop to stop the playback.");
+                CheckForDisposed();
+
+                if (source == null)
+                    throw new ArgumentNullException("source");
+
+                if (_playbackState != PlaybackState.Stopped)
+                {
+                    throw new InvalidOperationException(
+                        "PlaybackState has to be Stopped. Call WasapiOut::Stop to stop the playback.");
+                }
+
+                _playbackThread.WaitForExit();
+
+                //if (_isInitialized)
+                //    throw new InvalidOperationException("Wasapi is already initialized. Call WasapiOut::Stop to uninitialize Wasapi.");
+
+                _source = source;
+                CleanupResources();
+                InitializeInternal();
+                _isInitialized = true;
             }
-
-            _playbackThread.WaitForExit();
-
-            //if (_isInitialized)
-            //    throw new InvalidOperationException("Wasapi is already initialized. Call WasapiOut::Stop to uninitialize Wasapi.");
-
-            _source = source;
-            CleanupResources();
-            InitializeInternal();
-            _isInitialized = true;
         }
 
         /// <summary>
@@ -214,28 +220,34 @@ namespace CSCore.SoundOut
         /// </summary>
         public void Play()
         {
-            CheckForDisposed();
             CheckForInvalidThreadCall();
-            CheckForIsInitialized();
 
-            if (PlaybackState == PlaybackState.Stopped)
+            lock (_lockObj)
             {
-                using (var waitHandle = new AutoResetEvent(false))
-                {
-                    _playbackThread.WaitForExit();
-                    //just to be sure that the thread finished already. Should not be necessary because after Stop(), Initialize() has to be called which already waits until the playbackthread stopped.
-                    _playbackThread = new Thread(PlaybackProc)
-                    {
-                        Name = "WASAPI Playback-Thread; ID = " + DebuggingId,
-                        Priority = _playbackThreadPriority
-                    };
+                CheckForDisposed();
+                CheckForIsInitialized();
 
-                    _playbackThread.Start(waitHandle);
-                    waitHandle.WaitOne();
+                if (PlaybackState == PlaybackState.Stopped)
+                {
+                    using (var waitHandle = new AutoResetEvent(false))
+                    {
+                        //just to be sure that the thread finished already. Should not be necessary because after Stop(), Initialize() has to be called which already waits until the playbackthread stopped.
+                        _playbackThread.WaitForExit();
+                        _playbackThread = new Thread(PlaybackProc)
+                        {
+                            Name = "WASAPI Playback-Thread; ID = " + DebuggingId,
+                            Priority = _playbackThreadPriority
+                        };
+
+                        _playbackThread.Start(waitHandle);
+                        waitHandle.WaitOne();
+                    }
+                }
+                else if (PlaybackState == PlaybackState.Paused)
+                {
+                    Resume();
                 }
             }
-            else if (PlaybackState == PlaybackState.Paused)
-                Resume();
         }
 
         /// <summary>
@@ -244,27 +256,32 @@ namespace CSCore.SoundOut
         /// </summary>
         public void Stop()
         {
-            CheckForDisposed();
             CheckForInvalidThreadCall();
 
-            if (_playbackState != PlaybackState.Stopped && _playbackThread != null)
+            lock (_lockObj)
             {
-                _playbackState = PlaybackState.Stopped;
-                _playbackThread.WaitForExit(); //possible deadlock
-                _playbackThread = null;
+                CheckForDisposed();
+                //don't check for isinitialized here
+
+                if (_playbackState != PlaybackState.Stopped && _playbackThread != null)
+                {
+                    _playbackState = PlaybackState.Stopped;
+                    _playbackThread.WaitForExit(); //possible deadlock
+                    _playbackThread = null;
+                }
+                else if (_playbackState == PlaybackState.Stopped && _playbackThread != null)
+                {
+                    /*
+                    * On EOF playbackstate is Stopped, but thread is not stopped. => 
+                    * New Session can be started while cleaning up old one => unknown behavior. =>
+                    * Always call Stop() to make sure, you wait until the thread is finished cleaning up.
+                    */
+                    _playbackThread.WaitForExit();
+                    _playbackThread = null;
+                }
+                else
+                    Debug.WriteLine("Wasapi is already stopped.");
             }
-            else if (_playbackState == PlaybackState.Stopped && _playbackThread != null)
-            {
-                /*
-				 * On EOF playbackstate is Stopped, but thread is not stopped. => 
-				 * New Session can be started while cleaning up old one => unknown behavior. =>
-				 * Always call Stop() to make sure, you wait until the thread is finished cleaning up.
-				 */
-                _playbackThread.WaitForExit();
-                _playbackThread = null;
-            }
-            else
-                Debug.WriteLine("Wasapi is already stopped.");
         }
 
         /// <summary>
@@ -272,12 +289,16 @@ namespace CSCore.SoundOut
         /// </summary>
         public void Resume()
         {
-            CheckForDisposed();
             CheckForInvalidThreadCall();
-            CheckForIsInitialized();
 
-            if (_playbackState == PlaybackState.Paused)
-                _playbackState = PlaybackState.Playing;
+            lock (_lockObj)
+            {
+                CheckForDisposed();
+                CheckForIsInitialized();
+
+                if (_playbackState == PlaybackState.Paused)
+                    _playbackState = PlaybackState.Playing;
+            }
         }
 
         /// <summary>
@@ -285,11 +306,16 @@ namespace CSCore.SoundOut
         /// </summary>
         public void Pause()
         {
-            CheckForDisposed();
             CheckForInvalidThreadCall();
 
-            if (PlaybackState == PlaybackState.Playing)
-                _playbackState = PlaybackState.Paused;
+            lock (_lockObj)
+            {
+                CheckForDisposed();
+                CheckForIsInitialized();
+
+                if (PlaybackState == PlaybackState.Playing)
+                    _playbackState = PlaybackState.Paused;
+            }
         }
 
         /// <summary>
@@ -347,7 +373,7 @@ namespace CSCore.SoundOut
 
                 var buffer = new byte[bufferSize * frameSize];
 
-                WaitHandle[] eventWaitHandleArray = {_eventWaitHandle};
+                WaitHandle[] eventWaitHandleArray = { _eventWaitHandle };
 
                 //001
                 /*if (!FeedBuffer(_renderClient, buffer, bufferSize, frameSize)) //todo: might cause a deadlock: play() is waiting on eventhandle but FeedBuffer got already called
@@ -366,7 +392,7 @@ namespace CSCore.SoundOut
 
                 if (playbackStartedEventWaithandle is EventWaitHandle)
                 {
-                    ((EventWaitHandle) playbackStartedEventWaithandle).Set();
+                    ((EventWaitHandle)playbackStartedEventWaithandle).Set();
                     playbackStartedEventWaithandle = null;
                 }
 
@@ -396,7 +422,7 @@ namespace CSCore.SoundOut
                         //avoid conversion errors
                         if (framesReadyToFill > 5 &&
                             !(_source is DmoResampler &&
-                              ((DmoResampler) _source).OutputToInput(framesReadyToFill * frameSize) <= 0))
+                              ((DmoResampler)_source).OutputToInput(framesReadyToFill * frameSize) <= 0))
                         {
                             if (!FeedBuffer(_renderClient, buffer, framesReadyToFill, frameSize))
                                 _playbackState = PlaybackState.Stopped; //TODO: Fire Stopped-event here?
@@ -418,7 +444,7 @@ namespace CSCore.SoundOut
             {
                 //CleanupResources();
                 if (playbackStartedEventWaithandle is EventWaitHandle)
-                    ((EventWaitHandle) playbackStartedEventWaithandle).Set();
+                    ((EventWaitHandle)playbackStartedEventWaithandle).Set();
                 RaiseStopped(exception);
             }
         }
@@ -461,7 +487,7 @@ namespace CSCore.SoundOut
                 {
                     _audioClient.Initialize(_shareMode, AudioClientStreamFlags.StreamFlagsEventCallback, 0, 0,
                         _outputFormat, Guid.Empty);
-                    _latency = (int) (_audioClient.StreamLatency / 10000);
+                    _latency = (int)(_audioClient.StreamLatency / 10000);
                 }
 
                 _eventWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
@@ -477,7 +503,7 @@ namespace CSCore.SoundOut
         {
             if (_createdResampler && _source is DmoResampler)
             {
-                ((DmoResampler) _source).DisposeResamplerOnly();
+                ((DmoResampler)_source).DisposeResamplerOnly();
                 _source = null;
             }
 
@@ -490,11 +516,12 @@ namespace CSCore.SoundOut
             {
                 try
                 {
+                    _audioClient.StopNative();
                     _audioClient.Reset();
                 }
                 catch (CoreAudioAPIException ex)
                 {
-                    if (ex.ErrorCode != unchecked((int) 0x88890001)) //AUDCLNT_E_NOT_INITIALIZED
+                    if (ex.ErrorCode != unchecked((int)0x88890001)) //AUDCLNT_E_NOT_INITIALIZED
                         throw;
                 }
                 _audioClient.Dispose();
@@ -572,10 +599,8 @@ namespace CSCore.SoundOut
 
                 return finalFormat;
             }
-            else
-            {
-                return finalFormat;
-            }
+
+            return finalFormat;
         }
 
         private bool CheckForSupportedFormat(AudioClient audioClient, IEnumerable<WaveFormatExtensible> waveFormats,
@@ -627,13 +652,18 @@ namespace CSCore.SoundOut
         /// <param name="disposing">True to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (!_disposed)
+            CheckForInvalidThreadCall();
+
+            lock (_lockObj)
             {
-                Debug.WriteLine("Disposing WasapiOut.");
-                Stop();
-                CleanupResources();
+                if (!_disposed)
+                {
+                    Debug.WriteLine("Disposing WasapiOut.");
+                    Stop();
+                    CleanupResources();
+                }
+                _disposed = true;
             }
-            _disposed = true;
         }
 
         /// <summary>
