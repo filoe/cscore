@@ -175,7 +175,7 @@ namespace CSCore.DSP
         {
             get
             {
-                return OutputToInput(base.Length);
+                return InputToOutput(base.Length);
             }
         }
 
