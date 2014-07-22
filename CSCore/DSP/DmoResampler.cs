@@ -10,15 +10,15 @@ namespace CSCore.DSP
     /// </summary>
     public class DmoResampler : WaveAggregatorBase
     {
-        protected WaveFormat _outputformat;
-        protected WMResampler _resampler;
-        protected MediaBuffer _inputBuffer;
-        protected DmoOutputDataBuffer _outputBuffer;
+        internal WaveFormat _outputformat;
+        internal WMResampler _resampler;
+        internal MediaBuffer _inputBuffer;
+        internal DmoOutputDataBuffer _outputBuffer;
 
-        protected double _ratio;
+        internal double _ratio;
         private int _quality = 30;
 
-        protected object _lockObj;
+        internal object _lockObj;
 
         /// <summary>
         /// Resampler based on wavesource and new samplerate.
@@ -48,13 +48,13 @@ namespace CSCore.DSP
             _outputformat = outputFormat;
         }
 
-        protected void Init(WaveFormat inputformat, WaveFormat outputformat)
+        internal void Init(WaveFormat inputformat, WaveFormat outputformat)
         {
             _ratio = (double)outputformat.BytesPerSecond / (double)inputformat.BytesPerSecond;
             InitCom(inputformat, outputformat);
         }
 
-        protected void InitCom(WaveFormat inputformat, WaveFormat outputformat)
+        internal void InitCom(WaveFormat inputformat, WaveFormat outputformat)
         {
             lock (_lockObj)
             {
@@ -114,7 +114,7 @@ namespace CSCore.DSP
                         _outputBuffer.Reset();
                         do
                         {
-                            var outputBuffer = _outputBuffer.Buffer as MediaBuffer;
+                            var outputBuffer = (MediaBuffer)_outputBuffer.Buffer;
                             if (outputBuffer.MaxLength < count)
                             {
                                 outputBuffer.Dispose();
@@ -122,7 +122,7 @@ namespace CSCore.DSP
                             }
                             _outputBuffer.Buffer.SetLength(0);
 
-                            mediaObject.ProcessOutput(ProcessOutputFlags.None, new DmoOutputDataBuffer[] { _outputBuffer }, 1);
+                            mediaObject.ProcessOutput(ProcessOutputFlags.None, new[] { _outputBuffer }, 1);
 
                             if (_outputBuffer.Length <= 0)
                             {
@@ -223,6 +223,11 @@ namespace CSCore.DSP
         }
 
         private bool _disposed = false;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="disposing"></param>
         protected override void Dispose(bool disposing)
         {
             if (!disposing)

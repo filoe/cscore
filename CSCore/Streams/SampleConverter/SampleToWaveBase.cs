@@ -26,15 +26,42 @@ namespace CSCore.Streams.SampleConverter
             get { return _waveFormat; }
         }
 
-        public virtual long Position
+        /*public virtual long Position
         {
-            get { return (long)(_source.Position * _ratio); }
-            set { _source.Position = (long)(value / _ratio); }
+            get { return InputToOutput(_source.Position); }
+            set { _source.Position = OutputToInput(value); }
         }
 
         public virtual long Length
         {
-            get { return (long)(_source.Length * _ratio); }
+            get { return InputToOutput(_source.Length); }
+        }*/
+
+        public long Position
+        {
+            get { return _source.Position * WaveFormat.BytesPerSample; }
+            set { _source.Position = value / WaveFormat.BytesPerSample; }
+        }
+
+        public long Length
+        {
+            get { return _source.Length * WaveFormat.BytesPerSample; }
+        }
+
+        internal long InputToOutput(long position)
+        {
+            //long result = (long)(position * _ratio);
+            long result = (long)(position * _ratio);
+            result -= (result % _waveFormat.BlockAlign);
+            return result;
+        }
+
+        internal long OutputToInput(long position)
+        {
+            //long result = (long)(position * _ratio);
+            long result = (long)(position / _ratio);
+            result -= (result % _source.WaveFormat.BlockAlign);
+            return result;
         }
 
         private bool _disposed;

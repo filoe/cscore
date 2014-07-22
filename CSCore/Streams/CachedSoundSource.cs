@@ -48,12 +48,23 @@ namespace CSCore.Streams
         }
 
         /// <summary>
-        /// Reads data from the cache.
+        ///     Reads a sequence of bytes from the cache and advances the position within the cache by the
+        ///     number of bytes read.
         /// </summary>
-        /// <returns>Amount of read bytes.</returns>
+        /// <param name="buffer">
+        ///     An array of bytes. When this method returns, the <paramref name="buffer" /> contains the specified
+        ///     byte array with the values between <paramref name="offset" /> and (<paramref name="offset" /> +
+        ///     <paramref name="count" /> - 1) replaced by the bytes read from the cache.
+        /// </param>
+        /// <param name="offset">
+        ///     The zero-based byte offset in the <paramref name="buffer" /> at which to begin storing the data
+        ///     read from the cache.
+        /// </param>
+        /// <param name="count">The maximum number of bytes to read from the cache.</param>
+        /// <returns>The total number of bytes read into the <paramref name="buffer"/>.</returns>
         public int Read(byte[] buffer, int offset, int count)
         {
-            ThrowObjectDisposedEx();
+            CheckForDisposed();
 
             return _cache.Read(buffer, offset, count);
         }
@@ -77,7 +88,7 @@ namespace CSCore.Streams
             }
             set
             {
-                ThrowObjectDisposedEx();
+                CheckForDisposed();
 
                 _cache.Position = value;
             }
@@ -127,7 +138,7 @@ namespace CSCore.Streams
             Dispose(false);
         }
 
-        private void ThrowObjectDisposedEx()
+        private void CheckForDisposed()
         {
             if (_disposed)
                 throw new ObjectDisposedException("CachedSoundSource");

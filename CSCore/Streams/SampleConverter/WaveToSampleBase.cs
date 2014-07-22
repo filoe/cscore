@@ -27,7 +27,7 @@ namespace CSCore.Streams.SampleConverter
             get { return _waveFormat; }
         }
 
-        public long Position
+        /*public long Position
         {
             get { return (long) (_source.Position / _bpsratio); }
             set { _source.Position = (long) (value * _bpsratio); }
@@ -36,6 +36,17 @@ namespace CSCore.Streams.SampleConverter
         public long Length
         {
             get { return (long) (_source.Length / _bpsratio); }
+        }*/
+
+        public long Position
+        {
+            get { return _source.Position / _source.WaveFormat.BytesPerSample; }
+            set { _source.Position = value * _source.WaveFormat.BytesPerSample; }
+        }
+
+        public long Length
+        {
+            get { return _source.Length / _source.WaveFormat.BytesPerSample; }
         }
 
         public virtual void Dispose()

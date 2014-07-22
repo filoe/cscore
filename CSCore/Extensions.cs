@@ -103,11 +103,14 @@ namespace CSCore
                 throw new ArgumentNullException("source");
             if (bytes < 0)
                 throw new ArgumentNullException("bytes");
+            if (source is ISampleSource)
+                bytes *= 4;
+
             return TimeSpan.FromMilliseconds(GetMilliseconds(source, bytes));
         }
 
         /// <summary>
-        ///     Converts a duration in bytes to a duration in milliseconds.
+        ///     Converts a duration in bytes to a duration in milliseconds. 
         /// </summary>
         /// <param name="source">
         ///     <see cref="IWaveSource" /> instance which provides the <see cref="WaveFormat" /> used to convert
@@ -115,6 +118,7 @@ namespace CSCore
         /// </param>
         /// <param name="bytes">Duration in bytes to convert to a duration in milliseconds.</param>
         /// <returns>Duration in milliseconds.</returns>
+        /// <remarks>Note that a <see cref="ISampleSource"/> works with samples instead of bytes.</remarks>
         public static long GetMilliseconds(this IWaveStream source, long bytes)
         {
             if (source == null)
@@ -122,11 +126,7 @@ namespace CSCore
             if (bytes < 0)
                 throw new ArgumentOutOfRangeException("bytes");
 
-            if (source is IWaveSource)
-                return source.WaveFormat.BytesToMilliseconds(bytes);
-            if (source is ISampleSource)
-                return source.WaveFormat.BytesToMilliseconds(bytes * 4);
-            throw new NotSupportedException("IWaveStream-Subtype is not supported");
+            return source.WaveFormat.BytesToMilliseconds(bytes);
         }
 
         /// <summary>
