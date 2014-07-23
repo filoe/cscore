@@ -26,7 +26,7 @@ namespace CSCore.DSP
         /// <param name="source">Source which has to get resampled.</param>
         /// <param name="destSampleRate">Samplerate, the stream will be resampled to.</param>
         public DmoResampler(IWaveSource source, int destSampleRate)
-            : this(source, new WaveFormat(source.WaveFormat.SampleRate, source.WaveFormat.BitsPerSample, source.WaveFormat.Channels, source.WaveFormat.GetWaveFormatTag()))
+            : this(source, new WaveFormat(destSampleRate, source.WaveFormat.BitsPerSample, source.WaveFormat.Channels, source.WaveFormat.GetWaveFormatTag()))
         {
         }
 

@@ -56,10 +56,16 @@ namespace CSCore
                 throw new ArgumentOutOfRangeException("destSampleRate");
 
             var source = input as IWaveSource;
-            if (source == null && input is ISampleSource)
-                source = ((ISampleSource) input).ToWaveSource();
-            else
-                throw new ArgumentException("Not supported input type.", "input");
+            if (source == null)
+            {
+                if (input is ISampleSource)
+                    source = ((ISampleSource) input).ToWaveSource();
+                else
+                    throw new ArgumentException("Not supported input type.", "input");
+            }
+
+            if (input.WaveFormat.SampleRate == destSampleRate)
+                return source;
 
             return new DmoResampler(source, destSampleRate);
         }
