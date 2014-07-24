@@ -151,7 +151,7 @@ namespace CSCore.SoundOut
         }
 
         /// <summary>
-        ///     Random ID based on internal audioclients memory address for debugging purposes.
+        ///     Gets a random ID based on internal audioclients memory address for debugging purposes.
         /// </summary>
         public long DebuggingId
         {
@@ -159,7 +159,7 @@ namespace CSCore.SoundOut
         }
 
         /// <summary>
-        ///     Latency of the playback specified in milliseconds.
+        ///     Gets or sets the latency of the playback specified in milliseconds.
         /// </summary>
         public int Latency
         {

@@ -41,11 +41,11 @@ namespace CSCore.DSP
                 return;
             _sampleRate = sampleRate;
 
-            lock (_lockObj)
+            lock (LockObj)
             {
-                var format = new WaveFormat(sampleRate, _outputformat.BitsPerSample, _outputformat.Channels, _outputformat.WaveFormatTag, _outputformat.ExtraSize);
-                _resampler.MediaObject.SetOutputType(0, format);
-                _ratio = BaseStream.WaveFormat.BytesPerSecond / (double)format.BytesPerSecond;
+                var format = new WaveFormat(sampleRate, Outputformat.BitsPerSample, Outputformat.Channels, Outputformat.WaveFormatTag, Outputformat.ExtraSize);
+                Resampler.MediaObject.SetOutputType(0, format);
+                Ratio = BaseStream.WaveFormat.BytesPerSecond / (double)format.BytesPerSecond;
             }
         }
     }

@@ -1,39 +1,41 @@
-﻿using CSCore.DMO;
-using System;
+﻿using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
+using CSCore.DMO;
 
 namespace CSCore.DSP
 {
     /// <summary>
-    /// Resampler based on the DmoResampler. Supported since Windows XP.
+    ///     Resampler based on the DmoResampler. Supported since Windows XP.
     /// </summary>
     public class DmoResampler : WaveAggregatorBase
     {
-        internal WaveFormat _outputformat;
-        internal WMResampler _resampler;
-        internal MediaBuffer _inputBuffer;
-        internal DmoOutputDataBuffer _outputBuffer;
+        internal MediaBuffer InputBuffer;
+        internal object LockObj = new object();
+        internal DmoOutputDataBuffer OutputBuffer;
+        internal WaveFormat Outputformat;
 
-        internal double _ratio;
+        internal double Ratio;
+        internal WMResampler Resampler;
+        private bool _disposed;
         private int _quality = 30;
 
-        internal object _lockObj;
-
         /// <summary>
-        /// Resampler based on wavesource and new samplerate.
+        ///     Initializes a new instance of the <see cref="DmoResampler" /> class.
         /// </summary>
-        /// <param name="source">Source which has to get resampled.</param>
-        /// <param name="destSampleRate">Samplerate, the stream will be resampled to.</param>
+        /// <param name="source"><see cref="IWaveSource" /> which has to get resampled.</param>
+        /// <param name="destSampleRate">The new output samplerate specified in Hz.</param>
         public DmoResampler(IWaveSource source, int destSampleRate)
-            : this(source, new WaveFormat(destSampleRate, source.WaveFormat.BitsPerSample, source.WaveFormat.Channels, source.WaveFormat.GetWaveFormatTag()))
+            : this(
+                source,
+                new WaveFormat(destSampleRate, source.WaveFormat.BitsPerSample, source.WaveFormat.Channels,
+                    source.WaveFormat.GetWaveFormatTag()))
         {
         }
 
         /// <summary>
-        /// Resampler based on wavesource and new outputFormat.
+        ///     Initializes a new instance of the <see cref="DmoResampler" /> class.
         /// </summary>
-        /// <param name="source">Source which has to get resampled.</param>
+        /// <param name="source"><see cref="IWaveSource" /> which has to get resampled.</param>
         /// <param name="outputFormat">Waveformat, which specifies the new format. Note, that by far not all formats are supported.</param>
         public DmoResampler(IWaveSource source, WaveFormat outputFormat)
             : base(source)
@@ -43,58 +45,101 @@ namespace CSCore.DSP
             if (outputFormat == null)
                 throw new ArgumentNullException("outputFormat");
 
-            _lockObj = new object();
-            Init(source.WaveFormat, outputFormat);
-            _outputformat = outputFormat;
-        }
-
-        internal void Init(WaveFormat inputformat, WaveFormat outputformat)
-        {
-            _ratio = (double)outputformat.BytesPerSecond / (double)inputformat.BytesPerSecond;
-            InitCom(inputformat, outputformat);
-        }
-
-        internal void InitCom(WaveFormat inputformat, WaveFormat outputformat)
-        {
-            lock (_lockObj)
-            {
-                var source = BaseStream;
-                _resampler = new WMResampler();
-
-                MediaObject mediaObject = _resampler.MediaObject;
-                if (!mediaObject.SupportsInputFormat(0, inputformat))
-                {
-                    throw new NotSupportedException("Inputformat not supported.");
-                }
-                mediaObject.SetInputType(0, inputformat);
-
-                if (!mediaObject.SupportsOutputFormat(0, outputformat))
-                {
-                    throw new NotSupportedException("Outputformat not supported.");
-                }
-                mediaObject.SetOutputType(0, outputformat);
-
-                _inputBuffer = new MediaBuffer(inputformat.BytesPerSecond / 2);
-                _outputBuffer = new DmoOutputDataBuffer(outputformat.BytesPerSecond / 2);
-            }
+            Initialize(source.WaveFormat, outputFormat);
+            Outputformat = outputFormat;
         }
 
         /// <summary>
-        /// Read from the resampled source.
+        ///     Gets the new output format.
         /// </summary>
-        /// <returns>Amount of read bytes.</returns>
+        public override WaveFormat WaveFormat
+        {
+            get { return Outputformat; }
+        }
+
+        /// <summary>
+        ///     Gets or sets the position of the source.
+        /// </summary>
+        public override long Position
+        {
+            get { return InputToOutput(base.Position); }
+            set { base.Position = OutputToInput(value); }
+        }
+
+        /// <summary>
+        ///     Gets the length of the source.
+        /// </summary>
+        public override long Length
+        {
+            get { return InputToOutput(base.Length); }
+        }
+
+        /// <summary>
+        ///     Specifies the quality of the output. The valid range is from 1 to 60.
+        /// </summary>
+        /// <value>Specifies the quality of the resampled output. The valid range is: <code>1 &gt;= value &lt;= 60</code>.</value>
+        public int Quality
+        {
+            get { return _quality; }
+            set
+            {
+                if (value < 1 || value > 60)
+                    throw new ArgumentOutOfRangeException("value");
+                _quality = value;
+                Resampler.ResamplerProps.SetHalfFilterLength(value);
+            }
+        }
+
+        internal void Initialize(WaveFormat inputformat, WaveFormat outputformat)
+        {
+            Ratio = (double) outputformat.BytesPerSecond / inputformat.BytesPerSecond;
+            lock (LockObj)
+            {
+                Resampler = new WMResampler();
+
+                MediaObject mediaObject = Resampler.MediaObject;
+                if (!mediaObject.SupportsInputFormat(0, inputformat))
+                    throw new NotSupportedException("Inputformat not supported.");
+                mediaObject.SetInputType(0, inputformat);
+
+                if (!mediaObject.SupportsOutputFormat(0, outputformat))
+                    throw new NotSupportedException("Outputformat not supported.");
+                mediaObject.SetOutputType(0, outputformat);
+
+                InputBuffer = new MediaBuffer(inputformat.BytesPerSecond / 2);
+                OutputBuffer = new DmoOutputDataBuffer(outputformat.BytesPerSecond / 2);
+            }
+        }
+
+
+        /// <summary>
+        ///     Reads a resampled sequence of bytes from the <see cref="DmoResampler" /> and advances the position within the
+        ///     stream by the
+        ///     number of bytes read.
+        /// </summary>
+        /// <param name="buffer">
+        ///     An array of bytes. When this method returns, the <paramref name="buffer" /> contains the specified
+        ///     byte array with the values between <paramref name="offset" /> and (<paramref name="offset" /> +
+        ///     <paramref name="count" /> - 1) replaced by the bytes read from the current source.
+        /// </param>
+        /// <param name="offset">
+        ///     The zero-based byte offset in the <paramref name="buffer" /> at which to begin storing the data
+        ///     read from the current stream.
+        /// </param>
+        /// <param name="count">The maximum number of bytes to read from the current source.</param>
+        /// <returns>The total number of bytes read into the buffer.</returns>
         public override int Read(byte[] buffer, int offset, int count)
         {
-            lock (_lockObj)
+            lock (LockObj)
             {
                 int read = 0;
                 while (read < count)
                 {
-                    MediaObject mediaObject = _resampler.MediaObject;
+                    MediaObject mediaObject = Resampler.MediaObject;
                     if (mediaObject.IsReadyForInput(0))
                     {
-                        int bytesToRead = (int)OutputToInput(count - read);
-                        byte[] inputData = new byte[bytesToRead];
+                        var bytesToRead = (int) OutputToInput(count - read);
+                        var inputData = new byte[bytesToRead];
                         int bytesRead = base.Read(inputData, 0, inputData.Length);
                         if (bytesRead <= 0)
                             break;
@@ -102,119 +147,64 @@ namespace CSCore.DSP
                         if (_disposed)
                             break;
 
-                        if (_inputBuffer.MaxLength < bytesRead)
+                        if (InputBuffer.MaxLength < bytesRead)
                         {
-                            _inputBuffer.Dispose();
-                            _inputBuffer = new MediaBuffer(bytesRead);
+                            InputBuffer.Dispose();
+                            InputBuffer = new MediaBuffer(bytesRead);
                         }
-                        _inputBuffer.Write(inputData, 0, bytesRead);
+                        InputBuffer.Write(inputData, 0, bytesRead);
 
-                        mediaObject.ProcessInput(0, _inputBuffer);
+                        mediaObject.ProcessInput(0, InputBuffer);
 
-                        _outputBuffer.Reset();
+                        OutputBuffer.Reset();
                         do
                         {
-                            var outputBuffer = (MediaBuffer)_outputBuffer.Buffer;
+                            var outputBuffer = (MediaBuffer) OutputBuffer.Buffer;
                             if (outputBuffer.MaxLength < count)
                             {
                                 outputBuffer.Dispose();
-                                _outputBuffer.Buffer = outputBuffer = new MediaBuffer(count);
+                                OutputBuffer.Buffer = new MediaBuffer(count);
                             }
-                            _outputBuffer.Buffer.SetLength(0);
+                            OutputBuffer.Buffer.SetLength(0);
 
-                            mediaObject.ProcessOutput(ProcessOutputFlags.None, new[] { _outputBuffer }, 1);
+                            mediaObject.ProcessOutput(ProcessOutputFlags.None, new[] {OutputBuffer}, 1);
 
-                            if (_outputBuffer.Length <= 0)
+                            if (OutputBuffer.Length <= 0)
                             {
                                 Debug.WriteLine("DmoResampler::Read: No data in output buffer.");
                                 break;
                             }
 
-                            _outputBuffer.Read(buffer, offset + read);
-                            read += _outputBuffer.Length;
-                        }
-                        while (/*_outputBuffer.DataAvailable*/false); //todo: Implement DataAvailable
+                            OutputBuffer.Read(buffer, offset + read);
+                            read += OutputBuffer.Length;
+                        } while ( /*_outputBuffer.DataAvailable*/false); //todo: Implement DataAvailable
                     }
                     else
-                    {
                         Debug.WriteLine("Case of not ready for input is not implemented yet."); //todo: .
-                    }
                 }
 
                 return read;
             }
         }
 
-        /// <summary>
-        /// Gets the new output format.
-        /// </summary>
-        public override WaveFormat WaveFormat
-        {
-            get { return _outputformat; }
-        }
-
-        /// <summary>
-        /// Gets or sets the position of the source. Note that the position gets calculated with the new output format. See <see cref="WaveFormat"/>.
-        /// </summary>
-        public override long Position
-        {
-            get
-            {
-                return InputToOutput(base.Position);
-            }
-            set
-            {
-                base.Position = OutputToInput(value);
-            }
-        }
-
-        /// <summary>
-        /// Gets the length of the source. Note that the length gets calculated with the new output format. See <see cref="WaveFormat"/>. 
-        /// </summary>
-        public override long Length
-        {
-            get
-            {
-                return InputToOutput(base.Length);
-            }
-        }
-
-        /// <summary>
-        /// Specifies the quality of the output. The valid range is 1 to 60, inclusive.
-        /// </summary>
-        public int Quality
-        {
-            get
-            {
-                return _quality;
-            }
-            set
-            {
-                if (value < 1 || value > 60)
-                    throw new ArgumentOutOfRangeException("value");
-                _quality = value;
-                _resampler.ResamplerProps.SetHalfFilterLength(value);
-            }
-        }
-
         internal long InputToOutput(long position)
         {
             //long result = (long)(position * _ratio);
-            long result = (long)(position * _ratio);
-            result -= (result % _outputformat.BlockAlign);
+            var result = (long) (position * Ratio);
+            result -= (result % Outputformat.BlockAlign);
             return result;
         }
 
         internal long OutputToInput(long position)
         {
             //long result = (long)(position * _ratio);
-            long result = (long)(position / _ratio);
+            var result = (long) (position / Ratio);
             result -= (result % BaseStream.WaveFormat.BlockAlign);
             return result;
         }
 
         /// <summary>
-        /// Disposes the allocated resources of the resampler but does not dispose the unerlying source.
+        ///     Disposes the allocated resources of the resampler but does not dispose the underlying source.
         /// </summary>
         public void DisposeResamplerOnly()
         {
@@ -222,21 +212,22 @@ namespace CSCore.DSP
             Dispose();
         }
 
-        private bool _disposed = false;
-
         /// <summary>
-        /// 
+        ///     Disposes the <see cref="DmoResampler" />.
         /// </summary>
-        /// <param name="disposing"></param>
+        /// <param name="disposing">
+        ///     True to release both managed and unmanaged resources; false to release only unmanaged
+        ///     resources.
+        /// </param>
         protected override void Dispose(bool disposing)
         {
             if (!disposing)
                 DisposeBaseSource = false;
             base.Dispose(disposing);
 
-            DisposeAndReset(ref _resampler);
-            _outputBuffer.Dispose();
-            DisposeAndReset(ref _inputBuffer);
+            DisposeAndReset(ref Resampler);
+            OutputBuffer.Dispose();
+            DisposeAndReset(ref InputBuffer);
 
             _disposed = true;
         }

@@ -1,26 +1,29 @@
-﻿using CSCore.DMO;
-using System;
+﻿using System;
 
 namespace CSCore.DSP
 {
     /// <summary>
-    /// Resampler based on the DmoResampler. Supportet since Windows XP
+    ///     Resampler based on the <see cref="DmoResampler" /> which can change the number of channels based on a
+    ///     <see cref="ChannelMatrix" />. Supported since Windows XP.
     /// </summary>
     public class DmoChannelResampler : DmoResampler
     {
-        private ChannelMatrix _channelMatrix = ChannelMatrix.TwoToSixChannels;
-
         /// <summary>
-        /// Resampler based on wavesource and new samplerate
+        ///     Initializes a new instance of the <see cref="DmoChannelResampler" /> class.
         /// </summary>
-        /// <param name="source">Source which has to get resampled</param>
-        /// <param name="channelMatrix">Channelmatrix which contains information about the channel
-        /// mapping.</param>
+        /// <param name="source">Underlying source which has to get resampled.</param>
+        /// <param name="channelMatrix"><see cref="ChannelMatrix" /> which defines how to map each channel.</param>
         public DmoChannelResampler(IWaveSource source, ChannelMatrix channelMatrix)
             : this(source, channelMatrix, source.WaveFormat.SampleRate)
         {
         }
 
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="DmoChannelResampler" /> class.
+        /// </summary>
+        /// <param name="source">Underlying source which has to get resampled.</param>
+        /// <param name="channelMatrix"><see cref="ChannelMatrix" /> which defines how to map each channel.</param>
+        /// <param name="destSampleRate">The destination sample rate.</param>
         public DmoChannelResampler(IWaveSource source, ChannelMatrix channelMatrix, int destSampleRate)
             : base(source, destSampleRate)
         {
@@ -30,17 +33,24 @@ namespace CSCore.DSP
                 throw new ArgumentNullException("channelMatrix");
 
             if (source.WaveFormat.Channels != channelMatrix.InputChannelCount)
-                throw new ArgumentException("source.WaveFormat.Channels != channelMatrix.InputChannelCount");
+            {
+                throw new ArgumentException(
+                    "The number of channels of the source has to be equal to the number of input channels specified by the channelMatrix.");
+            }
 
-            WaveFormatExtensible inputformat = new WaveFormatExtensible(source.WaveFormat.SampleRate, source.WaveFormat.BitsPerSample,
-                source.WaveFormat.Channels, WaveFormatExtensible.SubTypeFromWaveFormat(source.WaveFormat), _channelMatrix.InputMask);
+            var inputformat = new WaveFormatExtensible(source.WaveFormat.SampleRate, source.WaveFormat.BitsPerSample,
+                source.WaveFormat.Channels, WaveFormatExtensible.SubTypeFromWaveFormat(source.WaveFormat),
+                channelMatrix.InputMask);
 
-            _outputformat = new WaveFormat(destSampleRate, source.WaveFormat.BitsPerSample, 6, source.WaveFormat.WaveFormatTag, source.WaveFormat.ExtraSize);
-            WaveFormatExtensible outputformat = new WaveFormatExtensible(_outputformat.SampleRate, _outputformat.BitsPerSample,
-            _outputformat.Channels, WaveFormatExtensible.SubTypeFromWaveFormat(_outputformat), _channelMatrix.OutputMask);
+            Outputformat = new WaveFormatExtensible(
+                destSampleRate,
+                source.WaveFormat.BitsPerSample,
+                channelMatrix.OutputChannelCount,
+                WaveFormatExtensible.SubTypeFromWaveFormat(Outputformat),
+                channelMatrix.OutputMask);
 
-            Init(inputformat, outputformat);
-            _resampler.ResamplerProps.SetUserChannelMtx(_channelMatrix.GetMatrix());
+            Initialize(inputformat, Outputformat);
+            Resampler.ResamplerProps.SetUserChannelMtx(channelMatrix.GetOneDimensionalMatrix());
         }
     }
 }
