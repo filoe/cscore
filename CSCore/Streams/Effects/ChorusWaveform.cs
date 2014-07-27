@@ -3,7 +3,7 @@ namespace CSCore.Streams.Effects
     /// <summary>
     /// Default value is WaveformSin (used for <see cref="DmoChorusEffect.Waveform"/>).
     /// </summary>
-    public enum ChorusWaveform : int
+    public enum ChorusWaveform
     {
         /// <summary>
         /// Sine 

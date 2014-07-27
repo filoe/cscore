@@ -7,7 +7,7 @@ namespace CSCore.DMO.Effects
     ///     The DirectSoundFXCompressor interface is used to set and retrieve effect parameters.
     /// </summary>
     [Guid("4bbd1154-62f6-4e2c-a15c-d3b6c417f7a0")]
-    public class DirectSoundFXCompressor : DirectSoundFXBase<CompressorParameters>
+    public class DirectSoundFXCompressor : DirectSoundFxBase<CompressorParameters>
     {
         /// <summary>
         ///     Creates a DirectSoundFXCompressor wrapper based on a pointer to a IDirectSoundFXCompressor cominterface.

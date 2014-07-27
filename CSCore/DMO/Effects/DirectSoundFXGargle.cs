@@ -7,7 +7,7 @@ namespace CSCore.DMO.Effects
     ///     The IDirectSoundFXChorus interface is used to set and retrieve effect parameters.
     /// </summary>
     [Guid("d616f352-d622-11ce-aac5-0020af0b99a3")]
-    public class DirectSoundFXGargle : DirectSoundFXBase<GargleParameters>
+    public class DirectSoundFXGargle : DirectSoundFxBase<GargleParameters>
     {
         /// <summary>
         ///     Creates a DirectSoundFXGargle wrapper based on a pointer to a IDirectSoundFXGargle cominterface.

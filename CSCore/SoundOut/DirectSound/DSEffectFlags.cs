@@ -1,6 +1,6 @@
 ﻿namespace CSCore.SoundOut.DirectSound
 {
-    public enum DSEffectFlags : int
+    public enum DSEffectFlags
     {
         Default = 0,
         LocHardware = 1,

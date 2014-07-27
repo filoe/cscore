@@ -7,7 +7,7 @@ namespace CSCore.DMO.Effects
     ///     The DirectSoundFXReverb interface is used to set and retrieve effect parameters.
     /// </summary>
     [Guid("46858c3a-0dc6-45e3-b760-d4eef16cb325")]
-    public class DirectSoundFXWavesReverb : DirectSoundFXBase<WavesReverbParameters>
+    public class DirectSoundFXWavesReverb : DirectSoundFxBase<WavesReverbParameters>
     {
         /// <summary>
         ///     Creates a DirectSoundFXWavesReverb wrapper based on a pointer to a IDirectSoundFXWavesReverb cominterface.

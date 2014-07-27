@@ -7,7 +7,7 @@ namespace CSCore.DMO.Effects
     ///     The DirectSoundFXFlanger interface is used to set and retrieve effect parameters.
     /// </summary>
     [Guid("903e9878-2c92-4072-9b2c-ea68f5396783")]
-    public class DirectSoundFXFlanger : DirectSoundFXBase<FlangerParameters>
+    public class DirectSoundFXFlanger : DirectSoundFxBase<FlangerParameters>
     {
         /// <summary>
         ///     Creates a DirectSoundFXFlanger wrapper based on a pointer to a IDirectSoundFXFlanger cominterface.

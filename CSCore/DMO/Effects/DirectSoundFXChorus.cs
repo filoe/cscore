@@ -7,7 +7,7 @@ namespace CSCore.DMO.Effects
     ///     The IDirectSoundFXChorus interface is used to set and retrieve effect parameters.
     /// </summary>
     [Guid("880842e3-145f-43e6-a934-a71806e50547")]
-    public class DirectSoundFXChorus : DirectSoundFXBase<ChorusParameters>
+    public class DirectSoundFXChorus : DirectSoundFxBase<ChorusParameters>
     {
         /// <summary>
         ///     Creates a DirectSoundFXChorus wrapper based on a pointer to a IDirectSoundFXChorus cominterface.

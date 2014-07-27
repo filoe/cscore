@@ -393,6 +393,9 @@
     <Compile Include="Streams\Effects\FlangerPhase.cs" />
     <Compile Include="Streams\Effects\FlangerWaveform.cs" />
     <Compile Include="Streams\Effects\GargleWaveShape.cs" />
+    <Compile Include="Streams\FadeInOut.cs" />
+    <Compile Include="Streams\IFadeStrategy.cs" />
+    <Compile Include="Streams\LinearFadeStrategy.cs" />
     <Compile Include="Streams\PeakEventArgs.cs" />
     <Compile Include="Streams\PeakMeter.cs" />
     <Compile Include="Streams\SynchronizedWaveSource.cs" />
@@ -501,10 +504,7 @@
     <Compile Include="MediaFoundation\MFWaveFormatExConvertFlags.cs" />
     <Compile Include="SoundIn\WaveInEvent.cs" />
     <Compile Include="SoundIn\WaveInWindow.cs" />
-    <Compile Include="Streams\AutoGain.cs" />
     <Compile Include="Streams\BlockReadEventArgs.cs" />
-    <Compile Include="Streams\Effects\Echo.cs" />
-    <Compile Include="Streams\FadeInOut.cs" />
     <Compile Include="Streams\GainSource.cs" />
     <Compile Include="Streams\MonoToStereoSource.cs" />
     <Compile Include="Streams\NotificationSource.cs" />
@@ -580,7 +580,6 @@
     <Compile Include="MediaFoundation\MFTMessageType.cs" />
     <Compile Include="DMO\WMResampler.cs" />
     <Compile Include="DSP\DmoResampler.cs" />
-    <Compile Include="DSP\FFTCalculatedEventArgs.cs" />
     <Compile Include="ISampleSource.cs" />
     <Compile Include="IWaveAggregator.cs" />
     <Compile Include="IWaveSource.cs" />
@@ -670,8 +669,6 @@
     <Compile Include="SoundOut\MMInterop\WaveOutCaps.cs" />
     <Compile Include="SoundOut\ISoundOut.cs" />
     <Compile Include="SoundOut\PlaybackState.cs" />
-    <Compile Include="Streams\Effects\WahWah.cs" />
-    <Compile Include="Streams\Effects\EffectBase.cs" />
     <Compile Include="Streams\LoopStream.cs" />
     <Compile Include="Streams\SampleConverter\Pcm16BitToSample.cs" />
     <Compile Include="Streams\SampleConverter\Pcm24BitToSample.cs" />
@@ -709,9 +706,9 @@ set sdk=C:\Program Files (x86)\Microsoft SDKs\Windows\v8.1A\bin\NETFX 4.5.1 Tool
 set project=$(ProjectPath)
 
 if $(ConfigurationName) == Debug (
-set ilasm_args="/DLL /OPTIMIZE /DEBUG"
+set ilasm_args=/DLL /DEBUG=IMPL
 ) else (
-set ilasm_args="/DLL /OPTIMIZE"
+set ilasm_args=/DLL /OPTIMIZE
 )
 
 set framework=%25WINDIR%25\Microsoft.NET\Framework\v2.0.50727

@@ -8,11 +8,15 @@ namespace CSCore.CoreAudioAPI
     public abstract class AudioSessionEventContextEventArgs : EventArgs
     {
         /// <summary>
-        /// The event context value.
+        /// Gets the event context value.
         /// </summary>
         public Guid EventContext { get; private set; }
 
-        public AudioSessionEventContextEventArgs(Guid eventContext)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AudioSessionEventContextEventArgs"/> class.
+        /// </summary>
+        /// <param name="eventContext">The event context value.</param>
+        protected AudioSessionEventContextEventArgs(Guid eventContext)
         {
             EventContext = eventContext;
         }

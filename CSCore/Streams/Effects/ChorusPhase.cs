@@ -3,7 +3,7 @@ namespace CSCore.Streams.Effects
     /// <summary>
     /// Default value is Phase90 (used for <see cref="DmoChorusEffect.Phase"/>).
     /// </summary>
-    public enum ChorusPhase : int
+    public enum ChorusPhase
     {
         /// <summary>
         /// 180° Phase.

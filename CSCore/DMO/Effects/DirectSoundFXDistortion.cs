@@ -7,7 +7,7 @@ namespace CSCore.DMO.Effects
     ///     The DirectSoundFXDistortion interface is used to set and retrieve effect parameters.
     /// </summary>
     [Guid("8ecf4326-455f-4d8b-bda9-8d5d3e9e3e0b")]
-    public class DirectSoundFXDistortion : DirectSoundFXBase<DistortionParameters>
+    public class DirectSoundFXDistortion : DirectSoundFxBase<DistortionParameters>
     {
         /// <summary>
         ///     Creates a DirectSoundFXDistortion wrapper based on a pointer to a IDirectSoundFXDistortion cominterface.

@@ -3,7 +3,7 @@ using System;
 namespace CSCore.MediaFoundation
 {
     [Flags]
-    public enum MFByteStreamCapsFlags : int
+    public enum MFByteStreamCapsFlags
     {
         None = 0x0,
         IsReadable = 0x00000001,

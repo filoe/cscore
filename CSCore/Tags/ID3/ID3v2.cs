@@ -91,9 +91,6 @@ namespace CSCore.Tags.ID3
 
         private bool ReadData(Stream stream, bool readData)
         {
-
-            bool success = true;
-
             if ((_header = ID3v2Header.FromStream(stream)) != null)
             {
                 byte[] buffer = new byte[_header.DataLength];
@@ -110,15 +107,15 @@ namespace CSCore.Tags.ID3
                 switch (_header.Version)
                 {
                     case ID3Version.ID3v2_2:
-                        success &= Parse2(contentStream);
+                        Parse2(contentStream);
                         break;
 
                     case ID3Version.ID3v2_3:
-                        success &= Parse3(contentStream);
+                        Parse3(contentStream);
                         break;
 
                     case ID3Version.ID3v2_4:
-                        success &= Parse4(contentStream);
+                        Parse4(contentStream);
                         break;
 
                     default:

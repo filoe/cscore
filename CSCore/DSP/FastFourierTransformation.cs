@@ -8,8 +8,6 @@ namespace CSCore.DSP
     /// </summary>
     public static class FastFourierTransformation
     {
-        private const double MinDB = -96;
-
         /// <summary>
         /// Obsolete. Use the <see cref="Complex.Value"/> property instead.
         /// </summary>
@@ -27,6 +25,7 @@ namespace CSCore.DSP
         /// <param name="n">Current index of the input signal.</param>
         /// <param name="N">Window width.</param>
         /// <returns>Hamming window multiplier.</returns>
+// ReSharper disable once InconsistentNaming
         public static double HammingWindow(int n, int N)
         {
             //according to Wikipedia we could also use alpha=0.53836 and beta=0.46164
@@ -41,6 +40,7 @@ namespace CSCore.DSP
         /// <param name="n">Current index of the input signal.</param>
         /// <param name="N">Window width.</param>
         /// <returns>Hamming Window multiplier.</returns>
+// ReSharper disable once InconsistentNaming
         public static float HammingWindowF(int n, int N)
         {
             //according to Wikipedia we could also use alpha=0.53836 and beta=0.46164

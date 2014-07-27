@@ -3,7 +3,7 @@
     /// <summary>
     /// Defines common HRESULT error codes.
     /// </summary>
-    public enum HResult : int
+    public enum HResult
     {
         S_OK = 0x0,
         S_FALSE = 0x1,

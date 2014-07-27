@@ -6,7 +6,7 @@ using System.Text;
 namespace CSCore.SoundOut.MMInterop
 {
     [System.Flags]
-    public enum WaveCapsSupported : int
+    public enum WaveCapsSupported
     {
         WAVECAPS_PITCH = 1,
         WAVECAPS_PLAYBACKRATE = 2,

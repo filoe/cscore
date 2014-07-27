@@ -13,7 +13,7 @@ namespace CSCore.Streams.Effects
     /// <typeparam name="TDXEffect">DMO effect itself.</typeparam>
     /// <typeparam name="TDXEffectStruct">Parameter struct of the DMO effect.</typeparam>
     public abstract class DmoEffectBase<TDXEffect, TDXEffectStruct> : DmoAggregator 
-        where TDXEffect : DMO.Effects.DirectSoundFXBase<TDXEffectStruct>
+        where TDXEffect : DMO.Effects.DirectSoundFxBase<TDXEffectStruct>
         where TDXEffectStruct : struct
     {
         private Object _comObj;

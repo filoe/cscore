@@ -7,13 +7,13 @@ namespace CSCore.DMO.Effects
     /// <summary>
     ///     Base class for any DirectSoundEffect.
     /// </summary>
-    public abstract class DirectSoundFXBase<T> : ComObject where T : struct
+    public abstract class DirectSoundFxBase<T> : ComObject where T : struct
     {
         /// <summary>
         ///     Default ctor for a ComObject.
         /// </summary>
         /// <param name="ptr">Pointer of a DirectSoundEffect interface.</param>
-        public DirectSoundFXBase(IntPtr ptr)
+        protected DirectSoundFxBase(IntPtr ptr)
             : base(ptr)
         {
         }
@@ -33,7 +33,7 @@ namespace CSCore.DMO.Effects
         }
 
         /// <summary>
-        ///     Gets the COM-Interface name of the Effect interface. Used for generating error messages.
+        ///     Gets the name of the COM interface. Used for generating error messages.
         /// </summary>
         protected abstract string InterfaceName { get; }
 

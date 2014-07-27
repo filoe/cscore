@@ -40,106 +40,144 @@ namespace CSCore
         }
 
         /// <summary>
-        ///     Changes the SampleRate of an already existing source.
+        ///     Changes the SampleRate of an already existing wave source.
         /// </summary>
-        /// <typeparam name="TInput">Input</typeparam>
-        /// <param name="input">Already existing source whose sample rate has to be changed.</param>
-        /// <param name="destSampleRate">Destination sample rate.</param>
-        /// <returns>Instance of the <see cref="DmoResampler"/> which resamples the specified <paramref name="input"/> source.</returns>
-        public static IWaveSource ChangeSampleRate<TInput>(this TInput input, int destSampleRate)
-            where TInput : class, IWaveStream
+        /// <param name="input">Already existing wave source whose sample rate has to be changed.</param>
+        /// <param name="destinationSampleRate">Destination sample rate.</param>
+        /// <returns>Wave source with the specified <paramref name="destinationSampleRate"/>.</returns>
+        public static IWaveSource ChangeSampleRate(this IWaveSource input, int destinationSampleRate)
         {
             if (input == null)
                 throw new ArgumentNullException("input");
 
-            if (destSampleRate <= 0)
-                throw new ArgumentOutOfRangeException("destSampleRate");
+            if (destinationSampleRate <= 0)
+                throw new ArgumentOutOfRangeException("destinationSampleRate");
 
-            var source = input as IWaveSource;
-            if (source == null)
-            {
-                if (input is ISampleSource)
-                    source = ((ISampleSource) input).ToWaveSource();
-                else
-                    throw new ArgumentException("Not supported input type.", "input");
-            }
+            if (input.WaveFormat.SampleRate == destinationSampleRate)
+                return input;
 
-            if (input.WaveFormat.SampleRate == destSampleRate)
-                return source;
-
-            return new DmoResampler(source, destSampleRate);
+            return new DmoResampler(input, destinationSampleRate);
         }
 
         /// <summary>
-        /// Converts the specified <paramref name="input"/> source to a stereo source.
+        ///     Changes the SampleRate of an already existing sample source. Note: This extension has to convert the <paramref name="input"/> to a <see cref="IWaveSource"/> and back to a <see cref="ISampleSource"/>.
         /// </summary>
-        /// <typeparam name="TInput">Input</typeparam>
-        /// <param name="input">Already existing source.</param>
+        /// <param name="input">Already existing sample source whose sample rate has to be changed.</param>
+        /// <param name="destinationSampleRate">Destination sample rate.</param>
+        /// <returns>Sample source with the specified <paramref name="destinationSampleRate"/>.</returns>
+        public static ISampleSource ChangeSampleRate(this ISampleSource input, int destinationSampleRate)
+        {
+            if (input == null)
+                throw new ArgumentNullException("input");
+
+            if (destinationSampleRate <= 0)
+                throw new ArgumentOutOfRangeException("destinationSampleRate");
+
+            if (input.WaveFormat.SampleRate == destinationSampleRate)
+                return input;
+
+            return new DmoResampler(input.ToWaveSource(), destinationSampleRate).ToSampleSource();
+        }
+
+
+        /// <summary>
+        /// Converts the specified wave source with n channels to a wave source with two channels.
+        /// Note: If the <see cref="input"/> has only one channel, the <see cref="ToStereo(CSCore.IWaveSource)"/> extension has to convert the <paramref name="input"/> to a <see cref="ISampleSource"/> and back to a <see cref="IWaveSource"/>.        
+        /// </summary>
+        /// <param name="input">Already existing wave source.</param>
         /// <returns><see cref="IWaveSource"/> instance with two channels.</returns>
-        public static IWaveSource ToStereo<TInput>(this TInput input)
-            where TInput : class, IWaveStream
+        public static IWaveSource ToStereo(this IWaveSource input)
         {
             if(input == null)
                 throw new ArgumentNullException("input");
 
             if (input.WaveFormat.Channels == 2)
             {
-                if (input is IWaveSource)
-                    return (IWaveSource) input;
-                if (input is ISampleSource)
-                    return ((ISampleSource) input).ToWaveSource();
-                throw new ArgumentException("Unknown input type.", "input");
+                return input;
             }
             if (input.WaveFormat.Channels == 1)
             {
                 return new MonoToStereoSource(input).ToWaveSource();
             }
 
-            IWaveSource waveSource = input as IWaveSource;
-            if (waveSource == null && input is ISampleSource)
-                waveSource = ((ISampleSource) input).ToWaveSource();
-            else
-                throw new ArgumentException("Unknown input type.", "input");
-
             var dstWaveFormat = (WaveFormat)input.WaveFormat.Clone();
             dstWaveFormat.Channels = 2;
-            return new DmoResampler(waveSource, dstWaveFormat);
+            return new DmoResampler(input, dstWaveFormat);
         }
 
         /// <summary>
-        /// Converts the specified <paramref name="input"/> source to a mono source.
+        /// Converts the specified sample source with n channels to a wave source with two channels.
+        /// Note: If the <see cref="input"/> has more than two channels, the <see cref="ToStereo(CSCore.ISampleSource)"/> extension has to convert the <paramref name="input"/> to a <see cref="IWaveSource"/> and back to a <see cref="ISampleSource"/>.
         /// </summary>
-        /// <typeparam name="TInput">Input</typeparam>
-        /// <param name="input">Already existing source.</param>
+        /// <param name="input">Already existing sample source.</param>
+        /// <returns><see cref="ISampleSource"/> instance with two channels.</returns>
+        public static ISampleSource ToStereo(this ISampleSource input)
+        {
+            if (input == null)
+                throw new ArgumentNullException("input");
+
+            if (input.WaveFormat.Channels == 2)
+            {
+                return input;
+            }
+            if (input.WaveFormat.Channels == 1)
+            {
+                return new MonoToStereoSource(input);
+            }
+
+            var dstWaveFormat = (WaveFormat)input.WaveFormat.Clone();
+            dstWaveFormat.Channels = 2;
+            return new DmoResampler(input.ToWaveSource(), dstWaveFormat).ToSampleSource();
+        }
+
+        /// <summary>
+        /// Converts the specified wave source with n channels to a wave source with one channel.
+        /// Note: If the <see cref="input"/> has two channels, the <see cref="ToMono(CSCore.IWaveSource)"/> extension has to convert the <paramref name="input"/> to a <see cref="ISampleSource"/> and back to a <see cref="IWaveSource"/>.        
+        /// </summary>
+        /// <param name="input">Already existing wave source.</param>
         /// <returns><see cref="IWaveSource"/> instance with one channel.</returns>
-        public static IWaveSource ToMono<TInput>(this TInput input)
-            where TInput : class, IWaveStream
+        public static IWaveSource ToMono(this IWaveSource input)
         {
             if (input == null)
                 throw new ArgumentNullException("input");
 
             if (input.WaveFormat.Channels == 1)
             {
-                if (input is IWaveSource)
-                    return (IWaveSource)input;
-                if (input is ISampleSource)
-                    return ((ISampleSource)input).ToWaveSource();
-                throw new ArgumentException("Unknown input type.", "input");
+                return input;
             }
             if (input.WaveFormat.Channels == 2)
             {
                 return new StereoToMonoSource(input).ToWaveSource();
             }
 
-            IWaveSource waveSource = input as IWaveSource;
-            if (waveSource == null && input is ISampleSource)
-                waveSource = ((ISampleSource)input).ToWaveSource();
-            else
-                throw new ArgumentException("Unknown input type.", "input");
+            var dstWaveFormat = (WaveFormat)input.WaveFormat.Clone();
+            dstWaveFormat.Channels = 1;
+            return new DmoResampler(input, dstWaveFormat);
+        }
+
+        /// <summary>
+        /// Converts the specified sample source with n channels to a wave source with one channel.
+        /// Note: If the <see cref="input"/> has only one channel, the <see cref="ToMono(CSCore.ISampleSource)"/> extension has to convert the <paramref name="input"/> to a <see cref="IWaveSource"/> and back to a <see cref="ISampleSource"/>.
+        /// </summary>
+        /// <param name="input">Already existing sample source.</param>
+        /// <returns><see cref="ISampleSource"/> instance with one channels</returns>
+        public static ISampleSource ToMono(this ISampleSource input)
+        {
+            if (input == null)
+                throw new ArgumentNullException("input");
+
+            if (input.WaveFormat.Channels == 1)
+            {
+                return input;
+            }
+            if (input.WaveFormat.Channels == 2)
+            {
+                return new StereoToMonoSource(input);
+            }
 
             var dstWaveFormat = (WaveFormat)input.WaveFormat.Clone();
             dstWaveFormat.Channels = 1;
-            return new DmoResampler(waveSource, dstWaveFormat);
+            return new DmoResampler(input.ToWaveSource(), dstWaveFormat).ToSampleSource();
         }
     }
 }

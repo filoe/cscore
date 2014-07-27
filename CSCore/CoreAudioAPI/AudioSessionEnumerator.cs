@@ -1,8 +1,6 @@
 ﻿using CSCore.Win32;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Runtime.InteropServices;
 
 namespace CSCore.CoreAudioAPI
@@ -14,8 +12,12 @@ namespace CSCore.CoreAudioAPI
     [Guid("E2F5BB11-0570-40CA-ACDD-3AA01277DEE8")]
     public class AudioSessionEnumerator : ComObject, IEnumerable<AudioSessionControl>
     {
-        private const string c = "IAudioSessionEnumerator";
+        private const string InterfaceName = "IAudioSessionEnumerator";
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AudioSessionEnumerator"/> class.
+        /// </summary>
+        /// <param name="ptr">The native pointer of the <see cref="AudioSessionEnumerator"/> object.</param>
         public AudioSessionEnumerator(IntPtr ptr)
             : base(ptr)
         {
@@ -29,7 +31,7 @@ namespace CSCore.CoreAudioAPI
             get
             {
                 int count;
-                CoreAudioAPIException.Try(GetCountNative(out count), c, "GetCount");
+                CoreAudioAPIException.Try(GetCountNative(out count), InterfaceName, "GetCount");
                 return count;
             }
         }
@@ -77,7 +79,7 @@ namespace CSCore.CoreAudioAPI
         public AudioSessionControl GetSession(int index)
         {
             AudioSessionControl session;
-            CoreAudioAPIException.Try(GetSessionNative(index, out session), c, "GetSession");
+            CoreAudioAPIException.Try(GetSessionNative(index, out session), InterfaceName, "GetSession");
             return session;
         }
 

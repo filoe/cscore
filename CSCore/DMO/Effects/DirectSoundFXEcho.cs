@@ -7,7 +7,7 @@ namespace CSCore.DMO.Effects
     ///     The IDirectSoundFXEcho interface is used to set and retrieve effect parameters.
     /// </summary>
     [Guid("8bd28edf-50db-4e92-a2bd-445488d1ed42")]
-    public class DirectSoundFXEcho : DirectSoundFXBase<EchoParameters>
+    public class DirectSoundFXEcho : DirectSoundFxBase<EchoParameters>
     {
         /// <summary>
         ///     Creates a DirectSoundFXEcho wrapper based on a pointer to a IDirectSoundFXEcho cominterface.

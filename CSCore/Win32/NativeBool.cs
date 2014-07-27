@@ -16,7 +16,7 @@ namespace CSCore.Win32
         public static readonly NativeBool True = new NativeBool(true);
         public static readonly NativeBool False = new NativeBool(false);
 
-        private int _value;
+        private readonly int _value;
 
         public NativeBool(bool value)
         {

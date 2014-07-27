@@ -5,7 +5,7 @@ using System.IO;
 
 namespace CSCore.Codecs.FLAC
 {
-    public class FlacFrameHeader
+    public sealed class FlacFrameHeader
     {
         private int _blocksizeHint = 0; //if bsindex == 6 || 7
         private int _sampleRateHint = 0; //if sampleRateIndex == 12 || 13 || 14
@@ -75,7 +75,7 @@ namespace CSCore.Codecs.FLAC
             HasError = !ParseHeader(ref buffer, streamInfo);
         }
 
-        protected unsafe bool ParseHeader(Stream stream, FlacMetadataStreamInfo streamInfo)
+        private unsafe bool ParseHeader(Stream stream, FlacMetadataStreamInfo streamInfo)
         {
             const string loggerLocation = "FlacFrameHeader.ParseHeader(Stream, FlacMetadataStreamInfo)";
 
@@ -99,7 +99,7 @@ namespace CSCore.Codecs.FLAC
             }
         }
 
-        protected unsafe virtual bool ParseHeader(ref byte* headerBuffer, FlacMetadataStreamInfo streamInfo)
+        private unsafe bool ParseHeader(ref byte* headerBuffer, FlacMetadataStreamInfo streamInfo)
         {
             const string loggerLocation = "FlacFrameHeader.ParseHeader(byte*, FlacMetadataStreamInfo)";
             int x = -1; //tmp value to store in
