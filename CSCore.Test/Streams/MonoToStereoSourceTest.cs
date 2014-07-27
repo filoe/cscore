@@ -10,7 +10,7 @@ namespace CSCore.Test.Streams
     [TestClass]
     public class MonoToStereoSourceTest
     {
-        const string testfile = GlobalTestConfig.testMP3;
+        const string testfile = GlobalTestConfig.TestMp3;
 
         [TestMethod] 
         [TestCategory("Streams")]

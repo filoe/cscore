@@ -34,7 +34,7 @@ namespace CSCore.Test.XAudio2
         [TestInitialize]
         public void Initialize()
         {
-            _source = CodecFactory.Instance.GetCodec(GlobalTestConfig.testMP3);
+            _source = CodecFactory.Instance.GetCodec(GlobalTestConfig.TestMp3);
             _xaudio2 = CreateXAudio2();
         }
 
@@ -187,7 +187,7 @@ namespace CSCore.Test.XAudio2
                     xaudio2.StartEngine();
 
                     using (var masteringVoice = xaudio2.CreateMasteringVoice())
-                    using (var source = CodecFactory.Instance.GetCodec(GlobalTestConfig.testWav2s))
+                    using (var source = CodecFactory.Instance.GetCodec(GlobalTestConfig.TestWav2S))
                     using (var pool = new StreamingSourceVoiceListener())
                     using (var streamingSourceVoice = StreamingSourceVoice.Create(xaudio2, source))
                     {

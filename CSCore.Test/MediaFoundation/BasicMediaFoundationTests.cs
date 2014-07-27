@@ -29,7 +29,7 @@ namespace CSCore.Test.MediaFoundation
         public void CanCreateSourceReaderFromUrl()
         {
             MediaFoundationCore.Startup();
-            using (var reader = MediaFoundationCore.CreateSourceReaderFromUrl(GlobalTestConfig.testMP3))
+            using (var reader = MediaFoundationCore.CreateSourceReaderFromUrl(GlobalTestConfig.TestMp3))
             {
                 Assert.IsNotNull(reader);
             }
@@ -41,7 +41,7 @@ namespace CSCore.Test.MediaFoundation
         public void CanCreateSourceReaderFromIOStream()
         {
             MediaFoundationCore.Startup();
-            var stream = File.OpenRead(GlobalTestConfig.testMP3);
+            var stream = File.OpenRead(GlobalTestConfig.TestMp3);
             using (var comstream = new ComStream(stream))
             {
                 var byteStream = MediaFoundationCore.IStreamToByteStream(comstream);

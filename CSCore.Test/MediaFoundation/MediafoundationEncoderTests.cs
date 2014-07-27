@@ -9,7 +9,7 @@ namespace CSCore.Test.MediaFoundation
     [TestClass]
     public class MediafoundationEncoderTests
     {
-        const string testfile = GlobalTestConfig.testWav2s;
+        const string testfile = GlobalTestConfig.TestWav2S;
 
         [TestMethod]
         [TestCategory("MediaFoundation")]

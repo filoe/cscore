@@ -17,7 +17,7 @@ namespace CSCore.Test.SoundOut
     [TestClass]
     public class SoundOutBehaviourTest
     {
-        const int basic_iteration_count = 5;
+        const int basic_iteration_count = 50;
         const int MinuteMilliseconds = 60000 * 300;
 
         [TestMethod]
@@ -213,7 +213,7 @@ namespace CSCore.Test.SoundOut
 
         private IWaveSource GetWaveSource()
         {
-            return CodecFactory.Instance.GetCodec(GlobalTestConfig.testWav2s);
+            return CodecFactory.Instance.GetCodec(GlobalTestConfig.TestWav2S);
         }
 
         private void CanHandleEOFOnReplayTestInternal(ISoundOut soundOut, IWaveSource source)
