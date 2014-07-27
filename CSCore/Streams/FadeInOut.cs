@@ -1,114 +1,67 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace CSCore.Streams
 {
-    public class FadeInOut : VolumeSource
+    /// <summary>
+    ///     Provides the ability use an implementation of the <see cref="IFadeStrategy" /> interface fade waveform-audio data.
+    /// </summary>
+    public class FadeInOut : SampleSourceBase
     {
-        public event EventHandler FadeFinished;
+        private volatile IFadeStrategy _fadeStrategy;
 
-        public override float Volume
-        {
-            get
-            {
-                return base.Volume;
-            }
-            set
-            {
-                throw new InvalidOperationException();
-            }
-        }
-
-        public float TargetVolume
-        {
-            get { return _targetVolume; }
-        }
-
-        public int Duration
-        {
-            get { return _duration; }
-        }
-
-        private bool _fade;
-        private int _duration;
-
-        private int _samplesRead = 0;
-        private float _step = 0;
-        private int _blockSize = 0;
-        private float _targetVolume = 1f;
-
-        public FadeInOut(IWaveStream source, float initialVolume)
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="FadeInOut" /> class.
+        /// </summary>
+        /// <param name="source">The underlying source to use.</param>
+        public FadeInOut(IWaveStream source)
             : base(source)
         {
-            base.Volume = initialVolume;
         }
 
-        public void StartFading(int duration, float targetVolume)
+        /// <summary>
+        ///     Gets or sets the fade strategy to use.
+        /// </summary>
+        public IFadeStrategy FadeStrategy
         {
-            StartFading(duration, targetVolume, -1, 10);
+            get { return _fadeStrategy; }
+            set
+            {
+                if (_fadeStrategy != value && value != null)
+                {
+                    _fadeStrategy = value;
+                    _fadeStrategy.SampleRate = WaveFormat.SampleRate;
+                    _fadeStrategy.Channels = WaveFormat.Channels;
+                }
+            }
         }
 
-        public void StartFading(int duration, float targetVolume, float startVolume, int resolution)
-        {
-            if (duration <= 0)
-                throw new ArgumentOutOfRangeException("duration");
-            if (targetVolume < 0 || targetVolume > 1)
-                throw new ArgumentOutOfRangeException("targetVolume");
-            if (resolution < 0)
-                throw new ArgumentOutOfRangeException("resolution");
-
-            if (startVolume == -1)
-                startVolume = base.Volume;
-
-            base.Volume = startVolume;
-
-            _fade = true;
-
-            this._duration = duration;
-            this._targetVolume = targetVolume;
-            _blockSize = (WaveFormat.SampleRate * WaveFormat.Channels) / resolution;
-            _blockSize -= (_blockSize % WaveFormat.BlockAlign);
-            if (_blockSize <= 0)
-                throw new InvalidOperationException("c");
-
-            _step = (targetVolume - Volume) / (WaveFormat.SampleRate * WaveFormat.Channels * duration) * _blockSize;
-        }
-
-        public void StopFading()
-        {
-            _fade = false;
-            _samplesRead = 0;
-        }
-
+        /// <summary>
+        ///     Reads a sequence of samples from the <see cref="FadeInOut" /> class and advances the position within the stream by
+        ///     the number of samples read.
+        /// </summary>
+        /// <param name="buffer">
+        ///     An array of floats. When this method returns, the <paramref name="buffer" /> contains the specified
+        ///     float array with the values between <paramref name="offset" /> and (<paramref name="offset" /> +
+        ///     <paramref name="count" /> - 1) replaced by the floats read from the current source.
+        /// </param>
+        /// <param name="offset">
+        ///     The zero-based offset in the <paramref name="buffer" /> at which to begin storing the data
+        ///     read from the current stream.
+        /// </param>
+        /// <param name="count">The maximum number of samples to read from the current source.</param>
+        /// <returns>The total number of samples read into the buffer.</returns>
         public override int Read(float[] buffer, int offset, int count)
         {
-            if (_fade && Volume == _targetVolume)
-            {
-                if (FadeFinished != null)
-                    FadeFinished(this, new EventArgs());
-                _fade = false;
-            }
-
-            if (!_fade)
-                return base.Read(buffer, offset, count);
-
             int read = 0;
-
             while (read < count)
             {
-                int r = base.Read(buffer, offset, Math.Min(_blockSize, count));
+                int r = base.Read(buffer, offset, count);
+                if (r == 0)
+                    break;
+
+                if (_fadeStrategy != null)
+                    _fadeStrategy.ApplyFading(buffer, offset, r);
+
                 read += r;
                 offset += r;
-                _samplesRead += r;
-                count -= r;
-
-                if (_samplesRead >= _blockSize)
-                {
-                    base.Volume = Math.Max(0, Math.Min(1, base.Volume + _step));
-                    _samplesRead = 0;
-                }
             }
 
             return read;
