@@ -59,7 +59,7 @@
             // 
             // updateTimer
             // 
-            this.updateTimer.Interval = 5;
+            this.updateTimer.Interval = 30;
             this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
             // 
             // MainWindow

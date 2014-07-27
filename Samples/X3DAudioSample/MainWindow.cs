@@ -9,6 +9,7 @@ namespace X3DAudioSample
 {
     public partial class MainWindow : Form
     {
+        public const double DurationPerPass = 5000; //in ms
         public const double Radius = 5000;
         private readonly AudioPlayer _audioPlayer = new AudioPlayer();
         private double _angle;
@@ -35,7 +36,7 @@ namespace X3DAudioSample
             var center = new Vector3(0);
 
             _audioPlayer.EmitterPosition = CalculatePosition(center, _angle, Radius);
-            _angle += 0.5;
+            _angle += (360 / DurationPerPass) * updateTimer.Interval;
 
             pictureBox.Invalidate();
         }
