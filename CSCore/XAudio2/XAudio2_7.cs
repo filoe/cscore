@@ -86,7 +86,7 @@ namespace CSCore.XAudio2
         ///     mode.
         /// </param>
         /// <param name="processor">
-        ///     Specifies which CPU to use. Use <see cref="XAudio2Processor.Xaudio2DefaultProcessor" /> as
+        ///     Specifies which CPU to use. Use <see cref="XAudio2Processor.Xaudio27DefaultProcessor" /> as
         ///     default value.
         /// </param>
         /// <remarks>This constructor already calls <see cref="Initialize" />. Don't call it a second time.</remarks>
@@ -181,8 +181,7 @@ namespace CSCore.XAudio2
         /// </summary>
         /// <param name="flags">Flags that specify the behavior of the XAudio2 object. This value must be 0.</param>
         /// <param name="processor">
-        ///     Specifies which CPU to use. Use <see cref="XAudio2Processor.Xaudio2DefaultProcessor" /> as
-        ///     default value.
+        ///     Specifies which CPU to use. Use <see cref="XAudio2Processor.Xaudio27DefaultProcessor" /> as default value.
         /// </param>
         /// <returns>HRESULT</returns>
         public unsafe int InitializeNative(int flags, XAudio2Processor processor)
@@ -195,8 +194,7 @@ namespace CSCore.XAudio2
         /// </summary>
         /// <param name="flags">Flags that specify the behavior of the XAudio2 object. This value must be 0.</param>
         /// <param name="processor">
-        ///     Specifies which CPU to use. Use <see cref="XAudio2Processor.Xaudio2DefaultProcessor" /> as
-        ///     default value.
+        ///     Specifies which CPU to use. Use <see cref="XAudio2Processor.Xaudio27DefaultProcessor" /> as default value.
         /// </param>
         public void Initialize(int flags, XAudio2Processor processor)
         {

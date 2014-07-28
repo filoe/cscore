@@ -218,11 +218,11 @@ namespace CSCore
         }
 
         /// <summary>
-        /// Creates a thread-safe (synchronized) wrapper around the specified <see cref="TWaveSource"/> object.
+        /// Creates a thread-safe (synchronized) wrapper around the specified <typeparamref name="TWaveSource"/> object.
         /// </summary>
-        /// <param name="waveSource">The <see cref="TWaveSource"/> object to synchronize.</param>
+        /// <param name="waveSource">The <typeparamref name="TWaveSource"/> object to synchronize.</param>
         /// <typeparam name="TWaveSource">Type of the <paramref name="waveSource"/> argument.</typeparam>
-        /// <returns>A thread-safe wrapper around the specified <see cref="TWaveSource"/> object.</returns>
+        /// <returns>A thread-safe wrapper around the specified <typeparamref name="TWaveSource"/> object.</returns>
         /// <exception cref="ArgumentNullException">The <paramref name="waveSource"/> is null.</exception>
         public static SynchronizedWaveSource<TWaveSource> Synchronized<TWaveSource>(this TWaveSource waveSource)
             where TWaveSource : class, IWaveSource

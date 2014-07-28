@@ -4,7 +4,8 @@ using System.Runtime.InteropServices;
 namespace CSCore.XAudio2.X3DAudio
 {
     /// <summary>
-    /// Receives the results from a call to <see cref="X3DAudioCore.X3DAudioCalculate"/>. See http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.x3daudio.x3daudio_dsp_settings%28v=vs.85%29.aspx for more details.
+    /// Receives the results from a call to <see cref="X3DAudioCore.X3DAudioCalculate(Listener,Emitter,CalculateFlags,DspSettings)"/>. 
+    /// See http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.x3daudio.x3daudio_dsp_settings%28v=vs.85%29.aspx for more details.
     /// </summary>
     public sealed class DspSettings
     {
@@ -26,7 +27,7 @@ namespace CSCore.XAudio2.X3DAudio
             ///     coefficients that may be used to adjust a delay DSP effect placed in the effect chain. The
             ///     <see cref="DelayTimesPtr" /> member can
             ///     be NULL if the <see cref="CalculateFlags.Delay" /> flag is not specified when calling
-            ///     <see cref="X3DAudioCore.X3DAudioCalculate" />.
+            ///     <see cref="X3DAudioCore.X3DAudioCalculate(Listener,Emitter,CalculateFlags,DspSettings)"/>.
             ///     Note  This member is only returned when X3DAudio is initialized for stereo output. For typical Xbox 360 usage, it
             ///     will not return any data at all.
             /// </summary>
@@ -34,19 +35,19 @@ namespace CSCore.XAudio2.X3DAudio
 
             /// <summary>
             ///     Number of source channels. This must be initialized to the number of emitter channels before calling
-            ///     <see cref="X3DAudioCore.X3DAudioCalculate" />.
+            ///     <see cref="X3DAudioCore.X3DAudioCalculate(Listener,Emitter,CalculateFlags,DspSettings)" />.
             /// </summary>
             public int SrcChannelCount;
 
             /// <summary>
             ///     Number of source channels. This must be initialized to the number of emitter channels before calling
-            ///     <see cref="X3DAudioCore.X3DAudioCalculate" />.
+            ///     <see cref="X3DAudioCore.X3DAudioCalculate(Listener,Emitter,CalculateFlags,DspSettings)" />.
             /// </summary>
             public int DstChannelCount;
 
             /// <summary>
             ///     LPF direct-path coefficient. Only calculated if the <see cref="CalculateFlags.LpfDirect" /> flag is specified when
-            ///     calling <see cref="X3DAudioCore.X3DAudioCalculate" />.
+            ///     calling <see cref="X3DAudioCore.X3DAudioCalculate(Listener,Emitter,CalculateFlags,DspSettings)" />.
             ///     When using X3DAudio with XAudio2 the value returned in the LPFDirectCoefficient member would be applied to a low
             ///     pass filter on a source voice with <see cref="XAudio2Voice.SetFilterParameters" />.
             /// </summary>
@@ -54,13 +55,13 @@ namespace CSCore.XAudio2.X3DAudio
 
             /// <summary>
             ///     LPF reverb-path coefficient. Only calculated if the <see cref="CalculateFlags.LpfReverb" /> flag is specified when
-            ///     calling <see cref="X3DAudioCore.X3DAudioCalculate" />.
+            ///     calling <see cref="X3DAudioCore.X3DAudioCalculate(Listener,Emitter,CalculateFlags,DspSettings)" />.
             /// </summary>
             public float LPFReverbCoefficient;
 
             /// <summary>
             ///     Reverb send level. Only calculated if the <see cref="CalculateFlags.Reverb" /> flag is specified when calling
-            ///     <see cref="X3DAudioCore.X3DAudioCalculate" />.
+            ///     <see cref="X3DAudioCore.X3DAudioCalculate(Listener,Emitter,CalculateFlags,DspSettings)" />.
             /// </summary>
             public float ReverbLevel;
 
@@ -68,7 +69,7 @@ namespace CSCore.XAudio2.X3DAudio
             ///     Doppler shift factor. Scales the resampler ratio for Doppler shift effect, where:
             ///     <code>effective_frequency = DopplerFactor × original_frequency</code>.
             ///     Only calculated if the <see cref="CalculateFlags.Doppler" /> flag is specified when calling
-            ///     <see cref="X3DAudioCore.X3DAudioCalculate" />.
+            ///     <see cref="X3DAudioCore.X3DAudioCalculate(Listener,Emitter,CalculateFlags,DspSettings)" />.
             ///     When using X3DAudio with XAudio2 the value returned in the DopplerFactor would be applied to a source voice with
             ///     <see cref="XAudio2SourceVoice.SetFrequencyRatio(float)" />.
             /// </summary>
@@ -77,7 +78,7 @@ namespace CSCore.XAudio2.X3DAudio
             /// <summary>
             ///     Emitter-to-listener interior angle, expressed in radians with respect to the emitter's front orientation.
             ///     Only calculated if the <see cref="CalculateFlags.EmitterAngle" /> flag is specified when calling
-            ///     <see cref="X3DAudioCore.X3DAudioCalculate" />.
+            ///     <see cref="X3DAudioCore.X3DAudioCalculate(Listener,Emitter,CalculateFlags,DspSettings)" />.
             /// </summary>
             public float EmitterToListenerAngle;
 
@@ -90,14 +91,14 @@ namespace CSCore.XAudio2.X3DAudio
             ///     Component of emitter velocity vector projected onto emitter-to-listener vector in user-defined world units per
             ///     second.
             ///     Only calculated if the <see cref="CalculateFlags.Doppler" /> flag is specified when calling
-            ///     <see cref="X3DAudioCore.X3DAudioCalculate" />.
+            ///     <see cref="X3DAudioCore.X3DAudioCalculate(Listener,Emitter,CalculateFlags,DspSettings)" />.
             /// </summary>
             public float EmitterVelocityComponent;
 
             /// <summary>
             ///     Component of listener velocity vector projected onto the emitter->listener vector in user-defined world units per
             ///     second. Only calculated if the <see cref="CalculateFlags.Doppler" /> flag is specified when calling
-            ///     <see cref="X3DAudioCore.X3DAudioCalculate" />.
+            ///     <see cref="X3DAudioCore.X3DAudioCalculate(Listener,Emitter,CalculateFlags,DspSettings)" />.
             /// </summary>
             public float ListenerVelocityComponent;
         }
@@ -117,7 +118,7 @@ namespace CSCore.XAudio2.X3DAudio
         ///     must have at least <see cref="DstChannelCount" /> elements. X3DAudio doesn't actually perform the delay. It simply
         ///     returns the
         ///     coefficients that may be used to adjust a delay DSP effect placed in the effect chain. This won't be calculated if the <see cref="CalculateFlags.Delay" /> flag is not specified when calling
-        ///     <see cref="X3DAudioCore.X3DAudioCalculate" />.
+        ///     <see cref="X3DAudioCore.X3DAudioCalculate(Listener,Emitter,CalculateFlags,DspSettings)" />.
         /// </summary>
         public float[] DelayTimes { get; private set; }
 
@@ -141,7 +142,7 @@ namespace CSCore.XAudio2.X3DAudio
 
         /// <summary>
         ///     Gets the LPF direct-path coefficient. Only calculated if the <see cref="CalculateFlags.LpfDirect" /> flag is specified when
-        ///     calling <see cref="X3DAudioCore.X3DAudioCalculate" />.
+        ///     calling <see cref="X3DAudioCore.X3DAudioCalculate(Listener,Emitter,CalculateFlags,DspSettings)" />.
         ///     When using X3DAudio with XAudio2 the value returned in the LPFDirectCoefficient member would be applied to a low
         ///     pass filter on a source voice with <see cref="XAudio2Voice.SetFilterParameters" />.
         /// </summary>
@@ -152,7 +153,7 @@ namespace CSCore.XAudio2.X3DAudio
 
         /// <summary>
         ///     Gets the LPF reverb-path coefficient. Only calculated if the <see cref="CalculateFlags.LpfReverb" /> flag is specified when
-        ///     calling <see cref="X3DAudioCore.X3DAudioCalculate" />.
+        ///     calling <see cref="X3DAudioCore.X3DAudioCalculate(Listener,Emitter,CalculateFlags,DspSettings)" />.
         /// </summary>
         public float LPFReverbCoefficient
         {
@@ -161,7 +162,7 @@ namespace CSCore.XAudio2.X3DAudio
 
         /// <summary>
         ///     Gets the reverb send level. Only calculated if the <see cref="CalculateFlags.Reverb" /> flag is specified when calling
-        ///     <see cref="X3DAudioCore.X3DAudioCalculate" />.
+        ///     <see cref="X3DAudioCore.X3DAudioCalculate(Listener,Emitter,CalculateFlags,DspSettings)" />.
         /// </summary>
         public float ReverbLevel
         {
@@ -172,7 +173,7 @@ namespace CSCore.XAudio2.X3DAudio
         ///     Gets the doppler shift factor. Scales the resampler ratio for Doppler shift effect, where:
         ///     <code>effective_frequency = DopplerFactor × original_frequency</code>.
         ///     Only calculated if the <see cref="CalculateFlags.Doppler" /> flag is specified when calling
-        ///     <see cref="X3DAudioCore.X3DAudioCalculate" />.
+        ///     <see cref="X3DAudioCore.X3DAudioCalculate(Listener,Emitter,CalculateFlags,DspSettings)" />.
         ///     When using X3DAudio with XAudio2 the value returned in the DopplerFactor would be applied to a source voice with
         ///     <see cref="XAudio2SourceVoice.SetFrequencyRatio(float)" />.
         /// </summary>
@@ -184,7 +185,7 @@ namespace CSCore.XAudio2.X3DAudio
         /// <summary>
         ///     Gets the emitter-to-listener interior angle, expressed in radians with respect to the emitter's front orientation.
         ///     Only calculated if the <see cref="CalculateFlags.EmitterAngle" /> flag is specified when calling
-        ///     <see cref="X3DAudioCore.X3DAudioCalculate" />.
+        ///     <see cref="X3DAudioCore.X3DAudioCalculate(Listener,Emitter,CalculateFlags,DspSettings)" />.
         /// </summary>
         public float EmitterToListenerAngle
         {
@@ -203,7 +204,7 @@ namespace CSCore.XAudio2.X3DAudio
         ///     Gets the component of emitter velocity vector projected onto emitter-to-listener vector in user-defined world units per
         ///     second.
         ///     Only calculated if the <see cref="CalculateFlags.Doppler" /> flag is specified when calling
-        ///     <see cref="X3DAudioCore.X3DAudioCalculate" />.
+        ///     <see cref="X3DAudioCore.X3DAudioCalculate(Listener,Emitter,CalculateFlags,DspSettings)" />.
         /// </summary>
         public float EmitterVelocityComponent
         {
@@ -213,7 +214,7 @@ namespace CSCore.XAudio2.X3DAudio
         /// <summary>
         ///     Gets the component of listener velocity vector projected onto the emitter->listener vector in user-defined world units per
         ///     second. Only calculated if the <see cref="CalculateFlags.Doppler" /> flag is specified when calling
-        ///     <see cref="X3DAudioCore.X3DAudioCalculate" />.
+        ///     <see cref="X3DAudioCore.X3DAudioCalculate(Listener,Emitter,CalculateFlags,DspSettings)" />.
         /// </summary>
         public float ListenerVelocityComponent
         {

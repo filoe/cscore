@@ -117,7 +117,7 @@ namespace CSCore.Streams
         ///     Applies the fading algorithm to the <paramref name="buffer" />.
         /// </summary>
         /// <param name="buffer">Float-array which contains IEEE-Float samples.</param>
-        /// <param name="offset">Zero-based offset of the <paramref name="buffer." />.</param>
+        /// <param name="offset">Zero-based offset of the <paramref name="buffer"/>.</param>
         /// <param name="count">The number of samples, the fading algorithm has to be applied on.</param>
         public void ApplyFading(float[] buffer, int offset, int count)
         {
