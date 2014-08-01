@@ -54,7 +54,7 @@ namespace CSCore.Win32
         private static string GetMessage(int result)
         {
             StringBuilder stringBuilder = new StringBuilder(512);
-            int num = InteropFunctions.FormatMessage(12800, IntPtr.Zero, result, 0, stringBuilder, stringBuilder.Capacity, IntPtr.Zero);
+            int num = NativeMethods.FormatMessage(12800, IntPtr.Zero, result, 0, stringBuilder, stringBuilder.Capacity, IntPtr.Zero);
             if (num != 0)
             {
                 return stringBuilder.ToString().Trim();

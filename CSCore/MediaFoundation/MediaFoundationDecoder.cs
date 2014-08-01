@@ -84,18 +84,18 @@ namespace CSCore.MediaFoundation
 
             try
             {
-                reader.SetStreamSelection(MFInterops.MF_SOURCE_READER_ALL_STREAMS, false);
-                reader.SetStreamSelection(MFInterops.MF_SOURCE_READER_FIRST_AUDIO_STREAM, true);
+                reader.SetStreamSelection(NativeMethods.MF_SOURCE_READER_ALL_STREAMS, false);
+                reader.SetStreamSelection(NativeMethods.MF_SOURCE_READER_FIRST_AUDIO_STREAM, true);
 
                 using (var mediaType = MFMediaType.CreateEmpty())
                 {
                     mediaType.MajorType = AudioSubTypes.MediaTypeAudio;
                     mediaType.SubType = AudioSubTypes.Pcm; //variable??
 
-                    reader.SetCurrentMediaType(MFInterops.MF_SOURCE_READER_FIRST_AUDIO_STREAM, mediaType);
+                    reader.SetCurrentMediaType(NativeMethods.MF_SOURCE_READER_FIRST_AUDIO_STREAM, mediaType);
                 }
 
-                using (var currentMediaType = reader.GetCurrentMediaType(MFInterops.MF_SOURCE_READER_FIRST_AUDIO_STREAM))
+                using (var currentMediaType = reader.GetCurrentMediaType(NativeMethods.MF_SOURCE_READER_FIRST_AUDIO_STREAM))
                 {
                     if (currentMediaType.MajorType != AudioSubTypes.MediaTypeAudio)
                         throw new InvalidOperationException(String.Format("Invalid Majortype set on sourcereader: {0}.", currentMediaType.MajorType.ToString()));
@@ -111,7 +111,7 @@ namespace CSCore.MediaFoundation
                     _waveFormat = new WaveFormat(currentMediaType.SampleRate, currentMediaType.BitsPerSample, currentMediaType.Channels, encoding);
                 }
 
-                reader.SetStreamSelection(MFInterops.MF_SOURCE_READER_FIRST_AUDIO_STREAM, true);
+                reader.SetStreamSelection(NativeMethods.MF_SOURCE_READER_FIRST_AUDIO_STREAM, true);
 
                 if (_hasFixedLength)
                     _length = GetLength(reader);
@@ -134,7 +134,7 @@ namespace CSCore.MediaFoundation
                     if (reader == null)
                         return 0;
 
-                    PropertyVariant value = reader.GetPresentationAttribute(MFInterops.MF_SOURCE_READER_MEDIASOURCE, MediaFoundationAttributes.MF_PD_DURATION);
+                    PropertyVariant value = reader.GetPresentationAttribute(NativeMethods.MF_SOURCE_READER_MEDIASOURCE, MediaFoundationAttributes.MF_PD_DURATION);
                     var length = ((value.HValue) * _waveFormat.BytesPerSecond) / 10000000L;
                     value.Dispose();
                     return length;
@@ -204,7 +204,7 @@ namespace CSCore.MediaFoundation
                     MFSourceReaderFlag flags;
                     long timestamp;
                     int actualStreamIndex;
-                    using (var sample = _reader.ReadSample(MFInterops.MF_SOURCE_READER_FIRST_AUDIO_STREAM, 0, out actualStreamIndex, out flags, out timestamp))
+                    using (var sample = _reader.ReadSample(NativeMethods.MF_SOURCE_READER_FIRST_AUDIO_STREAM, 0, out actualStreamIndex, out flags, out timestamp))
                     {
                         if (flags != MFSourceReaderFlag.None)
                             break;

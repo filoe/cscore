@@ -37,7 +37,7 @@ namespace CSCore.MediaFoundation
         {
             IntPtr ptr;
             int count;
-            int res = MFInterops.MFTEnumEx(category, flags, null, null, out ptr, out count);
+            int res = NativeMethods.MFTEnumEx(category, flags, null, null, out ptr, out count);
             MediaFoundationException.Try(res, "Interops", "MFTEnumEx");
             for (int i = 0; i < count; i++)
             {
@@ -52,7 +52,7 @@ namespace CSCore.MediaFoundation
         public static MFSinkWriter CreateSinkWriterFromMFByteStream(IMFByteStream byteStream, IMFAttributes attributes)
         {
             IntPtr p;
-            int result = MFInterops.ExternMFCreateSinkWriterFromURL(null, byteStream, attributes, out p);
+            int result = NativeMethods.ExternMFCreateSinkWriterFromURL(null, byteStream, attributes, out p);
             MediaFoundationException.Try(result, "Interops", "MFCreateSinkWriterFromURL");
             return new MFSinkWriter(p);
         }
@@ -80,7 +80,7 @@ namespace CSCore.MediaFoundation
             if (stream == null)
                 throw new ArgumentNullException("stream");
             IMFByteStream result;
-            MediaFoundationException.Try(MFInterops.MFCreateMFByteStreamOnStream(stream, out result), "Interops", "MFCreateMFByteStreamOnStream");
+            MediaFoundationException.Try(NativeMethods.MFCreateMFByteStreamOnStream(stream, out result), "Interops", "MFCreateMFByteStreamOnStream");
             return result;
         }
 
@@ -90,7 +90,7 @@ namespace CSCore.MediaFoundation
                 throw new ArgumentNullException("byteStream");
 
             IntPtr result = IntPtr.Zero;
-            MediaFoundationException.Try(MFInterops.MFCreateSourceReaderFromByteStream(byteStream, attributes, out result), "Interops", "MFCreateSourceReaderFromByteStream");
+            MediaFoundationException.Try(NativeMethods.MFCreateSourceReaderFromByteStream(byteStream, attributes, out result), "Interops", "MFCreateSourceReaderFromByteStream");
             return new MFSourceReader(result);
         }
 
@@ -102,7 +102,7 @@ namespace CSCore.MediaFoundation
         public static MFSourceReader CreateSourceReaderFromUrl(string url)
         {
             IntPtr ptr = IntPtr.Zero;
-            int result = MFInterops.MFCreateSourceReaderFromURL(url, IntPtr.Zero, out ptr);
+            int result = NativeMethods.MFCreateSourceReaderFromURL(url, IntPtr.Zero, out ptr);
             MediaFoundationException.Try(result, "Interops", "MFCreateSourceReaderFromURL");
             return new MFSourceReader(ptr);
         }
@@ -113,7 +113,7 @@ namespace CSCore.MediaFoundation
         {
             if (!_isstarted)
             {
-                MediaFoundationException.Try(MFInterops.MFStartup(MFInterops.MF_VERSION, 0), "Interops", "MFStartup");
+                MediaFoundationException.Try(NativeMethods.MFStartup(NativeMethods.MF_VERSION, 0), "Interops", "MFStartup");
                 _isstarted = true;
             }
         }
@@ -122,7 +122,7 @@ namespace CSCore.MediaFoundation
         {
             if (_isstarted)
             {
-                MediaFoundationException.Try(MFInterops.MFShutdown(), "Interops", "MFShutdown");
+                MediaFoundationException.Try(NativeMethods.MFShutdown(), "Interops", "MFShutdown");
                 _isstarted = false;
             }
         }
@@ -130,14 +130,14 @@ namespace CSCore.MediaFoundation
         public static MFMediaType CreateMediaType()
         {
             IntPtr mediaType;
-            MediaFoundationException.Try(MFInterops.MFCreateMediaType(out mediaType), "Interops", "MFCreateMediaType");
+            MediaFoundationException.Try(NativeMethods.MFCreateMediaType(out mediaType), "Interops", "MFCreateMediaType");
             return new MFMediaType(mediaType);
         }
 
         public static IMFAttributes CreateEmptyAttributes(uint initialSize)
         {
             IMFAttributes attributes;
-            int result = MFInterops.ExternMFCreateAttributes(out attributes, initialSize);
+            int result = NativeMethods.ExternMFCreateAttributes(out attributes, initialSize);
             if (result < 0)
             {
                 MediaFoundationException.Try(result, "Interops", "MFCreateAttributes");
@@ -149,21 +149,21 @@ namespace CSCore.MediaFoundation
         public static IntPtr CreateMemoryBuffer(int length)
         {
             IntPtr ptr;
-            MediaFoundationException.Try(MFInterops.MFCreateMemoryBuffer(length, out ptr), "Interops", "MFCreateMemoryBuffer");
+            MediaFoundationException.Try(NativeMethods.MFCreateMemoryBuffer(length, out ptr), "Interops", "MFCreateMemoryBuffer");
             return ptr;
         }
 
         public static IntPtr CreateEmptySample()
         {
             IntPtr ptr;
-            MediaFoundationException.Try(MFInterops.MFCreateSample(out ptr), "Interops", "MFCreateSample");
+            MediaFoundationException.Try(NativeMethods.MFCreateSample(out ptr), "Interops", "MFCreateSample");
             return ptr;
         }
 
         public static MFMediaType MediaTypeFromWaveFormat(WaveFormat waveFormat)
         {
             var mediaType = MFMediaType.CreateEmpty();
-            int result = MFInterops.MFInitMediaTypeFromWaveFormatEx(mediaType.BasePtr, waveFormat, Marshal.SizeOf(waveFormat));
+            int result = NativeMethods.MFInitMediaTypeFromWaveFormatEx(mediaType.BasePtr, waveFormat, Marshal.SizeOf(waveFormat));
             MediaFoundationException.Try(result, "Interops", "MFInitMediaTypeFromWaveFormatEx");
             return mediaType;
         }
@@ -173,7 +173,7 @@ namespace CSCore.MediaFoundation
             IMFCollection collection;
             try
             {
-                MediaFoundationException.Try(MFInterops.MFTranscodeGetAudioOutputAvailableTypes(audioSubType, MFTEnumFlags.All, null, out collection),
+                MediaFoundationException.Try(NativeMethods.MFTranscodeGetAudioOutputAvailableTypes(audioSubType, MFTEnumFlags.All, null, out collection),
                     "Interops",
                     "MFTranscodeGetAudioOutputAvailableTypes");
 

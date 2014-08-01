@@ -120,8 +120,8 @@ namespace CSCore.Codecs.MP3
         {
             //this can be experimental. We maybe have to switch to the CoCreateInstance method.
             //IntPtr ptr = IntPtr.Zero;
-            //InteropFunctions.CoCreateInstance(new Guid("bbeea841-0a63-4f52-a7ab-a9b3a84ed38a"), IntPtr.Zero,
-            //    InteropFunctions.CLSCTX.CLSCTX_INPROC_SERVER, typeof (MediaObject).GUID, out ptr);
+            //NativeMethods.CoCreateInstance(new Guid("bbeea841-0a63-4f52-a7ab-a9b3a84ed38a"), IntPtr.Zero,
+            //    NativeMethods.CLSCTX.CLSCTX_INPROC_SERVER, typeof (MediaObject).GUID, out ptr);
 
             _comObj = new DmoMP3DecoderObject();
             var ptr = Marshal.GetComInterfaceForObject(_comObj, typeof (IMediaObject));

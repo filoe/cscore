@@ -1,4 +1,5 @@
-﻿using CSCore.Win32;
+﻿using System.Security;
+using CSCore.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,8 @@ using System.Text;
 
 namespace CSCore.MediaFoundation
 {
-    internal static class MFInterops
+    [SuppressUnmanagedCodeSecurity]
+    internal static class NativeMethods
     {
         public const int MF_SDK_VERSION = 0x2;
         public const int MF_API_VERSION = 0x70;
@@ -73,5 +75,9 @@ namespace CSCore.MediaFoundation
             [In] MFTEnumFlags dwMFTFlags,
             [In] IMFAttributes pCodecConfig,
             [Out, MarshalAs(UnmanagedType.Interface)] out IMFCollection ppAvailableTypes);
+
+        [SuppressUnmanagedCodeSecurity]
+        [DllImport("Mfplat.dll", CallingConvention = CallingConvention.StdCall, EntryPoint = "MFCreateAttributes")]
+        internal static extern int MFCreateAttributes_(IntPtr ptr, int initialSize);
     }
 }

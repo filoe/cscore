@@ -297,7 +297,6 @@
     <Compile Include="DMO\DmoErrorCodes.cs" />
     <Compile Include="DMO\DmoInputSizeInfo.cs" />
     <Compile Include="DMO\DmoInputStreamInfoFlags.cs" />
-    <Compile Include="DMO\DmoInterop.cs" />
     <Compile Include="DMO\DmoOutputDataBuffer.cs" />
     <Compile Include="DMO\DmoOutputStreamInfoFlags.cs" />
     <Compile Include="DMO\DmoPartialMediaType.cs" />
@@ -318,7 +317,7 @@
     <Compile Include="DMO\Effects\FlangerParameters.cs" />
     <Compile Include="DMO\Effects\GargleParameters.cs" />
     <Compile Include="DMO\Effects\WavesReverbParameters.cs" />
-    <Compile Include="DMO\EnumDMO.cs" />
+    <Compile Include="DMO\EnumDmo.cs" />
     <Compile Include="DMO\IMediaBuffer.cs" />
     <Compile Include="DMO\InputDataBufferFlags.cs" />
     <Compile Include="DMO\InputStatusFlags.cs" />
@@ -346,7 +345,7 @@
     <Compile Include="MediaFoundation\MFByteStreamCapsFlags.cs" />
     <Compile Include="MediaFoundation\MFInputStreamInfo.cs" />
     <Compile Include="MediaFoundation\MFInputStreamInfoFlags.cs" />
-    <Compile Include="MediaFoundation\MFInterops.cs" />
+    <Compile Include="MediaFoundation\NativeMethods.cs" />
     <Compile Include="MediaFoundation\MFMediaSourceCharacteristics.cs" />
     <Compile Include="MediaFoundation\MFMediaTypes.cs" />
     <Compile Include="MediaFoundation\MFOutputStreamInfo.cs" />
@@ -414,7 +413,7 @@
     <Compile Include="Utils\Vector3.cs" />
     <Compile Include="Win32\CLSCTX.cs" />
     <Compile Include="Win32\ComStream.cs" />
-    <Compile Include="Win32\InteropFunctions.cs" />
+    <Compile Include="Win32\NativeMethods.cs" />
     <Compile Include="Win32\IStream.cs" />
     <Compile Include="Win32\Win32ComException.cs" />
     <Compile Include="XAudio2\AudioStreamCategory.cs" />

@@ -1,11 +1,7 @@
-﻿using CSCore.CoreAudioAPI;
+﻿// ReSharper disable InconsistentNaming
 using CSCore.Win32;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Security;
-using System.Text;
 
 namespace CSCore.MediaFoundation
 {
@@ -18,30 +14,41 @@ namespace CSCore.MediaFoundation
     [Guid("2cd2d921-c447-44a7-a13c-4adabfc247e3")]
     public class MFAttributes : ComObject
     {
-        [SuppressUnmanagedCodeSecurity]
-        [DllImport("Mfplat.dll", CallingConvention = CallingConvention.StdCall, EntryPoint = "MFCreateAttributes")]
-        private unsafe static extern int MFCreateAttributes_(IntPtr ptr, int initialSize);
+        private const string InterfaceName = "IMFAttributes";
 
-        private const string c = "IMFAttributes";
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MFAttributes"/> class.
+        /// </summary>
+        /// <param name="ptr">The underlying native pointer.</param>
         public MFAttributes(IntPtr ptr)
             : base(ptr)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MFAttributes"/> class.
+        /// </summary>
         public MFAttributes()
             : this(0)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MFAttributes"/> class.
+        /// </summary>
+        /// <param name="initialSize">The initial size in bytes.</param>
         public unsafe MFAttributes(int initialSize)
         {
             IntPtr zero = IntPtr.Zero;
-            int result = MFCreateAttributes_(new IntPtr((void*)(&zero)), initialSize);
-            MediaFoundationException.Try(result, "interop", "MFCreateAttributes");
+            int result = NativeMethods.MFCreateAttributes_(new IntPtr(&zero), initialSize);
+            MediaFoundationException.Try(result, "Interop", "MFCreateAttributes");
             UnsafeBasePtr = zero.ToPointer();
         }
 
+        /// <summary>
+        /// Gets or sets an item specified by its index.
+        /// </summary>
+        /// <param name="index">The index of the item.</param>
         public PropertyVariant this[int index]
         {
             get
@@ -57,6 +64,10 @@ namespace CSCore.MediaFoundation
             }
         }
 
+        /// <summary>
+        /// Gets or sets an item specified by its key.
+        /// </summary>
+        /// <param name="key">The key of the item.</param>
         public object this[Guid key]
         {
             get { return Get(key); }
@@ -102,7 +113,7 @@ namespace CSCore.MediaFoundation
         public MFAttributeType GetItemType(Guid key)
         {
             MFAttributeType type;
-            MediaFoundationException.Try(GetItemType(key, out type), c, "GetItemType");
+            MediaFoundationException.Try(GetItemType(key, out type), InterfaceName, "GetItemType");
             return type;
         }
 
@@ -148,7 +159,7 @@ namespace CSCore.MediaFoundation
         public int GetUINT32(Guid key)
         {
             int result;
-            MediaFoundationException.Try(GetUINT32(key, out result), c, "GetUINT32");
+            MediaFoundationException.Try(GetUINT32(key, out result), InterfaceName, "GetUINT32");
             return result;
         }
 
@@ -170,7 +181,7 @@ namespace CSCore.MediaFoundation
         public long GetUINT64(Guid key)
         {
             long result;
-            MediaFoundationException.Try(GetUINT64(key, out result), c, "GetUINT64");
+            MediaFoundationException.Try(GetUINT64(key, out result), InterfaceName, "GetUINT64");
             return result;
         }
 
@@ -192,7 +203,7 @@ namespace CSCore.MediaFoundation
         public double GetDouble(Guid key)
         {
             double result;
-            MediaFoundationException.Try(GetDouble(key, out result), c, "GetDouble");
+            MediaFoundationException.Try(GetDouble(key, out result), InterfaceName, "GetDouble");
             return result;
         }
 
@@ -214,7 +225,7 @@ namespace CSCore.MediaFoundation
         public Guid GetGuid(Guid key)
         {
             Guid result;
-            MediaFoundationException.Try(GetGuid(key, out result), c, "GetGuid");
+            MediaFoundationException.Try(GetGuid(key, out result), InterfaceName, "GetGuid");
             return result;
         }
 
@@ -236,7 +247,7 @@ namespace CSCore.MediaFoundation
         public int GetStringLength(Guid key)
         {
             int result;
-            MediaFoundationException.Try(GetStringLength(key, out result), c, "GetStringLength");
+            MediaFoundationException.Try(GetStringLength(key, out result), InterfaceName, "GetStringLength");
             return result;
         }
 
@@ -255,10 +266,10 @@ namespace CSCore.MediaFoundation
         public unsafe string GetString(Guid key)
         {
             int stringLength = GetStringLength(key);
-            char* value = stackalloc char[(int)(stringLength + 1)];
-            var res = GetString(key, new IntPtr((void*)value), stringLength + 1, IntPtr.Zero);
-            MediaFoundationException.Try(res, c, "GetString");
-            return Marshal.PtrToStringUni(new IntPtr((void*)value));
+            char* value = stackalloc char[stringLength + 1];
+            var res = GetString(key, new IntPtr(value), stringLength + 1, IntPtr.Zero);
+            MediaFoundationException.Try(res, InterfaceName, "GetString");
+            return Marshal.PtrToStringUni(new IntPtr(value));
         }
 
         /// <summary>
@@ -296,7 +307,7 @@ namespace CSCore.MediaFoundation
         public int GetBlobSize(Guid key)
         {
             int result;
-            MediaFoundationException.Try(GetBlobSize(key, out result), c, "GetBlobSize");
+            MediaFoundationException.Try(GetBlobSize(key, out result), InterfaceName, "GetBlobSize");
             return result;
         }
 
@@ -356,7 +367,7 @@ namespace CSCore.MediaFoundation
         /// </summary>
         public void SetItem(Guid key, PropertyVariant value)
         {
-            MediaFoundationException.Try(SetItemNative(key, value), c, "SetItem");
+            MediaFoundationException.Try(SetItemNative(key, value), InterfaceName, "SetItem");
         }
 
         /// <summary>
@@ -480,7 +491,7 @@ namespace CSCore.MediaFoundation
         public int GetCount()
         {
             int count;
-            MediaFoundationException.Try(GetCountNative(out count), c, "GetCount");
+            MediaFoundationException.Try(GetCountNative(out count), InterfaceName, "GetCount");
             return count;
         }
 
@@ -503,7 +514,7 @@ namespace CSCore.MediaFoundation
         public unsafe PropertyVariant GetItemByIndex(int index, out Guid key)
         {
             PropertyVariant value = default(PropertyVariant);
-            MediaFoundationException.Try(GetItemByIndexNative(index, out key, new IntPtr(&value)), c, "GetItemByIndex");
+            MediaFoundationException.Try(GetItemByIndexNative(index, out key, new IntPtr(&value)), InterfaceName, "GetItemByIndex");
             return value;
         }
 
@@ -516,144 +527,159 @@ namespace CSCore.MediaFoundation
             return InteropCalls.CalliMethodPtr(UnsafeBasePtr, (void*)((destination == null) ? IntPtr.Zero : destination.BasePtr), ((void**)(*(void**)UnsafeBasePtr))[32]);
         }
 
+        /// <summary>
+        /// Gets the item which got associated with the specified <paramref name="key"/>.
+        /// </summary>
+        /// <param name="key">The key of the item.</param>
+        /// <returns>The item which got associated with the specified <paramref name="key"/>.</returns>
+        /// <exception cref="NotSupportedException">The value type of the associated item is not supported.</exception>
         public object Get(Guid key)
         {
             var itemType = GetItemType(key);
-            var MFAttributeType = itemType;
-            if (MFAttributeType <= MFAttributeType.UInt64)
+            var mfAttributeType = itemType;
+            if (mfAttributeType <= MFAttributeType.UInt64)
             {
-                if (MFAttributeType == MFAttributeType.Double)
+                if (mfAttributeType == MFAttributeType.Double)
                 {
-                    return this.Get<double>(key);
+                    return Get<double>(key);
                 }
-                if (MFAttributeType == MFAttributeType.IUnknown)
+                if (mfAttributeType == MFAttributeType.IUnknown)
                 {
-                    return this.Get<ComObject>(key);
+                    return Get<ComObject>(key);
                 }
-                switch (MFAttributeType)
+                switch (mfAttributeType)
                 {
                     case MFAttributeType.UInt32:
-                        return this.Get<int>(key);
+                        return Get<int>(key);
 
                     case MFAttributeType.UInt64:
-                        return this.Get<long>(key);
+                        return Get<long>(key);
                 }
             }
             else
             {
-                if (MFAttributeType == MFAttributeType.String)
+                if (mfAttributeType == MFAttributeType.String)
                 {
-                    return this.Get<string>(key);
+                    return Get<string>(key);
                 }
-                if (MFAttributeType == MFAttributeType.Guid)
+                if (mfAttributeType == MFAttributeType.Guid)
                 {
-                    return this.Get<Guid>(key);
+                    return Get<Guid>(key);
                 }
-                if (MFAttributeType == MFAttributeType.Blob)
+                if (mfAttributeType == MFAttributeType.Blob)
                 {
-                    return this.Get<byte[]>(key);
+                    return Get<byte[]>(key);
                 }
             }
-            throw new ArgumentException("Valuetype is not supported");
+            throw new NotSupportedException("The valuetype is not supported");
         }
 
-        public unsafe T Get<T>(Guid key)
+        /// <summary>
+        /// Gets the item which got associated with the specified <paramref name="key"/>.
+        /// </summary>
+        /// <param name="key">The key of the item.</param>
+        /// <typeparam name="TValueType">Type of the returned item.</typeparam>
+        /// <returns>The item which got associated with the specified <paramref name="key"/>.</returns>
+        /// <exception cref="NotSupportedException">The specified <typeparamref name="TValueType"/> is not supported.</exception>
+        public unsafe TValueType Get<TValueType>(Guid key)
         {
-            if (typeof(T) == typeof(int) || typeof(T) == typeof(bool) || typeof(T) == typeof(byte) || typeof(T) == typeof(uint) || typeof(T) == typeof(short) || typeof(T) == typeof(ushort) || typeof(T) == typeof(byte) || typeof(T) == typeof(sbyte))
+            if (typeof(TValueType) == typeof(int) || typeof(TValueType) == typeof(bool) || typeof(TValueType) == typeof(byte) || typeof(TValueType) == typeof(uint) || typeof(TValueType) == typeof(short) || typeof(TValueType) == typeof(ushort) || typeof(TValueType) == typeof(byte) || typeof(TValueType) == typeof(sbyte))
             {
-                return (T)((object)Convert.ChangeType(GetUINT32(key), typeof(T)));
+                return (TValueType)Convert.ChangeType(GetUINT32(key), typeof(TValueType));
             }
-            if (typeof(T).IsEnum)
+            if (typeof(TValueType).IsEnum)
             {
-                return (T)((object)Enum.ToObject(typeof(T), GetUINT32(key)));
+                return (TValueType)Enum.ToObject(typeof(TValueType), GetUINT32(key));
             }
-            if (typeof(T) == typeof(IntPtr))
+            if (typeof(TValueType) == typeof(IntPtr))
             {
-                return (T)((object)new IntPtr(GetUINT64(key)));
+                return (TValueType)((object)new IntPtr(GetUINT64(key)));
             }
-            if (typeof(T) == typeof(long) || typeof(T) == typeof(ulong))
+            if (typeof(TValueType) == typeof(long) || typeof(TValueType) == typeof(ulong))
             {
-                return (T)((object)Convert.ChangeType(this.GetUINT64(key), typeof(T)));
+                return (TValueType)Convert.ChangeType(GetUINT64(key), typeof(TValueType));
             }
-            if (typeof(T) == typeof(Guid))
+            if (typeof(TValueType) == typeof(Guid))
             {
-                return (T)((object)GetGuid(key));
+                return (TValueType)((object)GetGuid(key));
             }
-            if (typeof(T) == typeof(string))
+            if (typeof(TValueType) == typeof(string))
             {
-                return (T)((object)GetString(key));
+                return (TValueType)((object)GetString(key));
             }
-            if (typeof(T) == typeof(double) || typeof(T) == typeof(float))
+            if (typeof(TValueType) == typeof(double) || typeof(TValueType) == typeof(float))
             {
-                return (T)((object)Convert.ChangeType(this.GetDouble(key), typeof(T)));
+                return (TValueType)Convert.ChangeType(GetDouble(key), typeof(TValueType));
             }
-            if (typeof(T) == typeof(byte[]))
+            if (typeof(TValueType) == typeof(byte[]))
             {
-                int blobSize = this.GetBlobSize(key);
+                int blobSize = GetBlobSize(key);
                 byte[] array = new byte[blobSize];
                 fixed (void* ptr = &array[0])
                 {
-                    this.GetBlob(key, (IntPtr)ptr, array.Length, IntPtr.Zero);
+                    GetBlob(key, (IntPtr)ptr, array.Length, IntPtr.Zero);
                 }
-                return (T)((object)array);
+                return (TValueType)((object)array);
             }
-            if (typeof(T).IsValueType)
+            if (typeof(TValueType).IsValueType)
             {
-                T result = default(T);
+                TValueType result = default(TValueType);
                 var h = GCHandle.Alloc(result, GCHandleType.Pinned);
-
-                int blobSize2 = this.GetBlobSize(key);
-                this.GetBlob(key, h.AddrOfPinnedObject(), Marshal.SizeOf(result), IntPtr.Zero);
+                GetBlob(key, h.AddrOfPinnedObject(), Marshal.SizeOf(result), IntPtr.Zero);
 
                 h.Free();
 
                 return result;
             }
-            else
+            if (typeof(TValueType) == typeof(ComObject))
             {
-                if (typeof(T) == typeof(ComObject))
-                {
-                    IntPtr pointer;
-                    this.GetUnknown(key, typeof(IUnknown).GetGuid(), out pointer);
-                    return (T)((object)new ComObject(pointer));
-                }
-                if (typeof(T).IsSubclassOf(typeof(ComObject)))
-                {
-                    IntPtr iunknownPtr;
-                    this.GetUnknown(key, typeof(T).GetGuid(), out iunknownPtr);
-                    return (T)((object)new ComObject(iunknownPtr).QueryInterface1<T>());
-                }
-                throw new ArgumentException("The type of the value is not supported");
+                IntPtr pointer;
+                GetUnknown(key, typeof(IUnknown).GetGuid(), out pointer);
+                return (TValueType)((object)new ComObject(pointer));
             }
+            if (typeof(TValueType).IsSubclassOf(typeof(ComObject)))
+            {
+                IntPtr iunknownPtr;
+                GetUnknown(key, typeof(TValueType).GetGuid(), out iunknownPtr);
+                return new ComObject(iunknownPtr).QueryInterface1<TValueType>();
+            }
+            throw new NotSupportedException("The specified valuetype is not supported.");
         }
 
-        public unsafe void Set<T>(Guid key, T value)
+        /// <summary>
+        /// Sets the value of a property specified by its <paramref name="key"/>.
+        /// </summary>
+        /// <param name="key">The key of the property.</param>
+        /// <param name="value">The value to set.</param>
+        /// <typeparam name="TValueType">The type of the property.</typeparam>
+        /// <exception cref="NotSupportedException">The specified <typeparamref name="TValueType"/> is not supported.</exception>
+        public unsafe void Set<TValueType>(Guid key, TValueType value)
         {
-            if (typeof(T) == typeof(int) || typeof(T) == typeof(bool) || typeof(T) == typeof(byte) || typeof(T) == typeof(uint) || typeof(T) == typeof(short) || typeof(T) == typeof(ushort) || typeof(T) == typeof(byte) || typeof(T) == typeof(sbyte) || typeof(T).IsEnum)
+            if (typeof(TValueType) == typeof(int) || typeof(TValueType) == typeof(bool) || typeof(TValueType) == typeof(byte) || typeof(TValueType) == typeof(uint) || typeof(TValueType) == typeof(short) || typeof(TValueType) == typeof(ushort) || typeof(TValueType) == typeof(byte) || typeof(TValueType) == typeof(sbyte) || typeof(TValueType).IsEnum)
             {
                 SetUINT32(key, Convert.ToInt32(value));
             }
-            else if (typeof(T) == typeof(long) || typeof(T) == typeof(ulong))
+            else if (typeof(TValueType) == typeof(long) || typeof(TValueType) == typeof(ulong))
             {
                 SetUINT64(key, Convert.ToInt64(value));
             }
-            else if (typeof(T) == typeof(IntPtr))
+            else if (typeof(TValueType) == typeof(IntPtr))
             {
                 SetUINT64(key, ((IntPtr)((object)value)).ToInt64());
             }
-            else if (typeof(T) == typeof(Guid))
+            else if (typeof(TValueType) == typeof(Guid))
             {
                 SetGuid(key, (Guid)((object)value));
             }
-            else if (typeof(T) == typeof(string))
+            else if (typeof(TValueType) == typeof(string))
             {
                 SetString(key, value.ToString());
             }
-            else if (typeof(T) == typeof(double) || typeof(T) == typeof(float))
+            else if (typeof(TValueType) == typeof(double) || typeof(TValueType) == typeof(float))
             {
                 SetDouble(key, Convert.ToDouble(value));
             }
-            else if (typeof(T) == typeof(byte[]))
+            else if (typeof(TValueType) == typeof(byte[]))
             {
                 byte[] array = (byte[])((object)value);
                 fixed (void* ptr = &array[0])
@@ -661,13 +687,13 @@ namespace CSCore.MediaFoundation
                     SetBlob(key, (IntPtr)(ptr), array.Length);
                 }
             }
-            else if (typeof(T).IsValueType)
+            else if (typeof(TValueType).IsValueType)
             {
                 var h = GCHandle.Alloc(value, GCHandleType.Pinned);
                 SetBlob(key, h.AddrOfPinnedObject(), Marshal.SizeOf(value)); //todo: test
                 h.Free();
             }
-            else if (typeof(T) == typeof(ComObject) || typeof(T).IsSubclassOf(typeof(ComObject)))
+            else if (typeof(TValueType) == typeof(ComObject) || typeof(TValueType).IsSubclassOf(typeof(ComObject)))
             {
                 Set(key, (ComObject)((object)value));
             }
@@ -677,6 +703,11 @@ namespace CSCore.MediaFoundation
             }
         }
 
+        /// <summary>
+        /// Sets the value of a property specified by the key of the <paramref name="keyValuePair"/> object.
+        /// </summary>
+        /// <typeparam name="T">The type of the property.</typeparam>
+        /// <param name="keyValuePair">Specifies the key of the property and the new value to set.</param>
         public void Set<T>(MFAttribute<T> keyValuePair)
         {
             if (keyValuePair == null)
@@ -685,3 +716,5 @@ namespace CSCore.MediaFoundation
         }
     }
 }
+
+// ReSharper restore InconsistentNaming

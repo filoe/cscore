@@ -9,15 +9,15 @@ namespace CSCore.DMO
     ///     Provides methods for enumerating Microsoft DirectX Media Objects.
     /// </summary>
     [Guid("2c3cd98a-2bfa-4a53-9c27-5249ba64ba0f")]
-    public class EnumDMO : ComObject
+    public class EnumDmo : ComObject
     {
-        private const string n = "IEnumDMO";
+        private const string InterfaceName = "IEnumDMO";
 
         /// <summary>
         ///     Creates a new DMO Enumerator based on its pointer.
         /// </summary>
         /// <param name="ptr"></param>
-        public EnumDMO(IntPtr ptr)
+        public EnumDmo(IntPtr ptr)
             : base(ptr)
         {
         }
@@ -33,15 +33,15 @@ namespace CSCore.DMO
         /// <param name="inputTypes">Array of input-Mediatypes.</param>
         /// <param name="outputTypes">Array of output-Mediatypes.</param>
         /// <returns>EnumDMO</returns>
-        public static EnumDMO EnumerateDMOs(Guid category, DmoEnumFlags flags, DmoPartialMediaType[] inputTypes,
+        public static EnumDmo EnumerateDMOs(Guid category, DmoEnumFlags flags, DmoPartialMediaType[] inputTypes,
             DmoPartialMediaType[] outputTypes)
         {
             IntPtr ptr;
-            int result = DmoInterop.DMOEnum(ref category, flags, inputTypes != null ? inputTypes.Length : 0, inputTypes,
+            int result = NativeMethods.DMOEnum(ref category, flags, inputTypes != null ? inputTypes.Length : 0, inputTypes,
                 outputTypes != null ? inputTypes.Length : 0, outputTypes, out ptr);
             DmoException.Try(result, "Interops", "DMOEnum");
 
-            return new EnumDMO(ptr);
+            return new EnumDmo(ptr);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace CSCore.DMO
         /// <param name="flags">Flags that specify search criteria.</param>
         public static IEnumerable<DmoEnumItem> EnumerateDMOs(Guid category, DmoEnumFlags flags)
         {
-            using (EnumDMO enumerator = EnumerateDMOs(category, flags, null, null))
+            using (EnumDmo enumerator = EnumerateDMOs(category, flags, null, null))
             {
                 var item = new DmoEnumItem[1];
                 while ((item = enumerator.Next(1)).Length > 0)
@@ -114,7 +114,7 @@ namespace CSCore.DMO
 
             int result = NextNative(itemsToFetch, out clsids, out names, out itemsFetched);
             if (result != (int) HResult.S_FALSE && result != (int) HResult.S_OK)
-                DmoException.Try(result, n, "Next");
+                DmoException.Try(result, InterfaceName, "Next");
 
             var items = new DmoEnumItem[itemsFetched];
             for (int i = 0; i < items.Length; i++)
@@ -147,7 +147,7 @@ namespace CSCore.DMO
         /// <param name="itemsToSkip">Number of items to skip.</param>
         public void Skip(int itemsToSkip)
         {
-            DmoException.Try(SkipNative(itemsToSkip), n, "Skip");
+            DmoException.Try(SkipNative(itemsToSkip), InterfaceName, "Skip");
         }
 
         //---
@@ -166,7 +166,7 @@ namespace CSCore.DMO
         /// </summary>
         public void Reset()
         {
-            DmoException.Try(ResetNative(), n, "Reset");
+            DmoException.Try(ResetNative(), InterfaceName, "Reset");
         }
 
         //---
@@ -185,11 +185,11 @@ namespace CSCore.DMO
         /// <summary>
         ///     This method is not implemented.
         /// </summary>
-        public EnumDMO Clone()
+        public EnumDmo Clone()
         {
             IntPtr p;
-            DmoException.Try(CloneNative(out p), n, "Clone");
-            return new EnumDMO(p);
+            DmoException.Try(CloneNative(out p), InterfaceName, "Clone");
+            return new EnumDmo(p);
         }
     }
 }

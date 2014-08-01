@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CSCore.Win32
 {
-    internal class InteropFunctions
+    internal class NativeMethods
     {
         [DllImport("ole32.dll", ExactSpelling = true)]
         internal static extern HResult CoCreateInstance([MarshalAs(UnmanagedType.LPStruct)] [In] Guid rclsid, IntPtr pUnkOuter, CLSCTX dwClsContext, [MarshalAs(UnmanagedType.LPStruct)] [In] Guid riid, out IntPtr comObject);

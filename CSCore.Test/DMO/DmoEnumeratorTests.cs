@@ -14,7 +14,7 @@ namespace CSCore.Test.DMO
         [TestCategory("DMO")]
         public void CanEnumerateEffects()
         {
-            foreach (var item in EnumDMO.EnumerateDMOs(DmoEnumeratorCategories.AudioEffect, DmoEnumFlags.None))
+            foreach (var item in EnumDmo.EnumerateDMOs(DmoEnumeratorCategories.AudioEffect, DmoEnumFlags.None))
             {
                 Console.WriteLine("\"{0}\": {1}", item.Name, item.CLSID);
             }

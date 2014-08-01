@@ -31,7 +31,7 @@ namespace CSCore.MediaFoundation
         public int GetSourceFlags()
         {
             int flags = 0;
-            var value = GetPresentationAttribute(MFInterops.MF_SOURCE_READER_MEDIASOURCE, MediaFoundationAttributes.MF_SOURCE_READER_MEDIASOURCE_CHARACTERISTICS);
+            var value = GetPresentationAttribute(NativeMethods.MF_SOURCE_READER_MEDIASOURCE, MediaFoundationAttributes.MF_SOURCE_READER_MEDIASOURCE_CHARACTERISTICS);
 
             flags = (int)value.UIntValue;
             value.Dispose();
