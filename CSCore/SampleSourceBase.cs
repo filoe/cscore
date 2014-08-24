@@ -32,8 +32,7 @@ namespace CSCore
 
         /// <summary>
         ///     Reads a sequence of samples from the <see cref="SampleSourceBase" /> and advances the position within the stream by
-        ///     the
-        ///     number of samples read.
+        ///     the number of samples read.
         /// </summary>
         /// <param name="buffer">
         ///     An array of floats. When this method returns, the <paramref name="buffer" /> contains the specified

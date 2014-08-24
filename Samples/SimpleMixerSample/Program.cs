@@ -50,7 +50,7 @@ namespace SimpleMixerSample
 
             const int mixerSampleRate = 44100; //44.1kHz
 
-            var mixer = new CSCore.Streams.SimpleMixer(2, mixerSampleRate) //output: stereo, 44,1kHz
+            var mixer = new SimpleMixer(2, mixerSampleRate) //output: stereo, 44,1kHz
             {
                 FillWithZeros = true,
                 DivideResult = true //you may play around with this

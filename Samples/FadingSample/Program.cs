@@ -41,7 +41,10 @@ namespace FadingSample
                         float to;
                         if (!Single.TryParse(Console.ReadLine(), out to) ||
                             to > 1 || to < 0)
+                        {
+                            Console.WriteLine("Invalid value.");
                             continue;
+                        }
 
                         linearFadeStrategy.StartFading(null, to, 3000); //fade from the current volume to the entered volume over a duration of 3000ms
 

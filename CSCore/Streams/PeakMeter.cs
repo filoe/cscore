@@ -6,7 +6,7 @@ using System.Text;
 namespace CSCore.Streams
 {
     /// <summary>
-    /// Peakmeter.
+    /// Represents a peak meter.
     /// </summary>
     public class PeakMeter : SampleSourceBase
     {
@@ -26,7 +26,7 @@ namespace CSCore.Streams
         /// </summary>
         public float[] ChannelPeakValues { get; private set; }
 
-        [Obsolete("Replaced by the Interval property.")]
+        [Obsolete("Use the PeakMeter.Interval property instead.")]
         public int BlocksToProcess
         {
             get { return _blocksToProcess; }
@@ -62,12 +62,20 @@ namespace CSCore.Streams
         }
 
         /// <summary>
-        /// Reads data from the base source. 
+        ///     Reads a sequence of samples from the <see cref="SampleSourceBase" /> and advances the position within the stream by the
+        ///     number of samples read.
         /// </summary>
-        /// <param name="buffer"></param>
-        /// <param name="offset"></param>
-        /// <param name="count"></param>
-        /// <returns></returns>
+        /// <param name="buffer">
+        ///     An array of floats. When this method returns, the <paramref name="buffer" /> contains the specified
+        ///     float array with the values between <paramref name="offset" /> and (<paramref name="offset" /> +
+        ///     <paramref name="count" /> - 1) replaced by the floats read from the current source.
+        /// </param>
+        /// <param name="offset">
+        ///     The zero-based offset in the <paramref name="buffer" /> at which to begin storing the data
+        ///     read from the current stream.
+        /// </param>
+        /// <param name="count">The maximum number of samples to read from the current source.</param>
+        /// <returns>The total number of samples read into the buffer.</returns>
         public override int Read(float[] buffer, int offset, int count)
         {
             if (count % WaveFormat.Channels != 0)
