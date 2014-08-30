@@ -4,11 +4,11 @@ using System.IO;
 
 namespace CSCore.Utils
 {
-    public class ReadBlockStream : Stream
+    internal class ReadBlockStream : Stream
     {
-        private long position;
+        private long _position;
 
-        private Stream _stream;
+        private readonly Stream _stream;
 
         public ReadBlockStream(Stream stream)
         {
@@ -28,7 +28,7 @@ namespace CSCore.Utils
                 read += _stream.Read(buffer, offset + read, count - read);
             }
 
-            position += read;
+            _position += read;
             return count;
         }
 
@@ -61,7 +61,7 @@ namespace CSCore.Utils
         {
             get
             {
-                return position;
+                return _position;
             }
             set
             {

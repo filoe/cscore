@@ -6,6 +6,10 @@ namespace CSCore.DSP
     /// <summary>
     /// Provides FFT calculations.
     /// </summary>
+    /// <remarks>
+    /// Usage: Use the <see cref="Add(float[],int)"/>-method to input samples to the <see cref="FftProvider"/>. Use the <see cref="GetFftData(float[])"/> method to 
+    /// calculate the Fast Fourier Transform.
+    /// </remarks>
     public class FftProvider
     {
         private readonly int _channels;
@@ -68,6 +72,8 @@ namespace CSCore.DSP
         /// <param name="count">Number of samples to add to the <see cref="FftProvider"/>.</param>
         public void Add(float[] samples, int count)
         {
+            if (samples == null)
+                throw new ArgumentNullException("samples");
             count -= count % _channels; //not sure whether to throw an exception...
             if(count > samples.Length)
                 throw new ArgumentOutOfRangeException("count");
@@ -93,12 +99,14 @@ namespace CSCore.DSP
         /// <returns>Returns a value which indicates whether the Fast Fourier Transform got calculated. If there have not been added any new samples since the last transform, the FFT won't be calculated. True means that the Fast Fourier Transform got calculated.</returns>
         public bool GetFftData(Complex[] fftResultBuffer)
         {
+            if (fftResultBuffer == null)
+                throw new ArgumentNullException("fftResultBuffer");
             if (_newDataAvailable)
             {
                 var input = fftResultBuffer;
                 Array.Copy(_storedSamples, input, _storedSamples.Length);
 
-                FastFourierTransformation.Fft(input, _fftSizeExponent, FftMode.Forward);
+                FastFourierTransformation.Fft(input, _fftSizeExponent);
                 _newDataAvailable = false;
 
                 return true;
@@ -112,6 +120,9 @@ namespace CSCore.DSP
         /// <returns>Returns a value which indicates whether the Fast Fourier Transform got calculated. If there have not been added any new samples since the last transform, the FFT won't be calculated. True means that the Fast Fourier Transform got calculated.</returns>
         public bool GetFftData(float[] fftResultBuffer)
         {
+            if (fftResultBuffer == null)
+                throw new ArgumentNullException("fftResultBuffer");
+
             if (_newDataAvailable)
             {
                 if(fftResultBuffer.Length < (int)_fftSize)

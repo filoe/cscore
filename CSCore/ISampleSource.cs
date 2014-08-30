@@ -6,8 +6,7 @@
     public interface ISampleSource : IWaveStream
     {
         /// <summary>
-        ///     Reads a sequence of samples from the <see cref="ISampleSource" /> and advances the position within the stream by
-        ///     the
+        ///     Reads a sequence of samples from the <see cref="ISampleSource" /> and advances the position within the stream by the
         ///     number of samples read.
         /// </summary>
         /// <param name="buffer">

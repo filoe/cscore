@@ -14,13 +14,13 @@ namespace CSCore
 
         /// <summary>
         ///     Gets or sets the current position. The unit of this property depends on the implementation of this interface. Some
-        ///     implementations may don't support this property.
+        ///     implementations may not support this property.
         /// </summary>
         long Position { get; set; }
 
         /// <summary>
         ///     Gets the length of the waveform-audio data. The unit of this property depends on the implementation of this
-        ///     interface. Some implementations may don't support this property.
+        ///     interface. Some implementations may not support this property.
         /// </summary>
         long Length { get; }
     }

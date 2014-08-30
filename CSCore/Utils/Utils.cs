@@ -24,12 +24,15 @@ namespace CSCore.Utils
 
             for (int i = 0; i < finalVtableLength; i++)
             {
+#if DEBUG
                 IntPtr prev = pp[i];
-
+#endif
                 pp[i] = pp[i + replaceCount];
 
+#if DEBUG
                 IntPtr after = pp[i];
-                //Console.WriteLine("{0} -> {1}", prev, after); //just for debugging
+                System.Diagnostics.Debug.WriteLine(String.Format("{0} -> {1}", prev, after));
+#endif
             }
             return ptr;
         }

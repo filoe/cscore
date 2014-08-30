@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace CSCore.Utils
 {
     [StructLayout(LayoutKind.Explicit)]
-    public struct HightLowConverterInt32//<T> where T : struct
+    internal struct HightLowConverterInt32
     {
         public HightLowConverterInt32(Int32 value)
         {
@@ -24,7 +24,7 @@ namespace CSCore.Utils
     }
 
     [StructLayout(LayoutKind.Explicit)]
-    public struct HightLowConverterUInt32//<T> where T : struct
+    internal struct HightLowConverterUInt32
     {
         public HightLowConverterUInt32(UInt32 value)
         {
