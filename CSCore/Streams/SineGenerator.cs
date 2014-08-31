@@ -115,6 +115,14 @@ namespace CSCore.Streams
         }
 
         /// <summary>
+        /// Gets a value indicating whether the <see cref="IWaveStream"/> supports seeking.
+        /// </summary>
+        public bool CanSeek
+        {
+            get { return false; }
+        }
+
+        /// <summary>
         /// Not used.
         /// </summary>
         public void Dispose()

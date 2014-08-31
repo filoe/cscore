@@ -20,7 +20,7 @@ namespace CSCore.Streams.SampleConverter
             int sourceCount = count;
             _buffer = _buffer.CheckBuffer(sourceCount);
 
-            int read = _source.Read(_buffer, 0, sourceCount);
+            int read = Source.Read(_buffer, 0, sourceCount);
             for (int i = offset; i < read; i++)
             {
                 byte value = (byte)((_buffer[i] + 1) * 128f);

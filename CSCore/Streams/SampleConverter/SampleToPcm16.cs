@@ -17,7 +17,7 @@ namespace CSCore.Streams.SampleConverter
         {
             _buffer = _buffer.CheckBuffer(count / 2);
 
-            int read = _source.Read(_buffer, 0, count / 2);
+            int read = Source.Read(_buffer, 0, count / 2);
             int bufferOffset = offset;
             for (int i = 0; i < read; i++)
             {

@@ -19,7 +19,7 @@ namespace CSCore.Streams.SampleConverter
         {
             int sourceCount = count / 3;
             _buffer = _buffer.CheckBuffer(sourceCount);
-            int read = _source.Read(_buffer, 0, sourceCount);
+            int read = Source.Read(_buffer, 0, sourceCount);
 
             int bufferOffset = offset;
             for (int i = 0; i < read; i++)

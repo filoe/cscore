@@ -15,7 +15,7 @@ namespace CSCore.Streams.SampleConverter
         public override int Read(byte[] buffer, int offset, int count)
         {
             var ub = new Utils.Buffer.UnsafeBuffer(buffer);
-            int read = _source.Read(ub.FloatBuffer, offset / 4, count / 4);
+            int read = Source.Read(ub.FloatBuffer, offset / 4, count / 4);
             return read * 4;
         }
     }

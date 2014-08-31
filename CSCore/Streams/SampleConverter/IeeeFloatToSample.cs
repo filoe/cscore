@@ -6,7 +6,7 @@ namespace CSCore.Streams.SampleConverter
     public class IeeeFloatToSample : WaveToSampleBase
     {
         public IeeeFloatToSample(IWaveSource source)
-            : base(source, 32, AudioEncoding.IeeeFloat)
+            : base(source)
         {
             if (source == null)
                 throw new ArgumentNullException("source");
@@ -18,13 +18,13 @@ namespace CSCore.Streams.SampleConverter
         public override int Read(float[] buffer, int offset, int count)
         {
             int bytesToRead = count * 4;
-            _buffer = _buffer.CheckBuffer(bytesToRead);
-            int read = _source.Read(_buffer, 0, bytesToRead);
+            Buffer = Buffer.CheckBuffer(bytesToRead);
+            int read = Source.Read(Buffer, 0, bytesToRead);
 
             int startIndex = offset;
             for (int i = 0; i < read; i += 4)
             {
-                buffer[startIndex] = BitConverter.ToSingle(_buffer, i);
+                buffer[startIndex] = BitConverter.ToSingle(Buffer, i);
                 startIndex++;
             }
 

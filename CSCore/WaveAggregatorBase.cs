@@ -89,8 +89,14 @@ namespace CSCore
         /// </summary>
         public virtual long Position
         {
-            get { return BaseStream.Position; }
-            set { BaseStream.Position = value; }
+            get { return CanSeek ? BaseStream.Position : 0; }
+            set
+            {
+                if(CanSeek)
+                    BaseStream.Position = value;
+                else
+                    throw new InvalidOperationException();
+            }
         }
 
         /// <summary>
@@ -98,7 +104,15 @@ namespace CSCore
         /// </summary>
         public virtual long Length
         {
-            get { return BaseStream.Length; }
+            get { return CanSeek ? BaseStream.Length : 0; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the <see cref="IWaveStream"/> supports seeking.
+        /// </summary>
+        public virtual bool CanSeek
+        {
+            get { return BaseStream.CanSeek; }
         }
 
         /// <summary>

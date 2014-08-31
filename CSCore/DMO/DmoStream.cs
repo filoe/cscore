@@ -146,6 +146,11 @@ namespace CSCore.DMO
         public abstract long Length { get; }
 
         /// <summary>
+        /// Gets a value indicating whether the <see cref="IWaveStream"/> supports seeking.
+        /// </summary>
+        public abstract bool CanSeek { get; }
+
+        /// <summary>
         ///     Disposes the <see cref="DmoStream" />.
         /// </summary>
         public void Dispose()

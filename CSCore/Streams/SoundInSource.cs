@@ -54,8 +54,7 @@ namespace CSCore.Streams
                 throw new ArgumentNullException("soundIn");
             ThrowIfSoundInNotInitialized(soundIn);
 
-            _buffer = new WriteableBufferingSource(soundIn.WaveFormat, bufferSize);
-            _buffer.FillWithZeros = false;
+            _buffer = new WriteableBufferingSource(soundIn.WaveFormat, bufferSize) {FillWithZeros = false};
             _soundIn = soundIn;
             _soundIn.DataAvailable += OnDataAvailable;
         }
@@ -121,6 +120,14 @@ namespace CSCore.Streams
         public long Length
         {
             get { return 0; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the <see cref="IWaveStream"/> supports seeking.
+        /// </summary>
+        public bool CanSeek
+        {
+            get { return false; }
         }
 
         /// <summary>

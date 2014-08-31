@@ -38,7 +38,9 @@ namespace CSCore.DSP
             if(channels < 1)
                 throw new ArgumentOutOfRangeException("channels");
             var exponent = Math.Log((int)fftSize, 2);
+// ReSharper disable CompareOfFloatsByEqualityOperator
             if (exponent % 1 != 0 || exponent == 0)
+// ReSharper restore CompareOfFloatsByEqualityOperator
                 throw new ArgumentOutOfRangeException("fftSize");
 
             _channels = channels;

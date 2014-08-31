@@ -8,6 +8,11 @@ namespace CSCore
     public interface IWaveStream : IDisposable
     {
         /// <summary>
+        /// Gets a value indicating whether the <see cref="IWaveStream"/> supports seeking.
+        /// </summary>
+        bool CanSeek { get; }
+
+        /// <summary>
         ///     Gets the <see cref="WaveFormat" /> of the waveform-audio data.
         /// </summary>
         WaveFormat WaveFormat { get; }

@@ -116,6 +116,14 @@ namespace CSCore.Codecs.WAV
         }
 
         /// <summary>
+        /// Gets a value indicating whether the <see cref="IWaveStream"/> supports seeking.
+        /// </summary>
+        public bool CanSeek
+        {
+            get { return true; }
+        }
+
+        /// <summary>
         ///     Disposes the <see cref="WaveFileReader" /> and the underlying stream.
         /// </summary>
         public void Dispose()

@@ -62,6 +62,14 @@ namespace CSCore.Codecs.RAW
         }
 
         /// <summary>
+        /// Gets a value indicating whether the <see cref="IWaveStream"/> supports seeking.
+        /// </summary>
+        public bool CanSeek
+        {
+            get { return true; }
+        }
+
+        /// <summary>
         ///     Gets the format of the raw data.
         /// </summary>
         public WaveFormat WaveFormat

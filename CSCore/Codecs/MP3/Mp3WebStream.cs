@@ -60,6 +60,8 @@ namespace CSCore.Codecs.MP3
             get { return _buffer.Length; }
         }
 
+        public bool CanSeek { get { return false; }}
+
         public WaveFormat WaveFormat
         {
             get { return _waveFormat; }

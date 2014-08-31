@@ -70,7 +70,21 @@ namespace CSCore.Streams
         }
 
         /// <summary>
-        ///     Gets or sets the underlying base stream.
+        /// Gets a value indicating whether the underlying <see cref="WaveAggregatorBase.BaseStream" /> supports seeking.
+        /// </summary>
+        public override bool CanSeek
+        {
+            get 
+            {
+                lock (_lockObj)
+                {
+                    return base.CanSeek;
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets the underlying <see cref="WaveAggregatorBase.BaseStream" />.
         /// </summary>
         public override IWaveSource BaseStream
         {

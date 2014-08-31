@@ -6,7 +6,7 @@ namespace CSCore.Streams.SampleConverter
     public class Pcm8BitToSample : WaveToSampleBase
     {
         public Pcm8BitToSample(IWaveSource source)
-            : base(source, 8, AudioEncoding.Pcm)
+            : base(source)
         {
             if (source == null)
                 throw new ArgumentNullException("source");
@@ -16,8 +16,8 @@ namespace CSCore.Streams.SampleConverter
 
         public override int Read(float[] buffer, int offset, int count)
         {
-            _buffer = _buffer.CheckBuffer(count);
-            int read = _source.Read(_buffer, 0, count);
+            Buffer = Buffer.CheckBuffer(count);
+            int read = Source.Read(Buffer, 0, count);
             unsafe
             {
                 fixed (float* ptrBuffer = buffer)
@@ -25,7 +25,7 @@ namespace CSCore.Streams.SampleConverter
                     float* ppbuffer = ptrBuffer + offset;
                     for (int i = 0; i < read; i++)
                     {
-                        *(ppbuffer++) = _buffer[i] / 128f - 1.0f;
+                        *(ppbuffer++) = Buffer[i] / 128f - 1.0f;
                     }
                 }
             }

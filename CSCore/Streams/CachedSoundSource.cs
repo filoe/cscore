@@ -95,6 +95,14 @@ namespace CSCore.Streams
         }
 
         /// <summary>
+        /// Gets a value indicating whether the <see cref="IWaveStream"/> supports seeking.
+        /// </summary>
+        public bool CanSeek
+        {
+            get { return true; }
+        }
+
+        /// <summary>
         /// Gets the amount of bytes stored in the cache.
         /// </summary>
         public long Length

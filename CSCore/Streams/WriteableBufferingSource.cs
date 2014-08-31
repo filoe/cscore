@@ -75,7 +75,7 @@ namespace CSCore.Streams
         {
             get
             {
-                return -1;
+                return 0;
             }
             set
             {
@@ -85,7 +85,15 @@ namespace CSCore.Streams
 
         public long Length
         {
-            get { return -1; }
+            get { return 0; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the <see cref="IWaveStream"/> supports seeking.
+        /// </summary>
+        public bool CanSeek
+        {
+            get { return false; }
         }
 
         private bool _disposed;
