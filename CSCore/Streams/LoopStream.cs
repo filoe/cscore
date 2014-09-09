@@ -7,7 +7,8 @@ namespace CSCore.Streams
     /// </summary>
     public class LoopStream : WaveAggregatorBase
     {
-        private bool _enalbeLoop = true;
+        private bool _enableLoop = true;
+        private bool _raisedStreamFinishedEvent;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="LoopStream" /> class.
@@ -23,12 +24,14 @@ namespace CSCore.Streams
         /// </summary>
         public bool EnableLoop
         {
-            get { return _enalbeLoop; }
-            set { _enalbeLoop = value; }
+            get { return _enableLoop; }
+            set { _enableLoop = value; }
         }
 
         /// <summary>
-        /// Occurs when the position of the <see cref="WaveAggregatorBase.BaseStream"/> gets reseted to zero and the next loop begins.
+        ///     Occurs when the underlying <see cref="WaveAggregatorBase.BaseStream" /> reaches its end.
+        ///     If the <see cref="EnableLoop" /> property is set to true, the Position of the
+        ///     <see cref="WaveAggregatorBase.BaseStream" /> will be reseted to zero.
         /// </summary>
         public event EventHandler StreamFinished;
 
@@ -48,13 +51,20 @@ namespace CSCore.Streams
                 int r = base.Read(buffer, offset + read, count - read);
                 if (r == 0)
                 {
-                    if (StreamFinished != null)
+                    if (StreamFinished != null && !_raisedStreamFinishedEvent)
+                    {
                         StreamFinished(this, EventArgs.Empty);
+                        _raisedStreamFinishedEvent = true;
+                    }
+
                     if (EnableLoop)
                         Position = 0;
                     else
                         break;
                 }
+                else
+                    _raisedStreamFinishedEvent = false;
+
                 read += r;
             }
             return read;
