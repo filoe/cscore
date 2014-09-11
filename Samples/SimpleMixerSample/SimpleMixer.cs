@@ -127,6 +127,8 @@ namespace SimpleMixerSample
             return numberOfStoredSamples;
         }
 
+        public bool CanSeek { get { return false; } }
+
         public WaveFormat WaveFormat
         {
             get { return _waveFormat; }

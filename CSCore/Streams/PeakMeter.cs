@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace CSCore.Streams
 {
@@ -26,6 +24,9 @@ namespace CSCore.Streams
         /// </summary>
         public float[] ChannelPeakValues { get; private set; }
 
+        /// <summary>
+        /// Obsolete
+        /// </summary>
         [Obsolete("Use the PeakMeter.Interval property instead.")]
         public int BlocksToProcess
         {

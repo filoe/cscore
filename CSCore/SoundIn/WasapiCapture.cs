@@ -58,7 +58,7 @@ namespace CSCore.SoundIn
         private volatile bool _isInitialized;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WasapiCapture"/> class..
+        /// Initializes a new instance of the <see cref="WasapiCapture"/> class.
         /// CaptureThreadPriority = AboveNormal. 
         /// DefaultFormat = null. 
         /// Latency = 100ms. 
@@ -71,7 +71,7 @@ namespace CSCore.SoundIn
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WasapiCapture"/> class..
+        /// Initializes a new instance of the <see cref="WasapiCapture"/> class.
         /// CaptureThreadPriority = AboveNormal. 
         /// DefaultFormat = null.
         /// Latency = 100ms.
@@ -84,7 +84,7 @@ namespace CSCore.SoundIn
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WasapiCapture"/> class..
+        /// Initializes a new instance of the <see cref="WasapiCapture"/> class.
         /// CaptureThreadPriority = AboveNormal. 
         /// DefaultFormat = null.
         /// </summary>
@@ -97,7 +97,7 @@ namespace CSCore.SoundIn
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WasapiCapture"/> class..
+        /// Initializes a new instance of the <see cref="WasapiCapture"/> class.
         /// CaptureThreadPriority = AboveNormal.
         /// </summary>
         /// <param name="eventSync">True, to use eventsynchronization instead of a simple loop and sleep behavior. Don't use this in combination with exclusive mode.</param>
@@ -110,7 +110,7 @@ namespace CSCore.SoundIn
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WasapiCapture"/> class..
+        /// Initializes a new instance of the <see cref="WasapiCapture"/> class.
         /// </summary>
         /// <param name="eventSync">True, to use eventsynchronization instead of a simple loop and sleep behavior. Don't use this in combination with exclusive mode.</param>
         /// <param name="shareMode">Specifies how to open the audio device. Note that if exclusive mode is used, the device can only be used once on the whole system. Don't use exclusive mode in combination with eventSync.</param>

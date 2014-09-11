@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMixerSample", "Sample
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FadingSample", "Samples\FadingSample\FadingSample.csproj", "{0027D5BC-DF90-4EE4-B07E-4192A183AC38}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinformsVisualization", "Samples\WinformsVisualization\WinformsVisualization.csproj", "{EE2BF129-3451-4ADA-8698-42EE2A293688}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug x64|Any CPU = Debug x64|Any CPU
@@ -461,6 +463,41 @@ Global
 		{0027D5BC-DF90-4EE4-B07E-4192A183AC38}.Release|Win32.ActiveCfg = Release|Any CPU
 		{0027D5BC-DF90-4EE4-B07E-4192A183AC38}.Release|x64.ActiveCfg = Release|Any CPU
 		{0027D5BC-DF90-4EE4-B07E-4192A183AC38}.Release|x86.ActiveCfg = Release|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Debug x64|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Debug x64|Any CPU.Build.0 = Debug|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Debug x64|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Debug x64|Mixed Platforms.Build.0 = Debug|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Debug x64|Win32.ActiveCfg = Debug|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Debug x64|x64.ActiveCfg = Debug|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Debug x64|x86.ActiveCfg = Debug|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Debug x86|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Debug x86|Any CPU.Build.0 = Debug|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Debug x86|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Debug x86|Mixed Platforms.Build.0 = Debug|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Debug x86|Win32.ActiveCfg = Debug|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Debug x86|x64.ActiveCfg = Debug|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Debug x86|x86.ActiveCfg = Debug|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Release x64|Any CPU.ActiveCfg = Release|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Release x64|Any CPU.Build.0 = Release|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Release x64|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Release x64|Mixed Platforms.Build.0 = Release|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Release x64|Win32.ActiveCfg = Release|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Release x64|x64.ActiveCfg = Release|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Release x64|x86.ActiveCfg = Release|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Release|Win32.ActiveCfg = Release|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Release|x64.ActiveCfg = Release|Any CPU
+		{EE2BF129-3451-4ADA-8698-42EE2A293688}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -474,5 +511,6 @@ Global
 		{C6F0D42E-A5D4-4A7B-AD77-91A84449DE04} = {41D1D336-13B2-488B-8A85-C0F744035F8B}
 		{237BD115-097E-4EB9-B447-8299F2EA5C7D} = {41D1D336-13B2-488B-8A85-C0F744035F8B}
 		{0027D5BC-DF90-4EE4-B07E-4192A183AC38} = {41D1D336-13B2-488B-8A85-C0F744035F8B}
+		{EE2BF129-3451-4ADA-8698-42EE2A293688} = {41D1D336-13B2-488B-8A85-C0F744035F8B}
 	EndGlobalSection
 EndGlobal

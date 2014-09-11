@@ -66,6 +66,11 @@ namespace CSCore.Codecs.MP3
             get { return _frameInfoCollection.TotalSamples * WaveFormat.BytesPerBlock; }
         }
 
+        public override bool CanSeek
+        {
+            get { return true; }
+        }
+
         private void ParseForMp3Frame(Stream stream)
         {
             Mp3Frame frame = null;

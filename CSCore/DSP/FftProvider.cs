@@ -28,6 +28,14 @@ namespace CSCore.DSP
         }
 
         /// <summary>
+        /// Gets a value which indicates whether new data is available.
+        /// </summary>
+        public virtual bool IsNewDataAvailable
+        {
+            get { return _newDataAvailable; }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="FftProvider"/> class.
         /// </summary>
         /// <param name="channels">Number of channels of the input data.</param>
@@ -54,7 +62,7 @@ namespace CSCore.DSP
         /// </summary>
         /// <param name="left">The sample of the left channel.</param>
         /// <param name="right">The sample of the right channel.</param>
-        public void Add(float left, float right)
+        public virtual void Add(float left, float right)
         {
             //todo: may throw an exception... not sure
             _storedSamples[_currentSampleOffset].Imaginary = 0f;
@@ -72,7 +80,7 @@ namespace CSCore.DSP
         /// </summary>
         /// <param name="samples">Float Array which contains samples.</param>
         /// <param name="count">Number of samples to add to the <see cref="FftProvider"/>.</param>
-        public void Add(float[] samples, int count)
+        public virtual void Add(float[] samples, int count)
         {
             if (samples == null)
                 throw new ArgumentNullException("samples");
@@ -99,48 +107,44 @@ namespace CSCore.DSP
         /// </summary>
         /// <param name="fftResultBuffer">The output buffer.</param>
         /// <returns>Returns a value which indicates whether the Fast Fourier Transform got calculated. If there have not been added any new samples since the last transform, the FFT won't be calculated. True means that the Fast Fourier Transform got calculated.</returns>
-        public bool GetFftData(Complex[] fftResultBuffer)
+        public virtual bool GetFftData(Complex[] fftResultBuffer)
         {
             if (fftResultBuffer == null)
                 throw new ArgumentNullException("fftResultBuffer");
-            if (_newDataAvailable)
-            {
-                var input = fftResultBuffer;
-                Array.Copy(_storedSamples, input, _storedSamples.Length);
 
-                FastFourierTransformation.Fft(input, _fftSizeExponent);
-                _newDataAvailable = false;
+            var input = fftResultBuffer;
+            Array.Copy(_storedSamples, input, _storedSamples.Length);
 
-                return true;
-            }
-            return false;
+            FastFourierTransformation.Fft(input, _fftSizeExponent);
+            var result = _newDataAvailable;
+            _newDataAvailable = false;
+
+            return result;
         }
         /// <summary>
         /// Calculates the Fast Fourier Transform and stores the result in the <paramref name="fftResultBuffer"/>.
         /// </summary>
         /// <param name="fftResultBuffer">The output buffer.</param>
         /// <returns>Returns a value which indicates whether the Fast Fourier Transform got calculated. If there have not been added any new samples since the last transform, the FFT won't be calculated. True means that the Fast Fourier Transform got calculated.</returns>
-        public bool GetFftData(float[] fftResultBuffer)
+        public virtual bool GetFftData(float[] fftResultBuffer)
         {
             if (fftResultBuffer == null)
                 throw new ArgumentNullException("fftResultBuffer");
 
-            if (_newDataAvailable)
+            if(fftResultBuffer.Length < (int)_fftSize)
+                throw new ArgumentException("Length of array must be at least as long as the specified fft size.", "fftResultBuffer");
+            var input = new Complex[(int) _fftSize];
+
+            var result = _newDataAvailable;
+            GetFftData(input);
+
+            for (int i = 0; i < input.Length; i++)
             {
-                if(fftResultBuffer.Length < (int)_fftSize)
-                    throw new ArgumentException("Length of array must be at least as long as the specified fft size.", "fftResultBuffer");
-                var input = new Complex[(int) _fftSize];
-                GetFftData(input);
-
-                for (int i = 0; i < input.Length; i++)
-                {
-                    fftResultBuffer[i] = input[i];
-                }
-
-                //no need to set _newDataAvailable to false, since it got already set by the GetFftData(Complex[]) method.
-                return true;
+                fftResultBuffer[i] = input[i];
             }
-            return false;
+
+            //no need to set _newDataAvailable to false, since it got already set by the GetFftData(Complex[]) method.
+            return result;
         }
 
         private float MergeSamples(float[] samples, int i, int channels)
