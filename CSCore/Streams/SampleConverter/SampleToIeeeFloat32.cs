@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
+using CSCore.Utils;
 
 namespace CSCore.Streams.SampleConverter
 {
     public class SampleToIeeeFloat32 : SampleToWaveBase
     {
+        private float[] _decoderBuffer;
+
         public SampleToIeeeFloat32(ISampleSource source)
             : base(source, 32, AudioEncoding.IeeeFloat)
         {
@@ -14,8 +18,9 @@ namespace CSCore.Streams.SampleConverter
 
         public override int Read(byte[] buffer, int offset, int count)
         {
-            var ub = new Utils.Buffer.UnsafeBuffer(buffer);
-            int read = Source.Read(ub.FloatBuffer, offset / 4, count / 4);
+            _decoderBuffer = _decoderBuffer.CheckBuffer(count / 4);
+            int read = Source.Read(_decoderBuffer, offset / 4, count / 4);
+            ILUtils.MemoryCopy(buffer, _decoderBuffer, read * 4);
             return read * 4;
         }
     }

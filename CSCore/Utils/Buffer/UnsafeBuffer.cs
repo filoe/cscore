@@ -1,8 +1,10 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 
 namespace CSCore.Utils.Buffer
 {
     //Based on this idea: http://stackoverflow.com/questions/11390645/structlayout-to-convert-byte-array-to-short
+    [Obsolete]
     [StructLayout(LayoutKind.Explicit, Pack = 2)]
     public class UnsafeBuffer
     {

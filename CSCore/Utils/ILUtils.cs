@@ -124,9 +124,7 @@ namespace CSCore.Utils
 			ldc.i4 0
 			ldelema !!TSource
 
-			sizeof !!TSource
 			ldarg byteCount
-			mul
 
 			cpblk
 			ret
