@@ -43,6 +43,7 @@
     <NoWarn>1591</NoWarn>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <UseVSHostingProcess>false</UseVSHostingProcess>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup>
@@ -709,10 +710,11 @@ set ilasm_args=/DLL /OPTIMIZE
 
 set framework=%25WINDIR%25\Microsoft.NET\Framework\v2.0.50727
 
-echo calling "$(SolutionDir)Tools\InlineILCompiler\InlineILCompiler\bin\$(ConfigurationName)\InlineILCompiler.exe" with %25ilasm_args%25
-call "$(SolutionDir)Tools\InlineILCompiler\InlineILCompiler\bin\$(ConfigurationName)\InlineILCompiler.exe"
+set inlineILCompiler=$(SolutionDir)Tools\InlineILCompiler\InlineILCompiler\bin\$(ConfigurationName)\InlineILCompiler.exe
+echo calling %25inlineILCompiler%25 with %25ilasm_args%25
+call %25inlineILCompiler%25
 
-call "$(SolutionDir)Tools\CSCli\$(OutDir)CSCli.exe" -file:"$(TargetPath)" -r:"RemoveObjAttribute" -c:"CSCalliAttribute"</PostBuildEvent>
+call "$(SolutionDir)Tools\CSCli\bin\$(ConfigurationName)\CSCli.exe" -file:"$(TargetPath)" -r:"RemoveObjAttribute" -c:"CSCalliAttribute"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>

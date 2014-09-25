@@ -14,7 +14,8 @@ namespace InlineILCompiler
         {
             ProcessStartInfo processStartInfo = new ProcessStartInfo(cmd, args);
             processStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            processStartInfo.UseShellExecute = false;
+            processStartInfo.UseShellExecute = true;
+            //processStartInfo.RedirectStandardOutput = true;
             Process process = Process.Start(processStartInfo);
             process.WaitForExit();
             if (process.ExitCode != 0)
@@ -130,6 +131,7 @@ namespace InlineILCompiler
                 }
                 else if (line.StartsWith(".line"))
                 {
+                    bool newFile = false;
                     // try to detect if there is a new source file we are now processing...
                     if (line.Count((x) => x == '\'') >= 2)
                     {
@@ -140,10 +142,16 @@ namespace InlineILCompiler
 
                         if (tcsf != string.Empty) // new source file?
                             csf = tcsf.ToLower();
+
+                        if(csf == @"D:\vsproj\CSCore\source\CSCore\CSCore\Utils\ILUtils.cs".ToLower())
+                            Debugger.Break();
+                        newFile = true;
                     }
 
                     // this is the line number the below IL is relative to in the source...
                     int nLine = int.Parse(line.Remove(0, 6).Substring(0, line.IndexOf(',') - 6));
+                    if (newFile)
+                        pnLine = 1;
                     List<CodeSegment> cs;
                     if (segments.TryGetValue(csf, out cs))
                     {
@@ -154,6 +162,8 @@ namespace InlineILCompiler
                             if (nLine > -1 && !codeSegment.Inserted && pnLine <= codeSegment.Start && nLine >= codeSegment.Start)
                             {
                                 codeSegment.Inserted = true;
+
+                                Console.WriteLine("Inserted segment from line {0} to {1}.", codeSegment.Start, codeSegment.End);
 
                                 for (int k = 0; k < codeSegment.ILCode.Count; k++)
                                 {
@@ -259,9 +269,9 @@ namespace InlineILCompiler
 
         static int Main(string[] args)
         {
-            /*string Target = @"C:\vsproj\CSCore\source\CSCore\CSCore\bin\Debug\CSCore.dll";//Environment.GetEnvironmentVariable("target");
+            /*string Target = @"D:\vsproj\CSCore\source\CSCore\CSCore\bin\Release\CSCore.dll";//Environment.GetEnvironmentVariable("target");
             string SDKDirectory = @"C:\Program Files (x86)\Microsoft SDKs\Windows\v8.1A\bin\NETFX 4.5.1 Tools";//Environment.GetEnvironmentVariable("sdk");
-            string ProjectPath = @"C:\vsproj\CSCore\source\CSCore\CSCore\CSCore.csproj"; //Environment.GetEnvironmentVariable("project");
+            string ProjectPath = @"D:\vsproj\CSCore\source\CSCore\CSCore\CSCore.csproj"; //Environment.GetEnvironmentVariable("project");
             string FrameworkDirectory = @"C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727";// Environment.GetEnvironmentVariable("framework");
             string UserILAsmArguments = "/DLL";//Environment.GetEnvironmentVariable("ilasm_args");*/
 
@@ -281,8 +291,8 @@ namespace InlineILCompiler
             //
             // re-direct the console
             //
-            var writer = new StreamWriter(new FileStream(working + @"\InlineILCompiler.log", FileMode.Create));
-            Console.SetOut(writer);
+            //var writer = new StreamWriter(new FileStream(working + @"\InlineILCompiler.log", FileMode.Create));
+            //Console.SetOut(writer);
 
             try
             {
@@ -348,7 +358,7 @@ namespace InlineILCompiler
             }
             finally
             {
-                writer.Close();
+                //writer.Close();
             }
             return 0;
         }
@@ -359,7 +369,7 @@ namespace InlineILCompiler
         public List<string> ILCode;
         public int Start;
         public int End;
-        public bool Inserted;
+        public bool Inserted { get; set; }
         public string SrcName;
 
         public CodeSegment()

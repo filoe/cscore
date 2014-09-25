@@ -122,7 +122,7 @@ namespace CSCli
                         //check whether the called method is marked with the given calli attribute
                         if (attributes.Contains(_calliAttributeName))
                         {
-                            MessageIntegration.Info("Patching [{0}] @ [{1}].", method.ToString(), instruction.ToString());
+                            //MessageIntegration.Info("Patching [{0}] @ [{1}].", method.ToString(), instruction.ToString());
                             if (!method.Name.EndsWith("Native"))
                                 MessageIntegration.Info(String.Format("CallI-Comimport Methodnames should end with a \"Native\". Method: \"{0}\".", method.FullName));
 

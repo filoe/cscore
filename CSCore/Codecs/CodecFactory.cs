@@ -21,7 +21,8 @@ namespace CSCore.Codecs
     /// </summary>
     public class CodecFactory
     {
-        private static CodecFactory _instance;
+// ReSharper disable once InconsistentNaming
+        private static readonly CodecFactory _instance = new CodecFactory();
 
         private readonly Dictionary<object, CodecFactoryEntry> _codecs;
 
@@ -86,10 +87,9 @@ namespace CSCore.Codecs
         /// <summary>
         ///     Gets the default singleton instance of the <see cref="CodecFactory" /> class.
         /// </summary>
-        /// <remarks>Singleton implementation is not threadsafe.</remarks>
         public static CodecFactory Instance
         {
-            get { return _instance ?? (_instance = new CodecFactory()); }
+            get { return _instance; }
         }
 
         /// <summary>
@@ -170,8 +170,7 @@ namespace CSCore.Codecs
                 {
                     return GetCodec(uri.LocalPath);
                 }
-
-                return Default(uri.ToString());
+                return OpenWebStream(uri.ToString());
             }
             catch (IOException)
             {
@@ -180,6 +179,28 @@ namespace CSCore.Codecs
             catch (Exception e)
             {
                 throw new NotSupportedException("Codec not supported.", e);
+            }
+        }
+
+        private IWaveSource OpenWebStream(string url)
+        {
+            try
+            {
+                return Default(url);
+            }
+            catch (Exception)
+            {
+                try
+                {
+#pragma warning disable 618
+                    return new Mp3WebStream(url, false);
+#pragma warning restore 618
+                }
+                catch (Exception)
+                {
+                    Debug.WriteLine("No mp3 webstream.");
+                }
+                throw; //better throw the exception of the MediaFoundationDecoder. We just try to use the Mp3WebStream class since a few mp3 streams are not supported by the mediafoundation.
             }
         }
 
@@ -194,7 +215,7 @@ namespace CSCore.Codecs
         ///     That means that it can be possible that some files with the file extension abc can be decoded but other a few files
         ///     with the file extension abc can't be decoded.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Supported file extensions.</returns>
         public string[] GetSupportedFileExtensions()
         {
             var extensions = new List<string>();

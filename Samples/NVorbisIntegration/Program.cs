@@ -22,11 +22,14 @@ namespace NVorbisIntegration
                 using (Stream stream = openFileDialog.OpenFile())
                 {
                     var source = new NVorbisSource(stream);
-                    WasapiOut soundOut = new WasapiOut();
-                    soundOut.Initialize(source.ToWaveSource());
-                    soundOut.Play();
+                    using (WasapiOut soundOut = new WasapiOut())
+                    {
+                        soundOut.Initialize(source.ToWaveSource());
+                        soundOut.Play();
 
-                    Console.ReadKey();
+                        Console.ReadKey();
+                        soundOut.Stop();
+                    }
                 }
             }
         }

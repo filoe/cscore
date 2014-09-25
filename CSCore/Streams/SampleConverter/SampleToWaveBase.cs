@@ -9,12 +9,13 @@ namespace CSCore.Streams.SampleConverter
     {
         private readonly WaveFormat _waveFormat;
         protected ISampleSource Source;
+        protected float[] Buffer;
         private readonly double _ratio;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SampleToWaveBase"/> class.
         /// </summary>
-        /// <param name="source">The <see cref="ISampleSource"/> which has to get converted to a <see cref="IWaveSource"/>.</param>
+        /// <param name="source">The underlying <see cref="ISampleSource"/> which has to get converted to a <see cref="IWaveSource"/>.</param>
         /// <param name="bits">The <see cref="CSCore.WaveFormat.BitsPerSample"/> of the Output-<see cref="WaveFormat"/>.</param>
         /// <param name="encoding">The <see cref="CSCore.WaveFormat.WaveFormatTag"/> of the Output-<see cref="WaveFormat"/>.</param>
         /// <exception cref="ArgumentNullException">The <paramref name="source"/> is null.</exception>
@@ -126,6 +127,7 @@ namespace CSCore.Streams.SampleConverter
         protected virtual void Dispose(bool disposing)
         {
             Source.Dispose();
+            Buffer = null;
         }
 
         /// <summary>

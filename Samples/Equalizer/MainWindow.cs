@@ -48,19 +48,10 @@ namespace EqualizerTest
                 else
                     _soundOut = new DirectSoundOut();
 
-                LoopStream loopStream;
                 var source = CodecFactory.Instance.GetCodec(ofn.FileName)
-                    .AppendSource(x => new LoopStream(x) { EnableLoop = true }, out loopStream)
+                    .AppendSource(x => new LoopStream(x) { EnableLoop = true })
                     .AppendSource(Equalizer.Create10BandEqualizer, out _equalizer)
                     .ToWaveSource(32);
-
-                loopStream.StreamFinished += (s, args) =>
-                {
-                    //Stop();
-                    button1.Invoke(new Action(() => button1.Text = button1.Text + "1"));
-                };
-
-                source.Position = Math.Max(source.Length - 96000, 0);
 
                 _soundOut.Initialize(source);
                 _soundOut.Play();
