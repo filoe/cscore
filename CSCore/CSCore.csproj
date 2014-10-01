@@ -262,6 +262,8 @@
     <Compile Include="CoreAudioAPI\AudioCaptureClient.cs" />
     <Compile Include="CoreAudioAPI\AudioClientBufferFlags.cs" />
     <Compile Include="CoreAudioAPI\AudioClientStreamFlags.cs" />
+    <Compile Include="CoreAudioAPI\AudioClock.cs" />
+    <Compile Include="CoreAudioAPI\AudioClock2.cs" />
     <Compile Include="CoreAudioAPI\AudioMeterInformation.cs" />
     <Compile Include="CoreAudioAPI\AudioSessionChannelVolumeChangedEventArgs.cs" />
     <Compile Include="CoreAudioAPI\AudioSessionControl2.cs" />

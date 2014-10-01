@@ -40,7 +40,7 @@ namespace CSCore.CoreAudioAPI
         ///     <see cref="AudioClient" /> which should be used to create the <see cref="AudioCaptureClient" />-instance
         ///     with.
         /// </param>
-        /// <returns></returns>
+        /// <returns>A new <see cref="AudioCaptureClient"/>.</returns>
         public static AudioCaptureClient FromAudioClient(AudioClient audioClient)
         {
             if (audioClient == null)

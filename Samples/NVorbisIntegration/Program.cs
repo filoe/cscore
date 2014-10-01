@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using CSCore;
+using CSCore.Codecs;
 using CSCore.SoundOut;
 using NVorbis;
 
@@ -15,16 +16,18 @@ namespace NVorbisIntegration
         [STAThread]
         static void Main(string[] args)
         {
+            //Register the new codec.
+            CodecFactory.Instance.Register("ogg-vorbis", new CodecFactoryEntry(s => new NVorbisSource(s).ToWaveSource(), ".ogg"));
+
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Vorbis file (*.ogg)|*.ogg";
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                using (Stream stream = openFileDialog.OpenFile())
+                using (var source = CodecFactory.Instance.GetCodec(openFileDialog.FileName))
                 {
-                    var source = new NVorbisSource(stream);
                     using (WasapiOut soundOut = new WasapiOut())
                     {
-                        soundOut.Initialize(source.ToWaveSource());
+                        soundOut.Initialize(source);
                         soundOut.Play();
 
                         Console.ReadKey();
@@ -54,9 +57,15 @@ namespace NVorbisIntegration
             _waveFormat = new WaveFormat(_vorbisReader.SampleRate, 32, _vorbisReader.Channels, AudioEncoding.IeeeFloat);
         }
 
-        public bool CanSeek { get { return _stream.CanSeek; } }
+        public bool CanSeek
+        {
+            get { return _stream.CanSeek; }
+        }
 
-        public WaveFormat WaveFormat { get { return _waveFormat; } }
+        public WaveFormat WaveFormat
+        {
+            get { return _waveFormat; }
+        }
 
         public long Position
         {
@@ -70,7 +79,10 @@ namespace NVorbisIntegration
             }
         }
 
-        public long Length { get { return CanSeek ? _vorbisReader.TotalSamples : 0; } }
+        public long Length
+        {
+            get { return CanSeek ? _vorbisReader.TotalSamples : 0; }
+        }
 
         public int Read(float[] buffer, int offset, int count)
         {

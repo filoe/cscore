@@ -33,6 +33,8 @@ namespace CSCore.Codecs
             if (fileextensions == null || fileextensions.Length <= 0)
                 throw new ArgumentException("No fileextensions", "fileextensions");
 
+            fileextensions = fileextensions.Where(x => x != null).Select(x => x.Replace(".", String.Empty)).ToArray();
+
             GetCodecAction = getCodecAction;
             FileExtensions = fileextensions;
         }
