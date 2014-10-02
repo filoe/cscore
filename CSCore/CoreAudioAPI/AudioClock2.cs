@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using CSCore.Win32;
 
 namespace CSCore.CoreAudioAPI
 {
@@ -7,7 +8,7 @@ namespace CSCore.CoreAudioAPI
     ///     Used to get the device position.
     /// </summary>
     [Guid("6f49ff73-6727-49ac-a008-d98cf5e70048")]
-    public class AudioClock2 : AudioClock
+    public class AudioClock2 : ComObject
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="AudioClock2" /> class.
@@ -58,12 +59,12 @@ namespace CSCore.CoreAudioAPI
         ///     <see cref="GetDevicePositionNative" /> converts the counter value to 100-nanosecond time units before writing it to
         ///     QPCPosition.
         /// </param>
-        /// <returns></returns>
+        /// <returns>HRESULT</returns>
         public unsafe int GetDevicePositionNative(out long devicePosition, out long qpcPosition)
         {
             fixed (void* p0 = &devicePosition, p1 = &qpcPosition)
             {
-                return InteropCalls.CallI(UnsafeBasePtr, p0, p1, ((void**) (*(void**) UnsafeBasePtr))[6]);
+                return InteropCalls.CallI(UnsafeBasePtr, p0, p1, ((void**) (*(void**) UnsafeBasePtr))[3]);
             }
         }
 

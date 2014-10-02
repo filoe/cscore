@@ -270,11 +270,19 @@ namespace CSCore.Test.CoreAudioAPI
             }
         }
 
-        private bool IsFormatSupported(WaveFormat waveFormat, AudioClientShareMode sharemode)
+        [TestMethod]
+        [TestCategory("CoreAudioAPI")]
+        public void CanGetAudioClock()
         {
             using (var audioClient = Utils.CreateDefaultRenderClient())
             {
-                return IsFormatSupported(waveFormat, sharemode, audioClient);
+                audioClient.Initialize(AudioClientShareMode.Shared, AudioClientStreamFlags.None, 1000, 0,
+                    audioClient.GetMixFormat(), Guid.Empty);
+                using (var audioClock = AudioClock.FromAudioClient(audioClient))
+                {
+                    Assert.IsNotNull(audioClock);
+                    Debug.WriteLine("Frequency: {0}; Position: {1}", audioClock.Pu64Frequency, audioClock.Pu64Position);
+                }
             }
         }
 

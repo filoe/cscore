@@ -22,10 +22,6 @@ namespace CSCore.CoreAudioAPI
         {
         }
 
-        internal AudioClock()
-        {
-        }
-
         /// <summary>
         ///     Gets the device frequency. For more information, see
         ///     <see href="http://msdn.microsoft.com/en-us/library/windows/desktop/dd370889(v=vs.85).aspx" />.
