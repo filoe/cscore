@@ -18,7 +18,13 @@ namespace CSCore.Win32
         [DllImport("kernel32.dll", SetLastError = true)]
         internal static extern bool FreeLibrary(IntPtr hModule);
 
-        [DllImport("kernel32", CharSet = CharSet.Ansi, ExactSpelling = true, SetLastError = true)]
+        [DllImport("kernel32.dll", CharSet = CharSet.Ansi, ExactSpelling = true, SetLastError = true)]
         internal static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
+
+        [DllImport("Avrt.dll", CharSet = CharSet.Unicode)]
+        internal static extern IntPtr AvSetMmThreadCharacteristics([MarshalAs(UnmanagedType.LPWStr)] string proAudio, out int taskIndex);
+
+        [DllImport("Avrt.dll")]
+        internal static extern bool AvRevertMmThreadCharacteristics(IntPtr avrtHandle);
     }
 }

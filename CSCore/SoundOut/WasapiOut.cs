@@ -1,10 +1,12 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
 using CSCore.CoreAudioAPI;
 using CSCore.DSP;
+using CSCore.Win32;
 
 namespace CSCore.SoundOut
 {
@@ -366,6 +368,7 @@ namespace CSCore.SoundOut
         private void PlaybackProc(object playbackStartedEventWaithandle)
         {
             Exception exception = null;
+            IntPtr avrtHandle = IntPtr.Zero;
             try
             {
                 int bufferSize = _audioClient.BufferSize;
@@ -412,6 +415,9 @@ namespace CSCore.SoundOut
 
                     if (PlaybackState == PlaybackState.Playing)
                     {
+                        int taskIndex;
+                        avrtHandle = Win32.NativeMethods.AvSetMmThreadCharacteristics("Pro Audio", out taskIndex);
+
                         int padding;
                         if (_eventSync && _shareMode == AudioClientShareMode.Exclusive)
                             padding = 0;
@@ -427,6 +433,8 @@ namespace CSCore.SoundOut
                             if (!FeedBuffer(_renderClient, buffer, framesReadyToFill, frameSize))
                                 _playbackState = PlaybackState.Stopped; //TODO: Fire Stopped-event here?
                         }
+
+                        Win32.NativeMethods.AvRevertMmThreadCharacteristics(avrtHandle);
                     }
                 }
 
@@ -442,6 +450,8 @@ namespace CSCore.SoundOut
             }
             finally
             {
+                if (avrtHandle != IntPtr.Zero)
+                    NativeMethods.AvRevertMmThreadCharacteristics(avrtHandle);
                 //CleanupResources();
                 if (playbackStartedEventWaithandle is EventWaitHandle)
                     ((EventWaitHandle)playbackStartedEventWaithandle).Set();
@@ -469,27 +479,50 @@ namespace CSCore.SoundOut
 
         private void InitializeInternal()
         {
+            const int reftimesPerMillisecond = 10000;
+
             _audioClient = AudioClient.FromMMDevice(Device);
             _outputFormat = SetupWaveFormat(_source.WaveFormat, _audioClient);
 
-            long latency = _latency * 10000;
-
-            if (!_eventSync)
-                _audioClient.Initialize(_shareMode, AudioClientStreamFlags.None, latency, 0, _outputFormat, Guid.Empty);
-            else //event sync
+            long latency = _latency * reftimesPerMillisecond;
+        AUDCLNT_E_BUFFER_SIZE_NOT_ALIGNED_TRY_AGAIN:
+            try
             {
-                if (_shareMode == AudioClientShareMode.Exclusive) //exclusive
-                {
-                    _audioClient.Initialize(_shareMode, AudioClientStreamFlags.StreamFlagsEventCallback, latency,
-                        latency, _outputFormat, Guid.Empty);
-                }
-                else //shared
-                {
-                    _audioClient.Initialize(_shareMode, AudioClientStreamFlags.StreamFlagsEventCallback, 0, 0,
-                        _outputFormat, Guid.Empty);
-                    _latency = (int)(_audioClient.StreamLatency / 10000);
-                }
 
+                if (!_eventSync)
+                    _audioClient.Initialize(_shareMode, AudioClientStreamFlags.None, latency, 0, _outputFormat,
+                        Guid.Empty);
+                else //event sync
+                {
+                    if (_shareMode == AudioClientShareMode.Exclusive) //exclusive
+                    {
+                        _audioClient.Initialize(_shareMode, AudioClientStreamFlags.StreamFlagsEventCallback, latency,
+                            latency, _outputFormat, Guid.Empty);
+                    }
+                    else //shared
+                    {
+                        _audioClient.Initialize(_shareMode, AudioClientStreamFlags.StreamFlagsEventCallback, 0, 0,
+                            _outputFormat, Guid.Empty);
+                        latency = (int)(_audioClient.StreamLatency / reftimesPerMillisecond);
+                    }
+                }
+            }
+            catch (CoreAudioAPIException exception)
+            {
+                if (exception.ErrorCode == unchecked((int)0x88890019)) //AUDCLNT_E_BUFFER_SIZE_NOT_ALIGNED
+                {
+                    const long reftimesPerSec = 10000000;
+                    int framesInBuffer = _audioClient.GetBufferSize();
+                    latency = (int)(reftimesPerSec * framesInBuffer / _outputFormat.SampleRate + 0.5);
+                    goto AUDCLNT_E_BUFFER_SIZE_NOT_ALIGNED_TRY_AGAIN;
+                }
+                throw;
+            }
+
+            Latency = (int) (latency / reftimesPerMillisecond);
+
+            if (_eventSync)
+            {
                 _eventWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
                 _audioClient.SetEventHandle(_eventWaitHandle.SafeWaitHandle.DangerousGetHandle());
             }
