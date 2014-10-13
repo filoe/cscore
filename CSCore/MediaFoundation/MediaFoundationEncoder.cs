@@ -242,6 +242,7 @@ namespace CSCore.MediaFoundation
                 {
                     while (_sinkWriter.GetStatistics(_streamIndex).DwByteCountQueued > 0)
                     {
+                        _sinkWriter.Flush(_streamIndex);
                         Thread.Sleep(50);
                     }
                     _sinkWriter.Flush(_streamIndex);
