@@ -40,8 +40,8 @@ namespace CSCore.Streams
         /// </summary>
         public int Interval
         {
-            get { return (int)((1000.0 * _blocksProcessed) / WaveFormat.SampleRate); }
-            set { _blocksProcessed = (int)((value / 1000.0) * WaveFormat.SampleRate); }
+            get { return (int)((1000.0 * _blocksToProcess) / WaveFormat.SampleRate); }
+            set { _blocksToProcess = (int)((value / 1000.0) * WaveFormat.SampleRate); }
         }
 
         /// <summary>
