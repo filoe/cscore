@@ -68,7 +68,7 @@ namespace WinformsVisualization.Visualization
                         float pointHeight = clipRectangle.Height / spectrumPoints.Length;
 
                         pen.Color = _colorCalculator.GetColor((float) p.Value);
-                        pen.Color = Color.FromArgb(255, pen.Color.R, pen.Color.G, pen.Color.B);
+                        //pen.Color = Color.FromArgb(255, pen.Color.R, pen.Color.G, pen.Color.B);
 
                         var p1 = new PointF(xCoord, currentYOffset);
                         var p2 = new PointF(xCoord, currentYOffset - pointHeight);

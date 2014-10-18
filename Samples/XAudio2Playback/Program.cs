@@ -21,7 +21,7 @@ namespace XAudio2Playback
                 using (var streamingSourceVoice = StreamingSourceVoice.Create(xaudio2, source))
                 {
                     StreamingSourceVoiceListener.Default.Add(streamingSourceVoice); //add the streamingSourceVoice to the default sourcevoicelistener which processes the data requests.
-                    streamingSourceVoice.Start(); //this call is not necessary in version 1.0 (changeset 949cc2652266)
+                    streamingSourceVoice.Start();
 
                     Console.WriteLine("Press any key to exit.");
                     Console.ReadKey();
