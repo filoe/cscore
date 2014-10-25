@@ -98,17 +98,23 @@ namespace CSCore.MediaFoundation
                 using (var currentMediaType = reader.GetCurrentMediaType(NativeMethods.MF_SOURCE_READER_FIRST_AUDIO_STREAM))
                 {
                     if (currentMediaType.MajorType != AudioSubTypes.MediaTypeAudio)
-                        throw new InvalidOperationException(String.Format("Invalid Majortype set on sourcereader: {0}.", currentMediaType.MajorType.ToString()));
+                        throw new InvalidOperationException(String.Format("Invalid Majortype set on sourcereader: {0}.", currentMediaType.MajorType));
 
-                    AudioEncoding encoding;
-                    if (currentMediaType.SubType == AudioSubTypes.Pcm)
-                        encoding = AudioEncoding.Pcm;
-                    else if (currentMediaType.SubType == AudioSubTypes.IeeeFloat)
-                        encoding = AudioEncoding.IeeeFloat;
+                    AudioEncoding encoding = AudioSubTypes.EncodingFromMediaType(currentMediaType.SubType);
+
+                    ChannelMask channelMask;
+                    if (currentMediaType.TryGet(MediaFoundationAttributes.MF_MT_AUDIO_CHANNEL_MASK, out channelMask))
+                        //check whether the attribute is available
+                    {
+                        _waveFormat = new WaveFormatExtensible(currentMediaType.SampleRate,
+                            currentMediaType.BitsPerSample, currentMediaType.Channels, currentMediaType.SubType,
+                            currentMediaType.ChannelMask);
+                    }
                     else
-                        throw new InvalidOperationException(String.Format("Invalid Subtype set on sourcereader: {0}.", currentMediaType.SubType.ToString()));
-
-                    _waveFormat = new WaveFormat(currentMediaType.SampleRate, currentMediaType.BitsPerSample, currentMediaType.Channels, encoding);
+                    {
+                        _waveFormat = new WaveFormat(currentMediaType.SampleRate, currentMediaType.BitsPerSample,
+                            currentMediaType.Channels, encoding);
+                    }
                 }
 
                 reader.SetStreamSelection(NativeMethods.MF_SOURCE_READER_FIRST_AUDIO_STREAM, true);

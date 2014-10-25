@@ -703,6 +703,20 @@ namespace CSCore.MediaFoundation
             }
         }
 
+        internal bool TryGet<T>(Guid key, out T value)
+        {
+            try
+            {
+                value = Get<T>(key);
+                return true;
+            }
+            catch (Exception)
+            {
+                value = default(T);
+                return false;
+            }
+        }
+
         /// <summary>
         /// Sets the value of a property specified by the key of the <paramref name="keyValuePair"/> object.
         /// </summary>

@@ -102,7 +102,16 @@ namespace CSCore
 
             var dstWaveFormat = (WaveFormat)input.WaveFormat.Clone();
             dstWaveFormat.Channels = 2;
-            return new DmoResampler(input, dstWaveFormat);
+            if (input.WaveFormat is WaveFormatExtensible)
+            {
+                var channelMask = ((WaveFormatExtensible) input.WaveFormat).ChannelMask;
+                var channelMatrix = ChannelMatrix.GetToStereoChannelMatrix(channelMask);
+                return new DmoChannelResampler(input, channelMatrix);
+            }
+            else
+            {
+                return new DmoResampler(input, dstWaveFormat);
+            }
         }
 
         /// <summary>
@@ -125,9 +134,7 @@ namespace CSCore
                 return new MonoToStereoSource(input);
             }
 
-            var dstWaveFormat = (WaveFormat)input.WaveFormat.Clone();
-            dstWaveFormat.Channels = 2;
-            return new DmoResampler(input.ToWaveSource(), dstWaveFormat).ToSampleSource();
+            return ToStereo(input.ToWaveSource()).ToSampleSource();
         }
 
         /// <summary>
@@ -152,7 +159,16 @@ namespace CSCore
 
             var dstWaveFormat = (WaveFormat)input.WaveFormat.Clone();
             dstWaveFormat.Channels = 1;
-            return new DmoResampler(input, dstWaveFormat);
+            if (input.WaveFormat is WaveFormatExtensible)
+            {
+                var channelMask = ((WaveFormatExtensible)input.WaveFormat).ChannelMask;
+                var channelMatrix = ChannelMatrix.GetToMonoChannelMatrix(channelMask);
+                return new DmoChannelResampler(input, channelMatrix);
+            }
+            else
+            {
+                return new DmoResampler(input, dstWaveFormat);
+            }
         }
 
         /// <summary>
@@ -175,9 +191,7 @@ namespace CSCore
                 return new StereoToMonoSource(input);
             }
 
-            var dstWaveFormat = (WaveFormat)input.WaveFormat.Clone();
-            dstWaveFormat.Channels = 1;
-            return new DmoResampler(input.ToWaveSource(), dstWaveFormat).ToSampleSource();
+            return ToMono(input.ToWaveSource()).ToSampleSource();
         }
     }
 }

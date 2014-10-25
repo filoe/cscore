@@ -8,7 +8,7 @@ namespace CSCore.MediaFoundation
     /// <summary>
     /// see http://msdn.microsoft.com/en-us/library/windows/desktop/ms696989%28v=vs.85%29.aspx
     /// </summary>
-    public static class MediaFoundationAttributes
+    internal static class MediaFoundationAttributes
     {
         public static readonly Guid MF_MT_AUDIO_BITS_PER_SAMPLE = new Guid("f2deb57f-40fa-4764-aa33-ed4f2d1ff669");
         public static readonly Guid MF_MT_AUDIO_NUM_CHANNELS = new Guid("37e48bf5-645e-4c5b-89de-ada9e29b696a");
@@ -22,5 +22,6 @@ namespace CSCore.MediaFoundation
 
         public static readonly Guid MF_READWRITE_ENABLE_HARDWARE_TRANSFORMS = new Guid("a634a91c-822b-41b9-a494-4de4643612b0");
         public static readonly Guid MF_TRANSCODE_CONTAINERTYPE = new Guid("150ff23f-4abc-478b-ac4f-e1916fba1cca");
+        public static readonly Guid MF_MT_AUDIO_CHANNEL_MASK = new Guid("55fb5765-644a-4caf-8479-938983bb1588");
     }
 }

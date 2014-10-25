@@ -44,7 +44,7 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Number of channels
+        /// Gets or sets the number of channels.
         /// </summary>
         public int Channels
         {
@@ -53,7 +53,7 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Bits per sample
+        /// Gets or sets the number of bits per sample.
         /// </summary>
         public int BitsPerSample
         {
@@ -62,7 +62,7 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Samples per second(for one channel each)
+        /// Gets or sets the number of samples per second (for one channel each).
         /// </summary>
         public int SampleRate
         {
@@ -71,7 +71,16 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// AVG bytes per second
+        /// Gets or sets the channelmask.
+        /// </summary>
+        public ChannelMask ChannelMask
+        {
+            get { return (ChannelMask) GetUINT32(MediaFoundationAttributes.MF_MT_AUDIO_CHANNEL_MASK); }
+            set { SetUINT32(MediaFoundationAttributes.MF_MT_AUDIO_CHANNEL_MASK, (int) value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the average number of bytes per second.
         /// </summary>
         public int AverageBytesPerSecond
         {
@@ -80,7 +89,7 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Audiosubtype
+        /// Gets or sets the audio subtype.
         /// </summary>
         public Guid SubType
         {
@@ -89,7 +98,7 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Majortype
+        /// Gets or sets the major type.
         /// </summary>
         public Guid MajorType
         {
