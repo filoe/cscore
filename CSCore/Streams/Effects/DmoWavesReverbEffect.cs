@@ -1,8 +1,7 @@
-﻿using CSCore.DMO.Effects;
+﻿// ReSharper disable InconsistentNaming
+
+using CSCore.DMO.Effects;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Runtime.InteropServices;
 
 namespace CSCore.Streams.Effects
@@ -22,6 +21,10 @@ namespace CSCore.Streams.Effects
             IsEnabled = true;
         }
 
+        /// <summary>
+        /// Creates and returns a new instance of the native COM object.
+        /// </summary>
+        /// <returns>A new instance of the native COM object.</returns>
         protected override object CreateComObject()
         {
             return new DmoWavesReverbEffectObject();
@@ -91,18 +94,58 @@ namespace CSCore.Streams.Effects
         }
         #endregion
         #region constants
+        /// <summary>
+        /// Default value for the <see cref="HighFrequencyRTRatio"/> property.
+        /// </summary>
         public const float HighFrequencyRTRatioDefault = 0.001f;
+        /// <summary>
+        /// Maximum value for the <see cref="HighFrequencyRTRatio"/> property.
+        /// </summary>
         public const float HighFrequencyRTRatioMax = 0.999f;
+        /// <summary>
+        /// Minimum value for the <see cref="HighFrequencyRTRatio"/> property.
+        /// </summary>
         public const float HighFrequencyRTRatioMin = 0.001f;
+
+        /// <summary>
+        /// Default value for the <see cref="InGain"/> property.
+        /// </summary>
         public const float InGainDefault = 0f;
+        /// <summary>
+        /// Maximum value for the <see cref="InGain"/> property.
+        /// </summary>
         public const float InGainMax = 0f;
+        /// <summary>
+        /// Minimum value for the <see cref="InGain"/> property.
+        /// </summary>
         public const float InGainMin = -96f;
+
+        /// <summary>
+        /// Default value for the <see cref="ReverbMix"/> property.
+        /// </summary>
         public const float ReverbMixDefault = 0f;
+        /// <summary>
+        /// Maximum value for the <see cref="ReverbMix"/> property.
+        /// </summary>
         public const float ReverbMixMax = 0f;
+        /// <summary>
+        /// Minimum value for the <see cref="ReverbMix"/> property.
+        /// </summary>
         public const float ReverbMixMin = -96f;
+
+        /// <summary>
+        /// Default value for the <see cref="ReverbTime"/> property.
+        /// </summary>
         public const float ReverbTimeDefault = 1000f;
+        /// <summary>
+        /// Maximum value for the <see cref="ReverbTime"/> property.
+        /// </summary>
         public const float ReverbTimeMax = 3000f;
+        /// <summary>
+        /// Minimum value for the <see cref="ReverbTime"/> property.
+        /// </summary>
         public const float ReverbTimeMin = 0.001f;
         #endregion
     }
 }
+// ReSharper restore InconsistentNaming

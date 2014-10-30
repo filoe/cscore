@@ -22,6 +22,10 @@ namespace CSCore.Streams.Effects
         {
         }
 
+        /// <summary>
+        /// Creates and returns a new instance of the native COM object.
+        /// </summary>
+        /// <returns>A new instance of the native COM object.</returns>
         protected override object CreateComObject()
         {
             return new DmoEchoEffectObject();
@@ -127,20 +131,69 @@ namespace CSCore.Streams.Effects
 
         #region constants
 
+        /// <summary>
+        /// Default value for the <see cref="Feedback"/> property.
+        /// </summary>
         public const float FeedbackDefault = 50f;
+        /// <summary>
+        /// Maximum value for the <see cref="Feedback"/> property.
+        /// </summary>
         public const float FeedbackMax = 100f;
+        /// <summary>
+        /// Minimum value for the <see cref="Feedback"/> property.
+        /// </summary>
         public const float FeedbackMin = 0f;
+
+        /// <summary>
+        /// Default value for the <see cref="LeftDelay"/> property.
+        /// </summary>
         public const float LeftDelayDefault = 500f;
+        /// <summary>
+        /// Maximum value for the <see cref="LeftDelay"/> property.
+        /// </summary>
         public const float LeftDelayMax = 2000f;
+        /// <summary>
+        /// Minimum value for the <see cref="LeftDelay"/> property.
+        /// </summary>
         public const float LeftDelayMin = 1f;
+
+        /// <summary>
+        /// Default value for the <see cref="PanDelay"/> property.
+        /// </summary>
         public const bool PanDelayDefault = false;
+        /// <summary>
+        /// Maximum value for the <see cref="PanDelay"/> property.
+        /// </summary>
         public const int PanDelayMax = 1;
+        /// <summary>
+        /// Minimum value for the <see cref="PanDelay"/> property.
+        /// </summary>
         public const int PanDelayMin = 0;
+
+        /// <summary>
+        /// Default value for the <see cref="RightDelay"/> property.
+        /// </summary>
         public const float RightDelayDefault = 500f;
+        /// <summary>
+        /// Maximum value for the <see cref="RightDelay"/> property.
+        /// </summary>
         public const float RightDelayMax = 2000f;
+        /// <summary>
+        /// Minimum value for the <see cref="RightDelay"/> property.
+        /// </summary>
         public const float RightDelayMin = 1f;
+
+        /// <summary>
+        /// Default value for the <see cref="WetDryMix"/> property.
+        /// </summary>
         public const float WetDryMixDefault = 50f;
+        /// <summary>
+        /// Maximum value for the <see cref="WetDryMix"/> property.
+        /// </summary>
         public const float WetDryMixMax = 100f;
+        /// <summary>
+        /// Minimum value for the <see cref="WetDryMix"/> property.
+        /// </summary>
         public const float WetDryMixMin = 0f;
 
         #endregion constants

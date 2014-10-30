@@ -1,9 +1,6 @@
 ﻿using CSCore.DMO;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace CSCore.Streams.Effects
 {
@@ -31,9 +28,9 @@ namespace CSCore.Streams.Effects
         }
 
         /// <summary>
-        /// Returns a new instance of the DMO effect.
+        /// Creates and returns a new instance of the native COM object.
         /// </summary>
-        /// <returns>DMO effect.</returns>
+        /// <returns>A new instance of the native COM object.</returns>
         protected abstract Object CreateComObject();
 
         /// <summary>
@@ -50,7 +47,7 @@ namespace CSCore.Streams.Effects
         /// <summary>
         /// Gets the output format of the effect.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The output format of the effect.</returns>
         protected override WaveFormat GetOutputFormat()
         {
             return GetInputFormat();
@@ -85,9 +82,9 @@ namespace CSCore.Streams.Effects
         /// <summary>
         /// Sets the value for one of the effects parameter and updates the effect.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="fieldname"></param>
-        /// <param name="value"></param>
+        /// <typeparam name="T">Type of the <paramref name="value"/>.</typeparam>
+        /// <param name="fieldname">Name of the field to set the value for.</param>
+        /// <param name="value">Value to set.</param>
         protected void SetValue<T>(string fieldname, T value) where T : struct
         {
             var p = Effect.Parameters;
@@ -95,6 +92,13 @@ namespace CSCore.Streams.Effects
             Effect.Parameters = p;
         }
 
+        /// <summary>
+        ///     Reads a sequence of bytes from the stream and applies the Dmo effect to them (only if the <see cref="IsEnabled"/> property is set to true).
+        /// </summary>
+        /// <param name="buffer">An array of bytes. When this method returns, the buffer contains the read bytes.</param>
+        /// <param name="offset">The zero-based byte offset in buffer at which to begin storing the data read from the stream.</param>
+        /// <param name="count">The maximum number of bytes to be read from the stream</param>
+        /// <returns>The actual number of read bytes.</returns>
         public override int Read(byte[] buffer, int offset, int count)
         {
             if (IsEnabled)

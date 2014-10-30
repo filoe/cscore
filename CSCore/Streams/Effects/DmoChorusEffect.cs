@@ -1,10 +1,6 @@
-﻿using CSCore.DMO;
-using CSCore.DMO.Effects;
+﻿using CSCore.DMO.Effects;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace CSCore.Streams.Effects
 {
@@ -22,6 +18,10 @@ namespace CSCore.Streams.Effects
         {
         }
 
+        /// <summary>
+        /// Creates and returns a new instance of the native COM object.
+        /// </summary>
+        /// <returns>A new instance of the native COM object.</returns>
         protected override object CreateComObject()
         {
             return new DmoChorusEffectObject();
@@ -131,31 +131,115 @@ namespace CSCore.Streams.Effects
         #endregion
 
         #region contants
+        /// <summary>
+        /// Default value for the <see cref="Delay"/> property.
+        /// </summary>
         public const float DelayDefault = 16f;
+        /// <summary>
+        /// Maximum value for the <see cref="Delay"/> property.
+        /// </summary>
         public const float DelayMax = 20f;
+        /// <summary>
+        /// Minimum value for the <see cref="Delay"/> property.
+        /// </summary>
         public const float DelayMin = 0f;
+
+        /// <summary>
+        /// Default value for the <see cref="Depth"/> property.
+        /// </summary>
         public const float DepthDefault = 10f;
+        /// <summary>
+        /// Maximum value for the <see cref="Depth"/> property.
+        /// </summary>
         public const float DepthMax = 100f;
+        /// <summary>
+        /// Minimum value for the <see cref="Depth"/> property.
+        /// </summary>
         public const float DepthMin = 0f;
+
+        /// <summary>
+        /// Default value for the <see cref="Feedback"/> property.
+        /// </summary>
         public const float FeedbackDefault = 25f;
+        /// <summary>
+        /// Maximum value for the <see cref="Feedback"/> property.
+        /// </summary>
         public const float FeedbackMax = 99f;
+        /// <summary>
+        /// Minimum value for the <see cref="Feedback"/> property.
+        /// </summary>
         public const float FeedbackMin = -99f;
+
+        /// <summary>
+        /// Default value for the <see cref="Frequency"/> property.
+        /// </summary>
         public const float FrequencyDefault = 1.1f;
+        /// <summary>
+        /// Maximum value for the <see cref="Frequency"/> property.
+        /// </summary>
         public const float FrequencyMax = 10f;
+        /// <summary>
+        /// Minimum value for the <see cref="Frequency"/> property.
+        /// </summary>
         public const float FrequencyMin = 0f;
+
+        /// <summary>
+        /// 180° Phase
+        /// </summary>
         public const int Phase180 = 4;
+        /// <summary>
+        /// 90° Phase
+        /// </summary>
         public const int Phase90 = 3;
+        /// <summary>
+        /// Default value for the <see cref="Phase"/> property.
+        /// </summary>
         public const int PhaseDefault = 3;
+        /// <summary>
+        /// Maximum value for the <see cref="Phase"/> property.
+        /// </summary>
         public const int PhaseMax = 4;
+        /// <summary>
+        /// Minimum value for the <see cref="Phase"/> property.
+        /// </summary>
         public const int PhaseMin = 0;
+        /// <summary>
+        /// -180° Phase
+        /// </summary>
         public const int PhaseNegative180 = 0;
+        /// <summary>
+        /// -90° Phase
+        /// </summary>
         public const int PhaseNegative90 = 1;
+        /// <summary>
+        /// 0° Phase
+        /// </summary>
         public const int PhaseZero = 2;
+
+        /// <summary>
+        /// Default value for the <see cref="Waveform"/> property.
+        /// </summary>
         public const int WaveformDefault = 1;
+        /// <summary>
+        /// Sine waveform
+        /// </summary>
         public const int WaveformSin = 1;
+        /// <summary>
+        /// Triangle waveform
+        /// </summary>
         public const int WaveformTriangle = 0;
+
+        /// <summary>
+        /// Default value for the <see cref="WetDryMix"/> property.
+        /// </summary>
         public const float WetDryMixDefault = 50f;
+        /// <summary>
+        /// Maximum value for the <see cref="WetDryMix"/> property.
+        /// </summary>
         public const float WetDryMixMax = 100f;
+        /// <summary>
+        /// Minimum value for the <see cref="WetDryMix"/> property.
+        /// </summary>
         public const float WetDryMixMin = 0f;
         #endregion
     }

@@ -1,9 +1,6 @@
 ﻿using CSCore.DMO.Effects;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace CSCore.Streams.Effects
 {
@@ -21,6 +18,10 @@ namespace CSCore.Streams.Effects
         {
         }
 
+        /// <summary>
+        /// Creates and returns a new instance of the native COM object.
+        /// </summary>
+        /// <returns>A new instance of the native COM object.</returns>
         protected override object CreateComObject()
         {
             return new DmoFlangerEffectObject();
@@ -129,20 +130,69 @@ namespace CSCore.Streams.Effects
         #endregion
 
         #region constants
+        /// <summary>
+        /// Default value for the <see cref="Delay"/> property.
+        /// </summary>
         public const float DelayDefault = 2f;
+        /// <summary>
+        /// Maximum value for the <see cref="Delay"/> property.
+        /// </summary>
         public const float DelayMax = 4f;
+        /// <summary>
+        /// Minimum value for the <see cref="Delay"/> property.
+        /// </summary>
         public const float DelayMin = 0f;
+
+        /// <summary>
+        /// Default value for the <see cref="Depth"/> property.
+        /// </summary>
         public const float DepthDefault = 100f;
+        /// <summary>
+        /// Maximum value for the <see cref="Depth"/> property.
+        /// </summary>
         public const float DepthMax = 100f;
+        /// <summary>
+        /// Minimum value for the <see cref="Depth"/> property.
+        /// </summary>
         public const float DepthMin = 0f;
+
+        /// <summary>
+        /// Default value for the <see cref="Feedback"/> property.
+        /// </summary>
         public const float FeedbackDefault = -50f;
+        /// <summary>
+        /// Maximum value for the <see cref="Feedback"/> property.
+        /// </summary>
         public const float FeedbackMax = 99f;
+        /// <summary>
+        /// Minimum value for the <see cref="Feedback"/> property.
+        /// </summary>
         public const float FeedbackMin = -99f;
+
+        /// <summary>
+        /// Default value for the <see cref="Frequency"/> property.
+        /// </summary>
         public const float FrequencyDefault = 0.25f;
+        /// <summary>
+        /// Maximum value for the <see cref="Frequency"/> property.
+        /// </summary>
         public const float FrequencyMax = 10f;
+        /// <summary>
+        /// Minimum value for the <see cref="Frequency"/> property.
+        /// </summary>
         public const float FrequencyMin = 0f;
+
+        /// <summary>
+        /// Default value for the <see cref="WetDryMix"/> property.
+        /// </summary>
         public const float WetDryMixDefault = 50f;
+        /// <summary>
+        /// Maximum value for the <see cref="WetDryMix"/> property.
+        /// </summary>
         public const float WetDryMixMax = 100f;
+        /// <summary>
+        /// Minimum value for the <see cref="WetDryMix"/> property.
+        /// </summary>
         public const float WetDryMixMin = 0f;
         #endregion
     }

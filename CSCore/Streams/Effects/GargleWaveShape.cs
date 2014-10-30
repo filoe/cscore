@@ -1,14 +1,17 @@
 namespace CSCore.Streams.Effects
 {
     /// <summary>
-    /// Default value is Triangle (used for <see cref="DmoGargleEffect.WaveShape"/>).
+    /// Default value is <see cref="Triangle"/> (used for <see cref="DmoGargleEffect.WaveShape"/>).
     /// </summary>
     public enum GargleWaveShape
     {
         /// <summary>
-        /// Default value. 
+        /// Triangle - Default value. 
         /// </summary>
         Triangle = 0,
+        /// <summary>
+        /// Square
+        /// </summary>
         Square = 1
     }
 }

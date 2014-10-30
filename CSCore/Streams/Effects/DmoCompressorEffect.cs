@@ -1,9 +1,6 @@
 ﻿using CSCore.DMO.Effects;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace CSCore.Streams.Effects
 {
@@ -21,6 +18,10 @@ namespace CSCore.Streams.Effects
         {
         }
 
+        /// <summary>
+        /// Creates and returns a new instance of the native COM object.
+        /// </summary>
+        /// <returns>A new instance of the native COM object.</returns>
         protected override object CreateComObject()
         {
             return new DmoCompressorEffectObject();
@@ -118,23 +119,82 @@ namespace CSCore.Streams.Effects
         }
         #endregion
         #region constants
+        /// <summary>
+        /// Default value for the <see cref="Attack"/> property.
+        /// </summary>
         public const float AttackDefault = 10f;
+        /// <summary>
+        /// Maximum value for the <see cref="Attack"/> property.
+        /// </summary>
         public const float AttackMax = 500f;
+        /// <summary>
+        /// Minimum value for the <see cref="Attack"/> property.
+        /// </summary>
         public const float AttackMin = 0.01f;
+
+        /// <summary>
+        /// Default value for the <see cref="Gain"/> property.
+        /// </summary>
         public const float GainDefault = 0f;
+        /// <summary>
+        /// Maximum value for the <see cref="Gain"/> property.
+        /// </summary>
         public const float GainMax = 60f;
+        /// <summary>
+        /// Minimum value for the <see cref="Gain"/> property.
+        /// </summary>
         public const float GainMin = -60f;
+
+        /// <summary>
+        /// Default value for the <see cref="Predelay"/> property.
+        /// </summary>
         public const float PredelayDefault = 4f;
+        /// <summary>
+        /// Maximum value for the <see cref="Predelay"/> property.
+        /// </summary>
         public const float PredelayMax = 4f;
+        /// <summary>
+        /// Minimum value for the <see cref="Predelay"/> property.
+        /// </summary>
         public const float PredelayMin = 0f;
+
+        /// <summary>
+        /// Default value for the <see cref="Ratio"/> property.
+        /// </summary>
         public const float RatioDefault = 3f;
+        /// <summary>
+        /// Maximum value for the <see cref="Ratio"/> property.
+        /// </summary>
         public const float RatioMax = 100f;
+        /// <summary>
+        /// Minimum value for the <see cref="Ratio"/> property.
+        /// </summary>
         public const float RatioMin = 1f;
+
+        /// <summary>
+        /// Default value for the <see cref="Release"/> property.
+        /// </summary>
         public const float ReleaseDefault = 200f;
+        /// <summary>
+        /// Maximum value for the <see cref="Release"/> property.
+        /// </summary>
         public const float ReleaseMax = 3000f;
+        /// <summary>
+        /// Minimum value for the <see cref="Release"/> property.
+        /// </summary>
         public const float ReleaseMin = 50f;
+
+        /// <summary>
+        /// Default value for the <see cref="Threshold"/> property.
+        /// </summary>
         public const float ThresholdDefault = -20f;
+        /// <summary>
+        /// Maximum value for the <see cref="Threshold"/> property.
+        /// </summary>
         public const float ThresholdMax = 0f;
+        /// <summary>
+        /// Minimum value for the <see cref="Threshold"/> property.
+        /// </summary>
         public const float ThresholdMin = -60f;
         #endregion
     }

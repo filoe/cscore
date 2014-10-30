@@ -10,6 +10,9 @@ namespace CSCore.Streams.Effects
         /// Default value for <see cref="DmoChorusEffect.Waveform"/>.
         /// </summary>
         WaveformSin = 1,
+        /// <summary>
+        /// Trinagle
+        /// </summary>
         WaveformTriangle = 0
     }
 }

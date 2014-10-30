@@ -21,6 +21,10 @@ namespace CSCore.Streams.Effects
         {
         }
 
+        /// <summary>
+        /// Creates and returns a new instance of the native COM object.
+        /// </summary>
+        /// <returns>A new instance of the native COM object.</returns>
         protected override object CreateComObject()
         {
             return new DmoGargleEffectObject();
@@ -59,11 +63,33 @@ namespace CSCore.Streams.Effects
 
         #endregion
         #region constants
+        /// <summary>
+        /// Default value for the <see cref="RateHz"/> property.
+        /// </summary>
         public const int RateDefault = 20;
+        /// <summary>
+        /// Maximum value for the <see cref="RateHz"/> property.
+        /// </summary>
         public const int RateMax = 1000;
+        /// <summary>
+        /// Minimum value for the <see cref="RateHz"/> property.
+        /// </summary>
         public const int RateMin = 1;
+
+        /// <summary>
+        /// Default value for the <see cref="WaveShape"/> property.
+        /// </summary>
+        /// <remarks>Use the <see cref="GargleWaveShape"/> enumeration instead.</remarks>
         public const int WaveShapeDefault = 0;
+        /// <summary>
+        /// Square Waveform.
+        /// </summary>
+        /// <remarks>Use the <see cref="GargleWaveShape"/> enumeration instead.</remarks>        
         public const int WaveShapeSquare = 1;
+        /// <summary>
+        /// Triangle Waveform
+        /// </summary>
+        /// <remarks>Use the <see cref="GargleWaveShape"/> enumeration instead.</remarks>        
         public const int WaveShapeTriangle = 0;
         #endregion
     }
