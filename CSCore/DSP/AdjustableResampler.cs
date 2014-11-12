@@ -43,7 +43,8 @@ namespace CSCore.DSP
 
             lock (LockObj)
             {
-                var format = new WaveFormat(sampleRate, Outputformat.BitsPerSample, Outputformat.Channels, Outputformat.WaveFormatTag, Outputformat.ExtraSize);
+                WaveFormat format = (WaveFormat) Outputformat.Clone();
+                format.SampleRate = sampleRate;                
                 Resampler.MediaObject.SetOutputType(0, format);
                 Ratio = BaseStream.WaveFormat.BytesPerSecond / (double)format.BytesPerSecond;
             }

@@ -1,4 +1,5 @@
-﻿using CSCore.CoreAudioAPI;
+﻿using System.Text.RegularExpressions;
+using CSCore.CoreAudioAPI;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -49,6 +50,7 @@ namespace CSCore.SoundIn
         private EventWaitHandle _eventWaitHandle;
         private Thread _recordThread;
         private readonly ThreadPriority _captureThreadPriority;
+        private readonly SynchronizationContext _synchronizationContext;
         private volatile RecordingState _recordingState;
 
         private int _latency;
@@ -118,6 +120,23 @@ namespace CSCore.SoundIn
         /// <param name="captureThreadPriority">ThreadPriority of the capturethread which runs in background and provides the audiocapture itself.</param>
         /// <param name="defaultFormat">The default WaveFormat to use for the capture. If this parameter is set to null, the best available format will be chosen automatically.</param>
         public WasapiCapture(bool eventSync, AudioClientShareMode shareMode, int latency, WaveFormat defaultFormat, ThreadPriority captureThreadPriority)
+            : this(eventSync, shareMode, latency, defaultFormat, captureThreadPriority, null)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WasapiCapture"/> class.
+        /// </summary>
+        /// <param name="eventSync">True, to use eventsynchronization instead of a simple loop and sleep behavior. Don't use this in combination with exclusive mode.</param>
+        /// <param name="shareMode">Specifies how to open the audio device. Note that if exclusive mode is used, the device can only be used once on the whole system. Don't use exclusive mode in combination with eventSync.</param>
+        /// <param name="latency">Latency of the capture specified in milliseconds.</param>
+        /// <param name="captureThreadPriority">ThreadPriority of the capturethread which runs in background and provides the audiocapture itself.</param>
+        /// <param name="defaultFormat">The default WaveFormat to use for the capture. If this parameter is set to null, the best available format will be chosen automatically.</param>
+        /// <param name="synchronizationContext">The <see cref="SynchronizationContext"/> to use to fire events on.</param>
+        /// <exception cref="PlatformNotSupportedException">The current platform does not support Wasapi. For more details see: <see cref="IsSupportedOnCurrentPlatform"/>.</exception>
+        /// <exception cref="ArgumentException">The <paramref name="eventSync"/> parameter is set to true while the <paramref name="shareMode"/> is set to <see cref="AudioClientShareMode.Exclusive"/>.</exception>
+        public WasapiCapture(bool eventSync, AudioClientShareMode shareMode, int latency, WaveFormat defaultFormat,
+            ThreadPriority captureThreadPriority, SynchronizationContext synchronizationContext)
         {
             if (!IsSupportedOnCurrentPlatform)
                 throw new PlatformNotSupportedException("Wasapi is only supported on Windows Vista and above.");
@@ -130,6 +149,7 @@ namespace CSCore.SoundIn
 
             _latency = latency;
             _captureThreadPriority = captureThreadPriority;
+            _synchronizationContext = synchronizationContext;
 
             _recordingState = RecordingState.Stopped;
         }
@@ -364,16 +384,28 @@ namespace CSCore.SoundIn
 
         private void RaiseDataAvilable(byte[] buffer, int offset, int count)
         {
-            if (count < 1)
+            if (count <= 0)
                 return;
             if (DataAvailable != null)
-                DataAvailable(this, new DataAvailableEventArgs(buffer, offset, count, WaveFormat));
+            {
+                var e = new DataAvailableEventArgs(buffer, offset, count, WaveFormat);
+                if (_synchronizationContext != null)
+                    _synchronizationContext.Post(o => DataAvailable(this, e), null); //use post instead of send to avoid deadlocks
+                else
+                    DataAvailable(this, e);
+            }
         }
 
         private void RaiseStopped(Exception exception)
         {
             if (Stopped != null)
-                Stopped(this, new RecordingStoppedEventArgs(exception));
+            {
+                var e = new RecordingStoppedEventArgs(exception);
+                if(_synchronizationContext != null)
+                    _synchronizationContext.Post(o => Stopped(this, e), null); //use post instead of send to avoid deadlocks
+                else
+                    Stopped(this, e);
+            }
         }
 
         /// <summary>

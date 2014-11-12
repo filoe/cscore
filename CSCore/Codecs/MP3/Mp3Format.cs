@@ -8,7 +8,7 @@ namespace CSCore.Codecs.MP3
     /// The <see cref="Mp3Format"/> class describes an MPEG Audio Layer-3 (MP3) audio format. 
     /// </summary>
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 2)]
-    public class Mp3Format : WaveFormat
+    public sealed class Mp3Format : WaveFormat
     {
         /// <summary>
         /// Set this member to <see cref="Mp3FormatId.Mpeg"/>.
@@ -62,6 +62,11 @@ namespace CSCore.Codecs.MP3
             BlockSize = (ushort)blockSize;
             FramesPerBlock = 1;
             CodecDelay = 0;
+        }
+
+        internal protected override void UpdateProperties()
+        {
+            //do nothing
         }
     }
 }

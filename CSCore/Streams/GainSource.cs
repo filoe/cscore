@@ -22,7 +22,7 @@ namespace CSCore.Streams
 
                 _gain = value;
                 if (PropertyChanged != null)
-                    PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs("Gain"));
+                    PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs("GainDB"));
             }
         }
 

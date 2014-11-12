@@ -17,12 +17,12 @@ namespace CSCore.Test.SoundOut
     [TestClass]
     public class SoundOutBehaviourTest
     {
-        const int basic_iteration_count = 50;
-        const int MinuteMilliseconds = 60000 * 300;
+        const int basic_iteration_count = 5;
+        const int TimeOut = 60000 * 300;
 
         [TestMethod]
         [TestCategory("SoundOuts")]
-        [Timeout(2 * MinuteMilliseconds)]
+        [Timeout(2 * TimeOut)]
         public void CanReinitializeSoundOut()
         {
             SoundOutTests((soundOut, source) =>
@@ -33,7 +33,7 @@ namespace CSCore.Test.SoundOut
 
         [TestMethod]
         [TestCategory("SoundOuts")]
-        [Timeout(2 * MinuteMilliseconds)]
+        [Timeout(2 * TimeOut)]
         public void CanHandleEOF()
         {
             SoundOutTests((soundOut, source) =>
@@ -64,7 +64,7 @@ namespace CSCore.Test.SoundOut
 
         [TestMethod]
         [TestCategory("SoundOuts")]
-        [Timeout(2 * MinuteMilliseconds)]
+        [Timeout(2 * TimeOut)]
         public void VolumeResetTest()
         {
             SoundOutTests((soundOut, source) =>
@@ -76,7 +76,7 @@ namespace CSCore.Test.SoundOut
 
         [TestMethod]
         [TestCategory("SoundOuts")]
-        [Timeout(2 * MinuteMilliseconds)]
+        [Timeout(2 * TimeOut)]
         public void PlaybackStoppedEventTest()
         {
             SoundOutTests((soundOut, source) =>
@@ -87,7 +87,7 @@ namespace CSCore.Test.SoundOut
 
         [TestMethod]
         [TestCategory("SoundOuts")]
-        [Timeout(2 * MinuteMilliseconds)]
+        [Timeout(2 * TimeOut)]
         [ExpectedException(typeof(ObjectDisposedException))]
         public void ThrowsObjectDisposedException()
         {
@@ -115,7 +115,7 @@ namespace CSCore.Test.SoundOut
 
         [TestMethod]
         [TestCategory("SoundOuts")]
-        [Timeout(2 * MinuteMilliseconds)]
+        [Timeout(2 * TimeOut)]
         [ExpectedException(typeof(InvalidOperationException))]
         public void ThrowsInvalidCallerThread()
         {
@@ -151,7 +151,7 @@ namespace CSCore.Test.SoundOut
 
         [TestMethod]
         [TestCategory("SoundOuts")]
-        [Timeout(2 * MinuteMilliseconds)]
+        [Timeout(2 * TimeOut)]
         public void SoundOutBehaviour()
         {
             SoundOutTests((soundOut, source) =>
@@ -177,7 +177,7 @@ namespace CSCore.Test.SoundOut
 
         [TestMethod]
         [TestCategory("SoundOuts")]
-        [Timeout(2 * MinuteMilliseconds)]
+        [Timeout(2 * TimeOut)]
         public void FastPlayStopSoundOutTest()
         {
             SoundOutTests((soundOut, source) =>

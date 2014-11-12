@@ -8,10 +8,10 @@ namespace CSCore.Streams.SampleConverter
     public abstract class WaveToSampleBase : ISampleSource
     {
         private readonly WaveFormat _waveFormat;
-        protected double BitsPerSampleRatio;
-        protected byte[] Buffer;
+        internal protected double BitsPerSampleRatio;
+        internal protected byte[] Buffer;
 
-        protected IWaveSource Source;
+        internal protected IWaveSource Source;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WaveToSampleBase"/> class.
@@ -24,9 +24,11 @@ namespace CSCore.Streams.SampleConverter
                 throw new ArgumentNullException("source");
 
             Source = source;
-            _waveFormat = new WaveFormat(source.WaveFormat.SampleRate, 32,
-                source.WaveFormat.Channels, AudioEncoding.IeeeFloat);
-            BitsPerSampleRatio = 32.0 / source.WaveFormat.BitsPerSample;
+            _waveFormat = (WaveFormat) source.WaveFormat.Clone();
+#warning todo test BitsPerSample property
+            _waveFormat.BitsPerSample = 32;
+            _waveFormat.SetWaveFormatTagInternal(AudioEncoding.IeeeFloat);
+            BitsPerSampleRatio = (double)_waveFormat.BitsPerSample / source.WaveFormat.BitsPerSample;
         }
 
         /// <summary>

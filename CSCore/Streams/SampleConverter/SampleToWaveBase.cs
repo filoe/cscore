@@ -8,8 +8,8 @@ namespace CSCore.Streams.SampleConverter
     public abstract class SampleToWaveBase : IWaveSource
     {
         private readonly WaveFormat _waveFormat;
-        protected ISampleSource Source;
-        protected float[] Buffer;
+        internal protected ISampleSource Source;
+        internal protected float[] Buffer;
         private readonly double _ratio;
 
         /// <summary>
@@ -27,7 +27,11 @@ namespace CSCore.Streams.SampleConverter
             if (bits < 1)
                 throw new ArgumentOutOfRangeException("bits");
 
-            _waveFormat = new WaveFormat(source.WaveFormat.SampleRate, (short)bits, source.WaveFormat.Channels, encoding);
+            _waveFormat = (WaveFormat) source.WaveFormat.Clone();
+#warning todo test BitsPerSample property
+            _waveFormat.BitsPerSample = bits;
+            _waveFormat.SetWaveFormatTagInternal(encoding);
+
             Source = source;
             _ratio = 32.0 / bits;
         }

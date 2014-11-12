@@ -47,16 +47,13 @@ namespace CSCore.SoundOut.DirectSound
                 result &= (caps.Flags & DSCapabilitiesFlags.SecondaryBufferStereo) == DSCapabilitiesFlags.SecondaryBufferStereo;
             else if (format.Channels == 1)
                 result &= (caps.Flags & DSCapabilitiesFlags.SecondaryBufferMono) == DSCapabilitiesFlags.SecondaryBufferMono;
-            else result &= false;
 
             if (format.BitsPerSample == 8)
                 result &= (caps.Flags & DSCapabilitiesFlags.SecondaryBuffer8Bit) == DSCapabilitiesFlags.SecondaryBuffer8Bit;
             else if (format.BitsPerSample == 16)
                 result &= (caps.Flags & DSCapabilitiesFlags.SecondaryBuffer16Bit) == DSCapabilitiesFlags.SecondaryBuffer16Bit;
-            else 
-                result &= false;
 
-            result &= format.WaveFormatTag == AudioEncoding.Pcm;
+            result &= format.IsPCM();
             return result;
         }
 

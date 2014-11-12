@@ -1,10 +1,13 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Runtime.Remoting.Messaging;
 using System.Windows.Forms;
 using CSCore;
 using CSCore.Codecs;
 using CSCore.SoundOut;
 using CSCore.Streams;
+using CSCore.Streams.Effects;
 
 namespace EqualizerTest
 {
@@ -30,7 +33,7 @@ namespace EqualizerTest
 
                 //the tag of the trackbar contains the index of the filter
                 int filterIndex = Int32.Parse((string) trackbar.Tag);
-                EqFilterEntry filter = _equalizer.SampleFilters[filterIndex];
+                EqualizerFilter filter = _equalizer.SampleFilters[filterIndex];
                 filter.SetGain(value);
             }
         }
@@ -49,9 +52,10 @@ namespace EqualizerTest
                     _soundOut = new DirectSoundOut();
 
                 var source = CodecFactory.Instance.GetCodec(ofn.FileName)
-                    .AppendSource(x => new LoopStream(x) { EnableLoop = true })
+                    .Loop()
+                    .ChangeSampleRate(32000)
                     .AppendSource(Equalizer.Create10BandEqualizer, out _equalizer)
-                    .ToWaveSource(32);
+                    .ToWaveSource();
 
                 _soundOut.Initialize(source);
                 _soundOut.Play();

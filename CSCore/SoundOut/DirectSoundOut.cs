@@ -280,12 +280,12 @@ namespace CSCore.SoundOut
         {
             get
             {
-                CheckForDisposed();
                 return _secondaryBuffer != null ? (float) _secondaryBuffer.GetVolume() : 1;
             }
             set
             {
                 CheckForDisposed();
+                CheckForIsInitialized();
 
                 if (value < 0 || value > 1)
                     throw new ArgumentOutOfRangeException("value");
@@ -325,26 +325,29 @@ namespace CSCore.SoundOut
             _directSound.SetCooperativeLevel(handle, DSCooperativeLevelType.DSSCL_NORMAL); //use normal as default
             if (!_directSound.SupportsFormat(_source.WaveFormat))
             {
-                if (_source.WaveFormat.WaveFormatTag == AudioEncoding.IeeeFloat)
+                if (_source.WaveFormat.WaveFormatTag == AudioEncoding.IeeeFloat) //directsound does not support ieeefloat
                     _source = _source.ToSampleSource().ToWaveSource(16);
-                if (
-                    _directSound.SupportsFormat(new WaveFormat(_source.WaveFormat.SampleRate, 16,
-                        _source.WaveFormat.Channels, _source.WaveFormat.WaveFormatTag)))
+
+#warning todo test BitsPerSample property
+                WaveFormat format16Bit = (WaveFormat) _source.WaveFormat.Clone();
+                format16Bit.BitsPerSample = 16;
+                WaveFormat format8Bit = (WaveFormat)_source.WaveFormat.Clone();
+                format8Bit.BitsPerSample = 8;
+
+                if (_directSound.SupportsFormat(format16Bit))
                     _source = _source.ToSampleSource().ToWaveSource(16);
-                else if (
-                    _directSound.SupportsFormat(new WaveFormat(_source.WaveFormat.SampleRate, 8,
-                        _source.WaveFormat.Channels, _source.WaveFormat.WaveFormatTag)))
+                else if (_directSound.SupportsFormat(format8Bit))
                     _source = _source.ToSampleSource().ToWaveSource(8);
                 else
                 {
-                    throw new InvalidOperationException(
-                        "Invalid WaveFormat. WaveFormat specified by parameter {_source} is not supported by this DirectSound-Device.");
+                    throw new NotSupportedException(
+                        "WaveFormat of the source is not supported.");
                 }
 
                 if (!_directSound.SupportsFormat(_source.WaveFormat))
                 {
-                    throw new InvalidOperationException(
-                        "Invalid WaveFormat. WaveFormat specified by parameter {_source} is not supported by this DirectSound-Device.");
+                    throw new NotSupportedException(
+                        "WaveFormat of the source is not supported.");
                 }
             }
 
@@ -559,7 +562,7 @@ namespace CSCore.SoundOut
 
         private void CheckForIsInitialized()
         {
-            if(_isInitialized)
+            if(!_isInitialized)
                 throw new InvalidOperationException("DirectSoundOut is not initialized.");
         }
 

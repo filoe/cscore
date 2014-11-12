@@ -10,6 +10,7 @@ namespace CSCore.Win32
     /// <summary>
     /// See "Functiondiscoverykeys_devpkey.h" for different keys like FriendlyName, DeviceDesc,...
     /// </summary>
+    /// <remarks>For a list of all Core Audio Properties see: http://msdn.microsoft.com/en-us/library/windows/desktop/dd370806(v=vs.85).aspx </remarks>
     [Guid("886d8eeb-8cf2-4446-8d02-cdba1dbdcf99")]
     public class PropertyStore : ComObject, IEnumerable<KeyValuePair<PropertyKey, PropertyVariant>>
     {

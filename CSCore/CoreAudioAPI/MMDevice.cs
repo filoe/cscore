@@ -27,7 +27,7 @@ namespace CSCore.CoreAudioAPI
 
         /// <summary>
         /// Warning: This PropertyStore is just Readable. Use the OpenPropertyStore-Method to get
-        ///          writeable PropertyStore.
+        /// writeable PropertyStore.
         /// </summary>
         public PropertyStore PropertyStore
         {

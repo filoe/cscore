@@ -331,6 +331,7 @@
     <Compile Include="DMO\SetTypeFlags.cs" />
     <Compile Include="DSP\BiQuad.cs" />
     <Compile Include="DSP\ChannelMatrixElement.cs" />
+    <Compile Include="DSP\EqualizerBiQuadFilter.cs" />
     <Compile Include="DSP\FastFourierTransformation.cs" />
     <Compile Include="DSP\FftProvider.cs" />
     <Compile Include="DSP\FftMode.cs" />
@@ -403,9 +404,8 @@
     <Compile Include="Streams\SynchronizedWaveSource.cs" />
     <Compile Include="Streams\WriteableBufferingSource.cs" />
     <Compile Include="Streams\BufferSource.cs" />
-    <Compile Include="Streams\EqFilter.cs" />
-    <Compile Include="Streams\EqFilterCollection.cs" />
-    <Compile Include="Streams\EqFilterEntry.cs" />
+    <Compile Include="Streams\EqualizerChannelFilter.cs" />
+    <Compile Include="Streams\EqualizerFilter.cs" />
     <Compile Include="Streams\Equalizer.cs" />
     <Compile Include="Streams\SingleBlockNotificationStream.cs" />
     <Compile Include="Streams\SingleBlockReadEventArgs.cs" />

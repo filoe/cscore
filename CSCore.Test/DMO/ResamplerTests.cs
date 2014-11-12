@@ -1,4 +1,5 @@
-﻿using CSCore.DMO;
+﻿using System.Diagnostics;
+using CSCore.DMO;
 using CSCore.DSP;
 using CSCore.Streams;
 using CSCore.Streams.SampleConverter;
@@ -23,6 +24,7 @@ namespace CSCore.Test.DMO
         public void DmoResamplerTest()
         {
             var source = new SineGenerator().ToWaveSource(16);
+            Debug.WriteLine("Source: " + source.WaveFormat);
             using (DmoResampler resampler = new DmoResampler(source, 11500))
             {
                 byte[] buffer = new byte[source.WaveFormat.BytesPerSecond / 2];

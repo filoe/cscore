@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using CSCore.CoreAudioAPI;
 using CSCore.DSP;
+using CSCore.Streams;
 using CSCore.Win32;
 
 namespace CSCore.SoundOut
@@ -32,7 +33,7 @@ namespace CSCore.SoundOut
         private volatile PlaybackState _playbackState;
         private Thread _playbackThread;
         private AudioRenderClient _renderClient;
-        private SimpleAudioVolume _simpleAudioVolume;
+        private VolumeSource _volumeSource;
         private IWaveSource _source;
 
         private readonly object _lockObj = new object();
@@ -207,7 +208,8 @@ namespace CSCore.SoundOut
                 //if (_isInitialized)
                 //    throw new InvalidOperationException("Wasapi is already initialized. Call WasapiOut::Stop to uninitialize Wasapi.");
 
-                _source = source;
+                _volumeSource = new VolumeSource(source);
+                _source = _volumeSource.ToWaveSource();
                 CleanupResources();
                 InitializeInternal();
                 _isInitialized = true;
@@ -334,12 +336,12 @@ namespace CSCore.SoundOut
         /// </summary>
         public float Volume
         {
-            get { return _simpleAudioVolume != null ? _simpleAudioVolume.MasterVolume : 1; }
+            get { return _volumeSource != null ? _volumeSource.Volume : 1; }
             set
             {
                 CheckForDisposed();
-                if (_simpleAudioVolume != null)
-                    _simpleAudioVolume.MasterVolume = value;
+                CheckForIsInitialized();
+                _volumeSource.Volume = value;
             }
         }
 
@@ -393,6 +395,10 @@ namespace CSCore.SoundOut
                 _audioClient.Start();
                 _playbackState = PlaybackState.Playing;
 
+                int taskIndex;
+                string mmcssType = Latency > 25 ? "Audio" : "Pro Audio";
+                avrtHandle = Win32.NativeMethods.AvSetMmThreadCharacteristics(mmcssType, out taskIndex);
+
                 if (playbackStartedEventWaithandle is EventWaitHandle)
                 {
                     ((EventWaitHandle)playbackStartedEventWaithandle).Set();
@@ -415,8 +421,7 @@ namespace CSCore.SoundOut
 
                     if (PlaybackState == PlaybackState.Playing)
                     {
-                        int taskIndex;
-                        avrtHandle = Win32.NativeMethods.AvSetMmThreadCharacteristics("Pro Audio", out taskIndex);
+
 
                         int padding;
                         if (_eventSync && _shareMode == AudioClientShareMode.Exclusive)
@@ -434,9 +439,10 @@ namespace CSCore.SoundOut
                                 _playbackState = PlaybackState.Stopped; //TODO: Fire Stopped-event here?
                         }
 
-                        Win32.NativeMethods.AvRevertMmThreadCharacteristics(avrtHandle);
                     }
                 }
+
+                Win32.NativeMethods.AvRevertMmThreadCharacteristics(avrtHandle);
 
                 Thread.Sleep(_latency / 2);
 
@@ -528,8 +534,6 @@ namespace CSCore.SoundOut
             }
 
             _renderClient = AudioRenderClient.FromAudioClient(_audioClient);
-            _simpleAudioVolume = SimpleAudioVolume.FromAudioClient(_audioClient);
-            _simpleAudioVolume.MasterVolume = 1f;
         }
 
         private void CleanupResources()
@@ -560,11 +564,11 @@ namespace CSCore.SoundOut
                 _audioClient.Dispose();
                 _audioClient = null;
             }
-            if (_simpleAudioVolume != null)
+            /*if (_simpleAudioVolume != null)
             {
                 _simpleAudioVolume.Dispose();
                 _simpleAudioVolume = null;
-            }
+            }*/
             if (_eventWaitHandle != null)
             {
                 _eventWaitHandle.Close();

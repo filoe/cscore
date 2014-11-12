@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace CSCore
 {
@@ -164,6 +166,31 @@ namespace CSCore
         public WaveFormat ToWaveFormat()
         {
             return new WaveFormat(SampleRate, BitsPerSample, Channels, AudioSubTypes.EncodingFromMediaType(SubFormat));
+        }
+
+        public override object Clone()
+        {
+            var waveFormat = new WaveFormatExtensible(SampleRate, BitsPerSample, Channels, SubFormat, ChannelMask);
+            waveFormat._samplesUnion = _samplesUnion;
+            return waveFormat;
+        }
+
+        internal override void SetWaveFormatTagInternal(AudioEncoding waveFormatTag)
+        {
+            SubFormat = AudioSubTypes.MediaTypeFromEncoding(waveFormatTag);
+        }
+
+        /// <summary>
+        ///     Returns a string which describes the <see cref="WaveFormatExtensible" />.
+        /// </summary>
+        /// <returns>A string which describes the <see cref="WaveFormatExtensible" />.</returns>
+        [DebuggerStepThrough]
+        public override string ToString()
+        {
+            var stringBuilder = new StringBuilder(base.ToString());
+            stringBuilder.Append("|SubFormat: " + SubFormat);
+            stringBuilder.Append("|ChannelMask: " + ChannelMask);
+            return stringBuilder.ToString();
         }
     }
 }

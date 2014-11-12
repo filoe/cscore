@@ -14,5 +14,10 @@ namespace CSCore.Win32
             ID = id;
             PropertyID = propertyid;
         }
+
+        public override string ToString()
+        {
+            return ID + "/" + PropertyID;
+        }
     }
 }

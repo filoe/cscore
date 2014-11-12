@@ -58,7 +58,7 @@ namespace CSCore.Streams.Effects
             {
                 if (value < GainMin || value > GainMax)
                     throw new ArgumentOutOfRangeException("value");
-                SetValue("Gain", value);
+                SetValue("GainDB", value);
             }
         }
 

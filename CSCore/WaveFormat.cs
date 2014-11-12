@@ -25,19 +25,27 @@ namespace CSCore
         ///     Gets the number of channels in the waveform-audio data. Mono data uses one channel and stereo data uses two
         ///     channels.
         /// </summary>
-        public int Channels
+        public virtual int Channels
         {
             get { return _channels; }
-            internal protected set { _channels = (short) value; }
+            protected internal set
+            {
+                _channels = (short) value;
+                UpdateProperties();
+            }
         }
 
         /// <summary>
         ///     Gets the sample rate, in samples per second (hertz).
         /// </summary>
-        public int SampleRate
+        public virtual int SampleRate
         {
             get { return _sampleRate; }
-            internal protected set { _sampleRate = value; }
+            protected internal set
+            {
+                _sampleRate = value;
+                UpdateProperties();
+            }
         }
 
         /// <summary>
@@ -45,10 +53,10 @@ namespace CSCore
         ///     average data rate of 176,400 bytes per second (2 channels — 2 bytes per sample per channel — 44,100 samples per
         ///     second).
         /// </summary>
-        public int BytesPerSecond
+        public virtual int BytesPerSecond
         {
             get { return _bytesPerSecond; }
-            internal protected set { _bytesPerSecond = value; }
+            protected internal set { _bytesPerSecond = value; }
         }
 
         /// <summary>
@@ -56,34 +64,38 @@ namespace CSCore
         ///     alignment is the number of bytes used by a single sample, including data for both channels if the data is stereo.
         ///     For example, the block alignment for 16-bit stereo PCM is 4 bytes (2 channels — 2 bytes per sample).
         /// </summary>
-        public int BlockAlign
+        public virtual int BlockAlign
         {
             get { return _blockAlign; }
-            internal protected set { _blockAlign = (short)value; }
+            protected internal set { _blockAlign = (short) value; }
         }
 
         /// <summary>
         ///     Gets the number of bits, used to store one sample.
         /// </summary>
-        public int BitsPerSample
+        public virtual int BitsPerSample
         {
             get { return _bitsPerSample; }
-            internal protected set { _bitsPerSample = (short)value; }
+            protected internal set
+            {
+                _bitsPerSample = (short) value;
+                UpdateProperties();
+            }
         }
 
         /// <summary>
         ///     Gets the size (in bytes) of extra information. This value is mainly used for marshalling.
         /// </summary>
-        public int ExtraSize
+        public virtual int ExtraSize
         {
             get { return _extraSize; }
-            internal protected set{ _extraSize = (short) value; }
+            protected internal set { _extraSize = (short) value; }
         }
 
         /// <summary>
         ///     Gets the number of bytes, used to store one sample.
         /// </summary>
-        public int BytesPerSample
+        public virtual int BytesPerSample
         {
             get { return BitsPerSample / 8; }
         }
@@ -92,7 +104,7 @@ namespace CSCore
         ///     Gets the number of bytes, used to store one block. This value equals <see cref="BytesPerSample" /> multiplied with
         ///     <see cref="Channels" />.
         /// </summary>
-        public int BytesPerBlock
+        public virtual int BytesPerBlock
         {
             get { return BytesPerSample * Channels; }
         }
@@ -100,10 +112,10 @@ namespace CSCore
         /// <summary>
         ///     Gets the waveform-audio format type.
         /// </summary>
-        public AudioEncoding WaveFormatTag
+        public virtual AudioEncoding WaveFormatTag
         {
             get { return _encoding; }
-            protected set { _encoding = value; }
+            protected internal set { _encoding = value; }
         }
 
         /// <summary>
@@ -159,9 +171,10 @@ namespace CSCore
             _bitsPerSample = (short) bits;
             _channels = (short) channels;
             _encoding = encoding;
-            _blockAlign = (short) (channels * (bits / 8));
-            _bytesPerSecond = (sampleRate * _blockAlign);
-            ExtraSize = (short) extraSize;
+            _extraSize = (short) extraSize;
+
+// ReSharper disable once DoNotCallOverridableMethodsInConstructor
+            UpdateProperties();
         }
 
         /// <summary>
@@ -198,12 +211,32 @@ namespace CSCore
         }
 
         /// <summary>
-        /// Creates a new <see cref="WaveFormat"/> object that is a copy of the current instance.
+        ///     Creates a new <see cref="WaveFormat" /> object that is a copy of the current instance.
         /// </summary>
         /// <returns>A copy of the current instance.</returns>
         public virtual object Clone()
         {
             return MemberwiseClone(); //since there are value types MemberWiseClone is enough.
+        }
+
+        internal virtual void SetWaveFormatTagInternal(AudioEncoding waveFormatTag)
+        {
+            WaveFormatTag = waveFormatTag;
+        }
+
+        internal virtual void SetBitsPerSampleAndFormatProperties(int bitsPerSample)
+        {
+            BitsPerSample = bitsPerSample;
+            UpdateProperties();
+        }
+
+        /// <summary>
+        /// Updates the <see cref="BlockAlign"/>- and the <see cref="BytesPerSecond"/>-property.
+        /// </summary>
+        internal protected virtual void UpdateProperties()
+        {
+            BlockAlign = (BitsPerSample / 8) * Channels;
+            BytesPerSecond = BlockAlign * SampleRate;
         }
 
         [DebuggerStepThrough]

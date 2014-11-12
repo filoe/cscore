@@ -19,6 +19,16 @@ namespace CSCore.DSP
         private bool _disposed;
         private int _quality = 30;
 
+        private static WaveFormat GetWaveFormatWithChangedSampleRate(IWaveSource source, int destSampleRate)
+        {
+            if (source == null)
+                throw new ArgumentNullException("source");
+
+            var waveFormat = (CSCore.WaveFormat)source.WaveFormat.Clone();
+            waveFormat.SampleRate = destSampleRate;
+            return waveFormat;
+        }
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="DmoResampler" /> class.
         /// </summary>
@@ -27,8 +37,7 @@ namespace CSCore.DSP
         public DmoResampler(IWaveSource source, int destSampleRate)
             : this(
                 source,
-                new WaveFormat(destSampleRate, source.WaveFormat.BitsPerSample, source.WaveFormat.Channels,
-                    source.WaveFormat.GetWaveFormatTag()))
+                GetWaveFormatWithChangedSampleRate(source, destSampleRate))
         {
         }
 

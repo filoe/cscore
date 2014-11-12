@@ -108,10 +108,8 @@ namespace CSCore
                 var channelMatrix = ChannelMatrix.GetToStereoChannelMatrix(channelMask);
                 return new DmoChannelResampler(input, channelMatrix);
             }
-            else
-            {
-                return new DmoResampler(input, dstWaveFormat);
-            }
+            
+            throw new ArgumentException("The specified input can't be converted to a stereo source. The input does not provide a WaveFormatExtensible.", "input");
         }
 
         /// <summary>
@@ -165,10 +163,8 @@ namespace CSCore
                 var channelMatrix = ChannelMatrix.GetToMonoChannelMatrix(channelMask);
                 return new DmoChannelResampler(input, channelMatrix);
             }
-            else
-            {
-                return new DmoResampler(input, dstWaveFormat);
-            }
+
+            throw new ArgumentException("The specified input can't be converted to a mono source. The input does not provide a WaveFormatExtensible.", "input");
         }
 
         /// <summary>
@@ -192,6 +188,16 @@ namespace CSCore
             }
 
             return ToMono(input.ToWaveSource()).ToSampleSource();
+        }
+
+        /// <summary>
+        /// Appends a new instance of the <see cref="LoopStream"/> class to the audio chain.
+        /// </summary>
+        /// <param name="input">The underlying <see cref="IWaveSource"/> which should be looped.</param>
+        /// <returns>The new instance <see cref="LoopStream"/> instance.</returns>
+        public static IWaveSource Loop(this IWaveSource input)
+        {
+            return new LoopStream(input){EnableLoop = true};
         }
     }
 }
