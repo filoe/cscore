@@ -34,7 +34,7 @@ namespace EqualizerTest
                 //the tag of the trackbar contains the index of the filter
                 int filterIndex = Int32.Parse((string) trackbar.Tag);
                 EqualizerFilter filter = _equalizer.SampleFilters[filterIndex];
-                filter.SetGain(value);
+                filter.AverageGainDB = value;
             }
         }
 
