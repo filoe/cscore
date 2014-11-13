@@ -19,6 +19,7 @@ namespace CSCore.Codecs.MP3
         private Mp3Format _inputFormat;
 
         private long _position;
+        private bool _canSeek;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DmoMp3Decoder"/> class.
@@ -34,17 +35,23 @@ namespace CSCore.Codecs.MP3
         /// </summary>
         /// <param name="stream">Stream which contains raw MP3 data.</param>
         public DmoMp3Decoder(Stream stream)
+            : this(stream, true)
+        {
+        }
+
+        internal DmoMp3Decoder(Stream stream, bool enableSeeking)
         {
             if (stream == null)
                 throw new ArgumentNullException("stream");
             if (!stream.CanRead)
                 throw new ArgumentException("Stream is not readable.", "stream");
-            if (!stream.CanSeek)
+            if (!stream.CanSeek && enableSeeking)
                 throw new ArgumentException("Stream is not seekable.", "stream");
 
             _stream = stream;
+            _canSeek = enableSeeking;
 
-            ParseForMp3Frame(stream);
+            ParseForMp3Frames(stream, enableSeeking);
             Initialize();
         }
 
@@ -66,12 +73,15 @@ namespace CSCore.Codecs.MP3
             get { return _frameInfoCollection.TotalSamples * WaveFormat.BytesPerBlock; }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether the <see cref="IWaveStream"/> supports seeking.
+        /// </summary>
         public override bool CanSeek
         {
-            get { return true; }
+            get { return _canSeek; }
         }
 
-        private void ParseForMp3Frame(Stream stream)
+        private void ParseForMp3Frames(Stream stream, bool enableSeeking)
         {
             Mp3Frame frame = null;
             long offsetOfFirstFrame = 0;
@@ -85,20 +95,25 @@ namespace CSCore.Codecs.MP3
             if (frame == null)
                 throw new Mp3Exception("Could not find any MP3-Frames in the stream.");
 
-            XingHeader xingHeader = XingHeader.FromFrame(frame);
-            if (xingHeader != null)
-                offsetOfFirstFrame = stream.Position;
-
+            if (stream.CanSeek)
+            {
+                XingHeader xingHeader = XingHeader.FromFrame(frame);
+                if (xingHeader != null)
+                    offsetOfFirstFrame = stream.Position;
+            }
             _inputFormat = new Mp3Format(frame.SampleRate, frame.ChannelCount, frame.FrameLength, frame.BitRate);
             //todo: implement VBR
 
             //Prescan stream
-            _frameInfoCollection = new FrameInfoCollection();
-            while (_frameInfoCollection.AddFromMp3Stream(stream))
+            if (enableSeeking)
             {
-            }
+                _frameInfoCollection = new FrameInfoCollection();
+                while (_frameInfoCollection.AddFromMp3Stream(stream))
+                {
+                }
 
-            stream.Position = offsetOfFirstFrame;
+                stream.Position = offsetOfFirstFrame;
+            }
         }
 
         /// <summary>

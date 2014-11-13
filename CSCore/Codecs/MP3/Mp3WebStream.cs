@@ -7,7 +7,6 @@ using System.Net;
 using System.Net.Configuration;
 using System.Reflection;
 using System.Threading;
-using CSCore.ACM;
 using CSCore.Utils;
 using CSCore.Utils.Buffer;
 using ThreadState = System.Threading.ThreadState;
@@ -23,10 +22,11 @@ namespace CSCore.Codecs.MP3
         private Thread _bufferThread;
         private bool _disposed;
         private bool _disposing;
-        private byte[] _frameBuffer;
         private WebResponse _response;
         private Stream _stream;
-        private WaveFormat _waveFormat;
+
+        private Stream _bufferingStream;
+        private DmoMp3Decoder _decoder;
 
         public Mp3WebStream(string uri, bool async)
             : this(new Uri(uri), async)
@@ -64,7 +64,7 @@ namespace CSCore.Codecs.MP3
 
         public WaveFormat WaveFormat
         {
-            get { return _waveFormat; }
+            get { return _decoder == null ? null : _decoder.WaveFormat; }
         }
 
         public int Read(byte[] buffer, int offset, int count)
@@ -76,7 +76,7 @@ namespace CSCore.Codecs.MP3
                 return count;
             do
             {
-                read += _buffer.Read(buffer, offset + read, count - read);
+                read += _decoder.Read(buffer, offset + read, count - read);
             } while (read < count);
             return read;
         }
@@ -114,7 +114,7 @@ namespace CSCore.Codecs.MP3
                     _bufferThread = new Thread(BufferProc);
                     _bufferThread.Start(resetEvent);
 
-                    success = resetEvent.WaitOne(1000);
+                    success = resetEvent.WaitOne();
                 }
                 if (ConnectionCreated != null && async)
                     ConnectionCreated(this, new ConnectionEstablishedEventArgs(_uri, success));
@@ -162,17 +162,30 @@ namespace CSCore.Codecs.MP3
                 if (_stream == null || _stream.CanRead == false)
                     throw new Exception("Mp3WebStream not initialized");
 
-                Mp3Frame frame = GetNextFrame(_stream);
+                byte[] buffer = null;
+                int read = 0;
 
-                int channels = frame.ChannelMode == Mp3ChannelMode.Stereo ? 2 : 1;
-                var converter =
-                    new AcmConverter(new Mp3Format(frame.SampleRate, frame.ChannelCount, frame.FrameLength,
-                        frame.BitRate));
+                Mp3Format format, prevFormat;
+                Mp3Frame frame;
 
-                _waveFormat = converter.DestinationFormat;
+                read = ReadRawDataFromFrame(ref buffer, out frame);
+                format = new Mp3Format(frame.SampleRate, frame.ChannelCount, frame.FrameLength,
+                    frame.BitRate);
 
-                var buffer = new byte[16384 * 4];
-                _buffer = new FixedSizeBuffer<byte>(converter.DestinationFormat.BytesPerSecond * 10);
+                _buffer = new FixedSizeBuffer<byte>(format.BytesPerSecond * 10);
+                _bufferingStream = new ReadBlockStream(_buffer.ToStream());
+
+                do
+                {
+                    _buffer.Write(buffer, 0, read);
+                    read = ReadRawDataFromFrame(ref buffer, out frame);
+                    prevFormat = format;
+                    format = new Mp3Format(frame.SampleRate, frame.ChannelCount, frame.FrameLength,
+                        frame.BitRate);
+                }
+                while (_buffer.Buffered < _buffer.Length / 10 || !format.Equals(prevFormat));
+
+                _decoder = new DmoMp3Decoder(_bufferingStream, false);
 
                 if (resetEvent != null) 
                     resetEvent.Set();
@@ -182,40 +195,14 @@ namespace CSCore.Codecs.MP3
                     if (_buffer.Buffered >= _buffer.Length * 0.85 && !_disposing)
                     {
                         Thread.Sleep(250);
-                        continue;
                     }
-                    try
+                    else
                     {
-                        frame = GetNextFrame(_stream);
-                        //_frameBuffer is set in GetNextFrame
-                        int count = converter.Convert(_frameBuffer, frame.FrameLength, buffer, 0);
-                        if (count > 0)
-                        {
-                            int written = _buffer.Write(buffer, 0, count);
-                        }
+                        _buffer.Write(buffer, 0, read);
+                        read = ReadRawDataFromFrame(ref buffer, out frame);
                     }
-                    catch (MmException)
-                    {
-                        _disposing = true;
-                        ThreadPool.QueueUserWorkItem(c =>
-                        {
-                            while (_bufferThread.ThreadState != ThreadState.Stopped)
-                            {
-                            }
-                            CreateStream(false);
-                        });
-                    }
-                    catch (WebException)
-                    {
-                        InitializeConnection();
-                    }
-                    catch (IOException)
-                    {
-                        InitializeConnection();
-                    }
+                    
                 } while (!_disposing);
-
-                converter.Dispose();
             }
             finally
             {
@@ -224,12 +211,27 @@ namespace CSCore.Codecs.MP3
             }
         }
 
-        private Mp3Frame GetNextFrame(Stream stream)
+        private int ReadRawDataFromFrame(ref byte[] buffer, out Mp3Frame frame)
+        {
+            frame = GetNextFrame(_stream, ref buffer);
+            if (frame == null)
+            {
+                buffer = new byte[0];
+                return 0;
+            }
+
+            if (buffer.Length > frame.FrameLength)
+                Array.Clear(buffer, frame.FrameLength, buffer.Length - frame.FrameLength);
+
+            return frame.FrameLength;
+        }
+
+        private Mp3Frame GetNextFrame(Stream stream, ref byte[] frameBuffer)
         {
             Mp3Frame frame;
             do
             {
-                frame = Mp3Frame.FromStream(stream, ref _frameBuffer);
+                frame = Mp3Frame.FromStream(stream, ref frameBuffer);
             } while (frame == null);
 
             return frame;

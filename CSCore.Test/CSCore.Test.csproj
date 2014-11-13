@@ -201,7 +201,6 @@
     <Compile Include="DMO\DmoEnumeratorTests.cs" />
     <Compile Include="GlobalTestConfig.cs" />
     <Compile Include="MediaFoundation\BasicMediaFoundationTests.cs" />
-    <Compile Include="ACM\AcmDriverTests.cs" />
     <Compile Include="MediaFoundation\MediafoundationEncoderTests.cs" />
     <Compile Include="RecentIssueTests\SoundInToSoundOutTests.cs" />
     <Compile Include="SoundIn\SoundInBehaviourTests.cs" />

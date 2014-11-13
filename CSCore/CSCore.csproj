@@ -191,12 +191,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ACM\AcmDriver.cs" />
-    <Compile Include="ACM\AcmException.cs" />
-    <Compile Include="ACM\Interop\AcmDriverDetails.cs" />
-    <Compile Include="ACM\Interop\AcmDriverDetailsSupport.cs" />
-    <Compile Include="ACM\Interop\AcmDriverEnumCallback.cs" />
-    <Compile Include="ACM\Interop\AcmDriverEnumFlags.cs" />
     <Compile Include="AudioSubTypes.cs">
       <DependentUpon>AudioSubTypes.tt</DependentUpon>
       <SubType>Code</SubType>
@@ -208,9 +202,9 @@
     <Compile Include="Codecs\AAC\AacEncoder.cs" />
     <Compile Include="Codecs\CodecFactoryEntry.cs" />
     <Compile Include="Codecs\AAC\AacDecoder.cs" />
+    <Compile Include="Codecs\ConnectionEstablishedEventArgs.cs" />
     <Compile Include="Codecs\DDP\DDPDecoder.cs" />
     <Compile Include="Codecs\CodecFactory.cs" />
-    <Compile Include="Codecs\ConnectionEstablishedEventArgs.cs" />
     <Compile Include="Codecs\FLAC\ChannelAssignment.cs" />
     <Compile Include="Codecs\FLAC\FlacException.cs" />
     <Compile Include="Codecs\FLAC\FlacChannelMode.cs" />
@@ -246,7 +240,6 @@
     <Compile Include="Codecs\MP3\FrameInfoCollection.cs" />
     <Compile Include="Codecs\MP3\Mp3ChannelMode.cs" />
     <Compile Include="Codecs\MP3\Mp3Exception.cs" />
-    <Compile Include="Codecs\MP3\Mp3FileReader.cs" />
     <Compile Include="Codecs\MP3\Mp3Format.cs" />
     <Compile Include="Codecs\MP3\Mp3FormatId.cs" />
     <Compile Include="Codecs\MP3\Mp3Frame.cs" />
@@ -543,19 +536,6 @@
     <Compile Include="Codecs\WAV\WaveFileChunk.cs" />
     <Compile Include="Codecs\WAV\WaveFileReader.cs" />
     <Compile Include="Codecs\WAV\WaveWriter.cs" />
-    <Compile Include="ACM\AcmConverter.cs" />
-    <Compile Include="ACM\AcmResult.cs" />
-    <Compile Include="ACM\AcmBufferConverter.cs" />
-    <Compile Include="ACM\Interop\AcmConvertFlags.cs" />
-    <Compile Include="ACM\Interop\AcmFormatSuggestFlags.cs" />
-    <Compile Include="ACM\AcmHeader.cs" />
-    <Compile Include="ACM\Interop\NativeAcmHeader.cs" />
-    <Compile Include="ACM\Interop\AcmHeaderState.cs" />
-    <Compile Include="ACM\Interop\NativeMethods.cs" />
-    <Compile Include="ACM\Interop\AcmStreamOpenFlags.cs" />
-    <Compile Include="ACM\Interop\AcmStreamSizeFlags.cs" />
-    <Compile Include="ACM\Interop\AcmWaveFilter.cs" />
-    <Compile Include="Codecs\MP3\Mp3Stream.cs" />
     <Compile Include="CoreAudioAPI\CoreAudioAPIException.cs" />
     <Compile Include="Win32\Blob.cs" />
     <Compile Include="CoreAudioAPI\DataFlow.cs" />

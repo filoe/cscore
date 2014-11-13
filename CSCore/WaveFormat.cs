@@ -10,7 +10,7 @@ namespace CSCore
     ///     Defines the format of waveform-audio data.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 2)]
-    public class WaveFormat : ICloneable
+    public class WaveFormat : ICloneable, IEquatable<WaveFormat>
     {
         private AudioEncoding _encoding;
         private short _channels;
@@ -199,6 +199,22 @@ namespace CSCore
             bytes -= bytes % BlockAlign;
             var result = (long) ((bytes / (double) BytesPerSecond) * 1000);
             return result;
+        }
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <param name="other">The <see cref="WaveFormat"/> to compare with this <see cref="WaveFormat"/>.</param>
+        /// <returns>true if the current object is equal to the other parameter; otherwise, false.</returns>
+        public virtual bool Equals(WaveFormat other)
+        {
+            return Channels == other.Channels &&
+                   SampleRate == other.SampleRate &&
+                   BytesPerSecond == other.BytesPerSecond &&
+                   BlockAlign == other.BlockAlign &&
+                   BitsPerSample == other.BitsPerSample &&
+                   ExtraSize == other.ExtraSize &&
+                   WaveFormatTag == other.WaveFormatTag;
         }
 
         /// <summary>

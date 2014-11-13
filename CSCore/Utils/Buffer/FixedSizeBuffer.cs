@@ -5,6 +5,7 @@ using System;
 #if static_buffer_queue
 using System.Collections.Generic;
 #endif
+using System.IO;
 
 namespace CSCore.Utils.Buffer
 {
@@ -200,6 +201,75 @@ namespace CSCore.Utils.Buffer
             Dispose(false);
         }
 
+        internal Stream ToStream()
+        {
+            if(typeof(T) != typeof(byte))
+                throw new NotSupportedException("Only byte buffers are supported.");
+            return new FixedSizeByteStream(this as FixedSizeBuffer<byte>);
+        }
 #endif
+
+        private class FixedSizeByteStream : Stream
+        {
+            private readonly FixedSizeBuffer<byte> _buffer;
+
+            public FixedSizeByteStream(FixedSizeBuffer<byte> buffer)
+            {
+                if (buffer == null)
+                    throw new ArgumentNullException("buffer");
+                _buffer = buffer;
+            }
+
+
+            public override void Flush()
+            {
+            }
+
+            public override long Seek(long offset, SeekOrigin origin)
+            {
+                throw new NotSupportedException();
+            }
+
+            public override void SetLength(long value)
+            {
+                throw new NotSupportedException();
+            }
+
+            public override int Read(byte[] buffer, int offset, int count)
+            {
+                return _buffer.Read(buffer, offset, count);
+            }
+
+            public override void Write(byte[] buffer, int offset, int count)
+            {
+                _buffer.Write(buffer, offset, count);
+            }
+
+            public override bool CanRead
+            {
+                get { return true; }
+            }
+
+            public override bool CanSeek
+            {
+                get { return false; }
+            }
+
+            public override bool CanWrite
+            {
+                get { return true; }
+            }
+
+            public override long Length
+            {
+                get { return _buffer.Buffered; }
+            }
+
+            public override long Position
+            {
+                get { return 0; }
+                set { throw new NotSupportedException(); }
+            }
+        }
     }
 }
