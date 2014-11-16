@@ -172,7 +172,7 @@ namespace CSCore.Codecs.MP3
                 format = new Mp3Format(frame.SampleRate, frame.ChannelCount, frame.FrameLength,
                     frame.BitRate);
 
-                _buffer = new FixedSizeBuffer<byte>(format.BytesPerSecond * 10);
+                _buffer = new FixedSizeBuffer<byte>(format.BytesPerSecond * 2);
                 _bufferingStream = new ReadBlockStream(_buffer.ToStream());
 
                 do
@@ -213,7 +213,34 @@ namespace CSCore.Codecs.MP3
 
         private int ReadRawDataFromFrame(ref byte[] buffer, out Mp3Frame frame)
         {
-            frame = GetNextFrame(_stream, ref buffer);
+            bool success = false;
+            frame = null;
+            do
+            {
+                try
+                {
+                    frame = GetNextFrame(_stream, ref buffer);
+                    success = true;
+                }
+                catch (IOException)
+                {
+                }
+                catch (WebException)
+                {
+                }
+
+                if (!success)
+                {
+                    do
+                    {
+                        CloseResponse();
+                        InitializeConnection();
+                        if(_stream == null)
+                            Thread.Sleep(100);
+                    } while (_stream == null);
+                }
+            } while (!success); 
+
             if (frame == null)
             {
                 buffer = new byte[0];
@@ -222,7 +249,7 @@ namespace CSCore.Codecs.MP3
 
             if (buffer.Length > frame.FrameLength)
                 Array.Clear(buffer, frame.FrameLength, buffer.Length - frame.FrameLength);
-
+            
             return frame.FrameLength;
         }
 
