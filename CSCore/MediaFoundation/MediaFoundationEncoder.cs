@@ -128,10 +128,13 @@ namespace CSCore.MediaFoundation
             if (count <= 0)
                 return;
 
-            int bytesToWrite = Math.Min(_sourceBytesPerSecond * 4, count);
-
-            long written = WriteBlock(buffer, offset, bytesToWrite, _streamIndex, _position, _sourceBytesPerSecond);
-            _position += written;
+            while (count > 0)
+            {
+                int bytesToWrite = Math.Min(_sourceBytesPerSecond * 4, count);
+                long written = WriteBlock(buffer, offset, bytesToWrite, _streamIndex, _position, _sourceBytesPerSecond);
+                count -= bytesToWrite;
+                _position += written;
+            }
         }
 
         /// <summary>
@@ -149,9 +152,6 @@ namespace CSCore.MediaFoundation
             {
                 _targetBaseStream = new ComStream(stream);
                 _targetStream = MediaFoundationCore.IStreamToByteStream(_targetBaseStream);
-
-                var flags = MFByteStreamCapsFlags.None;
-                _targetStream.GetCapabilities(ref flags); //TODO: Remove this call.
 
                 attributes = MediaFoundationCore.CreateEmptyAttributes(2);
                 attributes.SetUINT32(MediaFoundationAttributes.MF_READWRITE_ENABLE_HARDWARE_TRANSFORMS, 1);
@@ -194,9 +194,7 @@ namespace CSCore.MediaFoundation
         private long WriteBlock(byte[] buffer, int offset, int count, int streamIndex, long positionInTicks,
             int sourceBytesPerSecond)
         {
-            int bytesToWrite = count;
-
-            using (var mfBuffer = new MFMediaBuffer(MediaFoundationCore.CreateMemoryBuffer(bytesToWrite)))
+            using (var mfBuffer = new MFMediaBuffer(MediaFoundationCore.CreateMemoryBuffer(count)))
             {
                 using (var sample = new MFSample(MediaFoundationCore.CreateEmptySample()))
                 {
@@ -205,9 +203,10 @@ namespace CSCore.MediaFoundation
                     int currentLength, maxLength;
                     IntPtr bufferPtr = mfBuffer.Lock(out maxLength, out currentLength);
 
-                    long ticks = BytesToNanoSeconds(count, sourceBytesPerSecond);
-                    Marshal.Copy(buffer, offset, bufferPtr, count);
-                    mfBuffer.SetCurrentLength(count);
+                        long ticks = BytesToNanoSeconds(count, sourceBytesPerSecond);
+                        Marshal.Copy(buffer, offset, bufferPtr, count);
+                        mfBuffer.SetCurrentLength(count);
+
                     mfBuffer.Unlock();
 
                     sample.SetSampleTime(positionInTicks);
