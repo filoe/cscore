@@ -188,7 +188,7 @@ namespace CSCore.Win32
 
             Write(pv, 0, cb);
             if (pcbWritten != IntPtr.Zero)
-                Marshal.WriteInt64(pcbWritten, (long)cb);
+                Marshal.WriteInt32(pcbWritten, cb);
             return HResult.S_OK;
         }
 
