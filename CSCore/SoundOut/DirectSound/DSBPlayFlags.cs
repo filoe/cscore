@@ -9,7 +9,7 @@
     #define DSBPLAY_TERMINATEBY_PRIORITY    0x000000020
      */
 
-    public enum DSBPlayFlags : uint
+    public enum DSBPlayFlags
     {
         None = 0x0,
         DSBPLAY_LOOPING = 0x00000001,

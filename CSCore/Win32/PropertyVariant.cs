@@ -28,6 +28,7 @@ namespace CSCore.Win32
         [FieldOffset(6)]
         public short wReserved3;
 
+        [CLSCompliant(false)]
         [FieldOffset(8)]
         public sbyte CValue;
 
@@ -37,24 +38,28 @@ namespace CSCore.Win32
         [FieldOffset(8)]
         public short IValue;
 
+        [CLSCompliant(false)]
         [FieldOffset(8)]
         public ushort UIValue;
 
         [FieldOffset(8)]
         public int LValue;
 
+        [CLSCompliant(false)]
         [FieldOffset(8)]
         public uint ULValue;
 
         [FieldOffset(8)]
         public int IntValue;
 
+        [CLSCompliant(false)]
         [FieldOffset(8)]
         public uint UIntValue;
 
         [FieldOffset(8)]
         public long HValue;
 
+        [CLSCompliant(false)]
         [FieldOffset(8)]
         public ulong UHValue;
 

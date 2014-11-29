@@ -3,7 +3,7 @@
     /// <summary>
     /// MP3 Format id.
     /// </summary>
-    public enum Mp3FormatId : ushort
+    public enum Mp3FormatId : short
     {
         /// <summary>
         /// None

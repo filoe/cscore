@@ -1,6 +1,6 @@
 ﻿namespace CSCore.SoundOut.MMInterop
 {
-    public enum MMTimeType : uint
+    public enum MMTimeType
     {
         TIME_MS = 0x0001,
         TIME_SAMPLES = 0x0002,

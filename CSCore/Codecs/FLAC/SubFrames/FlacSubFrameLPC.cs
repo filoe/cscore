@@ -4,6 +4,7 @@ using System.Diagnostics;
 
 namespace CSCore.Codecs.FLAC
 {
+    [CLSCompliant(false)]
     public sealed class FlacSubFrameLPC : FlacSubFrameBase
     {
         private readonly int[] _warmup;

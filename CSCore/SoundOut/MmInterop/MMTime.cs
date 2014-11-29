@@ -13,16 +13,16 @@ namespace CSCore.SoundOut.MMInterop
         public MMTimeType wType;
 
         [FieldOffset(4)]
-        public UInt32 ms;
+        public Int32 ms;
 
         [FieldOffset(4)]
-        public UInt32 sample;
+        public Int32 sample;
 
         [FieldOffset(4)]
-        public UInt32 cb;
+        public Int32 cb;
 
         [FieldOffset(4)]
-        public UInt32 ticks;
+        public Int32 ticks;
 
         [FieldOffset(4)]
         public Byte smpteHour;
@@ -49,6 +49,6 @@ namespace CSCore.SoundOut.MMInterop
         public Byte smptePad1;
 
         [FieldOffset(4)]
-        public UInt32 midiSongPtrPos;
+        public Int32 midiSongPtrPos;
     }
 }

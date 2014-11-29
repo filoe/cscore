@@ -21,16 +21,16 @@ namespace CSCore.SoundIn
             return caps;
         }
 
-        private short wMid;
-        private short wPid;
-        private uint vDriverVersion;
+        private readonly short wMid;
+        private readonly short wPid;
+        private readonly int vDriverVersion;
 
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-        private string szPname;
+        private readonly string szPname;
 
-        private WaveCapsFormats dwFormats;
-        private short wChannels;
-        private short wReserved1;
+        private readonly WaveCapsFormats dwFormats;
+        private readonly short wChannels;
+        private readonly short wReserved1;
 
         public int Channels
         {
@@ -47,7 +47,7 @@ namespace CSCore.SoundIn
             get { return szPname; }
         }
 
-        public uint DriverVersion
+        public int DriverVersion
         {
             get { return vDriverVersion; }
         }

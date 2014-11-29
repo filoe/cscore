@@ -5,12 +5,12 @@ namespace CSCore.SoundOut.MMInterop
 {
     public class WaveWindow : NativeWindow, IWaveCallbackWindow
     {
-        private MMInterops.WaveCallback _waveCallback;
+        private WaveCallback _waveCallback;
 
-        public WaveWindow(MMInterops.WaveCallback callback)
+        public WaveWindow(WaveCallback callback)
         {
             if (callback == null)
-                throw new ArgumentNullException("callback equals null");
+                throw new ArgumentNullException("callback");
             _waveCallback = callback;
         }
 
@@ -24,7 +24,7 @@ namespace CSCore.SoundOut.MMInterop
                         WaveHeader header = new WaveHeader();
                         IntPtr waveOutHandle = m.WParam;
                         System.Runtime.InteropServices.Marshal.PtrToStructure(m.LParam, header); //header von wparam
-                        _waveCallback(waveOutHandle, (WaveMsg)m.Msg, UIntPtr.Zero, header, UIntPtr.Zero);
+                        _waveCallback(waveOutHandle, (WaveMsg)m.Msg, IntPtr.Zero, header, IntPtr.Zero);
                         break;
                     }
                 case (int)WaveMsg.WOM_OPEN:
@@ -32,7 +32,7 @@ namespace CSCore.SoundOut.MMInterop
                 case (int)WaveMsg.WIM_CLOSE:
                 case (int)WaveMsg.WIM_OPEN:
                     {
-                        _waveCallback(m.WParam, (WaveMsg)m.Msg, UIntPtr.Zero, null, UIntPtr.Zero);
+                        _waveCallback(m.WParam, (WaveMsg)m.Msg, IntPtr.Zero, null, IntPtr.Zero);
                         break;
                     }
                 default:
@@ -43,7 +43,7 @@ namespace CSCore.SoundOut.MMInterop
 
         #region ICallbackWindow Member
 
-        public MMInterops.WaveCallback CallBack
+        public WaveCallback CallBack
         {
             get { return _waveCallback; }
         }

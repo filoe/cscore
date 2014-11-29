@@ -1,6 +1,6 @@
 ﻿namespace CSCore.SoundOut.DirectSound
 {
-    public enum DSCooperativeLevelType : uint
+    public enum DSCooperativeLevelType
     {
         DSSCL_NORMAL = 0x00000001,
         DSSCL_PRIORITY = 0x00000002,

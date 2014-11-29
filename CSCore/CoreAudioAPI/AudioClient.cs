@@ -138,7 +138,7 @@ namespace CSCore.CoreAudioAPI
         /// (2-channel) stream with 16-bit samples.
         /// </remarks>
         /// <returns>HRESULT</returns>
-        public unsafe int GetBufferSize(out UInt32 bufferFramesCount)
+        public unsafe int GetBufferSize(out Int32 bufferFramesCount)
         {
             fixed (void* pbfc = &bufferFramesCount)
             {
@@ -158,9 +158,9 @@ namespace CSCore.CoreAudioAPI
         /// </remarks>
         public int GetBufferSize()
         {
-            uint bufferSize;
+            int bufferSize;
             CoreAudioAPIException.Try(GetBufferSize(out bufferSize), InterfaceName, "GetBufferSize");
-            return (int)bufferSize;
+            return bufferSize;
         }
 
         /// <summary>
@@ -204,7 +204,7 @@ namespace CSCore.CoreAudioAPI
         /// buffer.
         /// </summary>
         /// <returns>HRESULT</returns>
-        public unsafe int GetCurrentPaddingNative(out UInt32 numPaddingFrames)
+        public unsafe int GetCurrentPaddingNative(out Int32 numPaddingFrames)
         {
             fixed (void* pndf = &numPaddingFrames)
             {
@@ -218,9 +218,9 @@ namespace CSCore.CoreAudioAPI
         /// </summary>
         public int GetCurrentPadding()
         {
-            uint padding;
+            int padding;
             CoreAudioAPIException.Try(GetCurrentPaddingNative(out padding), InterfaceName, "GetCurrentPadding");
-            return (int)padding;
+            return padding;
         }
 
         /// <summary>

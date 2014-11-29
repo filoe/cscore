@@ -6,6 +6,6 @@ namespace CSCore.SoundOut.MMInterop
     {
         IntPtr Handle { get; }
 
-        MMInterops.WaveCallback CallBack { get; }
+        WaveCallback CallBack { get; }
     }
 }

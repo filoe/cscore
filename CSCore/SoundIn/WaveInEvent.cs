@@ -24,7 +24,7 @@ namespace CSCore.SoundIn
 
         protected override void OpenWaveDevice(int device)
         {
-            var result = MMInterops.waveInOpenWithWindow(out handle, (IntPtr)device, WaveFormat, _event.SafeWaitHandle.DangerousGetHandle(), IntPtr.Zero, MMInterops.WaveInOutOpenFlags.CALLBACK_EVENT);
+            var result = MMInterops.waveInOpenWithWindow(out InternalHandle, (IntPtr)device, WaveFormat, _event.SafeWaitHandle.DangerousGetHandle(), IntPtr.Zero, MMInterops.WaveInOutOpenFlags.CALLBACK_EVENT);
             MmException.Try(result, "waveInOpen");
         }
 
@@ -49,11 +49,11 @@ namespace CSCore.SoundIn
 
         private void EventProc(object o)
         {
-            while (!stopped)
+            while (!IsStopped)
             {
                 if (_event.WaitOne())
                 {
-                    foreach (var buffer in _buffers)
+                    foreach (var buffer in Buffers)
                     {
                         if (buffer.Done)
                         {
@@ -63,7 +63,7 @@ namespace CSCore.SoundIn
                     }
                 }
             }
-            stopped = true;
+            IsStopped = true;
             RaiseStopped();
         }
     }

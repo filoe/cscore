@@ -2,6 +2,7 @@
 
 namespace CSCore.Codecs.FLAC
 {
+    [CLSCompliant(false)]
     public class FlacPartitionedRice
     {
         public int PartitionOrder { get; private set; }
@@ -46,12 +47,12 @@ namespace CSCore.Codecs.FLAC
                     k = (int)reader.ReadBits(5);
                     for (int i = n; i > 0; i--)
                     {
-                        *(r) = reader.ReadBitsSigned((int)k);
+                        *(r) = reader.ReadBitsSigned(k);
                     }
                 }
                 else
                 {
-                    ReadFlacRiceBlock(reader, n, (int)k, r);
+                    ReadFlacRiceBlock(reader, n, k, r);
                     r += n;
                 }
                 j += n;
@@ -86,7 +87,7 @@ namespace CSCore.Codecs.FLAC
                             msbs += bits;
                         }
 
-                        uint uval = 0;
+                        uint uval;
                         if (riceParameter <= 16)
                         {
                             int btsk = riceParameter + (int)bits + 1;

@@ -18,7 +18,7 @@ namespace CSCore.Codecs.FLAC
 
         public FlacFrameHeader Header { get; private set; }
 
-        public ushort Crc16 { get; private set; }
+        public short Crc16 { get; private set; }
 
         public bool HasError { get; private set; }
 
@@ -36,12 +36,7 @@ namespace CSCore.Codecs.FLAC
             //return frame.HasError ? null : frame;
         }
 
-        private FlacFrame(Stream stream)
-            : this(stream, null)
-        {
-        }
-
-        private FlacFrame(Stream stream, FlacMetadataStreamInfo streamInfo)
+        private FlacFrame(Stream stream, FlacMetadataStreamInfo streamInfo = null)
         {
             if (stream == null) throw new ArgumentNullException("stream");
             if (stream.CanRead == false) throw new ArgumentException("Stream is not readable");
@@ -102,7 +97,7 @@ namespace CSCore.Codecs.FLAC
                 }
 
                 reader.Flush();
-                Crc16 = (ushort)reader.ReadBits(16);
+                Crc16 = (short) reader.ReadBits(16);
 
                 _stream.Position -= read - reader.Position;
 

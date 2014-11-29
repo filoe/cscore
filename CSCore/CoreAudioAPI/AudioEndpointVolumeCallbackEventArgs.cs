@@ -19,7 +19,7 @@ namespace CSCore.CoreAudioAPI
         /// </summary>
         public float MasterVolume { get; private set; }
 
-        public uint Channels { get; private set; }
+        public int Channels { get; private set; }
 
         /// <summary>
         /// The volume level for each channel is normalized to the range from 0.0 to 1.0, where 0.0

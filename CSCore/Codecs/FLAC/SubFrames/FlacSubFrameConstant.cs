@@ -1,5 +1,8 @@
-﻿namespace CSCore.Codecs.FLAC
+﻿using System;
+
+namespace CSCore.Codecs.FLAC
 {
+    [CLSCompliant(false)]
     public sealed class FlacSubFrameConstant : FlacSubFrameBase
     {
         public int Value { get; private set; }

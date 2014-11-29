@@ -134,7 +134,7 @@ namespace CSCore.MediaFoundation
             return new MFMediaType(mediaType);
         }
 
-        public static IMFAttributes CreateEmptyAttributes(uint initialSize)
+        public static IMFAttributes CreateEmptyAttributes(int initialSize)
         {
             IMFAttributes attributes;
             int result = NativeMethods.ExternMFCreateAttributes(out attributes, initialSize);

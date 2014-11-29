@@ -17,9 +17,9 @@ namespace CSCore.SoundOut.DirectSound
         public const int PanCenter = 0;
         public const int PanRight = 10000;
 
-        public const uint FrequencyOriginal = 0;
-        public const uint FrequencyMin = 100;
-        public const uint FrequencyMax = 20000;
+        public const int FrequencyOriginal = 0;
+        public const int FrequencyMin = 100;
+        public const int FrequencyMax = 20000;
         private const string c = "IDirectSoundBuffer";
 
         //assume that dv = 10.0

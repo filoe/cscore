@@ -6,7 +6,7 @@ namespace CSCore.SoundOut.DirectSound
     /// Line 2081
     /// </summary>
     [FlagsAttribute]
-    public enum DSBufferCapsFlags : uint
+    public enum DSBufferCapsFlags
     {
         DSBCAPS_PRIMARYBUFFER = 0x00000001,
         DSBCAPS_STATIC = 0x00000002,

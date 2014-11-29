@@ -1,4 +1,36 @@
-﻿using System;
+﻿/* libFLAC - Free Lossless Audio Codec library
+ * Copyright (C) 2000,2001,2002,2003,2004,2005,2006,2007,2008,2009  Josh Coalson
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * - Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the Xiph.org Foundation nor the names of its
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE FOUNDATION OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+
+using System;
 using System.Runtime.InteropServices;
 
 namespace CSCore.Utils
@@ -29,6 +61,7 @@ namespace CSCore.Utils
         /// </summary>
         /// <param name="buffer">buffer</param>
         /// <param name="offset">offset in bits</param>
+        [CLSCompliant(false)]        
         public BitReader(byte* buffer, int offset)
         {
             if (new IntPtr(buffer) == IntPtr.Zero)
@@ -44,14 +77,26 @@ namespace CSCore.Utils
             _cache = PeekCache();
         }
 
+        [CLSCompliant(false)]
         protected internal uint Cache
         {
             get { return _cache; }
         }
 
+        protected internal int CacheSigned
+        {
+            get { return (int) Cache; }
+        }
+
+        [CLSCompliant(false)]
         public byte* Buffer
         {
             get { return _storedBuffer; }
+        }
+
+        public IntPtr BufferPtr
+        {
+            get { return new IntPtr(Buffer);}
         }
 
         public int Position
@@ -101,6 +146,7 @@ namespace CSCore.Utils
             _position += tmp >> 3;
         }
 
+        [CLSCompliant(false)]
         public uint ReadBits(int bits)
         {
             if (bits <= 0 || bits > 32)
@@ -131,6 +177,7 @@ namespace CSCore.Utils
             return result;
         }
 
+        [CLSCompliant(false)]
         public ulong ReadBits64(int bits)
         {
             if (bits <= 0 || bits > 64)
@@ -165,6 +212,7 @@ namespace CSCore.Utils
             return (Int16) ReadBitsSigned(16);
         }
 
+        [CLSCompliant(false)]
         public UInt16 ReadUInt16()
         {
             return (UInt16) ReadBits(16);
@@ -175,11 +223,14 @@ namespace CSCore.Utils
             return ReadBitsSigned(32);
         }
 
+        [CLSCompliant(false)]
+
         public UInt32 ReadUInt32()
         {
             return ReadBits(32);
         }
 
+        [CLSCompliant(false)]
         public UInt64 ReadUInt64()
         {
             return ReadBits64(64);

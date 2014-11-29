@@ -9,7 +9,7 @@ namespace CSCore.SoundOut
     {
         public short wMid;
         public short wPid;
-        public uint vDriverVersion;
+        public int vDriverVersion;
 
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
         public string szPname;
@@ -25,7 +25,7 @@ namespace CSCore.SoundOut
             builder.AppendLine("Name: " + szPname);
             builder.AppendLine("DriverVersion: " + vDriverVersion);
             builder.AppendLine("DriverSupported: " + dwSupport);
-            builder.AppendLine("Formate: " + dwFormats.ToString());
+            builder.AppendLine("Formate: " + dwFormats);
 
             return builder.ToString();
         }

@@ -23,9 +23,9 @@ namespace CSCore.Codecs.FLAC
         //union
         public FlacNumberType NumberType { get; set; }
 
-        public ulong SampleNumber { get; set; }
+        public long SampleNumber { get; set; }
 
-        public uint FrameNumber { get; set; }
+        public int FrameNumber { get; set; }
 
         public byte CRC8 { get; set; }
 
@@ -60,11 +60,13 @@ namespace CSCore.Codecs.FLAC
             HasError = !ParseHeader(stream, streamInfo);
         }
 
+        [CLSCompliant(false)]
         public unsafe FlacFrameHeader(ref byte* buffer, FlacMetadataStreamInfo streamInfo, bool doCrc)
             : this(ref buffer, streamInfo, doCrc, true)
         {
         }
 
+        [CLSCompliant(false)]
         internal unsafe FlacFrameHeader(ref byte* buffer, FlacMetadataStreamInfo streamInfo, bool doCrc, bool logError)
         {
             PrintErrors = logError; //optimized for prescan
@@ -242,7 +244,7 @@ namespace CSCore.Codecs.FLAC
                     if (reader.ReadUTF8_64(out samplenumber) && samplenumber != ulong.MaxValue)
                     {
                         NumberType = FlacNumberType.SampleNumber;
-                        SampleNumber = samplenumber;
+                        SampleNumber = (long) samplenumber;
                     }
                     else
                     {
@@ -257,7 +259,7 @@ namespace CSCore.Codecs.FLAC
                     if (reader.ReadUTF8_32(out framenumber) && framenumber != uint.MaxValue)
                     {
                         NumberType = FlacNumberType.FrameNumber;
-                        FrameNumber = framenumber;
+                        FrameNumber = (int) framenumber;
                     }
                     else
                     {

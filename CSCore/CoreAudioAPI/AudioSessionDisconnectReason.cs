@@ -16,7 +16,7 @@ namespace CSCore.CoreAudioAPI
         /// </summary>
         DisconnectReasonDeviceRemoval = 0,
         /// <summary>
-        /// The Windows audio service has stopped.
+        /// The Windows audio service has _stopped.
         /// </summary>
         DisconnectReasonServerShutdown = (DisconnectReasonDeviceRemoval + 1),
         /// <summary>

@@ -5,6 +5,7 @@ using System;
 
 namespace CSCore.DMO
 {
+    [CLSCompliant(false)]
     [RemoveObj]
     internal class InteropCalls
     {

@@ -28,7 +28,6 @@ namespace CSCore.Streams.SampleConverter
                 throw new ArgumentOutOfRangeException("bits");
 
             _waveFormat = (WaveFormat) source.WaveFormat.Clone();
-#warning todo test BitsPerSample property
             _waveFormat.BitsPerSample = bits;
             _waveFormat.SetWaveFormatTagInternal(encoding);
 

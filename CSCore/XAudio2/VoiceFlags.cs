@@ -6,7 +6,7 @@ namespace CSCore.XAudio2
     ///     VoiceFlags
     /// </summary>
     [Flags]
-    public enum VoiceFlags : uint
+    public enum VoiceFlags
     {
         /// <summary>
         ///     None

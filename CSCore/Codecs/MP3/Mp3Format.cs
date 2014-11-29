@@ -23,17 +23,17 @@ namespace CSCore.Codecs.MP3
         /// <summary>
         /// Block size in bytes. This value equals the frame length in bytes x <see cref="FramesPerBlock"/>. For MP3 audio, the frame length is calculated as follows: 144 x (bitrate / sample rate) + padding.
         /// </summary>
-        public ushort BlockSize;
+        public short BlockSize;
 
         /// <summary>
         /// Number of audio frames per block.
         /// </summary>
-        public ushort FramesPerBlock;
+        public short FramesPerBlock;
 
         /// <summary>
         /// Encoder delay in samples. If you do not know this value, set this structure member to zero.
         /// </summary>
-        public ushort CodecDelay;
+        public short CodecDelay;
 
         /// <summary>
         /// MPEGLAYER3_WFX_EXTRA_BYTES
@@ -59,7 +59,7 @@ namespace CSCore.Codecs.MP3
             ExtraSize = Mp3WaveFormatExtraBytes;
             Id = Mp3FormatId.Mpeg;
             Flags = Mp3PaddingFlags.PaddingIso;
-            BlockSize = (ushort)blockSize;
+            BlockSize = (short) blockSize;
             FramesPerBlock = 1;
             CodecDelay = 0;
         }

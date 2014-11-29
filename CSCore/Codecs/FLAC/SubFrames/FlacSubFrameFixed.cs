@@ -1,6 +1,8 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 namespace CSCore.Codecs.FLAC
 {
+    [CLSCompliant(false)]
     public sealed class FlacSubFrameFixed : FlacSubFrameBase
     {
         public FlacResidual Residual { get; private set; }

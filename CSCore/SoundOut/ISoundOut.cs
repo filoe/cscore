@@ -44,7 +44,7 @@ namespace CSCore.SoundOut
         IWaveSource WaveSource { get; }
 
         /// <summary>
-        /// Gets the <see cref="SoundOut.PlaybackState"/> of the <see cref="ISoundOut"/>. The playback state indicates whether the playback is currently playing, paused or stopped.
+        /// Gets the <see cref="SoundOut.PlaybackState"/> of the <see cref="ISoundOut"/>. The playback state indicates whether the playback is currently playing, paused or _stopped.
         /// </summary>
         PlaybackState PlaybackState { get; }
 

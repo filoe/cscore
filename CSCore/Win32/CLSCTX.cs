@@ -8,7 +8,7 @@ namespace CSCore.Win32
     /// Values that are used in activation calls to indicate the execution contexts in which an object is to be run.
     /// </summary>
     [Flags]
-    public enum CLSCTX : uint
+    public enum CLSCTX : int
     {
         /// <summary>
         /// The code that creates and manages objects of this class is a DLL that runs in the same process as the caller of the function specifying the class context.
@@ -105,7 +105,7 @@ namespace CSCore.Win32
         /// <summary>
         /// Used for loading Proxy/Stub DLLs.
         /// </summary>
-        CLSCTX_PS_DLL = 0x80000000,
+        CLSCTX_PS_DLL = unchecked((int) 0x80000000),
 
         /// <summary>
         /// Bitwise combination of the <see cref="CLSCTX_INPROC_SERVER"/> and the <see cref="CLSCTX_INPROC_HANDLER"/> constants.

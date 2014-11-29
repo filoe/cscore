@@ -18,15 +18,15 @@ namespace CSCore.SoundIn
 
         public event EventHandler<RecordingStoppedEventArgs> Stopped;
 
-        protected IntPtr handle;
-        protected MMInterops.WaveCallback _callback;
+        protected internal IntPtr InternalHandle;
+        protected WaveCallback CallbackProc;
         private WaveFormat _waveFormat;
         private int _bufferSizeMs = 100;
-        protected bool stopped = true;
+        protected bool IsStopped = true;
 
-        private int _bufferCount = 3;
+        private const int BufferCount = 3;
 
-        protected WaveInBuffer[] _buffers;
+        protected WaveInBuffer[] Buffers;
 
         private int _device;
 
@@ -50,10 +50,10 @@ namespace CSCore.SoundIn
 
         public RecordingState RecordingState
         {
-            get { return stopped ? SoundIn.RecordingState.Stopped : SoundIn.RecordingState.Recording; }
+            get { return IsStopped ? SoundIn.RecordingState.Stopped : SoundIn.RecordingState.Recording; }
         }
 
-        public IntPtr Handle { get { return handle; } }
+        public IntPtr Handle { get { return InternalHandle; } }
 
         public WaveIn()
             : this(DefaultFormat)
@@ -68,7 +68,7 @@ namespace CSCore.SoundIn
 
         public void Initialize()
         {
-            if (!stopped)
+            if (!IsStopped)
                 throw new InvalidOperationException("Recording has to be stopped");
 
             CloseWaveDevice();
@@ -78,7 +78,7 @@ namespace CSCore.SoundIn
 
         public void Start()
         {
-            if (!stopped)
+            if (!IsStopped)
                 throw new InvalidOperationException("Recording has to be stopped");
             if (Handle == IntPtr.Zero)
                 throw new InvalidOperationException("Not initialized");
@@ -86,7 +86,7 @@ namespace CSCore.SoundIn
             ResetBuffers();
             var result = MMInterops.waveInStart(Handle);
             MmException.Try(result, "waveInStart");
-            stopped = false;
+            IsStopped = false;
 
             OnStarted();
         }
@@ -97,13 +97,13 @@ namespace CSCore.SoundIn
 
         public void Stop()
         {
-            if (!stopped)
+            if (!IsStopped)
             {
-                stopped = true;
+                IsStopped = true;
                 var result = MMInterops.waveInStop(Handle);
                 MmException.Try(result, "waveInStop");
                 OnStopping();
-                foreach (var buffer in _buffers)
+                foreach (var buffer in Buffers)
                 {
                     if (buffer.Done)
                         RaiseDataAvailable(buffer);
@@ -123,8 +123,8 @@ namespace CSCore.SoundIn
 
         protected virtual void OpenWaveDevice(int device)
         {
-            _callback = new MMInterops.WaveCallback(Callback);
-            var result = MMInterops.waveInOpen(out handle, (IntPtr)device, _waveFormat, _callback, IntPtr.Zero, MMInterops.WaveInOutOpenFlags.CALLBACK_FUNCTION);
+            CallbackProc = new WaveCallback(Callback);
+            var result = MMInterops.waveInOpen(out InternalHandle, (IntPtr)device, _waveFormat, CallbackProc, IntPtr.Zero, MMInterops.WaveInOutOpenFlags.CALLBACK_FUNCTION);
             MmException.Try(result, "waveInOpen");
         }
 
@@ -133,21 +133,21 @@ namespace CSCore.SoundIn
             if (Handle == IntPtr.Zero) return;
             var result = MMInterops.waveInReset(Handle);
             MmException.Try(result, "waveInReset");
-            if (_buffers != null)
+            if (Buffers != null)
             {
-                for (int i = 0; i < _buffers.Length; i++)
+                for (int i = 0; i < Buffers.Length; i++)
                 {
-                    _buffers[i].Dispose();
+                    Buffers[i].Dispose();
                 }
             }
             result = MMInterops.waveInClose(Handle);
             MmException.Try(result, "waveInClose");
-            handle = IntPtr.Zero;
+            InternalHandle = IntPtr.Zero;
         }
 
         private void ResetBuffers()
         {
-            foreach (var item in _buffers)
+            foreach (var item in Buffers)
             {
                 if (!item.IsInQueue)
                 {
@@ -158,7 +158,7 @@ namespace CSCore.SoundIn
 
         private void CreateBuffers()
         {
-            int count = _bufferCount;
+            int count = BufferCount;
             int size = (int)WaveFormat.MillisecondsToBytes(BufferSizeMs);
 
             WaveInBuffer[] buffers = new WaveInBuffer[count];
@@ -168,14 +168,14 @@ namespace CSCore.SoundIn
                 buffer.Initialize();
                 buffers[i] = buffer;
             }
-            _buffers = buffers;
+            Buffers = buffers;
         }
 
-        protected virtual void Callback(IntPtr handle, WaveMsg msg, UIntPtr user, WaveHeader header, UIntPtr reserved)
+        protected virtual void Callback(IntPtr handle, WaveMsg msg, IntPtr user, WaveHeader header, IntPtr reserved)
         {
             if (msg == WaveMsg.WIM_DATA)
             {
-                if (!stopped)
+                if (!IsStopped)
                 {
                     var buffer = ((GCHandle)header.userData).Target as WaveInBuffer;
                     RaiseDataAvailable(buffer);
@@ -185,7 +185,7 @@ namespace CSCore.SoundIn
                     }
                     catch (MmException)
                     {
-                        stopped = true;
+                        IsStopped = true;
                         RaiseStopped();
                     }
                 }
@@ -220,7 +220,7 @@ namespace CSCore.SoundIn
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!stopped)
+            if (!IsStopped)
                 Stop();
             CloseWaveDevice();
         }

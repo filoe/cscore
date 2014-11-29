@@ -25,7 +25,6 @@ namespace CSCore.Streams.SampleConverter
 
             Source = source;
             _waveFormat = (WaveFormat) source.WaveFormat.Clone();
-#warning todo test BitsPerSample property
             _waveFormat.BitsPerSample = 32;
             _waveFormat.SetWaveFormatTagInternal(AudioEncoding.IeeeFloat);
             BitsPerSampleRatio = (double)_waveFormat.BitsPerSample / source.WaveFormat.BitsPerSample;

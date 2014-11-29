@@ -20,7 +20,7 @@ namespace CSCore.Codecs.FLAC
             {
                 throw new FlacException(e, FlacLayer.Metadata);
             }
-            int bytesToRead = (240 / 8) - 16;
+            const int bytesToRead = (240 / 8) - 16;
             byte[] buffer = reader.ReadBytes(bytesToRead);
             if (buffer.Length != bytesToRead)
                 throw new FlacException(new EndOfStreamException("Could not read StreamInfo-content"), FlacLayer.Metadata);
@@ -28,8 +28,8 @@ namespace CSCore.Codecs.FLAC
             fixed (byte* b = buffer)
             {
                 FlacBitReader bitreader = new FlacBitReader(b, 0);
-                MinFrameSize = bitreader.ReadBits(24);
-                MaxFrameSize = bitreader.ReadBits(24);
+                MinFrameSize = (int) bitreader.ReadBits(24);
+                MaxFrameSize = (int) bitreader.ReadBits(24);
                 SampleRate = (int)bitreader.ReadBits(20);
                 Channels = 1 + (int)bitreader.ReadBits(3);
                 BitsPerSample = 1 + (int)bitreader.ReadBits(5);
@@ -42,9 +42,9 @@ namespace CSCore.Codecs.FLAC
 
         public short MaxBlockSize { get; private set; }
 
-        public uint MaxFrameSize { get; private set; }
+        public int MaxFrameSize { get; private set; }
 
-        public uint MinFrameSize { get; private set; }
+        public int MinFrameSize { get; private set; }
 
         public int SampleRate { get; private set; }
 

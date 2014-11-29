@@ -122,7 +122,7 @@ namespace CSCore.SoundOut
         }
 
         /// <summary>
-        ///     Occurs when the playback gets stopped.
+        ///     Occurs when the playback gets _stopped.
         /// </summary>
         public event EventHandler<PlaybackStoppedEventArgs> Stopped;
 
@@ -224,7 +224,7 @@ namespace CSCore.SoundOut
                     _playbackThread = null;
                 }
                 else
-                    Debug.WriteLine("DirectSoundOut is already stopped.");
+                    Debug.WriteLine("DirectSoundOut is already _stopped.");
             }
         }
 
@@ -328,7 +328,6 @@ namespace CSCore.SoundOut
                 if (_source.WaveFormat.WaveFormatTag == AudioEncoding.IeeeFloat) //directsound does not support ieeefloat
                     _source = _source.ToSampleSource().ToWaveSource(16);
 
-#warning todo test BitsPerSample property
                 WaveFormat format16Bit = (WaveFormat) _source.WaveFormat.Clone();
                 format16Bit.BitsPerSample = 16;
                 WaveFormat format8Bit = (WaveFormat)_source.WaveFormat.Clone();
@@ -396,7 +395,7 @@ namespace CSCore.SoundOut
                     },
                     new DSBPositionNotify
                     {
-                        dwOffset = (uint) _source.WaveFormat.MillisecondsToBytes(_latency),
+                        dwOffset = (int) _source.WaveFormat.MillisecondsToBytes(_latency),
                         hEventNotify = waitHandle0.SafeWaitHandle.DangerousGetHandle()
                     },
                     new DSBPositionNotify
@@ -430,7 +429,7 @@ namespace CSCore.SoundOut
                     int waitHandleIndex = WaitHandle.WaitAny(waitHandles, waitHandleTimeout, true);
                     bool isTimeOut = waitHandleIndex == WaitHandle.WaitTimeout;
 
-                    //dsound stopped
+                    //dsound _stopped
                     //case of end of buffer or Stop() called: http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.dsbpositionnotify(v=vs.85).aspx
                     bool isBufferStopped = waitHandleIndex == (waitHandles.Length - 1);
 

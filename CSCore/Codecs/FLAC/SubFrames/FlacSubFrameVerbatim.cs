@@ -1,5 +1,8 @@
-﻿namespace CSCore.Codecs.FLAC
+﻿using System;
+
+namespace CSCore.Codecs.FLAC
 {
+    [CLSCompliant(false)]
     public sealed class FlacSubFrameVerbatim : FlacSubFrameBase
     {
         public FlacSubFrameVerbatim(FlacBitReader reader, FlacFrameHeader header, FlacSubFrameData data, int bps)

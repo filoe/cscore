@@ -235,7 +235,7 @@ namespace CSCore.SoundOut
                 {
                     using (var waitHandle = new AutoResetEvent(false))
                     {
-                        //just to be sure that the thread finished already. Should not be necessary because after Stop(), Initialize() has to be called which already waits until the playbackthread stopped.
+                        //just to be sure that the thread finished already. Should not be necessary because after Stop(), Initialize() has to be called which already waits until the playbackthread _stopped.
                         _playbackThread.WaitForExit();
                         _playbackThread = new Thread(PlaybackProc)
                         {
@@ -276,7 +276,7 @@ namespace CSCore.SoundOut
                 else if (_playbackState == PlaybackState.Stopped && _playbackThread != null)
                 {
                     /*
-                    * On EOF playbackstate is Stopped, but thread is not stopped. => 
+                    * On EOF playbackstate is Stopped, but thread is not _stopped. => 
                     * New Session can be started while cleaning up old one => unknown behavior. =>
                     * Always call Stop() to make sure, you wait until the thread is finished cleaning up.
                     */
@@ -284,7 +284,7 @@ namespace CSCore.SoundOut
                     _playbackThread = null;
                 }
                 else
-                    Debug.WriteLine("Wasapi is already stopped.");
+                    Debug.WriteLine("Wasapi is already _stopped.");
             }
         }
 

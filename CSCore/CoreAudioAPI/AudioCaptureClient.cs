@@ -71,8 +71,8 @@ namespace CSCore.CoreAudioAPI
         ///     the audio endpoint device recorded the device position of the first audio frame in the data packet.
         /// </param>
         /// <returns>HRESULT</returns>
-        public unsafe int GetBufferNative(out IntPtr ppData, out UInt32 pNumFramesRead, out AudioClientBufferFlags flags,
-            out UInt64 devicePosition, out UInt64 qpcPosition)
+        public unsafe int GetBufferNative(out IntPtr ppData, out Int32 pNumFramesRead, out AudioClientBufferFlags flags,
+            out Int64 devicePosition, out Int64 qpcPosition)
         {
             fixed (void* d = &ppData, p0 = &pNumFramesRead, p1 = &flags)
             {
@@ -108,8 +108,8 @@ namespace CSCore.CoreAudioAPI
         /// <remarks>
         ///     Use Marshal.Copy to convert the pointer to the buffer into an array.
         /// </remarks>
-        public IntPtr GetBuffer(out UInt32 framesRead, out AudioClientBufferFlags flags, out UInt64 devicePosition,
-            out UInt64 qpcPosition)
+        public IntPtr GetBuffer(out int framesRead, out AudioClientBufferFlags flags, out Int64 devicePosition,
+            out Int64 qpcPosition)
         {
             IntPtr data;
             int result = GetBufferNative(out data, out framesRead, out flags, out devicePosition, out qpcPosition);
@@ -124,9 +124,9 @@ namespace CSCore.CoreAudioAPI
         /// <remarks>
         ///     Use Marshal.Copy to convert the pointer to the buffer into an array.
         /// </remarks>
-        public IntPtr GetBuffer(out UInt32 framesRead, out AudioClientBufferFlags flags)
+        public IntPtr GetBuffer(out int framesRead, out AudioClientBufferFlags flags)
         {
-            UInt64 p0, p1;
+            Int64 p0, p1;
             return GetBuffer(out framesRead, out flags, out p0, out p1);
         }
 
@@ -140,7 +140,7 @@ namespace CSCore.CoreAudioAPI
         ///     previously acquired data packet or 0.
         /// </param>
         /// <returns>HRESULT</returns>
-        public unsafe int ReleaseBufferNative(UInt32 framesRead)
+        public unsafe int ReleaseBufferNative(int framesRead)
         {
             return InteropCalls.CallI(UnsafeBasePtr, framesRead, ((void**) (*(void**) UnsafeBasePtr))[4]);
         }
@@ -154,7 +154,7 @@ namespace CSCore.CoreAudioAPI
         ///     capture buffer. This parameter must be either equal to the number of frames in the
         ///     previously acquired data packet or 0.
         /// </param>
-        public void ReleaseBuffer(UInt32 framesRead)
+        public void ReleaseBuffer(int framesRead)
         {
             CoreAudioAPIException.Try(ReleaseBufferNative(framesRead), InterfaceName, "ReleaseBuffer");
         }
@@ -169,7 +169,7 @@ namespace CSCore.CoreAudioAPI
         ///     frames in the next capture packet).
         /// </param>
         /// <returns>HRESULT</returns>
-        public unsafe int GetNextPacketSizeNative(out UInt32 numFramesInNextPacket)
+        public unsafe int GetNextPacketSizeNative(out int numFramesInNextPacket)
         {
             fixed (void* p = &numFramesInNextPacket)
             {
@@ -183,9 +183,9 @@ namespace CSCore.CoreAudioAPI
         ///     See <see href="http://msdn.microsoft.com/en-us/library/dd370860(v=vs.85).aspx" />.
         /// </summary>
         /// <returns>The number of the audio frames in the next capture packet.</returns>
-        public uint GetNextPacketSize()
+        public int GetNextPacketSize()
         {
-            uint t;
+            int t;
             CoreAudioAPIException.Try(GetNextPacketSizeNative(out t), InterfaceName, "GetNextPacketSize");
             return t;
         }

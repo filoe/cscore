@@ -5,6 +5,7 @@ using System;
 
 namespace CSCore.SoundOut.DirectSound
 {
+    [CLSCompliant(false)]
     [RemoveObj]
     internal unsafe class InteropCalls
     {

@@ -91,7 +91,7 @@ namespace CSCore.Streams.Effects
         }
 
         /// <summary>
-        /// Speed at which compression is stopped after input drops below fThreshold, in the range from 50 ms to 3000 ms. The default value is 200 ms.
+        /// Speed at which compression is _stopped after input drops below fThreshold, in the range from 50 ms to 3000 ms. The default value is 200 ms.
         /// </summary>
         public float Release
         {

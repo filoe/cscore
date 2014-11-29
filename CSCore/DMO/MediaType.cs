@@ -73,7 +73,7 @@ namespace CSCore.DMO
         /// <summary>
         ///     Size of the sample, in bytes. For compressed data, the value can be zero.
         /// </summary>
-        public uint SampleSize;
+        public int SampleSize;
 
         /// <summary>
         ///     GUID specifying the format type. The pbFormat member points to the corresponding format
@@ -87,7 +87,7 @@ namespace CSCore.DMO
         /// <summary>
         ///     Size of the format block of the media type.
         /// </summary>
-        public uint CbFormat;
+        public int CbFormat;
 
         /// <summary>
         ///     Pointer to the format structure. The structure type is specified by the formattype

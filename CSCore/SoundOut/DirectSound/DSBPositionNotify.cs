@@ -15,13 +15,13 @@ namespace CSCore.SoundOut.DirectSound
     [StructLayout(LayoutKind.Sequential)]
     public struct DSBPositionNotify
     {
-        public const uint OffsetZero = 0x0;
-        public const uint OffsetEnd = 0xFFFFFFFF;
+        public const int OffsetZero = 0x0;
+        public const int OffsetEnd = unchecked((int)0xFFFFFFFF);
 
-        public uint dwOffset;
+        public int dwOffset;
         public IntPtr hEventNotify;
 
-        public DSBPositionNotify(uint dwOffset, IntPtr hEventNotify)
+        public DSBPositionNotify(int dwOffset, IntPtr hEventNotify)
         {
             this.dwOffset = dwOffset;
             this.hEventNotify = hEventNotify;

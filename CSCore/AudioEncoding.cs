@@ -7,7 +7,7 @@ namespace CSCore
     ///     Defines all known encoding types. Primary used in the <see cref="WaveFormat" /> class. See
     ///     <see cref="WaveFormat.WaveFormatTag" />.
     /// </summary>
-    public enum AudioEncoding : ushort
+    public enum AudioEncoding : short
     {
         /// <summary>WAVE_FORMAT_UNKNOWN,	Microsoft Corporation</summary>
         Unknown = 0x0000,
@@ -557,10 +557,10 @@ namespace CSCore
         WAVE_FORMAT_WMAUDIO3 = 0x0162,
 
         /// <summary>WAVE_FORMAT_EXTENSIBLE</summary>
-        Extensible = 0xFFFE, // Microsoft 
+        Extensible = unchecked((short)0xFFFE), // Microsoft 
 
         /// <summary></summary>
-        WAVE_FORMAT_DEVELOPMENT = 0xFFFF,
+        WAVE_FORMAT_DEVELOPMENT = unchecked((short)0xFFFF),
     }
 }
 

@@ -173,7 +173,7 @@ namespace CSCore.MediaFoundation
         int IsCompressedFormat([Out] bool iscompressed);
 
         [PreserveSig]
-        int IsEqual([In, MarshalAs(UnmanagedType.Interface)] IMFMediaType mediaType, out uint flags);
+        int IsEqual([In, MarshalAs(UnmanagedType.Interface)] IMFMediaType mediaType, out int flags);
 
         int GetRepresentation([In] Guid guidrepresentation, out IntPtr representation);
 

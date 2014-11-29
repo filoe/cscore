@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 // Allgemeine Informationen über eine Assembly werden über die folgenden Attribute gesteuert. Ändern
@@ -29,3 +30,5 @@ using System.Runtime.InteropServices;
 // indem Sie "*" eingeben: [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.2")]
 [assembly: AssemblyFileVersion("1.0.0.2")]
+
+[assembly:CLSCompliant(true)]

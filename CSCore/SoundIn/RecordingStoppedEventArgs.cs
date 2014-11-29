@@ -25,8 +25,8 @@ namespace CSCore.SoundIn
         }
 
         /// <summary>
-        ///     Gets a value which indicates whether the recording stopped due to an error. True means that that the recording
-        ///     stopped due to an error. False means that the recording did not stop due to an error.
+        ///     Gets a value which indicates whether the recording _stopped due to an error. True means that that the recording
+        ///     _stopped due to an error. False means that the recording did not stop due to an error.
         /// </summary>
         public override bool HasError
         {

@@ -36,7 +36,7 @@ namespace CSCore.CoreAudioAPI
         /// <summary>
         /// Gets the number of available channels. <seealso cref="GetChannelCount()"/>
         /// </summary>
-        public uint ChannelCount
+        public int ChannelCount
         {
             get { return GetChannelCount(); }
         }
@@ -158,7 +158,7 @@ namespace CSCore.CoreAudioAPI
         /// or leaves the audio endpoint device.
         /// </summary>
         /// <returns>HRESULT</returns>
-        public unsafe int GetChannelCountNative(out uint channelCount)
+        public unsafe int GetChannelCountNative(out int channelCount)
         {
             fixed (void* ptr = &channelCount)
             {
@@ -170,9 +170,9 @@ namespace CSCore.CoreAudioAPI
         /// The GetChannelCount method gets a count of the channels in the audio stream that enters
         /// or leaves the audio endpoint device.
         /// </summary>
-        public uint GetChannelCount()
+        public int GetChannelCount()
         {
-            uint result;
+            int result;
             CoreAudioAPIException.Try(GetChannelCountNative(out result), C, "GetChannelCount");
             return result;
         }
@@ -302,7 +302,7 @@ namespace CSCore.CoreAudioAPI
         /// <param name="eventContext">EventContext which can be accessed in the event handler.</param>
         /// <param name="channel">The channel number. If the audio stream contains n channels, the channels are numbered from 0 to n– 1. </param>
         /// <returns>HRESULT</returns>
-        public unsafe int SetChannelVolumeLevelNative(uint channel, float levelDB, Guid eventContext)
+        public unsafe int SetChannelVolumeLevelNative(int channel, float levelDB, Guid eventContext)
         {
             return InteropCalls.CallI(UnsafeBasePtr, channel, levelDB, &eventContext, ((void**)(*(void**)UnsafeBasePtr))[10]);
         }
@@ -316,7 +316,7 @@ namespace CSCore.CoreAudioAPI
         /// IAudioEndpointVolume::GetVolumeRange method.</param>
         /// <param name="eventContext">EventContext which can be accessed in the event handler.</param>
         /// <param name="channel">The channel number. If the audio stream contains n channels, the channels are numbered from 0 to n– 1. </param>
-        public void SetChannelVolumeLevel(uint channel, float levelDB, Guid eventContext)
+        public void SetChannelVolumeLevel(int channel, float levelDB, Guid eventContext)
         {
             CoreAudioAPIException.Try(SetChannelVolumeLevelNative(channel, levelDB, eventContext), C, "SetChannelVolumeLevel");
         }
@@ -331,7 +331,7 @@ namespace CSCore.CoreAudioAPI
         /// <param name="eventContext">EventContext which can be accessed in the event handler.</param>
         /// <param name="channel">The channel number. If the audio stream contains n channels, the channels are numbered from 0 to n– 1. </param>
         /// <returns>HRESULT</returns>
-        public unsafe int SetChannelVolumeLevelScalarNative(uint channel, float level, Guid eventContext)
+        public unsafe int SetChannelVolumeLevelScalarNative(int channel, float level, Guid eventContext)
         {
             return InteropCalls.CallI(UnsafeBasePtr, channel, level, &eventContext, ((void**)(*(void**)UnsafeBasePtr))[11]);
         }
@@ -345,7 +345,7 @@ namespace CSCore.CoreAudioAPI
         /// value in the range from 0.0 to 1.0.</param>
         /// <param name="eventContext">EventContext which can be accessed in the event handler.</param>
         /// <param name="channel">The channel number. If the audio stream contains n channels, the channels are numbered from 0 to n– 1. </param>
-        public void SetChannelVolumeLevelScalar(uint channel, float level, Guid eventContext)
+        public void SetChannelVolumeLevelScalar(int channel, float level, Guid eventContext)
         {
             CoreAudioAPIException.Try(SetChannelVolumeLevelScalarNative(channel, level, eventContext), C, "SetChannelVolumeLevelScalar");
         }
@@ -359,7 +359,7 @@ namespace CSCore.CoreAudioAPI
         /// call the IAudioEndpointVolume::GetVolumeRange method.</param>
         /// <param name="channel">The channel number. If the audio stream contains n channels, the channels are numbered from 0 to n– 1. </param>
         /// <returns>HRESULT</returns>
-        public unsafe int GetChannelVolumeLevelNative(uint channel, out float levelDB)
+        public unsafe int GetChannelVolumeLevelNative(int channel, out float levelDB)
         {
             fixed (void* ptr = &levelDB)
             {
@@ -374,7 +374,7 @@ namespace CSCore.CoreAudioAPI
         /// <param name="channel">The channel number. If the audio stream contains n channels, the channels are numbered from 0 to n– 1. </param>
         /// <returns>Volume level in decibels. To get the range of volume levels obtained from this
         /// method, call the IAudioEndpointVolume::GetVolumeRange method.</returns>
-        public float GetChannelVolumeLevel(uint channel)
+        public float GetChannelVolumeLevel(int channel)
         {
             float result;
             CoreAudioAPIException.Try(GetChannelVolumeLevelNative(channel, out result), C, "GetChannelVolumeLevel");
@@ -391,7 +391,7 @@ namespace CSCore.CoreAudioAPI
         /// 1.0.</param>
         /// <param name="channel">The channel number. If the audio stream contains n channels, the channels are numbered from 0 to n– 1. </param>
         /// <returns>HRESULT</returns>
-        public unsafe int GetChannelVolumeLevelScalarNative(uint channel, out float level)
+        public unsafe int GetChannelVolumeLevelScalarNative(int channel, out float level)
         {
             fixed (void* ptr = &level)
             {
@@ -407,7 +407,7 @@ namespace CSCore.CoreAudioAPI
         /// <param name="channel">The channel number. If the audio stream contains n channels, the channels are numbered from 0 to n– 1. </param>
         /// <returns>Volume level of a specific channel. The level is expressed as a normalized
         /// value in the range from 0.0 to 1.0.</returns>
-        public float GetChannelVolumeLevelScalar(uint channel)
+        public float GetChannelVolumeLevelScalar(int channel)
         {
             float result;
             CoreAudioAPIException.Try(GetChannelVolumeLevelScalarNative(channel, out result), C, "GetChannelVolumeLevelScalar");
@@ -471,7 +471,7 @@ namespace CSCore.CoreAudioAPI
         /// to stepCount.</param>
         /// <param name="stepCount">Number of steps in the volume range.</param>
         /// <returns>HRESULT</returns>
-        public unsafe int GetVolumeStepInfoNative(out uint currentStep, out uint stepCount)
+        public unsafe int GetVolumeStepInfoNative(out int currentStep, out int stepCount)
         {
             fixed (void* ptr1 = &currentStep, ptr2 = &stepCount)
             {
@@ -486,7 +486,7 @@ namespace CSCore.CoreAudioAPI
         /// <param name="currentStep">Current stepindex. This value is a value in the range from 0
         /// to stepCount.</param>
         /// <param name="stepCount">Number of steps in the volume range.</param>
-        public void GetVolumeStepInfo(out uint currentStep, out uint stepCount)
+        public void GetVolumeStepInfo(out int currentStep, out int stepCount)
         {
             CoreAudioAPIException.Try(GetVolumeStepInfoNative(out currentStep, out stepCount), C, "GetVolumeStepInfo");
         }

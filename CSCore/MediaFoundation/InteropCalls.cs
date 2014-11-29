@@ -6,6 +6,7 @@ using System;
 
 namespace CSCore.MediaFoundation
 {
+    [CLSCompliant(false)]
     [RemoveObj]
     internal class InteropCalls
     {

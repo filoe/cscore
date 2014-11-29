@@ -6,7 +6,7 @@
     public enum PlaybackState
     {
         /// <summary>
-        ///     Playback is stopped.
+        ///     Playback is _stopped.
         /// </summary>
         Stopped,
 

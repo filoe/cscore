@@ -14,7 +14,7 @@ namespace CSCore.SoundOut
 
         public WaveOutWindow(IntPtr windowHandle)
         {
-            _window = new WaveWindow(new MMInterops.WaveCallback(Callback));
+            _window = new WaveWindow(new WaveCallback((handle, msg, user, header, reserved) => Callback(handle, msg, user, header, reserved)));
             if (windowHandle == IntPtr.Zero)
                 throw new ArgumentException("windowHandle is zero", "windowHandle");
             ((WaveWindow)_window).AssignHandle(windowHandle);
@@ -22,14 +22,14 @@ namespace CSCore.SoundOut
 
         public WaveOutWindow()
         {
-            _window = new WaveWindowForm(Callback);
+            _window = new WaveWindowForm((handle, msg, user, header, reserved) => Callback(handle, msg, user, header, reserved));
             ((Form)_window).CreateControl();
         }
 
         protected override IntPtr CreateWaveOut()
         {
             IntPtr ptr;
-            lock (_lockObj)
+            lock (LockObj)
             {
                 MmException.Try(MMInterops.waveOutOpenWithWindow(out ptr, (IntPtr)Device, WaveSource.WaveFormat, WindowHandle,
                     IntPtr.Zero, MMInterops.WaveInOutOpenFlags.CALLBACK_WINDOW),

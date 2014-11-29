@@ -38,7 +38,7 @@ namespace CSCore.SoundIn
         public event EventHandler<DataAvailableEventArgs> DataAvailable;
 
         /// <summary>
-        /// Occurs when capturing stopped.
+        /// Occurs when capturing _stopped.
         /// </summary>
         public event EventHandler<RecordingStoppedEventArgs> Stopped;
 
@@ -287,13 +287,13 @@ namespace CSCore.SoundIn
 
         private void ReadData(byte[] buffer, AudioCaptureClient captureClient, uint frameSize)
         {
-            uint nextPacketSize = captureClient.GetNextPacketSize();
+            int nextPacketSize = captureClient.GetNextPacketSize();
             int read = 0;
             int offset = 0;
 
             while (nextPacketSize != 0)
             {
-                uint framesAvailable;
+                int framesAvailable;
                 AudioClientBufferFlags flags;
 
                 IntPtr nativeBuffer = captureClient.GetBuffer(out framesAvailable, out flags);

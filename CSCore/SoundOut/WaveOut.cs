@@ -33,8 +33,8 @@ namespace CSCore.SoundOut
         public event EventHandler<PlaybackStoppedEventArgs> Stopped;
 
         private int _device = 0;
-        protected volatile IntPtr _hWaveOut;
-        protected object _lockObj = new object();
+        private volatile IntPtr _hWaveOut;
+        private readonly object _lockObj = new object();
         private IWaveSource _source;
         private int _latency = 150;
 
@@ -43,7 +43,10 @@ namespace CSCore.SoundOut
 
         private int _activeBuffers;
 
-        internal object LockObj { get { return _lockObj; } }
+        internal object LockObj 
+        { 
+            get { return _lockObj; }
+        }
 
         public float Volume
         {
@@ -80,7 +83,7 @@ namespace CSCore.SoundOut
 
         public WaveOut()
         {
-            callback = new MMInterops.WaveCallback(Callback);
+            callback = new WaveCallback((handle, msg, user, header, reserved) => Callback(handle, msg, user, header, reserved));
         }
 
         public virtual void Initialize(IWaveSource source)
@@ -159,7 +162,7 @@ namespace CSCore.SoundOut
             }
         }
 
-        private MMInterops.WaveCallback callback;
+        private WaveCallback callback;
 
         protected virtual IntPtr CreateWaveOut()
         {
@@ -174,7 +177,7 @@ namespace CSCore.SoundOut
             return handle;
         }
 
-        protected virtual void Callback(IntPtr handle, WaveMsg msg, UIntPtr user, WaveHeader header, UIntPtr reserved)
+        protected virtual void Callback(IntPtr handle, WaveMsg msg, IntPtr user, WaveHeader header, IntPtr reserved)
         {
             if (_hWaveOut != handle) 
                 return; //message does not belong to this waveout instance

@@ -11,7 +11,7 @@ namespace CSCore.XAudio2
     {
         /// <summary>
         ///     Pointer to a buffer context provided in the <see cref="XAudio2Buffer" /> that is processed currently, or,
-        ///     if the voice is stopped currently, to the next buffer due to be processed.
+        ///     if the voice is _stopped currently, to the next buffer due to be processed.
         ///     <see cref="CurrentBufferContextPtr" /> is NULL if there are no buffers in the queue.
         /// </summary>
         public IntPtr CurrentBufferContextPtr;

@@ -1,7 +1,7 @@
 ﻿namespace CSCore
 {
     //http://pinvoke.net/default.aspx/winmm/MMRESULT.html
-    public enum MmResult : uint
+    public enum MmResult
     {
         MMSYSERR_NOERROR = 0,
         MMSYSERR_ERROR = 1,

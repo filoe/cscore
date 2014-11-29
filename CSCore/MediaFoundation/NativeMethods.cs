@@ -50,7 +50,7 @@ namespace CSCore.MediaFoundation
         [DllImport("mfplat.dll", EntryPoint = "MFCreateAttributes")]
         public static extern int ExternMFCreateAttributes(
             [Out, MarshalAs(UnmanagedType.Interface)] out IMFAttributes ppMFAttributes,
-            [In] uint cInitialSize);
+            [In] int cInitialSize);
 
         [DllImport("Mfreadwrite.dll", EntryPoint="MFCreateSinkWriterFromURL")]
         public static extern int ExternMFCreateSinkWriterFromURL(

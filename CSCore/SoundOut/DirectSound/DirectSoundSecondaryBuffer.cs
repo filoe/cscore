@@ -15,7 +15,7 @@ namespace CSCore.SoundOut.DirectSound
 
             DSBufferDescription secondaryBufferDesc = new DSBufferDescription()
             {
-                dwBufferBytes = (uint)bufferSize * 2,
+                dwBufferBytes = bufferSize * 2,
                 dwFlags = DSBufferCapsFlags.DSBCAPS_CTRLFREQUENCY | DSBufferCapsFlags.DSBCAPS_CTRLPAN |
                           DSBufferCapsFlags.DSBCAPS_CTRLVOLUME | DSBufferCapsFlags.DSBCAPS_CTRLPOSITIONNOTIFY |
                           DSBufferCapsFlags.DSBCAPS_GETCURRENTPOSITION2 | DSBufferCapsFlags.DSBCAPS_GLOBALFOCUS |

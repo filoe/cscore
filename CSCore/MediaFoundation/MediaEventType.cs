@@ -144,7 +144,7 @@ namespace CSCore.MediaFoundation
         MEBufferingStarted = 122,
 
         /// <summary>
-        /// A media source stopped buffering data.
+        /// A media source _stopped buffering data.
         /// </summary>
         MEBufferingStopped = 123,
 
@@ -310,7 +310,7 @@ namespace CSCore.MediaFoundation
         MEStreamSinkStarted = 301,
 
         /// <summary>
-        /// Raised by a stream sink when it completes the transition to the stopped state.
+        /// Raised by a stream sink when it completes the transition to the _stopped state.
         /// </summary>
         MEStreamSinkStopped = 302,
 

@@ -6,9 +6,10 @@ using CSCore.Utils;
 namespace CSCore.SoundOut.MMInterop
 {
     [System.Security.SuppressUnmanagedCodeSecurity]
-    public static class MMInterops
+    [CLSCompliant(false)]
+    internal static class MMInterops
     {
-        public const uint MAXERRORTEXTLENGTH = 256;
+        public const int MAXERRORTEXTLENGTH = 256;
 
         [Flags]
         public enum WaveInOutOpenFlags
@@ -23,11 +24,6 @@ namespace CSCore.SoundOut.MMInterop
             WAVE_MAPPED = 4,
             WAVE_FORMAT_DIRECT = 8
         }
-
-        /// <summary>
-        /// http: //msdn.microsoft.com/en-us/library/dd743869%28VS.85%29.aspx
-        /// </summary>
-        public delegate void WaveCallback(IntPtr handle, WaveMsg msg, UIntPtr user, WaveHeader header, UIntPtr reserved);
 
         #region WaveOut
 
@@ -45,13 +41,6 @@ namespace CSCore.SoundOut.MMInterop
 
         [DllImport("winmm.dll", EntryPoint = "waveOutOpen")]
         public static extern MmResult waveOutOpenWithWindow(out IntPtr hWaveOut, IntPtr uDeviceID, WaveFormat lpFormat, IntPtr window, IntPtr dwInstance, WaveInOutOpenFlags dwFlags);
-
-        /*
-         * Pause,
-         * Rescume,
-         * Stopp
-         * und so weitaa
-         */
 
         [DllImport("winmm.dll")]
         public static extern MmResult waveOutReset(IntPtr hWaveOut);
@@ -156,15 +145,15 @@ namespace CSCore.SoundOut.MMInterop
         public static void SetVolume(IntPtr waveOut, float left, float right)
         {
             uint tmp = (uint)(left * 0xFFFF) + ((uint)(right * 0xFFFF) << 16);
-            MmResult result = MMInterops.waveOutSetVolume(waveOut, tmp);
+            MmResult result = waveOutSetVolume(waveOut, tmp);
             if (result != MmResult.MMSYSERR_NOERROR)
-                MmException.Try(MMInterops.waveOutSetVolume(waveOut, tmp),
+                MmException.Try(waveOutSetVolume(waveOut, tmp),
                     "waveOutSetVolume");
         }
 
         public static float GetVolume(IntPtr waveOut)
         {
-            uint volume = 0;
+            uint volume;
             MmResult result = MMInterops.waveOutGetVolume(waveOut, out volume);
             if (result != MmResult.MMSYSERR_NOERROR)
                 MmException.Try(result, "waveOutGetVolume");
@@ -172,16 +161,20 @@ namespace CSCore.SoundOut.MMInterop
             HightLowConverterUInt32 u = new HightLowConverterUInt32(volume);
             left = u.High;
             right = u.Low;
-            return (float)(((right + left) / 2) * (1.0 / 0xFFFF));
+            return (float)(((right + left) / 2.0) * (1.0 / 0xFFFF));
         }
 
         public static void GetVolume(IntPtr waveOut, out float left, out float right)
         {
             uint volume;
             MmException.Try(waveOutGetVolume(waveOut, out volume), "waveOutGetVolume");
-            left = (volume / 0xFFFF);
+            left = (float)volume / 0xFFFF;
             right = ((volume / 0xFFFF) << 16);
-            return;
         }
     }
+
+    /// <summary>
+    /// http: //msdn.microsoft.com/en-us/library/dd743869%28VS.85%29.aspx
+    /// </summary>
+    public delegate void WaveCallback(IntPtr handle, WaveMsg msg, IntPtr user, WaveHeader header, IntPtr reserved);
 }

@@ -16,7 +16,7 @@ namespace CSCore.CoreAudioAPI
         public Guid EventContext;
         public NativeBool Muted;
         public float MasterVolume;
-        public uint Channels;
+        public int Channels;
         public float ChannelVolumes; //array?
 
         public unsafe float[] GetAllChannelVolumes(IntPtr ptr)

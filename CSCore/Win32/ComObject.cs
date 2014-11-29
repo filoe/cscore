@@ -11,6 +11,7 @@ namespace CSCore.Win32
         /// <summary>
         /// Unsafe native pointer to the COM object.
         /// </summary>
+        [CLSCompliant(false)]
         protected volatile void* UnsafeBasePtr;
         private readonly object _lockObj = new object();
         private bool _disposed = false;

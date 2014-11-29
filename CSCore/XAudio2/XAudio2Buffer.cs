@@ -113,7 +113,7 @@ namespace CSCore.XAudio2
         /// <returns>
         ///     <see cref="UnmanagedMemoryStream" />
         /// </returns>
-        public unsafe UnmanagedMemoryStream GetStream()
+        public unsafe Stream GetStream()
         {
             return new UnmanagedMemoryStream((byte*) AudioDataPtr.ToPointer(), AudioBytes, AudioBytes, FileAccess.Write);
         }

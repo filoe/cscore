@@ -1,6 +1,8 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 namespace CSCore.Codecs.FLAC
 {
+    [CLSCompliant(false)]
     public class FlacSubFrameBase
     {
         public unsafe static FlacSubFrameBase GetSubFrame(FlacBitReader reader, FlacSubFrameData data, FlacFrameHeader header, int bps)

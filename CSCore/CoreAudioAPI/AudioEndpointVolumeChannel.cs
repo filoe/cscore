@@ -7,8 +7,8 @@ namespace CSCore.CoreAudioAPI
 {
     public class AudioEndpointVolumeChannel
     {
-        protected AudioEndpointVolume _audioEndpointVolume;
-        private int _channelIndex;
+        protected AudioEndpointVolume AudioEndpointVolume { get; set; }
+        private readonly int _channelIndex;
 
         public int ChannelIndex
         {
@@ -22,7 +22,7 @@ namespace CSCore.CoreAudioAPI
             if (channelIndex < 0)
                 throw new ArgumentOutOfRangeException("channelIndex");
 
-            _audioEndpointVolume = audioEndpointVolume;
+            AudioEndpointVolume = audioEndpointVolume;
             _channelIndex = channelIndex;
         }
 
@@ -30,11 +30,11 @@ namespace CSCore.CoreAudioAPI
         {
             get
             {
-                return _audioEndpointVolume.GetChannelVolumeLevel((uint)ChannelIndex);
+                return AudioEndpointVolume.GetChannelVolumeLevel(ChannelIndex);
             }
             set
             {
-                _audioEndpointVolume.SetChannelVolumeLevel((uint)ChannelIndex, value, Guid.Empty);
+                AudioEndpointVolume.SetChannelVolumeLevel(ChannelIndex, value, Guid.Empty);
             }
         }
 
@@ -42,11 +42,11 @@ namespace CSCore.CoreAudioAPI
         {
             get
             {
-                return _audioEndpointVolume.GetChannelVolumeLevelScalar((uint)ChannelIndex);
+                return AudioEndpointVolume.GetChannelVolumeLevelScalar(ChannelIndex);
             }
             set
             {
-                _audioEndpointVolume.SetChannelVolumeLevelScalar((uint)ChannelIndex, value, Guid.Empty);
+                AudioEndpointVolume.SetChannelVolumeLevelScalar(ChannelIndex, value, Guid.Empty);
             }
         }
     }
