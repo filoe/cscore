@@ -17,6 +17,14 @@ namespace CSCore.Win32
         private bool _disposed = false;
 
         /// <summary>
+        /// Gets a value which indicates whether the <see cref="ComObject"/> got already disposed.
+        /// </summary>
+        public bool IsDisposed
+        {
+            get { return _disposed; }
+        }
+
+        /// <summary>
         /// Native pointer to the COM object.
         /// </summary>
         public IntPtr BasePtr

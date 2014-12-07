@@ -10,7 +10,7 @@ namespace CSCore.Utils
         protected void CalcTable(int bits)
         {
             if (bits != 8 && bits != 16)
-                throw new ArgumentOutOfRangeException("bits has to be 8 or 16");
+                throw new ArgumentOutOfRangeException("bits");
             int polySumm = bits == 8 ? 0x07 : 0x8005;
             int bitmask = bits == 8 ? 0x00FF : 0xFFFF;
             crc_table = new ushort[tableSize];

@@ -549,7 +549,7 @@ namespace CSCore.SoundOut
                 _renderClient.Dispose();
                 _renderClient = null;
             }
-            if (_audioClient != null)
+            if (_audioClient != null && _audioClient.BasePtr != IntPtr.Zero)
             {
                 try
                 {

@@ -15,9 +15,5 @@ namespace CSCore.Codecs.FLAC
             get { return _content ?? (_content = new FlacPartitionedRiceContent()); }
             set { _content = value; }
         }
-
-        public FlacSubFrameData()
-        {
-        }
     }
 }

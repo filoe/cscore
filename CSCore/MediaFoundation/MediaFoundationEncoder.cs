@@ -245,7 +245,15 @@ namespace CSCore.MediaFoundation
                         Thread.Sleep(50);
                     }
                     _sinkWriter.Flush(_streamIndex);
-                    _sinkWriter.FinalizeWriting();
+                    try
+                    {
+                        _sinkWriter.FinalizeWriting();
+                    }
+                    catch (MediaFoundationException exception)
+                    {
+                        if (exception.ErrorCode != unchecked((int)0xc00d4a44)) //catch MF_E_SINK_NO_SAMPLES_PROCESSED
+                            throw;
+                    }
                     _sinkWriter.Dispose();
                     _sinkWriter = null;
                 }

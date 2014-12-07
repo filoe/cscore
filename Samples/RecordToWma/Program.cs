@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CSCore;
 using CSCore.MediaFoundation;
 using CSCore.SoundIn;
+using CSCore.Streams;
 
 namespace RecordToWma
 {
@@ -12,22 +14,27 @@ namespace RecordToWma
     {
         static void Main(string[] args)
         {
-            using (var wasapiCapture = new WasapiCapture())
+            using (var wasapiCapture = new WasapiLoopbackCapture())
             {
                 wasapiCapture.Initialize();
-
-                using (var writer = MediaFoundationEncoder.CreateWMAEncoder(wasapiCapture.WaveFormat, "output.wma"))
+                var wasapiCaptureSource = new SoundInSource(wasapiCapture);
+                using(var stereoSource = wasapiCaptureSource.ToStereo())
                 {
-                    wasapiCapture.DataAvailable += (s, e) =>
+                    using (var writer = MediaFoundationEncoder.CreateMP3Encoder(stereoSource.WaveFormat, "output.wma"))
                     {
-                        writer.Write(e.Data, e.Offset, e.ByteCount);
-                    };
+                        byte[] buffer = new byte[stereoSource.WaveFormat.BytesPerSecond];
+                        wasapiCaptureSource.DataAvailable += (s, e) =>
+                        {
+                            int read = stereoSource.Read(buffer, 0, buffer.Length);
+                            writer.Write(buffer, 0, read);
+                        };
 
-                    wasapiCapture.Start();
+                        wasapiCapture.Start();
 
-                    Console.ReadKey();
+                        Console.ReadKey();
 
-                    wasapiCapture.Stop();
+                        wasapiCapture.Stop();
+                    }
                 }
             }
         }
