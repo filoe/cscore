@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 
 namespace CSCore.Streams
 {
@@ -95,6 +96,7 @@ namespace CSCore.Streams
             }
 
             _targetVolume = to;
+            _currentVolume = _startVolume;
 
             //calculate the step
             var durationInBlocks = (int) (duration / 1000 * SampleRate);

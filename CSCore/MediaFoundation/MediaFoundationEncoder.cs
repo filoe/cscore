@@ -239,21 +239,11 @@ namespace CSCore.MediaFoundation
             {
                 if (_sinkWriter != null)
                 {
-                    while (_sinkWriter.GetStatistics(_streamIndex).DwByteCountQueued > 0)
-                    {
-                        _sinkWriter.Flush(_streamIndex);
-                        Thread.Sleep(50);
-                    }
-                    _sinkWriter.Flush(_streamIndex);
-                    try
-                    {
+                    //thanks to martin48 for providing the following source code (see http://cscore.codeplex.com/discussions/574280):
+                    var statistics = _sinkWriter.GetStatistics(_streamIndex);
+                    if(statistics.DwByteCountQueued > 0 || statistics.QwNumSamplesReceived > 0)
                         _sinkWriter.FinalizeWriting();
-                    }
-                    catch (MediaFoundationException exception)
-                    {
-                        if (exception.ErrorCode != unchecked((int)0xc00d4a44)) //catch MF_E_SINK_NO_SAMPLES_PROCESSED
-                            throw;
-                    }
+
                     _sinkWriter.Dispose();
                     _sinkWriter = null;
                 }
