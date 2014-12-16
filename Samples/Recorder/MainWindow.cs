@@ -1,152 +1,173 @@
-﻿using CSCore;
-using CSCore.Codecs.WAV;
-using CSCore.DSP;
-using CSCore.SoundIn;
-using CSCore.SoundOut;
-using CSCore.Streams;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Linq;
+﻿using System;
+using System.Globalization;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+using CSCore;
+using CSCore.Codecs.WAV;
+using CSCore.CoreAudioAPI;
 using System.Windows.Forms;
+using CSCore.SoundIn;
+using CSCore.Streams;
+using CSCore.Win32;
 
 namespace Recorder
 {
     public partial class MainWindow : Form
     {
+        //Change this to CaptureMode.Capture to capture a microphone,...
+        private const CaptureMode CaptureMode = Recorder.CaptureMode.LoopbackCapture;
+
+        private MMDevice _selectedDevice;
+        private WasapiCapture _soundIn;
+        private IWriteable _writer;
+        private readonly GraphVisualization _graphVisualization = new GraphVisualization();
+        private IWaveSource _finalSource;
+
+        public MMDevice SelectedDevice
+        {
+            get { return _selectedDevice; }
+            set
+            {
+                _selectedDevice = value;
+                if (value != null)
+                    btnStart.Enabled = true;
+            }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        private WaveInCaps _selectedDevice;
-
-        private WaveIn _waveIn;
-        private IWriteable _writer;
-        private ISoundOut _soundOut;
-
-        private IWaveSource _source;
-        private byte[] _writerBuffer;
-
-        private int _peakUpdateCounter = 0;
-        private int _left, _right;
-
-        private void deviceslist_SelectedIndexChanged(object sender, EventArgs e)
+        private void RefreshDevices()
         {
-            if (deviceslist.SelectedItems.Count > 0)
+            deviceList.Items.Clear();
+
+            using (var deviceEnumerator = new MMDeviceEnumerator())
+            using (var deviceCollection = deviceEnumerator.EnumAudioEndpoints(
+                CaptureMode == CaptureMode.Capture ? DataFlow.Capture : DataFlow.Render, DeviceState.Active))
             {
-                _selectedDevice = (WaveInCaps)deviceslist.SelectedItems[0].Tag;
-                btnStart.Enabled = true;
+                foreach (var device in deviceCollection)
+                {
+                    var deviceFormat = WaveFormatFromBlob(device.PropertyStore[
+                        new PropertyKey(new Guid(0xf19f064d, 0x82c, 0x4e27, 0xbc, 0x73, 0x68, 0x82, 0xa1, 0xbb, 0x8e, 0x4c), 0)].BlobValue);
+
+                    var item = new ListViewItem(device.FriendlyName) {Tag = device};
+                    item.SubItems.Add(deviceFormat.Channels.ToString(CultureInfo.InvariantCulture));
+
+                    deviceList.Items.Add(item);
+                }
             }
+        }
+
+        private void StartCapture(string fileName)
+        {
+            if (SelectedDevice == null)
+                return;
+
+            if(CaptureMode == CaptureMode.Capture)
+                _soundIn = new WasapiCapture();
             else
+                _soundIn = new WasapiLoopbackCapture();
+
+            _soundIn.Device = SelectedDevice;
+            _soundIn.Initialize();
+
+            var soundInSource = new SoundInSource(_soundIn);
+            var singleBlockNotificationStream = new SingleBlockNotificationStream(soundInSource);
+            _finalSource = singleBlockNotificationStream.ToWaveSource();
+            _writer = new WaveWriter(fileName, _finalSource.WaveFormat);
+
+            byte[] buffer = new byte[_finalSource.WaveFormat.BytesPerSecond / 2];
+            soundInSource.DataAvailable += (s, e) =>
             {
-                btnStart.Enabled = false;
-            }
+                int read;
+                while((read = _finalSource.Read(buffer, 0, buffer.Length)) > 0)
+                    _writer.Write(buffer, 0, read);
+            };
+
+            singleBlockNotificationStream.SingleBlockRead += SingleBlockNotificationStreamOnSingleBlockRead;
+
+            _soundIn.Start();
+        }
+
+        private void StopCapture()
+        {
+            _soundIn.Stop();
+        }
+
+        private void SingleBlockNotificationStreamOnSingleBlockRead(object sender, SingleBlockReadEventArgs e)
+        {
+            _graphVisualization.AddSamples(e.Left, e.Right);
+        }
+
+        private static WaveFormat WaveFormatFromBlob(Blob blob)
+        {
+            if (blob.Length == 40)
+                return (WaveFormat)Marshal.PtrToStructure(blob.Data, typeof(WaveFormatExtensible));
+            return (WaveFormat)Marshal.PtrToStructure(blob.Data, typeof(WaveFormat));
+        }
+
+        private void btnRefreshDevices_Click(object sender, EventArgs e)
+        {
+            RefreshDevices();
         }
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            if (deviceslist.SelectedItems.Count <= 0)
-                return;
-
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "WAV (*.wav)|*.wav";
-            sfd.Title = "Speichern";
-            sfd.FileName = String.Empty;
-            if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            SaveFileDialog sfd = new SaveFileDialog
             {
-                _waveIn = new WaveInEvent(new WaveFormat(44100, 16, _selectedDevice.Channels));
-                _waveIn.Device = deviceslist.SelectedItems[0].Index;
-
-                _waveIn.Initialize();
-                _waveIn.Start();
-
-                var waveInToSource = new SoundInSource(_waveIn);
-
-                _source = waveInToSource;
-                var notifyStream = new SingleBlockNotificationStream(_source);
-                notifyStream.SingleBlockRead += OnNotifyStream_SingleBlockRead;
-
-                _source = notifyStream.ToWaveSource(16);
-                _writerBuffer = new byte[_source.WaveFormat.BytesPerSecond];
-
-                _writer = new WaveWriter(File.OpenWrite(sfd.FileName), _source.WaveFormat);
-                waveInToSource.DataAvailable += OnNewData;
-
+                Filter = "WAV (*.wav)|*.wav",
+                Title = "Speichern",
+                FileName = String.Empty
+            };
+            if (sfd.ShowDialog(this) == DialogResult.OK)
+            {
+                StartCapture(sfd.FileName);
                 btnStart.Enabled = false;
                 btnStop.Enabled = true;
             }
         }
 
-        private void OnNotifyStream_SingleBlockRead(object sender, SingleBlockReadEventArgs e)
-        {
-            _left = Math.Max((int)(Math.Abs(e.Left) * 10000), _left);
-            _right = Math.Max((int)(Math.Abs(e.Right) * 10000), _right);
-
-            if (++_peakUpdateCounter >= _waveIn.WaveFormat.SampleRate / 20)
-            {
-                Invoke(new MethodInvoker(() =>
-                {
-                    peakLeft.Value = _left;
-                    peakRight.Value = _right;
-                    _peakUpdateCounter = _left = _right = 0;
-                }));
-            }
-        }
-
-        private void OnNewData(object sender, DataAvailableEventArgs e)
-        {
-            int read = 0;
-            while ((read = _source.Read(_writerBuffer, 0, _writerBuffer.Length)) > 0)
-            {
-                _writer.Write(_writerBuffer, 0, read);
-            }
-        }
-
         private void btnStop_Click(object sender, EventArgs e)
         {
-            if (_soundOut != null)
-                _soundOut.Dispose();
-
-            _waveIn.Dispose();
-            if(_writer is IDisposable)
-                ((IDisposable)_writer).Dispose();
-
-            _waveIn = null;
-            _writer = null;
-            _soundOut = null;
-
-            btnStart.Enabled = deviceslist.SelectedItems.Count > 0;
-            btnStop.Enabled = false;
-        }
-
-        private void btnRefreshDevices_Click(object sender, EventArgs e)
-        {
-            deviceslist.Items.Clear();
-            foreach (var device in WaveIn.Devices)
+            if (_soundIn != null)
             {
-                var item = new ListViewItem(device.Name);
-                item.Tag = device;
-                item.SubItems.Add(device.Channels.ToString());
-                item.SubItems.Add(device.DriverVersion.ToString());
-                deviceslist.Items.Add(item);
+                _soundIn.Stop();
+                _soundIn.Dispose();
+                _finalSource.Dispose();
+
+                if (_writer is IDisposable)
+                    ((IDisposable) _writer).Dispose();
+
+                btnStop.Enabled = false;
+                btnStart.Enabled = true;
             }
         }
 
-        private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
+        private void deviceList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (_waveIn != null || _writer != null)
+            if (deviceList.SelectedItems.Count > 0)
             {
-                e.Cancel = true;
-                MessageBox.Show("Aufnahme zuerst beenden.");
+                SelectedDevice = (MMDevice) deviceList.SelectedItems[0].Tag;
+            }
+            else
+            {
+                SelectedDevice = null;
             }
         }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            var image = pictureBox1.Image;
+            pictureBox1.Image = _graphVisualization.Draw(pictureBox1.Width, pictureBox1.Height);
+            if(image != null)
+                image.Dispose();
+        }
+    }
+
+    public enum CaptureMode
+    {
+        Capture,
+        LoopbackCapture
     }
 }

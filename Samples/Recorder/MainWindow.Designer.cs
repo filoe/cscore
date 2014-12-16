@@ -28,20 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.appContainer = new System.Windows.Forms.SplitContainer();
-            this.deviceslist = new System.Windows.Forms.ListView();
+            this.deviceList = new System.Windows.Forms.ListView();
             this.columnName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnChannels = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnDriverVersion = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.peakRight = new System.Windows.Forms.ProgressBar();
-            this.peakLeft = new System.Windows.Forms.ProgressBar();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnRefreshDevices = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
             this.btnStart = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.appContainer)).BeginInit();
             this.appContainer.Panel1.SuspendLayout();
             this.appContainer.Panel2.SuspendLayout();
             this.appContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // appContainer
@@ -52,12 +53,11 @@
             // 
             // appContainer.Panel1
             // 
-            this.appContainer.Panel1.Controls.Add(this.deviceslist);
+            this.appContainer.Panel1.Controls.Add(this.deviceList);
             // 
             // appContainer.Panel2
             // 
-            this.appContainer.Panel2.Controls.Add(this.peakRight);
-            this.appContainer.Panel2.Controls.Add(this.peakLeft);
+            this.appContainer.Panel2.Controls.Add(this.pictureBox1);
             this.appContainer.Panel2.Controls.Add(this.btnRefreshDevices);
             this.appContainer.Panel2.Controls.Add(this.btnStop);
             this.appContainer.Panel2.Controls.Add(this.btnStart);
@@ -65,21 +65,20 @@
             this.appContainer.SplitterDistance = 450;
             this.appContainer.TabIndex = 0;
             // 
-            // deviceslist
+            // deviceList
             // 
-            this.deviceslist.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.deviceList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnName,
-            this.columnChannels,
-            this.columnDriverVersion});
-            this.deviceslist.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.deviceslist.Location = new System.Drawing.Point(0, 0);
-            this.deviceslist.MultiSelect = false;
-            this.deviceslist.Name = "deviceslist";
-            this.deviceslist.Size = new System.Drawing.Size(450, 258);
-            this.deviceslist.TabIndex = 0;
-            this.deviceslist.UseCompatibleStateImageBehavior = false;
-            this.deviceslist.View = System.Windows.Forms.View.Details;
-            this.deviceslist.SelectedIndexChanged += new System.EventHandler(this.deviceslist_SelectedIndexChanged);
+            this.columnChannels});
+            this.deviceList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.deviceList.Location = new System.Drawing.Point(0, 0);
+            this.deviceList.MultiSelect = false;
+            this.deviceList.Name = "deviceList";
+            this.deviceList.Size = new System.Drawing.Size(450, 258);
+            this.deviceList.TabIndex = 0;
+            this.deviceList.UseCompatibleStateImageBehavior = false;
+            this.deviceList.View = System.Windows.Forms.View.Details;
+            this.deviceList.SelectedIndexChanged += new System.EventHandler(this.deviceList_SelectedIndexChanged);
             // 
             // columnName
             // 
@@ -90,26 +89,14 @@
             // 
             this.columnChannels.Text = "Channels";
             // 
-            // columnDriverVersion
+            // pictureBox1
             // 
-            this.columnDriverVersion.Text = "Driverversion";
-            this.columnDriverVersion.Width = 80;
-            // 
-            // peakRight
-            // 
-            this.peakRight.Location = new System.Drawing.Point(14, 95);
-            this.peakRight.Maximum = 10000;
-            this.peakRight.Name = "peakRight";
-            this.peakRight.Size = new System.Drawing.Size(203, 13);
-            this.peakRight.TabIndex = 5;
-            // 
-            // peakLeft
-            // 
-            this.peakLeft.Location = new System.Drawing.Point(14, 76);
-            this.peakLeft.Maximum = 10000;
-            this.peakLeft.Name = "peakLeft";
-            this.peakLeft.Size = new System.Drawing.Size(203, 13);
-            this.peakLeft.TabIndex = 4;
+            this.pictureBox1.BackColor = System.Drawing.Color.Black;
+            this.pictureBox1.Location = new System.Drawing.Point(14, 74);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(203, 143);
+            this.pictureBox1.TabIndex = 3;
+            this.pictureBox1.TabStop = false;
             // 
             // btnRefreshDevices
             // 
@@ -149,19 +136,26 @@
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Interval = 20;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(683, 258);
             this.Controls.Add(this.appContainer);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "MainWindow";
             this.Text = "CSCore - Recorder";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindow_FormClosing);
             this.appContainer.Panel1.ResumeLayout(false);
             this.appContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.appContainer)).EndInit();
             this.appContainer.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -172,12 +166,11 @@
         private System.Windows.Forms.Button btnRefreshDevices;
         private System.Windows.Forms.Button btnStop;
         private System.Windows.Forms.Button btnStart;
-        private System.Windows.Forms.ListView deviceslist;
+        private System.Windows.Forms.ListView deviceList;
         private System.Windows.Forms.ColumnHeader columnName;
         private System.Windows.Forms.ColumnHeader columnChannels;
-        private System.Windows.Forms.ColumnHeader columnDriverVersion;
-        private System.Windows.Forms.ProgressBar peakRight;
-        private System.Windows.Forms.ProgressBar peakLeft;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 
