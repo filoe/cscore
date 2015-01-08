@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace CSCore.Codecs.WAV
 {
@@ -12,12 +14,12 @@ namespace CSCore.Codecs.WAV
     {
         private readonly List<WaveFileChunk> _chunks;
 
-        private readonly object _lockObj;
+        private readonly object _lockObj = new object();
 
-        private long _dataInitPosition;
         private bool _disposed;
         private Stream _stream;
         private WaveFormat _waveFormat;
+        private DataChunk _dataChunk;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="WaveFileReader" /> class.
@@ -34,8 +36,10 @@ namespace CSCore.Codecs.WAV
         /// <param name="stream">Stream which contains wave file data.</param>
         public WaveFileReader(Stream stream)
         {
-            if (stream == null) throw new ArgumentNullException("stream");
-            if (!stream.CanRead) throw new ArgumentException("stream is not readable");
+            if (stream == null) 
+                throw new ArgumentNullException("stream");
+            if (!stream.CanRead) 
+                throw new ArgumentException("stream is not readable");
 
             _stream = stream;
 
@@ -47,15 +51,18 @@ namespace CSCore.Codecs.WAV
             }
 
             _chunks = ReadChunks(stream);
-            _lockObj = new object();
+            if (!_chunks.Any(x => x is DataChunk))
+                throw new ArgumentException("The specified stream does not contain any data chunks.", "stream");
+            _dataChunk = (DataChunk)_chunks.First(x => x is DataChunk);
+            Position = 0;
         }
 
         /// <summary>
         ///     Gets a list of all found chunks.
         /// </summary>
-        public List<WaveFileChunk> Chunks
+        public ReadOnlyCollection<WaveFileChunk> Chunks
         {
-            get { return _chunks; }
+            get { return _chunks.AsReadOnly(); }
         }
 
         /// <summary>
@@ -95,14 +102,15 @@ namespace CSCore.Codecs.WAV
         /// </summary>
         public long Position
         {
-            get { return _stream.Position - _dataInitPosition; }
+            get { return _stream.Position - _dataChunk.DataStartPosition; }
             set
             {
                 lock (_lockObj)
                 {
-                    value = Math.Min(value, Length);
+                    if(value > Length || value < 0)
+                        throw new ArgumentOutOfRangeException("value", "The position must not be bigger than the length or less than zero.");
                     value -= (value % WaveFormat.BlockAlign);
-                    _stream.Position = value + _dataInitPosition;
+                    _stream.Position = value + _dataChunk.DataStartPosition;
                 }
             }
         }
@@ -112,11 +120,11 @@ namespace CSCore.Codecs.WAV
         /// </summary>
         public long Length
         {
-            get { return _stream.Length - _dataInitPosition; }
+            get { return _dataChunk.ChunkDataSize; }
         }
 
         /// <summary>
-        /// Gets a value indicating whether the <see cref="IWaveStream"/> supports seeking.
+        /// Gets a value indicating whether the <see cref="WaveFileReader"/> supports seeking.
         /// </summary>
         public bool CanSeek
         {
@@ -145,8 +153,7 @@ namespace CSCore.Codecs.WAV
                     _waveFormat = (tmp as FmtChunk).WaveFormat;
                 else if (!(tmp is DataChunk))
                     stream.Position += tmp.ChunkDataSize;
-            } while (!(tmp is DataChunk));
-            _dataInitPosition = stream.Position;
+            } while (stream.Length - stream.Position > 8); //8 bytes = size of chunk header
 
             return chunks;
         }

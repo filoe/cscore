@@ -34,6 +34,13 @@ namespace CSCore.Codecs.WAV
 
             if (ChunkID != DataChunkID)
                 throw new FormatException("Chunk is no datachunk: " + DataChunkID.ToString("x") + " != \"0x61746164\"");
+
+            DataStartPosition = reader.BaseStream.Position;
         }
+
+        /// <summary>
+        /// Gets the zero-based position inside of the stream at which the audio data starts.
+        /// </summary>
+        public long DataStartPosition { get; private set; }
     }
 }
