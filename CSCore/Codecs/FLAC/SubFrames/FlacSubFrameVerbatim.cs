@@ -1,20 +1,18 @@
-﻿using System;
-
+﻿// ReSharper disable once CheckNamespace
 namespace CSCore.Codecs.FLAC
 {
-    [CLSCompliant(false)]
-    public sealed class FlacSubFrameVerbatim : FlacSubFrameBase
+    internal sealed class FlacSubFrameVerbatim : FlacSubFrameBase
     {
-        public FlacSubFrameVerbatim(FlacBitReader reader, FlacFrameHeader header, FlacSubFrameData data, int bps)
+        public FlacSubFrameVerbatim(FlacBitReader reader, FlacFrameHeader header, FlacSubFrameData data, int bitsPerSample)
             : base(header)
         {
             unsafe
             {
-                int* ptrDest = data.DestBuffer, ptrResidual = data.ResidualBuffer;
+                int* ptrDest = data.DestinationBuffer, ptrResidual = data.ResidualBuffer;
 
                 for (int i = 0; i < header.BlockSize; i++)
                 {
-                    int x = (int)reader.ReadBits(bps);
+                    int x = (int)reader.ReadBits(bitsPerSample);
                     *ptrDest++ = x;
                     *ptrResidual++ = x;
                 }

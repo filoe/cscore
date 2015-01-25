@@ -1,23 +1,25 @@
-﻿using System;
-
+﻿// ReSharper disable once CheckNamespace
 namespace CSCore.Codecs.FLAC
 {
-    [CLSCompliant(false)]
-    public sealed class FlacSubFrameConstant : FlacSubFrameBase
+    internal sealed class FlacSubFrameConstant : FlacSubFrameBase
     {
+#if FLAC_DEBUG
         public int Value { get; private set; }
-
-        public FlacSubFrameConstant(FlacBitReader reader, FlacFrameHeader header, FlacSubFrameData data, int bps)
+#endif
+        public FlacSubFrameConstant(FlacBitReader reader, FlacFrameHeader header, FlacSubFrameData data, int bitsPerSample)
             : base(header)
         {
-            Value = (int)reader.ReadBits(bps);
+            int value = (int)reader.ReadBits(bitsPerSample);
+#if FLAC_DEBUG
+            Value = value;
+#endif
 
             unsafe
             {
+                int* pDestinationBuffer = data.DestinationBuffer;
                 for (int i = 0; i < header.BlockSize; i++)
                 {
-                    int* ptr = data.DestBuffer;
-                    *ptr++ = Value;
+                    *pDestinationBuffer++ = value;
                 }
             }
         }

@@ -2,16 +2,25 @@
 using System.Collections.Generic;
 using System.IO;
 
+// ReSharper disable once CheckNamespace
 namespace CSCore.Codecs.FLAC
 {
+    /// <summary>
+    /// Represents a flac metadata block.
+    /// </summary>
     [System.Diagnostics.DebuggerDisplay("Type:{MetaDataType}   LastBlock:{IsLastMetaBlock}   Length:{Length} bytes")]
     public class FlacMetadata
     {
+        /// <summary>
+        /// Reads and returns a single <see cref="FlacMetadata"/> from the specified <paramref name="stream"/>.
+        /// </summary>
+        /// <param name="stream">The stream which contains the <see cref="FlacMetadata"/>.</param>
+        /// <returns>Returns the read <see cref="FlacMetadata"/>.</returns>
         public unsafe static FlacMetadata FromStream(Stream stream)
         {
-            bool lastBlock = false;
-            FlacMetaDataType type = FlacMetaDataType.Undef;
-            int length = 0;
+            bool lastBlock;
+            FlacMetaDataType type;
+            int length;
 
             byte[] b = new byte[4];
             if (stream.Read(b, 0, 4) <= 0)
@@ -24,11 +33,6 @@ namespace CSCore.Codecs.FLAC
                 lastBlock = bitReader.ReadBits(1) == 1;
                 type = (FlacMetaDataType)bitReader.ReadBits(7);
                 length = (int)bitReader.ReadBits(24);
-                ////1000 0000
-                //if (((b[0] & 0x80) >> 7) == 1)
-                //    lastBlock = true;
-                //type = (FlacMetaDataType)(b[0] & 0x7F);
-                //int length = (b[1] + (b[2] << 8) + (b[3] << 16));
             }
 
             FlacMetadata data;
@@ -55,31 +59,51 @@ namespace CSCore.Codecs.FLAC
             return data;
         }
 
-        public static List<FlacMetadata> ReadAllMetadataFromStream(Stream stream)
+
+        /// <summary>
+        /// Reads all <see cref="FlacMetadata"/> from the specified <paramref name="stream"/>.
+        /// </summary>
+        /// <param name="stream">The stream which contains the <see cref="FlacMetadata"/>.</param>
+        /// <returns>All <see cref="FlacMetadata"/>.</returns>
+        public static IEnumerable<FlacMetadata> ReadAllMetadataFromStream(Stream stream)
         {
-            List<FlacMetadata> metaDataCollection = new List<FlacMetadata>();
             while (true)
             {
                 FlacMetadata data = FromStream(stream);
-                if (data != null)
-                    metaDataCollection.Add(data);
+                yield return data;
 
                 if (data == null || data.IsLastMetaBlock)
-                    return metaDataCollection;
+                    break;
             }
         }
 
-        protected FlacMetadata(FlacMetaDataType type, bool lastBlock, Int32 length)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FlacMetadata"/> class.
+        /// </summary>
+        /// <param name="type">The type of the metadata.</param>
+        /// <param name="lastBlock">A value which indicates whether this is the last <see cref="FlacMetadata"/> block inside of the stream. <c>true</c> means that this is the last <see cref="FlacMetadata"/> block inside of the stream.</param>
+        /// <param name="length">The length of <see cref="FlacMetadata"/> block inside of the stream in bytes. Does not include the metadata header.</param>
+        protected FlacMetadata(FlacMetaDataType type, bool lastBlock, int length)
         {
             MetaDataType = type;
             IsLastMetaBlock = lastBlock;
             Length = length;
         }
 
+        /// <summary>
+        /// Gets the type of the <see cref="FlacMetadata"/>.
+        /// </summary>
         public FlacMetaDataType MetaDataType { get; private set; }
 
+        /// <summary>
+        /// Gets a value indicating whether this instance is the last <see cref="FlacMetadata"/> block.
+        /// </summary>
         public Boolean IsLastMetaBlock { get; private set; }
 
-        public Int32 Length { get; private set; }
+        /// <summary>
+        /// Gets the length of the <see cref="FlacMetadata"/> block inside of the stream in bytes.
+        /// </summary>
+        /// <remarks>The length does not include the metadata header.</remarks>
+        public int Length { get; private set; }
     }
 }

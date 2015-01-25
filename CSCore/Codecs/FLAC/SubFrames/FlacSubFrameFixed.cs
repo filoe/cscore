@@ -1,92 +1,84 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
+
+// ReSharper disable once CheckNamespace
 namespace CSCore.Codecs.FLAC
 {
-    [CLSCompliant(false)]
-    public sealed class FlacSubFrameFixed : FlacSubFrameBase
+    internal sealed class FlacSubFrameFixed : FlacSubFrameBase
     {
+#if FLAC_DEBUG
         public FlacResidual Residual { get; private set; }
-
-        public unsafe FlacSubFrameFixed(FlacBitReader reader, FlacFrameHeader header, FlacSubFrameData data, int bps, int order)
+#endif
+        public unsafe FlacSubFrameFixed(FlacBitReader reader, FlacFrameHeader header, FlacSubFrameData data, int bitsPerSample, int order)
             : base(header)
         {
-            for (int i = 0; i < order; i++)
+            for (int i = 0; i < order; i++) //order = predictor order
             {
-                data.ResidualBuffer[i] = data.DestBuffer[i] = reader.ReadBitsSigned(bps);
+                data.ResidualBuffer[i] = data.DestinationBuffer[i] = reader.ReadBitsSigned(bitsPerSample);
             }
 
-            Residual = new FlacResidual(reader, header, data, order); //necessary for decoding
+            var residual = new FlacResidual(reader, header, data, order); //necessary for decoding
             RestoreSignal(data, header.BlockSize - order, order);
+
+#if FLAC_DEBUG
+            Residual = residual;
+#endif
         }
 
-        //http://www.hpl.hp.com/techreports/1999/HPL-1999-144.pdf
-        private unsafe bool RestoreSignal(FlacSubFrameData subframeData, int length, int predictorOrder)
+        private unsafe void RestoreSignal(FlacSubFrameData subframeData, int length, int order)
         {
-            int* residual = subframeData.ResidualBuffer + predictorOrder;
-            int* data = subframeData.DestBuffer + predictorOrder;
+            //see ftp://svr-ftp.eng.cam.ac.uk/pub/reports/auto-pdf/robinson_tr156.pdf chapter 3.2
+            int* residual = subframeData.ResidualBuffer + order;
+            int* destBuffer = subframeData.DestinationBuffer + order;
 
-            int t0, t1, t2; //temp
-
-            switch (predictorOrder)
+            switch (order)
             {
                 case 0:
                     for (int i = 0; i < length; i++)
                     {
-                        *(data++) = *(residual++);
+                        destBuffer[i] = residual[i];
                     }
+                    //ILUtils.MemoryCopy(data, residual, length);
                     break;
 
                 case 1:
-                    t1 = data[-1];
                     for (int i = 0; i < length; i++)
                     {
-                        t1 += *(residual++);
-                        *(data++) = t1;
+                        //s(t-1)
+                        destBuffer[i] = residual[i] + destBuffer[i - 1];
                     }
                     break;
 
                 case 2:
-                    t2 = data[-2];
-                    t1 = data[-1];
                     for (int i = 0; i < length; i++)
                     {
-                        *(data++) = t0 = ((t1 << 1) + *(residual++)) - t2;
-                        t2 = t1;
-                        t1 = t0;
+                        //2s(t-1) - s(t-2)
+                        destBuffer[i] = residual[i] + 2 * destBuffer[i - 1] - destBuffer[i - 2];
                     }
+
                     break;
 
                 case 3:
-                    for (int i = 0; i < length; i++)
+                    for (int t = 0; t < length; t++)
                     {
-                        *(data) = *(residual) +
-                                    (((data[-1] - data[-2]) << 1) + (data[-1] - data[-2])) +
-                                    data[-3];
-
-                        data++;
-                        residual++;
+                        //3s(t-1) - 3s(t-2) + s(t-3)
+                        destBuffer[t] = residual[t] + 
+                            3 * (destBuffer[t - 1]) - 3 * (destBuffer[t - 2]) + destBuffer[t - 3]; 
                     }
                     break;
 
                 case 4:
-                    for (int i = 0; i < length; i++)
+                    //"FLAC adds a fourth-order predictor to the zero-to-third-order predictors used by Shorten." (see https://xiph.org/flac/format.html#prediction)
+                    for (int t = 0; t < length; t++)
                     {
-                        *(data) = *(residual) +
-                                    ((data[-1] + data[-3]) << 2) -
-                                    ((data[-2] << 2) + (data[-2] << 1)) -
-                                    data[-4];
-
-                        data++;
-                        residual++;
+                        destBuffer[t] = residual[t] +
+                            4 * destBuffer[t - 1] - 6 * destBuffer[t - 2] + 4 * destBuffer[t - 3] - destBuffer[t - 4];
                     }
                     break;
 
                 default:
                     Debug.WriteLine("Invalid FlacFixedSubFrame predictororder.");
-                    return false;
+                    return;
             }
-
-            return true;
         }
     }
 }

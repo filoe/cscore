@@ -3,17 +3,12 @@
     /// <summary>
     /// Defines how to scan a flac stream.
     /// </summary>
-    public enum FlacPreScanMethodMode
+    public enum FlacPreScanMode
     {
         /// <summary>
-        /// Don't scan the flac stream. This typically will cause a stream to be not seekable.
+        /// Don't scan the flac stream. This will cause a stream to be not seekable.
         /// </summary>
         None,
-
-        /// <summary>
-        /// Default value.
-        /// </summary>
-        Default,
 
         /// <summary>
         /// Scan synchronously.
@@ -21,9 +16,17 @@
         Sync,
 
         /// <summary>
-        /// Scan async BUT don't use the stream while scan is running because the stream position
-        /// will change while scanning. If you playback the stream, it will cause an error!
+        /// Scan async. 
         /// </summary>
-        Async
+        /// <remarks>
+        /// Don't use the stream while scan is running because the stream position
+        /// will change while scanning. If you playback the stream, it will cause an error!
+        /// </remarks>
+        Async,
+
+        /// <summary>
+        /// Default value.
+        /// </summary>
+        Default = Sync,
     }
 }

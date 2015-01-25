@@ -1,77 +1,166 @@
-﻿using CSCore.Utils;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 
 namespace CSCore.Codecs.FLAC
 {
+    /// <summary>
+    /// Represents the header of a <see cref="FlacFrame"/>.
+    /// </summary>
     public sealed class FlacFrameHeader
     {
-        private int _blocksizeHint = 0; //if bsindex == 6 || 7
-        private int _sampleRateHint = 0; //if sampleRateIndex == 12 || 13 || 14
+        private int _blocksizeHint; //if bsindex == 6 || 7
+        private int _sampleRateHint; //if sampleRateIndex == 12 || 13 || 14
 
-        public int BlockSize { get; set; }
 
-        public int SampleRate { get; set; }
+        /// <summary>
+        /// Gets number of samples, the frame contains.
+        /// </summary>
+        /// <value>
+        /// The number of samples, the frame contains.
+        /// </value>
+        public int BlockSize { get; private set; }
 
-        public int Channels { get; set; }
+        /// <summary>
+        /// Gets the sample rate in Hz.
+        /// </summary>
+        /// <value>
+        /// The sample rate in Hz.
+        /// </value>
+        public int SampleRate { get; private set; }
 
-        public ChannelAssignment ChannelAssignment { get; set; }
+        /// <summary>
+        /// Gets the number of channels.
+        /// </summary>
+        /// <value>
+        /// The number of channels.
+        /// </value>
+        public int Channels { get; private set; }
 
-        public int BitsPerSample { get; set; }
+        /// <summary>
+        /// Gets the channel assignment.
+        /// </summary>
+        /// <value>
+        /// The channel assignment.
+        /// </value>
+        public ChannelAssignment ChannelAssignment { get; private set; }
 
-        //union
-        public FlacNumberType NumberType { get; set; }
+        /// <summary>
+        /// Gets the bits per sample.
+        /// </summary>
+        /// <value>
+        /// The bits per sample.
+        /// </value>
+        public int BitsPerSample { get; private set; }
 
-        public long SampleNumber { get; set; }
+        /// <summary>
+        /// Gets a value which indicates whether the frame provides the <see cref="SampleNumber"/> or the <see cref="FrameNumber"/>.
+        /// </summary>
+        /// <value>
+        /// A value which indicates whether the frame provides the <see cref="SampleNumber"/> or the <see cref="FrameNumber"/>.
+        /// </value>
+        public BlockingStrategy BlockingStrategy { get; private set; }
 
-        public int FrameNumber { get; set; }
+        /// <summary>
+        /// Gets the frame's starting sample number.
+        /// </summary>
+        /// <value>
+        /// The frame's starting sample number.
+        /// </value>
+        /// <remarks>Only available if the <see cref="BlockingStrategy"/> is set to <see cref="FLAC.BlockingStrategy.VariableBlockSize"/>.</remarks>
+        public long SampleNumber { get; private set; }
 
-        public byte CRC8 { get; set; }
+        /// <summary>
+        /// Gets the frame's number.
+        /// </summary>
+        /// <value>
+        /// The frame's number.
+        /// </value>
+        /// <remarks>Only available if the <see cref="BlockingStrategy"/> is set to <see cref="FLAC.BlockingStrategy.FixedBlockSize"/>.</remarks>
+        public int FrameNumber { get; private set; }
 
-        public bool DoCRC { get; private set; }
+        /// <summary>
+        /// Gets the 8-bit crc checksum of the frame header.
+        /// </summary>
+        /// <value>
+        /// The 8-bit crc checksum of the frame header.
+        /// </value>
+        public byte Crc8 { get; private set; }
 
+        private bool DoCrc { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance has error.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance has error; otherwise, <c>false</c>.
+        /// </value>
         public bool HasError { get; private set; }
 
+        /// <summary>
+        /// Gets the stream position.
+        /// </summary>
+        /// <value>
+        /// The stream position.
+        /// </value>
         public long StreamPosition { get; private set; }
 
         internal bool PrintErrors = true;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FlacFrameHeader"/> class.
+        /// </summary>
+        /// <param name="stream">The underlying stream which contains the <see cref="FlacFrameHeader"/>.</param>
         public FlacFrameHeader(Stream stream)
             : this(stream, null, true)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FlacFrameHeader"/> class.
+        /// </summary>
+        /// <param name="stream">The underlying stream which contains the <see cref="FlacFrameHeader"/>.</param>
+        /// <param name="streamInfo">The stream-info-metadata-block of the flac stream which provides some basic information about the flac framestream. Can be set to null.</param>
         public FlacFrameHeader(Stream stream, FlacMetadataStreamInfo streamInfo)
             : this(stream, streamInfo, true)
         {
         }
 
-        //streamInfo can be null
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FlacFrameHeader"/> class.
+        /// </summary>
+        /// <param name="stream">The underlying stream which contains the <see cref="FlacFrameHeader"/>.</param>
+        /// <param name="streamInfo">The stream-info-metadata-block of the flac stream which provides some basic information about the flac framestream. Can be set to null.</param>
+        /// <param name="doCrc">A value which indicates whether the crc8 checksum of the <see cref="FlacFrameHeader"/> should be calculated.</param>
         public FlacFrameHeader(Stream stream, FlacMetadataStreamInfo streamInfo, bool doCrc)
         {
             if (stream == null) throw new ArgumentNullException("stream");
             if (stream.CanRead == false) throw new ArgumentException("stream is not readable");
             //streamInfo can be null
 
-            DoCRC = doCrc;
+            DoCrc = doCrc;
             StreamPosition = stream.Position;
 
             HasError = !ParseHeader(stream, streamInfo);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FlacFrameHeader"/> class.
+        /// </summary>
+        /// <param name="buffer">The raw byte-data which contains the <see cref="FlacFrameHeader"/>.</param>
+        /// <param name="streamInfo">The stream-info-metadata-block of the flac stream which provides some basic information about the flac framestream. Can be set to null.</param>
+        /// <param name="doCrc">A value which indicates whether the crc8 checksum of the <see cref="FlacFrameHeader"/> should be calculated.</param>
         [CLSCompliant(false)]
         public unsafe FlacFrameHeader(ref byte* buffer, FlacMetadataStreamInfo streamInfo, bool doCrc)
             : this(ref buffer, streamInfo, doCrc, true)
         {
         }
 
-        [CLSCompliant(false)]
         internal unsafe FlacFrameHeader(ref byte* buffer, FlacMetadataStreamInfo streamInfo, bool doCrc, bool logError)
         {
             PrintErrors = logError; //optimized for prescan
 
-            DoCRC = doCrc;
+            DoCrc = doCrc;
             StreamPosition = -1;
 
             HasError = !ParseHeader(ref buffer, streamInfo);
@@ -104,7 +193,7 @@ namespace CSCore.Codecs.FLAC
         private unsafe bool ParseHeader(ref byte* headerBuffer, FlacMetadataStreamInfo streamInfo)
         {
             const string loggerLocation = "FlacFrameHeader.ParseHeader(byte*, FlacMetadataStreamInfo)";
-            int x = -1; //tmp value to store in
+            int val;
             if (headerBuffer[0] == 0xFF && headerBuffer[1] >> 1 == 0x7C) //sync bits
             {
                 if ((headerBuffer[1] & 0x02) != 0) // ...10 2. letzes bits muss 0 sein
@@ -119,25 +208,25 @@ namespace CSCore.Codecs.FLAC
                 #region blocksize
 
                 //blocksize
-                x = headerBuffer[2] >> 4;
+                val = headerBuffer[2] >> 4;
                 int blocksize = -1;
 
-                if (x == 0)
+                if (val == 0)
                 {
                     Error("Invalid Blocksize value: 0", loggerLocation);
                     return false;
                 }
-                else if (x == 1)
+                if (val == 1)
                     blocksize = 192;
-                else if (x >= 2 && x <= 5)
-                    blocksize = 576 << (x - 2);
-                else if (x == 6 || x == 7)
-                    _blocksizeHint = x;
-                else if (x >= 8 && x <= 15)
-                    blocksize = 256 << (x - 8);
+                else if (val >= 2 && val <= 5)
+                    blocksize = 576 << (val - 2);
+                else if (val == 6 || val == 7)
+                    _blocksizeHint = val;
+                else if (val >= 8 && val <= 15)
+                    blocksize = 256 << (val - 8);
                 else
                 {
-                    Error("Invalid Blocksize value: " + x, loggerLocation);
+                    Error("Invalid Blocksize value: " + val, loggerLocation);
                     return false;
                 }
                 BlockSize = blocksize;
@@ -147,10 +236,10 @@ namespace CSCore.Codecs.FLAC
                 #region samplerate
 
                 //samplerate
-                x = headerBuffer[2] & 0x0F;
+                val = headerBuffer[2] & 0x0F;
                 int sampleRate = -1;
 
-                if (x == 0)
+                if (val == 0)
                 {
                     if (streamInfo != null)
                         sampleRate = streamInfo.SampleRate;
@@ -160,13 +249,13 @@ namespace CSCore.Codecs.FLAC
                         return false;
                     }
                 }
-                else if (x >= 1 && x <= 11)
-                    sampleRate = FlacConstant.SampleRateTable[x];
-                else if (x >= 12 && x <= 14)
-                    _sampleRateHint = x;
+                else if (val >= 1 && val <= 11)
+                    sampleRate = FlacConstant.SampleRateTable[val];
+                else if (val >= 12 && val <= 14)
+                    _sampleRateHint = val;
                 else
                 {
-                    Error("Invalid SampleRate value: " + x, loggerLocation);
+                    Error("Invalid SampleRate value: " + val, loggerLocation);
                     return false;
                 }
                 SampleRate = sampleRate;
@@ -175,22 +264,21 @@ namespace CSCore.Codecs.FLAC
 
                 #region channels
 
-                x = headerBuffer[3] >> 4; //cc: unsigned
-                int channels = -1;
-                if ((x & 8) != 0)
+                val = headerBuffer[3] >> 4; //cc: unsigned
+                int channels;
+                if ((val & 8) != 0)
                 {
                     channels = 2;
-                    if ((x & 7) > 2 || (x & 7) < 0)
+                    if ((val & 7) > 2 || (val & 7) < 0)
                     {
                         Error("Invalid ChannelAssignment", loggerLocation);
                         return false;
                     }
-                    else
-                        ChannelAssignment = (ChannelAssignment)((x & 7) + 1);
+                    ChannelAssignment = (ChannelAssignment)((val & 7) + 1);
                 }
                 else
                 {
-                    channels = x + 1;
+                    channels = val + 1;
                     ChannelAssignment = ChannelAssignment.Independent;
                 }
                 Channels = channels;
@@ -199,9 +287,9 @@ namespace CSCore.Codecs.FLAC
 
                 #region bitspersample
 
-                x = (headerBuffer[3] & 0x0E) >> 1;
-                int bitsPerSample = -1;
-                if (x == 0)
+                val = (headerBuffer[3] & 0x0E) >> 1;
+                int bitsPerSample;
+                if (val == 0)
                 {
                     if (streamInfo != null)
                         bitsPerSample = streamInfo.BitsPerSample;
@@ -211,13 +299,13 @@ namespace CSCore.Codecs.FLAC
                         return false;
                     }
                 }
-                else if (x == 3 || x >= 7 || x < 0)
+                else if (val == 3 || val >= 7 || val < 0)
                 {
                     Error("Invalid BitsPerSampleIndex", loggerLocation);
                     return false;
                 }
                 else
-                    bitsPerSample = FlacConstant.BitPerSampleTable[x];
+                    bitsPerSample = FlacConstant.BitPerSampleTable[val];
 
                 BitsPerSample = bitsPerSample;
 
@@ -229,8 +317,7 @@ namespace CSCore.Codecs.FLAC
                     return false;
                 }
 
-                //reader.SkipBits(4 * 8); //erste 3 bytes headerbytes überspringen, da diese schon ohne reader verarbeitet
-                reader.ReadBits(32);
+                reader.ReadBits(32); //skip the first 4 bytes since they got already processed
 
                 //BYTE 4
 
@@ -243,7 +330,7 @@ namespace CSCore.Codecs.FLAC
                     ulong samplenumber;
                     if (reader.ReadUTF8_64(out samplenumber) && samplenumber != ulong.MaxValue)
                     {
-                        NumberType = FlacNumberType.SampleNumber;
+                        BlockingStrategy = BlockingStrategy.VariableBlockSize;
                         SampleNumber = (long) samplenumber;
                     }
                     else
@@ -254,11 +341,11 @@ namespace CSCore.Codecs.FLAC
                 }
                 else //fixed blocksize
                 {
-                    uint framenumber;// = reader.ReadUTF8();
+                    uint framenumber;
 
                     if (reader.ReadUTF8_32(out framenumber) && framenumber != uint.MaxValue)
                     {
-                        NumberType = FlacNumberType.FrameNumber;
+                        BlockingStrategy = BlockingStrategy.FixedBlockSize;
                         FrameNumber = (int) framenumber;
                     }
                     else
@@ -275,44 +362,45 @@ namespace CSCore.Codecs.FLAC
                 //blocksize am ende des frameheaders
                 if (_blocksizeHint != 0)
                 {
-                    x = (int)reader.ReadBits(8);
+                    val = (int)reader.ReadBits(8);
                     if (_blocksizeHint == 7)
                     {
-                        x = (x << 8) | (int)reader.ReadBits(8);
+                        val = (val << 8) | (int)reader.ReadBits(8);
                     }
-                    BlockSize = x + 1;
+                    BlockSize = val + 1;
                 }
 
-                //samplerate am ende des frameheaders
+                //samplerate
                 if (_sampleRateHint != 0)
                 {
-                    x = (int)reader.ReadBits(8);
+                    val = (int)reader.ReadBits(8);
                     if (_sampleRateHint != 12)
                     {
-                        x = (x << 8) | (int)reader.ReadBits(8);
+                        val = (val << 8) | (int)reader.ReadBits(8);
                     }
                     if (_sampleRateHint == 12)
-                        SampleRate = x * 1000;
+                        SampleRate = val * 1000;
                     else if (_sampleRateHint == 13)
-                        SampleRate = x;
+                        SampleRate = val;
                     else
-                        SampleRate = x * 10;
+                        SampleRate = val * 10;
                 }
 
                 #endregion read hints
 
-                //if (Channels == 1 && BitsPerSample == 24 && SampleRate == 44100)
-                //    System.Diagnostics.Debugger.Break();
-
-                if (DoCRC)
+                if (DoCrc)
                 {
                     var crc8 = Utils.CRC8.Instance.CalcCheckSum(reader.Buffer, 0, reader.Position);
-                    CRC8 = (byte)reader.ReadBits(8);
-                    if (CRC8 != crc8)
+                    Crc8 = (byte) reader.ReadBits(8);
+                    if (Crc8 != crc8)
                     {
                         Error("CRC8 missmatch", loggerLocation);
                         return false;
                     }
+                }
+                else
+                {
+                    Crc8 = (byte) reader.ReadBits(8);
                 }
 
                 headerBuffer += reader.Position;
@@ -323,17 +411,23 @@ namespace CSCore.Codecs.FLAC
             return false;
         }
 
+        [Conditional("DEBUG")]
         internal void Error(string msg, string location)
         {
             if (PrintErrors)
                 Debug.WriteLine(location + msg);
         }
 
-        public bool CompareTo(FlacFrameHeader header)
+        /// <summary>
+        /// Indicates whether the format of the current <see cref="FlacFrameHeader"/> is equal to the format of another <see cref="FlacFrameHeader"/>.
+        /// </summary>
+        /// <param name="other">A <see cref="FlacFrameHeader"/> which provides the format to compare with the format of the current <see cref="FlacFrameHeader"/>.</param>
+        /// <returns><c>true</c> if the format of the current <see cref="FlacFrameHeader"/> is equal to the format of the <paramref name="other"/> <see cref="FlacFrameHeader"/>.</returns>
+        public bool IsFormatEqualTo(FlacFrameHeader other)
         {
-            return (BitsPerSample == header.BitsPerSample &&
-                    Channels == header.Channels &&
-                    SampleRate == header.SampleRate);
+            return (BitsPerSample == other.BitsPerSample &&
+                    Channels == other.Channels &&
+                    SampleRate == other.SampleRate);
         }
     }
 }

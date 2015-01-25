@@ -1,19 +1,9 @@
-﻿using System;
-
-namespace CSCore.Codecs.FLAC
+﻿namespace CSCore.Codecs.FLAC
 {
-    [CLSCompliant(false)]
-    public unsafe class FlacSubFrameData
+    internal unsafe class FlacSubFrameData
     {
-        public int* DestBuffer;
+        public int* DestinationBuffer;
         public int* ResidualBuffer;
-
-        private FlacPartitionedRiceContent _content;
-
-        public FlacPartitionedRiceContent Content
-        {
-            get { return _content ?? (_content = new FlacPartitionedRiceContent()); }
-            set { _content = value; }
-        }
+        public FlacPartitionedRiceContent Content = new FlacPartitionedRiceContent();
     }
 }

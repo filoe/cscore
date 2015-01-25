@@ -1,35 +1,26 @@
-﻿using System;
-
+﻿// ReSharper disable once CheckNamespace
 namespace CSCore.Codecs.FLAC
 {
-    [CLSCompliant(false)]
-    public class FlacResidual
+    internal class FlacResidual
     {
-        public FlacEntropyCoding CodingMethod { get; private set; }
+#if FLAC_DEBUG
+        public FlacResidualCodingMethod CodingMethodMethod { get; private set; }
 
-        public int RiceOrder { get; private set; }
-
-        internal FlacPartitionedRice Rice { get; private set; }
-
+        public int PartitionOrder { get; private set; }
+#endif
         public FlacResidual(FlacBitReader reader, FlacFrameHeader header, FlacSubFrameData data, int order)
         {
-            FlacEntropyCoding codingMethod = (FlacEntropyCoding)reader.ReadBits(FlacConstant.EntropyCodingMethodTypeLen); // 2 Bit
+            FlacResidualCodingMethod codingMethod = (FlacResidualCodingMethod)reader.ReadBits(2); // 2 Bit
 
-            if (codingMethod == FlacEntropyCoding.PartitionedRice || codingMethod == FlacEntropyCoding.PartitionedRice2)
+            if (codingMethod == FlacResidualCodingMethod.PartitionedRice || codingMethod == FlacResidualCodingMethod.PartitionedRice2)
             {
-                int riceOrder = (int)reader.ReadBits(FlacConstant.EntropyCodingMethodPartitionedRiceOrderLen);
+                int partitionOrder = (int)reader.ReadBits(4); //"Partition order." see https://xiph.org/flac/format.html#partitioned_rice and https://xiph.org/flac/format.html#partitioned_rice2
 
-                FlacPartitionedRice rice = new FlacPartitionedRice(riceOrder, codingMethod, data.Content);
+                FlacPartitionedRice.ProcessResidual(reader, header, data, order, partitionOrder, codingMethod);
 
-                if (rice.ProcessResidual(reader, header, data, order) == false)
-                {
-                    throw new FlacException("Decoding Flac Residual failed.", FlacLayer.SubFrame);
-                }
-
-#if DEBUG
-                CodingMethod = codingMethod;
-                RiceOrder = riceOrder;
-                Rice = rice;
+#if FLAC_DEBUG
+                CodingMethodMethod = codingMethod;
+                PartitionOrder = partitionOrder;
 #endif
 
             }
