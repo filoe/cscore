@@ -206,20 +206,19 @@
     <Compile Include="Codecs\ConnectionEstablishedEventArgs.cs" />
     <Compile Include="Codecs\DDP\DDPDecoder.cs" />
     <Compile Include="Codecs\CodecFactory.cs" />
+    <Compile Include="Codecs\FLAC\BlockingStrategy.cs" />
     <Compile Include="Codecs\FLAC\ChannelAssignment.cs" />
     <Compile Include="Codecs\FLAC\FlacException.cs" />
-    <Compile Include="Codecs\FLAC\FlacChannelMode.cs" />
     <Compile Include="Codecs\FLAC\FlacConstant.cs" />
-    <Compile Include="Codecs\FLAC\FlacEntropyCoding.cs" />
     <Compile Include="Codecs\FLAC\FlacFile.cs" />
     <Compile Include="Codecs\FLAC\FlacFrame.cs" />
     <Compile Include="Codecs\FLAC\FlacFrameHeader.cs" />
     <Compile Include="Codecs\FLAC\FlacFrameInformation.cs" />
     <Compile Include="Codecs\FLAC\FlacLayer.cs" />
-    <Compile Include="Codecs\FLAC\FlacNumberType.cs" />
     <Compile Include="Codecs\FLAC\FlacPreScan.cs" />
     <Compile Include="Codecs\FLAC\FlacPreScanFinishedEventArgs.cs" />
-    <Compile Include="Codecs\FLAC\FlacPreScanMethodMode.cs" />
+    <Compile Include="Codecs\FLAC\FlacPreScanMode.cs" />
+    <Compile Include="Codecs\FLAC\FlacResidualCodingMethod.cs" />
     <Compile Include="Codecs\FLAC\FlacSubFrameData.cs" />
     <Compile Include="Codecs\FLAC\Metadata\FlacMetadata.cs" />
     <Compile Include="Codecs\FLAC\Metadata\FlacMetadataSeekTable.cs" />
@@ -233,6 +232,11 @@
     <Compile Include="Codecs\FLAC\SubFrames\FlacSubFrameConstant.cs" />
     <Compile Include="Codecs\FLAC\SubFrames\FlacSubFrameFixed.cs" />
     <Compile Include="Codecs\FLAC\SubFrames\FlacSubFrameLPC.cs" />
+    <Compile Include="Codecs\FLAC\SubFrames\FlacSubFrameLPC_Calculation.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FlacSubFrameLPC_Calculation.tt</DependentUpon>
+    </Compile>
     <Compile Include="Codecs\FLAC\SubFrames\FlacSubFrameVerbatim.cs" />
     <Compile Include="Codecs\GetCodecAction.cs" />
     <Compile Include="Codecs\MP1\Mp1Decoder.cs" />
@@ -331,6 +335,7 @@
     <Compile Include="DSP\FftMode.cs" />
     <Compile Include="DSP\FftSize.cs" />
     <Compile Include="FluentExtensions.cs" />
+    <Compile Include="IWaveAggregator.cs" />
     <Compile Include="IWriteable.cs" />
     <Compile Include="MediaFoundation\CommonAudioDecoderGuids.cs" />
     <Compile Include="MediaFoundation\IMFCollection.cs" />
@@ -564,7 +569,6 @@
     <Compile Include="DMO\WMResampler.cs" />
     <Compile Include="DSP\DmoResampler.cs" />
     <Compile Include="ISampleSource.cs" />
-    <Compile Include="IWaveAggregator.cs" />
     <Compile Include="IWaveSource.cs" />
     <Compile Include="IWaveStream.cs" />
     <Compile Include="MmException.cs" />
@@ -674,6 +678,10 @@
     <None Include="AudioSubTypes.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>AudioSubTypes.cs</LastGenOutput>
+    </None>
+    <None Include="Codecs\FLAC\SubFrames\FlacSubFrameLPC_Calculation.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>FlacSubFrameLPC_Calculation.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
