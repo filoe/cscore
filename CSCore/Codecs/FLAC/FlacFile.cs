@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace CSCore.Codecs.FLAC
         /// <summary>
         ///     Gets a list with all found metadata fields.
         /// </summary>
-        public List<FlacMetadata> Metadata { get; protected set; }
+        public ReadOnlyCollection<FlacMetadata> Metadata { get; protected set; }
 
         /// <summary>
         ///     Gets the output <see cref="CSCore.WaveFormat" /> of the decoder.
@@ -72,7 +73,7 @@ namespace CSCore.Codecs.FLAC
         /// </summary>
         /// <param name="stream">Stream which contains flac data which should be decoded.</param>
         public FlacFile(Stream stream)
-            : this(stream, FlacPreScanMethodMode.Default)
+            : this(stream, FlacPreScanMode.Default)
         {
         }
 
@@ -81,7 +82,7 @@ namespace CSCore.Codecs.FLAC
         /// </summary>
         /// <param name="stream">Stream which contains flac data which should be decoded.</param>
         /// <param name="scanFlag">Scan mode which defines how to scan the flac data for frames.</param>
-        public FlacFile(Stream stream, FlacPreScanMethodMode scanFlag)
+        public FlacFile(Stream stream, FlacPreScanMode scanFlag)
             : this(stream, scanFlag, null)
         {
         }
@@ -93,9 +94,9 @@ namespace CSCore.Codecs.FLAC
         /// <param name="scanFlag">Scan mode which defines how to scan the flac data for frames.</param>
         /// <param name="onscanFinished">
         ///     Callback which gets called when the pre scan processes finished. Should be used if the
-        ///     <paramref name="scanFlag" /> argument is set the <see cref="FlacPreScanMethodMode.Async" />.
+        ///     <paramref name="scanFlag" /> argument is set the <see cref="FlacPreScanMode.Async" />.
         /// </param>
-        public FlacFile(Stream stream, FlacPreScanMethodMode scanFlag,
+        public FlacFile(Stream stream, FlacPreScanMode scanFlag,
             Action<FlacPreScanFinishedEventArgs> onscanFinished)
         {
             if (stream == null)
@@ -117,10 +118,10 @@ namespace CSCore.Codecs.FLAC
                 beginSync[2] == 0x61 && beginSync[3] == 0x43)
             {
                 //read metadata
-                List<FlacMetadata> metadata = FlacMetadata.ReadAllMetadataFromStream(stream);
+                List<FlacMetadata> metadata = FlacMetadata.ReadAllMetadataFromStream(stream).ToList();
 
-                Metadata = metadata;
-                if (metadata == null || metadata.Count <= 0)
+                Metadata = metadata.AsReadOnly();
+                if (metadata.Count <= 0)
                     throw new FlacException("No Metadata found.", FlacLayer.Metadata);
 
                 var streamInfo =
@@ -129,16 +130,15 @@ namespace CSCore.Codecs.FLAC
                     throw new FlacException("No StreamInfo-Metadata found.", FlacLayer.Metadata);
 
                 _streamInfo = streamInfo;
-                _waveFormat = new WaveFormat(streamInfo.SampleRate, (short) streamInfo.BitsPerSample,
-                    (short) streamInfo.Channels, AudioEncoding.Pcm);
+                _waveFormat = CreateWaveFormat(streamInfo);
                 Debug.WriteLine("Flac StreamInfo found -> WaveFormat: " + _waveFormat);
                 Debug.WriteLine("Flac-File-Metadata read.");
             }
             else
-                throw new FlacException("Invalid Flac-File. \"fLaC\" Sync not found.", FlacLayer.Top);
+                throw new FlacException("Invalid Flac-File. \"fLaC\" Sync not found.", FlacLayer.OutSideOfFrame);
 
             //prescan stream
-            if (scanFlag != FlacPreScanMethodMode.None)
+            if (scanFlag != FlacPreScanMode.None)
             {
                 var scan = new FlacPreScan(stream);
                 scan.ScanFinished += (s, e) =>
@@ -149,6 +149,58 @@ namespace CSCore.Codecs.FLAC
                 scan.ScanStream(_streamInfo, scanFlag);
                 _scan = scan;
             }
+        }
+
+        private WaveFormat CreateWaveFormat(FlacMetadataStreamInfo streamInfo)
+        {
+            if (streamInfo.Channels > 2 && streamInfo.Channels <= 8)
+            {
+                ChannelMask channelMask;
+                switch (streamInfo.Channels)
+                {
+                    case 3:
+                        //2.1
+                        channelMask = ChannelMask.SpeakerFrontLeft | ChannelMask.SpeakerFrontRight |
+                                      ChannelMask.SpeakerFrontCenter;
+                        break;
+                    case 4:
+                        //quadraphonic
+                        channelMask = ChannelMask.SpeakerFrontLeft | ChannelMask.SpeakerFrontRight |
+                                      ChannelMask.SpeakerBackLeft | ChannelMask.SpeakerBackRight;
+                        break;
+                    case 5:
+                        //5.0
+                        channelMask = ChannelMask.SpeakerFrontLeft | ChannelMask.SpeakerFrontRight |
+                                      ChannelMask.SpeakerFrontCenter | ChannelMask.SpeakerSideLeft |
+                                      ChannelMask.SpeakerSideRight;
+                        break;
+                    case 6:
+                        //5.1
+                        channelMask = ChannelMask.SpeakerFrontLeft | ChannelMask.SpeakerFrontRight |
+                                      ChannelMask.SpeakerFrontCenter | ChannelMask.SpeakerLowFrequency |
+                                      ChannelMask.SpeakerSideLeft | ChannelMask.SpeakerSideRight;
+                        break;
+                    case 7:
+                        //6.1
+                        channelMask = ChannelMask.SpeakerFrontLeft | ChannelMask.SpeakerFrontRight |
+                                      ChannelMask.SpeakerFrontCenter | ChannelMask.SpeakerLowFrequency |
+                                      ChannelMask.SpeakerSideLeft | ChannelMask.SpeakerSideRight |
+                                      ChannelMask.SpeakerBackCenter;
+                        break;
+                    case 8:
+                        //7.1
+                        channelMask = ChannelMask.SpeakerFrontLeft | ChannelMask.SpeakerFrontRight |
+                                      ChannelMask.SpeakerFrontCenter | ChannelMask.SpeakerLowFrequency |
+                                      ChannelMask.SpeakerBackLeft | ChannelMask.SpeakerBackRight |
+                                      ChannelMask.SpeakerSideLeft | ChannelMask.SpeakerSideRight;
+                        break;
+                    default:
+                        throw new Exception("Invalid number of channels. This error should not occur.");
+                }
+                return new WaveFormatExtensible(streamInfo.SampleRate, streamInfo.BitsPerSample, streamInfo.Channels,
+                    AudioSubTypes.Pcm, channelMask);
+            }
+            return new WaveFormat(streamInfo.SampleRate, streamInfo.BitsPerSample, streamInfo.Channels, AudioEncoding.Pcm);
         }
 
         /// <summary>
@@ -192,7 +244,7 @@ namespace CSCore.Codecs.FLAC
                     }
                     _frameIndex++;
 
-                    int bufferlength = frame.GetBuffer(ref _overflowBuffer, 0);
+                    int bufferlength = frame.GetBuffer(ref _overflowBuffer);
                     int bytesToCopy = Math.Min(count - read, bufferlength);
                     Array.Copy(_overflowBuffer, 0, buffer, offset, bytesToCopy);
                     read += bytesToCopy;
@@ -262,6 +314,9 @@ namespace CSCore.Codecs.FLAC
                     {
                         if ((value / WaveFormat.BlockAlign) <= _scan.Frames[i].SampleOffset)
                         {
+                            if (i != 0)
+                                i--;
+
                             _stream.Position = _scan.Frames[i].StreamOffset;
                             _frameIndex = i;
                             if (_stream.Position >= _stream.Length)
@@ -271,6 +326,13 @@ namespace CSCore.Codecs.FLAC
 #endif
                             _overflowCount = 0;
                             _overflowOffset = 0;
+
+                            int diff = (int) (value - Position);
+                            if (diff > 0)
+                            {
+                                this.ReadBytes(diff);
+                            }
+
                             break;
                         }
                     }
@@ -313,7 +375,7 @@ namespace CSCore.Codecs.FLAC
             {
                 if (_frame != null)
                 {
-                    _frame.FreeBuffers();
+                    _frame.Dispose();
                     _frame = null;
                 }
 

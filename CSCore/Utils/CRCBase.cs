@@ -2,6 +2,10 @@
 
 namespace CSCore.Utils
 {
+    /// <summary>
+    /// This class is based on the CUETools.NET project (see http://sourceforge.net/p/cuetoolsnet/)
+    /// The author "Grigory Chudov" explicitly gave the permission to use the source as part of the cscore source code which got licensed under the ms-pl.
+    /// </summary>
     internal abstract class CRCBase<T> where T : struct
     {
         protected readonly int tableSize = 256;

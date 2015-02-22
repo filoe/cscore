@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace CSCore.Codecs.FLAC
 {
@@ -11,7 +12,7 @@ namespace CSCore.Codecs.FLAC
         /// <summary>
         /// Gets the a list of found frames by the scan.
         /// </summary>
-        public List<FlacFrameInformation> Frames { get; private set; }
+        public ReadOnlyCollection<FlacFrameInformation> Frames { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FlacPreScanFinishedEventArgs"/> class.
@@ -19,7 +20,7 @@ namespace CSCore.Codecs.FLAC
         /// <param name="frames">Found frames.</param>
         public FlacPreScanFinishedEventArgs(List<FlacFrameInformation> frames)
         {
-            Frames = frames;
+            Frames = frames.AsReadOnly();
         }
     }
 }

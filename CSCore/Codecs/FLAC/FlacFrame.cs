@@ -6,9 +6,12 @@ using System.Runtime.InteropServices;
 
 namespace CSCore.Codecs.FLAC
 {
-    public sealed class FlacFrame
+    /// <summary>
+    /// Represents a frame inside of an Flac-Stream.
+    /// </summary>
+    public sealed class FlacFrame : IDisposable
     {
-        private List<FlacSubFrameData> _data;
+        private List<FlacSubFrameData> _subFrames;
         private Stream _stream;
         private FlacMetadataStreamInfo _streamInfo;
 
@@ -16,12 +19,29 @@ namespace CSCore.Codecs.FLAC
         private int[] _destBuffer;
         private int[] _residualBuffer;
 
+        /// <summary>
+        /// Gets the header of the flac frame.
+        /// </summary>
         public FlacFrameHeader Header { get; private set; }
 
+        /// <summary>
+        /// Gets the CRC16-checksum.
+        /// </summary>
         public short Crc16 { get; private set; }
 
+        /// <summary>
+        /// Gets a value indicating whether the decoder has encountered an error with this frame.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this frame contains an error; otherwise, <c>false</c>.
+        /// </value>
         public bool HasError { get; private set; }
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="FlacFrame"/> class based on the specified <paramref name="stream"/>.
+        /// </summary>
+        /// <param name="stream">The stream which contains the flac frame.</param>
+        /// <returns>A new instance of the <see cref="FlacFrame"/> class.</returns>
         public static FlacFrame FromStream(Stream stream)
         {
             FlacFrame frame = new FlacFrame(stream);
@@ -29,6 +49,12 @@ namespace CSCore.Codecs.FLAC
             //return frame.HasError ? null : frame;
         }
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="FlacFrame"/> class based on the specified <paramref name="stream"/> and some basic stream information.
+        /// </summary>
+        /// <param name="stream">The stream which contains the flac frame.</param>
+        /// <param name="streamInfo">Some basic information about the flac stream.</param>
+        /// <returns>A new instance of the <see cref="FlacFrame"/> class.</returns>
         public static FlacFrame FromStream(Stream stream, FlacMetadataStreamInfo streamInfo)
         {
             FlacFrame frame = new FlacFrame(stream, streamInfo);
@@ -38,13 +64,19 @@ namespace CSCore.Codecs.FLAC
 
         private FlacFrame(Stream stream, FlacMetadataStreamInfo streamInfo = null)
         {
-            if (stream == null) throw new ArgumentNullException("stream");
-            if (stream.CanRead == false) throw new ArgumentException("Stream is not readable");
+            if (stream == null) 
+                throw new ArgumentNullException("stream");
+            if (stream.CanRead == false) 
+                throw new ArgumentException("Stream is not readable");
 
             _stream = stream;
             _streamInfo = streamInfo;
         }
 
+        /// <summary>
+        /// Tries to read the next flac frame inside of the specified stream and returns a value which indicates whether the next flac frame could be successfully read.
+        /// </summary>
+        /// <returns>True if the next flac frame could be successfully read; false if not.</returns>
         public bool NextFrame()
         {
             Decode(_stream, _streamInfo);
@@ -70,7 +102,7 @@ namespace CSCore.Codecs.FLAC
 
             //alocateOutput
             var data = AllocOuputMemory();
-            _data = data;
+            _subFrames = data;
 
             byte[] buffer = new byte[0x20000];
             if ((_streamInfo.MaxFrameSize * Header.Channels * Header.BitsPerSample * 2 >> 3) > buffer.Length)
@@ -85,14 +117,13 @@ namespace CSCore.Codecs.FLAC
                 FlacBitReader reader = new FlacBitReader(ptrBuffer, 0);
                 for (int c = 0; c < Header.Channels; c++)
                 {
-                    int bps = Header.BitsPerSample;
+                    int bitsPerSample = Header.BitsPerSample;
                     if (Header.ChannelAssignment == ChannelAssignment.MidSide || Header.ChannelAssignment == ChannelAssignment.LeftSide)
-                        bps += c;
+                        bitsPerSample += c;
                     else if (Header.ChannelAssignment == ChannelAssignment.RightSide)
-                        bps += 1 - c;
+                        bitsPerSample += 1 - c;
 
-                    var subframe = FlacSubFrameBase.GetSubFrame(reader, data[c], Header, bps);
-
+                    var subframe = FlacSubFrameBase.GetSubFrame(reader, data[c], Header, bitsPerSample);
                     subFrames.Add(subframe);
                 }
 
@@ -101,46 +132,48 @@ namespace CSCore.Codecs.FLAC
 
                 _stream.Position -= read - reader.Position;
 
-                SamplesToBytes(_data);
-
-                //return reader.Position;
+                MapToChannels(_subFrames);
             }
         }
 
-        private unsafe void SamplesToBytes(List<FlacSubFrameData> data)
+        private unsafe void MapToChannels(List<FlacSubFrameData> subFrames)
         {
             if (Header.ChannelAssignment == ChannelAssignment.LeftSide)
             {
                 for (int i = 0; i < Header.BlockSize; i++)
                 {
-                    data[1].DestBuffer[i] = data[0].DestBuffer[i] - data[1].DestBuffer[i];
+                    subFrames[1].DestinationBuffer[i] = subFrames[0].DestinationBuffer[i] - subFrames[1].DestinationBuffer[i];
                 }
             }
             else if (Header.ChannelAssignment == ChannelAssignment.RightSide)
             {
                 for (int i = 0; i < Header.BlockSize; i++)
                 {
-                    data[0].DestBuffer[i] += data[1].DestBuffer[i];
+                    subFrames[0].DestinationBuffer[i] += subFrames[1].DestinationBuffer[i];
                 }
             }
             else if (Header.ChannelAssignment == ChannelAssignment.MidSide)
             {
                 for (int i = 0; i < Header.BlockSize; i++)
                 {
-                    int mid = data[0].DestBuffer[i] << 1;
-                    int side = data[1].DestBuffer[i];
+                    int mid = subFrames[0].DestinationBuffer[i] << 1;
+                    int side = subFrames[1].DestinationBuffer[i];
 
                     mid |= (side & 1);
 
-                    data[0].DestBuffer[i] = (mid + side) >> 1;
-                    data[1].DestBuffer[i] = (mid - side) >> 1;
+                    subFrames[0].DestinationBuffer[i] = (mid + side) >> 1;
+                    subFrames[1].DestinationBuffer[i] = (mid - side) >> 1;
                 }
             }
         }
 
-        public unsafe int GetBuffer(ref byte[] buffer, int offset)
+        /// <summary>
+        /// Gets the raw pcm data of the flac frame.
+        /// </summary>
+        /// <param name="buffer">The buffer which should be used to store the data in. This value can be null.</param>
+        /// <returns>The number of read bytes.</returns>
+        public unsafe int GetBuffer(ref byte[] buffer)
         {
-            //int desiredsize = Header.BlockSize * Header.Channels * Header.BitsPerSample;
             int desiredsize = Header.BlockSize * Header.Channels * ((Header.BitsPerSample + 7) / 2);
             if (buffer == null || buffer.Length < desiredsize)
                 buffer = new byte[desiredsize];
@@ -154,7 +187,7 @@ namespace CSCore.Codecs.FLAC
                     {
                         for (int c = 0; c < Header.Channels; c++)
                         {
-                            *(ptr++) = (byte)(_data[c].DestBuffer[i] + 0x80);
+                            *(ptr++) = (byte)(_subFrames[c].DestinationBuffer[i] + 0x80);
                         }
                     }
                 }
@@ -164,7 +197,7 @@ namespace CSCore.Codecs.FLAC
                     {
                         for (int c = 0; c < Header.Channels; c++)
                         {
-                            short val = (short)(_data[c].DestBuffer[i]); //remove
+                            short val = (short)(_subFrames[c].DestinationBuffer[i]);
                             *(ptr++) = (byte)(val & 0xFF);
                             *(ptr++) = (byte)((val >> 8) & 0xFF);
                         }
@@ -176,7 +209,7 @@ namespace CSCore.Codecs.FLAC
                     {
                         for (int c = 0; c < Header.Channels; c++)
                         {
-                            int val = (_data[c].DestBuffer[i]);
+                            int val = (_subFrames[c].DestinationBuffer[i]);
                             *(ptr++) = (byte)(val & 0xFF);
                             *(ptr++) = (byte)((val >> 8) & 0xFF);
                             *(ptr++) = (byte)((val >> 16) & 0xFF);
@@ -212,7 +245,7 @@ namespace CSCore.Codecs.FLAC
 
                     FlacSubFrameData data = new FlacSubFrameData
                     {
-                        DestBuffer = (ptrDestBuffer + c * Header.BlockSize),
+                        DestinationBuffer = (ptrDestBuffer + c * Header.BlockSize),
                         ResidualBuffer = (ptrResidualBuffer + c * Header.BlockSize)
                     };
                     output.Add(data);
@@ -222,7 +255,7 @@ namespace CSCore.Codecs.FLAC
             return output;
         }
 
-        public void FreeBuffers()
+        private void FreeBuffers()
         {
             if (_handle1.IsAllocated)
                 _handle1.Free();
@@ -230,9 +263,27 @@ namespace CSCore.Codecs.FLAC
                 _handle2.Free();
         }
 
+        private bool _disposed;
+
+        /// <summary>
+        /// Disposes the <see cref="FlacFrame"/> and releases all associated resources.
+        /// </summary>
+        public void Dispose()
+        {
+            if (!_disposed)
+            {
+                GC.SuppressFinalize(this);
+                FreeBuffers();
+                _disposed = true;
+            }
+        }
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="FlacFrame"/> class.
+        /// </summary>
         ~FlacFrame()
         {
-            FreeBuffers();
+            Dispose();
         }
     }
 }

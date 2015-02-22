@@ -1,9 +1,8 @@
 ﻿namespace CSCore.Utils
 {
     /// <summary>
-    ///     http: //flac.sourceforge.net/format.html#frame_footer
-    ///     CRC-16 (polynomial = x^16 + x^15 + x^2 + x^0, initialized with 0) of everything before
-    ///     the crc, back to and including the frame header sync code
+    /// This class is based on the CUETools.NET project (see http://sourceforge.net/p/cuetoolsnet/)
+    /// The author "Grigory Chudov" explicitly gave the permission to use the source as part of the cscore source code which got licensed under the ms-pl.
     /// </summary>
     internal class CRC16 : CRCBase<ushort>
     {

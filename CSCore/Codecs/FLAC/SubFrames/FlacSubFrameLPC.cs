@@ -1,140 +1,89 @@
-﻿using CSCore.Utils;
-using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
+// ReSharper disable once CheckNamespace
 namespace CSCore.Codecs.FLAC
 {
-    [CLSCompliant(false)]
-    public sealed class FlacSubFrameLPC : FlacSubFrameBase
+// ReSharper disable once InconsistentNaming
+    internal sealed partial class FlacSubFrameLPC : FlacSubFrameBase
     {
-        private readonly int[] _warmup;
-        private readonly int[] _qlpCoeffs;
-        private readonly int _lpcShiftNeeded;
-        private readonly int _qlpCoeffPrecision;
+#if FLAC_DEBUG
+        public int QLPCoeffPrecision { get; private set; }
 
-        public int QLPCoeffPrecision { get { return _qlpCoeffPrecision; } }
+        public int LPCShiftNeeded { get; private set; }
 
-        public int LPCShiftNeeded { get { return _lpcShiftNeeded; } }
+        public int[] QLPCoeffs { get; private set; }
 
-        public int[] QLPCoeffs { get { return _qlpCoeffs; } }
-
-        public int[] Warmup { get { return _warmup; } }
+        public int[] Warmup { get; private set; }
 
         public FlacResidual Residual { get; private set; }
-
-        public unsafe FlacSubFrameLPC(FlacBitReader reader, FlacFrameHeader header, FlacSubFrameData data, int bps, int order)
+#endif
+        public unsafe FlacSubFrameLPC(FlacBitReader reader, FlacFrameHeader header, FlacSubFrameData data, int bitsPerSample, int order)
             : base(header)
         {
-
-            //warmup
-            _warmup = new int[FlacConstant.MaxLpcOrder];
+            var warmup = new int[order];
             for (int i = 0; i < order; i++)
             {
-                _warmup[i] = data.ResidualBuffer[i] = reader.ReadBitsSigned(bps);
+                warmup[i] = data.ResidualBuffer[i] = reader.ReadBitsSigned(bitsPerSample);
             }
 
-            //header
-            int u32 = (int)reader.ReadBits(FlacConstant.SubframeLpcQlpCoeffPrecisionLen);
-            if (u32 == (1 << FlacConstant.SubframeLpcQlpCoeffPrecisionLen) - 1)
+            int coefPrecision = (int)reader.ReadBits(4) + 1;
+            if (coefPrecision == 0x0F)
             {
-                Debug.WriteLine("Invalid FlacLPC qlp coeff precision.");
-                return; //return false;
+                Debug.WriteLine("Invalid linear predictor coefficients' precision. Must not be 0x0F.");
+                return;
             }
-            _qlpCoeffPrecision = u32 + 1;
 
-            int level = reader.ReadBitsSigned(FlacConstant.SubframeLpcQlpShiftLen);
-            if (level < 0)
-                throw new Exception("negative shift");
-            _lpcShiftNeeded = level;
+            int shiftNeeded = reader.ReadBitsSigned(5);
+            if (shiftNeeded < 0)
+                throw new FlacException("\"Quantized linear predictor coefficient shift needed.\" was negative.", FlacLayer.SubFrame);
 
-            _qlpCoeffs = new int[FlacConstant.MaxLpcOrder];
-
-            //qlp coeffs
+            var q = new int[order];
             for (int i = 0; i < order; i++)
             {
-                _qlpCoeffs[i] = reader.ReadBitsSigned(_qlpCoeffPrecision);
+                q[i] = reader.ReadBitsSigned(coefPrecision);
             }
 
-            Residual = new FlacResidual(reader, header, data, order);
-
+            //decode the residual
+            var residual = new FlacResidual(reader, header, data, order);
             for (int i = 0; i < order; i++)
             {
-                data.DestBuffer[i] = data.ResidualBuffer[i];
+                data.DestinationBuffer[i] = data.ResidualBuffer[i];
             }
 
-            int i1 = order;
-            int result = 0;
-            while ((i1 >>= 1) != 0)
+            int* residualBuffer0 = data.ResidualBuffer + order;
+            int* destinationBuffer0 = data.DestinationBuffer + order;
+            int blockSizeToProcess = header.BlockSize - order;
+
+            if (bitsPerSample + coefPrecision + Log2(order) <= 32)
             {
-                result++;
-            }
-            if (bps + _qlpCoeffPrecision + result <= 32)
-            {
-                if (bps <= 16 && _qlpCoeffPrecision <= 16)
-                    RestoreLPCSignal(data.ResidualBuffer + order, data.DestBuffer + order, header.BlockSize - order, order); //Restore(data.residualBuffer + order, data.destBuffer, Header.BlockSize - order, order, order);
-                else
-                    RestoreLPCSignal(data.ResidualBuffer + order, data.DestBuffer + order, header.BlockSize - order, order);
+                RestoreLPCSignal32(residualBuffer0, destinationBuffer0, blockSizeToProcess, order, q, shiftNeeded);
             }
             else
             {
-                RestoreLPCSignalWide(data.ResidualBuffer + order, data.DestBuffer + order, header.BlockSize - order, order);//RestoreWide(data.residualBuffer + order, data.destBuffer, Header.BlockSize - order, order, order);
+                RestoreLPCSignal64(residualBuffer0, destinationBuffer0, blockSizeToProcess, order, q, shiftNeeded);
             }
+
+#if FLAC_DEBUG
+            QLPCoeffPrecision = coefPrecision;
+            LPCShiftNeeded = shiftNeeded;
+            Warmup = warmup;
+            Residual = residual;
+            QLPCoeffs = q;
+#endif
         }
 
-        private unsafe void Restore(int* residual, int* dest, int length, int predictorOrder, int destOffset)
+        /// <summary>
+        /// Copied from http://stackoverflow.com/questions/8970101/whats-the-quickest-way-to-compute-log2-of-an-integer-in-c 14.01.2015
+        /// </summary>
+        private int Log2(int x)
         {
-            for (int i = 0; i < length; i++)
+            int bits = 0;
+            while (x > 0)
             {
-                int sum = 0;
-                for (int j = 0; j < predictorOrder; j++)
-                {
-                    sum += (int)_qlpCoeffs[j] * (int)dest[destOffset + i - j - 1];
-                }
-                //System.Diagnostics.Debug.WriteLine(i + " " + (residual[i] + (int)(sum >> LPCShiftNeeded)));
-                dest[destOffset + i] = residual[i] + (int)(sum >> _lpcShiftNeeded);
+                bits++;
+                x >>= 1;
             }
-        }
-
-        private unsafe void RestoreLPCSignal(int* residual, int* destination, int length, int order)
-        {
-            int sum = 0;
-
-            int* r = residual;
-            int* history;
-            int* dest = destination;
-
-            for (int i = 0; i < length; i++)
-            {
-                sum = 0;
-                history = dest;
-                for (int j = 0; j < order; j++)
-                {
-                    sum += _qlpCoeffs[j] * *(--history);
-                }
-
-                *(dest++) = *(r++) + (sum >> _lpcShiftNeeded);
-            }
-        }
-
-        private unsafe void RestoreLPCSignalWide(int* residual, int* destination, int length, int order)
-        {
-            long sum = 0;
-
-            int* r = residual;
-            int* history;
-            int* dest = destination;
-
-            for (int i = 0; i < length; i++)
-            {
-                sum = 0;
-                history = dest;
-                for (int j = 0; j < order; j++)
-                {
-                    sum += (long)_qlpCoeffs[j] * ((long)*(--history));
-                }
-
-                *(dest++) = *(r++) + (int)(sum >> _lpcShiftNeeded);
-            }
+            return bits;
         }
     }
 }

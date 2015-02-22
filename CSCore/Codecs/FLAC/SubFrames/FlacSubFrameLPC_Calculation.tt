@@ -1,0 +1,83 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+namespace CSCore.Codecs.FLAC
+{
+	internal sealed partial class FlacSubFrameLPC
+	{
+		private unsafe void RestoreLPCSignal32(int* residual, int* destination, int length, int order, int[] qlpCoeff, int lpcShiftNeeded)
+		{
+			int* d = destination;
+			int[] q = qlpCoeff;
+			if(order <= 12)
+			{
+<#
+Generate(1, 12, false);
+#>
+			}
+			else if(order > 12)
+			{
+<#
+Generate(13, 32, false);
+#>
+			}
+		}
+
+		private unsafe void RestoreLPCSignal64(int* residual, int* destination, int length, int order, int[] qlpCoeff, int lpcShiftNeeded)
+		{
+			int* d = destination;
+			int[] q = qlpCoeff;
+			if(order <= 12)
+			{
+<#
+Generate(1, 12, true);
+#>
+			}
+			else if(order > 12)
+			{
+<#
+Generate(13, 32, true);
+#>
+			}
+		}
+	}
+}
+
+<#+
+
+    private void Generate(int minOrder, int maxOrder, bool isWide)
+    {
+#>
+<#= isWide ? "long" : "int" #> z;
+switch(order)
+				{
+<#+
+		for (int o = maxOrder; o >= minOrder; o--)
+		{
+#>
+	case <#= o #>:
+		for(int i = 0; i < length; i++)
+		{
+			z = 
+<#+
+			for (int n = o - 1; n >= 0; n--)
+			{
+#>
+			(q[<#= n #>] * <#= isWide ? "(long)" : "" #>d[i - <#= n+ 1 #>]) <#= n > 0 ? "+" : "" #>
+<#+
+			}
+#>
+			;
+			d[i] = residual[i] + <#= isWide ? "(int)" : "" #>(z >> lpcShiftNeeded);
+		}
+		break;
+<#+
+		}
+#>
+				}
+<#+
+    }
+#>

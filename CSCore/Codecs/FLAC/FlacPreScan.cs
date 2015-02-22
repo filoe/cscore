@@ -28,7 +28,7 @@ namespace CSCore.Codecs.FLAC
             _stream = stream;
         }
 
-        public void ScanStream(FlacMetadataStreamInfo streamInfo, FlacPreScanMethodMode mode)
+        public void ScanStream(FlacMetadataStreamInfo streamInfo, FlacPreScanMode mode)
         {
             long saveOffset = _stream.Position;
             StartScan(streamInfo, mode);
@@ -44,14 +44,14 @@ namespace CSCore.Codecs.FLAC
             TotalSamples = totalsamples;
         }
 
-        private void StartScan(FlacMetadataStreamInfo streamInfo, FlacPreScanMethodMode method)
+        private void StartScan(FlacMetadataStreamInfo streamInfo, FlacPreScanMode mode)
         {
             if (_isRunning)
                 throw new Exception("Scan is already running.");
 
             _isRunning = true;
 
-            if (method == FlacPreScanMethodMode.Async)
+            if (mode == FlacPreScanMode.Async)
             {
                 ThreadPool.QueueUserWorkItem(o =>
                 {
@@ -68,13 +68,13 @@ namespace CSCore.Codecs.FLAC
 
         private List<FlacFrameInformation> RunScan(FlacMetadataStreamInfo streamInfo)
         {
-#if DEBUG
+#if FLAC_DEBUG
             Stopwatch watch = new Stopwatch();
             watch.Start();
 #endif
             var result = ScanThisShit(streamInfo);
 
-#if DEBUG
+#if FLAC_DEBUG
             watch.Stop();
             Debug.WriteLine(String.Format("FlacPreScan finished: {0} Bytes processed in {1} ms.",
                 _stream.Length, watch.ElapsedMilliseconds));
@@ -97,9 +97,9 @@ namespace CSCore.Codecs.FLAC
             //    stream = new BufferedStream(stream);
 
             byte[] buffer = new byte[BufferSize];
-            int read = 0;
             stream.Position = 4; //fLaC
 
+            //skip the metadata
             FlacMetadata.ReadAllMetadataFromStream(stream);
 
             List<FlacFrameInformation> frames = new List<FlacFrameInformation>();
@@ -110,7 +110,7 @@ namespace CSCore.Codecs.FLAC
 
             while (true)
             {
-                read = stream.Read(buffer, 0, buffer.Length);
+                int read = stream.Read(buffer, 0, buffer.Length);
                 if (read <= FlacConstant.FrameHeaderSize)
                     break;
 
@@ -124,8 +124,8 @@ namespace CSCore.Codecs.FLAC
                         {
                             byte* ptrSafe = ptr;
                             ptr--;
-                            FlacFrameHeader tmp = null;
-                            if (IsFrame(ref ptr, streamInfo, baseHeader, out tmp))
+                            FlacFrameHeader tmp;
+                            if (IsFrame(ref ptr, streamInfo, out tmp))
                             {
                                 FlacFrameHeader header = tmp;
                                 if (frameInfo.IsFirstFrame)
@@ -134,7 +134,7 @@ namespace CSCore.Codecs.FLAC
                                     frameInfo.IsFirstFrame = false;
                                 }
 
-                                if (baseHeader.CompareTo(header))
+                                if (baseHeader != null && baseHeader.Equals(header))
                                 {
                                     frameInfo.StreamOffset = stream.Position - read + ((ptrSafe - 1) - bufferPtr);
                                     frameInfo.Header = header;
@@ -146,7 +146,6 @@ namespace CSCore.Codecs.FLAC
                                 {
                                     ptr = ptrSafe;
                                 }
-                                //todo:
                             }
                             else
                             {
@@ -162,7 +161,7 @@ namespace CSCore.Codecs.FLAC
             return frames;
         }
 
-        private unsafe bool IsFrame(ref byte* buffer, FlacMetadataStreamInfo streamInfo, FlacFrameHeader baseHeader, out FlacFrameHeader header)
+        private unsafe bool IsFrame(ref byte* buffer, FlacMetadataStreamInfo streamInfo, out FlacFrameHeader header)
         {
             header = new FlacFrameHeader(ref buffer, streamInfo, true, false);
             return !header.HasError;

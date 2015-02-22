@@ -25,15 +25,5 @@
         };
 
         public const int FrameHeaderSize = 16;
-        public const int MaxFixedOrder = 4;
-        public const int MaxLpcOrder = 32;
-
-        public const int SubframeLpcQlpCoeffPrecisionLen = 4;
-
-        public const int SubframeLpcQlpShiftLen = 5;
-
-        public const int EntropyCodingMethodTypeLen = 2;
-
-        public const int EntropyCodingMethodPartitionedRiceOrderLen = 4;
     }
 }

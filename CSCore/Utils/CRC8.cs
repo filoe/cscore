@@ -1,9 +1,8 @@
 ﻿namespace CSCore.Utils
 {
     /// <summary>
-    ///     http: //flac.sourceforge.net/format.html#frame_header
-    ///     CRC-8 (polynomial = x^8 + x^2 + x^1 + x^0, initialized with 0) of everything before the
-    ///     crc, including the sync code
+    /// This class is based on the CUETools.NET project (see http://sourceforge.net/p/cuetoolsnet/)
+    /// The author "Grigory Chudov" explicitly gave the permission to use the source as part of the cscore source code which got licensed under the ms-pl.
     /// </summary>
     internal class CRC8 : CRCBase<byte>
     {

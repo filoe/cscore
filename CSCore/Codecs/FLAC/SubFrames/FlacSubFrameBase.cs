@@ -1,91 +1,83 @@
 ﻿using System;
 using System.Diagnostics;
+// ReSharper disable once CheckNamespace
 namespace CSCore.Codecs.FLAC
 {
-    [CLSCompliant(false)]
-    public class FlacSubFrameBase
+    internal class FlacSubFrameBase
     {
-        public unsafe static FlacSubFrameBase GetSubFrame(FlacBitReader reader, FlacSubFrameData data, FlacFrameHeader header, int bps)
+        public unsafe static FlacSubFrameBase GetSubFrame(FlacBitReader reader, FlacSubFrameData data, FlacFrameHeader header, int bitsPerSample)
         {
-            int wastedBits = 0, order = 0;
+            int wastedBits = 0, order;
 
-            uint x = reader.ReadBits(8);
-            bool hasWastedBits = (x & 1) != 0;
-            x &= 0xFE; //1111 1110
+            uint firstByte = reader.ReadBits(8);
 
-            if (hasWastedBits)
+            if ((firstByte & 0x80) != 0) //Zero bit padding, to prevent sync-fooling string of 1s
             {
-                int u = (int)reader.ReadUnary();
-                wastedBits = u + 1;
-                bps -= wastedBits;
+                Debug.WriteLine("Flacdecoder subframe-header got no zero-bit padding.");
+                return null;
             }
 
-            if ((x & 0x80) != 0)
+            bool hasWastedBits = (firstByte & 1) != 0; //Wasted bits-per-sample' flag
+            if (hasWastedBits)
             {
-                Debug.WriteLine("Flacdecoder lost sync while reading FlacSubFrameHeader. [x & 0x80].");
-                return null;
+                int k = (int)reader.ReadUnary();
+                wastedBits = k + 1; //"k-1" follows -> add 1
+                bitsPerSample -= wastedBits;
             }
 
             FlacSubFrameBase subFrame;
+            var subframeType = (firstByte & 0x7E) >> 1; //0111 1110
 
-            if ((x > 2 && x < 16) ||
-                 (x > 24 && x < 64))
+            if (subframeType == 0) //000000
             {
-                Debug.WriteLine("Invalid FlacSubFrameHeader. [" + x.ToString("x") + "]");
-                return null;
+                subFrame = new FlacSubFrameConstant(reader, header, data, bitsPerSample);
             }
-
-            if (x == 0)
+            else if (subframeType == 1) //000001
             {
-                subFrame = new FlacSubFrameConstant(reader, header, data, bps);
+                subFrame = new FlacSubFrameVerbatim(reader, header, data, bitsPerSample);
             }
-            else if (x == 2)
+            else if ((subframeType & 0x08) != 0) //001000 = 0x08
             {
-                //verbatim
-                subFrame = new FlacSubFrameVerbatim(reader, header, data, bps);
+                order = (int) (subframeType & 0x07);
+                subFrame = new FlacSubFrameFixed(reader, header, data, bitsPerSample, order);
             }
-            else if (x >= 16 && x <= 24)
+            else if ((subframeType & 0x20) != 0) //100000 = 0x20
             {
-                //fixed
-                order = (int)((x >> 1) & 7);
-                subFrame = new FlacSubFrameFixed(reader, header, data, bps, order);
-            }
-            else if (x >= 64)
-            {
-                //lpc
-                order = (int)(((x >> 1) & 31) + 1);
-                subFrame = new FlacSubFrameLPC(reader, header, data, bps, order);
+                order = (int) (subframeType & 0x1F) + 1;
+                subFrame = new FlacSubFrameLPC(reader, header, data, bitsPerSample, order);
             }
             else
             {
-                Debug.WriteLine("Invalid Flac-SubframeType: x = " + x + ".");
+                Debug.WriteLine(String.Format("Invalid Flac-SubframeType. SubframeType: 0x{0:x}.", subframeType));
                 return null;
             }
 
             if (hasWastedBits)
             {
-                int* ptrDest = data.DestBuffer;
+                int* destination = data.DestinationBuffer;
                 for (int i = 0; i < header.BlockSize; i++)
                 {
-                    *(ptrDest++) <<= wastedBits;
+                    *(destination++) <<= wastedBits;
                 }
             }
 
-            //System.Diagnostics.Debug.WriteLine(subFrame.GetType().Name);
-
-            //check null removed
+#if FLAC_DEBUG
             subFrame.WastedBits = wastedBits;
-
+#endif
             return subFrame;
         }
 
-        public int WastedBits { get; protected set; }
+#if FLAC_DEBUG
+        public int WastedBits { get; private set; }
 
-        public FlacFrameHeader Header { get; protected set; }
+        public FlacFrameHeader Header { get; private set; }
+#endif
 
         protected FlacSubFrameBase(FlacFrameHeader header)
         {
+#if FLAC_DEBUG
             Header = header;
+#endif
         }
     }
 }
