@@ -4,7 +4,7 @@ namespace CSCore.DMO
 {
     /// <summary>
     ///     Defines flags that specify search criteria when enumerating Microsoft DirectX Media Objects.
-    ///     See http://msdn.microsoft.com/en-us/library/windows/desktop/dd375497(v=vs.85).aspx.
+    ///     For more information, see <see href="http://msdn.microsoft.com/en-us/library/windows/desktop/dd375497(v=vs.85).aspx"/>.
     /// </summary>
     /// <remarks>
     ///     A software key enables the developer of a DMO to control who uses the DMO. If a DMO has a software key,

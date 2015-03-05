@@ -1,10 +1,13 @@
-﻿using CSCore.Win32;
+﻿using System;
+using System.Runtime.Serialization;
+using CSCore.Win32;
 
 namespace CSCore.DMO
 {
     /// <summary>
     ///     DirectX Media Object COM Exception
     /// </summary>
+    [Serializable]
     public class DmoException : Win32ComException
     {
         /// <summary>
@@ -18,6 +21,19 @@ namespace CSCore.DMO
         /// <param name="member">Name of the COM-function which returned the specified <paramref name="result" />.</param>
         public DmoException(int result, string interfaceName, string member)
             : base(result, interfaceName, member)
+        {
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="DmoException" /> class from serialization data.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo" /> object that holds the serialized object data.</param>
+        /// <param name="context">
+        ///     The StreamingContext object that supplies the contextual information about the source or
+        ///     destination.
+        /// </param>
+        public DmoException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
 

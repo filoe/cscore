@@ -14,9 +14,9 @@ namespace CSCore.DMO
         private const string InterfaceName = "IEnumDMO";
 
         /// <summary>
-        ///     Creates a new DMO Enumerator based on its pointer.
+        /// Initializes a new instance of the <see cref="EnumDmo"/> class.
         /// </summary>
-        /// <param name="ptr"></param>
+        /// <param name="ptr">The native pointer of the COM object.</param>
         public EnumDmo(IntPtr ptr)
             : base(ptr)
         {
@@ -52,6 +52,7 @@ namespace CSCore.DMO
         ///     See <see cref="DmoEnumeratorCategories" /> for a list of category guids.
         /// </param>
         /// <param name="flags">Flags that specify search criteria.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> that can be used to iterate through the enumerated DMOs.</returns>
         public static IEnumerable<DmoEnumItem> EnumerateDMOs(Guid category, DmoEnumFlags flags)
         {
             using (EnumDmo enumerator = EnumerateDMOs(category, flags, null, null))
@@ -174,6 +175,8 @@ namespace CSCore.DMO
         /// <summary>
         ///     This method is not implemented.
         /// </summary>
+        /// <param name="pEnum">Reserved</param>
+        /// <returns><see cref="HResult.E_NOTIMPL"/></returns>
         public unsafe int CloneNative(out IntPtr pEnum)
         {
             fixed (void* p = &pEnum)
@@ -185,6 +188,7 @@ namespace CSCore.DMO
         /// <summary>
         ///     This method is not implemented.
         /// </summary>
+        /// <returns>This method is not implemented an will throw an <see cref="DmoException"/> with the error code <see cref="HResult.E_NOTIMPL"/>.</returns>
         public EnumDmo Clone()
         {
             IntPtr p;

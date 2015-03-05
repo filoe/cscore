@@ -6,15 +6,14 @@ namespace CSCore.DMO
 {
     /// <summary>
     ///     Default-Implementation of the IMediaBuffer interface.
-    ///     See http://msdn.microsoft.com/en-us/library/windows/desktop/dd376684(v=vs.85).aspx.
+    ///     For more information, see <see href="http://msdn.microsoft.com/en-us/library/windows/desktop/dd376684(v=vs.85).aspx"/>.
     /// </summary>
-    public class MediaBuffer : IMediaBuffer, IDisposable, IWriteable
+    public sealed class MediaBuffer : IMediaBuffer, IDisposable, IWriteable
     {
-        private const string N = "IMediaBuffer";
-
         private readonly int _maxlength;
         private IntPtr _buffer;
         private int _length;
+        private bool _disposed;
 
         /// <summary>
         ///     Creates a MediaBuffer and allocates the specified number of bytes in the memory.
@@ -62,10 +61,19 @@ namespace CSCore.DMO
         /// </summary>
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            if (!_disposed)
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+                _disposed = true;
+            }
         }
 
+        /// <summary>
+        /// The SetLength method specifies the length of the data currently in the buffer.
+        /// </summary>
+        /// <param name="length">Size of the data, in bytes. The value must not exceed the buffer's maximum size. Call the <see cref="IMediaBuffer.GetMaxLength"/> method to obtain the maximum size.</param>
+        /// <returns>HRESULT</returns>
         int IMediaBuffer.SetLength(int length)
         {
             if (length > MaxLength)
@@ -74,12 +82,23 @@ namespace CSCore.DMO
             return (int) HResult.S_OK;
         }
 
+        /// <summary>
+        /// The <see cref="IMediaBuffer.GetMaxLength"/> method retrieves the maximum number of bytes this buffer can hold.
+        /// </summary>
+        /// <param name="length">A variable that receives the buffer's maximum size, in bytes.</param>
+        /// <returns>HRESULT</returns>
         int IMediaBuffer.GetMaxLength(out int length)
         {
             length = _maxlength;
             return (int) HResult.S_OK;
         }
 
+        /// <summary>
+        /// The <see cref="IMediaBuffer.GetBufferAndLength"/> method retrieves the buffer and the size of the valid data in the buffer.
+        /// </summary>
+        /// <param name="ppBuffer">Address of a pointer that receives the buffer array. Can be <see cref="IntPtr.Zero"/> if <paramref name="validDataByteLength"/> is not <see cref="IntPtr.Zero"/>.</param>
+        /// <param name="validDataByteLength">Pointer to a variable that receives the size of the valid data, in bytes. Can be <see cref="IntPtr.Zero"/> if <paramref name="ppBuffer"/> is not <see cref="IntPtr.Zero"/>.</param>
+        /// <returns>HRESULT</returns>
         int IMediaBuffer.GetBufferAndLength(IntPtr ppBuffer, IntPtr validDataByteLength)
         {
             //if (ppBuffer == IntPtr.Zero && validDataByteLength == IntPtr.Zero)
@@ -147,8 +166,8 @@ namespace CSCore.DMO
         ///     buffer.
         /// </param>
         /// <param name="count">The maximum number of bytes to read from the buffer.</param>
-        /// <param name="sourceOffset">Zero-based byte source offset.</param>
-        public unsafe void Read(byte[] buffer, int offset, int count, int sourceOffset)
+        /// <param name="sourceOffset">Zero-based offset inside of the source buffer at which to begin copying data.</param>
+        internal unsafe void Read(byte[] buffer, int offset, int count, int sourceOffset)
         {
             if (count > Length)
                 throw new ArgumentOutOfRangeException("count", "count is greater than MaxLength");
@@ -162,7 +181,7 @@ namespace CSCore.DMO
         /// <summary>
         ///     Frees the allocated memory of the internally used buffer.
         /// </summary>
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (_buffer != IntPtr.Zero)
             {

@@ -3,7 +3,7 @@
 namespace CSCore.DMO
 {
     /// <summary>
-    ///     Contains DMO-Categories for enumerating DMOs.
+    ///     Defines DMO-Categories for enumerating DMOs.
     /// </summary>
     public static class DmoEnumeratorCategories
     {
@@ -32,6 +32,6 @@ namespace CSCore.DMO
         /// </summary>
         public static readonly Guid AudioEncoder = new Guid("33D9A761-90C8-11d0-BD43-00A0C911CE86");
 
-        //note: There would be some more categories. But since this library is an audio library, I do not include the video,...
+        //note: There would be some more categories. But since this library is an audio library, We do not include the video,...
     }
 }

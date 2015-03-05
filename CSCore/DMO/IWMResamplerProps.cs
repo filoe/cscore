@@ -6,7 +6,7 @@ namespace CSCore.DMO
     [ComImport]
     [Guid("E7E9984F-F09F-4da4-903F-6E2E0EFE56B5")]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IWMResamplerProps
+    internal interface IWMResamplerProps
     {
         /// <summary>
         ///     Specifies the quality of the output.
@@ -15,7 +15,7 @@ namespace CSCore.DMO
         ///     Specifies the quality of the output. The valid range is 1 to 60,
         ///     inclusive.
         /// </param>
-        /// <returns></returns>
+        /// <returns>HRESULT</returns>
         int SetHalfFilterLength(int quality);
 
         //http://msdn.microsoft.com/en-us/library/windows/desktop/ff819252(v=vs.85).aspx

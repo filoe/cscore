@@ -146,7 +146,7 @@ namespace CSCore.DMO
         public abstract long Length { get; }
 
         /// <summary>
-        /// Gets a value indicating whether the <see cref="IWaveStream"/> supports seeking.
+        /// Gets a value indicating whether the <see cref="IAudioSource"/> supports seeking.
         /// </summary>
         public abstract bool CanSeek { get; }
 
@@ -179,20 +179,23 @@ namespace CSCore.DMO
         protected abstract int GetInputData(ref byte[] inputDataBuffer, int requested);
 
         /// <summary>
-        ///     Creates a MediaObjec to use. This can be a decoder, effect, ...
+        ///     Creates and returns a new <see cref="MediaObject"/> instance to use for processing audio data. This can be a decoder, effect, ...
         /// </summary>
+        /// <param name="inputFormat">The input format of the <see cref="MediaObject"/> to create.</param>
+        /// <param name="outputFormat">The output format of the <see cref="MediaObject"/> to create.</param>
+        /// <returns>The created <see cref="MediaObject"/> to use for processing audio data.</returns>
         protected abstract MediaObject CreateMediaObject(WaveFormat inputFormat, WaveFormat outputFormat);
 
         /// <summary>
         ///     Gets the input format to use.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The input format.</returns>
         protected abstract WaveFormat GetInputFormat();
 
         /// <summary>
         ///     Gets the output format to use.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The output format.</returns>
         protected abstract WaveFormat GetOutputFormat();
 
         /// <summary>
@@ -224,10 +227,10 @@ namespace CSCore.DMO
         }
 
         /// <summary>
-        ///     Translates a position of the inputstream to the position in the outputstream.
+        ///     Converts a position of the inputstream to the equal position in the outputstream.
         /// </summary>
-        /// <param name="position">Any position/offset of the inputstream.</param>
-        /// <returns>Position in the outputstream.</returns>
+        /// <param name="position">Any position/offset of the inputstream, in bytes.</param>
+        /// <returns>Position in the outputstream, in bytes.</returns>
         protected virtual long InputToOutput(long position)
         {
             //long result = (long)(position * _ratio);
@@ -237,10 +240,10 @@ namespace CSCore.DMO
         }
 
         /// <summary>
-        ///     Translates a position of the outputstream to the position in the inputstream.
+        ///     Translates a position of the outputstream to the equal position in the inputstream.
         /// </summary>
-        /// <param name="position">Any position/offset of the outputstream.</param>
-        /// <returns>Position in the inputstream.</returns>
+        /// <param name="position">Any position/offset of the outputstream, in bytes.</param>
+        /// <returns>Position in the inputstream, in bytes.</returns>
         protected virtual long OutputToInput(long position)
         {
             //long result = (long)(position * _ratio);
@@ -259,8 +262,9 @@ namespace CSCore.DMO
         }
 
         /// <summary>
-        ///     Disposes the <see cref="DmoStream" />.
+        /// Releases the <see cref="DmoStream"/>.
         /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposed)
@@ -274,6 +278,9 @@ namespace CSCore.DMO
             _disposed = true;
         }
 
+        /// <summary>
+        /// Finalizes an instance of the <see cref="DmoStream"/> class.
+        /// </summary>
         ~DmoStream()
         {
             Dispose(false);

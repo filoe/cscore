@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace CSCore.DMO
 {
-    public sealed class WMResampler : IDisposable
+    internal sealed class WMResampler : IDisposable
     {
         private bool _disposed;
         private MediaObject _mediaObject;

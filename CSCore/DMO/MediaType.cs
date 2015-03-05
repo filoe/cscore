@@ -4,13 +4,13 @@ using System.Runtime.InteropServices;
 namespace CSCore.DMO
 {
     /// <summary>
-    ///     DMO_MEDIA_TYPE.
-    ///     See http://msdn.microsoft.com/en-us/library/windows/desktop/dd375504(v=vs.85).aspx.
+    ///     The <see cref="MediaType"/> structure describes the format of the data used by a stream in a Microsoft DirectX Media Object (DMO).
+    ///     For more information, <see href="http://msdn.microsoft.com/en-us/library/windows/desktop/dd375504(v=vs.85).aspx"/>.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public struct MediaType
+    public struct MediaType : IDisposable
     {
-        public static readonly Guid FORMAT_WaveFormatEx = new Guid("05589f81-c356-11ce-bf01-00aa0055595a");
+        private static readonly Guid FORMAT_WaveFormatEx = new Guid("05589f81-c356-11ce-bf01-00aa0055595a");
 
         /// <summary>
         ///     Creates a MediaType based on a given WaveFormat. Don't forget to call Free() for the returend MediaType.
@@ -97,9 +97,9 @@ namespace CSCore.DMO
         public IntPtr PtrFormat;
 
         /// <summary>
-        ///     Frees the allocated members of a media type structure.
+        /// Frees the allocated members of a media type structure by calling the <c>MoFreeMediaType</c> function.
         /// </summary>
-        public void Free()
+        public void Dispose()
         {
             NativeMethods.MoFreeMediaType(ref this);
         }
