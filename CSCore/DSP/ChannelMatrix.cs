@@ -5,7 +5,7 @@ using CSCore.DMO;
 namespace CSCore.DSP
 {
     /// <summary>
-    ///     Defines a channel conversion matrix. For more details see
+    ///     Represents a channel conversion matrix. For more information, see
     ///     <see href="http://msdn.microsoft.com/en-us/library/windows/desktop/ff819070(v=vs.85).aspx" />.
     /// </summary>
     public class ChannelMatrix

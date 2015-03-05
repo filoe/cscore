@@ -208,7 +208,7 @@ namespace CSCore.DSP
         {
             //long result = (long)(position * _ratio);
             var result = (long) (position / Ratio);
-            result -= (result % BaseStream.WaveFormat.BlockAlign);
+            result -= (result % BaseSource.WaveFormat.BlockAlign);
             return result;
         }
 
@@ -245,7 +245,13 @@ namespace CSCore.DSP
         {
             if (obj != null)
             {
-                obj.Dispose();
+                try
+                {
+                    obj.Dispose();
+                }
+                catch (ObjectDisposedException)
+                {
+                }
                 obj = null;
             }
         }

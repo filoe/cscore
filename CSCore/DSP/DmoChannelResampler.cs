@@ -8,6 +8,8 @@ namespace CSCore.DSP
     /// </summary>
     public class DmoChannelResampler : DmoResampler
     {
+        private readonly ChannelMatrix _channelMatrix;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="DmoChannelResampler" /> class.
         /// </summary>
@@ -50,7 +52,16 @@ namespace CSCore.DSP
                 channelMatrix.OutputMask);
 
             Initialize(inputformat, Outputformat);
-            Resampler.ResamplerProps.SetUserChannelMtx(channelMatrix.GetOneDimensionalMatrix());
+            _channelMatrix = channelMatrix;
+            CommitChannelMatrixChanges();
+        }
+
+        /// <summary>
+        /// Commits all channel-matrix-changes.
+        /// </summary>
+        public void CommitChannelMatrixChanges()
+        {
+            Resampler.ResamplerProps.SetUserChannelMtx(_channelMatrix.GetOneDimensionalMatrix());
         }
     }
 }
