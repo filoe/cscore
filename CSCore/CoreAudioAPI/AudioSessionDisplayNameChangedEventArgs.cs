@@ -3,7 +3,7 @@ using System;
 namespace CSCore.CoreAudioAPI
 {
     /// <summary>
-    /// AudioSessionDisplayNameChangedEventArgs
+    /// Provides data for the <see cref="AudioSessionEvents.DisplayNameChanged"/> event.
     /// </summary>
     public class AudioSessionDisplayNameChangedEventArgs : AudioSessionEventContextEventArgs
     {

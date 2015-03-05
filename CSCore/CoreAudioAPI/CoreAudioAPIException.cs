@@ -1,4 +1,5 @@
-﻿using CSCore.Win32;
+﻿using System;
+using CSCore.Win32;
 
 namespace CSCore.CoreAudioAPI
 {
@@ -6,6 +7,7 @@ namespace CSCore.CoreAudioAPI
     /// CoreAudioAPI COM Exception
     /// </summary>
 // ReSharper disable once InconsistentNaming
+    [Serializable]
     public class CoreAudioAPIException : Win32ComException
     {
         /// <summary>
