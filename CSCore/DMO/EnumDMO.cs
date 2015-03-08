@@ -37,8 +37,21 @@ namespace CSCore.DMO
             DmoPartialMediaType[] outputTypes)
         {
             IntPtr ptr;
-            int result = NativeMethods.DMOEnum(ref category, flags, inputTypes != null ? inputTypes.Length : 0, inputTypes,
-                outputTypes != null ? inputTypes.Length : 0, outputTypes, out ptr);
+            int numberOfInputTypes = 0;
+            int numberOfOutputTypes = 0;
+            if (inputTypes != null)
+                numberOfInputTypes = inputTypes.Length;
+            if (outputTypes != null)
+                numberOfOutputTypes = outputTypes.Length;
+
+            int result = NativeMethods.DMOEnum(
+                ref category,
+                flags, 
+                numberOfInputTypes, 
+                inputTypes,
+                numberOfOutputTypes, 
+                outputTypes, 
+                out ptr);
             DmoException.Try(result, "Interops", "DMOEnum");
 
             return new EnumDmo(ptr);
@@ -57,7 +70,7 @@ namespace CSCore.DMO
         {
             using (EnumDmo enumerator = EnumerateDMOs(category, flags, null, null))
             {
-                var item = new DmoEnumItem[1];
+                DmoEnumItem[] item;
                 while ((item = enumerator.Next(1)).Length > 0)
                 {
                     yield return item[0];
@@ -78,7 +91,7 @@ namespace CSCore.DMO
             if (itemsToFetch <= 0)
                 throw new ArgumentOutOfRangeException("itemsToFetch");
 
-            int result = 0;
+            int result;
             clsids = new Guid[itemsToFetch];
             names = new string[itemsToFetch];
 
