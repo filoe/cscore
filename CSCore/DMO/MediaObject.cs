@@ -903,5 +903,58 @@ namespace CSCore.DMO
         {
             DmoException.Try(LockNative(bLock), n, "Lock");
         }
+
+        /// <summary>
+        ///     Acquires or releases a lock on the DMO. Call this method to keep the DMO serialized when performing multiple
+        ///     operations.
+        /// </summary>
+        /// <returns>A disposable object which can be used to unlock the <see cref="MediaObject"/> by calling its <see cref="LockDisposable.Dispose"/> method.</returns>
+        /// <example>
+        /// This example shows how to use the <see cref="Lock()"/> method:
+        /// <code>
+        /// partial class TestClass
+        /// {
+        /// 	public void DoStuff(MediaObject mediaObject)
+        /// 	{
+        /// 		using(var lock = mediaObject.Lock())
+        /// 		{
+        /// 			//do some stuff
+        /// 		}
+        /// 		//the mediaObject gets automatically unlocked by the using statement after "doing your stuff"
+        /// 	}
+        /// }
+        /// </code>
+        /// </example>
+        public LockDisposable Lock()
+        {
+            Lock(1);
+            return new LockDisposable(this);
+        }
+
+        /// <summary>
+        /// Used to unlock a <see cref="MediaObject"/> after locking it by calling the <see cref="MediaObject.Lock()"/> method.
+        /// </summary>
+        public class LockDisposable : IDisposable
+        {
+            private readonly MediaObject _mediaObject;
+            private bool _disposed;
+
+            internal LockDisposable(MediaObject mediaObject)
+            {
+                _mediaObject = mediaObject;
+            }
+
+            /// <summary>
+            /// Unlocks the locked <see cref="MediaObject"/>.
+            /// </summary>
+            public void Dispose()
+            {
+                if (!_disposed)
+                {
+                    _mediaObject.Lock(0);
+                    _disposed = true;
+                }
+            }
+        }
     }
 }
