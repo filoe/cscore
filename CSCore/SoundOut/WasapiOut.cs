@@ -413,7 +413,12 @@ namespace CSCore.SoundOut
                         //3 * latency = see msdn: recommended timeout
                         int eventWaitHandleIndex = WaitHandle.WaitAny(eventWaitHandleArray, 3 * _latency, false);
                         if (eventWaitHandleIndex == WaitHandle.WaitTimeout)
-                            continue;
+                        {
+                            //guarantee that the stopped audio client (in exclusive and eventsync mode) can be
+                            //restarted below
+                            if(PlaybackState != PlaybackState.Playing && !isAudioClientStopped)
+                                continue;
+                        }
                     }
                     else
                     {
