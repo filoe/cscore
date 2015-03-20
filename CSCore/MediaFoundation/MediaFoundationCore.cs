@@ -1,4 +1,5 @@
-﻿using CSCore.Win32;
+﻿using System.IO;
+using CSCore.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace CSCore.MediaFoundation
 {
-    public static class MediaFoundationCore
+    internal static class MediaFoundationCore
     {
         public const int MF_SDK_VERSION = 0x2;
         public const int MF_API_VERSION = 0x70;
@@ -26,6 +27,8 @@ namespace CSCore.MediaFoundation
             {
                 Startup();
                 IsSupported = true;
+
+                AppDomain.CurrentDomain.ProcessExit += (s, e) => Shutdown();
             }
             catch (Exception)
             {
@@ -33,26 +36,10 @@ namespace CSCore.MediaFoundation
             }
         }
 
-        public static IEnumerable<MFActivate> EnumerateTransforms(Guid category, MFTEnumFlags flags)
-        {
-            IntPtr ptr;
-            int count;
-            int res = NativeMethods.MFTEnumEx(category, flags, null, null, out ptr, out count);
-            MediaFoundationException.Try(res, "Interops", "MFTEnumEx");
-            for (int i = 0; i < count; i++)
-            {
-                var ptr0 = ptr;
-                var ptr1 = Marshal.ReadIntPtr(new IntPtr(ptr0.ToInt64() + i * Marshal.SizeOf(ptr0)));
-                yield return new MFActivate(ptr1);
-            }
-
-            Marshal.FreeCoTaskMem(ptr);
-        }
-
-        public static MFSinkWriter CreateSinkWriterFromMFByteStream(IMFByteStream byteStream, IMFAttributes attributes)
+        public static MFSinkWriter CreateSinkWriterFromMFByteStream(MFByteStream byteStream, MFAttributes attributes)
         {
             IntPtr p;
-            int result = NativeMethods.ExternMFCreateSinkWriterFromURL(null, byteStream, attributes, out p);
+            int result = NativeMethods.ExternMFCreateSinkWriterFromURL(null, byteStream.BasePtr, attributes.BasePtr, out p);
             MediaFoundationException.Try(result, "Interops", "MFCreateSinkWriterFromURL");
             return new MFSinkWriter(p);
         }
@@ -61,50 +48,59 @@ namespace CSCore.MediaFoundation
         {
             try
             {
-                foreach (var t in transforms)
-                {
-                    var value = (Guid) t[MediaFoundationAttributes.MFT_TRANSFORM_CLSID_Attribute];
-                    if (value == transformGuid)
-                        return true;
-                }
+                return
+                    transforms.Select(t => (Guid) t[MediaFoundationAttributes.MFT_TRANSFORM_CLSID_Attribute])
+                        .Any(value => value == transformGuid);
             }
             catch (Exception)
             {
                 return false;
             }
-            return false;
         }
 
-        public static IMFByteStream IStreamToByteStream(IStream stream)
+        public static MFByteStream IStreamToByteStream(IStream stream)
         {
             if (stream == null)
                 throw new ArgumentNullException("stream");
-            IMFByteStream result;
+            IntPtr result;
             MediaFoundationException.Try(NativeMethods.MFCreateMFByteStreamOnStream(stream, out result), "Interops", "MFCreateMFByteStreamOnStream");
-            return result;
+            return new MFByteStream(result);
+        }
+
+        public static MFByteStream StreamToByteStream(Stream stream)
+        {
+            if (stream == null)
+                throw new ArgumentNullException("stream");
+
+            return IStreamToByteStream(new ComStream(stream));
         }
 
         public static MFSourceReader CreateSourceReaderFromByteStream(IntPtr byteStream, IntPtr attributes)
+        {
+            return new MFSourceReader(CreateSourceReaderFromByteStreamNative(byteStream, attributes));
+        }
+
+        public static IntPtr CreateSourceReaderFromByteStreamNative(IntPtr byteStream, IntPtr attributes)
         {
             if (byteStream == IntPtr.Zero)
                 throw new ArgumentNullException("byteStream");
 
             IntPtr result = IntPtr.Zero;
             MediaFoundationException.Try(NativeMethods.MFCreateSourceReaderFromByteStream(byteStream, attributes, out result), "Interops", "MFCreateSourceReaderFromByteStream");
-            return new MFSourceReader(result);
-        }
-
-        public static MFSourceReader CreateSourceReaderFromByteStream(IMFByteStream byteStream, IntPtr attributes)
-        {
-            return CreateSourceReaderFromByteStream(Marshal.GetComInterfaceForObject(byteStream, typeof(IMFByteStream)), attributes);
+            return result;
         }
 
         public static MFSourceReader CreateSourceReaderFromUrl(string url)
         {
+            return new MFSourceReader(CreateSourceReaderFromUrlNative(url));
+        }
+
+        public static IntPtr CreateSourceReaderFromUrlNative(string url)
+        {
             IntPtr ptr = IntPtr.Zero;
             int result = NativeMethods.MFCreateSourceReaderFromURL(url, IntPtr.Zero, out ptr);
             MediaFoundationException.Try(result, "Interops", "MFCreateSourceReaderFromURL");
-            return new MFSourceReader(ptr);
+            return ptr;
         }
 
         private static bool _isstarted;
@@ -134,16 +130,16 @@ namespace CSCore.MediaFoundation
             return new MFMediaType(mediaType);
         }
 
-        public static IMFAttributes CreateEmptyAttributes(int initialSize)
+        public static MFAttributes CreateEmptyAttributes(int initialSize)
         {
-            IMFAttributes attributes;
-            int result = NativeMethods.ExternMFCreateAttributes(out attributes, initialSize);
+            IntPtr p;
+            int result = NativeMethods.ExternMFCreateAttributes(out p, initialSize);
             if (result < 0)
             {
                 MediaFoundationException.Try(result, "Interops", "MFCreateAttributes");
             }
 
-            return attributes;
+            return new MFAttributes(p);
         }
 
         public static IntPtr CreateMemoryBuffer(int length)
@@ -170,10 +166,10 @@ namespace CSCore.MediaFoundation
 
         public static MFMediaType[] GetEncoderMediaTypes(Guid audioSubType)
         {
-            IMFCollection collection;
             try
             {
-                MediaFoundationException.Try(NativeMethods.MFTranscodeGetAudioOutputAvailableTypes(audioSubType, MFTEnumFlags.All, null, out collection),
+                IMFCollection collection;
+                MediaFoundationException.Try(NativeMethods.MFTranscodeGetAudioOutputAvailableTypes(audioSubType, MFTEnumFlags.All, IntPtr.Zero, out collection),
                     "Interops",
                     "MFTranscodeGetAudioOutputAvailableTypes");
 
@@ -201,24 +197,6 @@ namespace CSCore.MediaFoundation
 
                 throw;
             }
-        }
-
-        public static int[] GetEncoderBitrates(Guid audioSubType, int sampleRate, int channels)
-        {
-            var mediaTypes = GetEncoderMediaTypes(audioSubType);
-            List<int> bitRates = new List<int>();
-
-            foreach (var mediaType in mediaTypes)
-            {
-                if (mediaType.SampleRate == sampleRate && mediaType.Channels == channels)
-                {
-                    int t = mediaType.AverageBytesPerSecond * 8;
-                    if (!bitRates.Contains(t))
-                        bitRates.Add(t);
-                }
-            }
-
-            return bitRates.OrderBy(x => x).ToArray();
         }
     }
 }

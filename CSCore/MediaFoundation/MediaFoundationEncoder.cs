@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Threading;
 using CSCore.Codecs.AAC;
 using CSCore.DMO;
 using CSCore.Win32;
@@ -12,18 +11,18 @@ using CSCore.Win32;
 namespace CSCore.MediaFoundation
 {
     /// <summary>
-    ///     Provides encoding through the Mediafoundation.
+    ///     A generic encoder for all installed Mediafoundation-Encoders.
     /// </summary>
     public class MediaFoundationEncoder : IDisposable, IWriteable
     {
-        private ComStream _targetBaseStream;
         private bool _disposed;
         private long _position;
         private MFSinkWriter _sinkWriter;
         private int _sourceBytesPerSecond;
         private int _streamIndex;
+        private ComStream _targetBaseStream;
         private MFMediaType _targetMediaType;
-        private IMFByteStream _targetStream;
+        private MFByteStream _targetStream;
 
         static MediaFoundationEncoder()
         {
@@ -35,12 +34,12 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        ///     Creates an new instance of the MediaFoundationEncoder.
+        ///     Creates an new instance of the <see cref="MediaFoundationEncoder"/> class.
         /// </summary>
-        /// <param name="inputMediaType">Mediatype of the source which gets encoded.</param>
+        /// <param name="inputMediaType">Mediatype of the source to encode.</param>
         /// <param name="stream">Stream which will be used to store the encoded data.</param>
-        /// <param name="targetMediaType">The format, the data gets encoded to.</param>
-        /// <param name="containerType">See TranscodeContainerTypes-class.</param>
+        /// <param name="targetMediaType">The format of the encoded data.</param>
+        /// <param name="containerType">See container type. For a list of all available container types, see <see cref="TranscodeContainerTypes"/>.</param>
         public MediaFoundationEncoder(Stream stream, MFMediaType inputMediaType, MFMediaType targetMediaType,
             Guid containerType)
         {
@@ -65,7 +64,7 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        ///     Gets the total length of all encoded data.
+        ///     Gets the total duration of all encoded data.
         /// </summary>
         public TimeSpan EncodedDuration
         {
@@ -81,7 +80,7 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        ///     Gets the  OutputMediaType.
+        ///     Gets the media type of the encoded data.
         /// </summary>
         public MFMediaType OutputMediaType
         {
@@ -89,7 +88,7 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Gets the <see cref="MFSinkWriter"/> which is used to write.
+        ///     Gets the <see cref="MFSinkWriter" /> which is used to write to the <see cref="TargetStream"/>.
         /// </summary>
         protected MFSinkWriter SinkWriter
         {
@@ -98,9 +97,9 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Gets the destination stream which is used to store the encoded audio data.
+        ///     Gets the destination stream which is used to store the encoded audio data.
         /// </summary>
-        protected IMFByteStream TargetStream
+        protected MFByteStream TargetStream
         {
             get { return _targetStream; }
             set { _targetStream = value; }
@@ -116,9 +115,9 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        ///     Encodes raw data.
+        ///     Encodes raw audio data.
         /// </summary>
-        /// <param name="buffer">Buffer which contains raw data to encode.</param>
+        /// <param name="buffer">A byte-array which contains raw data to encode.</param>
         /// <param name="offset">The zero-based byte offset in buffer at which to begin encoding bytes to the underlying stream.</param>
         /// <param name="count">The number of bytes to encode.</param>
         public void Write(byte[] buffer, int offset, int count)
@@ -138,16 +137,16 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Sets and initializes the targetstream for the encoding process.
+        ///     Sets and initializes the targetstream for the encoding process.
         /// </summary>
         /// <param name="stream">Stream which should be used as the targetstream.</param>
-        /// <param name="inputMediaType">Mediatype of the raw input data which should be encoded.</param>
+        /// <param name="inputMediaType">Mediatype of the raw input data to encode.</param>
         /// <param name="targetMediaType">Mediatype of the encoded data.</param>
-        /// <param name="containerType">Container type which should be used. See the <see cref="TranscodeContainerTypes"/> class.</param>
+        /// <param name="containerType">Container type which should be used.</param>
         protected void SetTargetStream(Stream stream, MFMediaType inputMediaType, MFMediaType targetMediaType,
             Guid containerType)
         {
-            IMFAttributes attributes = null;
+            MFAttributes attributes = null;
             try
             {
                 _targetBaseStream = new ComStream(stream);
@@ -155,7 +154,7 @@ namespace CSCore.MediaFoundation
 
                 attributes = MediaFoundationCore.CreateEmptyAttributes(2);
                 attributes.SetUINT32(MediaFoundationAttributes.MF_READWRITE_ENABLE_HARDWARE_TRANSFORMS, 1);
-                attributes.SetGUID(MediaFoundationAttributes.MF_TRANSCODE_CONTAINERTYPE, containerType);
+                attributes.SetGuid(MediaFoundationAttributes.MF_TRANSCODE_CONTAINERTYPE, containerType);
 
                 _sinkWriter = MediaFoundationCore.CreateSinkWriterFromMFByteStream(_targetStream, attributes);
 
@@ -177,8 +176,7 @@ namespace CSCore.MediaFoundation
                 }
                 if (_targetStream != null)
                 {
-                    _targetStream.Close();
-                    Marshal.ReleaseComObject(_targetStream);
+                    _targetStream.Dispose();
                     _targetStream = null;
                 }
                 throw;
@@ -186,11 +184,11 @@ namespace CSCore.MediaFoundation
             finally
             {
                 if (attributes != null)
-                    Marshal.ReleaseComObject(attributes);
+                    attributes.Dispose();
             }
         }
 
-        /// <returns>Ticks, NO BYTES!</returns>
+        //This method returns ticks, not bytes!
         private long WriteBlock(byte[] buffer, int offset, int count, int streamIndex, long positionInTicks,
             int sourceBytesPerSecond)
         {
@@ -200,14 +198,13 @@ namespace CSCore.MediaFoundation
                 {
                     sample.AddBuffer(mfBuffer);
 
-                    int currentLength, maxLength;
-                    IntPtr bufferPtr = mfBuffer.Lock(out maxLength, out currentLength);
-
-                        long ticks = BytesToNanoSeconds(count, sourceBytesPerSecond);
-                        Marshal.Copy(buffer, offset, bufferPtr, count);
+                    using (var @lock = mfBuffer.Lock())
+                    {
+                        Marshal.Copy(buffer, offset, @lock.Buffer, count);
                         mfBuffer.SetCurrentLength(count);
+                    }
 
-                    mfBuffer.Unlock();
+                    long ticks = BytesToNanoSeconds(count, sourceBytesPerSecond);
 
                     sample.SetSampleTime(positionInTicks);
                     sample.SetSampleDuration(ticks);
@@ -230,18 +227,21 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Disposes the <see cref="MediaFoundationEncoder"/>.
+        ///     Disposes the <see cref="MediaFoundationEncoder" />.
         /// </summary>
-        /// <param name="disposing">True to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
+        /// <param name="disposing">
+        ///     True to release both managed and unmanaged resources; false to release only unmanaged
+        ///     resources.
+        /// </param>
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposed)
             {
                 if (_sinkWriter != null)
                 {
-                    //thanks to martin48 for providing the following source code (see http://cscore.codeplex.com/discussions/574280):
-                    var statistics = _sinkWriter.GetStatistics(_streamIndex);
-                    if(statistics.DwByteCountQueued > 0 || statistics.QwNumSamplesReceived > 0)
+                    //thanks to martin48 (and naudio??) for providing the following source code (see http://cscore.codeplex.com/discussions/574280):
+                    MFSinkWriterStatistics statistics = _sinkWriter.GetStatistics(_streamIndex);
+                    if (statistics.ByteCountQueued > 0 || statistics.NumSamplesReceived > 0)
                         _sinkWriter.FinalizeWriting();
 
                     _sinkWriter.Dispose();
@@ -250,8 +250,7 @@ namespace CSCore.MediaFoundation
                 if (_targetStream != null)
                 {
                     _targetStream.Flush();
-                    _targetStream.Close();
-                    Marshal.ReleaseComObject(_targetStream);
+                    _targetStream.Dispose();
                     _targetStream = null;
                 }
                 if (_targetBaseStream != null && !_targetBaseStream.IsClosed())
@@ -264,7 +263,7 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Destructor which calls <see cref="Dispose(bool)"/>.
+        /// Finalizes an instance of the <see cref="MediaFoundationEncoder"/> class.
         /// </summary>
         ~MediaFoundationEncoder()
         {
@@ -272,26 +271,37 @@ namespace CSCore.MediaFoundation
         }
 
         #region create_encoder
+
         /// <summary>
-        /// Encodes the whole <paramref name="source"/> with the specified <paramref name="encoder"/>. The encoding process stops as soon as the <see cref="IWaveSource.Read"/> method of the specified <paramref name="source"/> returns 0.
+        ///     Encodes the whole <paramref name="source" /> with the specified <paramref name="encoder" />. The encoding process
+        ///     stops as soon as the <see cref="IReadableAudioSource{T}.Read" /> method of the specified <paramref name="source" />
+        ///     returns 0.
         /// </summary>
         /// <param name="encoder">The encoder which should be used to encode the audio data.</param>
-        /// <param name="source">The <see cref="IWaveSource"/> which provides the raw audio data to encode.</param>
+        /// <param name="source">The <see cref="IWaveSource" /> which provides the raw audio data to encode.</param>
         public static void EncodeWholeSource(MediaFoundationEncoder encoder, IWaveSource source)
         {
+            if (encoder == null)
+                throw new ArgumentNullException("encoder");
+            if (source == null)
+                throw new ArgumentNullException("source");
             var buffer = new byte[source.WaveFormat.BytesPerSecond * 4];
             int read;
             while ((read = source.Read(buffer, 0, buffer.Length)) > 0)
             {
-                Debug.WriteLine(String.Format("{0:#00.00}%", source.Position / (double)source.Length * 100));
+                Debug.WriteLine(String.Format("{0:#00.00}%", source.Position / (double) source.Length * 100));
                 encoder.Write(buffer, 0, read);
             }
         }
 
         /// <summary>
-        ///     See http://msdn.microsoft.com/en-us/library/windows/desktop/hh162907(v=vs.85).aspx for supported input and output
-        ///     types.
+        ///     Returns a new instance of the <see cref="MediaFoundationEncoder"/> class, configured as mp3 encoder.
         /// </summary>
+        /// <param name="sourceFormat">The input format, of the data to encode.</param>
+        /// <param name="bitRate">The bitrate to use. The final bitrate can differ from the specified value.</param>        
+        /// <param name="targetFilename">The file to write to.</param>
+        /// <remarks>For more information about supported input and output formats, see <see href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh162907(v=vs.85).aspx"/>.</remarks>
+        /// <returns>A new instance of the <see cref="MediaFoundationEncoder"/> class, configured as mp3 encoder.</returns>        
         // ReSharper disable once InconsistentNaming
         public static MediaFoundationEncoder CreateMP3Encoder(WaveFormat sourceFormat, string targetFilename,
             int bitRate = 192000)
@@ -301,9 +311,13 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        ///     See http://msdn.microsoft.com/en-us/library/windows/desktop/hh162907(v=vs.85).aspx for supported input and output
-        ///     types.
+        ///     Returns a new instance of the <see cref="MediaFoundationEncoder"/> class, configured as mp3 encoder.
         /// </summary>
+        /// <param name="sourceFormat">The input format, of the data to encode.</param>
+        /// <param name="bitRate">The bitrate to use. The final bitrate can differ from the specified value.</param>        
+        /// <param name="targetStream">The stream to write to.</param>
+        /// <remarks>For more information about supported input and output formats, see <see href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh162907(v=vs.85).aspx"/>.</remarks>
+        /// <returns>A new instance of the <see cref="MediaFoundationEncoder"/> class, configured as mp3 encoder.</returns>
         // ReSharper disable once InconsistentNaming
         public static MediaFoundationEncoder CreateMP3Encoder(WaveFormat sourceFormat, Stream targetStream,
             int bitRate = 192000)
@@ -315,7 +329,7 @@ namespace CSCore.MediaFoundation
             if (targetStream.CanWrite != true)
                 throw new ArgumentException("Stream not writeable.", "targetStream");
 
-            MFMediaType targetMediaType = FindBestMediaType(MFMediaTypes.MFAudioFormat_MP3, sourceFormat.SampleRate,
+            MFMediaType targetMediaType = FindBestMediaType(AudioSubTypes.MpegLayer3, sourceFormat.SampleRate,
                 sourceFormat.Channels, bitRate);
             MFMediaType sourceMediaType = MediaFoundationCore.MediaTypeFromWaveFormat(sourceFormat);
 
@@ -327,9 +341,13 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        ///     See http://msdn.microsoft.com/en-us/library/windows/desktop/ff819498(v=vs.85).aspx for supported input and output
-        ///     types.
+        ///     Returns a new instance of the <see cref="MediaFoundationEncoder"/> class, configured as wma encoder.
         /// </summary>
+        /// <param name="sourceFormat">The input format, of the data to encode.</param>
+        /// <param name="bitRate">The bitrate to use. The final bitrate can differ from the specified value.</param>        
+        /// <param name="targetFilename">The file to write to.</param>
+        /// <remarks>For more information about supported input and output formats, see <see href="http://msdn.microsoft.com/en-us/library/windows/desktop/ff819498(v=vs.85).aspx"/>.</remarks>
+        /// <returns>A new instance of the <see cref="MediaFoundationEncoder"/> class, configured as wma encoder.</returns>
         // ReSharper disable once InconsistentNaming
         public static MediaFoundationEncoder CreateWMAEncoder(WaveFormat sourceFormat, string targetFilename,
             int bitRate = 192000)
@@ -339,9 +357,13 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        ///     See http://msdn.microsoft.com/en-us/library/windows/desktop/ff819498(v=vs.85).aspx for supported input and output
-        ///     types.
+        ///     Returns a new instance of the <see cref="MediaFoundationEncoder"/> class, configured as wma encoder.
         /// </summary>
+        /// <param name="sourceFormat">The input format, of the data to encode.</param>
+        /// <param name="bitRate">The bitrate to use. The final bitrate can differ from the specified value.</param>        
+        /// <param name="targetStream">The stream to write to.</param>
+        /// <remarks>For more information about supported input and output formats, see <see href="http://msdn.microsoft.com/en-us/library/windows/desktop/ff819498(v=vs.85).aspx"/>.</remarks>
+        /// <returns>A new instance of the <see cref="MediaFoundationEncoder"/> class, configured as wma encoder.</returns>        
         // ReSharper disable once InconsistentNaming
         public static MediaFoundationEncoder CreateWMAEncoder(WaveFormat sourceFormat, Stream targetStream,
             int bitRate = 192000)
@@ -353,7 +375,7 @@ namespace CSCore.MediaFoundation
             if (targetStream.CanWrite != true)
                 throw new ArgumentException("Stream not writeable.", "targetStream");
 
-            MFMediaType targetMediaType = FindBestMediaType(MFMediaTypes.MFAudioFormat_WMAudioV8,
+            MFMediaType targetMediaType = FindBestMediaType(AudioSubTypes.WindowsMediaAudio,
                 sourceFormat.SampleRate, sourceFormat.Channels, bitRate);
             MFMediaType sourceMediaType = MediaFoundationCore.MediaTypeFromWaveFormat(sourceFormat);
 
@@ -365,9 +387,13 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        ///     See http://msdn.microsoft.com/en-us/library/windows/desktop/dd742785(v=vs.85).aspx for supported input and output
-        ///     types.
+        ///     Returns a new instance of the <see cref="MediaFoundationEncoder"/> class, configured as aac encoder.
         /// </summary>
+        /// <param name="sourceFormat">The input format, of the data to encode.</param>
+        /// <param name="bitRate">The bitrate to use. The final bitrate can differ from the specified value.</param>        
+        /// <param name="targetFilename">The file to write to.</param>
+        /// <remarks>For more information about supported input and output formats, see <see href="http://msdn.microsoft.com/en-us/library/windows/desktop/dd742785(v=vs.85).aspx"/>.</remarks>
+        /// <returns>A new instance of the <see cref="MediaFoundationEncoder"/> class, configured as aac encoder.</returns>        
         // ReSharper disable once InconsistentNaming
         public static MediaFoundationEncoder CreateAACEncoder(WaveFormat sourceFormat, string targetFilename,
             int bitRate = 192000)
@@ -377,9 +403,13 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        ///     See http://msdn.microsoft.com/en-us/library/windows/desktop/dd742785(v=vs.85).aspx for supported input and output
-        ///     types.
+        ///     Returns a new instance of the <see cref="MediaFoundationEncoder"/> class, configured as aac encoder.
         /// </summary>
+        /// <param name="sourceFormat">The input format, of the data to encode.</param>
+        /// <param name="bitRate">The bitrate to use. The final bitrate can differ from the specified value.</param>        
+        /// <param name="targetStream">The stream to write to.</param>
+        /// <remarks>For more information about supported input and output formats, see <see href="http://msdn.microsoft.com/en-us/library/windows/desktop/dd742785(v=vs.85).aspx"/>.</remarks>
+        /// <returns>A new instance of the <see cref="MediaFoundationEncoder"/> class, configured as aac encoder.</returns>        
         // ReSharper disable once InconsistentNaming
         public static MediaFoundationEncoder CreateAACEncoder(WaveFormat sourceFormat, Stream targetStream,
             int bitRate = 192000)
@@ -389,13 +419,18 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Tries to find the <see cref="MediaType"/> which fits best the requested format specified by the parameters: <paramref name="sampleRate"/>, <paramref name="channels"/>, <paramref name="bitRate"/> and <paramref name="audioSubType"/>.
+        ///     Tries to find the <see cref="MediaType" /> which fits best the requested format specified by the parameters:
+        ///     <paramref name="sampleRate" />, <paramref name="channels" />, <paramref name="bitRate" /> and
+        ///     <paramref name="audioSubType" />.
         /// </summary>
-        /// <param name="audioSubType">The audio subtype. See the <see cref="AudioSubTypes"/> class.</param>
+        /// <param name="audioSubType">The audio subtype. For more information, see the <see cref="AudioSubTypes" /> class.</param>
         /// <param name="sampleRate">The requested sample rate.</param>
         /// <param name="channels">The requested number of channels.</param>
         /// <param name="bitRate">The requested bit rate.</param>
-        /// <returns>A <see cref="MediaType"/> which fits best the requested format. If no mediatype could be found the <see cref="FindBestMediaType"/> method returns null.</returns>
+        /// <returns>
+        ///     A <see cref="MediaType" /> which fits best the requested format. If no mediatype could be found the
+        ///     <see cref="FindBestMediaType" /> method returns null.
+        /// </returns>
         protected static MFMediaType FindBestMediaType(Guid audioSubType, int sampleRate, int channels, int bitRate)
         {
             MFMediaType[] mediaTypes = MediaFoundationCore.GetEncoderMediaTypes(audioSubType);

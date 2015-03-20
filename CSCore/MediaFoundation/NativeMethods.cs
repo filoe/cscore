@@ -27,7 +27,7 @@ namespace CSCore.MediaFoundation
         public static extern int MFShutdown();
 
         [DllImport("mfplat.dll")]
-        public static extern int MFCreateMFByteStreamOnStream(IStream stream, out IMFByteStream byteStream);
+        public static extern int MFCreateMFByteStreamOnStream(IStream stream, [Out] out IntPtr byteStream);
 
         [DllImport("mfplat.dll", EntryPoint = "MFCreateMFByteStreamOnStream")]
         public static extern int MFCreateMFByteStreamOnStreamPtr(IStream stream, out IntPtr byteStream);
@@ -49,14 +49,14 @@ namespace CSCore.MediaFoundation
 
         [DllImport("mfplat.dll", EntryPoint = "MFCreateAttributes")]
         public static extern int ExternMFCreateAttributes(
-            [Out, MarshalAs(UnmanagedType.Interface)] out IMFAttributes ppMFAttributes,
+            [Out] out IntPtr ppMFAttributes,
             [In] int cInitialSize);
 
         [DllImport("Mfreadwrite.dll", EntryPoint="MFCreateSinkWriterFromURL")]
         public static extern int ExternMFCreateSinkWriterFromURL(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pwszOutputURL,
-            [In, MarshalAs(UnmanagedType.Interface)] IMFByteStream pByteStream,
-            [In, MarshalAs(UnmanagedType.Interface)] IMFAttributes pAttributes,
+            [In] IntPtr pByteStream,
+            [In] IntPtr pAttributes,
             [Out] out IntPtr ppSinkWriter);
 
         [DllImport("mfplat.dll", ExactSpelling = true)]
@@ -73,11 +73,15 @@ namespace CSCore.MediaFoundation
         public static extern int MFTranscodeGetAudioOutputAvailableTypes(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidSubType,
             [In] MFTEnumFlags dwMFTFlags,
-            [In] IMFAttributes pCodecConfig,
+            [In] IntPtr pCodecConfig /*IMFAttributes*/,
             [Out, MarshalAs(UnmanagedType.Interface)] out IMFCollection ppAvailableTypes);
 
         [SuppressUnmanagedCodeSecurity]
         [DllImport("Mfplat.dll", CallingConvention = CallingConvention.StdCall, EntryPoint = "MFCreateAttributes")]
         internal static extern int MFCreateAttributes_(IntPtr ptr, int initialSize);
+
+        [SuppressUnmanagedCodeSecurity]
+        [DllImport("Mfplat.dll", CallingConvention = CallingConvention.StdCall, EntryPoint = "MFCreateWaveFormatExFromMFMediaType")]
+        public unsafe static extern int MFCreateWaveFormatExFromMFMediaType(void* arg0, void* arg1, void* arg2, int arg3);
     }
 }

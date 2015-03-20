@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSCore.MediaFoundation
 {
     //http://msdn.microsoft.com/en-us/library/windows/desktop/aa372553(v=vs.85).aspx
+    /// <summary>
+    /// Defines common audio subtypes.
+    /// </summary>
+    [Obsolete("Use the CSCore.AudioSubTypes class instead.")]
     public static class MFMediaTypes
     {
         /// <summary>

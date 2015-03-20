@@ -10,7 +10,7 @@ namespace CSCore.MediaFoundation
     /// </summary>
     public class MediaFoundationDecoder : IWaveSource
     {
-        private IMFByteStream _byteStream;
+        private MFByteStream _byteStream;
         private MFSourceReader _reader;
         private WaveFormat _waveFormat;
         private Stream _stream;
@@ -32,21 +32,21 @@ namespace CSCore.MediaFoundation
         /// <summary>
         /// Initializes a new instance of the <see cref="MediaFoundationDecoder"/> class.
         /// </summary>
-        /// <param name="uri">Uri which points to a audio source which can be decoded.</param>
-        public MediaFoundationDecoder(string uri)
+        /// <param name="url">Uri which points to an audio source which can be decoded.</param>
+        public MediaFoundationDecoder(string url)
         {
-            if (String.IsNullOrEmpty(uri))
-                throw new ArgumentNullException("uri");
+            if (String.IsNullOrEmpty(url))
+                throw new ArgumentNullException("url");
 
             _hasFixedLength = true;
 
-            _reader = Initialize(MediaFoundationCore.CreateSourceReaderFromUrl(uri));
+            _reader = Initialize(MediaFoundationCore.CreateSourceReaderFromUrl(url));
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MediaFoundationDecoder"/> class.
         /// </summary>
-        /// <param name="stream">Stream which holds audio data which can be decoded.</param>
+        /// <param name="stream">Stream which provides the audio data to decode.</param>
         public MediaFoundationDecoder(Stream stream)
         {
             if (stream == null)
@@ -63,8 +63,8 @@ namespace CSCore.MediaFoundation
         /// <summary>
         /// Initializes a new instance of the <see cref="MediaFoundationDecoder"/> class.
         /// </summary>
-        /// <param name="byteStream">Stream which holds audio data which can be decoded.</param>
-        public MediaFoundationDecoder(IMFByteStream byteStream)
+        /// <param name="byteStream">Stream which provides the audio data to decode.</param>
+        public MediaFoundationDecoder(MFByteStream byteStream)
         {
             if (byteStream == null)
                 throw new ArgumentNullException("byteStream");
@@ -72,16 +72,13 @@ namespace CSCore.MediaFoundation
             _reader = Initialize(_byteStream);
         }
 
-        private MFSourceReader Initialize(IMFByteStream stream)
+        private MFSourceReader Initialize(MFByteStream byteStream)
         {
-            MediaFoundationCore.Startup();
-            return Initialize(MediaFoundationCore.CreateSourceReaderFromByteStream(stream, IntPtr.Zero));
+            return Initialize(MediaFoundationCore.CreateSourceReaderFromByteStream(byteStream.BasePtr, IntPtr.Zero));
         }
 
         private MFSourceReader Initialize(MFSourceReader reader)
         {
-            MediaFoundationCore.Startup();
-
             try
             {
                 reader.SetStreamSelection(NativeMethods.MF_SOURCE_READER_ALL_STREAMS, false);
@@ -108,7 +105,7 @@ namespace CSCore.MediaFoundation
                     {
                         _waveFormat = new WaveFormatExtensible(currentMediaType.SampleRate,
                             currentMediaType.BitsPerSample, currentMediaType.Channels, currentMediaType.SubType,
-                            currentMediaType.ChannelMask);
+                            channelMask);
                     }
                     else
                     {
@@ -126,7 +123,7 @@ namespace CSCore.MediaFoundation
             }
             catch (Exception)
             {
-                Dispose();
+                DisposeInternal(true);
                 throw;
             }
         }
@@ -140,10 +137,16 @@ namespace CSCore.MediaFoundation
                     if (reader == null)
                         return 0;
 
-                    PropertyVariant value = reader.GetPresentationAttribute(NativeMethods.MF_SOURCE_READER_MEDIASOURCE, MediaFoundationAttributes.MF_PD_DURATION);
-                    var length = ((value.HValue) * _waveFormat.BytesPerSecond) / 10000000L;
-                    value.Dispose();
-                    return length;
+                    using (
+                        PropertyVariant value =
+                            reader.GetPresentationAttribute(NativeMethods.MF_SOURCE_READER_MEDIASOURCE,
+                                MediaFoundationAttributes.MF_PD_DURATION))
+
+
+                    {
+                        //bug: still, depending on the decoder, this returns imprecise values.
+                        return ((value.HValue) * _waveFormat.BytesPerSecond) / 10000000L;
+                    }
                 }
                 catch (Exception)
                 {
@@ -162,7 +165,7 @@ namespace CSCore.MediaFoundation
                 lock (_lockObj)
                 {
                     long hnsPos = (10000000L * value) / WaveFormat.BytesPerSecond;
-                    var propertyVariant = PropertyVariant.CreateLong(hnsPos);
+                    var propertyVariant = new PropertyVariant() { HValue = hnsPos, DataType = VarEnum.VT_I8 };
                     _reader.SetCurrentPosition(Guid.Empty, propertyVariant);
                     _decoderBufferCount = 0;
                     _decoderBufferOffset = 0;
@@ -207,27 +210,26 @@ namespace CSCore.MediaFoundation
 
                 while (read < count)
                 {
-                    MFSourceReaderFlag flags;
+                    MFSourceReaderFlags flags;
                     long timestamp;
                     int actualStreamIndex;
                     using (var sample = _reader.ReadSample(NativeMethods.MF_SOURCE_READER_FIRST_AUDIO_STREAM, 0, out actualStreamIndex, out flags, out timestamp))
                     {
-                        if (flags != MFSourceReaderFlag.None)
+                        if (flags != MFSourceReaderFlags.None)
                             break;
 
-                        using (MFMediaBuffer mediaBuffer = sample.ConvertToContinousBuffer())
+                        using (MFMediaBuffer mediaBuffer = sample.ConvertToContiguousBuffer())
                         {
-                            int maxlength, currentlength;
-                            IntPtr pdata = mediaBuffer.Lock(out maxlength, out currentlength);
-                            _decoderBuffer = _decoderBuffer.CheckBuffer(currentlength);
-                            Marshal.Copy(pdata, _decoderBuffer, 0, currentlength);
-                            _decoderBufferCount = currentlength;
-                            _decoderBufferOffset = 0;
+                            using (var @lock = mediaBuffer.Lock())
+                            {
+                                _decoderBuffer = _decoderBuffer.CheckBuffer(@lock.CurrentLength);
+                                Marshal.Copy(@lock.Buffer, _decoderBuffer, 0, @lock.CurrentLength);
+                                _decoderBufferCount = @lock.CurrentLength;
+                                _decoderBufferOffset = 0;
 
-                            int tmp = CopyDecoderBuffer(buffer, offset + read, count - read);
-                            read += tmp;
-
-                            mediaBuffer.Unlock();
+                                int tmp = CopyDecoderBuffer(buffer, offset + read, count - read);
+                                read += tmp;
+                            }
                         }
                     }
                 }
@@ -275,26 +277,31 @@ namespace CSCore.MediaFoundation
         {
             lock (_lockObj)
             {
-                if (_reader != null)
-                {
-                    _reader.Dispose();
-                    _reader = null;
-                }
-                if (_byteStream != null)
-                {
-                    Marshal.ReleaseComObject(_byteStream);
-                    _byteStream = null;
-                }
-                if (_stream != null)
-                {
-                    _stream.Dispose();
-                    _stream = null;
-                }
+                DisposeInternal(disposing);
+            }
+        }
+
+        private void DisposeInternal(bool disposing)
+        {
+            if (_reader != null)
+            {
+                _reader.Dispose();
+                _reader = null;
+            }
+            if (_byteStream != null)
+            {
+                _byteStream.Dispose();
+                _byteStream = null;
+            }
+            if (_stream != null)
+            {
+                _stream.Dispose();
+                _stream = null;
             }
         }
 
         /// <summary>
-        /// Destructor which calls <see cref="Dispose(bool)"/>.
+        /// Finalizes an instance of the <see cref="MediaFoundationDecoder"/> class.
         /// </summary>
         ~MediaFoundationDecoder()
         {
@@ -302,7 +309,7 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Gets the format of the decoded audio data.
+        /// Gets the format of the decoded audio data provided by the <see cref="Read"/> method.
         /// </summary>
         public WaveFormat WaveFormat
         {
@@ -310,7 +317,7 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Gets or sets the position of the output stream in bytes.
+        /// Gets or sets the position of the output stream, in bytes.
         /// </summary>
         public long Position
         {
@@ -325,7 +332,7 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Gets the total length of the decoded audio.
+        /// Gets the total length of the decoded audio, in bytes.
         /// </summary>
         public long Length
         {

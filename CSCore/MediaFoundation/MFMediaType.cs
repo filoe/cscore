@@ -1,7 +1,6 @@
 ﻿using CSCore.Win32;
 using System;
 using System.Runtime.InteropServices;
-using System.Security;
 
 namespace CSCore.MediaFoundation
 {
@@ -9,6 +8,7 @@ namespace CSCore.MediaFoundation
     /// Represents a description of a media format. 
     /// </summary>
     [Guid("44ae0fa8-ea31-4109-8d2e-4cae4997c555")]
+// ReSharper disable once InconsistentNaming
     public class MFMediaType : MFAttributes
     {
         /// <summary>
@@ -32,12 +32,12 @@ namespace CSCore.MediaFoundation
             return MediaFoundationCore.MediaTypeFromWaveFormat(waveFormat);
         }
 
-        private const string c = "IMFMediaType";
+        private const string InterfaceName = "IMFMediaType";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MFMediaType"/> class.
         /// </summary>
-        /// <param name="ptr">The native pointer.</param>
+        /// <param name="ptr">The native pointer of the COM object.</param>
         public MFMediaType(IntPtr ptr)
             : base(ptr)
         {
@@ -107,8 +107,9 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
-        /// Queries whether the media type is a temporally compressed format. Temporal compression
-        /// uses information from previously decoded samples when decompressing the current sample.
+        /// Gets a value, indicating whether the media type is a temporally compressed format.
+        /// Temporal compression uses information from previously decoded samples when 
+        /// decompressing the current sample.
         /// </summary>
         public NativeBool IsCompressed
         {
@@ -121,6 +122,8 @@ namespace CSCore.MediaFoundation
         /// <summary>
         /// Gets the major type of the format.
         /// </summary>
+        /// <param name="majorType">Receives the major type <see cref="Guid"/>. 
+        /// The major type describes the broad category of the format, such as audio or video. For a list of possible values, see <see href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa367377(v=vs.85).aspx"/>.</param>
         /// <returns>HRESULT</returns>
         public unsafe int GetMajorType(out Guid majorType)
         {
@@ -134,10 +137,11 @@ namespace CSCore.MediaFoundation
         /// <summary>
         /// Gets the major type of the format.
         /// </summary>
+        /// <returns>The major type <see cref="Guid"/>. The major type describes the broad category of the format, such as audio or video. For a list of possible values, see <see href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa367377(v=vs.85).aspx"/>.</returns>
         public Guid GetMajorType()
         {
             Guid result;
-            MediaFoundationException.Try(GetMajorType(out result), c, "GetMajorType");
+            MediaFoundationException.Try(GetMajorType(out result), InterfaceName, "GetMajorType");
             return result;
         }
 
@@ -145,8 +149,9 @@ namespace CSCore.MediaFoundation
         /// Queries whether the media type is a temporally compressed format. Temporal compression
         /// uses information from previously decoded samples when decompressing the current sample.
         /// </summary>
+        /// <param name="iscompressed">Receives a Boolean value. The value is <c>TRUE</c> if the format uses temporal compression, or <c>FALSE</c> if the format does not use temporal compression.</param>
         /// <returns>HRESULT</returns>
-        public unsafe int IsCompressedFormat(out NativeBool iscompressed)
+        public unsafe int IsCompressedFormatNative(out NativeBool iscompressed)
         {
             iscompressed = default(NativeBool);
             fixed (void* ptr = &iscompressed)
@@ -159,10 +164,11 @@ namespace CSCore.MediaFoundation
         /// Queries whether the media type is a temporally compressed format. Temporal compression
         /// uses information from previously decoded samples when decompressing the current sample.
         /// </summary>
+        /// <returns><see cref="NativeBool.True"/> if the format uses temporal compression. <see cref="NativeBool.False"/> if the format does not use temporal compression.</returns>
         public NativeBool IsCompressedFormat()
         {
             NativeBool result;
-            MediaFoundationException.Try(IsCompressedFormat(out result), c, "IsCompressedFormat");
+            MediaFoundationException.Try(IsCompressedFormatNative(out result), InterfaceName, "IsCompressedFormat");
             return result;
         }
 
@@ -170,8 +176,10 @@ namespace CSCore.MediaFoundation
         /// Compares two media types and determines whether they are identical. If they are not
         /// identical, the method indicates how the two formats differ.
         /// </summary>
+        /// <param name="mediaType">The <see cref="MFMediaType"/> to compare.</param>
+        /// <param name="flags">Receives a bitwise OR of zero or more flags, indicating the degree of similarity between the two media types.</param>
         /// <returns>HRESULT</returns>
-        public unsafe int IsEqual(MFMediaType mediaType, out MediaTypeEqualFlags flags)
+        public unsafe int IsEqualNative(MFMediaType mediaType, out MediaTypeEqualFlags flags)
         {
             fixed (void* ptr = &flags)
             {
@@ -183,10 +191,12 @@ namespace CSCore.MediaFoundation
         /// Compares two media types and determines whether they are identical. If they are not
         /// identical, the method indicates how the two formats differ.
         /// </summary>
+        /// <param name="mediaType">The <see cref="MFMediaType"/> to compare.</param>
+        /// <returns>A bitwise OR of zero or more flags, indicating the degree of similarity between the two media types.</returns>
         public MediaTypeEqualFlags IsEqual(MFMediaType mediaType)
         {
             MediaTypeEqualFlags flags;
-            MediaFoundationException.Try(IsEqual(mediaType, out flags), c, "IsEqual");
+            MediaFoundationException.Try(IsEqualNative(mediaType, out flags), InterfaceName, "IsEqual");
             return flags;
         }
 
@@ -194,12 +204,15 @@ namespace CSCore.MediaFoundation
         /// Retrieves an alternative representation of the media type. Currently only the DirectShow
         /// AM_MEDIA_TYPE structure is supported.
         /// </summary>
+        /// <param name="guidRepresentation"><see cref="Guid"/> that specifies the representation to retrieve. The following values are defined.</param>
+        /// <param name="representation">Receives a pointer to a structure that contains the representation. The method allocates the memory for the structure. The caller must release the memory by calling <see cref="FreeRepresentation"/>.</param>
         /// <returns>HRESULT</returns>
-        public unsafe int GetRepresentation(Guid guidRepresenation, out IntPtr representation)
+        /// <remarks>For more information, see <see href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms695248(v=vs.85).aspx"/>.</remarks>
+        public unsafe int GetRepresentationNative(Guid guidRepresentation, out IntPtr representation)
         {
             fixed (void* ptr = &representation)
             {
-                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, guidRepresenation, new IntPtr(ptr), ((void**)(*(void**)UnsafeBasePtr))[36]);
+                return InteropCalls.CalliMethodPtr(UnsafeBasePtr, guidRepresentation, new IntPtr(ptr), ((void**)(*(void**)UnsafeBasePtr))[36]);
             }
         }
 
@@ -207,28 +220,37 @@ namespace CSCore.MediaFoundation
         /// Retrieves an alternative representation of the media type. Currently only the DirectShow
         /// AM_MEDIA_TYPE structure is supported.
         /// </summary>
+        /// <param name="guidRepresentation"><see cref="Guid"/> that specifies the representation to retrieve. The following values are defined.</param>
+        /// <returns>A pointer to a structure that contains the representation. The method allocates the memory for the structure. The caller must release the memory by calling <see cref="FreeRepresentation"/>.</returns>
+        /// <remarks>For more information, see <see href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms695248(v=vs.85).aspx"/>.</remarks>        
         public IntPtr GetRepresentation(Guid guidRepresentation)
         {
             IntPtr result;
-            MediaFoundationException.Try(GetRepresentation(guidRepresentation, out result), c, "GetRepresentation");
+            MediaFoundationException.Try(GetRepresentationNative(guidRepresentation, out result), InterfaceName, "GetRepresentation");
             return result;
         }
 
         /// <summary>
-        /// Frees memory that was allocated by the IMFMediaType::GetRepresentation method.
+        /// Frees memory that was allocated by the <see cref="GetRepresentation"/> method.
         /// </summary>
+        /// <param name="guidRepresentation"><see cref="Guid"/> that was passed to the <see cref="GetRepresentation"/> method.</param>
+        /// <param name="representation">Pointer to the buffer that was returned by the <see cref="GetRepresentation"/> method.</param>
         /// <returns>HRESULT</returns>
+        /// <remarks>For more information, see <see href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms703846(v=vs.85).aspx"/>.</remarks>        
         public unsafe int FreeRepresentationNative(Guid guidRepresentation, IntPtr representation)
         {
             return InteropCalls.CalliMethodPtr(UnsafeBasePtr, guidRepresentation, representation, ((void**)(*(void**)UnsafeBasePtr))[37]);
         }
 
         /// <summary>
-        /// Frees memory that was allocated by the IMFMediaType::GetRepresentation method.
+        /// Frees memory that was allocated by the <see cref="GetRepresentation"/> method.
         /// </summary>
+        /// <param name="guidRepresentation"><see cref="Guid"/> that was passed to the <see cref="GetRepresentation"/> method.</param>
+        /// <param name="representation">Pointer to the buffer that was returned by the <see cref="GetRepresentation"/> method.</param>
+        /// <remarks>For more information, see <see href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms703846(v=vs.85).aspx"/>.</remarks>
         public void FreeRepresentation(Guid guidRepresentation, IntPtr representation)
         {
-            MediaFoundationException.Try(FreeRepresentationNative(guidRepresentation, representation), c, "FreeRepresentation");
+            MediaFoundationException.Try(FreeRepresentationNative(guidRepresentation, representation), InterfaceName, "FreeRepresentation");
         }
 
         /// <summary>
@@ -240,16 +262,12 @@ namespace CSCore.MediaFoundation
         {
             IntPtr pointer = IntPtr.Zero;
             int cbSize;
-            MediaFoundationException.Try(MFCreateWaveFormatExFromMFMediaType(BasePtr.ToPointer(), &pointer, &cbSize, (int)flags), "Interop", "MFCreateWaveFormatExFromMFMediaType");
+            MediaFoundationException.Try(NativeMethods.MFCreateWaveFormatExFromMFMediaType(BasePtr.ToPointer(), &pointer, &cbSize, (int)flags), "Interop", "MFCreateWaveFormatExFromMFMediaType");
             
             var waveformat = (WaveFormat)Marshal.PtrToStructure(pointer, typeof(WaveFormat));
             if (waveformat.WaveFormatTag == AudioEncoding.Extensible)
                 waveformat = (WaveFormatExtensible)Marshal.PtrToStructure(pointer, typeof(WaveFormatExtensible));
             return waveformat;
         }
-
-        [SuppressUnmanagedCodeSecurity]
-        [DllImport("Mfplat.dll", CallingConvention = CallingConvention.StdCall, EntryPoint = "MFCreateWaveFormatExFromMFMediaType")]
-        private unsafe static extern int MFCreateWaveFormatExFromMFMediaType(void* arg0, void* arg1, void* arg2, int arg3);
     }
 }

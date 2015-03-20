@@ -7,7 +7,7 @@ using System.Text;
 namespace CSCore.MediaFoundation
 {
     [StructLayout(LayoutKind.Sequential)]
-    public class MFTRegisterTypeInfo
+    internal class MFTRegisterTypeInfo
     {
         public Guid GuidMajorType;
         public Guid GuidSubType;
