@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace CSCore.Streams.Effects
 {
     /// <summary>
-    /// Chorus Effect.
+    /// Represents the dmo chorus effect in form of an <see cref="IWaveSource"/> implementation.
     /// </summary>
     public sealed class DmoChorusEffect : DmoEffectBase<DirectSoundFXChorus, ChorusParameters>
     {
@@ -35,7 +35,7 @@ namespace CSCore.Streams.Effects
 
         #region properties
         /// <summary>
-        /// Number of milliseconds the input is delayed before it is played back, in the range from 0 to 20. The default value is 16 ms.
+        /// Gets or sets the number of milliseconds the input is delayed before it is played back, in the range from 0 to 20. The default value is 16 ms.
         /// </summary>
         public float Delay
         {
@@ -49,7 +49,7 @@ namespace CSCore.Streams.Effects
         }
 
         /// <summary>
-        /// Percentage by which the delay time is modulated by the low-frequency oscillator, in hundredths of a percentage point. Must be in the range from 0 through 100. The default value is 10.
+        /// Gets or sets the percentage by which the delay time is modulated by the low-frequency oscillator, in hundredths of a percentage point. Must be in the range from 0 through 100. The default value is 10.
         /// </summary>
         public float Depth
         {
@@ -63,7 +63,7 @@ namespace CSCore.Streams.Effects
         }
 
         /// <summary>
-        /// Percentage of output signal to feed back into the effect's input, in the range from -99 to 99. The default value is 25.
+        /// Gets or sets the percentage of output signal to feed back into the effect's input, in the range from -99 to 99. The default value is 25.
         /// </summary>
         public float Feedback
         {
@@ -77,7 +77,7 @@ namespace CSCore.Streams.Effects
         }
 
         /// <summary>
-        /// Frequency of the LFO, in the range from 0 to 10. The default value is 1.1.
+        /// Gets or sets the frequency of the LFO, in the range from 0 to 10. The default value is 1.1.
         /// </summary>
         public float Frequency
         {
@@ -91,7 +91,7 @@ namespace CSCore.Streams.Effects
         }
 
         /// <summary>
-        /// Waveform shape of the LFO. By default, the waveform is a sine.
+        /// Gets or sets the waveform shape of the LFO. By default, the waveform is a sine.
         /// </summary>
         public ChorusWaveform Waveform
         {
@@ -103,7 +103,7 @@ namespace CSCore.Streams.Effects
         }
 
         /// <summary>
-        /// Phase differential between left and right LFOs. The default value is Phase90.
+        /// Gets or sets the phase differential between left and right LFOs. The default value is Phase90.
         /// </summary>
         public ChorusPhase Phase
         {
@@ -115,7 +115,7 @@ namespace CSCore.Streams.Effects
         }
 
         /// <summary>
-        /// Ratio of wet (processed) signal to dry (unprocessed) signal. Must be in the range from 0 through 100 (all wet). The default value is 50.
+        /// Gets or sets the ratio of wet (processed) signal to dry (unprocessed) signal. Must be in the range from 0 through 100 (all wet). The default value is 50.
         /// </summary>
         public float WetDryMix
         {

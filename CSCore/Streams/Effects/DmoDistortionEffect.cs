@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 namespace CSCore.Streams.Effects
 {
     /// <summary>
-    /// DistortionEffect.
+    /// Represents the dmo distortion effect in form of an <see cref="IWaveSource"/> implementation.
     /// </summary>
     public class DmoDistortionEffect : DmoEffectBase<DirectSoundFXDistortion, DistortionParameters>
     {
@@ -36,7 +36,7 @@ namespace CSCore.Streams.Effects
 
         #region properties
         /// <summary>
-        /// Amount of signal change after distortion, in the range from -60 dB through 0 dB. The default value is -18 dB.
+        /// Gets or sets the amount of signal change after distortion, in the range from -60 dB through 0 dB. The default value is -18 dB.
         /// </summary>
         public float Gain
         {
@@ -45,12 +45,12 @@ namespace CSCore.Streams.Effects
             {
                 if (value < GainMin || value > GainMax)
                     throw new ArgumentOutOfRangeException("value");
-                SetValue("GainDB", value);
+                SetValue("Gain", value);
             }
         }
 
         /// <summary>
-        /// Percentage of distortion intensity, in the range in the range from 0 % through 100 %. The default value is 15 percent.
+        /// Gets or sets the percentage of distortion intensity, in the range in the range from 0 % through 100 %. The default value is 15 percent.
         /// </summary>
         public float Edge
         {
@@ -64,7 +64,7 @@ namespace CSCore.Streams.Effects
         }
 
         /// <summary>
-        /// Center frequency of harmonic content addition, in the range from 100 Hz through 8000 Hz. The default value is 2400 Hz.
+        /// Gets or sets the center frequency of harmonic content addition, in the range from 100 Hz through 8000 Hz. The default value is 2400 Hz.
         /// </summary>
         public float PostEQCenterFrequency
         {
@@ -78,7 +78,7 @@ namespace CSCore.Streams.Effects
         }
 
         /// <summary>
-        /// Width of frequency band that determines range of harmonic content addition, in the range from 100 Hz through 8000 Hz. The default value is 2400 Hz.
+        /// Gets or sets the width of frequency band that determines range of harmonic content addition, in the range from 100 Hz through 8000 Hz. The default value is 2400 Hz.
         /// </summary>
         public float PostEQBandwidth
         {
@@ -92,7 +92,7 @@ namespace CSCore.Streams.Effects
         }
 
         /// <summary>
-        /// Filter cutoff for high-frequency harmonics attenuation, in the range from 100 Hz through 8000 Hz. The default value is 8000 Hz.
+        /// Gets or sets the filter cutoff for high-frequency harmonics attenuation, in the range from 100 Hz through 8000 Hz. The default value is 8000 Hz.
         /// </summary>
         public float PreLowpassCutoff
         {

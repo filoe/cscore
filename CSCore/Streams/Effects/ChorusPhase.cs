@@ -1,7 +1,8 @@
 namespace CSCore.Streams.Effects
 {
     /// <summary>
-    /// Default value is Phase90 (used for <see cref="DmoChorusEffect.Phase"/>).
+    /// Defines possible values for the <see cref="DmoChorusEffect.Phase"/> property.
+    /// Default value is <see cref="Phase90"/>.
     /// </summary>
     public enum ChorusPhase
     {

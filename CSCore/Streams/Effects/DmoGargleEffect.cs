@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 namespace CSCore.Streams.Effects
 {
     /// <summary>
-    /// Gargle Effect.
+    /// Represents the dmo gargle effect in form of an <see cref="IWaveSource"/> implementation.
     /// </summary>
     public class DmoGargleEffect : DmoEffectBase<DirectSoundFXGargle, GargleParameters>
     {

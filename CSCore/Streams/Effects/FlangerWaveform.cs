@@ -1,7 +1,8 @@
 namespace CSCore.Streams.Effects
 {
     /// <summary>
-    /// FlangerWaveform. See <see cref="DmoFlangerEffect.Waveform"/>.
+    /// Defines possible values for the <see cref="DmoFlangerEffect.Waveform"/> property.
+    /// The default value is <see cref="Sin"/>.
     /// </summary>
     public enum FlangerWaveform
     {

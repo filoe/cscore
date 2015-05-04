@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace CSCore.Streams.Effects
 {
     /// <summary>
-    /// Flanger Effect.
+    /// Represents the dmo flanger effect in form of an <see cref="IWaveSource"/> implementation.
     /// </summary>
     public class DmoFlangerEffect : DmoEffectBase<DirectSoundFXFlanger, FlangerParameters>
     {
@@ -117,7 +117,7 @@ namespace CSCore.Streams.Effects
         }
 
         /// <summary>
-        /// Phase differential between left and right LFOs. The default value is <see cref="FlangerPhase.PhaseZero"/>.
+        /// Gets or sets the phase differential between left and right LFOs. The default value is <see cref="FlangerPhase.PhaseZero"/>.
         /// </summary>
         public FlangerPhase Phase
         {

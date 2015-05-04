@@ -1,7 +1,8 @@
 namespace CSCore.Streams.Effects
 {
     /// <summary>
-    /// Default value is <see cref="Triangle"/> (used for <see cref="DmoGargleEffect.WaveShape"/>).
+    /// Defines possible values for the <see cref="DmoGargleEffect.WaveShape"/> property.
+    /// The default value is <see cref="Triangle"/>.
     /// </summary>
     public enum GargleWaveShape
     {
