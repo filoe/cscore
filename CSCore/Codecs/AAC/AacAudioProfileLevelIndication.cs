@@ -3,13 +3,17 @@
     //see: http://www.nhzjj.com/asp/admin/editor/newsfile/2010318163752818.pdf
     /// <summary>
     /// Specifies the audio profile and level of an Advanced Audio Coding (AAC) stream.
-    /// AACProfile_L2_0x29 is the default setting.
-    /// http://msdn.microsoft.com/en-us/library/windows/desktop/dd319560(v=vs.85).aspx
+    /// <see cref="AACProfile_L2_0x29"/> is the default setting.
+    /// For more information, see <see href="http://msdn.microsoft.com/en-us/library/windows/desktop/dd319560(v=vs.85).aspx"/>.
     /// </summary>
     public enum AacAudioProfileLevelIndication
     {
         /// <summary>
-        /// Default
+        /// None/Invalid
+        /// </summary>
+        None = 0,
+        /// <summary>
+        /// AACProfile_L2_0x29 - Default value
         /// </summary>
         AACProfile_L2_0x29 = 0x29,
         /// <summary>

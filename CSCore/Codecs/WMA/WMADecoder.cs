@@ -32,7 +32,7 @@ namespace CSCore.Codecs.WMA
             {
                 if (_isspeechsupported == null)
                 {
-                    _isspeechsupported = MediaFoundationCore.IsTransformAvailable(MediaFoundationCore.EnumerateTransforms(MFTCategories.AudioDecoder, MFTEnumFlags.All),
+                    _isspeechsupported = MediaFoundationCore.IsTransformAvailable(MFTEnumerator.EnumerateTransforms(MFTCategories.AudioDecoder, MFTEnumFlags.All),
                         CommonAudioDecoderGuids.WmSpeechDecoder);
                 }
                 return _isspeechsupported.Value;
@@ -48,7 +48,7 @@ namespace CSCore.Codecs.WMA
             {
                 if (_iswmaprosupported == null)
                 {
-                    _iswmaprosupported = MediaFoundationCore.IsTransformAvailable(MediaFoundationCore.EnumerateTransforms(MFTCategories.AudioDecoder, MFTEnumFlags.All),
+                    _iswmaprosupported = MediaFoundationCore.IsTransformAvailable(MFTEnumerator.EnumerateTransforms(MFTCategories.AudioDecoder, MFTEnumFlags.All),
                         CommonAudioDecoderGuids.WmaProDecoder);
                 }
                 return _iswmaprosupported.Value;
@@ -64,7 +64,7 @@ namespace CSCore.Codecs.WMA
             {
                 if (_iswmasupported == null)
                 {
-                    _iswmasupported = MediaFoundationCore.IsTransformAvailable(MediaFoundationCore.EnumerateTransforms(MFTCategories.AudioDecoder, MFTEnumFlags.All),
+                    _iswmasupported = MediaFoundationCore.IsTransformAvailable(MFTEnumerator.EnumerateTransforms(MFTCategories.AudioDecoder, MFTEnumFlags.All),
                         CommonAudioDecoderGuids.WmAudioDecoder);
                 }
                 return _iswmasupported.Value;
@@ -74,9 +74,9 @@ namespace CSCore.Codecs.WMA
         /// <summary>
         /// Initializes a new instance of the <see cref="WmaDecoder"/> class.
         /// </summary>
-        /// <param name="uri">Url which points to a data source which provides WMA data. This is typically a filename.</param>
-        public WmaDecoder(string uri)
-            : base(uri)
+        /// <param name="url">Url which points to a data source which provides WMA data. This is typically a filename.</param>
+        public WmaDecoder(string url)
+            : base(url)
         {
         }
 

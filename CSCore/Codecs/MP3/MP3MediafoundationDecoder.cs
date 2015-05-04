@@ -20,7 +20,7 @@ namespace CSCore.Codecs.MP3
             {
                 if (_issupported == null)
                 {
-                    _issupported = MediaFoundationCore.IsSupported && MediaFoundationCore.IsTransformAvailable(MediaFoundationCore.EnumerateTransforms(MFTCategories.AudioDecoder, MFTEnumFlags.All),
+                    _issupported = MediaFoundationCore.IsSupported && MediaFoundationCore.IsTransformAvailable(MFTEnumerator.EnumerateTransforms(MFTCategories.AudioDecoder, MFTEnumFlags.All),
                         CommonAudioDecoderGuids.Mp3Decoder);
                 }
                 return _issupported.Value;
@@ -30,9 +30,9 @@ namespace CSCore.Codecs.MP3
         /// <summary>
         /// Initializes a new instance of the <see cref="Mp3MediafoundationDecoder"/> class.
         /// </summary>
-        /// <param name="uri">Url which points to a data source which provides MP3 data. This is typically a filename.</param>
-        public Mp3MediafoundationDecoder(string uri)
-            : base(uri)
+        /// <param name="url">Url which points to a data source which provides MP3 data. This is typically a filename.</param>
+        public Mp3MediafoundationDecoder(string url)
+            : base(url)
         {
         }
 

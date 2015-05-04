@@ -19,7 +19,7 @@ namespace CSCore.Codecs.MP2
             {
                 if (_issupported == null)
                 {
-                    _issupported = MediaFoundationCore.IsSupported && MediaFoundationCore.IsTransformAvailable(MediaFoundationCore.EnumerateTransforms(MFTCategories.AudioDecoder, MFTEnumFlags.All),
+                    _issupported = MediaFoundationCore.IsSupported && MediaFoundationCore.IsTransformAvailable(MFTEnumerator.EnumerateTransforms(MFTCategories.AudioDecoder, MFTEnumFlags.All),
                         CommonAudioDecoderGuids.MpegAudioDecoder);
                 }
                 return _issupported.Value;
@@ -29,9 +29,9 @@ namespace CSCore.Codecs.MP2
         /// <summary>
         /// Initializes a new instance of the <see cref="Mp2Decoder"/> class.
         /// </summary>
-        /// <param name="uri">Url which points to a data source which provides MP2 data. This is typically a filename.</param>
-        public Mp2Decoder(string uri)
-            : base(uri)
+        /// <param name="url">Url which points to a data source which provides MP2 data. This is typically a filename.</param>
+        public Mp2Decoder(string url)
+            : base(url)
         {
         }
 
