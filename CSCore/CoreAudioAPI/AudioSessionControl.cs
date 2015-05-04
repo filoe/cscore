@@ -195,7 +195,7 @@ namespace CSCore.CoreAudioAPI
         /// <param name="groupingParam"></param>
         /// <param name="eventContext"></param>
         /// <returns>HRESULT</returns>
-        /// <remarks>For some more information about Grouping Parameters see http://msdn.microsoft.com/en-us/library/windows/desktop/dd370848(v=vs.85).aspx </remarks>
+        /// <remarks>For some more information about grouping parameters, see <see href="http://msdn.microsoft.com/en-us/library/windows/desktop/dd370848(v=vs.85).aspx"/>.</remarks>        
         public unsafe int SetGroupingParamNative(Guid groupingParam, Guid eventContext)
         {
             return InteropCalls.CallI(UnsafeBasePtr, &groupingParam, &eventContext,

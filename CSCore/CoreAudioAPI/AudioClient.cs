@@ -512,12 +512,13 @@ namespace CSCore.CoreAudioAPI
             {
                 try
                 {
-                    deviceFormat = Marshal.PtrToStructure(pdeviceFormat, typeof (WaveFormat)) as WaveFormat;
-                    if (deviceFormat != null && deviceFormat.WaveFormatTag == AudioEncoding.Extensible)
-                    {
-                        deviceFormat =
-                            Marshal.PtrToStructure(pdeviceFormat, typeof (WaveFormatExtensible)) as WaveFormatExtensible;
-                    }
+                    //deviceFormat = Marshal.PtrToStructure(pdeviceFormat, typeof (WaveFormat)) as WaveFormat;
+                    //if (deviceFormat != null && deviceFormat.WaveFormatTag == AudioEncoding.Extensible)
+                    //{
+                    //    deviceFormat =
+                    //        Marshal.PtrToStructure(pdeviceFormat, typeof (WaveFormatExtensible)) as WaveFormatExtensible;
+                    //}
+                    deviceFormat = WaveFormatMarshaler.PointerToWaveFormat(pdeviceFormat);
                 }
                 finally
                 {

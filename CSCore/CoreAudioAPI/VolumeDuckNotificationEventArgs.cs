@@ -3,7 +3,8 @@ using System;
 namespace CSCore.CoreAudioAPI
 {
     /// <summary>
-    /// Provides data for the <see cref="AudioVolumeDuckNotification.VolumeDuckNotification"/> and the <see cref="AudioVolumeDuckNotification.VolumeUnDuckNotification"/> event. For more see http://msdn.microsoft.com/en-us/library/windows/desktop/dd371010(v=vs.85).aspx.
+    /// Provides data for the <see cref="AudioVolumeDuckNotification.VolumeDuckNotification"/> and the <see cref="AudioVolumeDuckNotification.VolumeUnDuckNotification"/> event. 
+    /// For more information, see <see href="http://msdn.microsoft.com/en-us/library/windows/desktop/dd371010(v=vs.85).aspx"/>.
     /// </summary>
     public class VolumeDuckNotificationEventArgs : EventArgs
     {
