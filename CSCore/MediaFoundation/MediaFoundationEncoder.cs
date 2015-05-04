@@ -152,11 +152,11 @@ namespace CSCore.MediaFoundation
                 _targetBaseStream = new ComStream(stream);
                 _targetStream = MediaFoundationCore.IStreamToByteStream(_targetBaseStream);
 
-                attributes = MediaFoundationCore.CreateEmptyAttributes(2);
+                attributes = new MFAttributes(2);
                 attributes.SetUINT32(MediaFoundationAttributes.MF_READWRITE_ENABLE_HARDWARE_TRANSFORMS, 1);
                 attributes.SetGuid(MediaFoundationAttributes.MF_TRANSCODE_CONTAINERTYPE, containerType);
 
-                _sinkWriter = MediaFoundationCore.CreateSinkWriterFromMFByteStream(_targetStream, attributes);
+                _sinkWriter = new MFSinkWriter(_targetStream, attributes);
 
                 _streamIndex = _sinkWriter.AddStream(targetMediaType);
                 _sinkWriter.SetInputMediaType(_streamIndex, inputMediaType, null);
@@ -192,9 +192,9 @@ namespace CSCore.MediaFoundation
         private long WriteBlock(byte[] buffer, int offset, int count, int streamIndex, long positionInTicks,
             int sourceBytesPerSecond)
         {
-            using (var mfBuffer = new MFMediaBuffer(MediaFoundationCore.CreateMemoryBuffer(count)))
+            using (var mfBuffer = new MFMediaBuffer(count))
             {
-                using (var sample = new MFSample(MediaFoundationCore.CreateEmptySample()))
+                using (var sample = new MFSample())
                 {
                     sample.AddBuffer(mfBuffer);
 
@@ -433,7 +433,7 @@ namespace CSCore.MediaFoundation
         /// </returns>
         protected static MFMediaType FindBestMediaType(Guid audioSubType, int sampleRate, int channels, int bitRate)
         {
-            MFMediaType[] mediaTypes = MediaFoundationCore.GetEncoderMediaTypes(audioSubType);
+            MFMediaType[] mediaTypes = GetEncoderMediaTypes(audioSubType);
             IEnumerable<MFMediaType> n = mediaTypes.Where(x => x.SampleRate == sampleRate && x.Channels == channels);
             var availableMediaTypes = n.Select(x => new
             {
@@ -442,6 +442,54 @@ namespace CSCore.MediaFoundation
             });
 
             return availableMediaTypes.OrderBy(x => x.dif).Select(x => x.mediaType).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Returns all <see cref="MFMediaType"/>s available for encoding the specified <paramref name="audioSubType"/>.
+        /// </summary>
+        /// <param name="audioSubType">The audio subtype to search available <see cref="MFMediaType"/>s for.</param>
+        /// <returns>Available <see cref="MFMediaType"/>s for the specified <paramref name="audioSubType"/>. If the <see cref="GetEncoderMediaTypes"/> returns an empty array, no encoder for the specified <paramref name="audioSubType"/> was found.</returns>
+        public static MFMediaType[] GetEncoderMediaTypes(Guid audioSubType)
+        {
+            try
+            {
+                IMFCollection collection;
+
+                MediaFoundationException.Try(
+                    NativeMethods.MFTranscodeGetAudioOutputAvailableTypes(audioSubType, MFTEnumFlags.All,
+                        IntPtr.Zero, out collection),
+                    "Interops",
+                    "MFTranscodeGetAudioOutputAvailableTypes");
+                try
+                {
+                    int count;
+                    MediaFoundationException.Try(collection.GetElementCount(out count), "IMFCollection",
+                        "GetElementCount");
+                    MFMediaType[] mediaTypes = new MFMediaType[count];
+                    for (int i = 0; i < count; i++)
+                    {
+                        IntPtr ptr;
+                        MediaFoundationException.Try(collection.GetElement(i, out ptr), "IMFCollection", "GetElement");
+
+                        mediaTypes[i] = new MFMediaType(ptr);
+                    }
+
+                    return mediaTypes;
+                }
+                finally
+                {
+                    Marshal.ReleaseComObject(collection);
+                }
+            }
+            catch (MediaFoundationException ex)
+            {
+                if (ex.ErrorCode == unchecked((int)0xC00D36D5)) // MF_E_NOT_FOUND
+                {
+                    return Enumerable.Empty<MFMediaType>().ToArray();
+                }
+
+                throw;
+            }
         }
 
         #endregion

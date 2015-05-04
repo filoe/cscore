@@ -40,6 +40,16 @@ namespace CSCore.MediaFoundation
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="MFMediaBuffer"/> class with the specified maximum <paramref name="size"/>.
+        /// </summary>
+        /// <param name="size">The size of the <see cref="MFMediaBuffer"/> in bytes. The specified <paramref name="size"/> will be the <see cref="MaxLength"/> of the constructed <see cref="MFMediaBuffer"/>.</param>
+        /// <remarks>The caller needs to release the allocated memory by disposing the <see cref="MFMediaBuffer"/>.</remarks>
+        public MFMediaBuffer(int size)
+            : this(MediaFoundationCore.CreateMemoryBuffer(size))
+        {
+        }
+
+        /// <summary>
         /// Gives the caller access to the memory in the buffer, for reading or writing.
         /// </summary>
         /// <param name="buffer">Receives a pointer to the start of the buffer.</param>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -49,6 +50,15 @@ namespace CSCore.MediaFoundation
         public MFByteStream(IntPtr ptr)
             : base(ptr)
         {            
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MFByteStream"/> class which acts as a wrapper for the specified <paramref name="stream"/> to use it in a media foundation context.
+        /// </summary>
+        /// <param name="stream">The stream to wrap for media foundation usage.</param>
+        public MFByteStream(Stream stream)
+            : this(MediaFoundationCore.StreamToByteStreamNative(stream))
+        {
         }
 
         /// <summary>

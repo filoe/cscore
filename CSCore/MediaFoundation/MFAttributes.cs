@@ -579,7 +579,7 @@ namespace CSCore.MediaFoundation
         /// Obsolete, use the <see cref="GetBlob(System.Guid)"/> method instead.
         /// </remarks>
         [Obsolete("Use the GetBlob-method instead.")]
-        public unsafe int GetAllocatedBlob(Guid key, out byte[] buffer, out int pcbSize)
+        public unsafe int GetAllocatedBlobNative(Guid key, out byte[] buffer, out int pcbSize)
         {
             fixed (void* ppcbsize = &pcbSize)
             {

@@ -125,7 +125,7 @@ namespace CSCore.MediaFoundation
         /// <param name="majorType">Receives the major type <see cref="Guid"/>. 
         /// The major type describes the broad category of the format, such as audio or video. For a list of possible values, see <see href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa367377(v=vs.85).aspx"/>.</param>
         /// <returns>HRESULT</returns>
-        public unsafe int GetMajorType(out Guid majorType)
+        public unsafe int GetMajorTypeNative(out Guid majorType)
         {
             majorType = default(Guid);
             fixed (void* ptr = &majorType)
@@ -141,7 +141,7 @@ namespace CSCore.MediaFoundation
         public Guid GetMajorType()
         {
             Guid result;
-            MediaFoundationException.Try(GetMajorType(out result), InterfaceName, "GetMajorType");
+            MediaFoundationException.Try(GetMajorTypeNative(out result), InterfaceName, "GetMajorType");
             return result;
         }
 
@@ -261,13 +261,22 @@ namespace CSCore.MediaFoundation
         public unsafe WaveFormat ToWaveFormat(MFWaveFormatExConvertFlags flags)
         {
             IntPtr pointer = IntPtr.Zero;
-            int cbSize;
-            MediaFoundationException.Try(NativeMethods.MFCreateWaveFormatExFromMFMediaType(BasePtr.ToPointer(), &pointer, &cbSize, (int)flags), "Interop", "MFCreateWaveFormatExFromMFMediaType");
-            
-            var waveformat = (WaveFormat)Marshal.PtrToStructure(pointer, typeof(WaveFormat));
-            if (waveformat.WaveFormatTag == AudioEncoding.Extensible)
-                waveformat = (WaveFormatExtensible)Marshal.PtrToStructure(pointer, typeof(WaveFormatExtensible));
-            return waveformat;
+            try
+            {
+                int cbSize;
+                MediaFoundationException.Try(
+                    NativeMethods.MFCreateWaveFormatExFromMFMediaType(BasePtr.ToPointer(), &pointer, &cbSize,
+                        (int) flags), "Interop", "MFCreateWaveFormatExFromMFMediaType");
+            }
+            finally
+            {
+                Marshal.FreeCoTaskMem(pointer);
+            }
+            //var waveformat = (WaveFormat)Marshal.PtrToStructure(pointer, typeof(WaveFormat));
+            //if (waveformat.WaveFormatTag == AudioEncoding.Extensible)
+            //    waveformat = (WaveFormatExtensible)Marshal.PtrToStructure(pointer, typeof(WaveFormatExtensible));
+            //return waveformat;
+            return WaveFormatMarshaler.PointerToWaveFormat(pointer);
         }
     }
 }

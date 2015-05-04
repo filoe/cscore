@@ -31,6 +31,16 @@ namespace CSCore.MediaFoundation
 		{
 		}
 
+	    /// <summary>
+        /// Initializes a new instance of the <see cref="MFSinkWriter"/> class with a underlying <paramref name="byteStream"/>.
+	    /// </summary>
+	    /// <param name="byteStream">The underlying <see cref="MFByteStream"/> to use.</param>
+        /// <param name="attributes">Attributes to configure the <see cref="MFSinkWriter"/>. For more information, see <see href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd389284(v=vs.85).aspx"/>. Use null/nothing as the default value.</param>
+	    public MFSinkWriter(MFByteStream byteStream, MFAttributes attributes = null)
+            : this(MediaFoundationCore.CreateSinkWriterFromMFByteStreamNative(byteStream, attributes))
+	    {
+	    }
+
 		/// <summary>
 		/// Adds a stream to the sink writer.
 		/// <seealso cref="AddStream"/>

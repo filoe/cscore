@@ -47,11 +47,6 @@ namespace CSCore.MediaFoundation
             [In] MFTRegisterTypeInfo inputtype, [In] MFTRegisterTypeInfo outputType,
             [Out] out IntPtr pppMftActivate, [Out] out int mftCount);
 
-        [DllImport("mfplat.dll", EntryPoint = "MFCreateAttributes")]
-        public static extern int ExternMFCreateAttributes(
-            [Out] out IntPtr ppMFAttributes,
-            [In] int cInitialSize);
-
         [DllImport("Mfreadwrite.dll", EntryPoint="MFCreateSinkWriterFromURL")]
         public static extern int ExternMFCreateSinkWriterFromURL(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pwszOutputURL,

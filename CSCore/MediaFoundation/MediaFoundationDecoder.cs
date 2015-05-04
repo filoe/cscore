@@ -97,7 +97,7 @@ namespace CSCore.MediaFoundation
                     if (currentMediaType.MajorType != AudioSubTypes.MediaTypeAudio)
                         throw new InvalidOperationException(String.Format("Invalid Majortype set on sourcereader: {0}.", currentMediaType.MajorType));
 
-                    AudioEncoding encoding = AudioSubTypes.EncodingFromMediaType(currentMediaType.SubType);
+                    AudioEncoding encoding = AudioSubTypes.EncodingFromSubType(currentMediaType.SubType);
 
                     ChannelMask channelMask;
                     if (currentMediaType.TryGet(MediaFoundationAttributes.MF_MT_AUDIO_CHANNEL_MASK, out channelMask))
