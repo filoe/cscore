@@ -4,7 +4,7 @@ using System.Security;
 
 namespace CSCore.XAudio2
 {
-    internal class XAudio2Interop
+    internal class NativeMethods
     {
         private const string XAudioDll = "xaudio2_8.dll";
 

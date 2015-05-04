@@ -8,12 +8,12 @@ namespace CSCore.XAudio2
     ///     Default implementation of the <see cref="IXAudio2VoiceCallback" /> interface.
     /// </summary>
     [ComVisible(true)]
-    public class VoiceCallback : IXAudio2VoiceCallback
+    public sealed class VoiceCallback : IXAudio2VoiceCallback
     {
         void IXAudio2VoiceCallback.OnVoiceProcessingPassStart(int bytesRequired)
         {
             if (ProcessingPassStart != null)
-                ProcessingPassStart(bytesRequired);
+                ProcessingPassStart(this, new XAudio2ProcessingPassStartEventArgs(bytesRequired));
         }
 
         void IXAudio2VoiceCallback.OnVoiceProcessingPassEnd()
@@ -31,25 +31,25 @@ namespace CSCore.XAudio2
         void IXAudio2VoiceCallback.OnBufferStart(IntPtr bufferContextPtr)
         {
             if (BufferStart != null)
-                BufferStart(bufferContextPtr);
+                BufferStart(this, new XAudio2BufferEventArgs(bufferContextPtr));
         }
 
         void IXAudio2VoiceCallback.OnBufferEnd(IntPtr bufferContextPtr)
         {
             if (BufferEnd != null)
-                BufferEnd(bufferContextPtr);
+                BufferEnd(this, new XAudio2BufferEventArgs(bufferContextPtr));
         }
 
         void IXAudio2VoiceCallback.OnLoopEnd(IntPtr bufferContextPtr)
         {
             if (LoopEnd != null)
-                LoopEnd(bufferContextPtr);
+                LoopEnd(this, new XAudio2BufferEventArgs(bufferContextPtr));
         }
 
         void IXAudio2VoiceCallback.OnVoiceError(IntPtr bufferContextPtr, int error)
         {
             if (VoiceError != null)
-                VoiceError(bufferContextPtr, error);
+                VoiceError(this, new XAudio2VoiceErrorEventArgs(bufferContextPtr, error));
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace CSCore.XAudio2
         ///     Note: In a situation where there is always plenty of data available on the source voice, BytesRequired should
         ///     always report zero, because it doesn't need any samples immediately to avoid glitching.
         /// </summary>
-        public event Action<int> ProcessingPassStart;
+        public event EventHandler<XAudio2ProcessingPassStartEventArgs> ProcessingPassStart;
 
         /// <summary>
         ///     Called just after the processing pass for the voice ends.
@@ -80,21 +80,21 @@ namespace CSCore.XAudio2
         ///     The only argument passed to the eventhandler is a context pointer that was assigned to the pContext member of the
         ///     <see cref="XAudio2Buffer" /> structure when the buffer was submitted.
         /// </summary>
-        public event Action<IntPtr> BufferStart;
+        public event EventHandler<XAudio2BufferEventArgs> BufferStart;
 
         /// <summary>
         ///     Called when the voice finishes processing a buffer.
         ///     The only argument passed to the eventhandler is a context pointer that was assigned to the pContext member of the
         ///     <see cref="XAudio2Buffer" /> structure when the buffer was submitted.
         /// </summary>
-        public event Action<IntPtr> BufferEnd;
+        public event EventHandler<XAudio2BufferEventArgs> BufferEnd;
 
         /// <summary>
         ///     Called when the voice reaches the end position of a loop.
         ///     The only argument passed to the eventhandler is a context pointer that was assigned to the pContext member of the
         ///     <see cref="XAudio2Buffer" /> structure when the buffer was submitted.
         /// </summary>
-        public event Action<IntPtr> LoopEnd;
+        public event EventHandler<XAudio2BufferEventArgs> LoopEnd;
 
         /// <summary>
         ///     Called when a critical error occurs during voice processing.
@@ -102,6 +102,6 @@ namespace CSCore.XAudio2
         ///     <see cref="XAudio2Buffer" /> structure when the buffer was submitted.
         ///     The second argument passed to the eventhandler is the HRESULT error code of the critical error.
         /// </summary>
-        public event Action<IntPtr, int> VoiceError;
+        public event EventHandler<XAudio2VoiceErrorEventArgs> VoiceError;
     }
 }

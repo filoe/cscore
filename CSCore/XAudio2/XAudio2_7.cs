@@ -97,7 +97,7 @@ namespace CSCore.XAudio2
                 : new Guid("5a508685-a254-4fba-9b82-9a24b00306af");
 
             IntPtr ptr0;
-            HResult result = NativeMethods.CoCreateInstance(guid,
+            HResult result = Win32.NativeMethods.CoCreateInstance(guid,
                 IntPtr.Zero, CLSCTX.CLSCTX_INPROC_SERVER, typeof (XAudio2_7).GUID, out ptr0);
 
             if (result != HResult.S_OK)

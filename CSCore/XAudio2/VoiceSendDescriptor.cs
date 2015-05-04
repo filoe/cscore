@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 
 namespace CSCore.XAudio2
@@ -11,20 +12,26 @@ namespace CSCore.XAudio2
     public struct VoiceSendDescriptor
     {
         /// <summary>
-        ///     Either 0 or XAUDIO2_SEND_USEFILTER.
+        ///     Either <see cref="VoiceSendFlags.None"/> or <see cref="VoiceSendFlags.UseFilter"/>.
         /// </summary>
-        public VoiceSendFlags Flags;
+        public readonly VoiceSendFlags Flags;
 
         /// <summary>
-        ///     This send's destination voice.
+        ///     The destination voice.
         /// </summary>
-        public IntPtr OutputVoicePtr;
+        public readonly IntPtr OutputVoicePtr;
 
         /// <summary>
         ///     Creates a new instance of the <see cref="VoiceSendDescriptor" /> structure.
         /// </summary>
+        /// <param name="flags">The <see cref="VoiceSendFlags"/>. Must be either <see cref="VoiceSendFlags.None"/> or <see cref="VoiceSendFlags.UseFilter"/>.</param>
+        /// <param name="outputVoice">The destination voice. Must not be null.</param>
         public VoiceSendDescriptor(VoiceSendFlags flags, XAudio2Voice outputVoice)
         {
+            if(flags != VoiceSendFlags.None && flags != VoiceSendFlags.UseFilter)
+                throw new InvalidEnumArgumentException("flags", (int)flags, typeof(VoiceSendFlags));
+            if (outputVoice == null)
+                throw new ArgumentNullException("outputVoice");
             Flags = flags;
             OutputVoicePtr = outputVoice.BasePtr;
         }
@@ -32,8 +39,14 @@ namespace CSCore.XAudio2
         /// <summary>
         ///     Creates a new instance of the <see cref="VoiceSendDescriptor" /> structure.
         /// </summary>
+        /// <param name="flags">The <see cref="VoiceSendFlags"/>. Must be either <see cref="VoiceSendFlags.None"/> or <see cref="VoiceSendFlags.UseFilter"/>.</param>
+        /// <param name="outputVoicePtr">Pointer to the destination voice. Must not be <see cref="IntPtr.Zero"/>.</param>
         public VoiceSendDescriptor(VoiceSendFlags flags, IntPtr outputVoicePtr)
         {
+            if (flags != VoiceSendFlags.None && flags != VoiceSendFlags.UseFilter)
+                throw new InvalidEnumArgumentException("flags", (int)flags, typeof(VoiceSendFlags));
+            if(outputVoicePtr == IntPtr.Zero)
+                throw new ArgumentException("Must not be Zero.", "outputVoicePtr");
             Flags = flags;
             OutputVoicePtr = outputVoicePtr;
         }

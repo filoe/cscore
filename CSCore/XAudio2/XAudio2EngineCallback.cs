@@ -7,7 +7,7 @@ namespace CSCore.XAudio2
     ///     XAudio2EngineCallback
     /// </summary>
     [ComVisible(true)]
-    public class XAudio2EngineCallback : IXAudio2EngineCallback
+    public sealed class XAudio2EngineCallback : IXAudio2EngineCallback
     {
         void IXAudio2EngineCallback.OnProcessingPassStart()
         {
