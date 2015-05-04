@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading;
-using CSCore.SoundOut.DirectSound;
+using CSCore.DirectSound;
 
 namespace CSCore.SoundOut
 {
@@ -27,7 +27,7 @@ namespace CSCore.SoundOut
         private IWaveSource _source;
 
         private readonly object _lockObj = new object();
-        private bool _isInitialized = false;
+        private bool _isInitialized;
 
         /// <summary>
         ///     Initializes an new instance of <see cref="DirectSoundOut" /> class.
@@ -122,7 +122,7 @@ namespace CSCore.SoundOut
         }
 
         /// <summary>
-        ///     Occurs when the playback gets _stopped.
+        ///     Occurs when the playback gets stopped.
         /// </summary>
         public event EventHandler<PlaybackStoppedEventArgs> Stopped;
 
@@ -224,7 +224,7 @@ namespace CSCore.SoundOut
                     _playbackThread = null;
                 }
                 else
-                    Debug.WriteLine("DirectSoundOut is already _stopped.");
+                    Debug.WriteLine("DirectSoundOut is already stopped.");
             }
         }
 
@@ -280,7 +280,7 @@ namespace CSCore.SoundOut
         {
             get
             {
-                return _secondaryBuffer != null ? (float) _secondaryBuffer.GetVolume() : 1;
+                return _secondaryBuffer != null ? (float) _secondaryBuffer.GetVolumeScalar() : 1;
             }
             set
             {
@@ -290,7 +290,7 @@ namespace CSCore.SoundOut
                 if (value < 0 || value > 1)
                     throw new ArgumentOutOfRangeException("value");
                 if (_secondaryBuffer != null)
-                    _secondaryBuffer.SetVolume(value);
+                    _secondaryBuffer.SetVolumeScalar(value);
             }
         }
 
@@ -322,7 +322,7 @@ namespace CSCore.SoundOut
                 "DSInterop", "DirectSoundCreate8");
 
             _directSound = new DirectSound8(pdsound);
-            _directSound.SetCooperativeLevel(handle, DSCooperativeLevelType.DSSCL_NORMAL); //use normal as default
+            _directSound.SetCooperativeLevel(handle, DSCooperativeLevelType.Normal); //use normal as default
             if (!_directSound.SupportsFormat(_source.WaveFormat))
             {
                 if (_source.WaveFormat.WaveFormatTag == AudioEncoding.IeeeFloat) //directsound does not support ieeefloat
@@ -354,7 +354,7 @@ namespace CSCore.SoundOut
             var bufferSize = (int) waveFormat.MillisecondsToBytes(_latency);
 
             _primaryBuffer = new DirectSoundPrimaryBuffer(_directSound);
-            _secondaryBuffer = new DirectSoundSecondaryBuffer(_directSound, waveFormat, bufferSize);
+            _secondaryBuffer = new DirectSoundSecondaryBuffer(_directSound, waveFormat, bufferSize * 2);
         }
 
         private void PlaybackProc(object o)
@@ -367,11 +367,11 @@ namespace CSCore.SoundOut
             {
                 //004
                 //bool flag = true;
-                int bufferSize = _secondaryBuffer.BufferCaps.dwBufferBytes;
+                int bufferSize = _secondaryBuffer.BufferCaps.BufferBytes;
                 var latencyBytes = (int) _source.WaveFormat.MillisecondsToBytes(_latency);
                 var buffer = new byte[bufferSize];
 
-                _primaryBuffer.Play(DSBPlayFlags.DSBPLAY_LOOPING); //default flags: looping
+                _primaryBuffer.Play(DSBPlayFlags.Looping); //default flags: looping
 
                 //003
                 /*if (flag) //could refill buffer
@@ -390,18 +390,18 @@ namespace CSCore.SoundOut
                 {
                     new DSBPositionNotify
                     {
-                        dwOffset = DSBPositionNotify.OffsetZero,
-                        hEventNotify = waitHandleNull.SafeWaitHandle.DangerousGetHandle()
+                        Offset = DSBPositionNotify.OffsetZero,
+                        EventNotifyHandle = waitHandleNull.SafeWaitHandle.DangerousGetHandle()
                     },
                     new DSBPositionNotify
                     {
-                        dwOffset = (int) _source.WaveFormat.MillisecondsToBytes(_latency),
-                        hEventNotify = waitHandle0.SafeWaitHandle.DangerousGetHandle()
+                        Offset = (int) _source.WaveFormat.MillisecondsToBytes(_latency),
+                        EventNotifyHandle = waitHandle0.SafeWaitHandle.DangerousGetHandle()
                     },
                     new DSBPositionNotify
                     {
-                        dwOffset = DSBPositionNotify.OffsetEnd,
-                        hEventNotify = waitHandleEnd.SafeWaitHandle.DangerousGetHandle()
+                        Offset = DSBPositionNotify.OffsetStop,
+                        EventNotifyHandle = waitHandleEnd.SafeWaitHandle.DangerousGetHandle()
                     }
                 };
                 _directSoundNotify.SetNotificationPositions(positionNotifies);
@@ -416,7 +416,7 @@ namespace CSCore.SoundOut
                 //002
                 _secondaryBuffer.SetCurrentPosition(0);
 
-                _secondaryBuffer.Play(DSBPlayFlags.DSBPLAY_LOOPING); //default flags: looping
+                _secondaryBuffer.Play(DSBPlayFlags.Looping); //default flags: looping
 
                 _playbackState = PlaybackState.Playing;
 
@@ -429,7 +429,7 @@ namespace CSCore.SoundOut
                     int waitHandleIndex = WaitHandle.WaitAny(waitHandles, waitHandleTimeout, true);
                     bool isTimeOut = waitHandleIndex == WaitHandle.WaitTimeout;
 
-                    //dsound _stopped
+                    //dsound stopped
                     //case of end of buffer or Stop() called: http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.dsbpositionnotify(v=vs.85).aspx
                     bool isBufferStopped = waitHandleIndex == (waitHandles.Length - 1);
 
@@ -486,7 +486,7 @@ namespace CSCore.SoundOut
         {
             int read;
 
-            if (_secondaryBuffer.IsBufferLost())
+            if (_secondaryBuffer.IsBufferLost)
                 _secondaryBuffer.Restore();
 
             if (_playbackState == PlaybackState.Paused)
