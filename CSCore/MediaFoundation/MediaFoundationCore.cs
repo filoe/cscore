@@ -57,6 +57,12 @@ namespace CSCore.MediaFoundation
             }
         }
 
+        public static bool IsTransformAvailable(Guid category, Guid transformClsid)
+        {
+            var clsids = MFTEnumerator.EnumerateTransforms(category);
+            return clsids.Any(x => x == transformClsid);
+        }
+
         public static MFByteStream IStreamToByteStream(IStream stream)
         {
             return new MFByteStream(IStreamToByteStreamNative(stream));
