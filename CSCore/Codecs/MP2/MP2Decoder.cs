@@ -19,8 +19,7 @@ namespace CSCore.Codecs.MP2
             {
                 if (_issupported == null)
                 {
-                    _issupported = MediaFoundationCore.IsSupported && MediaFoundationCore.IsTransformAvailable(MFTEnumerator.EnumerateTransforms(MFTCategories.AudioDecoder, MFTEnumFlags.All),
-                        CommonAudioDecoderGuids.MpegAudioDecoder);
+                    _issupported = MediaFoundationCore.IsSupported && MediaFoundationCore.IsTransformAvailable(MFTCategories.AudioDecoder, CommonAudioDecoderGuids.MpegAudioDecoder);
                 }
                 return _issupported.Value;
             }

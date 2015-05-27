@@ -64,6 +64,9 @@ namespace CSCore.Codecs.MP3
             CodecDelay = 0;
         }
 
+        /// <summary>
+        /// Updates the <see cref="WaveFormat.BlockAlign"/>- and the <see cref="WaveFormat.BytesPerSecond"/>-property.
+        /// </summary>
         internal protected override void UpdateProperties()
         {
             //do nothing

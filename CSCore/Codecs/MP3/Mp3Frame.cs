@@ -77,6 +77,7 @@ namespace CSCore.Codecs.MP3
         /// Creates a new instance of the <see cref="Mp3Frame"/> class based on a <see cref="Stream"/>.
         /// </summary>
         /// <param name="stream"><see cref="Stream"/> which provides MP3 data.</param>
+        /// <returns>A new instance of the <see cref="Mp3Frame"/> class based on the specified <paramref name="stream"/>.</returns>
         public static Mp3Frame FromStream(Stream stream)
         {
             Mp3Frame frame = new Mp3Frame(stream);
@@ -88,6 +89,7 @@ namespace CSCore.Codecs.MP3
         /// </summary>
         /// <param name="stream"><see cref="Stream"/> which provides MP3 data.</param>
         /// <param name="data">Byte array which recieves the content of the <see cref="Mp3Frame"/>.</param>
+        /// <returns>A new instance of the <see cref="Mp3Frame"/> class based on the specified <paramref name="stream"/>.</returns>        
         public static Mp3Frame FromStream(Stream stream, ref byte[] data)
         {
             Mp3Frame frame = new Mp3Frame(stream);
@@ -167,7 +169,7 @@ namespace CSCore.Codecs.MP3
         /// </summary>
         /// <param name="buffer">Buffer which will receive the read data.</param>
         /// <param name="offset">Zero-based index at which to begin storing data within the <paramref name="buffer"/>.</param>
-        /// <returns></returns>
+        /// <returns>The number of read bytes.</returns>
         public int ReadData(ref byte[] buffer, int offset)
         {
             long currentPosition = _stream.Position;

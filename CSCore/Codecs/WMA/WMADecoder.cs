@@ -32,7 +32,7 @@ namespace CSCore.Codecs.WMA
             {
                 if (_isspeechsupported == null)
                 {
-                    _isspeechsupported = MediaFoundationCore.IsTransformAvailable(MFTEnumerator.EnumerateTransforms(MFTCategories.AudioDecoder, MFTEnumFlags.All),
+                    _isspeechsupported = MediaFoundationCore.IsTransformAvailable(MFTCategories.AudioDecoder, 
                         CommonAudioDecoderGuids.WmSpeechDecoder);
                 }
                 return _isspeechsupported.Value;
@@ -48,7 +48,7 @@ namespace CSCore.Codecs.WMA
             {
                 if (_iswmaprosupported == null)
                 {
-                    _iswmaprosupported = MediaFoundationCore.IsTransformAvailable(MFTEnumerator.EnumerateTransforms(MFTCategories.AudioDecoder, MFTEnumFlags.All),
+                    _iswmaprosupported = MediaFoundationCore.IsTransformAvailable(MFTCategories.AudioDecoder,
                         CommonAudioDecoderGuids.WmaProDecoder);
                 }
                 return _iswmaprosupported.Value;
@@ -64,7 +64,7 @@ namespace CSCore.Codecs.WMA
             {
                 if (_iswmasupported == null)
                 {
-                    _iswmasupported = MediaFoundationCore.IsTransformAvailable(MFTEnumerator.EnumerateTransforms(MFTCategories.AudioDecoder, MFTEnumFlags.All),
+                    _iswmasupported = MediaFoundationCore.IsTransformAvailable(MFTCategories.AudioDecoder,
                         CommonAudioDecoderGuids.WmAudioDecoder);
                 }
                 return _iswmasupported.Value;

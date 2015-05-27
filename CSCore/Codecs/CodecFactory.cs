@@ -111,8 +111,9 @@ namespace CSCore.Codecs
         /// <param name="codec"><see cref="CodecFactoryEntry" /> which provides information about the codec.</param>
         public void Register(object key, CodecFactoryEntry codec)
         {
-            if (key is string)
-                key = (key as string).ToLower();
+            var keyString = key as string;
+            if (keyString != null)
+                key = keyString.ToLower();
 
             if (_codecs.ContainsKey(key) != true)
                 _codecs.Add(key, codec);
@@ -182,6 +183,11 @@ namespace CSCore.Codecs
             }
         }
 
+        internal IWaveSource GetCodec(Stream stream, object key)
+        {
+            return _codecs[key].GetCodecAction(stream);
+        }
+
         private IWaveSource OpenWebStream(string url)
         {
             try
@@ -204,7 +210,7 @@ namespace CSCore.Codecs
             }
         }
 
-        private IWaveSource Default(string url)
+        private static IWaveSource Default(string url)
         {
             return new MediaFoundationDecoder(url);
         }
