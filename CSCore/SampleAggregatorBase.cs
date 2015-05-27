@@ -1,37 +1,30 @@
 ﻿using System;
-using CSCore.Streams.SampleConverter;
 
 namespace CSCore
 {
     /// <summary>
     ///     Base class for most of the sample sources.
     /// </summary>
-    public class SampleSourceBase : ISampleSource
+    public class SampleAggregatorBase : ISampleAggregator
     {
-        /// <summary>
-        ///     Underlying sample source.
-        /// </summary>
-        protected ISampleSource Source;
-
         private bool _disposed;
+        private ISampleSource _baseSource;
 
         /// <summary>
-        ///     Creates a new instance of the <see cref="SampleSourceBase" /> class.
+        ///     Creates a new instance of the <see cref="SampleAggregatorBase" /> class.
         /// </summary>
         /// <param name="source">Underlying base source which provides audio data.</param>
-        public SampleSourceBase(IWaveStream source)
+        public SampleAggregatorBase(ISampleSource source)
         {
             if (source == null)
                 throw new ArgumentNullException("source");
 
-            if (source is ISampleSource)
-                Source = (source as ISampleSource);
-            else
-                Source = WaveToSampleBase.CreateConverter(source as IWaveSource);
+            _baseSource = source;
+            DisposeBaseSource = true;
         }
 
         /// <summary>
-        ///     Reads a sequence of samples from the <see cref="SampleSourceBase" /> and advances the position within the stream by
+        ///     Reads a sequence of samples from the <see cref="SampleAggregatorBase" /> and advances the position within the stream by
         ///     the number of samples read.
         /// </summary>
         /// <param name="buffer">
@@ -52,15 +45,15 @@ namespace CSCore
             if (count % WaveFormat.Channels != 0)
                 throw new ArgumentOutOfRangeException("count");
 
-            return Source.Read(buffer, offset, count);
+            return BaseSource.Read(buffer, offset, count);
         }
 
         /// <summary>
-        ///     Gets the <see cref="IWaveStream.WaveFormat" /> of the waveform-audio data.
+        ///     Gets the <see cref="IAudioSource.WaveFormat" /> of the waveform-audio data.
         /// </summary>
         public virtual WaveFormat WaveFormat
         {
-            get { return Source.WaveFormat; }
+            get { return BaseSource.WaveFormat; }
         }
 
         /// <summary>
@@ -68,13 +61,13 @@ namespace CSCore
         /// </summary>
         public virtual long Position
         {
-            get { return CanSeek ? Source.Position : 0; }
+            get { return CanSeek ? BaseSource.Position : 0; }
             set
             {
                 if(CanSeek)
-                    Source.Position = value;
+                    BaseSource.Position = value;
                 else
-                    throw new InvalidOperationException();
+                    throw new InvalidOperationException("Underlying BaseSource is not readable.");
             }
         }
 
@@ -83,19 +76,39 @@ namespace CSCore
         /// </summary>
         public virtual long Length
         {
-            get { return CanSeek ? Source.Length : 0; }
+            get { return CanSeek ? BaseSource.Length : 0; }
         }
 
         /// <summary>
-        /// Gets a value indicating whether the <see cref="IWaveStream"/> supports seeking.
+        /// Gets a value indicating whether the <see cref="IAudioSource"/> supports seeking.
         /// </summary>
         public bool CanSeek
         {
-            get { return Source.CanSeek; }
+            get { return BaseSource.CanSeek; }
         }
 
         /// <summary>
-        ///     Disposes the <see cref="SampleSourceBase" /> and the underlying <see cref="Source" />.
+        ///     Gets or sets the underlying sample source.
+        /// </summary>
+        public virtual ISampleSource BaseSource
+        {
+            get { return _baseSource; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+                _baseSource = value;
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets a value which indicates whether to dispose the <see cref="BaseSource" />
+        ///     on calling <see cref="Dispose(bool)" />.
+        /// </summary>
+        public bool DisposeBaseSource { get; set; }
+
+        /// <summary>
+        ///     Disposes the <see cref="SampleAggregatorBase" /> and the underlying <see cref="BaseSource" />.
         /// </summary>
         public void Dispose()
         {
@@ -109,7 +122,7 @@ namespace CSCore
         }
 
         /// <summary>
-        ///     Disposes the <see cref="SampleSourceBase" /> and the underlying <see cref="Source" />.
+        ///     Disposes the <see cref="SampleAggregatorBase" /> and the underlying <see cref="BaseSource" />.
         /// </summary>
         /// <param name="disposing">
         ///     True to release both managed and unmanaged resources; false to release only unmanaged
@@ -117,13 +130,17 @@ namespace CSCore
         /// </param>
         protected virtual void Dispose(bool disposing)
         {
-            Source.Dispose();
+            if (DisposeBaseSource && BaseSource != null)
+            {
+                BaseSource.Dispose();
+                _baseSource = null;
+            }
         }
 
         /// <summary>
         ///     Destructor which calls <see cref="Dispose(bool)" />.
         /// </summary>
-        ~SampleSourceBase()
+        ~SampleAggregatorBase()
         {
             Dispose(false);
         }

@@ -5,10 +5,10 @@ namespace CSCore
     /// <summary>
     ///     Defines the base for all audio streams.
     /// </summary>
-    public interface IWaveStream : IDisposable
+    public interface IAudioSource : IDisposable
     {
         /// <summary>
-        /// Gets a value indicating whether the <see cref="IWaveStream"/> supports seeking.
+        ///     Gets a value indicating whether the <see cref="IAudioSource" /> supports seeking.
         /// </summary>
         bool CanSeek { get; }
 
