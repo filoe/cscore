@@ -7,7 +7,7 @@ namespace CSCore.Streams
     /// <summary>
     /// Converts a stereo source to a mono source.
     /// </summary>
-    public class StereoToMonoSource : SampleSourceBase
+    public class StereoToMonoSource : SampleAggregatorBase
     {
         private readonly WaveFormat _waveFormat;
         private float[] _buffer;
@@ -17,7 +17,7 @@ namespace CSCore.Streams
         /// </summary>
         /// <param name="source">The underlying stereo source.</param>
         /// <exception cref="ArgumentException">The <paramref name="source"/> has more or less than two channels.</exception>
-        public StereoToMonoSource(IWaveStream source)
+        public StereoToMonoSource(ISampleSource source)
             : base(source)
         {
             if (source == null)
@@ -46,7 +46,7 @@ namespace CSCore.Streams
         public unsafe override int Read(float[] buffer, int offset, int count)
         {
             _buffer = _buffer.CheckBuffer(count * 2);
-            int read = Source.Read(_buffer, 0, count * 2);
+            int read = BaseSource.Read(_buffer, 0, count * 2);
             fixed (float* pbuffer = buffer)
             {
                 float* ppbuffer = pbuffer + offset;
@@ -66,11 +66,11 @@ namespace CSCore.Streams
         {
             get
             {
-                return Source.Position / 2;
+                return BaseSource.Position / 2;
             }
             set
             {
-                Source.Position = value * 2;
+                BaseSource.Position = value * 2;
             }
         }
 
@@ -79,11 +79,11 @@ namespace CSCore.Streams
         /// </summary>
         public override long Length
         {
-            get { return Source.Length / 2; }
+            get { return BaseSource.Length / 2; }
         }
 
         /// <summary>
-        ///     Gets the <see cref="IWaveStream.WaveFormat" /> of the waveform-audio data.
+        ///     Gets the <see cref="IAudioSource.WaveFormat" /> of the waveform-audio data.
         /// </summary>
         public override WaveFormat WaveFormat
         {
@@ -91,7 +91,7 @@ namespace CSCore.Streams
         }
 
         /// <summary>
-        ///     Disposes the <see cref="StereoToMonoSource" /> and the underlying <see cref="SampleSourceBase.Source" />.
+        ///     Disposes the <see cref="StereoToMonoSource" /> and the underlying <see cref="SampleAggregatorBase.BaseSource" />.
         /// </summary>
         /// <param name="disposing">
         ///     True to release both managed and unmanaged resources; false to release only unmanaged

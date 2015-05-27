@@ -6,7 +6,7 @@ namespace CSCore.Streams
     /// <summary>
     /// Represents a peak meter.
     /// </summary>
-    public class PeakMeter : SampleSourceBase
+    public class PeakMeter : SampleAggregatorBase
     {
         /// <summary>
         /// Gets the average value of all <see cref="ChannelPeakValues"/>.
@@ -53,17 +53,21 @@ namespace CSCore.Streams
         private int _blocksProcessed = 0;
 
         /// <summary>
-        /// Creates a new instance of the <see cref="PeakMeter"/> class.
+        /// Initializes a new instance of the <see cref="PeakMeter"/> class.
         /// </summary>
-        public PeakMeter(IWaveStream source)
+        /// <param name="source">Underlying base source which provides audio data.</param>
+        /// <exception cref="System.ArgumentNullException">source</exception>
+        public PeakMeter(ISampleSource source)
             : base(source)
         {
+            if (source == null)
+                throw new ArgumentNullException("source");
             ChannelPeakValues = new float[source.WaveFormat.Channels];
             Interval = 250;
         }
 
         /// <summary>
-        ///     Reads a sequence of samples from the <see cref="SampleSourceBase" /> and advances the position within the stream by the
+        ///     Reads a sequence of samples from the <see cref="SampleAggregatorBase" /> and advances the position within the stream by the
         ///     number of samples read.
         /// </summary>
         /// <param name="buffer">

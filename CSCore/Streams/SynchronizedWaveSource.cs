@@ -3,151 +3,189 @@
 namespace CSCore.Streams
 {
     /// <summary>
-    ///     A thread-safe (synchronized) wrapper around the specified <see cref="IWaveSource" /> object.
+    ///     A thread-safe (synchronized) wrapper around the specified a <see cref="IReadableAudioSource{T}"/>.
     /// </summary>
-    public class SynchronizedWaveSource<TBaseStream>
-        : WaveAggregatorBase
-        where TBaseStream : IWaveSource
+    /// <typeparam name="TBaseSource">The type of the underlying <see cref="IReadableAudioSource{T}"/>.</typeparam>
+    /// <typeparam name="T">The type of the data read by the <see cref="Read"/> method.</typeparam>
+    public class SynchronizedWaveSource<TBaseSource, T>
+        : IAggregator<T, TBaseSource> where TBaseSource : class, IReadableAudioSource<T>
     {
         private readonly object _lockObj = new object();
+        private TBaseSource _baseSource;
+        private bool _disposed;
 
         /// <summary>
-        ///     Initializes a new synchronizedWaveSource of the <see cref="SynchronizedWaveSource{TBaseStream}" /> class.
+        /// Initializes a new instance of the <see cref="SynchronizedWaveSource{TBaseSource, T}"/> class.
         /// </summary>
-        /// <param name="baseWaveSource">The <see cref="IWaveSource" /> object to synchronize.</param>
-        public SynchronizedWaveSource(TBaseStream baseWaveSource)
-            : base(baseWaveSource)
+        /// <param name="baseWaveSource">The underlying source to synchronize.</param>
+        public SynchronizedWaveSource(TBaseSource baseWaveSource)
         {
+            BaseSource = baseWaveSource;
         }
 
         /// <summary>
-        ///     Gets the output WaveFormat of the <see cref="WaveAggregatorBase.BaseStream" />.
+        ///     Gets the output <see cref="CSCore.WaveFormat"/> of the <see cref="BaseSource" />.
         /// </summary>
-        public override WaveFormat WaveFormat
+        public WaveFormat WaveFormat
         {
             get
             {
                 lock (_lockObj)
                 {
-                    return base.WaveFormat;
+                    return BaseSource.WaveFormat;
                 }
             }
         }
 
         /// <summary>
-        ///     Gets or sets the position of the <see cref="WaveAggregatorBase.BaseStream" />.
+        ///     Gets or sets the position of the <see cref="BaseSource" />.
         /// </summary>
-        public override long Position
+        public long Position
         {
             get
             {
                 lock (_lockObj)
                 {
-                    return base.Position;
+                    return BaseSource.Position;
                 }
             }
             set
             {
                 lock (_lockObj)
                 {
-                    base.Position = value;
+                    BaseSource.Position = value;
                 }
             }
         }
 
         /// <summary>
-        ///     Gets the length of the underlying <see cref="WaveAggregatorBase.BaseStream" />.
+        ///     Gets the length of the <see cref="BaseSource" />.
         /// </summary>
-        public override long Length
+        public long Length
         {
             get
             {
                 lock (_lockObj)
                 {
-                    return base.Length;
+                    return BaseSource.Length;
                 }
             }
         }
 
         /// <summary>
-        /// Gets a value indicating whether the underlying <see cref="WaveAggregatorBase.BaseStream" /> supports seeking.
+        /// Gets a value indicating whether the <see cref="BaseSource" /> supports seeking.
         /// </summary>
-        public override bool CanSeek
+        public bool CanSeek
         {
             get 
             {
                 lock (_lockObj)
                 {
-                    return base.CanSeek;
+                    return BaseSource.CanSeek;
                 }
             }
         }
 
         /// <summary>
-        ///     Gets or sets the underlying <see cref="WaveAggregatorBase.BaseStream" />.
+        ///     Gets or sets the <see cref="BaseSource" />.
         /// </summary>
-        public override IWaveSource BaseStream
+        public TBaseSource BaseSource
         {
             get
             {
                 lock (_lockObj)
                 {
-                    return base.BaseStream;
+                    return _baseSource;
                 }
             }
             set
             {
                 lock (_lockObj)
                 {
-                    if (value == null || value is TBaseStream)
-                        base.BaseStream = value;
-                    else
-                        throw new ArgumentException("The value does not fit the specified TBaseStream type.", "value");
+                    if (value == null)
+                        throw new ArgumentNullException("value");
+                    _baseSource = value;
                 }
             }
         }
 
         /// <summary>
-        ///     Defines an explicit conversation of a <see cref="SynchronizedWaveSource{TBaseStream}" /> to its
-        ///     <see cref="BaseStream" />.
+        ///     Reads a sequence of elements from the <see cref="BaseSource" /> and advances its position by the
+        ///     number of elements read.
         /// </summary>
-        /// <param name="synchronizedWaveSource">Instance of the <see cref="SynchronizedWaveSource{TBaseStream}" />.</param>
-        /// <returns>The <see cref="BaseStream" /> of the <paramref name="synchronizedWaveSource" />.</returns>
-        public static explicit operator TBaseStream(SynchronizedWaveSource<TBaseStream> synchronizedWaveSource)
-        {
-            if (synchronizedWaveSource == null)
-                throw new ArgumentNullException("synchronizedWaveSource");
-            return (TBaseStream) synchronizedWaveSource.BaseStream;
-        }
-
-        /// <summary>
-        ///     Reads from the underlying <see cref="WaveAggregatorBase.BaseStream" />.
-        /// </summary>
-        /// <param name="buffer">Buffer which receives the read data.</param>
-        /// <param name="offset">Zero-based offset offset in the <paramref name="buffer" /> at which to begin storing data.</param>
-        /// <param name="count">The maximum number of bytes to read.</param>
-        /// <returns>Actual number of read bytes.</returns>
-        public override int Read(byte[] buffer, int offset, int count)
+        /// <param name="buffer">
+        ///     An array of elements. When this method returns, the <paramref name="buffer" /> contains the specified
+        ///     array of elements with the values between <paramref name="offset" /> and (<paramref name="offset" /> +
+        ///     <paramref name="count" /> - 1) replaced by the elements read from the current source.
+        /// </param>
+        /// <param name="offset">
+        ///     The zero-based offset in the <paramref name="buffer" /> at which to begin storing the data
+        ///     read from the current stream.
+        /// </param>
+        /// <param name="count">The maximum number of elements to read from the current source.</param>
+        /// <returns>The total number of elements read into the buffer.</returns>
+        public int Read(T[] buffer, int offset, int count)
         {
             lock (_lockObj)
             {
-                return base.Read(buffer, offset, count);
+                return BaseSource.Read(buffer, offset, count);
             }
         }
 
+        /// <summary>
+        ///     Defines an explicit conversation of a <see cref="SynchronizedWaveSource{TBaseStream,T}" /> to its
+        ///     <see cref="BaseSource" />.
+        /// </summary>
+        /// <param name="synchronizedWaveSource">Instance of the <see cref="SynchronizedWaveSource{TBaseStream,T}" />.</param>
+        /// <returns>The <see cref="BaseSource" /> of the <paramref name="synchronizedWaveSource" />.</returns>
+        public static explicit operator TBaseSource(SynchronizedWaveSource<TBaseSource, T> synchronizedWaveSource)
+        {
+            if (synchronizedWaveSource == null)
+                throw new ArgumentNullException("synchronizedWaveSource");
+            return synchronizedWaveSource.BaseSource;
+        }
 
         /// <summary>
-        ///     Disposes the <see cref="WaveAggregatorBase.BaseStream" /> and releases all allocated resources.
+        ///     Disposes the <see cref="BaseSource" /> and releases all allocated resources.
         /// </summary>
         /// <param name="disposing">
         ///     True to release both managed and unmanaged resources; false to release only unmanaged
         ///     resources.
         /// </param>
-        protected override void Dispose(bool disposing)
+        protected void Dispose(bool disposing)
         {
             lock (_lockObj)
             {
-                base.Dispose(disposing);
+                if(BaseSource != null)
+                    BaseSource.Dispose();
+                _baseSource = null;
+            }
+        }
+
+        /// <summary>
+        ///     Disposes the <see cref="BaseSource" /> and releases all allocated resources.
+        /// </summary>
+        public void Dispose()
+        {
+            lock (_lockObj)
+            {
+                if (!_disposed)
+                {
+                    _disposed = true;
+                    Dispose(true);
+                    GC.SuppressFinalize(this);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="SynchronizedWaveSource{TBaseSource, T}"/> class.
+        /// </summary>
+        ~SynchronizedWaveSource()
+        {
+            lock (_lockObj)
+            {
+                Dispose(false);
             }
         }
     }

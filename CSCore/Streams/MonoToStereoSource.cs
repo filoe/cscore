@@ -5,7 +5,7 @@ namespace CSCore.Streams
     /// <summary>
     /// Converts a mono source to a stereo source.
     /// </summary>
-    public sealed class MonoToStereoSource : SampleSourceBase
+    public sealed class MonoToStereoSource : SampleAggregatorBase
     {
         private float[] _buffer;
 
@@ -16,7 +16,7 @@ namespace CSCore.Streams
         /// </summary>
         /// <param name="source">The underlying mono source.</param>
         /// <exception cref="ArgumentException">The <paramref name="source"/> has more or less than one channel.</exception>
-        public MonoToStereoSource(IWaveStream source)
+        public MonoToStereoSource(ISampleSource source)
             : base(source)
         {
             if (source == null)
@@ -84,7 +84,7 @@ namespace CSCore.Streams
         }
 
         /// <summary>
-        ///     Gets the <see cref="IWaveStream.WaveFormat" /> of the waveform-audio data.
+        ///     Gets the <see cref="IAudioSource.WaveFormat" /> of the waveform-audio data.
         /// </summary>
         public override WaveFormat WaveFormat
         {
@@ -92,7 +92,7 @@ namespace CSCore.Streams
         }
 
         /// <summary>
-        ///     Disposes the <see cref="MonoToStereoSource" /> and the underlying <see cref="SampleSourceBase.Source" />.
+        ///     Disposes the <see cref="MonoToStereoSource" /> and the underlying <see cref="SampleAggregatorBase.BaseSource" />.
         /// </summary>
         /// <param name="disposing">
         ///     True to release both managed and unmanaged resources; false to release only unmanaged

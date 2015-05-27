@@ -1,9 +1,11 @@
+using System;
+
 namespace CSCore.Streams
 {
     /// <summary>
     ///     Provides the ability use an implementation of the <see cref="IFadeStrategy" /> interface fade waveform-audio data.
     /// </summary>
-    public class FadeInOut : SampleSourceBase
+    public class FadeInOut : SampleAggregatorBase
     {
         private volatile IFadeStrategy _fadeStrategy;
 
@@ -11,9 +13,11 @@ namespace CSCore.Streams
         ///     Initializes a new instance of the <see cref="FadeInOut" /> class.
         /// </summary>
         /// <param name="source">The underlying source to use.</param>
-        public FadeInOut(IWaveStream source)
+        public FadeInOut(ISampleSource source)
             : base(source)
         {
+            if (source == null)
+                throw new ArgumentNullException("source");
         }
 
         /// <summary>

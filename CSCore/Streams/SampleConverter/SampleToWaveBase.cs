@@ -8,7 +8,13 @@ namespace CSCore.Streams.SampleConverter
     public abstract class SampleToWaveBase : IWaveSource
     {
         private readonly WaveFormat _waveFormat;
+        /// <summary>
+        /// The underlying source which provides samples.
+        /// </summary>
         internal protected ISampleSource Source;
+        /// <summary>
+        /// The buffer to use for reading from the <see cref="Source"/>.
+        /// </summary>
         internal protected float[] Buffer;
         private readonly double _ratio;
 
@@ -84,7 +90,7 @@ namespace CSCore.Streams.SampleConverter
         }
 
         /// <summary>
-        /// Gets a value indicating whether the <see cref="IWaveStream"/> supports seeking.
+        /// Gets a value indicating whether the <see cref="IAudioSource"/> supports seeking.
         /// </summary>
         public bool CanSeek
         {

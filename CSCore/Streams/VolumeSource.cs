@@ -5,7 +5,7 @@ namespace CSCore.Streams
     /// <summary>
     /// Provides the ability to adjust the volume of an audio stream.
     /// </summary>
-    public class VolumeSource : SampleSourceBase
+    public class VolumeSource : SampleAggregatorBase
     {
         private float _volume = 1f;
 
@@ -30,9 +30,11 @@ namespace CSCore.Streams
         /// Initializes a new instance of the <see cref="VolumeSource"/> class.
         /// </summary>
         /// <param name="source">The underlying base source.</param>
-        public VolumeSource(IWaveStream source)
+        public VolumeSource(ISampleSource source)
             : base(source)
         {
+            if (source == null)
+                throw new ArgumentNullException("source");
         }
 
         /// <summary>
