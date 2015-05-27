@@ -3,7 +3,7 @@
 namespace CSCore
 {
     /// <summary>
-    ///     Provides data for any _stopped operations.
+    ///     Provides data for any stopped operations.
     /// </summary>
     public class StoppedEventArgs : EventArgs
     {
@@ -28,8 +28,8 @@ namespace CSCore
         }
 
         /// <summary>
-        ///     Gets a value which indicates whether the operation _stopped due to an error. True means that that the operation
-        ///     _stopped due to an error. False means that the operation did not stop due to an error.
+        ///     Gets a value which indicates whether the operation stopped due to an error. True means that that the operation
+        ///     stopped due to an error. False means that the operation did not stop due to an error.
         /// </summary>
         public virtual bool HasError
         {

@@ -48,7 +48,7 @@ namespace CSCore.DMO
 
         /// <summary>
         ///     A GUID identifying the stream's major media type. This must be one of the DMO Media
-        ///     Types(see http://msdn.microsoft.com/en-us/library/aa924843.aspx).
+        ///     Types(see <see href="http://msdn.microsoft.com/en-us/library/aa924843.aspx"/>).
         /// </summary>
         public Guid MajorType;
 
@@ -77,7 +77,7 @@ namespace CSCore.DMO
 
         /// <summary>
         ///     GUID specifying the format type. The pbFormat member points to the corresponding format
-        ///     structure. (see http://msdn.microsoft.com/en-us/library/aa929922.aspx)
+        ///     structure. (see <see href="http://msdn.microsoft.com/en-us/library/aa929922.aspx"/>)
         /// </summary>
         public Guid FormatType;
 

@@ -107,7 +107,7 @@ namespace CSCore.Tags.ID3
                 switch (_header.Version)
                 {
                     case ID3Version.ID3v2_2:
-                        Parse2(contentStream);
+                        Parse2();
                         break;
 
                     case ID3Version.ID3v2_3:
@@ -136,7 +136,7 @@ namespace CSCore.Tags.ID3
             }
         }
 
-        private bool Parse2(Stream stream)
+        private bool Parse2()
         {
             if (((int)_header.Flags & 0x3F) != 0)
                 throw new ID3Exception("Invalid headerflags: 0x{0}.", ((int)_header.Flags).ToString("x"));

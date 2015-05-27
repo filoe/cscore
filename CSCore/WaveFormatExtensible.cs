@@ -28,7 +28,7 @@ namespace CSCore
         /// <summary>
         ///     Returns the SubType-Guid of a <paramref name="waveFormat" />. If the specified <paramref name="waveFormat" /> does
         ///     not contain a SubType-Guid, the <see cref="WaveFormat.WaveFormatTag" /> gets converted to the equal SubType-Guid
-        ///     using the <see cref="AudioSubTypes.MediaTypeFromEncoding" /> method.
+        ///     using the <see cref="AudioSubTypes.SubTypeFromEncoding" /> method.
         /// </summary>
         /// <param name="waveFormat"><see cref="WaveFormat" /> which gets used to determine the SubType-Guid.</param>
         /// <returns>SubType-Guid of the specified <paramref name="waveFormat" />.</returns>
@@ -38,7 +38,7 @@ namespace CSCore
                 throw new ArgumentNullException("waveFormat");
             if (waveFormat is WaveFormatExtensible)
                 return ((WaveFormatExtensible) waveFormat).SubFormat;
-            return AudioSubTypes.MediaTypeFromEncoding(waveFormat.WaveFormatTag);
+            return AudioSubTypes.SubTypeFromEncoding(waveFormat.WaveFormatTag);
         }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace CSCore
             }
 
             if (channels != valuesSet)
-                throw new ArgumentException("Channels has to equal the set bits in the channelmask.");
+                throw new ArgumentException("Channels has to equal the set flags in the channelmask.");
 
             _channelMask = channelMask;
         }
@@ -165,19 +165,26 @@ namespace CSCore
         /// <returns>A simple <see cref="WaveFormat"/> instance.</returns>
         public WaveFormat ToWaveFormat()
         {
-            return new WaveFormat(SampleRate, BitsPerSample, Channels, AudioSubTypes.EncodingFromMediaType(SubFormat));
+            return new WaveFormat(SampleRate, BitsPerSample, Channels, AudioSubTypes.EncodingFromSubType(SubFormat));
         }
 
+        /// <summary>
+        /// Creates a new <see cref="WaveFormat" /> object that is a copy of the current instance.
+        /// </summary>
+        /// <returns>
+        /// A copy of the current instance.
+        /// </returns>
         public override object Clone()
         {
-            var waveFormat = new WaveFormatExtensible(SampleRate, BitsPerSample, Channels, SubFormat, ChannelMask);
-            waveFormat._samplesUnion = _samplesUnion;
-            return waveFormat;
+            //var waveFormat = new WaveFormatExtensible(SampleRate, BitsPerSample, Channels, SubFormat, ChannelMask);
+            //waveFormat._samplesUnion = _samplesUnion;
+            //return waveFormat;
+            return MemberwiseClone();
         }
 
         internal override void SetWaveFormatTagInternal(AudioEncoding waveFormatTag)
         {
-            SubFormat = AudioSubTypes.MediaTypeFromEncoding(waveFormatTag);
+            SubFormat = AudioSubTypes.SubTypeFromEncoding(waveFormatTag);
         }
 
         /// <summary>

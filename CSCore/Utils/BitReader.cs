@@ -145,7 +145,7 @@ namespace CSCore.Utils
         public ulong ReadBits64(int bits)
         {
             if (bits <= 0 || bits > 64)
-                throw new ArgumentOutOfRangeException("bits", "bits has to be a value between 1 and 32");
+                throw new ArgumentOutOfRangeException("bits", "bits has to be a value between 1 and 64");
 
             ulong result = ReadBits(Math.Min(24, bits));
             if (bits <= 24)
@@ -163,7 +163,7 @@ namespace CSCore.Utils
         public long ReadBits64Signed(int bits)
         {
             if (bits <= 0 || bits > 64)
-                throw new ArgumentOutOfRangeException("bits", "bits has to be a value between 1 and 32");
+                throw new ArgumentOutOfRangeException("bits", "bits has to be a value between 1 and 64");
 
             var result = (long) ReadBits64(bits);
             result <<= (64 - bits);
