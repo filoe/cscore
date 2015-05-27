@@ -1,5 +1,7 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace CSCore.Win32
@@ -46,6 +48,20 @@ namespace CSCore.Win32
             Member = member;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Win32ComException"/> class from serialization data.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> object that holds the serialized object data.</param>
+        /// <param name="context">The StreamingContext object that supplies the contextual information about the source or destination.</param>
+        protected Win32ComException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+            if (info == null)
+                throw new ArgumentNullException("info");
+            InterfaceName = info.GetString("InterfaceName");
+            Member = info.GetString("Member");
+        }
+
         private static string GetErrorMessage(int result, string interfaceName, string member)
         {
             return String.Format("{0}::{1} caused an error: 0x{2}, \"{3}\".", interfaceName, member, result.ToString("x8"), GetMessage(result));
@@ -61,6 +77,18 @@ namespace CSCore.Win32
             }
 
             return "Unknown HRESULT";
+        }
+
+        /// <summary>
+        /// Populates a <see cref="SerializationInfo"/> with the data needed to serialize the target object.
+        /// </summary>
+        /// <param name="info">The <see cref="SerializationInfo"/> to populate with data.</param>
+        /// <param name="context">The destination (see StreamingContext) for this serialization.</param>
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+            info.AddValue("Interface", InterfaceName);
+            info.AddValue("Member", Member);
         }
     }
 }
