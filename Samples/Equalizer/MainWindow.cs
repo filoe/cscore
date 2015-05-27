@@ -54,6 +54,7 @@ namespace EqualizerTest
                 var source = CodecFactory.Instance.GetCodec(ofn.FileName)
                     .Loop()
                     .ChangeSampleRate(32000)
+                    .ToSampleSource()
                     .AppendSource(Equalizer.Create10BandEqualizer, out _equalizer)
                     .ToWaveSource();
 

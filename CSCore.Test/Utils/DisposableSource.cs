@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace CSCore.Test.Utils
 {
-    public class DisposableSource : WaveAggregatorBase
+    internal class DisposableSource : WaveAggregatorBase
     {
         public bool IsDisposed { get; private set; }
 

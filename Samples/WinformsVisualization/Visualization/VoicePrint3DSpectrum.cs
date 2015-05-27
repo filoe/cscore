@@ -42,7 +42,7 @@ namespace WinformsVisualization.Visualization
             }
         }
 
-        public void CreateVoicePrint3D(Graphics graphics, RectangleF clipRectangle, float xPos, Color background,
+        public bool CreateVoicePrint3D(Graphics graphics, RectangleF clipRectangle, float xPos, Color background,
             float lineThickness = 1f)
         {
             if (!_isInitialized)
@@ -53,7 +53,7 @@ namespace WinformsVisualization.Visualization
 
             var fftBuffer = new float[(int) FftSize];
 
-            if(SpectrumProvider.GetFftData(fftBuffer, this))
+            if (SpectrumProvider.GetFftData(fftBuffer, this))
             {
                 SpectrumPointData[] spectrumPoints = CalculateSpectrumPoints(1.0, fftBuffer);
                 using (var pen = new Pen(background, lineThickness))
@@ -78,7 +78,9 @@ namespace WinformsVisualization.Visualization
                         currentYOffset -= pointHeight;
                     }
                 }
+                return true;
             }
+            return false;
         }
     }
 }

@@ -34,7 +34,7 @@ namespace CSCore.Test.XAudio2
         [TestInitialize]
         public void Initialize()
         {
-            _source = CodecFactory.Instance.GetCodec(GlobalTestConfig.TestMp3);
+            _source = GlobalTestConfig.TestMp3();
             _xaudio2 = CreateXAudio2();
         }
 
@@ -45,13 +45,13 @@ namespace CSCore.Test.XAudio2
             _xaudio2.Dispose();
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("XAudio2")]
         public void CanCreateXAudio2()
         {
             //Work is done by Initialize and Cleanup method
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("XAudio2")]
         public void CanCreateMasteringVoice()
         {
             using (var masteringVoice = _xaudio2.CreateMasteringVoice())
@@ -59,7 +59,7 @@ namespace CSCore.Test.XAudio2
             }
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("XAudio2")]
         public void CanCreateSourceVoice()
         {
             using (var masteringVoice = _xaudio2.CreateMasteringVoice())
@@ -68,7 +68,7 @@ namespace CSCore.Test.XAudio2
             }
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("XAudio2")]
         public void CanSubmitSourceBuffer()
         {
             const int lengthInSeconds = 2;
@@ -92,7 +92,7 @@ namespace CSCore.Test.XAudio2
             }
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("XAudio2")]
         public void CanRegisterSourceVoiceCallback()
         {
             const int lengthInSeconds = 2;
@@ -103,8 +103,8 @@ namespace CSCore.Test.XAudio2
             using (var masteringVoice = _xaudio2.CreateMasteringVoice())
             using (var sourceVoice = _xaudio2.CreateSourceVoice(_source.WaveFormat, VoiceFlags.None, CSCore.XAudio2.XAudio2.DefaultFrequencyRatio, callback, null, null))
             {
-                callback.BufferStart += (p) => b0 = true;
-                callback.BufferEnd += (p) => b1 = true;
+                callback.BufferStart += (s,e) => b0 = true;
+                callback.BufferEnd += (s,e) => b1 = true;
 
                 byte[] rawBuffer = new byte[_source.WaveFormat.BytesPerSecond * lengthInSeconds];
                 int read = _source.Read(rawBuffer, 0, rawBuffer.Length);
@@ -125,7 +125,7 @@ namespace CSCore.Test.XAudio2
             }
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("XAudio2")]
         public void CanRegisterEngineCallback()
         {
             const int lengthInSeconds = 2;
@@ -177,7 +177,7 @@ namespace CSCore.Test.XAudio2
             _xaudio2.UnregisterForCallbacks(engineCallback);
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("XAudio2")]
         public void CanPlayWithStreamingSourceVoice()
         {
             for (int i = 0; i < 20; i++)
@@ -187,7 +187,7 @@ namespace CSCore.Test.XAudio2
                     xaudio2.StartEngine();
 
                     using (var masteringVoice = xaudio2.CreateMasteringVoice())
-                    using (var source = CodecFactory.Instance.GetCodec(GlobalTestConfig.TestWav2S))
+                    using (var source = GlobalTestConfig.TestWav2S())
                     using (var pool = new StreamingSourceVoiceListener())
                     using (var streamingSourceVoice = StreamingSourceVoice.Create(xaudio2, source))
                     {
@@ -213,13 +213,13 @@ namespace CSCore.Test.XAudio2
             }
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("XAudio2")]
         public void CanSetEffect()
         {
             //TODO: Implement
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("XAudio2")]
         public void CanGetEffect()
         {
             //TODO: Implement

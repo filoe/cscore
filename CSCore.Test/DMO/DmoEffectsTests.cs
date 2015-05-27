@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using CSCore.Streams.Effects;
 using System.Reflection;
+using CSCore.Streams;
+using CSCore.Streams.Effects;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CSCore.Test.DMO
 {
@@ -17,23 +17,25 @@ namespace CSCore.Test.DMO
         {
             bool flag = true;
 
-            var types = GetEffectTypes();
-            foreach (var type in types)
+            Type[] types = GetEffectTypes();
+            foreach (Type type in types)
             {
                 Console.WriteLine(type.FullName);
 
-                using (var effect = CreateEffect(type, GetSource()))
+                using (IWaveSource effect = CreateEffect(type, GetSource()))
                 {
-                    var properties = type.GetProperties(BindingFlags.SetProperty | BindingFlags.GetProperty | BindingFlags.Public | BindingFlags.Instance).Where(x => x.DeclaringType == type);
-                    foreach (var property in properties)
+                    IEnumerable<PropertyInfo> properties =
+                        type.GetProperties(BindingFlags.SetProperty | BindingFlags.GetProperty | BindingFlags.Public |
+                                           BindingFlags.Instance).Where(x => x.DeclaringType == type);
+                    foreach (PropertyInfo property in properties)
                     {
                         try
                         {
-                            var value = property.GetValue(effect, null);
+                            object value = property.GetValue(effect, null);
                             property.SetValue(effect, value, null);
                             Console.WriteLine(" - SUCCESSFUL: {0}.", property.Name);
                         }
-                        catch(Exception ex)
+                        catch (Exception ex)
                         {
                             Console.WriteLine(" - FAILED: {0}. -> {1}", property.Name, ex);
                             flag = false;
@@ -45,32 +47,32 @@ namespace CSCore.Test.DMO
             Console.WriteLine("=================================");
             Console.WriteLine(flag ? "Successful!" : "Failed!");
 
-            if(!flag)
+            if (!flag)
                 Assert.Fail();
         }
 
         private Type[] GetEffectTypes()
         {
-            return new Type[]
+            return new[]
             {
-                typeof(DmoChorusEffect),
-                typeof(DmoCompressorEffect),
-                typeof(DmoDistortionEffect),
-                typeof(DmoEchoEffect),
-                typeof(DmoFlangerEffect),
-                typeof(DmoGargleEffect),
-                typeof(DmoWavesReverbEffect)
+                typeof (DmoChorusEffect),
+                typeof (DmoCompressorEffect),
+                typeof (DmoDistortionEffect),
+                typeof (DmoEchoEffect),
+                typeof (DmoFlangerEffect),
+                typeof (DmoGargleEffect),
+                typeof (DmoWavesReverbEffect)
             };
         }
 
         private IWaveSource GetSource()
         {
-            return new CSCore.Streams.SineGenerator().ToWaveSource();
+            return new SineGenerator().ToWaveSource();
         }
 
         private IWaveSource CreateEffect(Type effectType, IWaveSource source)
         {
-            return (IWaveSource)Activator.CreateInstance(effectType, source);
+            return (IWaveSource) Activator.CreateInstance(effectType, source);
         }
     }
 }

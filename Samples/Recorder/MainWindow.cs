@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using CSCore;
@@ -73,7 +74,7 @@ namespace Recorder
             _soundIn.Initialize();
 
             var soundInSource = new SoundInSource(_soundIn);
-            var singleBlockNotificationStream = new SingleBlockNotificationStream(soundInSource);
+            var singleBlockNotificationStream = new SingleBlockNotificationStream(soundInSource.ToSampleSource());
             _finalSource = singleBlockNotificationStream.ToWaveSource();
             _writer = new WaveWriter(fileName, _finalSource.WaveFormat);
 
@@ -88,11 +89,6 @@ namespace Recorder
             singleBlockNotificationStream.SingleBlockRead += SingleBlockNotificationStreamOnSingleBlockRead;
 
             _soundIn.Start();
-        }
-
-        private void StopCapture()
-        {
-            _soundIn.Stop();
         }
 
         private void SingleBlockNotificationStreamOnSingleBlockRead(object sender, SingleBlockReadEventArgs e)
@@ -130,10 +126,16 @@ namespace Recorder
 
         private void btnStop_Click(object sender, EventArgs e)
         {
+            StopCapture();
+        }
+
+        private void StopCapture()
+        {
             if (_soundIn != null)
             {
                 _soundIn.Stop();
                 _soundIn.Dispose();
+                _soundIn = null;
                 _finalSource.Dispose();
 
                 if (_writer is IDisposable)
@@ -162,6 +164,12 @@ namespace Recorder
             pictureBox1.Image = _graphVisualization.Draw(pictureBox1.Width, pictureBox1.Height);
             if(image != null)
                 image.Dispose();
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            StopCapture();
         }
     }
 

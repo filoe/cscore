@@ -46,15 +46,15 @@ namespace XAudio2Playback
             using (var sourceVoice = xaudio2.CreateSourceVoice(waveSource.WaveFormat))
             {
                 var buffer = waveSource.ToByteArray();
-                var sourceBuffer = new XAudio2Buffer(buffer.Length);
-                using (var stream = sourceBuffer.GetStream())
+                using (var sourceBuffer = new XAudio2Buffer(buffer.Length))
                 {
-                    stream.Write(buffer, 0, buffer.Length);
+                    using (var stream = sourceBuffer.GetStream())
+                    {
+                        stream.Write(buffer, 0, buffer.Length);
+                    }
+
+                    sourceVoice.SubmitSourceBuffer(sourceBuffer);
                 }
-
-                sourceVoice.SubmitSourceBuffer(sourceBuffer);
-
-                sourceBuffer.Free();
 
                 sourceVoice.Start();
 
