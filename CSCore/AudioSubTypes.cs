@@ -2,45 +2,8 @@
 
 namespace CSCore
 {
-	/// <summary>
-    /// Defines MediaTypes and provides methods to convert between AudioEncoding and MediaType.
-    /// </summary>
-	public static class AudioSubTypes
+	public static partial class AudioSubTypes
 	{
-
-		/// <summary>
-        /// Converts a Mediatype-value to a AudioEncoding-value.
-        /// </summary>
-        /// <param name="mediaType"></param>
-        /// <returns>The <see cref="AudioEncoding"/> which equals to the specified</returns>
-        public static AudioEncoding EncodingFromMediaType(Guid mediaType)
-        {
-            var bytes = mediaType.ToByteArray();
-            int value = BitConverter.ToInt32(bytes, 0);
-            if (Enum.IsDefined(typeof(AudioEncoding), (short)value))
-                return (AudioEncoding)value;
-
-            throw new ArgumentException("Invalid mediaType.");
-        }
-
-        /// <summary>
-        /// Converts a <see cref="AudioEncoding"/> value to a Mediatype value.
-        /// </summary>
-        /// <param name="audioEncoding">The <see cref="AudioEncoding"/> to convert to the mediatype value.</param>
-        /// <returns>The mediatype which belongs to the specified <paramref name="audioEncoding"/>.</returns>
-        public static Guid MediaTypeFromEncoding(AudioEncoding encoding)
-        {
-            if(Enum.IsDefined(typeof(AudioEncoding), (short)encoding))
-                return new Guid((int)encoding, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
-
-            throw new ArgumentException("Invalid encoding.");
-        }
-
-		/// <summary>
-        /// Major Type: Audio.
-        /// </summary>
-		public static readonly Guid MediaTypeAudio = new Guid("73647561-0000-0010-8000-00AA00389B71");
-
 // ReSharper disable InconsistentNaming
 
 		/// <summary>WAVE_FORMAT_UNKNOWN,	Microsoft Corporation</summary>
@@ -350,7 +313,7 @@ namespace CSCore
 		/// </remarks>
 		/// <see>http://msdn.microsoft.com/en-us/library/dd317599%28VS.85%29.aspx</see>
 		public static readonly Guid MPEG_ADTS_AAC = new Guid((int)AudioEncoding.MPEG_ADTS_AAC, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
-		/// <summary></summary>
+		/// <summary>MPEG_RAW_AAC</summary>
 		/// <remarks>Source wmCodec.h</remarks>
 		public static readonly Guid MPEG_RAW_AAC = new Guid((int)AudioEncoding.MPEG_RAW_AAC, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
 		/// <summary>
