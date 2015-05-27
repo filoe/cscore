@@ -121,6 +121,7 @@ namespace CSCore
         /// <summary>
         /// Gets the <see cref="TimeConverter"/> for the specified <paramref name="sourceType"/>.
         /// </summary>
+        /// <param name="sourceType">The <see cref="Type"/> to get the associated <see cref="TimeConverter"/> for.</param>
         /// <returns>The best <see cref="TimeConverter"/> for the specified <paramref name="sourceType"/>.</returns>
         /// <exception cref="System.ArgumentException">
         /// Specified type is no AudioSource.;type
@@ -188,9 +189,9 @@ namespace CSCore
                 {
                     CacheItem cacheItem;
                     if (attribute == null)
-                        cacheItem = new CacheItem() {CreateNewInstance = false, TimeConverter = timeConverter};
+                        cacheItem = new CacheItem {CreateNewInstance = false, TimeConverter = timeConverter};
                     else
-                        cacheItem = new CacheItem()
+                        cacheItem = new CacheItem
                         {
                             CreateNewInstance = attribute.ForceNewInstance,
                             TimeConverterAttribute = attribute,
