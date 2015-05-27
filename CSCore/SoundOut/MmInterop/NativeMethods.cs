@@ -6,8 +6,7 @@ using CSCore.Utils;
 namespace CSCore.SoundOut.MMInterop
 {
     [System.Security.SuppressUnmanagedCodeSecurity]
-    [CLSCompliant(false)]
-    internal static class MMInterops
+    internal static class NativeMethods
     {
         public const int MAXERRORTEXTLENGTH = 256;
 
@@ -37,10 +36,10 @@ namespace CSCore.SoundOut.MMInterop
         public static extern MmResult waveOutUnprepareHeader(IntPtr hWaveOut, WaveHeader lpWaveOutHdr, int uSize);
 
         [DllImport("winmm.dll")]
-        public static extern MmResult waveOutOpen(out IntPtr hWaveOut, IntPtr uDeviceID, WaveFormat lpFormat, WaveCallback dwCallback, IntPtr dwInstance, WaveInOutOpenFlags dwFlags);
+        public static extern MmResult waveOutOpen(out IntPtr hWaveOut, IntPtr device, WaveFormat lpFormat, WaveCallback dwCallback, IntPtr dwInstance, WaveInOutOpenFlags dwFlags);
 
         [DllImport("winmm.dll", EntryPoint = "waveOutOpen")]
-        public static extern MmResult waveOutOpenWithWindow(out IntPtr hWaveOut, IntPtr uDeviceID, WaveFormat lpFormat, IntPtr window, IntPtr dwInstance, WaveInOutOpenFlags dwFlags);
+        public static extern MmResult waveOutOpenWithWindow(out IntPtr hWaveOut, IntPtr device, WaveFormat lpFormat, IntPtr window, IntPtr dwInstance, WaveInOutOpenFlags dwFlags);
 
         [DllImport("winmm.dll")]
         public static extern MmResult waveOutReset(IntPtr hWaveOut);
@@ -60,15 +59,11 @@ namespace CSCore.SoundOut.MMInterop
         [DllImport("winmm.dll")]
         public static extern MmResult waveOutGetVolume(IntPtr hWaveOut, out uint pdwVolume);
 
-        // http: //msdn.microsoft.com/en-us/library/dd743863%28VS.85%29.aspx
-        [DllImport("winmm.dll")]
-        public static extern MmResult waveOutGetPosition(IntPtr hWaveOut, out MMTime mmTime, int uSize);
-
         [DllImport("winmm.dll")]
         public static extern Int32 waveOutGetNumDevs();
 
         [DllImport("winmm.dll")]
-        public static extern MmResult waveOutGetDevCaps(uint deviceID, out WaveOutCaps waveOutCaps, uint cbwaveOutCaps);
+        public static extern MmResult waveOutGetDevCaps(IntPtr deviceID, out WaveOutCaps waveOutCaps, uint cbwaveOutCaps);
 
         [DllImport("winmm.dll")]
         public static extern MmResult waveOutGetPitch(IntPtr hWaveOut, IntPtr pdwPitch);
@@ -84,18 +79,15 @@ namespace CSCore.SoundOut.MMInterop
         [DllImport("winmm.dll")]
         public static extern MmResult waveOutGetPlaybackRate(IntPtr hWaveOut, IntPtr pdwRate);
 
-        [DllImport("winmm.dll")]
-        public static extern MmResult waveOutGetErrorText(MmResult mmrError, StringBuilder pszText, uint cchText);
-
         #endregion WaveOut
 
         #region waveIn
 
         [DllImport("winmm.dll")]
-        public static extern MmResult waveInOpen(out IntPtr hWaveIn, IntPtr uDeviceID, WaveFormat pwfx, WaveCallback dwCallback, IntPtr dwInstance, WaveInOutOpenFlags fdwOpen);
+        public static extern MmResult waveInOpen(out IntPtr hWaveIn, IntPtr device, WaveFormat pwfx, WaveCallback dwCallback, IntPtr dwInstance, WaveInOutOpenFlags fdwOpen);
 
         [DllImport("winmm.dll", EntryPoint = "waveInOpen")]
-        public static extern MmResult waveInOpenWithWindow(out IntPtr hWaveIn, IntPtr uDeviceID, WaveFormat pwfx, IntPtr window, IntPtr dwInstance, WaveInOutOpenFlags fdwOpen);
+        public static extern MmResult waveInOpenWithWindow(out IntPtr hWaveIn, IntPtr device, WaveFormat pwfx, IntPtr window, IntPtr dwInstance, WaveInOutOpenFlags fdwOpen);
 
         [DllImport("winmm.dll")]
         public static extern MmResult waveInPrepareHeader(IntPtr hWaveIn, WaveHeader waveHdr, int headerSize);
@@ -122,13 +114,8 @@ namespace CSCore.SoundOut.MMInterop
         public static extern Int32 waveInGetNumDevs();
 
         [DllImport("winmm.dll")]
-        public static extern MmResult waveInGetDevCaps(uint deviceID, out CSCore.SoundIn.WaveInCaps waveInCaps, uint cbWaveInCaps);
+        public static extern MmResult waveInGetDevCaps(IntPtr deviceID, out CSCore.SoundIn.WaveInCaps waveInCaps, uint cbWaveInCaps);
 
-        [DllImport("winmm.dll")]
-        public static extern MmResult waveInGetPosition(IntPtr hWaveIn, out MMTime time, uint cbTime);
-
-        [DllImport("winmm.dll")]
-        public static extern MmResult waveInGetErrorText(MmResult mmrError, StringBuilder pszText, int cchText);
 
         #endregion waveIn
 
@@ -146,21 +133,18 @@ namespace CSCore.SoundOut.MMInterop
         {
             uint tmp = (uint)(left * 0xFFFF) + ((uint)(right * 0xFFFF) << 16);
             MmResult result = waveOutSetVolume(waveOut, tmp);
-            if (result != MmResult.MMSYSERR_NOERROR)
-                MmException.Try(waveOutSetVolume(waveOut, tmp),
-                    "waveOutSetVolume");
+            MmException.Try(result,
+                "waveOutSetVolume");
         }
 
         public static float GetVolume(IntPtr waveOut)
         {
             uint volume;
-            MmResult result = MMInterops.waveOutGetVolume(waveOut, out volume);
-            if (result != MmResult.MMSYSERR_NOERROR)
-                MmException.Try(result, "waveOutGetVolume");
-            uint left, right;
+            MmResult result = waveOutGetVolume(waveOut, out volume);
+            MmException.Try(result, "waveOutGetVolume");
             HightLowConverterUInt32 u = new HightLowConverterUInt32(volume);
-            left = u.High;
-            right = u.Low;
+            uint left = u.High;
+            uint right = u.Low;
             return (float)(((right + left) / 2.0) * (1.0 / 0xFFFF));
         }
 
@@ -172,9 +156,4 @@ namespace CSCore.SoundOut.MMInterop
             right = ((volume / 0xFFFF) << 16);
         }
     }
-
-    /// <summary>
-    /// http: //msdn.microsoft.com/en-us/library/dd743869%28VS.85%29.aspx
-    /// </summary>
-    public delegate void WaveCallback(IntPtr handle, WaveMsg msg, IntPtr user, WaveHeader header, IntPtr reserved);
 }

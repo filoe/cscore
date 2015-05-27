@@ -23,23 +23,5 @@ namespace CSCore.SoundIn
             : base(exception)
         {
         }
-
-        /// <summary>
-        ///     Gets a value which indicates whether the recording _stopped due to an error. True means that that the recording
-        ///     _stopped due to an error. False means that the recording did not stop due to an error.
-        /// </summary>
-        public override bool HasError
-        {
-            get { return base.HasError; }
-        }
-
-        /// <summary>
-        ///     Gets the associated <see cref="Exception" /> which caused the recording to stop.
-        /// </summary>
-        /// <value>Can be null.</value>
-        public override Exception Exception
-        {
-            get { return base.Exception; }
-        }
     }
 }

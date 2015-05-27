@@ -117,6 +117,8 @@ namespace CSCore.SoundOut
             _eventSync = eventSync;
             _playbackThreadPriority = playbackThreadPriority;
             _syncContext = eventSyncContext;
+
+            UseChannelMixingMatrices = true;
         }
 
         /// <summary>
@@ -162,6 +164,7 @@ namespace CSCore.SoundOut
 
         /// <summary>
         ///     Gets or sets the latency of the playback specified in milliseconds.
+        /// The <see cref="Latency" /> property has to be set before initializing.
         /// </summary>
         public int Latency
         {
@@ -180,7 +183,7 @@ namespace CSCore.SoundOut
         public event EventHandler<PlaybackStoppedEventArgs> Stopped;
 
         /// <summary>
-        ///     Initializes WasapiOut and prepares all resources for playback.
+        ///     Initializes WasapiOut instance and prepares all resources for playback.
         ///     Note that properties like <see cref="Device" />, <see cref="Latency" />,... won't affect WasapiOut after calling
         ///     <see cref="Initialize" />.
         /// </summary>
@@ -196,7 +199,7 @@ namespace CSCore.SoundOut
                 if (source == null)
                     throw new ArgumentNullException("source");
 
-                if (_playbackState != PlaybackState.Stopped)
+                if (PlaybackState != PlaybackState.Stopped)
                 {
                     throw new InvalidOperationException(
                         "PlaybackState has to be Stopped. Call WasapiOut::Stop to stop the playback.");
@@ -253,8 +256,7 @@ namespace CSCore.SoundOut
         }
 
         /// <summary>
-        ///     Stops the playback and frees all allocated resources.
-        ///     After calling the caller has to call <see cref="Initialize" /> again before another playback can be started.
+        ///     Stops the playback and frees most of allocated resources.
         /// </summary>
         public void Stop()
         {
@@ -263,7 +265,7 @@ namespace CSCore.SoundOut
             lock (_lockObj)
             {
                 CheckForDisposed();
-                //don't check for isinitialized here
+                //don't check for isinitialized here (we don't want the Dispose method to throw an exception)
 
                 if (_playbackState != PlaybackState.Stopped && _playbackThread != null)
                 {
@@ -355,6 +357,11 @@ namespace CSCore.SoundOut
         {
             get { return _source; }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether <see cref="WasapiOut"/> should try to use all available channels.
+        /// </summary>
+        public bool UseChannelMixingMatrices { get; set; }
 
         /// <summary>
         ///     Stops the playback (if playing) and cleans up all used resources.
@@ -523,7 +530,7 @@ namespace CSCore.SoundOut
             const int reftimesPerMillisecond = 10000;
 
             _audioClient = AudioClient.FromMMDevice(Device);
-            _outputFormat = SetupWaveFormat(_source.WaveFormat, _audioClient);
+            _outputFormat = SetupWaveFormat(_source, _audioClient);
 
             long latency = _latency * reftimesPerMillisecond;
         AUDCLNT_E_BUFFER_SIZE_NOT_ALIGNED_TRY_AGAIN:
@@ -608,8 +615,9 @@ namespace CSCore.SoundOut
             _isInitialized = false;
         }
 
-        private WaveFormat SetupWaveFormat(WaveFormat waveFormat, AudioClient audioClient)
+        private WaveFormat SetupWaveFormat(IWaveSource source, AudioClient audioClient)
         {
+            WaveFormat waveFormat = source.WaveFormat;
             WaveFormat closestMatch;
             WaveFormat finalFormat = waveFormat;
             if (!audioClient.IsFormatSupported(_shareMode, waveFormat, out closestMatch))
@@ -637,26 +645,21 @@ namespace CSCore.SoundOut
                             new WaveFormatExtensible(waveFormat.SampleRate, 16, 2,
                                 AudioSubTypes.Pcm),
                             new WaveFormatExtensible(waveFormat.SampleRate, 8, 2,
+                                AudioSubTypes.Pcm),
+
+                            new WaveFormatExtensible(waveFormat.SampleRate, 32, 1, 
+                                AudioSubTypes.IeeeFloat),
+                            new WaveFormatExtensible(waveFormat.SampleRate, 24, 1, 
+                                AudioSubTypes.Pcm),
+                            new WaveFormatExtensible(waveFormat.SampleRate, 16, 1, 
+                                AudioSubTypes.Pcm),
+                            new WaveFormatExtensible(waveFormat.SampleRate, 8, 1, 
                                 AudioSubTypes.Pcm)
                         };
 
                         if (!CheckForSupportedFormat(audioClient, possibleFormats, out mixformat))
                         {
-                            //no format found...
-                            possibleFormats = new[]
-                            {
-                                new WaveFormatExtensible(waveFormat.SampleRate, 32, 2, AudioSubTypes.IeeeFloat),
-                                new WaveFormatExtensible(waveFormat.SampleRate, 24, 2, AudioSubTypes.Pcm),
-                                new WaveFormatExtensible(waveFormat.SampleRate, 16, 2, AudioSubTypes.Pcm),
-                                new WaveFormatExtensible(waveFormat.SampleRate, 8, 2, AudioSubTypes.Pcm),
-                                new WaveFormatExtensible(waveFormat.SampleRate, 32, 1, AudioSubTypes.IeeeFloat),
-                                new WaveFormatExtensible(waveFormat.SampleRate, 24, 1, AudioSubTypes.Pcm),
-                                new WaveFormatExtensible(waveFormat.SampleRate, 16, 1, AudioSubTypes.Pcm),
-                                new WaveFormatExtensible(waveFormat.SampleRate, 8, 1, AudioSubTypes.Pcm)
-                            };
-
-                            if (CheckForSupportedFormat(audioClient, possibleFormats, out mixformat))
-                                throw new NotSupportedException("Could not find a supported format.");
+                            throw new NotSupportedException("Could not find a supported format.");
                         }
                     }
 
@@ -665,11 +668,24 @@ namespace CSCore.SoundOut
                 else
                     finalFormat = closestMatch;
 
-                //todo: implement channel matrix
-                var resampler = new DmoResampler(_source, finalFormat)
+                //todo: test channel matrix conversion
+                ChannelMatrix channelMatrix = null;
+                if (UseChannelMixingMatrices)
                 {
-                    Quality = 60
-                };
+                    try
+                    {
+                        channelMatrix = ChannelMatrix.GetMatrix(_source.WaveFormat, finalFormat);
+                    }
+                    catch (Exception)
+                    {
+                        Debug.WriteLine("No channelmatrix was found.");
+                    }
+                }
+                DmoResampler resampler = channelMatrix != null
+                    ? new DmoChannelResampler(_source, channelMatrix, finalFormat)
+                    : new DmoResampler(_source, finalFormat);
+                resampler.Quality = 60;
+
                 _source = resampler;
                 _createdResampler = true;
 
@@ -770,7 +786,7 @@ namespace CSCore.SoundOut
         }
 
         /// <summary>
-        /// Destructor which calls the <see cref="Dispose(bool)"/> method.
+        /// Finalizes an instance of the <see cref="WasapiOut"/> class.
         /// </summary>
         ~WasapiOut()
         {

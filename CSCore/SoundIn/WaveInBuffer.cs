@@ -1,104 +1,54 @@
-﻿using CSCore.SoundOut.MMInterop;
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
+using System.Threading;
+using CSCore.SoundOut.MMInterop;
 
 namespace CSCore.SoundIn
 {
-    public class WaveInBuffer : IDisposable
+    internal sealed class WaveInBuffer : IDisposable
     {
-        private int _bufferSize;
+        private readonly byte[] _buffer;
+        private readonly WaveHeader _waveHeader;
+        private readonly IntPtr _waveInHandle;
+        private GCHandle _bufferHandle;
+        private GCHandle _waveHeaderHandle;
+        private bool _isDisposed;
 
-        private byte[] _buffer;
-        private WaveHeader _header;
-
-        private GCHandle _bufferHandle, _headerHandle, _userDataHandle;
-
-        private IntPtr _waveInHandle;
-
-        public IntPtr WaveInHandle 
-        { 
-            get { return _waveInHandle; } 
-        }
-
-        public Byte[] Buffer 
-        { 
-            get { return _buffer; } 
-        }
-
-        public int Recorded 
-        { 
-            get { return _header.bytesRecorded; } 
-        }
-
-        public int BufferSize 
-        { 
-            get { return _buffer.Length; } 
-        }
-
-        public bool IsInQueue 
-        { 
-            get { return (_header.flags & WaveHeaderFlags.WHDR_INQUEUE) == WaveHeaderFlags.WHDR_INQUEUE; } 
-        }
-
-        public bool Done 
+        public WaveInBuffer(IntPtr waveInHandle, int bufferSize, IntPtr userData)
         {
-            get { return (_header.flags & WaveHeaderFlags.WHDR_DONE) == WaveHeaderFlags.WHDR_DONE; }
-        }
+            if (waveInHandle == IntPtr.Zero)
+                throw new ArgumentNullException("waveInHandle");
+            if (bufferSize <= 0)
+                throw new ArgumentOutOfRangeException("bufferSize");
 
-#pragma warning disable 612
-        public WaveInBuffer(WaveIn waveIn, int bufferSize)
-#pragma warning restore 612
-        {
-            if (waveIn == null) throw new ArgumentNullException("waveOut");
-            if (bufferSize <= 0) throw new ArgumentOutOfRangeException("bufferSize");
-            if (waveIn.Handle == IntPtr.Zero)
-                throw new InvalidOperationException("Invalid WaveIn-Handle");
+            _waveInHandle = waveInHandle;
 
-            _waveInHandle = waveIn.Handle;
-            _bufferSize = bufferSize;
-        }
-
-        public void Initialize()
-        {
-            _buffer = new byte[_bufferSize];
-            _header = new WaveHeader();
-
-            _headerHandle = GCHandle.Alloc(_header, GCHandleType.Pinned);
+            _buffer = new byte[bufferSize];
             _bufferHandle = GCHandle.Alloc(_buffer, GCHandleType.Pinned);
-            _userDataHandle = GCHandle.Alloc(this);
 
-            _header.bufferLength = _bufferSize;
-            _header.dataBuffer = _bufferHandle.AddrOfPinnedObject();
-            _header.loops = 1;
-            _header.userData = (IntPtr)_userDataHandle;
-
-            Prepare();
-            AddBuffer();
+            _waveHeader = new WaveHeader
+            {
+                bufferLength = bufferSize,
+                dataBuffer = _bufferHandle.AddrOfPinnedObject(),
+                loops = 1,
+                userData = userData
+            };
+            _waveHeaderHandle = GCHandle.Alloc(_waveHeader);
         }
 
-        public void Reset()
+        public WaveHeader WaveHeader
         {
-            Unprepare();
-            Prepare();
-            AddBuffer();
+            get { return _waveHeader; }
         }
 
-        private void AddBuffer()
+        public byte[] Buffer
         {
-            var result = MMInterops.waveInAddBuffer(_waveInHandle, _header, Marshal.SizeOf(_header));
-            MmException.Try(result, "waveInAddBuffer");
+            get { return _buffer; }
         }
 
-        private void Prepare()
+        public bool IsInQueue
         {
-            var result = MMInterops.waveInPrepareHeader(_waveInHandle, _header, Marshal.SizeOf(_header));
-            MmException.Try(result, "waveInPrepareHeader");
-        }
-
-        private void Unprepare()
-        {
-            var result = MMInterops.waveInUnprepareHeader(_waveInHandle, _header, Marshal.SizeOf(_header));
-            MmException.Try(result, "waveInUnprepareHeader");
+            get { return (WaveHeader.flags & WaveHeaderFlags.WHDR_INQUEUE) == WaveHeaderFlags.WHDR_INQUEUE; }
         }
 
         public void Dispose()
@@ -107,32 +57,40 @@ namespace CSCore.SoundIn
             GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool disposing)
+        public void AddBufferToQueue()
         {
-            if (disposing)
-            {
-                //dispose managed
-            }
+            MmException.Try(
+                NativeMethods.waveInUnprepareHeader(_waveInHandle, _waveHeader, Marshal.SizeOf(_waveHeader)),
+                "waveInUnprepareHeader");
+            MmException.Try(NativeMethods.waveInPrepareHeader(_waveInHandle, _waveHeader, Marshal.SizeOf(_waveHeader)),
+                "waveInPrepareHeader");
+            MmException.Try(NativeMethods.waveInAddBuffer(_waveInHandle, _waveHeader, Marshal.SizeOf(_waveHeader)),
+                "waveInAddBuffer");
+        }
 
-            if (_header != null)
+        private void Dispose(bool disposing)
+        {
+            if (!_isDisposed)
             {
-                try
-                {
-                    Unprepare();
-                }
-                catch (Exception) { }
-                finally
-                {
-                    _header = null;
-                }
-            }
+                _isDisposed = true;
 
-            if (_bufferHandle.IsAllocated)
-                _bufferHandle.Free();
-            if (_headerHandle.IsAllocated)
-                _headerHandle.Free();
-            if (_userDataHandle.IsAllocated)
-                _userDataHandle.Free();
+                MmResult result;
+                int counter = 0;
+                while (
+                    (result =
+                        NativeMethods.waveInUnprepareHeader(_waveInHandle, _waveHeader, Marshal.SizeOf(_waveHeader))) ==
+                    MmResult.StillPlaying
+                    && counter++ < 3)
+                {
+                    Thread.Sleep(20);
+                }
+                MmException.Try(result, "waveInUnprepareHeader");
+
+                if (_bufferHandle.IsAllocated)
+                    _bufferHandle.Free();
+                if(_waveHeaderHandle.IsAllocated)
+                    _waveHeaderHandle.Free();
+            }
         }
 
         ~WaveInBuffer()

@@ -3,7 +3,7 @@
 namespace CSCore.SoundIn
 {
     /// <summary>
-    /// Defines a provider for recording audio.
+    /// Defines a interface for capturing audio. 
     /// </summary>
     public interface ISoundIn : IDisposable
     {
@@ -13,28 +13,33 @@ namespace CSCore.SoundIn
         event EventHandler<DataAvailableEventArgs> DataAvailable;
 
         /// <summary>
-        /// Occurs when the recording _stopped.
+        /// Occurs when the recording stopped.
         /// </summary>
         event EventHandler<RecordingStoppedEventArgs> Stopped;
 
         /// <summary>
-        /// Gets the OutputFormat.
+        /// Gets the format of the captured audio data.
         /// </summary>
         WaveFormat WaveFormat { get; }
 
         /// <summary>
-        /// Initializes the <see cref="ISoundIn"/> instance and prepares all resources recording.
+        /// Initializes the <see cref="ISoundIn"/> instance.
         /// </summary>
         void Initialize();
 
         /// <summary>
-        /// Starts recording.
+        /// Starts capturing.
         /// </summary>
         void Start();
 
         /// <summary>
-        /// Stops recording. 
+        /// Stops capturing. 
         /// </summary>
         void Stop();
+
+        /// <summary>
+        /// Gets the current <see cref="SoundIn.RecordingState"/>.
+        /// </summary>
+        RecordingState RecordingState { get; }
     }
 }

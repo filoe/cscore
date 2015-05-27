@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace CSCore.SoundOut.MMInterop
 {
     [StructLayout(LayoutKind.Sequential)]
-    public class WaveHeader
+    internal class WaveHeader
     {
         /// <summary>
         /// pointer to locked data buffer (lpData)
