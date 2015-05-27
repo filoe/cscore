@@ -230,7 +230,8 @@ namespace CSCore.CoreAudioAPI
         /// <param name="disposing">True to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
-            base.Dispose(disposing);
+            if (_disposed)
+                return;
 
             for (int i = _sessionNotifications.Count - 1; i >= 0; i--)
             {
@@ -243,6 +244,10 @@ namespace CSCore.CoreAudioAPI
                 UnregisterDuckNotification(_volumeDuckNotifications[i]);
                 _volumeDuckNotifications.RemoveAt(i);
             }
+            _disposed = true;
+            base.Dispose(disposing);
         }
+
+        private bool _disposed;
     }
 }

@@ -148,6 +148,9 @@ namespace CSCore.XAudio2
         {
             lock (_lockObj)
             {
+                if (_disposed)
+                    return;
+
                 _waitHandle.Close();
                 Stop(SourceVoiceStopFlags.None, XAudio2.CommitNow);
 

@@ -380,13 +380,19 @@ namespace CSCore.MediaFoundation
             MediaFoundationException.Try(CloseNative(), InterfaceName, "Close");
         }
 
+        private bool _disposed;
+
         /// <summary>
         /// Releases the COM object.
         /// </summary>
         /// <param name="disposing">True to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
+            if (_disposed)
+                return;
+
             Close();
+            _disposed = true;
             base.Dispose(disposing);
         }
     }

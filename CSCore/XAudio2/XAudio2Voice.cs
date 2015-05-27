@@ -943,8 +943,9 @@ namespace CSCore.XAudio2
         {
             if (!_disposed)
             {
-                _disposed = true;
                 DestroyVoice();
+                _disposed = true;
+
                 base.Dispose(disposing);
             }
         }

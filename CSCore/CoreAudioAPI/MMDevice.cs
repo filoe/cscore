@@ -171,13 +171,19 @@ namespace CSCore.CoreAudioAPI
         /// <param name="disposing">True to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
-            base.Dispose(disposing);
+            if (_disposed)
+                return;
+
             if (_propertyStore != null)
             {
                 _propertyStore.Dispose();
                 _propertyStore = null;
             }
+            _disposed = true;
+            base.Dispose(disposing);
         }
+
+        private bool _disposed;
 
         /// <summary>
         /// Returns the <see cref="FriendlyName"/> of the <see cref="MMDevice"/>.
