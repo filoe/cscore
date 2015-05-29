@@ -19,7 +19,7 @@ namespace CSCore.Codecs.MP3
         private Mp3Format _inputFormat;
 
         private long _position;
-        private bool _canSeek;
+        private readonly bool _canSeek;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DmoMp3Decoder"/> class.

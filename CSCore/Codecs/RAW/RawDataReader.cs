@@ -57,6 +57,7 @@ namespace CSCore.Codecs.RAW
         /// <returns>The total number of bytes read into the buffer.</returns>
         public int Read(byte[] buffer, int offset, int count)
         {
+            CheckForDisposed();
             count -= (count & WaveFormat.BlockAlign);
             return _stream.Read(buffer, offset, count);
         }
@@ -82,8 +83,18 @@ namespace CSCore.Codecs.RAW
         /// </summary>
         public long Position
         {
-            get { return _stream.Position - _startPosition; }
-            set { _stream.Position = _startPosition + value; }
+            get { return _stream != null ? _stream.Position - _startPosition : 0; }
+            set
+            {
+                CheckForDisposed();
+                _stream.Position = _startPosition + value;
+            }
+        }
+
+        private void CheckForDisposed()
+        {
+            if (_disposed)
+                throw new ObjectDisposedException(GetType().FullName);
         }
 
         /// <summary>
@@ -91,7 +102,7 @@ namespace CSCore.Codecs.RAW
         /// </summary>
         public long Length
         {
-            get { return _stream.Length - _startPosition; }
+            get { return _stream != null ? _stream.Length - _startPosition : 0; }
         }
 
         /// <summary>
