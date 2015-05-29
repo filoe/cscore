@@ -360,7 +360,7 @@ namespace CSCore.SoundIn
 
         private void WaitForBuffersToFinish()
         {
-#warning TODO: do we have volatile to _activeBuffers???
+            //do we have volatile to _activeBuffers???
             while (Interlocked.CompareExchange(ref _activeBuffers, 0, 0) != 0 &&
                    RecordingState != RecordingState.Stopped)
             {
