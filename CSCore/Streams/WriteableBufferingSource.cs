@@ -18,7 +18,15 @@ namespace CSCore.Streams
         public bool FillWithZeros { get; set; }
 
         /// <summary>
-        /// Creates an new instance of the WriteableBufferingSource class with a default buffersize of 5 seconds.
+        /// Gets the maximum size of the buffer in bytes.
+        /// </summary>
+        /// <value>
+        /// The maximum size of the buffer in bytes.
+        /// </value>
+        public int MaxBufferSize { get; private set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WriteableBufferingSource"/> class with a default buffersize of 5 seconds.
         /// </summary>
         /// <param name="waveFormat">The WaveFormat of the source.</param>
         public WriteableBufferingSource(WaveFormat waveFormat)
@@ -27,16 +35,18 @@ namespace CSCore.Streams
         }
 
         /// <summary>
-        /// Creates an new instance of the WriteableBufferingSource class.
+        /// Initializes a new instance of the <see cref="WriteableBufferingSource"/> class.
         /// </summary>
         /// <param name="waveFormat">The WaveFormat of the source.</param>
-        /// <param name="bufferSize">Buffersize in bytes</param>
+        /// <param name="bufferSize">Buffersize in bytes.</param>
         public WriteableBufferingSource(WaveFormat waveFormat, int bufferSize)
         {
             if (waveFormat == null)
                 throw new ArgumentNullException("waveFormat");
             if (bufferSize <= 0 || (bufferSize % waveFormat.BlockAlign) != 0)
                 throw new ArgumentException("Invalid bufferSize.");
+
+            MaxBufferSize = bufferSize;
 
             _waveFormat = waveFormat;
             _buffer = new FixedSizeBuffer<byte>(bufferSize);
@@ -46,7 +56,7 @@ namespace CSCore.Streams
         /// <summary>
         /// Adds new data to the internal buffer.
         /// </summary>
-        /// <param name="buffer">Bytearray which contains the data.</param>
+        /// <param name="buffer">A byte-array which contains the data.</param>
         /// <param name="offset">Zero-based offset in the <paramref name="buffer"/> (specified in bytes).</param>
         /// <param name="count">Number of bytes to add to the internal buffer.</param>
         /// <returns>Number of added bytes.</returns>
@@ -89,7 +99,7 @@ namespace CSCore.Streams
         }
 
         /// <summary>
-        ///     Gets the <see cref="IWaveStream.WaveFormat" /> of the waveform-audio data.
+        ///     Gets the <see cref="IAudioSource.WaveFormat" /> of the waveform-audio data.
         /// </summary>
         public WaveFormat WaveFormat
         {
@@ -120,7 +130,7 @@ namespace CSCore.Streams
         }
 
         /// <summary>
-        /// Gets a value indicating whether the <see cref="IWaveStream"/> supports seeking.
+        /// Gets a value indicating whether the <see cref="IAudioSource"/> supports seeking.
         /// </summary>
         public bool CanSeek
         {

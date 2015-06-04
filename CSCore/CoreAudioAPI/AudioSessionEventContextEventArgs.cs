@@ -3,7 +3,7 @@ using System;
 namespace CSCore.CoreAudioAPI
 {
     /// <summary>
-    /// AudioSessionEventContextEventArgs
+    /// A base class for all event-args classes which specify an <see cref="EventContext"/> value.
     /// </summary>
     public abstract class AudioSessionEventContextEventArgs : EventArgs
     {

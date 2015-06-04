@@ -2,6 +2,9 @@
 
 namespace CSCore.MediaFoundation
 {
+    /// <summary>
+    /// Defines the CLSID values for several common mediafoundation audio decoders.
+    /// </summary>
     public static class CommonAudioDecoderGuids
     {
         /// <summary>

@@ -1,5 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using CSCore.CoreAudioAPI;
+﻿using CSCore.CoreAudioAPI;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,13 +9,14 @@ namespace CSCore.SoundIn
 {
     //http://msdn.microsoft.com/en-us/library/dd370800(v=vs.85).aspx
     /// <summary>
-    /// Provides audiocapture through Wasapi.
+    /// Captures audio data from a audio device (through Wasapi Apis). To capture audio from an output device, use the <see cref="WasapiLoopbackCapture"/> class.
     /// Minimum supported OS: Windows Vista (see <see cref="IsSupportedOnCurrentPlatform"/> property).
     /// </summary>
-    public class WasapiCapture : ISoundRecorder
+    public class WasapiCapture : ISoundIn
     {
         /// <summary>
-        /// Returns true if Wasapi is supported on the current platform.
+        /// Gets a value indicating whether the <see cref="WasapiCapture"/> class is supported on the current platform.
+        /// If <b>true</b>, it is supported; otherwise false.
         /// </summary>
         public static bool IsSupportedOnCurrentPlatform
         {
@@ -38,7 +38,7 @@ namespace CSCore.SoundIn
         public event EventHandler<DataAvailableEventArgs> DataAvailable;
 
         /// <summary>
-        /// Occurs when capturing _stopped.
+        /// Occurs when <see cref="WasapiCapture"/> stopped capturing audio.
         /// </summary>
         public event EventHandler<RecordingStoppedEventArgs> Stopped;
 
@@ -58,6 +58,8 @@ namespace CSCore.SoundIn
         private bool _disposed;
 
         private volatile bool _isInitialized;
+
+        private readonly object _lockObj = new object();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WasapiCapture"/> class.
@@ -112,7 +114,7 @@ namespace CSCore.SoundIn
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WasapiCapture"/> class.
+        /// Initializes a new instance of the <see cref="WasapiCapture"/> class. SynchronizationContext = null.
         /// </summary>
         /// <param name="eventSync">True, to use eventsynchronization instead of a simple loop and sleep behavior. Don't use this in combination with exclusive mode.</param>
         /// <param name="shareMode">Specifies how to open the audio device. Note that if exclusive mode is used, the device can only be used once on the whole system. Don't use exclusive mode in combination with eventSync.</param>
@@ -160,63 +162,76 @@ namespace CSCore.SoundIn
         /// </summary>
         public void Initialize()
         {
-            CheckForDisposed();
             CheckForInvalidThreadCall();
+            lock (_lockObj)
+            {
+                CheckForDisposed();
 
-            if (RecordingState != RecordingState.Stopped)
-                throw new InvalidOperationException("RecordingState has to be Stopped. Call WasapiCapture::Stop to stop the wasapicapture.");
+                if (RecordingState != RecordingState.Stopped)
+                    throw new InvalidOperationException(
+                        "RecordingState has to be Stopped. Call WasapiCapture::Stop to stop the wasapicapture.");
 
-            _recordThread.WaitForExit();
+                _recordThread.WaitForExit();
 
-            UninitializeAudioClients();
-            InitializeInternal();
-            _isInitialized = true;
+                UninitializeAudioClients();
+                InitializeInternal();
+                _isInitialized = true;
 
-            Debug.WriteLine(String.Format("Initialized WasapiCapture[Mode: {0}; Latency: {1}; OutputFormat: {2}]", _shareMode, _latency, _waveFormat));
+                Debug.WriteLine(String.Format("Initialized WasapiCapture[Mode: {0}; Latency: {1}; OutputFormat: {2}]",
+                    _shareMode, _latency, _waveFormat));
+            }
         }
 
         /// <summary>
-        /// Start Recording.
+        /// Start recording.
         /// </summary>
         public void Start()
         {
-            CheckForDisposed();
             CheckForInvalidThreadCall();
-            CheckForInitialized();
 
-            if (RecordingState == RecordingState.Stopped)
+            lock (_lockObj)
             {
-                using (var waitHandle = new AutoResetEvent(false))
+                CheckForDisposed();
+                CheckForInitialized();
+
+                if (RecordingState == RecordingState.Stopped)
                 {
-                    _recordThread = new Thread(CaptureProc)
+                    using (var waitHandle = new AutoResetEvent(false))
                     {
-                        Name = "WASAPI Capture-Thread; ID = " + DebuggingId,
-                        Priority = _captureThreadPriority
-                    };
-                    _recordThread.Start(waitHandle);
-                    waitHandle.WaitOne();
+                        _recordThread = new Thread(CaptureProc)
+                        {
+                            Name = "WASAPI Capture-Thread; ID = " + DebuggingId,
+                            Priority = _captureThreadPriority
+                        };
+                        _recordThread.Start(waitHandle);
+                        waitHandle.WaitOne();
+                    }
                 }
             }
         }
 
         /// <summary>
-        /// Stop Recording.
+        /// Stop recording.
         /// </summary>
         public void Stop()
         {
-            CheckForDisposed();
             CheckForInvalidThreadCall();
+            lock (_lockObj)
+            {
+                CheckForDisposed();
+                //don't check for initialized since disposing without init would cause an exception
 
-            if (RecordingState != RecordingState.Stopped)
-            {
-                _recordingState = RecordingState.Stopped;
-                _recordThread.WaitForExit(); //possible deadlock
-                _recordThread = null;
-            }
-            else if(RecordingState == RecordingState.Stopped && _recordThread != null)
-            {
-                _recordThread.WaitForExit();
-                _recordThread = null;
+                if (RecordingState != RecordingState.Stopped)
+                {
+                    _recordingState = RecordingState.Stopped;
+                    _recordThread.WaitForExit(); //possible deadlock
+                    _recordThread = null;
+                }
+                else if (RecordingState == RecordingState.Stopped && _recordThread != null)
+                {
+                    _recordThread.WaitForExit();
+                    _recordThread = null;
+                }
             }
         }
 
@@ -537,11 +552,19 @@ namespace CSCore.SoundIn
             _isInitialized = false;
         }
 
+        /// <summary>
+        /// Returns the default device.
+        /// </summary>
+        /// <returns>The default device.</returns>
         protected virtual MMDevice GetDefaultDevice()
         {
             return MMDeviceEnumerator.DefaultAudioEndpoint(DataFlow.Capture, Role.Console);
         }
 
+        /// <summary>
+        /// Returns the stream flags to use for the audioclient initialization.
+        /// </summary>
+        /// <returns>The stream flags to use for the audioclient initialization.</returns>
         protected virtual AudioClientStreamFlags GetStreamFlags()
         {
             return AudioClientStreamFlags.None;
@@ -574,17 +597,29 @@ namespace CSCore.SoundIn
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (!_disposed)
+            CheckForInvalidThreadCall();
+
+            lock (_lockObj)
             {
-                Stop();
-                UninitializeAudioClients();
-                //todo: dispose device?
+                if (!_disposed)
+                {
+                    Stop();
+                    UninitializeAudioClients();
+                    //todo: dispose device?
+                }
+                _disposed = true;
             }
-            _disposed = true;
         }
 
+        /// <summary>
+        /// Finalizes an instance of the <see cref="WasapiCapture"/> class.
+        /// </summary>
         ~WasapiCapture()
         {
             Dispose(false);

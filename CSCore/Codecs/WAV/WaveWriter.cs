@@ -70,9 +70,15 @@ namespace CSCore.Codecs.WAV
         }
 
         /// <summary>
-        ///     Writes down all audio data of the <see cref="IWaveSource" /> to a file.
+        /// Writes down all audio data of the <see cref="IWaveSource" /> to a file.
         /// </summary>
-        /// <remarks>This method is obsolete. Use the <see cref="Extensions.WriteToWaveStream" /> extension instead.</remarks>
+        /// <param name="filename">The filename.</param>
+        /// <param name="source">The source to write down to the file.</param>
+        /// <param name="deleteFileIfAlreadyExists">if set to <c>true</c> the file will be overritten if it already exists.</param>
+        /// <param name="maxlength">The maximum number of bytes to write. Use -1 to write an infinte number of bytes.</param>
+        /// <remarks>
+        /// This method is obsolete. Use the <see cref="Extensions.WriteToWaveStream" /> extension instead.
+        /// </remarks>
         [Obsolete("Use the Extensions.WriteToWaveStream extension instead.")]
         public static void WriteToFile(string filename, IWaveSource source, bool deleteFileIfAlreadyExists,
             int maxlength = -1)
@@ -84,7 +90,7 @@ namespace CSCore.Codecs.WAV
             var buffer = new byte[source.WaveFormat.BytesPerSecond];
             using (var w = new WaveWriter(filename, source.WaveFormat))
             {
-                int read = 0;
+                int read;
                 while ((read = source.Read(buffer, 0, buffer.Length)) > 0)
                 {
                     w.Write(buffer, 0, read);
@@ -225,7 +231,7 @@ namespace CSCore.Codecs.WAV
         {
             AudioEncoding tag = _waveFormat.WaveFormatTag;
             if (tag == AudioEncoding.Extensible && _waveFormat is WaveFormatExtensible)
-                tag = AudioSubTypes.EncodingFromMediaType((_waveFormat as WaveFormatExtensible).SubFormat);
+                tag = AudioSubTypes.EncodingFromSubType((_waveFormat as WaveFormatExtensible).SubFormat);
 
             _writer.Write(Encoding.UTF8.GetBytes("fmt "));
             _writer.Write((int)16);

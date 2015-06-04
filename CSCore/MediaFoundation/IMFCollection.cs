@@ -7,7 +7,7 @@ namespace CSCore.MediaFoundation
     [Guid("5BC8A76B-869A-46a3-9B03-FA218A66AEBE")]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     [System.Security.SuppressUnmanagedCodeSecurity]
-    public interface IMFCollection
+    internal interface IMFCollection
     {
         int GetElementCount([Out] out int count);
 

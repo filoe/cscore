@@ -85,7 +85,7 @@ namespace CSCore.XAudio2
         {
             IntPtr ptr = IntPtr.Zero;
             var pptr = new IntPtr(&ptr);
-            int result = XAudio2Interop.XAudio2Create(pptr, 0, processor);
+            int result = NativeMethods.XAudio2Create(pptr, 0, processor);
             XAudio2Exception.Try(result, "Interop", "XAudio2Create");
 
             Version = XAudio2Version.XAudio2_8;

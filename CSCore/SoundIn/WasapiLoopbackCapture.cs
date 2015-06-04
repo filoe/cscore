@@ -27,9 +27,11 @@ namespace CSCore.SoundIn
         }
 
         /// <summary>
-        /// Returns the <see cref="AudioClientStreamFlags"/> used to initialize (see <see cref="AudioClient.Initialize"/>). 
+        /// Returns the stream flags to use for the audioclient initialization.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        /// The stream flags to use for the audioclient initialization.
+        /// </returns>
         protected override AudioClientStreamFlags GetStreamFlags()
         {
             return AudioClientStreamFlags.StreamFlagsLoopback;

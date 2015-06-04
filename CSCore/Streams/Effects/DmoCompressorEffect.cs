@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace CSCore.Streams.Effects
 {
     /// <summary>
-    /// Compressor Effect.
+    /// Represents the dmo compressor effect in form of an <see cref="IWaveSource"/> implementation.
     /// </summary>
     public class DmoCompressorEffect : DmoEffectBase<DirectSoundFXCompressor, CompressorParameters>
     {
@@ -35,7 +35,7 @@ namespace CSCore.Streams.Effects
 
         #region properties
         /// <summary>
-        /// Time before compression reaches its full value, in the range from 0.01 ms to 500 ms. The default value is 10 ms.
+        /// Gets or sets the time before compression reaches its full value, in the range from 0.01 ms to 500 ms. The default value is 10 ms.
         /// </summary>
         public float Attack
         {
@@ -49,7 +49,7 @@ namespace CSCore.Streams.Effects
         }
 
         /// <summary>
-        /// Output gain of signal after compression, in the range from -60 dB to 60 dB. The default value is 0 dB.
+        /// Gets or sets the output gain of signal after compression, in the range from -60 dB to 60 dB. The default value is 0 dB.
         /// </summary>
         public float Gain
         {
@@ -58,12 +58,12 @@ namespace CSCore.Streams.Effects
             {
                 if (value < GainMin || value > GainMax)
                     throw new ArgumentOutOfRangeException("value");
-                SetValue("GainDB", value);
+                SetValue("Gain", value);
             }
         }
 
         /// <summary>
-        /// Time after <see cref="Threshold"/> is reached before attack phase is started, in milliseconds, in the range from 0 ms to 4 ms. The default value is 4 ms.
+        /// Gets or sets the time after <see cref="Threshold"/> is reached before attack phase is started, in milliseconds, in the range from 0 ms to 4 ms. The default value is 4 ms.
         /// </summary>
         public float Predelay
         {
@@ -77,7 +77,7 @@ namespace CSCore.Streams.Effects
         }
 
         /// <summary>
-        /// Compression ratio, in the range from 1 to 100. The default value is 3, which means 3:1 compression.
+        /// Gets or sets the compression ratio, in the range from 1 to 100. The default value is 3, which means 3:1 compression.
         /// </summary>
         public float Ratio
         {
@@ -91,7 +91,7 @@ namespace CSCore.Streams.Effects
         }
 
         /// <summary>
-        /// Speed at which compression is _stopped after input drops below fThreshold, in the range from 50 ms to 3000 ms. The default value is 200 ms.
+        /// Gets or sets the speed at which compression is stopped after input drops below fThreshold, in the range from 50 ms to 3000 ms. The default value is 200 ms.
         /// </summary>
         public float Release
         {
@@ -105,7 +105,7 @@ namespace CSCore.Streams.Effects
         }
 
         /// <summary>
-        /// Point at which compression begins, in decibels, in the range from -60 dB to 0 dB. The default value is -20 dB.
+        /// Gets or sets the point at which compression begins, in decibels, in the range from -60 dB to 0 dB. The default value is -20 dB.
         /// </summary>
         public float Threshold
         {

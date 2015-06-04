@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -19,24 +20,24 @@ namespace CSCore.Codecs
         /// <summary>
         /// Gets all with the codec associated file extensions.
         /// </summary>
-        public string[] FileExtensions { get; private set; }
+        public ReadOnlyCollection<string> FileExtensions { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CodecFactoryEntry"/> class.
         /// </summary>
         /// <param name="getCodecAction">Delegate which initializes a codec decoder based on a <see cref="Stream"/>.</param>
-        /// <param name="fileextensions">All which the codec associated file extensions.</param>
-        public CodecFactoryEntry(GetCodecAction getCodecAction, params string[] fileextensions)
+        /// <param name="fileExtensions">All which the codec associated file extensions.</param>
+        public CodecFactoryEntry(GetCodecAction getCodecAction, params string[] fileExtensions)
         {
             if (getCodecAction == null)
-                throw new ArgumentNullException("GetCodecAction");
-            if (fileextensions == null || fileextensions.Length <= 0)
-                throw new ArgumentException("No fileextensions", "fileextensions");
+                throw new ArgumentNullException("getCodecAction");
+            if (fileExtensions == null || fileExtensions.Length <= 0)
+                throw new ArgumentException("No specified file extensions.", "fileExtensions");
 
-            fileextensions = fileextensions.Where(x => x != null).Select(x => x.Replace(".", String.Empty)).ToArray();
+            fileExtensions = fileExtensions.Where(x => x != null).Select(x => x.Replace(".", String.Empty)).ToArray();
 
             GetCodecAction = getCodecAction;
-            FileExtensions = fileextensions;
+            FileExtensions = new ReadOnlyCollection<string>(fileExtensions);
         }
     }
 }

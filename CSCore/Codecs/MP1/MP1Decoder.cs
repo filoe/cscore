@@ -19,8 +19,7 @@ namespace CSCore.Codecs.MP1
             {
                 if (_issupported == null)
                 {
-                    _issupported = MediaFoundationCore.IsSupported && MediaFoundationCore.IsTransformAvailable(MediaFoundationCore.EnumerateTransforms(MFTCategories.AudioDecoder, MFTEnumFlags.All),
-                        CommonAudioDecoderGuids.MpegAudioDecoder);
+                    _issupported = MediaFoundationCore.IsSupported && MediaFoundationCore.IsTransformAvailable(MFTCategories.AudioDecoder, CommonAudioDecoderGuids.MpegAudioDecoder);
                 }
                 return _issupported.Value;
             }
@@ -29,9 +28,9 @@ namespace CSCore.Codecs.MP1
         /// <summary>
         /// Initializes a new instance of the <see cref="Mp1Decoder"/> class.
         /// </summary>
-        /// <param name="uri">Url which points to a data source which provides MP1 data. This is typically a filename.</param>
-        public Mp1Decoder(string uri)
-            : base(uri)
+        /// <param name="url">Url which points to a data source which provides MP1 data. This is typically a filename.</param>
+        public Mp1Decoder(string url)
+            : base(url)
         {
         }
 

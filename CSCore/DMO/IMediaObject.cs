@@ -4,13 +4,10 @@ using CSCore.Win32;
 
 namespace CSCore.DMO
 {
-    //http://msdn.microsoft.com/en-us/library/windows/desktop/dd406926(v=vs.85).aspx
-    //mediaobj.h line 312
     [ComImport]
     [Guid("d8ad0f58-5494-4102-97c5-ec798e59bcf4")]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    [SuppressUnmanagedCodeSecurity]
-    public interface IMediaObject : IUnknown
+    internal interface IMediaObject : IUnknown
     {
         int GetStreamCount([Out] out int inputStreams, [Out] out int outputStreams);
 

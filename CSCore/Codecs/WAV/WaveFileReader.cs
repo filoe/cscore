@@ -19,7 +19,7 @@ namespace CSCore.Codecs.WAV
         private bool _disposed;
         private Stream _stream;
         private WaveFormat _waveFormat;
-        private DataChunk _dataChunk;
+        private readonly DataChunk _dataChunk;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="WaveFileReader" /> class.
@@ -84,6 +84,8 @@ namespace CSCore.Codecs.WAV
         {
             lock (_lockObj)
             {
+                CheckForDisposed();
+
                 count -= count % WaveFormat.BlockAlign;
                 return _stream.Read(buffer, offset, count);
             }
@@ -102,11 +104,13 @@ namespace CSCore.Codecs.WAV
         /// </summary>
         public long Position
         {
-            get { return _stream.Position - _dataChunk.DataStartPosition; }
+            get { return _stream != null ? _stream.Position - _dataChunk.DataStartPosition : 0; }
             set
             {
                 lock (_lockObj)
                 {
+                    CheckForDisposed();
+
                     if(value > Length || value < 0)
                         throw new ArgumentOutOfRangeException("value", "The position must not be bigger than the length or less than zero.");
                     value -= (value % WaveFormat.BlockAlign);
@@ -120,7 +124,7 @@ namespace CSCore.Codecs.WAV
         /// </summary>
         public long Length
         {
-            get { return _dataChunk.ChunkDataSize; }
+            get { return _dataChunk != null ? _dataChunk.ChunkDataSize : 0; }
         }
 
         /// <summary>
@@ -143,10 +147,9 @@ namespace CSCore.Codecs.WAV
         private List<WaveFileChunk> ReadChunks(Stream stream)
         {
             var chunks = new List<WaveFileChunk>();
-            WaveFileChunk tmp;
             do
             {
-                tmp = WaveFileChunk.FromStream(stream);
+                WaveFileChunk tmp = WaveFileChunk.FromStream(stream);
                 chunks.Add(tmp);
 
                 if (tmp is FmtChunk)
@@ -156,6 +159,12 @@ namespace CSCore.Codecs.WAV
             } while (stream.Length - stream.Position > 8); //8 bytes = size of chunk header
 
             return chunks;
+        }
+
+        private void CheckForDisposed()
+        {
+            if (_disposed)
+                throw new ObjectDisposedException(GetType().FullName);
         }
 
         /// <summary>

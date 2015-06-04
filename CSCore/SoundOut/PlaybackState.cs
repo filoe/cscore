@@ -1,12 +1,12 @@
 ﻿namespace CSCore.SoundOut
 {
     /// <summary>
-    ///     Represents the state of a payback.
+    ///     Defines playback states.
     /// </summary>
     public enum PlaybackState
     {
         /// <summary>
-        ///     Playback is _stopped.
+        ///     Playback is stopped.
         /// </summary>
         Stopped,
 

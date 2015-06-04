@@ -36,6 +36,11 @@ namespace CSCore.Streams.Effects
         /// <summary>
         /// Creates an MediaObject from the effect DMO.
         /// </summary>
+        /// <param name="inputFormat">The input format of the <see cref="MediaObject" /> to create.</param>
+        /// <param name="outputFormat">The output format of the <see cref="MediaObject" /> to create.</param>
+        /// <returns>
+        /// The created <see cref="MediaObject" /> to use for processing audio data.
+        /// </returns>
         protected override MediaObject CreateMediaObject(WaveFormat inputFormat, WaveFormat outputFormat)
         {
             _comObj = CreateComObject();
@@ -103,7 +108,7 @@ namespace CSCore.Streams.Effects
         {
             if (IsEnabled)
                 return base.Read(buffer, offset, count);
-            return BaseStream.Read(buffer, offset, count);
+            return BaseSource.Read(buffer, offset, count);
         }
     }
 }

@@ -32,19 +32,29 @@ namespace CSCore.Streams
 
         private void CacheSource(IWaveSource source)
         {
-            _cache = new MemoryStream((int)source.Length);
+            _cache = new MemoryStream {Position = 0};
             int read = 0;
             int count = (int)Math.Min(source.WaveFormat.BytesPerSecond * 5, source.Length);
             byte[] buffer = new byte[count];
 
-            long position = source.Position;
+            long position = 0;
+            if(source.CanSeek)
+                position = source.Position;
 
             while((read = source.Read(buffer, 0, count)) > 0)
             {
                 _cache.Write(buffer, 0, read);
             }
 
-            source.Position = position;
+            if (source.CanSeek)
+            {
+                source.Position = position;
+                _cache.Position = source.Position;
+            }
+            else
+            {
+                _cache.Position = 0;
+            }
         }
 
         /// <summary>
@@ -95,7 +105,7 @@ namespace CSCore.Streams
         }
 
         /// <summary>
-        /// Gets a value indicating whether the <see cref="IWaveStream"/> supports seeking.
+        /// Gets a value indicating whether the <see cref="IAudioSource"/> supports seeking.
         /// </summary>
         public bool CanSeek
         {
@@ -141,6 +151,9 @@ namespace CSCore.Streams
             _disposed = true;
         }
 
+        /// <summary>
+        /// Finalizes an instance of the <see cref="CachedSoundSource"/> class.
+        /// </summary>
         ~CachedSoundSource()
         {
             Dispose(false);

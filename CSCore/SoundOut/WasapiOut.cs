@@ -1,5 +1,4 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -26,7 +25,7 @@ namespace CSCore.SoundOut
         private MMDevice _device;
         private bool _disposed;
         private EventWaitHandle _eventWaitHandle;
-        private bool _isInitialized = false;
+        private bool _isInitialized;
 
         private int _latency;
         private WaveFormat _outputFormat;
@@ -101,7 +100,7 @@ namespace CSCore.SoundOut
         ///     with data.
         /// </param>
         /// <param name="eventSyncContext">
-        ///     The synchronizationcontext which is used to raise any events like the "Stopped"-event.
+        ///     The <see cref="SynchronizationContext"/> which is used to raise any events like the <see cref="Stopped"/>-event.
         ///     If the passed value is not null, the events will be called async through the <see cref="SynchronizationContext.Post"/> method.
         /// </param>
         public WasapiOut(bool eventSync, AudioClientShareMode shareMode, int latency,
@@ -118,6 +117,8 @@ namespace CSCore.SoundOut
             _eventSync = eventSync;
             _playbackThreadPriority = playbackThreadPriority;
             _syncContext = eventSyncContext;
+
+            UseChannelMixingMatrices = true;
         }
 
         /// <summary>
@@ -163,6 +164,7 @@ namespace CSCore.SoundOut
 
         /// <summary>
         ///     Gets or sets the latency of the playback specified in milliseconds.
+        /// The <see cref="Latency" /> property has to be set before initializing.
         /// </summary>
         public int Latency
         {
@@ -181,7 +183,7 @@ namespace CSCore.SoundOut
         public event EventHandler<PlaybackStoppedEventArgs> Stopped;
 
         /// <summary>
-        ///     Initializes WasapiOut and prepares all resources for playback.
+        ///     Initializes WasapiOut instance and prepares all resources for playback.
         ///     Note that properties like <see cref="Device" />, <see cref="Latency" />,... won't affect WasapiOut after calling
         ///     <see cref="Initialize" />.
         /// </summary>
@@ -197,7 +199,7 @@ namespace CSCore.SoundOut
                 if (source == null)
                     throw new ArgumentNullException("source");
 
-                if (_playbackState != PlaybackState.Stopped)
+                if (PlaybackState != PlaybackState.Stopped)
                 {
                     throw new InvalidOperationException(
                         "PlaybackState has to be Stopped. Call WasapiOut::Stop to stop the playback.");
@@ -205,10 +207,9 @@ namespace CSCore.SoundOut
 
                 _playbackThread.WaitForExit();
 
-                //if (_isInitialized)
-                //    throw new InvalidOperationException("Wasapi is already initialized. Call WasapiOut::Stop to uninitialize Wasapi.");
+                source = new InterruptDisposingChainSource(source);
 
-                _volumeSource = new VolumeSource(source);
+                _volumeSource = new VolumeSource(source.ToSampleSource());
                 _source = _volumeSource.ToWaveSource();
                 CleanupResources();
                 InitializeInternal();
@@ -235,7 +236,7 @@ namespace CSCore.SoundOut
                 {
                     using (var waitHandle = new AutoResetEvent(false))
                     {
-                        //just to be sure that the thread finished already. Should not be necessary because after Stop(), Initialize() has to be called which already waits until the playbackthread _stopped.
+                        //just to be sure that the thread finished already. Should not be necessary because after Stop(), Initialize() has to be called which already waits until the playbackthread stopped.
                         _playbackThread.WaitForExit();
                         _playbackThread = new Thread(PlaybackProc)
                         {
@@ -255,8 +256,7 @@ namespace CSCore.SoundOut
         }
 
         /// <summary>
-        ///     Stops the playback and frees all allocated resources.
-        ///     After calling the caller has to call <see cref="Initialize" /> again before another playback can be started.
+        ///     Stops the playback and frees most of allocated resources.
         /// </summary>
         public void Stop()
         {
@@ -265,7 +265,7 @@ namespace CSCore.SoundOut
             lock (_lockObj)
             {
                 CheckForDisposed();
-                //don't check for isinitialized here
+                //don't check for isinitialized here (we don't want the Dispose method to throw an exception)
 
                 if (_playbackState != PlaybackState.Stopped && _playbackThread != null)
                 {
@@ -276,7 +276,7 @@ namespace CSCore.SoundOut
                 else if (_playbackState == PlaybackState.Stopped && _playbackThread != null)
                 {
                     /*
-                    * On EOF playbackstate is Stopped, but thread is not _stopped. => 
+                    * On EOF playbackstate is Stopped, but thread is not stopped. => 
                     * New Session can be started while cleaning up old one => unknown behavior. =>
                     * Always call Stop() to make sure, you wait until the thread is finished cleaning up.
                     */
@@ -284,7 +284,7 @@ namespace CSCore.SoundOut
                     _playbackThread = null;
                 }
                 else
-                    Debug.WriteLine("Wasapi is already _stopped.");
+                    Debug.WriteLine("Wasapi is already stopped.");
             }
         }
 
@@ -359,6 +359,11 @@ namespace CSCore.SoundOut
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether <see cref="WasapiOut"/> should try to use all available channels.
+        /// </summary>
+        public bool UseChannelMixingMatrices { get; set; }
+
+        /// <summary>
         ///     Stops the playback (if playing) and cleans up all used resources.
         /// </summary>
         public void Dispose()
@@ -397,13 +402,15 @@ namespace CSCore.SoundOut
 
                 int taskIndex;
                 string mmcssType = Latency > 25 ? "Audio" : "Pro Audio";
-                avrtHandle = Win32.NativeMethods.AvSetMmThreadCharacteristics(mmcssType, out taskIndex);
+                avrtHandle = NativeMethods.AvSetMmThreadCharacteristics(mmcssType, out taskIndex);
 
                 if (playbackStartedEventWaithandle is EventWaitHandle)
                 {
                     ((EventWaitHandle)playbackStartedEventWaithandle).Set();
                     playbackStartedEventWaithandle = null;
                 }
+
+                bool isAudioClientStopped = false;
 
                 while (PlaybackState != PlaybackState.Stopped)
                 {
@@ -413,15 +420,28 @@ namespace CSCore.SoundOut
                         //3 * latency = see msdn: recommended timeout
                         int eventWaitHandleIndex = WaitHandle.WaitAny(eventWaitHandleArray, 3 * _latency, false);
                         if (eventWaitHandleIndex == WaitHandle.WaitTimeout)
-                            continue;
+                        {
+                            //guarantee that the stopped audio client (in exclusive and eventsync mode) can be
+                            //restarted below
+                            if(PlaybackState != PlaybackState.Playing && !isAudioClientStopped)
+                                continue;
+                        }
                     }
                     else
+                    {
                         //based on the "RenderSharedTimerDriven"-Sample: http://msdn.microsoft.com/en-us/library/dd940521(v=vs.85).aspx
                         Thread.Sleep(_latency / 8);
+                    }
 
                     if (PlaybackState == PlaybackState.Playing)
                     {
-
+                        if (isAudioClientStopped)
+                        {
+                            //restart the audioclient if it is still paused in exclusive mode
+                            //belongs to the bugfix described below. http://cscore.codeplex.com/workitem/23
+                            _audioClient.Start();
+                            isAudioClientStopped = false;
+                        }
 
                         int padding;
                         if (_eventSync && _shareMode == AudioClientShareMode.Exclusive)
@@ -431,18 +451,34 @@ namespace CSCore.SoundOut
 
                         int framesReadyToFill = bufferSize - padding;
                         //avoid conversion errors
-                        if (framesReadyToFill > 5 &&
+                        /*if (framesReadyToFill > 5 &&
                             !(_source is DmoResampler &&
-                              ((DmoResampler)_source).OutputToInput(framesReadyToFill * frameSize) <= 0))
+                              ((DmoResampler) _source).OutputToInput(framesReadyToFill * frameSize) <= 0))
                         {
                             if (!FeedBuffer(_renderClient, buffer, framesReadyToFill, frameSize))
                                 _playbackState = PlaybackState.Stopped; //TODO: Fire Stopped-event here?
-                        }
+                        }*/
 
+                        if(framesReadyToFill <= 5 || 
+                            ((_source is DmoResampler) && ((DmoResampler)_source).OutputToInput(framesReadyToFill * frameSize) <= 0))
+                            continue;
+
+                        if(!FeedBuffer(_renderClient, buffer, framesReadyToFill, frameSize))
+                            _playbackState = PlaybackState.Stopped; //source is eof
+
+                    }
+                    else if(PlaybackState == PlaybackState.Paused && 
+                            _shareMode == AudioClientShareMode.Exclusive &&
+                            !isAudioClientStopped)
+                    {
+                        //stop the audioclient on paused if the sharemode is set to exclusive
+                        //otherwise there would be a "repetitive" sound. see http://cscore.codeplex.com/workitem/23
+                        _audioClient.Stop();
+                        isAudioClientStopped = true;
                     }
                 }
 
-                Win32.NativeMethods.AvRevertMmThreadCharacteristics(avrtHandle);
+                NativeMethods.AvRevertMmThreadCharacteristics(avrtHandle);
 
                 Thread.Sleep(_latency / 2);
 
@@ -456,11 +492,17 @@ namespace CSCore.SoundOut
             }
             finally
             {
+                //set the playbackstate to stopped
+                _playbackState = PlaybackState.Stopped;
+
                 if (avrtHandle != IntPtr.Zero)
                     NativeMethods.AvRevertMmThreadCharacteristics(avrtHandle);
-                //CleanupResources();
-                if (playbackStartedEventWaithandle is EventWaitHandle)
-                    ((EventWaitHandle)playbackStartedEventWaithandle).Set();
+
+                //set the eventWaitHandle since the Play() method maybe still waits on it (only possible if there were any errors during the initialization)
+                var eventWaitHandle = playbackStartedEventWaithandle as EventWaitHandle;
+                if (eventWaitHandle != null)
+                    eventWaitHandle.Set();
+
                 RaiseStopped(exception);
             }
         }
@@ -488,7 +530,7 @@ namespace CSCore.SoundOut
             const int reftimesPerMillisecond = 10000;
 
             _audioClient = AudioClient.FromMMDevice(Device);
-            _outputFormat = SetupWaveFormat(_source.WaveFormat, _audioClient);
+            _outputFormat = SetupWaveFormat(_source, _audioClient);
 
             long latency = _latency * reftimesPerMillisecond;
         AUDCLNT_E_BUFFER_SIZE_NOT_ALIGNED_TRY_AGAIN:
@@ -509,7 +551,7 @@ namespace CSCore.SoundOut
                     {
                         _audioClient.Initialize(_shareMode, AudioClientStreamFlags.StreamFlagsEventCallback, 0, 0,
                             _outputFormat, Guid.Empty);
-                        latency = (int)(_audioClient.StreamLatency / reftimesPerMillisecond);
+                        //latency = (int)(_audioClient.StreamLatency / reftimesPerMillisecond);
                     }
                 }
             }
@@ -525,7 +567,7 @@ namespace CSCore.SoundOut
                 throw;
             }
 
-            Latency = (int) (latency / reftimesPerMillisecond);
+            Latency = (int) (_audioClient.StreamLatency / reftimesPerMillisecond);
 
             if (_eventSync)
             {
@@ -564,11 +606,6 @@ namespace CSCore.SoundOut
                 _audioClient.Dispose();
                 _audioClient = null;
             }
-            /*if (_simpleAudioVolume != null)
-            {
-                _simpleAudioVolume.Dispose();
-                _simpleAudioVolume = null;
-            }*/
             if (_eventWaitHandle != null)
             {
                 _eventWaitHandle.Close();
@@ -578,8 +615,9 @@ namespace CSCore.SoundOut
             _isInitialized = false;
         }
 
-        private WaveFormat SetupWaveFormat(WaveFormat waveFormat, AudioClient audioClient)
+        private WaveFormat SetupWaveFormat(IWaveSource source, AudioClient audioClient)
         {
+            WaveFormat waveFormat = source.WaveFormat;
             WaveFormat closestMatch;
             WaveFormat finalFormat = waveFormat;
             if (!audioClient.IsFormatSupported(_shareMode, waveFormat, out closestMatch))
@@ -598,26 +636,30 @@ namespace CSCore.SoundOut
                             new WaveFormatExtensible(waveFormat.SampleRate, 16, waveFormat.Channels,
                                 AudioSubTypes.Pcm),
                             new WaveFormatExtensible(waveFormat.SampleRate, 8, waveFormat.Channels,
+                                AudioSubTypes.Pcm),
+
+                            new WaveFormatExtensible(waveFormat.SampleRate, 32, 2,
+                                AudioSubTypes.IeeeFloat),
+                            new WaveFormatExtensible(waveFormat.SampleRate, 24, 2,
+                                AudioSubTypes.Pcm),
+                            new WaveFormatExtensible(waveFormat.SampleRate, 16, 2,
+                                AudioSubTypes.Pcm),
+                            new WaveFormatExtensible(waveFormat.SampleRate, 8, 2,
+                                AudioSubTypes.Pcm),
+
+                            new WaveFormatExtensible(waveFormat.SampleRate, 32, 1, 
+                                AudioSubTypes.IeeeFloat),
+                            new WaveFormatExtensible(waveFormat.SampleRate, 24, 1, 
+                                AudioSubTypes.Pcm),
+                            new WaveFormatExtensible(waveFormat.SampleRate, 16, 1, 
+                                AudioSubTypes.Pcm),
+                            new WaveFormatExtensible(waveFormat.SampleRate, 8, 1, 
                                 AudioSubTypes.Pcm)
                         };
 
                         if (!CheckForSupportedFormat(audioClient, possibleFormats, out mixformat))
                         {
-                            //no format found...
-                            possibleFormats = new[]
-                            {
-                                new WaveFormatExtensible(waveFormat.SampleRate, 32, 2, AudioSubTypes.IeeeFloat),
-                                new WaveFormatExtensible(waveFormat.SampleRate, 24, 2, AudioSubTypes.Pcm),
-                                new WaveFormatExtensible(waveFormat.SampleRate, 16, 2, AudioSubTypes.Pcm),
-                                new WaveFormatExtensible(waveFormat.SampleRate, 8, 2, AudioSubTypes.Pcm),
-                                new WaveFormatExtensible(waveFormat.SampleRate, 32, 1, AudioSubTypes.IeeeFloat),
-                                new WaveFormatExtensible(waveFormat.SampleRate, 24, 1, AudioSubTypes.Pcm),
-                                new WaveFormatExtensible(waveFormat.SampleRate, 16, 1, AudioSubTypes.Pcm),
-                                new WaveFormatExtensible(waveFormat.SampleRate, 8, 1, AudioSubTypes.Pcm)
-                            };
-
-                            if (CheckForSupportedFormat(audioClient, possibleFormats, out mixformat))
-                                throw new NotSupportedException("Could not find a supported format.");
+                            throw new NotSupportedException("Could not find a supported format.");
                         }
                     }
 
@@ -626,11 +668,24 @@ namespace CSCore.SoundOut
                 else
                     finalFormat = closestMatch;
 
-                //todo: implement channel matrix
-                var resampler = new DmoResampler(_source, finalFormat)
+                //todo: test channel matrix conversion
+                ChannelMatrix channelMatrix = null;
+                if (UseChannelMixingMatrices)
                 {
-                    Quality = 60
-                };
+                    try
+                    {
+                        channelMatrix = ChannelMatrix.GetMatrix(_source.WaveFormat, finalFormat);
+                    }
+                    catch (Exception)
+                    {
+                        Debug.WriteLine("No channelmatrix was found.");
+                    }
+                }
+                DmoResampler resampler = channelMatrix != null
+                    ? new DmoChannelResampler(_source, channelMatrix, finalFormat)
+                    : new DmoResampler(_source, finalFormat);
+                resampler.Quality = 60;
+
                 _source = resampler;
                 _createdResampler = true;
 
@@ -657,18 +712,45 @@ namespace CSCore.SoundOut
 
         private bool FeedBuffer(AudioRenderClient renderClient, byte[] buffer, int numFramesCount, int frameSize)
         {
+            //calculate the number of bytes to "feed"
             int count = numFramesCount * frameSize;
             count -= (count % _source.WaveFormat.BlockAlign);
+            //if the driver did not request enough data, return true to continue playback
             if (count <= 0)
                 return true;
 
+            //get the requested data
             int read = _source.Read(buffer, 0, count);
+            //if the source did not provide enough data, we abort the playback by returning false
+            if (read <= 0)
+                return false;
 
-            IntPtr ptr = renderClient.GetBuffer(numFramesCount);
+            //calculate the number of FRAMES to request
+            int actualNumFramesCount = read / frameSize;
+
+            //again there are some special requirements for exclusive mode AND eventsync
+            if (_shareMode == AudioClientShareMode.Exclusive && _eventSync &&
+                read < count)
+            {
+                /* The caller can request a packet size that is less than or equal to the amount
+                 * of available space in the buffer (except in the case of an exclusive-mode stream
+                 * that uses event-driven buffering; for more information, see IAudioClient::Initialize).
+                 * see https://msdn.microsoft.com/en-us/library/windows/desktop/dd368243%28v=vs.85%29.aspx - remarks*/
+
+                //since we have to provide exactly the requested number of frames, we clear the rest of the array
+                Array.Clear(buffer, read, count - read);
+                //set the number of frames to request memory for, to the number of requested frames
+                actualNumFramesCount = numFramesCount;
+            }
+
+            IntPtr ptr = renderClient.GetBuffer(actualNumFramesCount);
+
+            //we may should introduce a try-finally statement here, but the Marshal.Copy method should not
+            //throw any relevant exceptions ... so we should be able to always release the packet
             Marshal.Copy(buffer, 0, ptr, read);
-            renderClient.ReleaseBuffer(read / frameSize, AudioClientBufferFlags.None);
+            renderClient.ReleaseBuffer(actualNumFramesCount, AudioClientBufferFlags.None);
 
-            return read > 0;
+            return true;
         }
 
         private void RaiseStopped(Exception exception)
@@ -704,11 +786,22 @@ namespace CSCore.SoundOut
         }
 
         /// <summary>
-        /// Destructor which calls the <see cref="Dispose(bool)"/> method.
+        /// Finalizes an instance of the <see cref="WasapiOut"/> class.
         /// </summary>
         ~WasapiOut()
         {
             Dispose(false);
+        }
+
+        private class InterruptDisposingChainSource : WaveAggregatorBase
+        {
+            public InterruptDisposingChainSource(IWaveSource source)
+                : base(source)
+            {
+                if (source == null)
+                    throw new ArgumentNullException("source");
+                DisposeBaseSource = false;
+            }
         }
     }
 }

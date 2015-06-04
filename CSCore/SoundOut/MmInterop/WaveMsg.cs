@@ -4,7 +4,7 @@
     /// uMsg
     /// http: //msdn.microsoft.com/en-us/library/dd743869%28VS.85%29.aspx
     /// </summary>
-    public enum WaveMsg
+    internal enum WaveMsg
     {
         WOM_OPEN = 0x3BB,
         WOM_CLOSE = 0x3BC,

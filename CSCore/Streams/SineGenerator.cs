@@ -104,7 +104,7 @@ namespace CSCore.Streams
         }
 
         /// <summary>
-        ///     Gets the <see cref="IWaveStream.WaveFormat" /> of the waveform-audio data.
+        ///     Gets the <see cref="IAudioSource.WaveFormat" /> of the waveform-audio data.
         /// </summary>
         public WaveFormat WaveFormat
         {
@@ -129,7 +129,7 @@ namespace CSCore.Streams
         }
 
         /// <summary>
-        /// Gets a value indicating whether the <see cref="IWaveStream"/> supports seeking.
+        /// Gets a value indicating whether the <see cref="IAudioSource"/> supports seeking.
         /// </summary>
         public bool CanSeek
         {
@@ -141,25 +141,6 @@ namespace CSCore.Streams
         /// </summary>
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Not used.
-        /// </summary>
-        /// <param name="disposing">Not used.</param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                //dispose managed
-            }
-        }
-
-        ~SineGenerator()
-        {
-            Dispose(false);
         }
     }
 }

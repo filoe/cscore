@@ -9,7 +9,7 @@ using System.Text;
 namespace CSCore.Streams.Effects
 {
     /// <summary>
-    /// Echo Effect.
+    /// Represents the dmo echo effect in form of an <see cref="IWaveSource"/> implementation.
     /// </summary>
     public sealed class DmoEchoEffect : DmoEffectBase<DirectSoundFXEcho, EchoParameters>
     {
@@ -39,7 +39,7 @@ namespace CSCore.Streams.Effects
 
         #region Properties
         /// <summary>
-        /// Ratio of wet (processed) signal to dry (unprocessed) signal. Must be in the range from
+        /// Gets or sets the ratio of wet (processed) signal to dry (unprocessed) signal. Must be in the range from
         /// 0 through 100 (all wet). The default value is 50.
         /// </summary>
         public float WetDryMix
@@ -57,7 +57,7 @@ namespace CSCore.Streams.Effects
         }
 
         /// <summary>
-        /// Percentage of output fed back into input, in the range from 0
+        /// Gets or sets the percentage of output fed back into input, in the range from 0
         /// through 100. The default value is 50.
         /// </summary>
         public float Feedback
@@ -75,7 +75,7 @@ namespace CSCore.Streams.Effects
         }
 
         /// <summary>
-        /// Delay for left channel, in milliseconds, in the range from 1
+        /// Gets or sets the delay for left channel, in milliseconds, in the range from 1
         /// through 2000. The default value is 500 ms.
         /// </summary>
         public float LeftDelay
@@ -93,7 +93,7 @@ namespace CSCore.Streams.Effects
         }
 
         /// <summary>
-        /// Delay for right channel, in milliseconds, in the range from 1
+        /// Gets or sets the delay for right channel, in milliseconds, in the range from 1
         /// through 2000. The default value is 500 ms.
         /// </summary>
         public float RightDelay
@@ -111,7 +111,7 @@ namespace CSCore.Streams.Effects
         }
 
         /// <summary>
-        /// Value that specifies whether to swap left and right delays with each successive echo.
+        /// Gets or sets the value that specifies whether to swap left and right delays with each successive echo.
         /// The default value is false, meaning no swap.
         /// </summary>
         public bool PanDelay

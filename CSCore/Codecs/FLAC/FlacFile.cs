@@ -220,6 +220,8 @@ namespace CSCore.Codecs.FLAC
         /// <returns>The total number of bytes read into the buffer.</returns>
         public int Read(byte[] buffer, int offset, int count)
         {
+            CheckForDisposed();
+
             int read = 0;
             count -= (count % WaveFormat.BlockAlign);
 
@@ -278,6 +280,7 @@ namespace CSCore.Codecs.FLAC
 
 #if DIAGNOSTICS
         private long _position;
+        private bool _disposed;
 #endif
 
         /// <summary>
@@ -287,7 +290,7 @@ namespace CSCore.Codecs.FLAC
         {
             get
             {
-                if (!CanSeek)
+                if (!CanSeek || _disposed)
                     return 0;
 
                 lock (_bufferLock)
@@ -303,6 +306,8 @@ namespace CSCore.Codecs.FLAC
             }
             set
             {
+                CheckForDisposed();
+
                 if (!CanSeek)
                     return;
                 lock (_bufferLock)
@@ -347,6 +352,8 @@ namespace CSCore.Codecs.FLAC
         {
             get
             {
+                if (_disposed)
+                    return 0;
                 if (CanSeek)
                     return _scan.TotalSamples * WaveFormat.BlockAlign;
                 return -1;
@@ -373,15 +380,26 @@ namespace CSCore.Codecs.FLAC
         {
             lock (_bufferLock)
             {
-                if (_frame != null)
+                if (!_disposed)
                 {
-                    _frame.Dispose();
-                    _frame = null;
-                }
+                    if (_frame != null)
+                    {
+                        _frame.Dispose();
+                        _frame = null;
+                    }
 
-                if (!_stream.IsClosed())
-                    _stream.Dispose();
+                    if (!_stream.IsClosed())
+                        _stream.Dispose();
+
+                    _disposed = true;
+                }
             }
+        }
+
+        private void CheckForDisposed()
+        {
+            if (_disposed)
+                throw new ObjectDisposedException(GetType().FullName);
         }
 
         /// <summary>

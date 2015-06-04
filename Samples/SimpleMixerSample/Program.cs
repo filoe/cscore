@@ -97,13 +97,13 @@ namespace SimpleMixerSample
             mixer.AddSource(
                 new SineGenerator(700, 0.5, 0).ToWaveSource()
                 .AppendSource(x => new DmoChannelResampler(x, monoToLeftOnlyChannelMatrix, mixerSampleRate))
-                .AppendSource(x => new VolumeSource(x), out volumeSource1));
+                .AppendSource(x => new VolumeSource(x.ToSampleSource()), out volumeSource1));
 
             //Add a 300Hz sine with a amplitude of 0.5 which plays only on the right channel.
             mixer.AddSource(
                 new SineGenerator(300, 0.5, 0).ToWaveSource()
                 .AppendSource(x => new DmoChannelResampler(x, monoToRightOnlyChannelMatrix, mixerSampleRate))
-                .AppendSource(x => new VolumeSource(x), out volumeSource2));
+                .AppendSource(x => new VolumeSource(x.ToSampleSource()), out volumeSource2));
 
             //Initialize the soundout with the mixer. 
             var soundOut = new WasapiOut() { Latency = 200 }; //better use a quite high latency

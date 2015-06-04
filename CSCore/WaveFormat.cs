@@ -62,7 +62,7 @@ namespace CSCore
         /// <summary>
         ///     Gets the block alignment, in bytes. The block alignment is the minimum atomic unit of data. For PCM data, the block
         ///     alignment is the number of bytes used by a single sample, including data for both channels if the data is stereo.
-        ///     For example, the block alignment for 16-bit stereo PCM is 4 bytes (2 channels — 2 bytes per sample).
+        ///     For example, the block alignment for 16-bit stereo PCM is 4 bytes (2 channels x 2 bytes per sample).
         /// </summary>
         public virtual int BlockAlign
         {
@@ -182,7 +182,7 @@ namespace CSCore
         /// </summary>
         /// <param name="milliseconds">Duration in millisecond to convert to a duration in bytes.</param>
         /// <returns>Duration in bytes.</returns>
-        public long MillisecondsToBytes(long milliseconds)
+        public long MillisecondsToBytes(double milliseconds)
         {
             var result = (long) ((BytesPerSecond / 1000.0) * milliseconds);
             result -= result % BlockAlign;
@@ -194,10 +194,10 @@ namespace CSCore
         /// </summary>
         /// <param name="bytes">Duration in bytes to convert to a duration in milliseconds.</param>
         /// <returns>Duration in milliseconds.</returns>
-        public long BytesToMilliseconds(long bytes)
+        public double BytesToMilliseconds(long bytes)
         {
             bytes -= bytes % BlockAlign;
-            var result = (long) ((bytes / (double) BytesPerSecond) * 1000);
+            var result = ((bytes / (double) BytesPerSecond) * 1000.0);
             return result;
         }
 

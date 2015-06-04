@@ -25,6 +25,7 @@ namespace FadingSample
             using (var soundOut = new WasapiOut() { Latency = 50 })
             {
                 using (var fadeInOut = CodecFactory.Instance.GetCodec(openFileDialog.FileName)
+                    .ToSampleSource()
                     .AppendSource(x => new FadeInOut(x)))
                 {
                     var linearFadeStrategy = new LinearFadeStrategy();
@@ -46,7 +47,7 @@ namespace FadingSample
                             continue;
                         }
 
-                        linearFadeStrategy.StartFading(null, to, 3000); //fade from the current volume to the entered volume over a duration of 3000ms
+                        linearFadeStrategy.StartFading(0.3f, to, 5000); //fade from the current volume to the entered volume over a duration of 3000ms
 
                         do
                         {

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
 using System.Threading;
-using CSCore.SoundOut;
 
 namespace CSCore.XAudio2
 {
@@ -37,9 +35,8 @@ namespace CSCore.XAudio2
         ///     Buffersize of the internal used buffers in milliseconds. Values in the range from 70ms to
         ///     200ms are recommended.
         /// </param>
-        /// <param name="version">The XAudio2 Version to use.</param>
         /// <remarks>It is recommended to use the <see cref="Create" /> method instead of the this constructor.</remarks>
-        public StreamingSourceVoice(IntPtr ptr, VoiceCallback voiceCallback, IWaveSource waveSource, int bufferSize, XAudio2Version version)
+        public StreamingSourceVoice(IntPtr ptr, VoiceCallback voiceCallback, IWaveSource waveSource, int bufferSize)
         {
             BasePtr = ptr;
             _voiceCallback = voiceCallback;
@@ -79,7 +76,7 @@ namespace CSCore.XAudio2
                 XAudio2.DefaultFrequencyRatio, voiceCallback,
                 null, null);
 
-            return new StreamingSourceVoice(ptr, voiceCallback, waveSource, bufferSize, xaudio2.Version);
+            return new StreamingSourceVoice(ptr, voiceCallback, waveSource, bufferSize);
         }
 
         /// <summary>
@@ -96,7 +93,7 @@ namespace CSCore.XAudio2
         {
             _waitHandle = new AutoResetEvent(true); //set the initial state to true to start streaming
 
-            _voiceCallback.BufferEnd += (ptr) => _waitHandle.Set();
+            _voiceCallback.BufferEnd += (s, e) => _waitHandle.Set();
             //Start(); //start the playback
         }
 
@@ -151,12 +148,15 @@ namespace CSCore.XAudio2
         {
             lock (_lockObj)
             {
+                if (_disposed)
+                    return;
+
                 _waitHandle.Close();
                 Stop(SourceVoiceStopFlags.None, XAudio2.CommitNow);
 
                 foreach (XAudio2Buffer buffer in _buffers)
                 {
-                    buffer.Free();
+                    buffer.Dispose();
                 }
 
                 base.Dispose(disposing);

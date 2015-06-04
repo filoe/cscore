@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 namespace CSCore.Streams.Effects
 {
     /// <summary>
-    /// WavesReverb Effect.
+    /// Represents the dmo waves reverb effect in form of an <see cref="IWaveSource"/> implementation.
     /// </summary>
     public class DmoWavesReverbEffect : DmoEffectBase<DirectSoundFXWavesReverb, WavesReverbParameters>
     {
@@ -38,7 +38,7 @@ namespace CSCore.Streams.Effects
 
         #region properties
         /// <summary>
-        /// Input gain of signal, in decibels (dB), in the range from -96 dB through 0 dB. The default value is 0 dB.
+        /// Gets or sets the input gain of signal, in decibels (dB), in the range from -96 dB through 0 dB. The default value is 0 dB.
         /// </summary>
         public float InGain
         {
@@ -52,7 +52,7 @@ namespace CSCore.Streams.Effects
         }
 
         /// <summary>
-        /// Reverb mix, in dB, in the range from -96 dB through 0 dB. The default value is 0 dB.
+        /// Gets or sets the reverb mix, in dB, in the range from -96 dB through 0 dB. The default value is 0 dB.
         /// </summary>
         public float ReverbMix
         {
@@ -66,7 +66,7 @@ namespace CSCore.Streams.Effects
         }
 
         /// <summary>
-        /// Reverb time, in milliseconds, in the range from 0.001 through 3000. The default value is 1000.
+        /// Gets or sets the reverb time, in milliseconds, in the range from 0.001 through 3000. The default value is 1000.
         /// </summary>
         public float ReverbTime
         {
@@ -80,7 +80,7 @@ namespace CSCore.Streams.Effects
         }
 
         /// <summary>
-        /// High-frequency reverb time ratio, in the range from 0.001 through 0.999. The default value is 0.001.
+        /// Gets or sets the high-frequency reverb time ratio, in the range from 0.001 through 0.999. The default value is 0.001.
         /// </summary>
         public float HighFrequencyRTRatio
         {

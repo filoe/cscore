@@ -8,10 +8,14 @@ namespace CSCore.Streams.SampleConverter
     public abstract class WaveToSampleBase : ISampleSource
     {
         private readonly WaveFormat _waveFormat;
-        internal protected double BitsPerSampleRatio;
-        internal protected byte[] Buffer;
-
+        /// <summary>
+        /// The underlying source which provides the raw data.
+        /// </summary>
         internal protected IWaveSource Source;
+        /// <summary>
+        /// The buffer to use for reading from the <see cref="Source"/>.
+        /// </summary>
+        internal protected byte[] Buffer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WaveToSampleBase"/> class.
@@ -27,7 +31,6 @@ namespace CSCore.Streams.SampleConverter
             _waveFormat = (WaveFormat) source.WaveFormat.Clone();
             _waveFormat.BitsPerSample = 32;
             _waveFormat.SetWaveFormatTagInternal(AudioEncoding.IeeeFloat);
-            BitsPerSampleRatio = (double)_waveFormat.BitsPerSample / source.WaveFormat.BitsPerSample;
         }
 
         /// <summary>
@@ -79,7 +82,7 @@ namespace CSCore.Streams.SampleConverter
         }
 
         /// <summary>
-        /// Gets a value indicating whether the <see cref="IWaveStream"/> supports seeking.
+        /// Gets a value indicating whether the <see cref="IAudioSource"/> supports seeking.
         /// </summary>
         public bool CanSeek
         {
@@ -91,7 +94,7 @@ namespace CSCore.Streams.SampleConverter
         /// </summary>
         public void Dispose()
         {
-            Source.Dispose();
+            Dispose(true);
         }
 
         /// <summary>
@@ -108,21 +111,29 @@ namespace CSCore.Streams.SampleConverter
         }
 
         /// <summary>
+        /// Finalizes an instance of the <see cref="WaveToSampleBase"/> class.
+        /// </summary>
+        ~WaveToSampleBase()
+        {
+            Dispose(false);
+        }
+
+        /// <summary>
         /// Returns an implementation of the <see cref="ISampleSource"/> interface which converts the specified <paramref name="source"/> to a <see cref="ISampleSource"/>.
         /// </summary>
         /// <param name="source">The <see cref="IWaveSource"/> instance to convert.</param>
         /// <returns>Returns an implementation of the <see cref="ISampleSource"/> interface which converts the specified <paramref name="source"/> to a <see cref="ISampleSource"/>.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-        /// <exception cref="NotSupportedException">The <see cref="IWaveStream.WaveFormat"/> of the <paramref name="source"/> is not supported.</exception>
+        /// <exception cref="NotSupportedException">The <see cref="IAudioSource.WaveFormat"/> of the <paramref name="source"/> is not supported.</exception>
         public static ISampleSource CreateConverter(IWaveSource source)
         {
             if (source == null)
                 throw new ArgumentNullException("source");
 
-            int bps = source.WaveFormat.BitsPerSample;
+            int bitsPerSample = source.WaveFormat.BitsPerSample;
             if (source.WaveFormat.IsPCM())
             {
-                switch (bps)
+                switch (bitsPerSample)
                 {
                     case 8:
                         return new Pcm8BitToSample(source);
@@ -137,7 +148,7 @@ namespace CSCore.Streams.SampleConverter
                         throw new NotSupportedException("Waveformat is not supported. Invalid BitsPerSample value.");
                 }
             }
-            if (source.WaveFormat.IsIeeeFloat() && bps == 32)
+            if (source.WaveFormat.IsIeeeFloat() && bitsPerSample == 32)
                 return new IeeeFloatToSample(source);
             throw new NotSupportedException("Waveformat is not supported. Invalid WaveformatTag.");
         }

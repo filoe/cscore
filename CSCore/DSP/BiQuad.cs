@@ -12,9 +12,46 @@ namespace CSCore.DSP
     /// </summary>
     public class BiQuad
     {
-        protected double A0, A1, A2, B1, B2;
-        protected double Fc, Q, GainDB;
-        protected double Z1, Z2;
+        /// <summary>
+        /// The a0 value.
+        /// </summary>
+        protected double A0;
+        /// <summary>
+        /// The a1 value.
+        /// </summary>
+        protected double A1;
+        /// <summary>
+        /// The a2 value.
+        /// </summary>
+        protected double A2;
+        /// <summary>
+        /// The b1 value.
+        /// </summary>
+        protected double B1;
+        /// <summary>
+        /// The b2 value.
+        /// </summary>
+        protected double B2;
+        /// <summary>
+        /// The fc value.
+        /// </summary>
+        protected double Fc;
+        /// <summary>
+        /// The q value.
+        /// </summary>
+        protected double Q;
+        /// <summary>
+        /// The gain value in dB.
+        /// </summary>
+        protected double GainDB;
+        /// <summary>
+        /// The z1 value.
+        /// </summary>
+        protected double Z1;
+        /// <summary>
+        /// The z2 value.
+        /// </summary>
+        protected double Z2;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BiQuad"/> class.

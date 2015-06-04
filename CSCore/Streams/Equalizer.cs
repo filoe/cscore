@@ -8,7 +8,7 @@ namespace CSCore.Streams
     ///     Represents an equalizer which can be dynamically modified by adding, removing or modifying
     ///     <see cref="EqualizerFilter" />.
     /// </summary>
-    public class Equalizer : SampleSourceBase
+    public class Equalizer : SampleAggregatorBase
     {
         private readonly EqualizerFilterCollection _equalizerFilters = new EqualizerFilterCollection();
 
@@ -16,9 +16,11 @@ namespace CSCore.Streams
         ///     Initializes a new instance of the <see cref="Equalizer" /> class based on an underlying wave stream.
         /// </summary>
         /// <param name="source">The underlying wave stream.</param>
-        public Equalizer(IWaveStream source)
+        public Equalizer(ISampleSource source)
             : base(source)
         {
+            if (source == null)
+                throw new ArgumentNullException("source");
         }
 
         /// <summary>
@@ -35,9 +37,9 @@ namespace CSCore.Streams
         /// <summary>
         ///     Returns a new instance of the <see cref="Equalizer" /> class with 10 preset <see cref="EqualizerFilter" />.
         /// </summary>
-        /// <param name="source">The underlying wave stream which provides the data for the equalizer.</param>
+        /// <param name="source">The underlying sample source which provides the data for the equalizer.</param>
         /// <returns>A new instance of the <see cref="Equalizer" /> class with 10 preset <see cref="EqualizerFilter" />.</returns>
-        public static Equalizer Create10BandEqualizer(IWaveStream source)
+        public static Equalizer Create10BandEqualizer(ISampleSource source)
         {
             return Create10BandEqualizer(source, 18, 0);
         }
@@ -45,14 +47,14 @@ namespace CSCore.Streams
         /// <summary>
         ///     Returns a new instance of the <see cref="Equalizer" /> class with 10 preset <see cref="EqualizerFilter" />.
         /// </summary>
-        /// <param name="source">The underlying wave stream which provides the data for the equalizer.</param>
+        /// <param name="source">The underlying sample source which provides the data for the equalizer.</param>
         /// <param name="bandWidth">The bandwidth to use for the 10 <see cref="EqualizerFilter" />. The default value is 18.</param>
         /// <param name="defaultGain">
         ///     The default gain to use for the 10 <see cref="EqualizerFilter" />. The default value is zero
         ///     which means that the data, passed through the equalizer won't be affected by the <see cref="EqualizerFilter" />.
         /// </param>
         /// <returns>A new instance of the <see cref="Equalizer" /> class with 10 preset <see cref="EqualizerFilter" />.</returns>
-        public static Equalizer Create10BandEqualizer(IWaveStream source, int bandWidth, int defaultGain)
+        public static Equalizer Create10BandEqualizer(ISampleSource source, int bandWidth, int defaultGain)
         {
             int sampleRate = source.WaveFormat.SampleRate;
             int channels = source.WaveFormat.Channels;
@@ -87,7 +89,7 @@ namespace CSCore.Streams
         }
 
         /// <summary>
-        ///     Reads a sequence of samples from the underlying <see cref="SampleSourceBase.Source" />, applies the equalizer
+        ///     Reads a sequence of samples from the underlying <see cref="SampleAggregatorBase.BaseSource" />, applies the equalizer
         ///     effect and advances the position within the stream by
         ///     the number of samples read.
         /// </summary>

@@ -74,7 +74,7 @@ namespace CSCore.XAudio2
         ///     Stops consumption of audio by the current voice.
         /// </summary>
         /// <param name="flags">
-        ///     Flags that control how the voice is _stopped. Can be <see cref="SourceVoiceStopFlags.None" /> or
+        ///     Flags that control how the voice is stopped. Can be <see cref="SourceVoiceStopFlags.None" /> or
         ///     <see cref="SourceVoiceStopFlags.PlayTails" />.
         /// </param>
         /// <param name="operationSet">
@@ -99,7 +99,7 @@ namespace CSCore.XAudio2
         ///     Stops consumption of audio by the current voice.
         /// </summary>
         /// <param name="flags">
-        ///     Flags that control how the voice is _stopped. Can be <see cref="SourceVoiceStopFlags.None" /> or
+        ///     Flags that control how the voice is stopped. Can be <see cref="SourceVoiceStopFlags.None" /> or
         ///     <see cref="SourceVoiceStopFlags.PlayTails" />.
         /// </param>
         /// <param name="operationSet">

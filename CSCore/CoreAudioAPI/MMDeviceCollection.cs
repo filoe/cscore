@@ -59,7 +59,7 @@ namespace CSCore.CoreAudioAPI
             fixed (void* pdeviceCount = &deviceCount)
             {
                 deviceCount = 0;
-                return InteropCalls.CallI(UnsafeBasePtr, pdeviceCount, ((void**)(*(void**)UnsafeBasePtr))[3]);
+                return InteropCalls.CallI(UnsafeBasePtr, pdeviceCount, ((void**) (*(void**) UnsafeBasePtr))[3]);
             }
         }
 
@@ -79,14 +79,14 @@ namespace CSCore.CoreAudioAPI
         /// The <see cref="ItemAtNative"/> method retrieves a pointer to the specified item in the device collection.
         /// </summary>
         /// <param name="deviceIndex">The device number. If the collection contains n devices, the devices are numbered 0 to n– 1.</param>
-        /// <param name="device">Pointer to a pointer variable into which the method writes the address of the <see cref="MMDevice"/> object of the specified item in the device collection.</param>
+        /// <param name="device">A pointer variable into which the method writes the address of the <see cref="MMDevice"/> object of the specified item in the device collection.</param>
         /// <returns>HRESULT</returns>
         public unsafe int ItemAtNative(int deviceIndex, out IntPtr device)
         {
             device = IntPtr.Zero;
             fixed (void* pdevice = &device)
             {
-                return InteropCalls.CallI(UnsafeBasePtr, deviceIndex, pdevice, ((void**)(*(void**)UnsafeBasePtr))[4]);
+                return InteropCalls.CallI(UnsafeBasePtr, deviceIndex, pdevice, ((void**) (*(void**) UnsafeBasePtr))[4]);
             }
         }
 

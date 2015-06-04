@@ -14,7 +14,7 @@ namespace CSCore.Win32
         [CLSCompliant(false)]
         protected volatile void* UnsafeBasePtr;
         private readonly object _lockObj = new object();
-        private bool _disposed = false;
+        private bool _disposed;
 
         /// <summary>
         /// Gets a value which indicates whether the <see cref="ComObject"/> got already disposed.
@@ -55,7 +55,7 @@ namespace CSCore.Win32
         /// Queries supported interfaces/objects on a <see cref="ComObject"/>.
         /// </summary>
         /// <typeparam name="T">The <see cref="ComObject"/> being requested.</typeparam>
-        /// <returns></returns>
+        /// <returns>The queried com interface/object.</returns>
         public T QueryInterface<T>() where T : ComObject
         {
             return QueryInterface1<T>();
@@ -66,11 +66,25 @@ namespace CSCore.Win32
             return (T)Activator.CreateInstance(typeof(T), QueryInterface(typeof(T)));
         }
 
+        internal static T QueryInterfaceStatic<T>(Guid guid, IntPtr ptr) where T : ComObject
+        {
+            IntPtr p0;
+            Marshal.QueryInterface(ptr, ref guid, out p0);
+            return (T) Activator.CreateInstance(typeof (T), p0);
+        }
+
+        internal IntPtr QueryInterfacePtr(Guid riid)
+        {
+            IntPtr ptr;
+            ((IUnknown)this).QueryInterface(ref riid, out ptr);
+            return ptr;
+        }
+
         /// <summary>
         /// Retrieves a pointer to the supported interface on an object.
         /// </summary>
         /// <param name="type">Type of the requested <see cref="ComObject"/>.</param>
-        /// <returns></returns>
+        /// <returns>A pointer to the requested interface.</returns>
         public IntPtr QueryInterface(Type type)
         {
             IntPtr ptr;
@@ -166,6 +180,9 @@ namespace CSCore.Win32
             }
         }
 
+        /// <summary>
+        /// Finalizes an instance of the <see cref="ComObject"/> class.
+        /// </summary>
         ~ComObject()
         {
             lock (_lockObj)

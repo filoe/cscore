@@ -8,7 +8,7 @@ namespace CSCore.XAudio2
     ///     Represents an audio data buffer.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct XAudio2Buffer
+    public struct XAudio2Buffer : IDisposable
     {
         /// <summary>
         ///     Maximum non-infinite LoopCount.
@@ -33,7 +33,7 @@ namespace CSCore.XAudio2
 
         /// <summary>
         ///     Size of the audio data, in bytes. Must be no larger than <see cref="MaxBufferBytes" /> for PCM data.
-        ///     Fore more details see
+        ///     For more details see
         ///     http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.xaudio2.xaudio2_buffer(v=vs.85).aspx.
         /// </summary>
         public int AudioBytes;
@@ -52,7 +52,7 @@ namespace CSCore.XAudio2
         /// <summary>
         ///     Length of the region to be played, in samples.
         ///     A value of zero means to play the entire buffer, and, in this case, <see cref="PlayBegin" /> must be zero as well.
-        ///     Fore more details see
+        ///     For more details see
         ///     http://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.xaudio2.xaudio2_buffer(v=vs.85).aspx.
         /// </summary>
         public int PlayLength;
@@ -121,7 +121,16 @@ namespace CSCore.XAudio2
         /// <summary>
         ///     Frees the allocated memory.
         /// </summary>
+        [Obsolete("Use the Dispose method instead.")]
         public void Free()
+        {
+            Free();
+        }
+
+        /// <summary>
+        /// Frees the allocated memory.
+        /// </summary>
+        public void Dispose()
         {
             if (AudioDataPtr != IntPtr.Zero)
             {

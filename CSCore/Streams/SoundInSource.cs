@@ -92,7 +92,7 @@ namespace CSCore.Streams
         }
 
         /// <summary>
-        ///     Gets the <see cref="IWaveStream.WaveFormat" /> of the recorded data.
+        ///     Gets the <see cref="IAudioSource.WaveFormat" /> of the recorded data.
         /// </summary>
         public WaveFormat WaveFormat
         {
@@ -123,7 +123,7 @@ namespace CSCore.Streams
         }
 
         /// <summary>
-        /// Gets a value indicating whether the <see cref="IWaveStream"/> supports seeking.
+        /// Gets a value indicating whether the <see cref="IAudioSource"/> supports seeking.
         /// </summary>
         public bool CanSeek
         {

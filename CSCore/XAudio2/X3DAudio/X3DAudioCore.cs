@@ -44,9 +44,9 @@ namespace CSCore.XAudio2.X3DAudio
 
         private void LoadX3DAudio()
         {
-            _hModule = NativeMethods.LoadLibrary("X3DAudio1_7.dll");
+            _hModule = Win32.NativeMethods.LoadLibrary("X3DAudio1_7.dll");
             if (_hModule == IntPtr.Zero)
-                _hModule = NativeMethods.LoadLibrary("X3DAudio2_8.dll");
+                _hModule = Win32.NativeMethods.LoadLibrary("X3DAudio2_8.dll");
 
             if (_hModule == IntPtr.Zero)
                 throw new NotSupportedException("No supported X3DAudio version could be found.");
@@ -58,7 +58,7 @@ namespace CSCore.XAudio2.X3DAudio
             {
                 _initializeDelegate = null;
                 _calculateDelegate = null;
-                NativeMethods.FreeLibrary(_hModule);
+                Win32.NativeMethods.FreeLibrary(_hModule);
                 throw new Exception("Could not load X3DAudio functions.");
             }
         }
@@ -175,7 +175,7 @@ namespace CSCore.XAudio2.X3DAudio
         private TDelegate GetUnmanagedProc<TDelegate>(IntPtr hModule, string procName)
             where TDelegate : class
         {
-            IntPtr procAddress = NativeMethods.GetProcAddress(hModule, procName);
+            IntPtr procAddress = Win32.NativeMethods.GetProcAddress(hModule, procName);
             if (procAddress == IntPtr.Zero)
                 return null;
 
@@ -192,7 +192,7 @@ namespace CSCore.XAudio2.X3DAudio
 
             if (_hModule != IntPtr.Zero)
             {
-                NativeMethods.FreeLibrary(_hModule);
+                Win32.NativeMethods.FreeLibrary(_hModule);
                 _hModule = IntPtr.Zero;
             }
         }

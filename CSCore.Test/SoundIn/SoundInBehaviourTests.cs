@@ -1,4 +1,5 @@
 ﻿using System;
+using CSCore.CoreAudioAPI;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CSCore.SoundIn;
 using System.Threading;
@@ -7,40 +8,58 @@ using System.Diagnostics;
 namespace CSCore.Test.SoundIn
 {
     [TestClass]
-    public class SoundInBehaviourTests
+    public abstract class SoundInBehaviourTests
     {
+        private ISoundIn _soundIn;
+        protected abstract ISoundIn CreateSoundIn();
+
+        [TestInitialize]
+        public virtual void OnTestInitialize()
+        {
+            _soundIn = CreateSoundIn();
+            if (_soundIn == null)
+                throw new Exception("No valid soundin.");
+            Debug.WriteLine(_soundIn.GetType().FullName);
+        }
+
+        [TestCleanup]
+        public virtual void OnTestCleanup()
+        {
+            _soundIn.Dispose();
+            _soundIn = null;
+        }
+
         [TestMethod]
         [TestCategory("SoundIns")]
-        public void CanCaptureAudio()
+        public virtual void CanCaptureAudio()
         {
-            int n = 0;
-            SoundInTests((c) =>
+            const int runs = 10;
+            int i = 0;
+            using (var waitHandle = new AutoResetEvent(false))
             {
-                for (int i = 0; i < 500; i++)
+                for (; i < runs; i++)
                 {
-                    var waitHandle = new AutoResetEvent(true);
-
-                    c.DataAvailable += (s, e) =>
+                    _soundIn.DataAvailable += (s, e) =>
                     {
-                        waitHandle.Reset();
+// ReSharper disable once AccessToDisposedClosure
+                        waitHandle.Set();
                     };
 
-                    c.Initialize();
-                    c.Start();
+                    _soundIn.Initialize();
+                    Assert.AreEqual(RecordingState.Stopped, _soundIn.RecordingState);
 
-                    if (!waitHandle.WaitOne(2000))
+                    _soundIn.Start();
+                    Assert.AreEqual(RecordingState.Recording, _soundIn.RecordingState);
+
+                    if (!waitHandle.WaitOne(Debugger.IsAttached ? Timeout.Infinite : 2000))
                         Assert.Fail("Timeout");
-                    else
-                    {
-                        Debug.WriteLine(n.ToString());
-                        n++;
-                    }
 
-                    c.Stop();
-
-                    waitHandle.Dispose();
+                    _soundIn.Stop();
+                    Assert.AreEqual(RecordingState.Stopped, _soundIn.RecordingState);
                 }
-            });
+            }
+
+            Assert.AreEqual(runs, i);
         }
 
         [TestMethod]
@@ -48,28 +67,33 @@ namespace CSCore.Test.SoundIn
         [ExpectedException(typeof(InvalidOperationException))]
         public void ThrowsInvalidCallerThread()
         {
-            bool flag = true;
-            SoundInTests((c) =>
+            Exception exception = null;
+            using (var waitHandle = new AutoResetEvent(false))
             {
-                c.DataAvailable += (s, e) =>
+                _soundIn.DataAvailable += (s, e) =>
                 {
                     try
                     {
-                        c.Stop();
-                        flag = false;
+                        _soundIn.Stop();
                     }
-                    catch(InvalidOperationException)
+                    catch (InvalidOperationException ex)
                     {
-                        Debug.WriteLine("Caught expected exception for " + c.GetType().FullName);
+                        Debug.WriteLine("Caught expected exception for " + _soundIn.GetType().FullName);
+                        exception = ex;
+                    }
+                    finally
+                    {
+// ReSharper disable once AccessToDisposedClosure
+                        waitHandle.Set();
                     }
                 };
 
-                c.Initialize();
-                c.Start();
-            });
-
-            if (flag)
-                throw new InvalidOperationException();
+                _soundIn.Initialize();
+                _soundIn.Start();
+                waitHandle.WaitOne();
+            }
+            if (exception != null)
+                throw exception;
         }
 
         [TestMethod]
@@ -77,45 +101,11 @@ namespace CSCore.Test.SoundIn
         [ExpectedException(typeof(ObjectDisposedException))]
         public void ThrowsObjectDisposed()
         {
-            bool flag = true;
-            foreach (var c in GetSoundIns())
-            {
-                try
-                {
-                    c.Initialize();
-                    c.Start();
-                    Thread.Sleep(200);
-                    c.Dispose();
-                    c.Start();
-                    flag = false;
-                }
-                catch(ObjectDisposedException)
-                {
-                }
-            }
-
-            if (flag)
-                throw new ObjectDisposedException(String.Empty);
-        }
-
-        private void SoundInTests(Action<ISoundIn> action)
-        {
-            foreach (var soundIn in GetSoundIns())
-            {
-                try
-                {
-                    action(soundIn);
-                }
-                finally
-                {
-                    soundIn.Dispose();
-                }
-            }
-        }
-
-        private ISoundIn[] GetSoundIns()
-        {
-            return new ISoundIn[] { new WasapiCapture(true, CSCore.CoreAudioAPI.AudioClientShareMode.Shared), new WasapiLoopbackCapture() };
+            _soundIn.Initialize();
+            _soundIn.Start();
+            Thread.Sleep(200);
+            _soundIn.Dispose();
+            _soundIn.Start();
         }
     }
 }

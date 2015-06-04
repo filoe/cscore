@@ -26,19 +26,17 @@ namespace CSCore.CoreAudioAPI
         }
 
         /// <summary>
-        /// Warning: This PropertyStore is just Readable. Use the OpenPropertyStore-Method to get
-        /// writeable PropertyStore.
+        /// Gets the propertystore associated with the <see cref="MMDevice"/>.
         /// </summary>
+        /// <remarks>Warning: This PropertyStore is only <c>readable</c>. Use the OpenPropertyStore-Method to get
+        /// writeable PropertyStore.</remarks>
         public PropertyStore PropertyStore
         {
-            get
-            {
-                return _propertyStore ?? (_propertyStore = OpenPropertyStore(StorageAccess.Read));
-            }
+            get { return _propertyStore ?? (_propertyStore = OpenPropertyStore(StorageAccess.Read)); }
         }
 
         /// <summary>
-        /// Gets the device id. Fore details about device ids see: <see href="http://msdn.microsoft.com/en-us/library/windows/desktop/dd370837(v=vs.85).aspx"/>.
+        /// Gets the device id. For information, see <see href="http://msdn.microsoft.com/en-us/library/windows/desktop/dd370837(v=vs.85).aspx"/>.
         /// </summary>
         public string DeviceID
         {
@@ -78,14 +76,15 @@ namespace CSCore.CoreAudioAPI
         /// <param name="iid">The interface identifier. This parameter is a reference to a GUID that identifies the interface that the caller requests be activated. The caller will use this interface to communicate with the COM object.</param>
         /// <param name="context">The execution context in which the code that manages the newly created object will run. </param>
         /// <param name="activationParams">Use <see cref="IntPtr.Zero"/> as the default value. See http://msdn.microsoft.com/en-us/library/windows/desktop/dd371405%28v=vs.85%29.aspx for more details.</param>
-        /// <param name="pinterface">Pointer to a pointer variable into which the method writes the address of the interface specified by parameter <paramref name="iid"/>.</param>
+        /// <param name="pinterface">A pointer variable into which the method writes the address of the interface specified by parameter <paramref name="iid"/>.</param>
         /// <returns>HRESULT</returns>
         public unsafe int ActivateNative(Guid iid, CLSCTX context, IntPtr activationParams, out IntPtr pinterface)
         {
             pinterface = IntPtr.Zero;
             fixed (void* ppinterface = &pinterface)
             {
-                var result = InteropCalls.CallI(UnsafeBasePtr, &iid, (uint)context, activationParams, new IntPtr(ppinterface), ((void**)(*(void**)UnsafeBasePtr))[3]);
+                var result = InteropCalls.CallI(UnsafeBasePtr, &iid, (uint) context, activationParams,
+                    new IntPtr(ppinterface), ((void**) (*(void**) UnsafeBasePtr))[3]);
                 return result;
             }
         }
@@ -96,7 +95,7 @@ namespace CSCore.CoreAudioAPI
         /// <param name="iid">The interface identifier. This parameter is a reference to a GUID that identifies the interface that the caller requests be activated. The caller will use this interface to communicate with the COM object.</param>
         /// <param name="context">The execution context in which the code that manages the newly created object will run. </param>
         /// <param name="activationParams">Use <see cref="IntPtr.Zero"/> as the default value. See http://msdn.microsoft.com/en-us/library/windows/desktop/dd371405%28v=vs.85%29.aspx for more details.</param>
-        /// <returns>Pointer to a pointer variable into which the method writes the address of the interface specified by parameter <paramref name="iid"/>.</returns>
+        /// <returns>A pointer variable into which the method writes the address of the interface specified by parameter <paramref name="iid"/>.</returns>
         public IntPtr Activate(Guid iid, CLSCTX context, IntPtr activationParams)
         {
             IntPtr ptr;
@@ -121,14 +120,15 @@ namespace CSCore.CoreAudioAPI
         /// Retrieves an interface to the device's property store.
         /// </summary>
         /// <param name="storageAccess">The storage-access mode. This parameter specifies whether to open the property store in read mode, write mode, or read/write mode.</param>
-        /// <param name="propertyStore">Pointer to a pointer variable into which the method writes the address of the IPropertyStore interface of the device's property store.</param>
+        /// <param name="propertyStore">A pointer variable into which the method writes the address of the IPropertyStore interface of the device's property store.</param>
         /// <returns>HRESULT</returns>
         public unsafe int OpenPropertyStoreNative(StorageAccess storageAccess, out IntPtr propertyStore)
         {
             propertyStore = IntPtr.Zero;
             fixed (void* pps = &propertyStore)
             {
-                return InteropCalls.CallI(UnsafeBasePtr, unchecked(storageAccess), pps, ((void**)(*(void**)UnsafeBasePtr))[4]);
+                return InteropCalls.CallI(UnsafeBasePtr, unchecked(storageAccess), pps,
+                    ((void**) (*(void**) UnsafeBasePtr))[4]);
             }
         }
 
@@ -142,7 +142,7 @@ namespace CSCore.CoreAudioAPI
             IntPtr pdeviceid = IntPtr.Zero;
             deviceid = null;
 
-            var err = InteropCalls.CallI(UnsafeBasePtr, &pdeviceid, ((void**)(*(void**)UnsafeBasePtr))[5]);
+            var err = InteropCalls.CallI(UnsafeBasePtr, &pdeviceid, ((void**) (*(void**) UnsafeBasePtr))[5]);
             if (err == 0 && pdeviceid != IntPtr.Zero)
             {
                 deviceid = Marshal.PtrToStringUni(pdeviceid);
@@ -161,7 +161,7 @@ namespace CSCore.CoreAudioAPI
         {
             fixed (void* pstate = &state)
             {
-                return InteropCalls.CallI(UnsafeBasePtr, unchecked(pstate), ((void**)(*(void**)UnsafeBasePtr))[6]);
+                return InteropCalls.CallI(UnsafeBasePtr, unchecked(pstate), ((void**) (*(void**) UnsafeBasePtr))[6]);
             }
         }
 
@@ -171,13 +171,19 @@ namespace CSCore.CoreAudioAPI
         /// <param name="disposing">True to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
-            base.Dispose(disposing);
+            if (_disposed)
+                return;
+
             if (_propertyStore != null)
             {
                 _propertyStore.Dispose();
                 _propertyStore = null;
             }
+            _disposed = true;
+            base.Dispose(disposing);
         }
+
+        private bool _disposed;
 
         /// <summary>
         /// Returns the <see cref="FriendlyName"/> of the <see cref="MMDevice"/>.

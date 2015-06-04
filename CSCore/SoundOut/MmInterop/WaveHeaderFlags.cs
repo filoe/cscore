@@ -6,8 +6,9 @@ namespace CSCore.SoundOut.MMInterop
     /// WaveHeaderFlags: http://msdn.microsoft.com/en-us/library/aa909814.aspx#1
     /// </summary>
     [Flags]
-    public enum WaveHeaderFlags
+    internal enum WaveHeaderFlags
     {
+        NONE = 0x0,
         WHDR_DONE = 0x00000001,
         WHDR_PREPARED = 0x00000002,
         WHDR_BEGINLOOP = 0x00000004,

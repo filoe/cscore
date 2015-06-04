@@ -1,11 +1,13 @@
-﻿using CSCore.SoundOut.MMInterop;
+﻿using System.Collections.Generic;
+using System.Linq;
+using CSCore.SoundOut.MMInterop;
 using System.Runtime.InteropServices;
 using System.Text;
 
 namespace CSCore.SoundOut
 {
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
-    public struct WaveOutCaps
+    internal struct WaveOutCaps
     {
         public short wMid;
         public short wPid;
@@ -14,20 +16,14 @@ namespace CSCore.SoundOut
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
         public string szPname;
 
-        public WaveCapsFormats dwFormats;
+        public MmDeviceFormats dwFormats;
         public short wChannels;
         public short wReserved1;
-        public WaveCapsSupported dwSupport;
+        public MmDeviceSupported dwSupport;
 
-        public override string ToString()
+        public WaveFormat[] GetSupportedFormats()
         {
-            StringBuilder builder = new StringBuilder();
-            builder.AppendLine("Name: " + szPname);
-            builder.AppendLine("DriverVersion: " + vDriverVersion);
-            builder.AppendLine("DriverSupported: " + dwSupport);
-            builder.AppendLine("Formate: " + dwFormats);
-
-            return builder.ToString();
+            return MMInterop.Utils.SupportedFormatsFlagsToWaveFormats(dwFormats);
         }
     }
 }

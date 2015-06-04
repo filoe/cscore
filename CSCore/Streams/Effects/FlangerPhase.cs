@@ -1,7 +1,8 @@
 namespace CSCore.Streams.Effects
 {
     /// <summary>
-    /// FlangerPhase. See <see cref="DmoFlangerEffect.Phase"/>.
+    /// Defines possible values for the <see cref="DmoFlangerEffect.Phase"/> property.
+    /// The default value is <see cref="Phase90"/>.
     /// </summary>
     public enum FlangerPhase
     {

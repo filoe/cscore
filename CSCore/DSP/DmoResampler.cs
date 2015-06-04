@@ -24,7 +24,7 @@ namespace CSCore.DSP
             if (source == null)
                 throw new ArgumentNullException("source");
 
-            var waveFormat = (CSCore.WaveFormat)source.WaveFormat.Clone();
+            var waveFormat = (WaveFormat)source.WaveFormat.Clone();
             waveFormat.SampleRate = destSampleRate;
             return waveFormat;
         }
@@ -33,11 +33,11 @@ namespace CSCore.DSP
         ///     Initializes a new instance of the <see cref="DmoResampler" /> class.
         /// </summary>
         /// <param name="source"><see cref="IWaveSource" /> which has to get resampled.</param>
-        /// <param name="destSampleRate">The new output samplerate specified in Hz.</param>
-        public DmoResampler(IWaveSource source, int destSampleRate)
+        /// <param name="destinationSampleRate">The new output samplerate specified in Hz.</param>
+        public DmoResampler(IWaveSource source, int destinationSampleRate)
             : this(
                 source,
-                GetWaveFormatWithChangedSampleRate(source, destSampleRate))
+                GetWaveFormatWithChangedSampleRate(source, destinationSampleRate))
         {
         }
 
@@ -208,7 +208,7 @@ namespace CSCore.DSP
         {
             //long result = (long)(position * _ratio);
             var result = (long) (position / Ratio);
-            result -= (result % BaseStream.WaveFormat.BlockAlign);
+            result -= (result % BaseSource.WaveFormat.BlockAlign);
             return result;
         }
 
@@ -245,7 +245,13 @@ namespace CSCore.DSP
         {
             if (obj != null)
             {
-                obj.Dispose();
+                try
+                {
+                    obj.Dispose();
+                }
+                catch (ObjectDisposedException)
+                {
+                }
                 obj = null;
             }
         }

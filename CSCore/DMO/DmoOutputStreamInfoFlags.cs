@@ -2,6 +2,9 @@
 
 namespace CSCore.DMO
 {
+    /// <summary>
+    /// The <see cref="DmoOutputStreamInfoFlags"/> enumeration defines flags that describe an output stream.
+    /// </summary>
     [Flags]
     public enum DmoOutputStreamInfoFlags
     {

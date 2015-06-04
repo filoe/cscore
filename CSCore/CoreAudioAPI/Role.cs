@@ -9,10 +9,12 @@
         /// Games, system notification sounds, and voice commands.
         /// </summary>
         Console = 0,
+
         /// <summary>
         /// Music, movies, narration, and live music recording.
         /// </summary>
         Multimedia = Console + 1,
+
         /// <summary>
         /// Voice communications (talking to another person).
         /// </summary>

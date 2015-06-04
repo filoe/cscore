@@ -23,23 +23,5 @@ namespace CSCore.SoundOut
             : base(exception)
         {
         }
-
-        /// <summary>
-        ///     Gets a value which indicates whether the playback _stopped due to an error. True means that that the playback
-        ///     _stopped due to an error. False means that the playback did not stop due to an error.
-        /// </summary>
-        public override bool HasError
-        {
-            get { return base.HasError; }
-        }
-
-        /// <summary>
-        ///     Gets the associated <see cref="Exception" /> which caused the playback to stop.
-        /// </summary>
-        /// <value>Can be null.</value>
-        public override Exception Exception
-        {
-            get { return base.Exception; }
-        }
     }
 }

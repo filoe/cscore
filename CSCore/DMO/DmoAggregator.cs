@@ -3,7 +3,7 @@
 namespace CSCore.DMO
 {
     /// <summary>
-    ///     IWaveAggreator base class for Dmo based streams.
+    ///     <see cref="IWaveAggregator"/> implementation for Dmo based streams.
     /// </summary>
     public abstract class DmoAggregator : DmoStream, IWaveAggregator
     {
@@ -22,40 +22,40 @@ namespace CSCore.DMO
         }
 
         /// <summary>
-        ///     Gets or sets the position of the stream.
+        ///     Gets or sets the position of the stream in bytes.
         /// </summary>
         public override long Position
         {
-            get { return CanSeek ? InputToOutput(_source.Position) : 0; }
+            get { return CanSeek ? InputToOutput(BaseSource.Position) : 0; }
             set
             {
-                if(CanSeek) 
-                    _source.Position = OutputToInput(value);
+                if(CanSeek)
+                    BaseSource.Position = OutputToInput(value);
                 else
-                    throw new InvalidOperationException();
+                    throw new InvalidOperationException("BaseSource is not seekable.");
             }
         }
 
         /// <summary>
-        ///     Gets the length of the stream.
+        ///     Gets the length of the stream in bytes.
         /// </summary>
         public override long Length
         {
-            get { return CanSeek ? InputToOutput(_source.Length) : 0; }
+            get { return CanSeek ? InputToOutput(BaseSource.Length) : 0; }
         }
 
         /// <summary>
-        /// Gets a value indicating whether the <see cref="IWaveStream"/> supports seeking.
+        /// Gets a value indicating whether the <see cref="IAudioSource"/> supports seeking.
         /// </summary>
         public override bool CanSeek
         {
-            get { return _source.CanSeek; }
+            get { return BaseSource.CanSeek; }
         }
 
         /// <summary>
-        ///     Gets the <see cref="BaseStream" /> of the <see cref="DmoAggregator" />.
+        ///     Gets the <see cref="BaseSource" /> of the <see cref="DmoAggregator" />.
         /// </summary>
-        public IWaveSource BaseStream
+        public IWaveSource BaseSource
         {
             get { return _source; }
         }
@@ -72,16 +72,17 @@ namespace CSCore.DMO
         protected override int GetInputData(ref byte[] inputDataBuffer, int requested)
         {
             inputDataBuffer = inputDataBuffer.CheckBuffer(requested);
-            return BaseStream.Read(inputDataBuffer, 0, requested);
+            return BaseSource.Read(inputDataBuffer, 0, requested);
         }
 
         /// <summary>
         ///     Gets the input format to use.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The input format.</returns>
+        /// <remarks>Typically this is the <see cref="IAudioSource.WaveFormat"/> of the <see cref="BaseSource"/>.</remarks>
         protected override WaveFormat GetInputFormat()
         {
-            return BaseStream.WaveFormat;
+            return BaseSource.WaveFormat;
         }
     }
 }

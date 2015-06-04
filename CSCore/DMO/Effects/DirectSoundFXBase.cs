@@ -7,6 +7,7 @@ namespace CSCore.DMO.Effects
     /// <summary>
     ///     Base class for any DirectSoundEffect.
     /// </summary>
+    /// <typeparam name="T">Parameters type. <seealso cref="Parameters"/></typeparam>
     public abstract class DirectSoundFxBase<T> : ComObject where T : struct
     {
         /// <summary>
@@ -38,9 +39,12 @@ namespace CSCore.DMO.Effects
         protected abstract string InterfaceName { get; }
 
         /// <summary>
-        ///     The SetAllParameters method sets the effects parameters.
+        ///     Sets the effects parameters.
+        /// <seealso cref="Parameters"/>
         /// </summary>
+        /// <param name="parameters">Object that contains the new parameters of the effect.</param>
         /// <returns>HRESULT</returns>
+        /// <remarks>Use the <see cref="Parameters"/> property instead.</remarks>        
         public unsafe int SetAllParametersNative(T parameters)
         {
             IntPtr p = Marshal.AllocCoTaskMem(Marshal.SizeOf(typeof (T)));
@@ -56,9 +60,12 @@ namespace CSCore.DMO.Effects
         }
 
         /// <summary>
-        ///     The GetAllParameters method retrieves the effects parameters.
+        ///     Retrieves the effects parameters.
+        /// <seealso cref="Parameters"/>
         /// </summary>
+        /// <param name="parameters">A variable which retrieves the set parameters of the effect.</param>
         /// <returns>HRESULT</returns>
+        /// <remarks>Use the <see cref="Parameters"/> property instead.</remarks>
         public unsafe int GetAllParametersNative(out T parameters)
         {
             IntPtr p = Marshal.AllocCoTaskMem(Marshal.SizeOf(typeof (T)));

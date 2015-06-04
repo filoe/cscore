@@ -10,9 +10,11 @@ namespace CSCore.DSP
     {
         /// <summary>
         /// Obsolete. Use the <see cref="Complex.Value"/> property instead.
+        /// <seealso cref="Complex.Value"/>
         /// </summary>
         /// <param name="c"></param>
-        /// <returns></returns>
+        /// <returns>The intensity of the complex value <paramref name="c"/>.</returns>
+        /// <remarks>sqrt(r² + i²)</remarks>
         [Obsolete("Use the Complex.Value property instead.")]
         public static double GetIntensity(Complex c)
         {
@@ -117,8 +119,11 @@ namespace CSCore.DSP
         }
 
         /// <summary>
-        /// Obsolete. Use the <see cref="Fft"/> method instead.
+        /// Computes an Fast Fourier Transform.
         /// </summary>
+        /// <param name="data">Array of complex numbers. This array provides the input data and is used to store the result of the FFT.</param>
+        /// <param name="exponent">The exponent n.</param>
+        /// <param name="mode">The <see cref="FftMode"/> to use. Use <see cref="FftMode.Forward"/> as the default value.</param>
         [Obsolete("Use FastFourierTransform.Fft instead.")]
         public static void FFT1(Complex[] data, int exponent, FftMode mode)
         {

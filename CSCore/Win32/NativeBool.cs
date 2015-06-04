@@ -62,33 +62,61 @@ namespace CSCore.Win32
             return _value.GetHashCode();
         }
 
-#pragma warning disable 1591
+        /// <summary>
+        /// Implements the operator ==.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
         public static bool operator ==(NativeBool left, NativeBool right)
         {
             return left.Equals(right);
         }
 
+        /// <summary>
+        /// Implements the operator !=.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
         public static bool operator !=(NativeBool left, NativeBool right)
         {
             return !(left == right);
         }
 
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="NativeBool"/> to <see cref="System.Boolean"/>.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>
+        /// The result of the conversion.
+        /// </returns>
         public static implicit operator bool(NativeBool value)
         {
             return value._value != 0;
         }
 
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="System.Boolean"/> to <see cref="NativeBool"/>.
+        /// </summary>
+        /// <param name="value">if set to <c>true</c> [value].</param>
+        /// <returns>
+        /// The result of the conversion.
+        /// </returns>
         public static implicit operator NativeBool(bool value)
         {
             return new NativeBool(value);
         }
-#pragma warning restore 1591
 
 
         /// <summary>
         /// Converts the value of this instance to its equivalent string representation (either "True" or "False").
         /// </summary>
-        /// <returns>String representation of this instance.</returns>
+        /// <returns>The string representation of this instance.</returns>
         public override string ToString()
         {
             return this ? "True" : "False";

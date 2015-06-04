@@ -5,6 +5,9 @@ namespace CSCore.MediaFoundation
     /// </summary>
     public enum MFSampleFlags
     {
+        /// <summary>
+        /// None
+        /// </summary>
         None = 0x0
     }
 }

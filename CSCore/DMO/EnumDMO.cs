@@ -14,9 +14,9 @@ namespace CSCore.DMO
         private const string InterfaceName = "IEnumDMO";
 
         /// <summary>
-        ///     Creates a new DMO Enumerator based on its pointer.
+        /// Initializes a new instance of the <see cref="EnumDmo"/> class.
         /// </summary>
-        /// <param name="ptr"></param>
+        /// <param name="ptr">The native pointer of the COM object.</param>
         public EnumDmo(IntPtr ptr)
             : base(ptr)
         {
@@ -37,8 +37,21 @@ namespace CSCore.DMO
             DmoPartialMediaType[] outputTypes)
         {
             IntPtr ptr;
-            int result = NativeMethods.DMOEnum(ref category, flags, inputTypes != null ? inputTypes.Length : 0, inputTypes,
-                outputTypes != null ? inputTypes.Length : 0, outputTypes, out ptr);
+            int numberOfInputTypes = 0;
+            int numberOfOutputTypes = 0;
+            if (inputTypes != null)
+                numberOfInputTypes = inputTypes.Length;
+            if (outputTypes != null)
+                numberOfOutputTypes = outputTypes.Length;
+
+            int result = NativeMethods.DMOEnum(
+                ref category,
+                flags, 
+                numberOfInputTypes, 
+                inputTypes,
+                numberOfOutputTypes, 
+                outputTypes, 
+                out ptr);
             DmoException.Try(result, "Interops", "DMOEnum");
 
             return new EnumDmo(ptr);
@@ -52,11 +65,12 @@ namespace CSCore.DMO
         ///     See <see cref="DmoEnumeratorCategories" /> for a list of category guids.
         /// </param>
         /// <param name="flags">Flags that specify search criteria.</param>
+        /// <returns>An <see cref="IEnumerable{T}"/> that can be used to iterate through the enumerated DMOs.</returns>
         public static IEnumerable<DmoEnumItem> EnumerateDMOs(Guid category, DmoEnumFlags flags)
         {
             using (EnumDmo enumerator = EnumerateDMOs(category, flags, null, null))
             {
-                var item = new DmoEnumItem[1];
+                DmoEnumItem[] item;
                 while ((item = enumerator.Next(1)).Length > 0)
                 {
                     yield return item[0];
@@ -77,7 +91,7 @@ namespace CSCore.DMO
             if (itemsToFetch <= 0)
                 throw new ArgumentOutOfRangeException("itemsToFetch");
 
-            int result = 0;
+            int result;
             clsids = new Guid[itemsToFetch];
             names = new string[itemsToFetch];
 
@@ -174,6 +188,8 @@ namespace CSCore.DMO
         /// <summary>
         ///     This method is not implemented.
         /// </summary>
+        /// <param name="pEnum">Reserved</param>
+        /// <returns><see cref="HResult.E_NOTIMPL"/></returns>
         public unsafe int CloneNative(out IntPtr pEnum)
         {
             fixed (void* p = &pEnum)
@@ -185,6 +201,7 @@ namespace CSCore.DMO
         /// <summary>
         ///     This method is not implemented.
         /// </summary>
+        /// <returns>This method is not implemented an will throw an <see cref="DmoException"/> with the error code <see cref="HResult.E_NOTIMPL"/>.</returns>
         public EnumDmo Clone()
         {
             IntPtr p;

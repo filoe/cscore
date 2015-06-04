@@ -126,151 +126,151 @@ namespace CSCore
         /// <summary>WAVE_FORMAT_CONTROL_RES_CR10, Control Resources Limited</summary>
         ControlResCr10 = 0x0037,
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_NMS_VBXADPCM</summary>
         WAVE_FORMAT_NMS_VBXADPCM = 0x0038, // Natural MicroSystems 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_CS_IMAADPCM</summary>
         WAVE_FORMAT_CS_IMAADPCM = 0x0039, // Crystal Semiconductor IMA ADPCM 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_ECHOSC3</summary>
         WAVE_FORMAT_ECHOSC3 = 0x003A, // Echo Speech Corporation 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_ROCKWELL_ADPCM</summary>
         WAVE_FORMAT_ROCKWELL_ADPCM = 0x003B, // Rockwell International 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_ROCKWELL_DIGITALK</summary>
         WAVE_FORMAT_ROCKWELL_DIGITALK = 0x003C, // Rockwell International 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_XEBEC</summary>
         WAVE_FORMAT_XEBEC = 0x003D, // Xebec Multimedia Solutions Limited 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_G721_ADPCM</summary>
         WAVE_FORMAT_G721_ADPCM = 0x0040, // Antex Electronics Corporation 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_G728_CELP</summary>
         WAVE_FORMAT_G728_CELP = 0x0041, // Antex Electronics Corporation 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_MSG723</summary>
         WAVE_FORMAT_MSG723 = 0x0042, // Microsoft Corporation 
 
         /// <summary>WAVE_FORMAT_MPEG, Microsoft Corporation </summary>
         Mpeg = 0x0050,
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_RT24</summary>
         WAVE_FORMAT_RT24 = 0x0052, // InSoft, Inc. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_PAC</summary>
         WAVE_FORMAT_PAC = 0x0053, // InSoft, Inc. 
 
         /// <summary>WAVE_FORMAT_MPEGLAYER3, ISO/MPEG Layer3 Format Tag </summary>
         MpegLayer3 = 0x0055,
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_LUCENT_G723</summary>
         WAVE_FORMAT_LUCENT_G723 = 0x0059, // Lucent Technologies 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_CIRRUS</summary>
         WAVE_FORMAT_CIRRUS = 0x0060, // Cirrus Logic 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_ESPCM</summary>
         WAVE_FORMAT_ESPCM = 0x0061, // ESS Technology 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_VOXWARE</summary>
         WAVE_FORMAT_VOXWARE = 0x0062, // Voxware Inc 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_CANOPUS_ATRAC</summary>
         WAVE_FORMAT_CANOPUS_ATRAC = 0x0063, // Canopus, co., Ltd. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_G726_ADPCM</summary>
         WAVE_FORMAT_G726_ADPCM = 0x0064, // APICOM 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_G722_ADPCM</summary>
         WAVE_FORMAT_G722_ADPCM = 0x0065, // APICOM 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_DSAT_DISPLAY</summary>
         WAVE_FORMAT_DSAT_DISPLAY = 0x0067, // Microsoft Corporation 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_VOXWARE_BYTE_ALIGNED</summary>
         WAVE_FORMAT_VOXWARE_BYTE_ALIGNED = 0x0069, // Voxware Inc 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_VOXWARE_AC8</summary>
         WAVE_FORMAT_VOXWARE_AC8 = 0x0070, // Voxware Inc 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_VOXWARE_AC10</summary>
         WAVE_FORMAT_VOXWARE_AC10 = 0x0071, // Voxware Inc 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_VOXWARE_AC16</summary>
         WAVE_FORMAT_VOXWARE_AC16 = 0x0072, // Voxware Inc 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_VOXWARE_AC20</summary>
         WAVE_FORMAT_VOXWARE_AC20 = 0x0073, // Voxware Inc 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_VOXWARE_RT24</summary>
         WAVE_FORMAT_VOXWARE_RT24 = 0x0074, // Voxware Inc 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_VOXWARE_RT29</summary>
         WAVE_FORMAT_VOXWARE_RT29 = 0x0075, // Voxware Inc 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_VOXWARE_RT29HW</summary>
         WAVE_FORMAT_VOXWARE_RT29HW = 0x0076, // Voxware Inc 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_VOXWARE_VR12</summary>
         WAVE_FORMAT_VOXWARE_VR12 = 0x0077, // Voxware Inc 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_VOXWARE_VR18</summary>
         WAVE_FORMAT_VOXWARE_VR18 = 0x0078, // Voxware Inc 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_VOXWARE_TQ40</summary>
         WAVE_FORMAT_VOXWARE_TQ40 = 0x0079, // Voxware Inc 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_SOFTSOUND</summary>
         WAVE_FORMAT_SOFTSOUND = 0x0080, // Softsound, Ltd. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_VOXWARE_TQ60</summary>
         WAVE_FORMAT_VOXWARE_TQ60 = 0x0081, // Voxware Inc 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_MSRT24</summary>
         WAVE_FORMAT_MSRT24 = 0x0082, // Microsoft Corporation 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_G729A</summary>
         WAVE_FORMAT_G729A = 0x0083, // AT&T Labs, Inc. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_MVI_MVI2</summary>
         WAVE_FORMAT_MVI_MVI2 = 0x0084, // Motion Pixels 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_DF_G726</summary>
         WAVE_FORMAT_DF_G726 = 0x0085, // DataFusion Systems (Pty) (Ltd) 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_DF_GSM610</summary>
         WAVE_FORMAT_DF_GSM610 = 0x0086, // DataFusion Systems (Pty) (Ltd) 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_ISIAUDIO</summary>
         WAVE_FORMAT_ISIAUDIO = 0x0088, // Iterated Systems, Inc. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_ONLIVE</summary>
         WAVE_FORMAT_ONLIVE = 0x0089, // OnLive! Technologies, Inc. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_SBC24</summary>
         WAVE_FORMAT_SBC24 = 0x0091, // Siemens Business Communications Sys 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_DOLBY_AC3_SPDIF</summary>
         WAVE_FORMAT_DOLBY_AC3_SPDIF = 0x0092, // Sonic Foundry 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_MEDIASONIC_G723</summary>
         WAVE_FORMAT_MEDIASONIC_G723 = 0x0093, // MediaSonic 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_PROSODY_8KBPS</summary>
         WAVE_FORMAT_PROSODY_8KBPS = 0x0094, // Aculab plc 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_ZYXEL_ADPCM</summary>
         WAVE_FORMAT_ZYXEL_ADPCM = 0x0097, // ZyXEL Communications, Inc. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_PHILIPS_LPCBB</summary>
         WAVE_FORMAT_PHILIPS_LPCBB = 0x0098, // Philips Speech Processing 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_PACKED</summary>
         WAVE_FORMAT_PACKED = 0x0099, // Studer Professional Audio AG 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_MALDEN_PHONYTALK</summary>
         WAVE_FORMAT_MALDEN_PHONYTALK = 0x00A0, // Malden Electronics Ltd. 
 
         /// <summary>WAVE_FORMAT_GSM</summary>
@@ -290,55 +290,55 @@ namespace CSCore
         /// </summary>
         RawAac = 0x00FF,
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_RHETOREX_ADPCM</summary>
         WAVE_FORMAT_RHETOREX_ADPCM = 0x0100, // Rhetorex Inc. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_IRAT</summary>
         WAVE_FORMAT_IRAT = 0x0101, // BeCubed Software Inc. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_VIVO_G723</summary>
         WAVE_FORMAT_VIVO_G723 = 0x0111, // Vivo Software 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_VIVO_SIREN</summary>
         WAVE_FORMAT_VIVO_SIREN = 0x0112, // Vivo Software 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_DIGITAL_G723</summary>
         WAVE_FORMAT_DIGITAL_G723 = 0x0123, // Digital Equipment Corporation 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_SANYO_LD_ADPCM</summary>
         WAVE_FORMAT_SANYO_LD_ADPCM = 0x0125, // Sanyo Electric Co., Ltd. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_SIPROLAB_ACEPLNET</summary>
         WAVE_FORMAT_SIPROLAB_ACEPLNET = 0x0130, // Sipro Lab Telecom Inc. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_SIPROLAB_ACELP4800</summary>
         WAVE_FORMAT_SIPROLAB_ACELP4800 = 0x0131, // Sipro Lab Telecom Inc. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_SIPROLAB_ACELP8V3</summary>
         WAVE_FORMAT_SIPROLAB_ACELP8V3 = 0x0132, // Sipro Lab Telecom Inc. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_SIPROLAB_G729</summary>
         WAVE_FORMAT_SIPROLAB_G729 = 0x0133, // Sipro Lab Telecom Inc. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_SIPROLAB_G729A</summary>
         WAVE_FORMAT_SIPROLAB_G729A = 0x0134, // Sipro Lab Telecom Inc. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_SIPROLAB_KELVIN</summary>
         WAVE_FORMAT_SIPROLAB_KELVIN = 0x0135, // Sipro Lab Telecom Inc. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_G726ADPCM</summary>
         WAVE_FORMAT_G726ADPCM = 0x0140, // Dictaphone Corporation 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_QUALCOMM_PUREVOICE</summary>
         WAVE_FORMAT_QUALCOMM_PUREVOICE = 0x0150, // Qualcomm, Inc. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_QUALCOMM_HALFRATE</summary>
         WAVE_FORMAT_QUALCOMM_HALFRATE = 0x0151, // Qualcomm, Inc. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_TUBGSM</summary>
         WAVE_FORMAT_TUBGSM = 0x0155, // Ring Zero Systems, Inc. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_MSAUDIO1</summary>
         WAVE_FORMAT_MSAUDIO1 = 0x0160, // Microsoft Corporation
 
         /// <summary>
@@ -361,91 +361,91 @@ namespace CSCore
         /// </summary>
         WindowsMediaAudioSpdif = 0x0164,
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_UNISYS_NAP_ADPCM</summary>
         WAVE_FORMAT_UNISYS_NAP_ADPCM = 0x0170, // Unisys Corp. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_UNISYS_NAP_ULAW</summary>
         WAVE_FORMAT_UNISYS_NAP_ULAW = 0x0171, // Unisys Corp. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_UNISYS_NAP_ALAW</summary>
         WAVE_FORMAT_UNISYS_NAP_ALAW = 0x0172, // Unisys Corp. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_UNISYS_NAP_16K</summary>
         WAVE_FORMAT_UNISYS_NAP_16K = 0x0173, // Unisys Corp. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_CREATIVE_ADPCM</summary>
         WAVE_FORMAT_CREATIVE_ADPCM = 0x0200, // Creative Labs, Inc 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_CREATIVE_FASTSPEECH8</summary>
         WAVE_FORMAT_CREATIVE_FASTSPEECH8 = 0x0202, // Creative Labs, Inc 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_CREATIVE_FASTSPEECH10</summary>
         WAVE_FORMAT_CREATIVE_FASTSPEECH10 = 0x0203, // Creative Labs, Inc 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_UHER_ADPCM</summary>
         WAVE_FORMAT_UHER_ADPCM = 0x0210, // UHER informatic GmbH 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_QUARTERDECK</summary>
         WAVE_FORMAT_QUARTERDECK = 0x0220, // Quarterdeck Corporation 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_ILINK_VC</summary>
         WAVE_FORMAT_ILINK_VC = 0x0230, // I-link Worldwide 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_RAW_SPORT</summary>
         WAVE_FORMAT_RAW_SPORT = 0x0240, // Aureal Semiconductor 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_ESST_AC3</summary>
         WAVE_FORMAT_ESST_AC3 = 0x0241, // ESS Technology, Inc. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_IPI_HSX</summary>
         WAVE_FORMAT_IPI_HSX = 0x0250, // Interactive Products, Inc. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_IPI_RPELP</summary>
         WAVE_FORMAT_IPI_RPELP = 0x0251, // Interactive Products, Inc. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_CS2</summary>
         WAVE_FORMAT_CS2 = 0x0260, // Consistent Software 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_SONY_SCX</summary>
         WAVE_FORMAT_SONY_SCX = 0x0270, // Sony Corp. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_FM_TOWNS_SND</summary>
         WAVE_FORMAT_FM_TOWNS_SND = 0x0300, // Fujitsu Corp. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_BTV_DIGITAL</summary>
         WAVE_FORMAT_BTV_DIGITAL = 0x0400, // Brooktree Corporation 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_QDESIGN_MUSIC</summary>
         WAVE_FORMAT_QDESIGN_MUSIC = 0x0450, // QDesign Corporation 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_VME_VMPCM</summary>
         WAVE_FORMAT_VME_VMPCM = 0x0680, // AT&T Labs, Inc. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_TPC</summary>
         WAVE_FORMAT_TPC = 0x0681, // AT&T Labs, Inc. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_OLIGSM</summary>
         WAVE_FORMAT_OLIGSM = 0x1000, // Ing C. Olivetti & C., S.p.A. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_OLIADPCM</summary>
         WAVE_FORMAT_OLIADPCM = 0x1001, // Ing C. Olivetti & C., S.p.A. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_OLICELP</summary>
         WAVE_FORMAT_OLICELP = 0x1002, // Ing C. Olivetti & C., S.p.A. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_OLISBC</summary>
         WAVE_FORMAT_OLISBC = 0x1003, // Ing C. Olivetti & C., S.p.A. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_OLIOPR</summary>
         WAVE_FORMAT_OLIOPR = 0x1004, // Ing C. Olivetti & C., S.p.A. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_LH_CODEC</summary>
         WAVE_FORMAT_LH_CODEC = 0x1100, // Lernout & Hauspie 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_NORRIS</summary>
         WAVE_FORMAT_NORRIS = 0x1400, // Norris Communications, Inc. 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_SOUNDSPACE_MUSICOMPRESS</summary>
         WAVE_FORMAT_SOUNDSPACE_MUSICOMPRESS = 0x1500, // AT&T Labs, Inc. 
 
         /// <summary>
@@ -460,20 +460,20 @@ namespace CSCore
         /// <see>http://msdn.microsoft.com/en-us/library/dd317599%28VS.85%29.aspx</see>
         MPEG_ADTS_AAC = 0x1600,
 
-        /// <summary></summary>
+        /// <summary>MPEG_RAW_AAC</summary>
         /// <remarks>Source wmCodec.h</remarks>
         MPEG_RAW_AAC = 0x1601,
 
         /// <summary>
         ///     MPEG-4 audio transport stream with a synchronization layer (LOAS) and a multiplex layer (LATM).
         ///     The format block is a WAVEFORMATEX structure with wFormatTag equal to WAVE_FORMAT_MPEG_LOAS.
+        ///     See <see href="http://msdn.microsoft.com/en-us/library/dd317599%28VS.85%29.aspx"/>.
         /// </summary>
         /// <remarks>
         ///     The WAVEFORMATEX structure specifies the core AAC-LC sample rate and number of channels,
         ///     prior to applying spectral SBR or PS tools, if present.
         ///     No additional data is required after the WAVEFORMATEX structure.
         /// </remarks>
-        /// <see>http://msdn.microsoft.com/en-us/library/dd317599%28VS.85%29.aspx</see>
         MPEG_LOAS = 0x1602,
 
         /// <summary>NOKIA_MPEG_ADTS_AAC</summary>
@@ -494,9 +494,8 @@ namespace CSCore
 
         /// <summary>
         ///     High-Efficiency Advanced Audio Coding (HE-AAC) stream.
-        ///     The format block is an HEAACWAVEFORMAT structure.
+        ///     The format block is an HEAACWAVEFORMAT structure. See <see href="http://msdn.microsoft.com/en-us/library/dd317599%28VS.85%29.aspx"/>.
         /// </summary>
-        /// <see>http://msdn.microsoft.com/en-us/library/dd317599%28VS.85%29.aspx</see>
         MPEG_HEAAC = 0x1610,
 
         /// <summary>WAVE_FORMAT_DVM</summary>
@@ -527,39 +526,14 @@ namespace CSCore
         WAVE_FORMAT_RAW_AAC1 = 0x00FF,
 
         /// <summary>
-        ///     Advanced Audio Coding (AAC)
-        /// </summary>
-        WAVE_FORMAT_MPEG_HEAAC = 0x1610, // Advanced Audio Coding (AAC).
-
-        /// <summary>
         ///     Windows Media Audio Voice (WMA Voice)
         /// </summary>
         WAVE_FORMAT_WMAVOICE9 = 0x000A,
 
-        /// <summary>
-        ///     WMASPDIF
-        /// </summary>
-        WAVE_FORMAT_WMASPDIF = 0x0164,
-
-        /// <summary>
-        ///     Windows Media Audio lossless
-        /// </summary>
-        WAVE_FORMAT_WMAUDIO_LOSSLESS = 0x0163,
-
-        /// <summary>
-        ///     Windows Media Audio 2
-        /// </summary>
-        WAVE_FORMAT_WMAUDIO2 = 0x0161,
-
-        /// <summary>
-        ///     Windows Media Audio 3
-        /// </summary>
-        WAVE_FORMAT_WMAUDIO3 = 0x0162,
-
-        /// <summary>WAVE_FORMAT_EXTENSIBLE</summary>
+        /// <summary>Extensible</summary>
         Extensible = unchecked((short)0xFFFE), // Microsoft 
 
-        /// <summary></summary>
+        /// <summary>WAVE_FORMAT_DEVELOPMENT</summary>
         WAVE_FORMAT_DEVELOPMENT = unchecked((short)0xFFFF),
     }
 }

@@ -19,8 +19,7 @@ namespace CSCore.Codecs.AAC
             {
                 if (_issupported == null)
                 {
-                    _issupported = MediaFoundationCore.IsSupported && MediaFoundationCore.IsTransformAvailable(MediaFoundationCore.EnumerateTransforms(MFTCategories.AudioDecoder, MFTEnumFlags.All),
-                        CommonAudioDecoderGuids.AacDecoder);
+                    _issupported = MediaFoundationCore.IsSupported && MediaFoundationCore.IsTransformAvailable(MFTCategories.AudioDecoder, CommonAudioDecoderGuids.AacDecoder);
                 }
                 return _issupported.Value;
             }
@@ -29,9 +28,9 @@ namespace CSCore.Codecs.AAC
         /// <summary>
         /// Initializes a new instance of the <see cref="AacDecoder"/> class.
         /// </summary>
-        /// <param name="uri">Url which points to a data source which provides AAC data. This is typically a filename.</param>
-        public AacDecoder(string uri)
-            : base(uri)
+        /// <param name="url">Url which points to a data source which provides AAC data. This is typically a filename.</param>
+        public AacDecoder(string url)
+            : base(url)
         {
         }
 

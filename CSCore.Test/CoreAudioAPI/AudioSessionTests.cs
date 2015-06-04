@@ -189,7 +189,7 @@ namespace CSCore.Test.CoreAudioAPI
 
                             Debug.WriteLine("SessionIdentifier: {0}\nSessionInstanceIdentifier: {1}\nProcessID: {2}\nProcessWindowTitle: {3}\nIsSingleProcessSession: {4}\nIsSystemSoundSession: {5}",
                                 session2.SessionIdentifier,
-                                session2.SessionIstanceIdentifier,
+                                session2.SessionInstanceIdentifier,
                                 session2.ProcessID,
                                 session2.Process == null ? String.Empty : session2.Process.MainWindowTitle,
                                 session2.IsSingleProcessSession,

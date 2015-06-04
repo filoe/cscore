@@ -304,6 +304,9 @@ namespace CSCore.Win32
             }
         }
 
+        /// <summary>
+        /// Closes the current stream and releases any resources (such as sockets and file handles) associated with the current stream.
+        /// </summary>
         public override void Close()
         {
             base.Close();

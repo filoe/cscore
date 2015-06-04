@@ -120,7 +120,7 @@ namespace CSCore.Codecs.FLAC
                     //for (int i = 0; i < read - FlacConstant.FrameHeaderSize; i++)
                     while ((bufferPtr + read - FlacConstant.FrameHeaderSize) > ptr)
                     {
-                        if ((*ptr++ & 0xFF) == 0xFF && (*ptr & 0xF8) == 0xF8) //check sync
+                        if (*ptr++ == 0xFF && (*ptr & 0xF8) == 0xF8) //check sync
                         {
                             byte* ptrSafe = ptr;
                             ptr--;
@@ -134,7 +134,7 @@ namespace CSCore.Codecs.FLAC
                                     frameInfo.IsFirstFrame = false;
                                 }
 
-                                if (baseHeader != null && baseHeader.Equals(header))
+                                if (baseHeader != null && baseHeader.IsFormatEqualTo(header))
                                 {
                                     frameInfo.StreamOffset = stream.Position - read + ((ptrSafe - 1) - bufferPtr);
                                     frameInfo.Header = header;

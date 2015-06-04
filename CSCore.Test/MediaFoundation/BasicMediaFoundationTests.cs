@@ -15,53 +15,72 @@ namespace CSCore.Test.MediaFoundation
         [TestCategory("MediaFoundation")]
         public void CanCreateByteStreamFromIOStream()
         {
-            MediaFoundationCore.Startup();
             var stream = new MemoryStream();
             var comstream = new ComStream(stream);
-            var byteStream = MediaFoundationCore.IStreamToByteStream(comstream);
-            Assert.IsNotNull(byteStream);
-            Marshal.ReleaseComObject(byteStream);
-            MediaFoundationCore.Shutdown();
+            using (var byteStream = MediaFoundationCore.IStreamToByteStream(comstream))
+            {
+                Assert.IsNotNull(byteStream);
+            }
         }
 
         [TestMethod]
         [TestCategory("MediaFoundation")]
         public void CanCreateSourceReaderFromUrl()
         {
-            MediaFoundationCore.Startup();
-            using (var reader = MediaFoundationCore.CreateSourceReaderFromUrl(GlobalTestConfig.TestMp3))
+            var filename = Path.ChangeExtension(Path.GetTempFileName(), "mp3");
+            try
             {
-                Assert.IsNotNull(reader);
+                using (var stream = GlobalTestConfig.TestMp3AsStream())
+                {
+                    File.WriteAllBytes(filename, stream.ToArray());
+                    using (var reader = MediaFoundationCore.CreateSourceReaderFromUrl(filename))
+                    {
+                        Assert.IsNotNull(reader);
+                    }
+                }
             }
-            MediaFoundationCore.Shutdown();
+            finally
+            {
+                File.Delete(filename);
+            }
         }
 
         [TestMethod]
         [TestCategory("MediaFoundation")]
         public void CanCreateSourceReaderFromIOStream()
         {
-            MediaFoundationCore.Startup();
-            var stream = File.OpenRead(GlobalTestConfig.TestMp3);
+            using(var stream = GlobalTestConfig.TestMp3AsStream())
             using (var comstream = new ComStream(stream))
             {
-                var byteStream = MediaFoundationCore.IStreamToByteStream(comstream);
-                Assert.IsNotNull(byteStream);
-
-                using (var reader = MediaFoundationCore.CreateSourceReaderFromByteStream(byteStream, IntPtr.Zero))
+                using (var byteStream = MediaFoundationCore.IStreamToByteStream(comstream))
                 {
-                    Assert.IsNotNull(reader);
-                }
+                    Assert.IsNotNull(byteStream);
 
-                Marshal.ReleaseComObject(byteStream);
+                    using (
+                        var reader = MediaFoundationCore.CreateSourceReaderFromByteStream(byteStream.BasePtr,
+                            IntPtr.Zero))
+                    {
+                        Assert.IsNotNull(reader);
+                    }
+                }
             }
-            MediaFoundationCore.Shutdown();
+        }
+
+        //will only run on windows 7 and above
+        [TestMethod]
+        [TestCategory("MediaFoundation")]
+        public void CanEnumerateMFDecodersEx()
+        {
+            var arr =
+                MFTEnumerator.EnumerateTransformsEx(MFTCategories.AudioDecoder, MFTEnumFlags.All)
+                    .Select(x => x[MediaFoundationAttributes.MFT_TRANSFORM_CLSID_Attribute])
+                    .ToArray();
         }
 
         [TestMethod]
-        [TestCategory("MediaFoundation")]
         public void CanEnumerateMFDecoders()
         {
-            MediaFoundationCore.EnumerateTransforms(MFTCategories.AudioDecoder, MFTEnumFlags.All);
+            MFTEnumerator.EnumerateTransforms(MFTCategories.AudioDecoder);
         }
     }
 }

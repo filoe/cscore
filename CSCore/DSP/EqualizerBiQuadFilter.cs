@@ -73,16 +73,6 @@ namespace CSCore.DSP
         public double Frequency
         {
             get { return _frequency; }
-//            set
-//            {
-//                if(SampleRate < value * 2)
-//#error todo
-//                    throw new ArgumentOutOfRangeException("value", "The frequency ");
-
-//                _frequency = value;
-//                Fc = Frequency / SampleRate;
-//                CalculateBiQuadCoefficients();
-//            }
         }
 
         /// <summary>
@@ -91,16 +81,6 @@ namespace CSCore.DSP
         public int SampleRate
         {
             get { return _sampleRate; }
-            //set
-            //{
-            //    if(value <= 0)
-            //        throw new ArgumentOutOfRangeException("value");
-            //    if(value < Frequency * 2)
-            //        throw new ArgumentOutOfRangeException("value", "The sampleRate has to be bigger than 2 * frequency.");
-            //    _sampleRate = value;
-            //    Fc = Frequency / SampleRate;
-            //    CalculateBiQuadCoefficients();
-            //}
         }
     }
 }

@@ -67,21 +67,28 @@ namespace NVorbisIntegration
             get { return _waveFormat; }
         }
 
-        public long Position
-        {
-            get { return CanSeek ? _vorbisReader.DecodedPosition : 0; }
-            set
-            {
-                if(CanSeek)
-                    _vorbisReader.DecodedPosition = value;
-                else 
-                    throw new InvalidOperationException("NVorbisSource is not seekable.");
-            }
-        }
-
+        //got fixed through workitem #17, thanks for reporting @rgodart.
         public long Length
         {
-            get { return CanSeek ? _vorbisReader.TotalSamples : 0; }
+            get { return CanSeek ? (long)(_vorbisReader.TotalTime.TotalSeconds * _waveFormat.SampleRate * _waveFormat.Channels) : 0; }
+        }
+
+        //got fixed through workitem #17, thanks for reporting @rgodart.
+        public long Position
+        {
+            get
+            {
+                return CanSeek ? (long)(_vorbisReader.DecodedTime.TotalSeconds * _vorbisReader.SampleRate * _vorbisReader.Channels) : 0;
+            }
+            set
+            {
+                if(!CanSeek)
+                    throw new InvalidOperationException("NVorbisSource is not seekable.");
+                if (value < 0 || value > Length) 
+                    throw new ArgumentOutOfRangeException("value");
+
+                _vorbisReader.DecodedTime = TimeSpan.FromSeconds((double)value / _vorbisReader.SampleRate / _vorbisReader.Channels);
+            }
         }
 
         public int Read(float[] buffer, int offset, int count)

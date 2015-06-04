@@ -3,7 +3,7 @@
 namespace CSCore.DMO
 {
     /// <summary>
-    ///     The DmoInputStreamInfoFlags enumeration defines flags that describe an input stream.
+    ///     Defines flags that describe an input stream.
     /// </summary>
     [Flags]
     public enum DmoInputStreamInfoFlags
@@ -25,7 +25,7 @@ namespace CSCore.DMO
         SingleSamplePerBuffer = 0x2,
 
         /// <summary>
-        ///     All the samples in this stream must be the same size
+        ///     All the samples in this stream must be the same size.
         /// </summary>
         FixedSampleSize = 0x4,
 

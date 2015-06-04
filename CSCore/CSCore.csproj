@@ -22,15 +22,15 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;FLAC_DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <UseVSHostingProcess>true</UseVSHostingProcess>
-    <DocumentationFile>
-    </DocumentationFile>
+    <DocumentationFile>bin\Debug\CSCore.XML</DocumentationFile>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <NoWarn>1573</NoWarn>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -50,16 +50,6 @@
   <PropertyGroup>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release x64|AnyCPU'">
-    <OutputPath>bin\Release x64\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x64\Debug\</OutputPath>
@@ -72,16 +62,6 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release x64|x64'">
-    <OutputPath>bin\x64\Release x64\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
@@ -110,75 +90,12 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release x64|x86'">
-    <OutputPath>bin\x86\Release x64\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug x64|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Debug x64\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug x64|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug x64\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug x64|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug x64\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug x86|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Debug x86\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug x86|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug x86\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug x86|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug x86\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -198,7 +115,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="AudioSubTypes.Utils.cs">
+      <DependentUpon>AudioSubTypes.tt</DependentUpon>
+    </Compile>
     <Compile Include="ChannelMask.cs" />
+    <Compile Include="ChannelMasks.cs" />
     <Compile Include="Codecs\AAC\AacAudioProfileLevelIndication.cs" />
     <Compile Include="Codecs\AAC\AacEncoder.cs" />
     <Compile Include="Codecs\CodecFactoryEntry.cs" />
@@ -210,15 +131,26 @@
     <Compile Include="Codecs\FLAC\ChannelAssignment.cs" />
     <Compile Include="Codecs\FLAC\FlacException.cs" />
     <Compile Include="Codecs\FLAC\FlacConstant.cs" />
+<<<<<<< HEAD
+=======
+    <Compile Include="Codecs\FLAC\FlacResidualCodingMethod.cs" />
+>>>>>>> version_1_1
     <Compile Include="Codecs\FLAC\FlacFile.cs" />
     <Compile Include="Codecs\FLAC\FlacFrame.cs" />
     <Compile Include="Codecs\FLAC\FlacFrameHeader.cs" />
     <Compile Include="Codecs\FLAC\FlacFrameInformation.cs" />
     <Compile Include="Codecs\FLAC\FlacLayer.cs" />
+<<<<<<< HEAD
     <Compile Include="Codecs\FLAC\FlacPreScan.cs" />
     <Compile Include="Codecs\FLAC\FlacPreScanFinishedEventArgs.cs" />
     <Compile Include="Codecs\FLAC\FlacPreScanMode.cs" />
     <Compile Include="Codecs\FLAC\FlacResidualCodingMethod.cs" />
+=======
+    <Compile Include="Codecs\FLAC\BlockingStrategy.cs" />
+    <Compile Include="Codecs\FLAC\FlacPreScan.cs" />
+    <Compile Include="Codecs\FLAC\FlacPreScanFinishedEventArgs.cs" />
+    <Compile Include="Codecs\FLAC\FlacPreScanMode.cs" />
+>>>>>>> version_1_1
     <Compile Include="Codecs\FLAC\FlacSubFrameData.cs" />
     <Compile Include="Codecs\FLAC\Metadata\FlacMetadata.cs" />
     <Compile Include="Codecs\FLAC\Metadata\FlacMetadataSeekTable.cs" />
@@ -244,7 +176,6 @@
     <Compile Include="Codecs\MP3\DmoMp3Decoder.cs" />
     <Compile Include="Codecs\MP3\FrameInfoCollection.cs" />
     <Compile Include="Codecs\MP3\Mp3ChannelMode.cs" />
-    <Compile Include="Codecs\MP3\Mp3Exception.cs" />
     <Compile Include="Codecs\MP3\Mp3Format.cs" />
     <Compile Include="Codecs\MP3\Mp3FormatId.cs" />
     <Compile Include="Codecs\MP3\Mp3Frame.cs" />
@@ -259,6 +190,7 @@
     <Compile Include="Codecs\WMA\WmaDecoder.cs" />
     <Compile Include="CoreAudioAPI\AudioCaptureClient.cs" />
     <Compile Include="CoreAudioAPI\AudioClientBufferFlags.cs" />
+    <Compile Include="CoreAudioAPI\AudioClientSessionFlags.cs" />
     <Compile Include="CoreAudioAPI\AudioClientStreamFlags.cs" />
     <Compile Include="CoreAudioAPI\AudioClock.cs" />
     <Compile Include="CoreAudioAPI\AudioClock2.cs" />
@@ -291,6 +223,33 @@
     <Compile Include="CoreAudioAPI\IMMNotificationClient.cs" />
     <Compile Include="CoreAudioAPI\SessionCreatedEventArgs.cs" />
     <Compile Include="CoreAudioAPI\VolumeDuckNotificationEventArgs.cs" />
+    <Compile Include="DirectSound\DirectSound8.cs" />
+    <Compile Include="DirectSound\DirectSoundBase.cs" />
+    <Compile Include="DirectSound\DirectSoundBuffer.cs" />
+    <Compile Include="DirectSound\DirectSoundCapabilities.cs" />
+    <Compile Include="DirectSound\DirectSoundDevice.cs" />
+    <Compile Include="DirectSound\DirectSoundDeviceEnumerator.cs" />
+    <Compile Include="DirectSound\DirectSoundException.cs" />
+    <Compile Include="DirectSound\DirectSoundNotify.cs" />
+    <Compile Include="DirectSound\DirectSoundPrimaryBuffer.cs" />
+    <Compile Include="DirectSound\DirectSoundSecondaryBuffer.cs" />
+    <Compile Include="DirectSound\DSBLock.cs" />
+    <Compile Include="DirectSound\DSBPlayFlags.cs" />
+    <Compile Include="DirectSound\DSBPositionNotify.cs" />
+    <Compile Include="DirectSound\DSBStatus.cs" />
+    <Compile Include="DirectSound\DSBufferCaps.cs" />
+    <Compile Include="DirectSound\DSBufferCapsFlags.cs" />
+    <Compile Include="DirectSound\DSBufferDescription.cs" />
+    <Compile Include="DirectSound\DSCapabilitiesFlags.cs" />
+    <Compile Include="DirectSound\DSCertification.cs" />
+    <Compile Include="DirectSound\DSCooperativeLevelType.cs" />
+    <Compile Include="DirectSound\DSEnumCallback.cs" />
+    <Compile Include="DirectSound\DSResult.cs" />
+    <Compile Include="DirectSound\DSSpeakerConfigurations.cs" />
+    <Compile Include="DirectSound\DSSpeakerGeometry.cs" />
+    <Compile Include="DirectSound\DSUtils.cs" />
+    <Compile Include="DirectSound\InteropCalls.cs" />
+    <Compile Include="DirectSound\NativeMethods.cs" />
     <Compile Include="DMO\DmoAggregator.cs" />
     <Compile Include="DMO\DmoEnumeratorCategories.cs" />
     <Compile Include="DMO\DmoEnumFlags.cs" />
@@ -318,7 +277,7 @@
     <Compile Include="DMO\Effects\FlangerParameters.cs" />
     <Compile Include="DMO\Effects\GargleParameters.cs" />
     <Compile Include="DMO\Effects\WavesReverbParameters.cs" />
-    <Compile Include="DMO\EnumDmo.cs" />
+    <Compile Include="DMO\EnumDMO.cs" />
     <Compile Include="DMO\IMediaBuffer.cs" />
     <Compile Include="DMO\InputDataBufferFlags.cs" />
     <Compile Include="DMO\InputStatusFlags.cs" />
@@ -335,51 +294,55 @@
     <Compile Include="DSP\FftMode.cs" />
     <Compile Include="DSP\FftSize.cs" />
     <Compile Include="FluentExtensions.cs" />
+<<<<<<< HEAD
     <Compile Include="IWaveAggregator.cs" />
+=======
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="IReadableAudioSource.cs" />
+>>>>>>> version_1_1
     <Compile Include="IWriteable.cs" />
     <Compile Include="MediaFoundation\CommonAudioDecoderGuids.cs" />
     <Compile Include="MediaFoundation\IMFCollection.cs" />
-    <Compile Include="MediaFoundation\MediaEventType.cs" />
     <Compile Include="MediaFoundation\MediaFoundationAttributes.cs" />
     <Compile Include="MediaFoundation\MediaFoundationCore.cs" />
     <Compile Include="MediaFoundation\MediaFoundationDecoder.cs" />
     <Compile Include="MediaFoundation\MediaFoundationEncoder.cs" />
     <Compile Include="MediaFoundation\MFActivate.cs" />
+    <Compile Include="MediaFoundation\MFByteStream.cs" />
     <Compile Include="MediaFoundation\MFByteStreamCapsFlags.cs" />
-    <Compile Include="MediaFoundation\MFInputStreamInfo.cs" />
-    <Compile Include="MediaFoundation\MFInputStreamInfoFlags.cs" />
+    <Compile Include="MediaFoundation\MFByteStreamSeekOrigin.cs" />
+    <Compile Include="MediaFoundation\MFTEnumerator.cs" />
     <Compile Include="MediaFoundation\NativeMethods.cs" />
     <Compile Include="MediaFoundation\MFMediaSourceCharacteristics.cs" />
     <Compile Include="MediaFoundation\MFMediaTypes.cs" />
-    <Compile Include="MediaFoundation\MFOutputStreamInfo.cs" />
-    <Compile Include="MediaFoundation\MFOutputStreamInfoFlags.cs" />
     <Compile Include="MediaFoundation\MFSampleFlags.cs" />
     <Compile Include="MediaFoundation\MFSinkWriter.cs" />
     <Compile Include="MediaFoundation\MFSinkWriterStatistics.cs" />
-    <Compile Include="MediaFoundation\MFSourceReaderFlag.cs" />
+    <Compile Include="MediaFoundation\MFSourceReaderFlags.cs" />
     <Compile Include="MediaFoundation\MFTCategories.cs" />
     <Compile Include="MediaFoundation\MFTEnumFlags.cs" />
-    <Compile Include="MediaFoundation\MFTOutputDataBuffer.cs" />
-    <Compile Include="MediaFoundation\MFTProcessOutputStatus.cs" />
-    <Compile Include="MediaFoundation\MFTransformSetTypeFlags.cs" />
-    <Compile Include="MediaFoundation\MFTransformStatusFlags.cs" />
     <Compile Include="MediaFoundation\MFTRegisterTypeInfo.cs" />
+    <Compile Include="MediaFoundation\SourceReaderControlFlags.cs" />
     <Compile Include="MediaFoundation\TranscodeContainerTypes.cs" />
-    <Compile Include="SoundIn\ISoundRecorder.cs" />
+    <Compile Include="MmResult.cs" />
     <Compile Include="SoundIn\RecordingState.cs" />
     <Compile Include="SoundIn\RecordingStoppedEventArgs.cs" />
     <Compile Include="SoundIn\WasapiCapture.cs" />
     <Compile Include="SoundIn\WasapiLoopbackCapture.cs" />
+    <Compile Include="SoundIn\WaveIn.cs" />
+    <Compile Include="SoundIn\WaveInBuffer.cs" />
+    <Compile Include="SoundIn\WaveInDevice.cs" />
     <Compile Include="SoundOut\DirectSoundOut.cs" />
-    <Compile Include="SoundOut\DirectSound\DirectSoundDeviceEnumerator.cs" />
-    <Compile Include="SoundOut\DirectSound\DSBufferFlags.cs" />
-    <Compile Include="SoundOut\DirectSound\DSUtils.cs" />
-    <Compile Include="SoundOut\MMInterop\MMTimeType.cs" />
-    <Compile Include="SoundOut\MMInterop\WaveCapsFormats.cs" />
-    <Compile Include="SoundOut\MMInterop\WaveCapsSupported.cs" />
+    <Compile Include="SoundOut\MMInterop\Utils.cs" />
+    <Compile Include="SoundOut\MMInterop\WaveCallback.cs" />
+    <Compile Include="SoundOut\MmDeviceFormats.cs" />
+    <Compile Include="SoundOut\MmDeviceSupported.cs" />
     <Compile Include="SoundOut\MMInterop\WaveHeaderFlags.cs" />
     <Compile Include="SoundOut\PlaybackStoppedEventArgs.cs" />
     <Compile Include="SoundOut\WasapiOut.cs" />
+    <Compile Include="SoundOut\WaveOut.cs" />
+    <Compile Include="SoundOut\WaveOutBuffer.cs" />
+    <Compile Include="SoundOut\WaveOutDevice.cs" />
     <Compile Include="StoppedEventArgs.cs" />
     <Compile Include="Streams\CachedSoundSource.cs" />
     <Compile Include="Streams\Effects\ChorusPhase.cs" />
@@ -396,6 +359,7 @@
     <Compile Include="Streams\Effects\FlangerWaveform.cs" />
     <Compile Include="Streams\Effects\GargleWaveShape.cs" />
     <Compile Include="Streams\FadeInOut.cs" />
+    <Compile Include="Streams\GainSource.cs" />
     <Compile Include="Streams\IFadeStrategy.cs" />
     <Compile Include="Streams\LinearFadeStrategy.cs" />
     <Compile Include="Streams\PeakEventArgs.cs" />
@@ -411,6 +375,9 @@
     <Compile Include="AudioEncoding.cs" />
     <Compile Include="Tags\ID3\Frames\PictureFormat.cs" />
     <Compile Include="Tags\ID3\Frames\ReceivedType.cs" />
+    <Compile Include="TimeConverter.cs" />
+    <Compile Include="TimeConverterAttribute.cs" />
+    <Compile Include="TimeConverterFactory.cs" />
     <Compile Include="Utils\Utils.cs" />
     <Compile Include="Utils\Vector3.cs" />
     <Compile Include="Win32\CLSCTX.cs" />
@@ -451,18 +418,21 @@
     <Compile Include="XAudio2\X3DAudio\X3DAudioCore.cs" />
     <Compile Include="XAudio2\XAudio2.cs" />
     <Compile Include="XAudio2\XAudio2Buffer.cs" />
+    <Compile Include="XAudio2\XAudio2BufferEventArgs.cs" />
     <Compile Include="XAudio2\XAudio2BufferFlags.cs" />
     <Compile Include="XAudio2\XAudio2CriticalErrorEventArgs.cs" />
     <Compile Include="XAudio2\XAudio2DeviceRole.cs" />
     <Compile Include="XAudio2\XAudio2EngineCallback.cs" />
     <Compile Include="XAudio2\XAudio2Exception.cs" />
-    <Compile Include="XAudio2\XAudio2Interop.cs" />
+    <Compile Include="XAudio2\NativeMethods.cs" />
     <Compile Include="XAudio2\XAudio2MasteringVoice.cs" />
+    <Compile Include="XAudio2\XAudio2ProcessingPassStartEventArgs.cs" />
     <Compile Include="XAudio2\XAudio2Processor.cs" />
     <Compile Include="XAudio2\XAudio2SourceVoice.cs" />
     <Compile Include="XAudio2\XAudio2SubmixVoice.cs" />
     <Compile Include="XAudio2\XAudio2Version.cs" />
     <Compile Include="XAudio2\XAudio2Voice.cs" />
+    <Compile Include="XAudio2\XAudio2VoiceErrorEventArgs.cs" />
     <Compile Include="XAudio2\XAudio2_7.cs" />
     <Compile Include="XAudio2\XAudio2_8.cs" />
     <Compile Include="Codecs\RAW\RawDataReader.cs" />
@@ -472,7 +442,7 @@
     <Compile Include="CoreAudioAPI\AudioEndpointVolumeChannel.cs" />
     <Compile Include="CoreAudioAPI\AudioRenderClient.cs" />
     <Compile Include="CoreAudioAPI\AudioVolumeNotificationData.cs" />
-    <Compile Include="CoreAudioAPI\EndpointHardwareSupport.cs" />
+    <Compile Include="CoreAudioAPI\EndpointHardwareSupportFlags.cs" />
     <Compile Include="CoreAudioAPI\IAudioEndpointVolumeCallback.cs" />
     <Compile Include="CoreAudioAPI\InteropCalls.cs" />
     <Compile Include="CoreAudioAPI\AudioClient.cs" />
@@ -485,12 +455,10 @@
     <Compile Include="DMO\MediaObject.cs" />
     <Compile Include="DMO\MediaType.cs" />
     <Compile Include="DMO\WMResamplerProps.cs" />
-    <Compile Include="DSP\AdjustableResampler.cs" />
     <Compile Include="DSP\ChannelMatrix.cs" />
     <Compile Include="DSP\DmoChannelResampler.cs" />
     <Compile Include="CoreAudioAPI\MMDevice.cs" />
     <Compile Include="Win32\PropertyStore.cs" />
-    <Compile Include="MediaFoundation\IMFByteStream.cs" />
     <Compile Include="MediaFoundation\InteropCalls.cs" />
     <Compile Include="MediaFoundation\MediaFoundationException.cs" />
     <Compile Include="MediaFoundation\MediaTypeEqualFlags.cs" />
@@ -503,10 +471,7 @@
     <Compile Include="MediaFoundation\MFSample.cs" />
     <Compile Include="MediaFoundation\MFSourceReader.cs" />
     <Compile Include="MediaFoundation\MFWaveFormatExConvertFlags.cs" />
-    <Compile Include="SoundIn\WaveInEvent.cs" />
-    <Compile Include="SoundIn\WaveInWindow.cs" />
     <Compile Include="Streams\BlockReadEventArgs.cs" />
-    <Compile Include="Streams\GainSource.cs" />
     <Compile Include="Streams\MonoToStereoSource.cs" />
     <Compile Include="Streams\NotificationSource.cs" />
     <Compile Include="Streams\PanSource.cs" />
@@ -549,7 +514,6 @@
     <Compile Include="CoreAudioAPI\IMMDevice.cs" />
     <Compile Include="CoreAudioAPI\IMMDeviceCollection.cs" />
     <Compile Include="CoreAudioAPI\IMMDeviceEnumerator.cs" />
-    <Compile Include="Win32\IPropertyStore.cs" />
     <Compile Include="Win32\PropertyKey.cs" />
     <Compile Include="Win32\PropertyVariant.cs" />
     <Compile Include="CoreAudioAPI\Role.cs" />
@@ -558,51 +522,21 @@
     <Compile Include="DMO\DmoException.cs" />
     <Compile Include="DMO\NativeMethods.cs" />
     <Compile Include="DMO\IMediaObject.cs" />
-    <Compile Include="MediaFoundation\IMFAttributes.cs" />
-    <Compile Include="MediaFoundation\IMFMediaBuffer.cs" />
-    <Compile Include="MediaFoundation\IMFMediaType.cs" />
-    <Compile Include="MediaFoundation\IMFSample.cs" />
-    <Compile Include="MediaFoundation\IMFTransform.cs" />
-    <Compile Include="MediaFoundation\IMFMediaEvent.cs" />
     <Compile Include="DMO\IWMResamplerProps.cs" />
-    <Compile Include="MediaFoundation\MFTMessageType.cs" />
     <Compile Include="DMO\WMResampler.cs" />
     <Compile Include="DSP\DmoResampler.cs" />
     <Compile Include="ISampleSource.cs" />
     <Compile Include="IWaveSource.cs" />
-    <Compile Include="IWaveStream.cs" />
+    <Compile Include="IAudioSource.cs" />
     <Compile Include="MmException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SoundIn\DataAvailableEventArgs.cs" />
     <Compile Include="SoundIn\ISoundIn.cs" />
-    <Compile Include="SoundIn\WaveIn.cs" />
-    <Compile Include="SoundIn\WaveInBuffer.cs" />
-    <Compile Include="SoundOut\DirectSound\3D\DSListener3DSettings.cs" />
-    <Compile Include="SoundOut\DirectSound\3D\DirectSound3DListener.cs" />
-    <Compile Include="SoundOut\DirectSound\DirectSoundNotifyEventArgs.cs" />
-    <Compile Include="SoundOut\DirectSound\DSEffectFlags.cs" />
-    <Compile Include="SoundOut\MMInterop\IWaveCallbackWindow.cs" />
-    <Compile Include="SoundOut\MMInterop\WaveWindow.cs" />
-    <Compile Include="SoundOut\MMInterop\WaveWindowForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Streams\SampleConverter\IeeeFloatToSample.cs" />
     <Compile Include="Streams\SampleConverter\SampleToPcm16.cs" />
     <Compile Include="Streams\SampleConverter\SampleToWaveBase.cs" />
     <Compile Include="Streams\StereoToMonoSource.cs" />
-    <Compile Include="SampleSourceBase.cs" />
-    <Compile Include="SoundOut\DirectSound\3D\D3DVector.cs" />
-    <Compile Include="SoundOut\DirectSound\3D\DS3DApplyMode.cs" />
-    <Compile Include="SoundOut\DirectSound\3D\DSBuffer3DSettings.cs" />
-    <Compile Include="SoundOut\DirectSound\3D\DSMode3D.cs" />
-    <Compile Include="SoundOut\DirectSound\3D\DirectSoundBuffer3D.cs" />
-    <Compile Include="SoundOut\DirectSound\DirectSoundNotify.cs" />
-    <Compile Include="SoundOut\DirectSound\DSBPositionNotify.cs" />
-    <Compile Include="SoundOut\DirectSound\DSCapabilitiesFlags.cs" />
-    <Compile Include="SoundOut\DirectSound\NativeMethods.cs" />
-    <Compile Include="SoundOut\MMInterop\WaveOutBuffer.cs" />
-    <Compile Include="SoundOut\WaveOut.cs" />
-    <Compile Include="SoundOut\WaveOutWindow.cs" />
+    <Compile Include="SampleAggregatorBase.cs" />
     <Compile Include="Tags\ID3\Frames\FrameFactory.cs" />
     <Compile Include="Tags\ID3\Frames\FrameFlags.cs" />
     <Compile Include="Tags\ID3\Frames\FrameHeader.cs" />
@@ -626,32 +560,11 @@
     <Compile Include="Tags\ID3\UnsyncStream.cs" />
     <Compile Include="Utils\BitReader.cs" />
     <Compile Include="Win32\ComObject.cs" />
-    <Compile Include="SoundOut\DirectSound\DirectSoundBase.cs" />
-    <Compile Include="SoundOut\DirectSound\DirectSound8.cs" />
-    <Compile Include="SoundOut\DirectSound\DirectSoundBufferBase.cs" />
-    <Compile Include="SoundOut\DirectSound\DirectSoundCapabilities.cs" />
-    <Compile Include="SoundOut\DirectSound\DirectSoundDevice.cs" />
-    <Compile Include="SoundOut\DirectSound\DirectSoundException.cs" />
-    <Compile Include="SoundOut\DirectSound\DirectSoundPrimaryBuffer.cs" />
-    <Compile Include="SoundOut\DirectSound\DirectSoundSecondaryBuffer.cs" />
-    <Compile Include="SoundOut\DirectSound\DSBLock.cs" />
-    <Compile Include="SoundOut\DirectSound\DSBPlayFlags.cs" />
-    <Compile Include="SoundOut\DirectSound\DSBStatus.cs" />
-    <Compile Include="SoundOut\DirectSound\DSBufferCaps.cs" />
-    <Compile Include="SoundOut\DirectSound\DSBufferCapsFlags.cs" />
-    <Compile Include="SoundOut\DirectSound\DSBufferDescription.cs" />
-    <Compile Include="SoundOut\DirectSound\DSCertification.cs" />
-    <Compile Include="SoundOut\DirectSound\DSCooperativeLevelType.cs" />
-    <Compile Include="SoundOut\DirectSound\DSEnumCallback.cs" />
-    <Compile Include="SoundOut\DirectSound\DSResult.cs" />
-    <Compile Include="SoundOut\DirectSound\InteropCalls.cs" />
-    <Compile Include="SoundOut\MMInterop\MMInterops.cs" />
+    <Compile Include="SoundOut\MMInterop\NativeMethods.cs" />
     <Compile Include="Utils\FlacBitReader.cs" />
     <Compile Include="Win32\IUnknown.cs" />
-    <Compile Include="SoundOut\MMInterop\MmResult.cs" />
-    <Compile Include="SoundOut\MMInterop\MMTime.cs" />
     <Compile Include="SoundOut\MMInterop\WaveHeader.cs" />
-    <Compile Include="SoundIn\WaveInCaps.cs" />
+    <Compile Include="SoundOut\MMInterop\WaveInCaps.cs" />
     <Compile Include="SoundOut\MMInterop\WaveMsg.cs" />
     <Compile Include="SoundOut\MMInterop\WaveOutCaps.cs" />
     <Compile Include="SoundOut\ISoundOut.cs" />
@@ -663,7 +576,6 @@
     <Compile Include="Streams\SampleConverter\WaveToSampleBase.cs" />
     <Compile Include="Streams\SineGenerator.cs" />
     <Compile Include="Utils\Buffer\FixedSizeBuffer.cs" />
-    <Compile Include="Utils\Buffer\UnsafeBuffer.cs" />
     <Compile Include="Utils\Complex.cs" />
     <Compile Include="Utils\CRC16.cs" />
     <Compile Include="Utils\CRC8.cs" />
@@ -679,6 +591,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>AudioSubTypes.cs</LastGenOutput>
     </None>
+<<<<<<< HEAD
+=======
+    <None Include="Base.cd" />
+>>>>>>> version_1_1
     <None Include="Codecs\FLAC\SubFrames\FlacSubFrameLPC_Calculation.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>FlacSubFrameLPC_Calculation.cs</LastGenOutput>
@@ -689,23 +605,77 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>set target=$(TargetPath)
-set sdk=C:\Program Files (x86)\Microsoft SDKs\Windows\v8.1A\bin\NETFX 4.5.1 Tools
+    <PostBuildEvent>@echo off &amp; setLocal EnableDELAYedeXpansion
+chcp 65001
+
+set errorCode=0
+
+set target=$(TargetPath)
 set project=$(ProjectPath)
 
-if $(ConfigurationName) == Debug (
-set ilasm_args=/DLL /DEBUG=IMPL
+set sdk=%25PROGRAMFILES(x86)%25\Microsoft SDKs\Windows\v8.1A\bin\NETFX 4.5.1 Tools
+set framework=%25WINDIR%25\Microsoft.NET\Framework\v2.0.50727
+set inlineILCompiler=$(SolutionDir)Tools\InlineILCompiler\InlineILCompiler\bin\$(ConfigurationName)\InlineILCompiler.exe
+set cscli=$(SolutionDir)Tools\CSCli\bin\$(ConfigurationName)\CSCli.exe
+
+IF exist "%25sdk%25\." ( 
+	echo ✔ The Microsoft Windows SDK was found.
 ) else (
-set ilasm_args=/DLL /OPTIMIZE
+	echo ✘ The Microsoft Windows SDK Dir was not found. Check the following path: "%25sdk%25"
+	goto EXIT_ERR
+)
+IF exist "%25framework%25\." (
+	echo ✔ The .NET Framework Dir was found.
+) else (
+	echo ✘ The Framework-Dir was not found. Check the following path: "%25framework%25"
+	goto EXIT_ERR
+)
+IF exist "%25inlineILCompiler%25" (
+	echo ✔ Found the inline-il-compiler.
+) else (
+	echo ✘ The inline-il-compiler was not found. Check the following path: "%25inlineILCompiler%25"
+	goto EXIT_ERR
+)
+IF exist "%25cscli%25" (
+	echo ✔ Found the cscli-compiler.
+) else (
+	echo ✘ The cscli was not found. Check the following path: "%25cscli%25"
+	goto EXIT_ERR
 )
 
-set framework=%25WINDIR%25\Microsoft.NET\Framework\v2.0.50727
+if $(ConfigurationName) == Debug (
+	echo Build-Configuration: DEBUG
+	echo    ✔ DEBUG=IMPL
+	echo    ✘ OPTIMIZE
+	set ilasm_args=/DLL /DEBUG=IMPL
+) else (
+	if $(ConfigurationName) == Release (
+		echo Build-Configuration: RELEASE
+		echo    ✘ DEBUG
+		echo    ✔ OPTIMIZE
+		set ilasm_args=/DLL /OPTIMIZE
+	) else (
+		echo ✘ Invalid Configuration.
+		goto EXIT_ERR
+	)
+)
 
-set inlineILCompiler=$(SolutionDir)Tools\InlineILCompiler\InlineILCompiler\bin\$(ConfigurationName)\InlineILCompiler.exe
-echo calling %25inlineILCompiler%25 with %25ilasm_args%25
+echo.
+echo.
+echo Calling the inline-il-compiler ...
 call %25inlineILCompiler%25
 
-call "$(SolutionDir)Tools\CSCli\bin\$(ConfigurationName)\CSCli.exe" -file:"$(TargetPath)" -r:"RemoveObjAttribute" -c:"CSCalliAttribute"</PostBuildEvent>
+echo.
+echo.
+echo Calling CSCli ...
+call "%25cscli%25" -file:"$(TargetPath)" -r:"RemoveObjAttribute" -c:"CSCalliAttribute"
+
+:EXIT
+REM EXIT /B %25errorCode%25
+
+:EXIT_ERR
+set errorCode=-1
+REM goto EXIT</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>

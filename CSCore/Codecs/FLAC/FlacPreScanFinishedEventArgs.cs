@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 namespace CSCore.Codecs.FLAC
 {
     /// <summary>
-    /// FlacPreScanFinishedEventArgs
+    /// Provides data for a FlacPreScan.
     /// </summary>
     public class FlacPreScanFinishedEventArgs : EventArgs
     {

@@ -2,8 +2,9 @@
 
 namespace CSCore.Codecs.MP3
 {
+    //see http://www.codeproject.com/KB/audio-video/mpegaudioinfo.aspx#XINGHeader and www.mp3-tech.org/programmer/sources/vbrheadersdk.zip.
     /// <summary>
-    /// See http://www.codeproject.com/KB/audio-video/mpegaudioinfo.aspx#XINGHeader and www.mp3-tech.org/programmer/sources/vbrheadersdk.zip.
+    /// Defines a Xing-Header.
     /// </summary>
     public class XingHeader
     {

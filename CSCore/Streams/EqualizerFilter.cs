@@ -10,7 +10,7 @@ namespace CSCore.Streams
     ///     Represents an EqualizerFilter which holds an <see cref="EqualizerChannelFilter" /> for each channel.
     /// </summary>
     [DebuggerDisplay("{AverageFrequency}Hz")]
-    public class EqualizerFilter : IEnumerable<KeyValuePair<int, EqualizerChannelFilter>>, IComparable<EqualizerFilter>
+    public sealed class EqualizerFilter : IEnumerable<KeyValuePair<int, EqualizerChannelFilter>>, IComparable<EqualizerFilter>
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="EqualizerFilter" /> class.
@@ -70,11 +70,23 @@ namespace CSCore.Streams
             return AverageFrequency.CompareTo(other.AverageFrequency);
         }
 
+        /// <summary>
+        /// Returns an enumerator that iterates through the <see cref="Filters"/>.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the <see cref="Filters"/>.
+        /// </returns>
         public IEnumerator<KeyValuePair<int, EqualizerChannelFilter>> GetEnumerator()
         {
             return Filters.GetEnumerator();
         }
 
+        /// <summary>
+        /// Returns an enumerator that iterates through a <see cref="Filters"/>.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the <see cref="Filters"/>.
+        /// </returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();

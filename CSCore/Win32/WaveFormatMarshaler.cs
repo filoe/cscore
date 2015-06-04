@@ -3,16 +3,16 @@ using System.Runtime.InteropServices;
 
 namespace CSCore.Win32
 {
-    public class WaveFormatMarshaler : ICustomMarshaler
+    internal class WaveFormatMarshaler : ICustomMarshaler
     {
-        private static WaveFormatMarshaler instance = null;
+        private static readonly WaveFormatMarshaler Instance = null;
 
         public static ICustomMarshaler GetInstance(string cookie)
         {
-            return (instance != null) ? instance : new WaveFormatMarshaler();
+            return Instance ?? new WaveFormatMarshaler();
         }
 
-        public void CleanUpManagedData(object ManagedObj)
+        public void CleanUpManagedData(object managedObj)
         {
         }
 
@@ -26,9 +26,9 @@ namespace CSCore.Win32
             throw new NotImplementedException();
         }
 
-        public IntPtr MarshalManagedToNative(object ManagedObj)
+        public IntPtr MarshalManagedToNative(object managedObj)
         {
-            return WaveFormatToPointer((WaveFormat)ManagedObj);
+            return WaveFormatToPointer((WaveFormat)managedObj);
         }
 
         public object MarshalNativeToManaged(IntPtr pNativeData)
@@ -46,7 +46,8 @@ namespace CSCore.Win32
         public static WaveFormat PointerToWaveFormat(IntPtr pointer)
         {
             WaveFormat waveFormat = (WaveFormat)Marshal.PtrToStructure(pointer, typeof(WaveFormat));
-            waveFormat.ExtraSize = 0;
+            if (waveFormat.WaveFormatTag == AudioEncoding.Extensible)
+                waveFormat = (WaveFormatExtensible) Marshal.PtrToStructure(pointer, typeof (WaveFormatExtensible));
             return waveFormat;
         }
     }

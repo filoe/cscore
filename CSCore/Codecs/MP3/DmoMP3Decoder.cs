@@ -19,7 +19,7 @@ namespace CSCore.Codecs.MP3
         private Mp3Format _inputFormat;
 
         private long _position;
-        private bool _canSeek;
+        private readonly bool _canSeek;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DmoMp3Decoder"/> class.
@@ -74,7 +74,7 @@ namespace CSCore.Codecs.MP3
         }
 
         /// <summary>
-        /// Gets a value indicating whether the <see cref="IWaveStream"/> supports seeking.
+        /// Gets a value indicating whether the <see cref="IAudioSource"/> supports seeking.
         /// </summary>
         public override bool CanSeek
         {
@@ -93,7 +93,7 @@ namespace CSCore.Codecs.MP3
             }
 
             if (frame == null)
-                throw new Mp3Exception("Could not find any MP3-Frames in the stream.");
+                throw new Exception("Could not find any MP3-Frames in the stream.");
 
             if (stream.CanSeek)
             {
@@ -193,7 +193,7 @@ namespace CSCore.Codecs.MP3
             value = Math.Min(value, Length);
             value = (value > 0) ? value : 0;
 
-            long n = value / WaveFormat.BytesPerBlock;
+            //long n = value / WaveFormat.BytesPerBlock;
 
             for (int i = 0; i < _frameInfoCollection.Count; i++)
             {
@@ -232,6 +232,11 @@ namespace CSCore.Codecs.MP3
             {
                 Marshal.ReleaseComObject(_comObj);
                 _comObj = null;
+            }
+            if (_frameInfoCollection != null)
+            {
+                _frameInfoCollection.Dispose();
+                _frameInfoCollection = null;
             }
         }
 

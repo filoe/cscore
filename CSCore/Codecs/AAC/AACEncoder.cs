@@ -46,7 +46,7 @@ namespace CSCore.Codecs.AAC
             if (containerType == Guid.Empty)
                 throw new ArgumentNullException("containerType");
 
-            var targetMediaType = FindBestMediaType(MFMediaTypes.MFAudioFormat_AAC, 
+            var targetMediaType = FindBestMediaType(AudioSubTypes.MPEG_HEAAC, 
                 sourceFormat.SampleRate, sourceFormat.Channels, defaultBitrate);
 
             if (targetMediaType == null)

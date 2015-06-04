@@ -3,7 +3,7 @@
 namespace CSCore.SoundOut
 {
     /// <summary>
-    /// Defines a provider for playing audio.
+    /// Defines a interface for audio playbacks.
     /// </summary>
     public interface ISoundOut : IDisposable
     {
@@ -44,7 +44,7 @@ namespace CSCore.SoundOut
         IWaveSource WaveSource { get; }
 
         /// <summary>
-        /// Gets the <see cref="SoundOut.PlaybackState"/> of the <see cref="ISoundOut"/>. The playback state indicates whether the playback is currently playing, paused or _stopped.
+        /// Gets the <see cref="SoundOut.PlaybackState"/> of the <see cref="ISoundOut"/>. The playback state indicates whether the playback is currently playing, paused or stopped.
         /// </summary>
         PlaybackState PlaybackState { get; }
 

@@ -29,15 +29,15 @@ namespace CSCore.Streams
         }
 
         /// <summary>
-        ///     Occurs when the underlying <see cref="WaveAggregatorBase.BaseStream" /> reaches its end.
+        ///     Occurs when the underlying <see cref="WaveAggregatorBase.BaseSource" /> reaches its end.
         ///     If the <see cref="EnableLoop" /> property is set to true, the Position of the
-        ///     <see cref="WaveAggregatorBase.BaseStream" /> will be reseted to zero.
+        ///     <see cref="WaveAggregatorBase.BaseSource" /> will be reseted to zero.
         /// </summary>
         public event EventHandler StreamFinished;
 
         /// <summary>
-        ///     Reads from the underlying <see cref="WaveAggregatorBase.BaseStream" />. If the
-        ///     <see cref="WaveAggregatorBase.BaseStream" /> does not provide any more data, its position gets reseted to zero.
+        ///     Reads from the underlying <see cref="WaveAggregatorBase.BaseSource" />. If the
+        ///     <see cref="WaveAggregatorBase.BaseSource" /> does not provide any more data, its position gets reseted to zero.
         /// </summary>
         /// <param name="buffer">Buffer which receives the read data.</param>
         /// <param name="offset">Zero-based offset offset in the <paramref name="buffer" /> at which to begin storing data.</param>

@@ -1,6 +1,7 @@
 namespace CSCore.Streams.Effects
 {
     /// <summary>
+    /// Defines possible values for the <see cref="DmoChorusEffect.Waveform"/> property.
     /// Default value is WaveformSin (used for <see cref="DmoChorusEffect.Waveform"/>).
     /// </summary>
     public enum ChorusWaveform

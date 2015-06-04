@@ -1,5 +1,5 @@
-﻿using CSCore.SoundOut;
-using CSCore.SoundOut.DirectSound;
+﻿using CSCore.DirectSound;
+using CSCore.SoundOut;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Diagnostics;
@@ -14,7 +14,7 @@ namespace CSCore.Test.DirectSound
         [TestCategory("DirectSound")]
         public void EnumerateDirectSoundDeviceTest()
         {
-            var devices = DirectSoundDevice.EnumerateDevices();
+            var devices = DirectSoundDeviceEnumerator.EnumerateDevices();
             foreach (var device in devices)
             {
                 Debug.WriteLine(device.ToString());
@@ -50,7 +50,7 @@ namespace CSCore.Test.DirectSound
         {
             using (var dsound = CreateDirectSound8())
             {
-                dsound.SetCooperativeLevel(DSUtils.GetDesktopWindow(), DSCooperativeLevelType.DSSCL_PRIORITY);
+                dsound.SetCooperativeLevel(DSUtils.GetDesktopWindow(), DSCooperativeLevelType.Priority);
             }
         }
 
@@ -60,7 +60,7 @@ namespace CSCore.Test.DirectSound
         {
             using (var dsound = CreateDirectSound8())
             {
-                dsound.SetCooperativeLevel(DSUtils.GetDesktopWindow(), DSCooperativeLevelType.DSSCL_NORMAL);
+                dsound.SetCooperativeLevel(DSUtils.GetDesktopWindow(), DSCooperativeLevelType.Normal);
             }
         }
 
@@ -70,7 +70,7 @@ namespace CSCore.Test.DirectSound
         {
             using (var dsound = CreateDirectSound8())
             {
-                dsound.SetCooperativeLevel(DSUtils.GetDesktopWindow(), DSCooperativeLevelType.DSSCL_EXCLUSIVE);
+                dsound.SetCooperativeLevel(DSUtils.GetDesktopWindow(), DSCooperativeLevelType.Exclusive);
             }
         }
 
@@ -80,7 +80,7 @@ namespace CSCore.Test.DirectSound
         {
             using (var dsound = CreateDirectSound8())
             {
-                dsound.SetCooperativeLevel(DSUtils.GetDesktopWindow(), DSCooperativeLevelType.DSSCL_WRITEPRIMARY);
+                dsound.SetCooperativeLevel(DSUtils.GetDesktopWindow(), DSCooperativeLevelType.WritePrimary);
             }
         }
 
@@ -90,7 +90,7 @@ namespace CSCore.Test.DirectSound
         {
             using (var dsound = CreateDirectSound8())
             {
-                dsound.SetCooperativeLevel(DSUtils.GetDesktopWindow(), DSCooperativeLevelType.DSSCL_NORMAL);
+                dsound.SetCooperativeLevel(DSUtils.GetDesktopWindow(), DSCooperativeLevelType.Normal);
                 var caps = dsound.Caps;
             }
         }
@@ -101,7 +101,7 @@ namespace CSCore.Test.DirectSound
         {
             using (var dsound = CreateDirectSound8())
             {
-                dsound.SetCooperativeLevel(DSUtils.GetDesktopWindow(), DSCooperativeLevelType.DSSCL_NORMAL);
+                dsound.SetCooperativeLevel(DSUtils.GetDesktopWindow(), DSCooperativeLevelType.Normal);
                 dsound.SupportsFormat(new WaveFormat());
             }
         }
@@ -112,7 +112,7 @@ namespace CSCore.Test.DirectSound
         {
             using (var dsound = CreateDirectSound8())
             {
-                dsound.SetCooperativeLevel(DSUtils.GetDesktopWindow(), DSCooperativeLevelType.DSSCL_NORMAL);
+                dsound.SetCooperativeLevel(DSUtils.GetDesktopWindow(), DSCooperativeLevelType.Normal);
                 new DirectSoundPrimaryBuffer(dsound).Dispose();
             }
         }
@@ -123,7 +123,7 @@ namespace CSCore.Test.DirectSound
         {
             using (var dsound = CreateDirectSound8())
             {
-                dsound.SetCooperativeLevel(DSUtils.GetDesktopWindow(), DSCooperativeLevelType.DSSCL_NORMAL);
+                dsound.SetCooperativeLevel(DSUtils.GetDesktopWindow(), DSCooperativeLevelType.Normal);
                 new DirectSoundPrimaryBuffer(dsound).Dispose();
                 WaveFormat waveFormat = new WaveFormat();
                 new DirectSoundSecondaryBuffer(dsound, waveFormat, (int)waveFormat.MillisecondsToBytes(100)).Dispose();
@@ -136,19 +136,19 @@ namespace CSCore.Test.DirectSound
         {
             using (var dsound = CreateDirectSound8())
             {
-                dsound.SetCooperativeLevel(DSUtils.GetDesktopWindow(), DSCooperativeLevelType.DSSCL_NORMAL);
+                dsound.SetCooperativeLevel(DSUtils.GetDesktopWindow(), DSCooperativeLevelType.Normal);
                 WaveFormat waveFormat = new WaveFormat(44100, 16, 2);
                 using (var primaryBuffer = new DirectSoundPrimaryBuffer(dsound))
                 using (var secondaryBuffer = new DirectSoundSecondaryBuffer(dsound, waveFormat, (int)waveFormat.MillisecondsToBytes(10000)))
                 {
-                    primaryBuffer.Play(DSBPlayFlags.DSBPLAY_LOOPING);
+                    primaryBuffer.Play(DSBPlayFlags.Looping);
                     var caps = secondaryBuffer.BufferCaps;
 
-                    var data = GenerateData(caps.dwBufferBytes / 2, waveFormat);
+                    var data = GenerateData(caps.BufferBytes / 2, waveFormat);
 
                     if (secondaryBuffer.Write(data, 0, data.Length))
                     {
-                        secondaryBuffer.Play(DSBPlayFlags.DSBPLAY_LOOPING);
+                        secondaryBuffer.Play(DSBPlayFlags.Looping);
                     }
                     else
                     {

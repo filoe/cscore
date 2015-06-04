@@ -7,7 +7,7 @@ namespace CSCore.Utils
     ///     Represents a complex number.
     /// </summary>
     [DebuggerDisplay("r: {Real} i: {Imaginary}")]
-    public struct Complex
+    public struct Complex : IEquatable<Complex>
     {
         /// <summary>
         ///     A complex number with a total length of zero.
@@ -71,6 +71,72 @@ namespace CSCore.Utils
         public static implicit operator double(Complex complex)
         {
             return complex.Value;
+        }
+
+        /// <summary>
+        /// Implements the operator ==.
+        /// </summary>
+        /// <param name="complex1">The complex1.</param>
+        /// <param name="complex2">The complex2.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
+        public static bool operator ==(Complex complex1, Complex complex2)
+        {
+            return complex1.Real == complex2.Real && complex1.Imaginary == complex2.Imaginary;
+        }
+
+        /// <summary>
+        /// Implements the operator !=.
+        /// </summary>
+        /// <param name="complex1">The complex1.</param>
+        /// <param name="complex2">The complex2.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
+        public static bool operator !=(Complex complex1, Complex complex2)
+        {
+            return !(complex1 == complex2);
+        }
+
+        /// <summary>
+        /// Indicates whether the current complex value is equal to another complex value.
+        /// </summary>
+        /// <param name="other">A complex value to compare with this complex value.</param>
+        /// <returns>
+        /// true if the current complex value is equal to the <paramref name="other" /> complex value; otherwise, false.
+        /// </returns>
+        public bool Equals(Complex other)
+        {
+            return Imaginary.Equals(other.Imaginary) && Real.Equals(other.Real);
+        }
+
+        /// <summary>
+        /// Determines whether the specified <see cref="System.Object" />, is equal to this instance.
+        /// </summary>
+        /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+                return false;
+            return obj is Complex && Equals((Complex)obj);
+        }
+
+        /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// </returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (Imaginary.GetHashCode() * 397) ^ Real.GetHashCode();
+            }
         }
     }
 }

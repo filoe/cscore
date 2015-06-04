@@ -6,7 +6,6 @@ using System;
 
 namespace CSCore.MediaFoundation
 {
-    [CLSCompliant(false)]
     [RemoveObj]
     internal class InteropCalls
     {
@@ -198,6 +197,36 @@ namespace CSCore.MediaFoundation
 
         [CSCalli]
         internal static unsafe int CalliMethodPtr(void* _basePtr, int streamIndex, long timeStamp, void* p)
+        {
+            throw new NotImplementedException();
+        }
+
+        [CSCalli]
+        public unsafe static int CalliMethodPtr(IntPtr basePtr, void* hnsSampleTime, void* propertyVariant)
+        {
+            throw new NotImplementedException();
+        }
+
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* UnsafeBasePtr, void* p1, int count, void* p2)
+        {
+            throw new NotImplementedException();
+        }
+
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* UnsafeBasePtr, void* p1, int count, void* pRead, void* p2)
+        {
+            throw new NotImplementedException();
+        }
+
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* UnsafeBasePtr, IntPtr buffer, int count, IntPtr callback, IntPtr unkState, void* ptr2)
+        {
+            throw new NotImplementedException();
+        }
+
+        [CSCalli]
+        internal static unsafe int CalliMethodPtr(void* UnsafeBasePtr, int p1, long seekOffset, int flags, void* p2, void* p3)
         {
             throw new NotImplementedException();
         }
