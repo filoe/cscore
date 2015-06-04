@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 ![CSCore Logo](http://fs1.directupload.net/images/150528/h8n8qwyc.png)
 
 
-=======
->>>>>>> version_1_1
 # CSCore - .NET Audio Library #
 
 CSCore is a free .NET audio library which is completely written in C#. Although it is still a rather young project, it offers tons of features like playing or capturing audio, en- or decoding many different codecs, effects and much more!
