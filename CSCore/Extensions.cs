@@ -266,20 +266,6 @@ namespace CSCore
             return buffer;
         }
 
-        internal static byte[] ReadBytes(this IWaveSource waveSource, int count)
-        {
-            if (waveSource == null)
-                throw new ArgumentNullException("waveSource");
-            if (count <= 0 || (count % waveSource.WaveFormat.BlockAlign) != 0)
-                throw new ArgumentOutOfRangeException("count");
-
-            byte[] buffer = new byte[count];
-            int read = waveSource.Read(buffer, 0, buffer.Length);
-            if (read < count)
-                Array.Resize(ref buffer, read);
-            return buffer;
-        }
-
         internal static bool IsClosed(this Stream stream)
         {
             return !stream.CanRead && !stream.CanWrite;
