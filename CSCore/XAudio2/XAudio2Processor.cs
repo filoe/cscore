@@ -173,7 +173,7 @@
         /// <summary>
         ///     Default processor for XAudio2.7, which is defined as <see cref="Xaudio2AnyProcessor"/>.
         /// </summary>
-        Xaudio27DefaultProcessor = Xaudio2AnyProcessor,
+        XAudio27DefaultProcessor = Xaudio2AnyProcessor,
 
         /// <summary>
         ///     Default processor for XAudio2.8, which is defined as <see cref="Processor1"/>.

@@ -127,30 +127,19 @@
     <Compile Include="Codecs\ConnectionEstablishedEventArgs.cs" />
     <Compile Include="Codecs\DDP\DDPDecoder.cs" />
     <Compile Include="Codecs\CodecFactory.cs" />
-    <Compile Include="Codecs\FLAC\BlockingStrategy.cs" />
     <Compile Include="Codecs\FLAC\ChannelAssignment.cs" />
     <Compile Include="Codecs\FLAC\FlacException.cs" />
     <Compile Include="Codecs\FLAC\FlacConstant.cs" />
-<<<<<<< HEAD
-=======
     <Compile Include="Codecs\FLAC\FlacResidualCodingMethod.cs" />
->>>>>>> version_1_1
     <Compile Include="Codecs\FLAC\FlacFile.cs" />
     <Compile Include="Codecs\FLAC\FlacFrame.cs" />
     <Compile Include="Codecs\FLAC\FlacFrameHeader.cs" />
     <Compile Include="Codecs\FLAC\FlacFrameInformation.cs" />
     <Compile Include="Codecs\FLAC\FlacLayer.cs" />
-<<<<<<< HEAD
-    <Compile Include="Codecs\FLAC\FlacPreScan.cs" />
-    <Compile Include="Codecs\FLAC\FlacPreScanFinishedEventArgs.cs" />
-    <Compile Include="Codecs\FLAC\FlacPreScanMode.cs" />
-    <Compile Include="Codecs\FLAC\FlacResidualCodingMethod.cs" />
-=======
     <Compile Include="Codecs\FLAC\BlockingStrategy.cs" />
     <Compile Include="Codecs\FLAC\FlacPreScan.cs" />
     <Compile Include="Codecs\FLAC\FlacPreScanFinishedEventArgs.cs" />
     <Compile Include="Codecs\FLAC\FlacPreScanMode.cs" />
->>>>>>> version_1_1
     <Compile Include="Codecs\FLAC\FlacSubFrameData.cs" />
     <Compile Include="Codecs\FLAC\Metadata\FlacMetadata.cs" />
     <Compile Include="Codecs\FLAC\Metadata\FlacMetadataSeekTable.cs" />
@@ -294,12 +283,8 @@
     <Compile Include="DSP\FftMode.cs" />
     <Compile Include="DSP\FftSize.cs" />
     <Compile Include="FluentExtensions.cs" />
-<<<<<<< HEAD
-    <Compile Include="IWaveAggregator.cs" />
-=======
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IReadableAudioSource.cs" />
->>>>>>> version_1_1
     <Compile Include="IWriteable.cs" />
     <Compile Include="MediaFoundation\CommonAudioDecoderGuids.cs" />
     <Compile Include="MediaFoundation\IMFCollection.cs" />
@@ -591,10 +576,7 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>AudioSubTypes.cs</LastGenOutput>
     </None>
-<<<<<<< HEAD
-=======
     <None Include="Base.cd" />
->>>>>>> version_1_1
     <None Include="Codecs\FLAC\SubFrames\FlacSubFrameLPC_Calculation.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>FlacSubFrameLPC_Calculation.cs</LastGenOutput>
@@ -605,77 +587,79 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>@echo off &amp; setLocal EnableDELAYedeXpansion
-chcp 65001
+    <PostBuildEvent>
+      @echo off &amp; setLocal EnableDELAYedeXpansion
+      chcp 65001
 
-set errorCode=0
+      set errorCode=0
 
-set target=$(TargetPath)
-set project=$(ProjectPath)
+      set target=$(TargetPath)
+      set project=$(ProjectPath)
 
-set sdk=%25PROGRAMFILES(x86)%25\Microsoft SDKs\Windows\v8.1A\bin\NETFX 4.5.1 Tools
-set framework=%25WINDIR%25\Microsoft.NET\Framework\v2.0.50727
-set inlineILCompiler=$(SolutionDir)Tools\InlineILCompiler\InlineILCompiler\bin\$(ConfigurationName)\InlineILCompiler.exe
-set cscli=$(SolutionDir)Tools\CSCli\bin\$(ConfigurationName)\CSCli.exe
+      set sdk=%25PROGRAMFILES(x86)%25\Microsoft SDKs\Windows\v8.1A\bin\NETFX 4.5.1 Tools
+      set framework=%25WINDIR%25\Microsoft.NET\Framework\v2.0.50727
+      set inlineILCompiler=$(SolutionDir)Tools\InlineILCompiler\InlineILCompiler\bin\$(ConfigurationName)\InlineILCompiler.exe
+      set cscli=$(SolutionDir)Tools\CSCli\bin\$(ConfigurationName)\CSCli.exe
 
-IF exist "%25sdk%25\." ( 
-	echo ✔ The Microsoft Windows SDK was found.
-) else (
-	echo ✘ The Microsoft Windows SDK Dir was not found. Check the following path: "%25sdk%25"
-	goto EXIT_ERR
-)
-IF exist "%25framework%25\." (
-	echo ✔ The .NET Framework Dir was found.
-) else (
-	echo ✘ The Framework-Dir was not found. Check the following path: "%25framework%25"
-	goto EXIT_ERR
-)
-IF exist "%25inlineILCompiler%25" (
-	echo ✔ Found the inline-il-compiler.
-) else (
-	echo ✘ The inline-il-compiler was not found. Check the following path: "%25inlineILCompiler%25"
-	goto EXIT_ERR
-)
-IF exist "%25cscli%25" (
-	echo ✔ Found the cscli-compiler.
-) else (
-	echo ✘ The cscli was not found. Check the following path: "%25cscli%25"
-	goto EXIT_ERR
-)
+      IF exist "%25sdk%25\." (
+      echo ✔ The Microsoft Windows SDK was found.
+      ) else (
+      echo ✘ The Microsoft Windows SDK Dir was not found. Check the following path: "%25sdk%25"
+      goto EXIT_ERR
+      )
+      IF exist "%25framework%25\." (
+      echo ✔ The .NET Framework Dir was found.
+      ) else (
+      echo ✘ The Framework-Dir was not found. Check the following path: "%25framework%25"
+      goto EXIT_ERR
+      )
+      IF exist "%25inlineILCompiler%25" (
+      echo ✔ Found the inline-il-compiler.
+      ) else (
+      echo ✘ The inline-il-compiler was not found. Check the following path: "%25inlineILCompiler%25"
+      goto EXIT_ERR
+      )
+      IF exist "%25cscli%25" (
+      echo ✔ Found the cscli-compiler.
+      ) else (
+      echo ✘ The cscli was not found. Check the following path: "%25cscli%25"
+      goto EXIT_ERR
+      )
 
-if $(ConfigurationName) == Debug (
-	echo Build-Configuration: DEBUG
-	echo    ✔ DEBUG=IMPL
-	echo    ✘ OPTIMIZE
-	set ilasm_args=/DLL /DEBUG=IMPL
-) else (
-	if $(ConfigurationName) == Release (
-		echo Build-Configuration: RELEASE
-		echo    ✘ DEBUG
-		echo    ✔ OPTIMIZE
-		set ilasm_args=/DLL /OPTIMIZE
-	) else (
-		echo ✘ Invalid Configuration.
-		goto EXIT_ERR
-	)
-)
+      if $(ConfigurationName) == Debug (
+      echo Build-Configuration: DEBUG
+      echo    ✔ DEBUG=IMPL
+      echo    ✘ OPTIMIZE
+      set ilasm_args=/DLL /DEBUG=IMPL
+      ) else (
+      if $(ConfigurationName) == Release (
+      echo Build-Configuration: RELEASE
+      echo    ✘ DEBUG
+      echo    ✔ OPTIMIZE
+      set ilasm_args=/DLL /OPTIMIZE
+      ) else (
+      echo ✘ Invalid Configuration.
+      goto EXIT_ERR
+      )
+      )
 
-echo.
-echo.
-echo Calling the inline-il-compiler ...
-call %25inlineILCompiler%25
+      echo.
+      echo.
+      echo Calling the inline-il-compiler ...
+      call %25inlineILCompiler%25
 
-echo.
-echo.
-echo Calling CSCli ...
-call "%25cscli%25" -file:"$(TargetPath)" -r:"RemoveObjAttribute" -c:"CSCalliAttribute"
+      echo.
+      echo.
+      echo Calling CSCli ...
+      call "%25cscli%25" -file:"$(TargetPath)" -r:"RemoveObjAttribute" -c:"CSCalliAttribute"
 
-:EXIT
-REM EXIT /B %25errorCode%25
+      :EXIT
+      REM EXIT /B %25errorCode%25
 
-:EXIT_ERR
-set errorCode=-1
-REM goto EXIT</PostBuildEvent>
+      :EXIT_ERR
+      set errorCode=-1
+      REM goto EXIT
+    </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>
