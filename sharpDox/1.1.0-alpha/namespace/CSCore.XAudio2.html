@@ -1,0 +1,747 @@
+
+
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>CSCore - CSCore.XAudio2</title>
+        <meta name="viewport" content="width=device-width">
+
+					<link rel="stylesheet" type="text/css" href="../assets/css/font.css?version=0.9.6.8" />
+			<link rel="stylesheet" type="text/css" href="../assets/css/font-awesome.css?version=0.9.6.8" />
+			<link rel="stylesheet" type="text/css" href="../assets/css/style.css?version=0.9.6.8" />
+			
+			<!--[if IE 8]>
+				<script src="../assets/js/vendor.ie8.js?version=0.9.6.8"></script>
+			<![endif]-->
+			<![if !IE 8]>
+				<script src="../assets/js/vendor.js?version=0.9.6.8"></script>
+			<![endif]>
+
+			<script src="../assets/js/jquery.layout.min.js"></script>	
+			<script src="../assets/js/frame.js?version=0.9.6.8"></script>
+			<script src="../assets/js/iframe.js"></script>
+		
+		<script>hljs.initHighlightingOnLoad();</script>
+
+    </head>
+    <body>        
+       
+	    <div id="dropdown-1" class="dropdown dropdown-tip">
+			<ul class="dropdown-menu">
+									<li><a href="../type/AudioStreamCategory.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioStreamCategory</a></li>
+
+									<li><a href="../type/DebugConfiguration.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> DebugConfiguration</a></li>
+
+									<li><a href="../type/DeviceDetails.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> DeviceDetails</a></li>
+
+									<li><a href="../type/EffectChain.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> EffectChain</a></li>
+
+									<li><a href="../type/EffectDescriptor.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> EffectDescriptor</a></li>
+
+									<li><a href="../type/FilterParameters.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> FilterParameters</a></li>
+
+									<li><a href="../type/FilterType.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> FilterType</a></li>
+
+									<li><a href="../type/GetVoiceStateFlags.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> GetVoiceStateFlags</a></li>
+
+									<li><a href="../type/InteropCalls.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> InteropCalls</a></li>
+
+									<li><a href="../type/IXAudio2EngineCallback.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> IXAudio2EngineCallback</a></li>
+
+									<li><a href="../type/IXAudio2VoiceCallback.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> IXAudio2VoiceCallback</a></li>
+
+									<li><a href="../type/LogMask.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> LogMask</a></li>
+
+									<li><a href="../type/PerformanceData.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> PerformanceData</a></li>
+
+									<li><a href="../type/SourceVoiceStopFlags.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> SourceVoiceStopFlags</a></li>
+
+									<li><a href="../type/StreamingSourceVoice.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> StreamingSourceVoice</a></li>
+
+									<li><a href="../type/StreamingSourceVoiceListener.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> StreamingSourceVoiceListener</a></li>
+
+									<li><a href="../type/VoiceCallback.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> VoiceCallback</a></li>
+
+									<li><a href="../type/VoiceDetails.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> VoiceDetails</a></li>
+
+									<li><a href="../type/VoiceFlags.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> VoiceFlags</a></li>
+
+									<li><a href="../type/VoiceSendDescriptor.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> VoiceSendDescriptor</a></li>
+
+									<li><a href="../type/VoiceSendFlags.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> VoiceSendFlags</a></li>
+
+									<li><a href="../type/VoiceSends.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> VoiceSends</a></li>
+
+									<li><a href="../type/VoiceState.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> VoiceState</a></li>
+
+									<li><a href="../type/XAudio2.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> XAudio2</a></li>
+
+									<li><a href="../type/XAudio2_7.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> XAudio2_7</a></li>
+
+									<li><a href="../type/XAudio2_8.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> XAudio2_8</a></li>
+
+									<li><a href="../type/XAudio2Buffer.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> XAudio2Buffer</a></li>
+
+									<li><a href="../type/XAudio2BufferEventArgs.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> XAudio2BufferEventArgs</a></li>
+
+									<li><a href="../type/XAudio2BufferFlags.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> XAudio2BufferFlags</a></li>
+
+									<li><a href="../type/XAudio2CriticalErrorEventArgs.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> XAudio2CriticalErrorEventArgs</a></li>
+
+									<li><a href="../type/XAudio2DeviceRole.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> XAudio2DeviceRole</a></li>
+
+									<li><a href="../type/XAudio2EngineCallback.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> XAudio2EngineCallback</a></li>
+
+									<li><a href="../type/XAudio2Exception.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> XAudio2Exception</a></li>
+
+									<li><a href="../type/XAudio2MasteringVoice.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> XAudio2MasteringVoice</a></li>
+
+									<li><a href="../type/XAudio2ProcessingPassStartEventArgs.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> XAudio2ProcessingPassStartEventArgs</a></li>
+
+									<li><a href="../type/XAudio2Processor.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> XAudio2Processor</a></li>
+
+									<li><a href="../type/XAudio2SourceVoice.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> XAudio2SourceVoice</a></li>
+
+									<li><a href="../type/XAudio2SubmixVoice.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> XAudio2SubmixVoice</a></li>
+
+									<li><a href="../type/XAudio2Version.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> XAudio2Version</a></li>
+
+									<li><a href="../type/XAudio2Voice.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> XAudio2Voice</a></li>
+
+									<li><a href="../type/XAudio2VoiceErrorEventArgs.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> XAudio2VoiceErrorEventArgs</a></li>
+
+							</ul>
+		</div>
+	   
+	    <div class="ui-layout-north">
+			<div class="toolbar">
+				<a href="#" data-dropdown="#dropdown-1" class="button"><img src="../assets/images/icons/class_public.png"/> Types <span class="info">(41)</span> <i class="icon-caret-down"></i></a>
+				<div class="right">
+					<span class="toolbar-info"> Assembly: CSCore</span>
+					<a href="#" id="print-button" class="button" title="print"><i class="icon-print"></i></a>
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+		</div>
+        
+		<div class="ui-layout-center">
+			<div>
+				
+					<h3 class="box-title first-heading">Types</h3>
+
+				
+				<div class="table-box">
+					<table>
+						<thead>
+							<tr>
+								<td></td>
+								<td>Name</td>
+								<td>Description</td>
+							</tr>
+						</thead>
+						<tbody>			
+
+							
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioStreamCategory" href="../type/AudioStreamCategory.html">AudioStreamCategory</a>
+									</td>	
+									<td class="markdown">
+																						<p>Specifies the category of an audio stream.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="DebugConfiguration" href="../type/DebugConfiguration.html">DebugConfiguration</a>
+									</td>	
+									<td class="markdown">
+																						<p>Contains the new global debug configuration for XAudio2. Used with the SetDebugConfiguration
+function.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="DeviceDetails" href="../type/DeviceDetails.html">DeviceDetails</a>
+									</td>	
+									<td class="markdown">
+																						<p>Provides information about an audio device.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="EffectChain" href="../type/EffectChain.html">EffectChain</a>
+									</td>	
+									<td class="markdown">
+																						<p>Defines an effect chain.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="EffectDescriptor" href="../type/EffectDescriptor.html">EffectDescriptor</a>
+									</td>	
+									<td class="markdown">
+																						<p>Contains information about an XAPO for use in an effect chain.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="FilterParameters" href="../type/FilterParameters.html">FilterParameters</a>
+									</td>	
+									<td class="markdown">
+																						<p>Defines filter parameters for a source voice.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="FilterType" href="../type/FilterType.html">FilterType</a>
+									</td>	
+									<td class="markdown">
+																						<p>Indicates the filter type.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="GetVoiceStateFlags" href="../type/GetVoiceStateFlags.html">GetVoiceStateFlags</a>
+									</td>	
+									<td class="markdown">
+																						<p>Flags controlling which voice state data should be returned.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="InteropCalls" href="../type/InteropCalls.html">InteropCalls</a>
+									</td>	
+									<td class="markdown">
+																			</td>
+								</tr>
+
+							
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="IXAudio2EngineCallback" href="../type/IXAudio2EngineCallback.html">IXAudio2EngineCallback</a>
+									</td>	
+									<td class="markdown">
+																						<p>Internal used IXAudio2EngineCallback-wrapper. The default implementation of this interface is
+XAudio2EngineCallback.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="IXAudio2VoiceCallback" href="../type/IXAudio2VoiceCallback.html">IXAudio2VoiceCallback</a>
+									</td>	
+									<td class="markdown">
+																						<p>The IXAudio2VoiceCallback interface contains methods that notify the client when certain events happen in a given
+XAudio2SourceVoice.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="LogMask" href="../type/LogMask.html">LogMask</a>
+									</td>	
+									<td class="markdown">
+																						<p>Specifies values for the TraceMask and
+BreakMask.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="PerformanceData" href="../type/PerformanceData.html">PerformanceData</a>
+									</td>	
+									<td class="markdown">
+																						<p>Contains performance information. Used by PerformanceData.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="SourceVoiceStopFlags" href="../type/SourceVoiceStopFlags.html">SourceVoiceStopFlags</a>
+									</td>	
+									<td class="markdown">
+																						<p>Flags that specify how a XAudio2SourceVoice is stopped.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="StreamingSourceVoice" href="../type/StreamingSourceVoice.html">StreamingSourceVoice</a>
+									</td>	
+									<td class="markdown">
+																						<p>Extends the the XAudio2SourceVoice to enable real-time audio streaming.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="StreamingSourceVoiceListener" href="../type/StreamingSourceVoiceListener.html">StreamingSourceVoiceListener</a>
+									</td>	
+									<td class="markdown">
+																						<p>Provides a mechanism for playing StreamingSourceVoice instances.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="VoiceCallback" href="../type/VoiceCallback.html">VoiceCallback</a>
+									</td>	
+									<td class="markdown">
+																						<p>Default implementation of the IXAudio2VoiceCallback interface.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="VoiceDetails" href="../type/VoiceDetails.html">VoiceDetails</a>
+									</td>	
+									<td class="markdown">
+																						<p>Contains information about the creation flags, input channels, and sample rate of a voice.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="VoiceFlags" href="../type/VoiceFlags.html">VoiceFlags</a>
+									</td>	
+									<td class="markdown">
+																						<p>VoiceFlags</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="VoiceSendDescriptor" href="../type/VoiceSendDescriptor.html">VoiceSendDescriptor</a>
+									</td>	
+									<td class="markdown">
+																						<p>Defines a destination voice that is the target of a send from another voice and specifies whether a filter should
+be used.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="VoiceSendFlags" href="../type/VoiceSendFlags.html">VoiceSendFlags</a>
+									</td>	
+									<td class="markdown">
+																						<p>VoiceSendFlags</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="VoiceSends" href="../type/VoiceSends.html">VoiceSends</a>
+									</td>	
+									<td class="markdown">
+																						<p>Defines a set of voices to receive data from a single output voice.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="VoiceState" href="../type/VoiceState.html">VoiceState</a>
+									</td>	
+									<td class="markdown">
+																						<p>Returns the voice's current state and cursor position data.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="XAudio2" href="../type/XAudio2.html">XAudio2</a>
+									</td>	
+									<td class="markdown">
+																						<p>XAudio2 is the class for the XAudio2 object that manages all audio engine states, the audio
+processing thread, the voice graph, and so forth.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="XAudio2_7" href="../type/XAudio2_7.html">XAudio2_7</a>
+									</td>	
+									<td class="markdown">
+																						<p>XAudio2 is the class for the XAudio2 object that manages all audio engine states, the audio
+processing thread, the voice graph, and so forth.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="XAudio2_8" href="../type/XAudio2_8.html">XAudio2_8</a>
+									</td>	
+									<td class="markdown">
+																						<p>XAudio2 is the class for the XAudio2 object that manages all audio engine states, the audio
+processing thread, the voice graph, and so forth.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="XAudio2Buffer" href="../type/XAudio2Buffer.html">XAudio2Buffer</a>
+									</td>	
+									<td class="markdown">
+																						<p>Represents an audio data buffer.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="XAudio2BufferEventArgs" href="../type/XAudio2BufferEventArgs.html">XAudio2BufferEventArgs</a>
+									</td>	
+									<td class="markdown">
+																						<p>Provides data for the BufferStart, the BufferEnd and the
+LoopEnd event.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="XAudio2BufferFlags" href="../type/XAudio2BufferFlags.html">XAudio2BufferFlags</a>
+									</td>	
+									<td class="markdown">
+																						<p>Flags that provide additional information about the audio buffer.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="XAudio2CriticalErrorEventArgs" href="../type/XAudio2CriticalErrorEventArgs.html">XAudio2CriticalErrorEventArgs</a>
+									</td>	
+									<td class="markdown">
+																						<p>XAudio2CriticalErrorEventArgs</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="XAudio2DeviceRole" href="../type/XAudio2DeviceRole.html">XAudio2DeviceRole</a>
+									</td>	
+									<td class="markdown">
+																						<p>Describes device roles of an XAudio2 Device. Used in DeviceDetails.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="XAudio2EngineCallback" href="../type/XAudio2EngineCallback.html">XAudio2EngineCallback</a>
+									</td>	
+									<td class="markdown">
+																						<p>XAudio2EngineCallback</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="XAudio2Exception" href="../type/XAudio2Exception.html">XAudio2Exception</a>
+									</td>	
+									<td class="markdown">
+																						<p>XAudio2-COMException.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="XAudio2MasteringVoice" href="../type/XAudio2MasteringVoice.html">XAudio2MasteringVoice</a>
+									</td>	
+									<td class="markdown">
+																						<p>A mastering voice is used to represent the audio output device.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="XAudio2ProcessingPassStartEventArgs" href="../type/XAudio2ProcessingPassStartEventArgs.html">XAudio2ProcessingPassStartEventArgs</a>
+									</td>	
+									<td class="markdown">
+																						<p>Provides data for the ProcessingPassStart event.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="XAudio2Processor" href="../type/XAudio2Processor.html">XAudio2Processor</a>
+									</td>	
+									<td class="markdown">
+																						<p>Defines values to use with XAudio2Create to specify available processors.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="XAudio2SourceVoice" href="../type/XAudio2SourceVoice.html">XAudio2SourceVoice</a>
+									</td>	
+									<td class="markdown">
+																						<p>Use a source voice to submit audio data to the XAudio2 processing pipeline.You must send voice data to a mastering
+voice to be heard, either directly or through intermediate submix voices.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="XAudio2SubmixVoice" href="../type/XAudio2SubmixVoice.html">XAudio2SubmixVoice</a>
+									</td>	
+									<td class="markdown">
+																						<p>A submix voice is used primarily for performance improvements and effects processing.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="XAudio2Version" href="../type/XAudio2Version.html">XAudio2Version</a>
+									</td>	
+									<td class="markdown">
+																						<p>Defines supported XAudio2 subversions.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="XAudio2Voice" href="../type/XAudio2Voice.html">XAudio2Voice</a>
+									</td>	
+									<td class="markdown">
+																						<p>Represents the base class from which XAudio2SourceVoice, XAudio2SubmixVoice and
+XAudio2MasteringVoice are derived.</p>
+
+																			</td>
+								</tr>
+
+							
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="XAudio2VoiceErrorEventArgs" href="../type/XAudio2VoiceErrorEventArgs.html">XAudio2VoiceErrorEventArgs</a>
+									</td>	
+									<td class="markdown">
+																						<p>Provides data for the VoiceError event.</p>
+
+																			</td>
+								</tr>
+
+							
+						</tbody>
+					</table>
+				</div>
+
+									<h3 class="box-title">Uses</h3>
+					<div class="list-box">
+						<ul>
+													<li><a href="../namespace/CSCore.html">CSCore</a></li>
+													<li><a href="../namespace/CSCore.Win32.html">CSCore.Win32</a></li>
+												</ul>
+					</div>
+				
+							</div>
+		</div>
+	   
+    </body>
+</html>
+
