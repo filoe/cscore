@@ -581,6 +581,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>FlacSubFrameLPC_Calculation.cs</LastGenOutput>
     </None>
+    <None Include="cscore.snk">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

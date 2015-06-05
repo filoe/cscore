@@ -1,11 +1,9 @@
-﻿using Mono.Cecil;
-using Mono.Cecil.Cil;
-using Mono.Cecil.Pdb;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using System.Linq;
-using System.Text;
+using System.Reflection;
+using Mono.Cecil;
+using Mono.Cecil.Pdb;
 
 namespace CSCli
 {
@@ -64,6 +62,13 @@ namespace CSCli
             WriterParameters wp = new WriterParameters();
             ReaderParameters rp = new ReaderParameters();
 
+            var strongNameKey = Path.ChangeExtension(filename, "snk");
+            if (File.Exists(strongNameKey))
+            {
+                MessageIntegration.Info("Signing with Key : " + strongNameKey);
+                wp.StrongNameKeyPair = new StrongNameKeyPair(File.OpenRead(strongNameKey));
+            }
+
             //check whether the pdbfile has been passed through application parameters
             if (pdbfile == null)
             {
@@ -77,6 +82,7 @@ namespace CSCli
             //if the original pdb-file exists -> prepare for rewriting the symbols file
             wp.WriteSymbols = generatePdb;
             rp.ReadSymbols = generatePdb;
+
             if (rp.ReadSymbols)
             {
                 rp.SymbolReaderProvider = new PdbReaderProvider();
