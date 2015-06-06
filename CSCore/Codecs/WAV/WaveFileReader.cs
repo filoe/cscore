@@ -36,9 +36,9 @@ namespace CSCore.Codecs.WAV
         /// <param name="stream">Stream which contains wave file data.</param>
         public WaveFileReader(Stream stream)
         {
-            if (stream == null) 
+            if (stream == null)
                 throw new ArgumentNullException("stream");
-            if (!stream.CanRead) 
+            if (!stream.CanRead)
                 throw new ArgumentException("stream is not readable");
 
             _stream = stream;
@@ -51,9 +51,9 @@ namespace CSCore.Codecs.WAV
             }
 
             _chunks = ReadChunks(stream);
-            if (!_chunks.Any(x => x is DataChunk))
+            _dataChunk = (DataChunk)_chunks.FirstOrDefault(x => x is DataChunk);
+            if (_dataChunk == null)
                 throw new ArgumentException("The specified stream does not contain any data chunks.", "stream");
-            _dataChunk = (DataChunk)_chunks.First(x => x is DataChunk);
             Position = 0;
         }
 
@@ -111,7 +111,7 @@ namespace CSCore.Codecs.WAV
                 {
                     CheckForDisposed();
 
-                    if(value > Length || value < 0)
+                    if (value > Length || value < 0)
                         throw new ArgumentOutOfRangeException("value", "The position must not be bigger than the length or less than zero.");
                     value -= (value % WaveFormat.BlockAlign);
                     _stream.Position = value + _dataChunk.DataStartPosition;
@@ -146,16 +146,23 @@ namespace CSCore.Codecs.WAV
 
         private List<WaveFileChunk> ReadChunks(Stream stream)
         {
-            var chunks = new List<WaveFileChunk>();
+            var chunks = new List<WaveFileChunk>(2);
             do
             {
-                WaveFileChunk tmp = WaveFileChunk.FromStream(stream);
-                chunks.Add(tmp);
+                var tmp = WaveFileChunk.FromStream(stream);
 
                 if (tmp is FmtChunk)
+                {
                     _waveFormat = (tmp as FmtChunk).WaveFormat;
-                else if (!(tmp is DataChunk))
+                    chunks.Add(tmp);
+                }
+                else if (tmp is DataChunk)
+                {
                     stream.Position += tmp.ChunkDataSize;
+                    chunks.Add(tmp);
+                    break;
+                }
+
             } while (stream.Length - stream.Position > 8); //8 bytes = size of chunk header
 
             return chunks;
