@@ -54,6 +54,7 @@ namespace CSCore.Codecs.WAV
             _dataChunk = (DataChunk)_chunks.FirstOrDefault(x => x is DataChunk);
             if (_dataChunk == null)
                 throw new ArgumentException("The specified stream does not contain any data chunks.", "stream");
+
             Position = 0;
         }
 
@@ -150,17 +151,16 @@ namespace CSCore.Codecs.WAV
             do
             {
                 var tmp = WaveFileChunk.FromStream(stream);
+                chunks.Add(tmp);
 
-                if (tmp is FmtChunk)
+                var fmtChunk = tmp as FmtChunk;
+                if (fmtChunk != null)
                 {
-                    _waveFormat = (tmp as FmtChunk).WaveFormat;
-                    chunks.Add(tmp);
+                    _waveFormat = fmtChunk.WaveFormat;
                 }
                 else if (tmp is DataChunk)
                 {
                     stream.Position += tmp.ChunkDataSize;
-                    chunks.Add(tmp);
-                    break;
                 }
 
             } while (stream.Length - stream.Position > 8); //8 bytes = size of chunk header
