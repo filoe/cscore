@@ -16,7 +16,7 @@ namespace CSCore.CoreAudioAPI
     public sealed class MMNotificationClient : IMMNotificationClient, IDisposable
     {
         private readonly MMDeviceEnumerator _deviceEnumerator;
-        private const string c = "IMMNotificationClient";
+        private const string InterfaceName = "IMMNotificationClient";
 
         /// <summary>
         /// Occurs when the state of an audio endpoint device has changed.
@@ -78,12 +78,12 @@ namespace CSCore.CoreAudioAPI
         /// <param name="deviceId">The device id that identifies the audio endpoint device.</param>
         /// <param name="deviceState">Specifies the new state of the endpoint device.</param>
         /// <returns>HRESULT</returns>
-        int IMMNotificationClient.OnDeviceStateChanged(string deviceId, DeviceState deviceState)
+        void IMMNotificationClient.OnDeviceStateChanged(string deviceId, DeviceState deviceState)
         {
             if (DeviceStateChanged != null)
                 DeviceStateChanged(this, new DeviceStateChangedEventArgs(deviceId, deviceState));
 
-            return (int) HResult.S_OK;
+            //return (int) HResult.S_OK;
         }
 
         /// <summary>
@@ -91,12 +91,12 @@ namespace CSCore.CoreAudioAPI
         /// </summary>
         /// <param name="deviceId">The device id that identifies the audio endpoint device.</param>
         /// <returns>HRESULT</returns>
-        int IMMNotificationClient.OnDeviceAdded(string deviceId)
+        void IMMNotificationClient.OnDeviceAdded(string deviceId)
         {
             if (DeviceAdded != null)
                 DeviceAdded(this, new DeviceNotificationEventArgs(deviceId));
 
-            return (int) HResult.S_OK;
+            //return (int) HResult.S_OK;
         }
 
         /// <summary>
@@ -104,12 +104,12 @@ namespace CSCore.CoreAudioAPI
         /// </summary>
         /// <param name="deviceId">The device id that identifies the audio endpoint device.</param>
         /// <returns>HRESULT</returns>
-        int IMMNotificationClient.OnDeviceRemoved(string deviceId)
+        void IMMNotificationClient.OnDeviceRemoved(string deviceId)
         {
             if (DeviceRemoved != null)
                 DeviceRemoved(this, new DeviceNotificationEventArgs(deviceId));
 
-            return (int) HResult.S_OK;
+            //return (int) HResult.S_OK;
         }
 
         /// <summary>
@@ -120,12 +120,12 @@ namespace CSCore.CoreAudioAPI
         /// <param name="role">The device role of the audio endpoint device.</param>
         /// <param name="deviceId">The device id that identifies the audio endpoint device.</param>
         /// <returns>HRESULT</returns>
-        int IMMNotificationClient.OnDefaultDeviceChanged(DataFlow dataFlow, Role role, string deviceId)
+        void IMMNotificationClient.OnDefaultDeviceChanged(DataFlow dataFlow, Role role, string deviceId)
         {
             if (DefaultDeviceChanged != null)
                 DefaultDeviceChanged(this, new DefaultDeviceChangedEventArgs(deviceId, dataFlow, role));
 
-            return (int) HResult.S_OK;
+            //return (int) HResult.S_OK;
         }
 
         /// <summary>
@@ -135,12 +135,12 @@ namespace CSCore.CoreAudioAPI
         /// <param name="deviceId">The device id that identifies the audio endpoint device.</param>
         /// <param name="key">The <see cref="Win32.PropertyKey"/> that specifies the changed property.</param>        
         /// <returns>HRESULT</returns>
-        int IMMNotificationClient.OnPropertyValueChanged(string deviceId, PropertyKey key)
+        void IMMNotificationClient.OnPropertyValueChanged(string deviceId, PropertyKey key)
         {
             if (DevicePropertyChanged != null)
                 DevicePropertyChanged(this, new DevicePropertyChangedEventArgs(deviceId, key));
 
-            return (int) HResult.S_OK;
+            //return (int) HResult.S_OK;
         }
 
         private bool _disposed;
@@ -158,7 +158,7 @@ namespace CSCore.CoreAudioAPI
                 try
                 {
                     CoreAudioAPIException.Try(_deviceEnumerator.UnregisterEndpointNotificationCallbackNative(this),
-                        c, "UnregisterEndpointNotificationCallback");
+                        InterfaceName, "UnregisterEndpointNotificationCallback");
                 }
                 finally
                 {

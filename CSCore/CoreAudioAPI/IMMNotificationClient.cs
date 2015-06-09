@@ -25,21 +25,21 @@ namespace CSCore.CoreAudioAPI
         /// <param name="deviceId">The device id that identifies the audio endpoint device.</param>
         /// <param name="deviceState">Specifies the new state of the endpoint device.</param>
         /// <returns>HRESULT</returns>
-        int OnDeviceStateChanged([In, MarshalAs(UnmanagedType.LPWStr)] string deviceId, DeviceState deviceState);
+        void OnDeviceStateChanged([In, MarshalAs(UnmanagedType.LPWStr)] string deviceId, DeviceState deviceState);
 
         /// <summary>
         /// The OnDeviceAdded method indicates that a new audio endpoint device has been added.
         /// </summary>
         /// <param name="deviceId">The device id that identifies the audio endpoint device.</param>
         /// <returns>HRESULT</returns>
-        int OnDeviceAdded([In, MarshalAs(UnmanagedType.LPWStr)] string deviceId);
+        void OnDeviceAdded([In, MarshalAs(UnmanagedType.LPWStr)] string deviceId);
 
         /// <summary>
         /// The OnDeviceRemoved method indicates that an audio endpoint device has been removed.
         /// </summary>
         /// <param name="deviceId">The device id that identifies the audio endpoint device.</param>
         /// <returns>HRESULT</returns>
-        int OnDeviceRemoved([In, MarshalAs(UnmanagedType.LPWStr)] string deviceId);
+        void OnDeviceRemoved([In, MarshalAs(UnmanagedType.LPWStr)] string deviceId);
 
         /// <summary>
         /// The OnDefaultDeviceChanged method notifies the client that the default audio endpoint
@@ -49,7 +49,7 @@ namespace CSCore.CoreAudioAPI
         /// <param name="role">The device role of the audio endpoint device.</param>
         /// <param name="deviceId">The device id that identifies the audio endpoint device.</param>
         /// <returns>HRESULT</returns>
-        int OnDefaultDeviceChanged([In] DataFlow dataFlow, [In] Role role,
+        void OnDefaultDeviceChanged([In] DataFlow dataFlow, [In] Role role,
             [In, MarshalAs(UnmanagedType.LPWStr)] string deviceId);
 
         /// <summary>
@@ -59,6 +59,6 @@ namespace CSCore.CoreAudioAPI
         /// <param name="deviceId">The device id that identifies the audio endpoint device.</param>
         /// <param name="key">The <see cref="Win32.PropertyKey"/> that specifies the changed property.</param>        
         /// <returns>HRESULT</returns>
-        int OnPropertyValueChanged([In, MarshalAs(UnmanagedType.LPWStr)] string deviceId, PropertyKey key);
+        void OnPropertyValueChanged([In, MarshalAs(UnmanagedType.LPWStr)] string deviceId, PropertyKey key);
     }
 }
