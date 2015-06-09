@@ -26,5 +26,76 @@ You may prefer to install the [CSCore nuget package](https://www.nuget.org/packa
  - **Licensed under the MS-PL** (which allows the usage of cscore
    for commercial products)
 
+### Supported Features ###
+
+Currently the following features are implemented:
+
+- **Realtime audio processing**
+  - Process audio data in realtime
+  - Apply any processors in any order you want in realtime
+  - Create custom processors (e.g. effects, analyzes, decoders,...)
+- **Codecs** *1
+  - MP3
+  - WAVE (PCM, IeeeFloat, GSM, ADPCM,...)
+  - FLAC
+  - AAC
+  - AC3
+  - WMA
+  - Raw data
+  - OGG-Vorbis (through NVorbis)
+- **Speaker Output**
+  - WaveOut
+  - DirectSoundOut (realtime streaming)
+  - WASAPI (loop- and event-callback + exclusive mode available)
+  - XAudio2
+- **Recording**
+  - WaveIn
+  - WASAPI (loop- and event-callback + exclusive mode available)
+  - WASAPI loopback capture (capture output from soundcard)
+- **DSP Algorithms**
+  - Fastfouriertransform (FFT)
+  - Effects (Echo, Compressor, Reverb, Chorus, Gargle, Flanger,...)
+  - Resampler
+  - Channel-mixing using custom channel-matrices
+  - Generic Equalizer
+  - ...
+- **XAudio2 support**
+  - XAudio2.7 and XAudio2.8 support
+  - 3D Audio support (see X3DAudio sample)
+  - Streaming source voice implementation allowing
+    the client to stream any codec, custom effect,... to XAudio2
+  - Optimized for games
+- **Mediafoundation encoding and decoding**
+- **DirectX Media Objects Wrapper**
+- **CoreAudioAPI Wrapper**
+  - WASAPI
+  - Windows Multimedia Devices
+  - Windows Audio Session
+  - Endpoint Volume,...
+- **Multi-Channel support**
+- **Flexible**
+  - Configure and customize any parts of CSCore
+  - Use low latency values for realtime performance, high latency values for stability
+  - Adjust the audio quality
+  - Configure custom channel matrices
+  - Create custom effects
+  - ...
+  - Or simply: **Make CSCore fit your needs!**
+- **Tags** (ID3v1, ID3v2, FLAC)
+- **Sample Winforms Visualizations**
+- **Optimized performance though the usage of CLI instructions provided by a custom post compiler**
+
+**\*1** Some Codecs are only available on certain platforms. For more details, see [Codeplex-Page](http://cscore.codeplex.com/).
+
+Some projects using already using cscore:
+- [Dopamine](http://raphaelgodart.tumblr.com/dopamine): _An music player which tries to keep listening to music clean and simple._
+- [Hurricane](https://github.com/Alkalinee/Hurricane): _Is a powerful music player written in C# based on [CSCore sound library](https://github.com/filoe/cscore)._
+- [Sharpex2D](https://github.com/ThuCommix/Sharpex2D): A game engine which _allows you to create beautiful 2D games under .NET for Windows and Mono compatible systems_
+- [HTLED](https://www.youtube.com/watch?v=tbrKepBgH3M): A audio visualization displayed on a selfmade 32x16 LED matrix.
+- ...
+
+"CSCore - Visualization" Sample:
+
+![VIS_SAMPLE](http://download-codeplex.sec.s-msft.com/Download?ProjectName=cscore&DownloadId=970569)
 
 #### As long as this document is in development, see [Codeplex](http://cscore.codeplex.com/) for more details.  ####
