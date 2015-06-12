@@ -23,6 +23,7 @@ namespace InlineILCompiler
                 Console.WriteLine(string.Format("ERROR: Process '{0}' failed with exit code '{1}", cmd, process.ExitCode));
                 return false;
             }
+
             return true;
         }
         static string[] GetSourceFilesFromProject(string proj)
@@ -358,8 +359,22 @@ namespace InlineILCompiler
             }
             finally
             {
+                var files = new[] {Path.Combine(working, "disasm.il"), Path.Combine(working, "disasm.res")};
+                foreach (var file in files)
+                {
+                    try
+                    {
+                        if (File.Exists(file))
+                            File.Delete(file);
+                    }
+                    catch (IOException ex)
+                    {
+                        Console.WriteLine("Failed to delete temp file: " + ex.Message);
+                    }
+                }
                 //writer.Close();
             }
+
             return 0;
         }
     }

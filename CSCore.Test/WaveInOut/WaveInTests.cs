@@ -16,10 +16,10 @@ namespace CSCore.Test.WaveInOut
         public void CanEnumerateWaveInDevices()
         {
 #pragma warning disable 612
-            foreach (var device in WaveIn.Devices)
+            foreach (var device in WaveInDevice.EnumerateDevices())
 #pragma warning restore 612
             {
-                Debug.WriteLine("{0};{1};{2}", device.Name, device.Channels, device.DriverVersion);
+                Debug.WriteLine("{0};{1}", device.Name, device.DriverVersion);
             }
         }
 

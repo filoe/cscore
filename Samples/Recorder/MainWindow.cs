@@ -113,7 +113,7 @@ namespace Recorder
             SaveFileDialog sfd = new SaveFileDialog
             {
                 Filter = "WAV (*.wav)|*.wav",
-                Title = "Speichern",
+                Title = "Save",
                 FileName = String.Empty
             };
             if (sfd.ShowDialog(this) == DialogResult.OK)
