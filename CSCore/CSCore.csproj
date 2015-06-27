@@ -119,6 +119,14 @@
     <Compile Include="ChannelMasks.cs" />
     <Compile Include="Codecs\AAC\AacAudioProfileLevelIndication.cs" />
     <Compile Include="Codecs\AAC\AacEncoder.cs" />
+    <Compile Include="Codecs\AIFF\AiffBinaryReader.cs" />
+    <Compile Include="Codecs\AIFF\AiffChunk.cs" />
+    <Compile Include="Codecs\AIFF\AiffChunkContainer.cs" />
+    <Compile Include="Codecs\AIFF\AiffException.cs" />
+    <Compile Include="Codecs\AIFF\AiffReader.cs" />
+    <Compile Include="Codecs\AIFF\CommonChunk.cs" />
+    <Compile Include="Codecs\AIFF\FormatVersionChunk.cs" />
+    <Compile Include="Codecs\AIFF\SoundDataChunk.cs" />
     <Compile Include="Codecs\CodecFactoryEntry.cs" />
     <Compile Include="Codecs\AAC\AacDecoder.cs" />
     <Compile Include="Codecs\ConnectionEstablishedEventArgs.cs" />

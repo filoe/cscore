@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using CSCore.Codecs.AAC;
+using CSCore.Codecs.AIFF;
 using CSCore.Codecs.DDP;
 using CSCore.Codecs.FLAC;
 using CSCore.Codecs.MP1;
@@ -51,6 +52,8 @@ namespace CSCore.Codecs
                 "wav", "wave"));
             Register("flac", new CodecFactoryEntry(s => new FlacFile(s),
                 "flac", "fla"));
+            Register("aiff", new CodecFactoryEntry(s => new AiffReader(s),
+                "aiff", "aif", "aifc"));
 
             if (AacDecoder.IsSupported)
             {

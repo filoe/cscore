@@ -63,6 +63,16 @@ namespace CSCore.Test.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] aiff_50s_sine {
+            get {
+                object obj = ResourceManager.GetObject("aiff_50s_sine", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] test_120s_stereo {
             get {
                 object obj = ResourceManager.GetObject("test_120s_stereo", resourceCulture);

@@ -133,6 +133,7 @@
     <Compile Include="Streams\LoopStreamTests.cs" />
     <Compile Include="Streams\Obsolete\StereoToMonoSourceTest.cs" />
     <Compile Include="Streams\Obsolete\MonoToStereoSourceTest.cs" />
+    <Compile Include="Streams\AiffDecoderTests.cs" />
     <Compile Include="TimeConverterTests.cs" />
     <Compile Include="Utils\BitReaderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -163,6 +164,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\test_120s_stereo.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\50s_sine.aiff" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
