@@ -101,16 +101,21 @@ namespace CSCore
             if (input.WaveFormat.Channels == 1)
                 return new MonoToStereoSource(input.ToSampleSource()).ToWaveSource();
 
-            if (input.WaveFormat is WaveFormatExtensible)
+            var format = input.WaveFormat as WaveFormatExtensible;
+            if (format != null)
             {
-                ChannelMask channelMask = ((WaveFormatExtensible) input.WaveFormat).ChannelMask;
+                ChannelMask channelMask = format.ChannelMask;
                 ChannelMatrix channelMatrix = ChannelMatrix.GetMatrix(channelMask, ChannelMasks.StereoMask);
                 return new DmoChannelResampler(input, channelMatrix);
             }
 
-            throw new ArgumentException(
-                "The specified input can't be converted to a stereo source. The input does not provide a WaveFormatExtensible.",
-                "input");
+            //throw new ArgumentException(
+            //    "The specified input can't be converted to a stereo source. The input does not provide a WaveFormatExtensible.",
+            //    "input");
+
+            WaveFormat waveFormat = (WaveFormat)input.WaveFormat.Clone();
+            waveFormat.Channels = 2;
+            return new DmoResampler(input, waveFormat);
         }
 
         /// <summary>
@@ -159,10 +164,14 @@ namespace CSCore
                 ChannelMatrix channelMatrix = ChannelMatrix.GetMatrix(channelMask, ChannelMasks.MonoMask);
                 return new DmoChannelResampler(input, channelMatrix);
             }
+            
+            //throw new ArgumentException(
+            //    "The specified input can't be converted to a mono source. The input does not provide a WaveFormatExtensible.",
+            //    "input");
 
-            throw new ArgumentException(
-                "The specified input can't be converted to a mono source. The input does not provide a WaveFormatExtensible.",
-                "input");
+            WaveFormat waveFormat = (WaveFormat) input.WaveFormat.Clone();
+            waveFormat.Channels = 1;
+            return new DmoResampler(input, waveFormat);
         }
 
         /// <summary>
