@@ -233,14 +233,14 @@ namespace CSCore.Codecs.FLAC
                 {
                     FlacFrame frame = Frame;
                     if (frame == null)
-                        return 0;
+                        return read;
 
                     while (!frame.NextFrame())
                     {
                         if (CanSeek) //go to next frame
                         {
                             if (++_frameIndex >= _scan.Frames.Count)
-                                return 0;
+                                return read;
                             _stream.Position = _scan.Frames[_frameIndex].StreamOffset;
                         }
                     }
