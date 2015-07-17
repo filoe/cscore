@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using CSCore.DSP;
 using CSCore.Streams;
 using CSCore.Streams.SampleConverter;
@@ -113,6 +114,8 @@ namespace CSCore
             //    "The specified input can't be converted to a stereo source. The input does not provide a WaveFormatExtensible.",
             //    "input");
 
+            Debug.WriteLine("MultiChannel stream with no ChannelMask.");
+
             WaveFormat waveFormat = (WaveFormat)input.WaveFormat.Clone();
             waveFormat.Channels = 2;
             return new DmoResampler(input, waveFormat);
@@ -168,6 +171,8 @@ namespace CSCore
             //throw new ArgumentException(
             //    "The specified input can't be converted to a mono source. The input does not provide a WaveFormatExtensible.",
             //    "input");
+
+            Debug.WriteLine("MultiChannel stream with no ChannelMask.");
 
             WaveFormat waveFormat = (WaveFormat) input.WaveFormat.Clone();
             waveFormat.Channels = 1;
