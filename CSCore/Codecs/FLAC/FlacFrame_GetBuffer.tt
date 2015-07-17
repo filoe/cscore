@@ -1,0 +1,139 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+<# int[] possibleBitsPerSample = {8, 16, 24}; #>
+<# int[] possibleNumberOfChannels = Enumerable.Range(1, 8).ToArray(); #>
+using System;
+
+namespace CSCore.Codecs.FLAC
+{
+    public partial class FlacFrame
+    {
+		private unsafe int GetBufferInternal(ref byte[] buffer)
+		{
+			short vals;
+			int   vali;
+
+			int desiredsize = Header.BlockSize * Header.Channels * ((Header.BitsPerSample + 7) / 2);
+            if (buffer == null || buffer.Length < desiredsize)
+                buffer = new byte[desiredsize];
+
+            fixed (byte* ptrBuffer = buffer)
+            {
+                byte* ptr = ptrBuffer;
+				switch (Header.BitsPerSample)
+				{
+<#
+    foreach (var bps in possibleBitsPerSample)
+    {
+#>
+#region <#= bps #>
+					case <#= bps #>:
+						switch (Header.Channels)
+						{
+<#  foreach (var c in possibleNumberOfChannels)
+	{
+#>
+							case <#= c #>:
+								for (int i = 0; i < Header.BlockSize; i++)
+								{
+<#	for (int i = 0; i < c; i++)
+	{
+	    switch (bps)
+	    {
+			case 8:
+#>
+									*(ptr++) = (byte)(_subFrames[<#= i #>].DestinationBuffer[i] + 0x80);
+<#
+	            break;
+			case 16:
+#>
+									vals = (short)(_subFrames[<#= i #>].DestinationBuffer[i]);
+									*(ptr++) = (byte)(vals & 0xFF);
+									*(ptr++) = (byte)((vals >> 8) & 0xFF);
+
+<#
+	            break;
+			case 24:
+#>
+									vali = (_subFrames[<#= i #>].DestinationBuffer[i]);
+									*(ptr++) = (byte)(vali & 0xFF);
+									*(ptr++) = (byte)((vali >> 8) & 0xFF);
+									*(ptr++) = (byte)((vali >> 16) & 0xFF);
+
+<#
+	            break;
+			default:
+				throw new Exception("Invalid bps");
+	    }
+	} 
+#>
+								}
+								break;
+<#
+	}
+#>
+							default:
+<#
+        switch (bps)
+        {
+            case 8:
+#>
+								for (int i = 0; i < Header.BlockSize; i++)
+								{
+									for (int c = 0; c < Header.Channels; c++)
+									{
+										*(ptr++) = (byte)(_subFrames[c].DestinationBuffer[i] + 0x80);
+									}
+								}
+<#
+                break;
+			case 16:
+#>
+								for (int i = 0; i < Header.BlockSize; i++)
+								{
+									for (int c = 0; c < Header.Channels; c++)
+									{
+										short val = (short)(_subFrames[c].DestinationBuffer[i]);
+										*(ptr++) = (byte)(val & 0xFF);
+										*(ptr++) = (byte)((val >> 8) & 0xFF);
+									}
+								}
+<#
+                break;
+			case 24:
+#>
+								for (int i = 0; i < Header.BlockSize; i++)
+								{
+									for (int c = 0; c < Header.Channels; c++)
+									{
+										int val = (_subFrames[c].DestinationBuffer[i]);
+										*(ptr++) = (byte)(val & 0xFF);
+										*(ptr++) = (byte)((val >> 8) & 0xFF);
+										*(ptr++) = (byte)((val >> 16) & 0xFF);
+									}
+								}
+<#
+                break;
+				default: 
+					throw new Exception("Invalid bps");
+        }
+#>
+								break;
+						}
+						break;
+#endregion
+<#
+    }
+#>
+					default: //default bits per sample
+						throw new FlacException(String.Format("FlacFrame::GetBuffer: Invalid BitsPerSample value: {0}", Header.BitsPerSample), FlacLayer.Frame);
+				}
+				return (int)(ptr - ptrBuffer);
+			}
+		}
+    }
+}

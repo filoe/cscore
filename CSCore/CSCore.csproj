@@ -135,6 +135,11 @@
     <Compile Include="Codecs\FLAC\ChannelAssignment.cs" />
     <Compile Include="Codecs\FLAC\FlacException.cs" />
     <Compile Include="Codecs\FLAC\FlacConstant.cs" />
+    <Compile Include="Codecs\FLAC\FlacFrame_GetBuffer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FlacFrame_GetBuffer.tt</DependentUpon>
+    </Compile>
     <Compile Include="Codecs\FLAC\FlacResidualCodingMethod.cs" />
     <Compile Include="Codecs\FLAC\FlacFile.cs" />
     <Compile Include="Codecs\FLAC\FlacFrame.cs" />
@@ -582,6 +587,10 @@
       <LastGenOutput>AudioSubTypes.cs</LastGenOutput>
     </None>
     <None Include="Base.cd" />
+    <None Include="Codecs\FLAC\FlacFrame_GetBuffer.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>FlacFrame_GetBuffer.cs</LastGenOutput>
+    </None>
     <None Include="Codecs\FLAC\SubFrames\FlacSubFrameLPC_Calculation.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>FlacSubFrameLPC_Calculation.cs</LastGenOutput>

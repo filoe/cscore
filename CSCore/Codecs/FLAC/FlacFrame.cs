@@ -1,6 +1,8 @@
-﻿using System;
+﻿#define GET_BUFFER_INTERNAL
+
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -9,9 +11,10 @@ namespace CSCore.Codecs.FLAC
     /// <summary>
     /// Represents a frame inside of an Flac-Stream.
     /// </summary>
-    public sealed class FlacFrame : IDisposable
+    public sealed partial class FlacFrame : IDisposable
     {
-        private List<FlacSubFrameData> _subFrames;
+        private List<FlacSubFrameData> _subFrameData;
+        private ReadOnlyCollection<FlacSubFrameBase> _subFrames;  
         private Stream _stream;
         private FlacMetadataStreamInfo _streamInfo;
 
@@ -102,7 +105,7 @@ namespace CSCore.Codecs.FLAC
 
             //alocateOutput
             var data = AllocOuputMemory();
-            _subFrames = data;
+            _subFrameData = data;
 
             byte[] buffer = new byte[0x20000];
             if ((_streamInfo.MaxFrameSize * Header.Channels * Header.BitsPerSample * 2 >> 3) > buffer.Length)
@@ -127,13 +130,18 @@ namespace CSCore.Codecs.FLAC
                     subFrames.Add(subframe);
                 }
 
-                reader.Flush();
+                reader.Flush(); //Zero-padding to byte alignment.
+
+                //footer
                 Crc16 = (short) reader.ReadBits(16);
 
                 _stream.Position -= read - reader.Position;
-
-                MapToChannels(_subFrames);
+                MapToChannels(_subFrameData);
             }
+
+#if FLAC_DEBUG
+            _subFrames = subFrames.AsReadOnly();
+#endif
         }
 
         private unsafe void MapToChannels(List<FlacSubFrameData> subFrames)
@@ -172,8 +180,15 @@ namespace CSCore.Codecs.FLAC
         /// </summary>
         /// <param name="buffer">The buffer which should be used to store the data in. This value can be null.</param>
         /// <returns>The number of read bytes.</returns>
-        public unsafe int GetBuffer(ref byte[] buffer)
+        public
+#if FLAC_DEBUG && !GET_BUFFER_INTERNAL
+            unsafe 
+#endif
+ int GetBuffer(ref byte[] buffer)
         {
+#if !FLAC_DEBUG || GET_BUFFER_INTERNAL
+            return GetBufferInternal(ref buffer);
+#else 
             int desiredsize = Header.BlockSize * Header.Channels * ((Header.BitsPerSample + 7) / 2);
             if (buffer == null || buffer.Length < desiredsize)
                 buffer = new byte[desiredsize];
@@ -218,13 +233,12 @@ namespace CSCore.Codecs.FLAC
                 }
                 else
                 {
-                    string error = "FlacFrame::GetBuffer: Invalid Flac-BitsPerSample: " + Header.BitsPerSample + ".";
-                    Debug.WriteLine(error);
-                    throw new FlacException(error, FlacLayer.Frame);
+                    throw new FlacException(String.Format("FlacFrame::GetBuffer: Invalid BitsPerSample value: {0}", Header.BitsPerSample), FlacLayer.Frame);
                 }
 
                 return (int)(ptr - ptrBuffer);
             }
+#endif
         }
 
         private unsafe List<FlacSubFrameData> AllocOuputMemory()
