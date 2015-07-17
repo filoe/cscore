@@ -36,15 +36,16 @@ namespace CSCore.Codecs.FLAC
             {
                 subFrame = new FlacSubFrameVerbatim(reader, header, data, bitsPerSample);
             }
+            else if ((subframeType & 0x20) != 0) //100000 = 0x20
+            {
+                order = (int)(subframeType & 0x1F) + 1;
+                subFrame = new FlacSubFrameLPC(reader, header, data, bitsPerSample, order);
+            }
             else if ((subframeType & 0x08) != 0) //001000 = 0x08
             {
                 order = (int) (subframeType & 0x07);
+                if (order > 4) return null;
                 subFrame = new FlacSubFrameFixed(reader, header, data, bitsPerSample, order);
-            }
-            else if ((subframeType & 0x20) != 0) //100000 = 0x20
-            {
-                order = (int) (subframeType & 0x1F) + 1;
-                subFrame = new FlacSubFrameLPC(reader, header, data, bitsPerSample, order);
             }
             else
             {
