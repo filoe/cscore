@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 // ReSharper disable once CheckNamespace
 namespace CSCore.Codecs.FLAC
@@ -75,6 +76,15 @@ namespace CSCore.Codecs.FLAC
                 if (data == null || data.IsLastMetaBlock)
                     break;
             }
+        }
+
+        /// <summary>
+        /// Skips all <see cref="FlacMetadata"/> of the specified <paramref name="stream"/>.
+        /// </summary>
+        /// <param name="stream">The stream which contains the <see cref="FlacMetadata"/>.</param>
+        public static void SkipMetadata(Stream stream)
+        {
+            ReadAllMetadataFromStream(stream).ToArray();
         }
 
         /// <summary>

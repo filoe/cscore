@@ -42,6 +42,8 @@ namespace CSCore.Codecs.FLAC
             }
             TotalLength = totalLength;
             TotalSamples = totalsamples;
+
+            Debug.WriteLineIf(TotalSamples == streamInfo.TotalSamples, "Flac prescan successful. Calculated total_samples value matching the streaminfo-metadata.");
         }
 
         private void StartScan(FlacMetadataStreamInfo streamInfo, FlacPreScanMode mode)
@@ -100,7 +102,7 @@ namespace CSCore.Codecs.FLAC
             stream.Position = 4; //fLaC
 
             //skip the metadata
-            FlacMetadata.ReadAllMetadataFromStream(stream);
+            FlacMetadata.SkipMetadata(stream);
 
             List<FlacFrameInformation> frames = new List<FlacFrameInformation>();
             FlacFrameInformation frameInfo = new FlacFrameInformation();
