@@ -207,7 +207,7 @@ namespace CSCore
         }
 
         /// <summary>
-        /// Writes all audio data of the <paramref name="source" /> to the <paramref name="stream" />.
+        /// Writes all audio data of the <paramref name="source" /> to a wavestream (including a wav header).
         /// </summary>
         /// <param name="source">Source which provides the audio data to write to the <paramref name="stream" />.</param>
         /// <param name="stream"><see cref="Stream" /> to store the audio data in.</param>
@@ -234,6 +234,36 @@ namespace CSCore
                 {
                     writer.Write(buffer, 0, read);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Writes all audio data of the <paramref name="waveSource"/> to a stream. In comparison to the <see cref="WriteToWaveStream"/> method, 
+        /// the <see cref="WriteToStream"/> method won't encode the provided audio to any particular format. No wav, aiff,... header won't be included.
+        /// </summary>
+        /// <param name="waveSource">The waveSource which provides the audio data to write to the <paramref name="stream"/>.</param>
+        /// <param name="stream">The <see cref="Stream"/> to store the audio data in.</param>
+        /// <exception cref="System.ArgumentNullException">
+        /// waveSource
+        /// or
+        /// stream
+        /// </exception>
+        /// <exception cref="System.ArgumentException">Stream is not writeable.;stream</exception>
+        public static void WriteToStream(this IWaveSource waveSource, Stream stream)
+        {
+            if (waveSource == null)
+                throw new ArgumentNullException("waveSource");
+            if (stream == null)
+                throw new ArgumentNullException("stream");
+            if (!stream.CanWrite)
+                throw new ArgumentException("Stream is not writeable.", "stream");
+
+
+            var buffer = new byte[waveSource.WaveFormat.BytesPerSecond];
+            int read;
+            while ((read = waveSource.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                stream.Write(buffer, 0, read);
             }
         }
 
