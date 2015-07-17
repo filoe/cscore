@@ -26,16 +26,15 @@ namespace CSCore.Codecs.FLAC
                 warmup[i] = data.ResidualBuffer[i] = reader.ReadBitsSigned(bitsPerSample);
             }
 
-            int coefPrecision = (int)reader.ReadBits(4) + 1;
+            int coefPrecision = (int)reader.ReadBits(4);
             if (coefPrecision == 0x0F)
-            {
-                Debug.WriteLine("Invalid linear predictor coefficients' precision. Must not be 0x0F.");
-                return;
-            }
+                throw new FlacException("Invalid \"quantized linear predictor coefficients' precision in bits\" was invalid. Must not be 0x0F.",
+                    FlacLayer.SubFrame);
+            coefPrecision += 1;
 
             int shiftNeeded = reader.ReadBitsSigned(5);
             if (shiftNeeded < 0)
-                throw new FlacException("\"Quantized linear predictor coefficient shift needed.\" was negative.", FlacLayer.SubFrame);
+                throw new FlacException("'\"Quantized linear predictor coefficient shift needed in bits\" was negative.", FlacLayer.SubFrame);
 
             var q = new int[order];
             for (int i = 0; i < order; i++)
