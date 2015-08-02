@@ -333,6 +333,7 @@ namespace CSCore.Codecs.FLAC
                             _overflowOffset = 0;
 
                             int diff = (int) (value - Position);
+                            diff -= (diff % WaveFormat.BlockAlign);
                             if (diff > 0)
                             {
                                 this.ReadBytes(diff);

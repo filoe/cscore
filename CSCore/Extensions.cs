@@ -286,7 +286,8 @@ namespace CSCore
         {
             if (waveSource == null)
                 throw new ArgumentNullException("waveSource");
-            if(count <= 0 || (count % waveSource.WaveFormat.BlockAlign) != 0)
+            count -= (count % waveSource.WaveFormat.BlockAlign);
+            if(count <= 0)
                 throw new ArgumentOutOfRangeException("count");
 
             byte[] buffer = new byte[count];
