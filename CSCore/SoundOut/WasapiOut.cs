@@ -400,20 +400,11 @@ namespace CSCore.SoundOut
 				_audioClient.Start();
 				_playbackState = PlaybackState.Playing;
 
-			    string mmcssType = Latency > 25 ? "Audio" : "Pro Audio";
+				string mmcssType = Latency > 25 ? "Audio" : "Pro Audio";
 
-                try
-                {
-                    //on windows 10 the MMCSS functions sometimes throw a SEHException. Could not figure out "why" yet.
-                    //currently fixed through catching the exception
-                    //todo: find a better solution for this problem
-                    int taskIndex;
-                    avrtHandle = NativeMethods.AvSetMmThreadCharacteristics(mmcssType, out taskIndex);
-                }
-                catch (SEHException)
-                {
-                    Debug.WriteLine("Unhandled SEHException.");
-                }
+				int taskIndex;
+				avrtHandle = NativeMethods.AvSetMmThreadCharacteristics(mmcssType, out taskIndex);
+
 
 				if (playbackStartedEventWaithandle is EventWaitHandle)
 				{
@@ -489,40 +480,29 @@ namespace CSCore.SoundOut
 					}
 				}
 
-                try
-                {
-                    if (avrtHandle != IntPtr.Zero)
-                        NativeMethods.AvRevertMmThreadCharacteristics(avrtHandle);
-                }
-                catch (SEHException)
-                {
-                    Debug.WriteLine("Unhandled SEHException.");
-                }
+			    if (avrtHandle != IntPtr.Zero)
+			    {
+			        NativeMethods.AvRevertMmThreadCharacteristics(avrtHandle);
+			        avrtHandle = IntPtr.Zero;
+			    }
 
-				Thread.Sleep(_latency / 2);
+
+			    Thread.Sleep(_latency / 2);
 
 				_audioClient.Stop();
 				_audioClient.Reset();
 				//}
 			}
-			/*catch (Exception ex)
+			catch (Exception ex)
 			{
 				exception = ex;
-			}*/
+			}
 			finally
 			{
 				//set the playbackstate to stopped
 				_playbackState = PlaybackState.Stopped;
-
-			    try
-			    {
-			        if (avrtHandle != IntPtr.Zero)
-			            NativeMethods.AvRevertMmThreadCharacteristics(avrtHandle);
-			    }
-			    catch (SEHException)
-			    {
-			        Debug.WriteLine("Unhandled SEHException.");    
-			    }
+			    if (avrtHandle != IntPtr.Zero)
+			        NativeMethods.AvRevertMmThreadCharacteristics(avrtHandle);
 
 			    //set the eventWaitHandle since the Play() method maybe still waits on it (only possible if there were any errors during the initialization)
 				var eventWaitHandle = playbackStartedEventWaithandle as EventWaitHandle;
@@ -587,16 +567,17 @@ namespace CSCore.SoundOut
 				{
 					const long reftimesPerSec = 10000000;
 					int framesInBuffer = _audioClient.GetBufferSize();
+				    // ReSharper disable once PossibleLossOfFraction
 					latency = (int)(reftimesPerSec * framesInBuffer / _outputFormat.SampleRate + 0.5);
 					goto AUDCLNT_E_BUFFER_SIZE_NOT_ALIGNED_TRY_AGAIN;
 				}
 				throw;
 			}
 
-            if (_audioClient.StreamLatency != 0) //windows 10 returns zero, got no idea why => https://github.com/filoe/cscore/issues/11
-		    {
-                Latency = (int)(_audioClient.StreamLatency / reftimesPerMillisecond);   
-		    }
+			if (_audioClient.StreamLatency != 0) //windows 10 returns zero, got no idea why => https://github.com/filoe/cscore/issues/11
+			{
+				Latency = (int)(_audioClient.StreamLatency / reftimesPerMillisecond);   
+			}
 
 			if (_eventSync)
 			{
