@@ -505,10 +505,10 @@ namespace CSCore.SoundOut
 				_audioClient.Reset();
 				//}
 			}
-			catch (Exception ex)
+			/*catch (Exception ex)
 			{
 				exception = ex;
-			}
+			}*/
 			finally
 			{
 				//set the playbackstate to stopped
