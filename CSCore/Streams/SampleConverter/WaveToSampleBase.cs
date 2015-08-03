@@ -78,7 +78,7 @@ namespace CSCore.Streams.SampleConverter
         /// </summary>
         public long Length
         {
-            get { return CanSeek ? Source.Length / Source.WaveFormat.BytesPerSample : 0; }
+            get { return CanSeek && Source.Length != 0 ? Source.Length / Source.WaveFormat.BytesPerSample : 0; }
         }
 
         /// <summary>

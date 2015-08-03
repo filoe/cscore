@@ -400,9 +400,20 @@ namespace CSCore.SoundOut
 				_audioClient.Start();
 				_playbackState = PlaybackState.Playing;
 
-				int taskIndex;
-				string mmcssType = Latency > 25 ? "Audio" : "Pro Audio";
-				avrtHandle = NativeMethods.AvSetMmThreadCharacteristics(mmcssType, out taskIndex);
+			    string mmcssType = Latency > 25 ? "Audio" : "Pro Audio";
+
+                try
+                {
+                    //on windows 10 the MMCSS functions sometimes throw a SEHException. Could not figure out "why" yet.
+                    //currently fixed through catching the exception
+                    //todo: find a better solution for this problem
+                    int taskIndex;
+                    avrtHandle = NativeMethods.AvSetMmThreadCharacteristics(mmcssType, out taskIndex);
+                }
+                catch (SEHException)
+                {
+                    Debug.WriteLine("Unhandled SEHException.");
+                }
 
 				if (playbackStartedEventWaithandle is EventWaitHandle)
 				{
@@ -478,7 +489,15 @@ namespace CSCore.SoundOut
 					}
 				}
 
-				NativeMethods.AvRevertMmThreadCharacteristics(avrtHandle);
+                try
+                {
+                    if (avrtHandle != IntPtr.Zero)
+                        NativeMethods.AvRevertMmThreadCharacteristics(avrtHandle);
+                }
+                catch (SEHException)
+                {
+                    Debug.WriteLine("Unhandled SEHException.");
+                }
 
 				Thread.Sleep(_latency / 2);
 
@@ -495,10 +514,17 @@ namespace CSCore.SoundOut
 				//set the playbackstate to stopped
 				_playbackState = PlaybackState.Stopped;
 
-				if (avrtHandle != IntPtr.Zero)
-					NativeMethods.AvRevertMmThreadCharacteristics(avrtHandle);
+			    try
+			    {
+			        if (avrtHandle != IntPtr.Zero)
+			            NativeMethods.AvRevertMmThreadCharacteristics(avrtHandle);
+			    }
+			    catch (SEHException)
+			    {
+			        Debug.WriteLine("Unhandled SEHException.");    
+			    }
 
-				//set the eventWaitHandle since the Play() method maybe still waits on it (only possible if there were any errors during the initialization)
+			    //set the eventWaitHandle since the Play() method maybe still waits on it (only possible if there were any errors during the initialization)
 				var eventWaitHandle = playbackStartedEventWaithandle as EventWaitHandle;
 				if (eventWaitHandle != null)
 					eventWaitHandle.Set();
@@ -567,7 +593,10 @@ namespace CSCore.SoundOut
 				throw;
 			}
 
-			Latency = (int) (_audioClient.StreamLatency / reftimesPerMillisecond);
+            if (_audioClient.StreamLatency != 0) //windows 10 returns zero, got no idea why => https://github.com/filoe/cscore/issues/11
+		    {
+                Latency = (int)(_audioClient.StreamLatency / reftimesPerMillisecond);   
+		    }
 
 			if (_eventSync)
 			{

@@ -387,7 +387,10 @@ namespace CSCore.SoundIn
                 else
                 {
                     _audioClient.Initialize(_shareMode, AudioClientStreamFlags.StreamFlagsEventCallback | GetStreamFlags(), 0, 0, _waveFormat, Guid.Empty);
-                    _latency = (int)(_audioClient.StreamLatency / ReftimesPerMillisecond);
+                    if(_audioClient.StreamLatency > 0) 
+                    {
+                        _latency = (int) (_audioClient.StreamLatency / ReftimesPerMillisecond);
+                    }
                 }
 
                 _eventWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
