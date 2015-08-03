@@ -486,10 +486,10 @@ namespace CSCore.SoundOut
 				_audioClient.Reset();
 				//}
 			}
-			catch (Exception ex)
+			/*catch (Exception ex)
 			{
 				exception = ex;
-			}
+			}*/
 			finally
 			{
 				//set the playbackstate to stopped
@@ -567,7 +567,10 @@ namespace CSCore.SoundOut
 				throw;
 			}
 
-			Latency = (int) (_audioClient.StreamLatency / reftimesPerMillisecond);
+            if (_audioClient.StreamLatency != 0) //windows 10 returns zero, got no idea why => https://github.com/filoe/cscore/issues/11
+		    {
+                Latency = (int)(_audioClient.StreamLatency / reftimesPerMillisecond);   
+		    }
 
 			if (_eventSync)
 			{
