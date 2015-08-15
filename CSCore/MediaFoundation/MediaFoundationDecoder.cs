@@ -26,6 +26,7 @@ namespace CSCore.MediaFoundation
         private MFSourceReader _reader;
         private Stream _stream;
         private WaveFormat _waveFormat;
+        private bool _positionChanged;
 
         static MediaFoundationDecoder()
         {
@@ -121,6 +122,12 @@ namespace CSCore.MediaFoundation
                     {
                         if (flags != MFSourceReaderFlags.None)
                             break;
+                        var sampleTime = sample.GetSampleTime();
+                        if (_positionChanged && timestamp > 0)
+                        {
+                            _position = NanoSecond100UnitsToSamples(sampleTime);
+                            _positionChanged = false;
+                        }
 
                         using (MFMediaBuffer mediaBuffer = sample.ConvertToContiguousBuffer())
                         {
@@ -277,18 +284,13 @@ namespace CSCore.MediaFoundation
                         PropertyVariant value =
                             reader.GetPresentationAttribute(NativeMethods.MF_SOURCE_READER_MEDIASOURCE,
                                 MediaFoundationAttributes.MF_PD_DURATION))
-
-
                     {
                         //bug: still, depending on the decoder, this returns imprecise values.
-                        return ((value.HValue) * _waveFormat.BytesPerSecond) / 10000000L;
+                        return NanoSecond100UnitsToSamples(value.HValue);
                     }
                 }
                 catch (Exception)
                 {
-                    //if (e.Result == (int)HResult.MF_E_ATTRIBUTENOTFOUND)
-                    //    return 0;
-                    //throw;
                     return 0;
                 }
             }
@@ -300,12 +302,14 @@ namespace CSCore.MediaFoundation
             {
                 lock (_lockObj)
                 {
-                    long hnsPos = (10000000L * value) / WaveFormat.BytesPerSecond;
+                    long hnsPos = SamplesToNanoSecond100Units(value);
                     var propertyVariant = new PropertyVariant {HValue = hnsPos, DataType = VarEnum.VT_I8};
                     _reader.SetCurrentPosition(Guid.Empty, propertyVariant);
                     _decoderBufferCount = 0;
                     _decoderBufferOffset = 0;
                     _position = value;
+
+                    _positionChanged = true;
                 }
             }
         }
@@ -321,6 +325,16 @@ namespace CSCore.MediaFoundation
                 _decoderBufferOffset = 0;
 
             return count;
+        }
+
+        private long NanoSecond100UnitsToSamples(long nanoSeconds100Units)
+        {
+            return (nanoSeconds100Units * WaveFormat.BytesPerSecond) / 10000000L;
+        }
+
+        private long SamplesToNanoSecond100Units(long samples)
+        {
+            return (10000000L * samples) / WaveFormat.BytesPerSecond;
         }
 
         /// <summary>
