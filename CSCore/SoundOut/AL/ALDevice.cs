@@ -113,6 +113,12 @@ namespace CSCore.SoundOut.AL
             {
                 Context.Dispose();
             }
+
+            if (_deviceHandle != IntPtr.Zero)
+            {
+                ALInterops.alcCloseDevice(_deviceHandle);
+                _deviceHandle = IntPtr.Zero;
+            }
         }
     }
 }
