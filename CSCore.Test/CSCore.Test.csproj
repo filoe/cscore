@@ -126,6 +126,7 @@
     <Compile Include="SoundIn\WasapiCaptureBehaviourTests.cs" />
     <Compile Include="SoundIn\WasapiLoopbackCaptureBehaviourTests.cs" />
     <Compile Include="SoundIn\WaveInCaptureBehaviourTests.cs" />
+    <Compile Include="SoundOut\ALSoundOutBehaviourTests.cs" />
     <Compile Include="SoundOut\DirectSoundOutBehaviourTests.cs" />
     <Compile Include="SoundOut\SoundOutBehaviourTests.cs" />
     <Compile Include="SoundOut\WasapiOutBehaviourTests.cs" />
