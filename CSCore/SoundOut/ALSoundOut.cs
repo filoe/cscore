@@ -65,7 +65,8 @@ namespace CSCore.SoundOut
         /// <param name="device">The openal device</param>
         public ALSoundOut(ALDevice device)
         {
-            _alDevice = ALDevice.DefaultDevice;
+            _alDevice = device;
+            _alDevice.Initialize();
         }
 
         ~ALSoundOut()
