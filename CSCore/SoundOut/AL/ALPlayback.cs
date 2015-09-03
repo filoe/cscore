@@ -263,7 +263,10 @@ namespace CSCore.SoundOut.AL
         /// </summary>
         private void RaisePlaybackChanged()
         {
-            PlaybackChanged?.Invoke(this, EventArgs.Empty);
+            if (PlaybackChanged != null)
+            {
+                PlaybackChanged.Invoke(this, EventArgs.Empty);
+            }
         }
 
         /// <summary>
