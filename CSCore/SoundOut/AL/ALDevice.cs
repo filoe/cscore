@@ -19,7 +19,8 @@ namespace CSCore.SoundOut.AL
         internal ALContext Context { get; private set; }
 
         private IntPtr _deviceHandle;
-        private readonly List<ALSource> _sources; 
+        private readonly List<ALSource> _sources;
+        private bool _isInitialized;
 
         /// <summary>
         /// Initializes a new ALDevice class
@@ -33,10 +34,14 @@ namespace CSCore.SoundOut.AL
         /// <summary>
         /// Initializes the openal device
         /// </summary>
-        internal void Initialize()
+        public void Initialize()
         {
-            _deviceHandle = ALInterops.alcOpenDevice(Name);
-            Context = ALContext.CreateContext(_deviceHandle);
+            if (!_isInitialized)
+            {
+                _deviceHandle = ALInterops.alcOpenDevice(Name);
+                Context = ALContext.CreateContext(_deviceHandle);
+                _isInitialized = true;
+            }
         }
 
         /// <summary>
@@ -81,7 +86,6 @@ namespace CSCore.SoundOut.AL
                 for (int i = 0; i < devices.Length; i++)
                 {
                     devices[i] = new ALDevice(deviceNames[i]);
-                    devices[i].Initialize();
                 }
 
                 _devices = devices;
