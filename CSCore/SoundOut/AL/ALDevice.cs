@@ -4,19 +4,19 @@ using System.Linq;
 
 namespace CSCore.SoundOut.AL
 {
-    internal class ALDevice : IDisposable
+    public class ALDevice : IDisposable
     {
         private static ALDevice[] _devices;
 
         /// <summary>
         /// Gets the name
         /// </summary>
-        public string Name { get; }
+        public string Name { private set; get; }
 
         /// <summary>
         /// Gets the openal context
         /// </summary>
-        public ALContext Context { get; private set; }
+        internal ALContext Context { get; private set; }
 
         private IntPtr _deviceHandle;
         private readonly List<ALSource> _sources; 
@@ -24,7 +24,7 @@ namespace CSCore.SoundOut.AL
         /// <summary>
         /// Initializes a new ALDevice class
         /// </summary>
-        public ALDevice(string deviceName)
+        internal ALDevice(string deviceName)
         {
             Name = deviceName;
             _sources = new List<ALSource>();
@@ -33,7 +33,7 @@ namespace CSCore.SoundOut.AL
         /// <summary>
         /// Initializes the openal device
         /// </summary>
-        public void Initialize()
+        internal void Initialize()
         {
             _deviceHandle = ALInterops.alcOpenDevice(Name);
             Context = ALContext.CreateContext(_deviceHandle);
@@ -43,7 +43,7 @@ namespace CSCore.SoundOut.AL
         /// Generates a new openal source
         /// </summary>
         /// <returns></returns>
-        public ALSource GenerateALSource()
+        internal ALSource GenerateALSource()
         {
             Context.MakeCurrent();
 
@@ -57,7 +57,7 @@ namespace CSCore.SoundOut.AL
         /// Deletes the specified openal source
         /// </summary>
         /// <param name="source">The source</param>
-        public void DeleteALSource(ALSource source)
+        internal void DeleteALSource(ALSource source)
         {
             Context.MakeCurrent();
 
@@ -81,6 +81,7 @@ namespace CSCore.SoundOut.AL
                 for (int i = 0; i < devices.Length; i++)
                 {
                     devices[i] = new ALDevice(deviceNames[i]);
+                    devices[i].Initialize();
                 }
 
                 _devices = devices;
@@ -92,7 +93,10 @@ namespace CSCore.SoundOut.AL
         /// <summary>
         /// Gets the default playback device
         /// </summary>
-        public static ALDevice DefaultDevice => EnumerateALDevices().FirstOrDefault();
+        public static ALDevice DefaultDevice
+        {
+            get { return EnumerateALDevices().FirstOrDefault(); }
+        }
 
         /// <summary>
         /// Disposes the openal device

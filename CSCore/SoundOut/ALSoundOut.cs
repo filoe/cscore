@@ -50,12 +50,20 @@ namespace CSCore.SoundOut
 
         private ALPlayback _alPlayback;
         private VolumeSource _volumeSource;
-        private ALDevice _alDevice;
+        private readonly ALDevice _alDevice;
 
         /// <summary>
         /// Initializes a new ALSoundOut class
         /// </summary>
-        public ALSoundOut()
+        public ALSoundOut() : this(ALDevice.DefaultDevice)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new ALSoundOut class
+        /// </summary>
+        /// <param name="device">The openal device</param>
+        public ALSoundOut(ALDevice device)
         {
             _alDevice = ALDevice.DefaultDevice;
         }
@@ -63,14 +71,6 @@ namespace CSCore.SoundOut
         ~ALSoundOut()
         {
             Dispose(false);
-        }
-
-        static ALSoundOut()
-        {
-            if (ALInterops.IsSupported())
-            {
-                ALDevice.DefaultDevice.Initialize();
-            }
         }
 
         /// <summary>

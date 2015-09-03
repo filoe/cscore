@@ -7,7 +7,7 @@ namespace CSCore.SoundOut.AL
         /// <summary>
         /// Gets the openal source id
         /// </summary>
-        public uint Id { get; }
+        public uint Id { private set; get; }
 
         private readonly ALDevice _device;
 
