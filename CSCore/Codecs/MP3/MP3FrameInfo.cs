@@ -9,7 +9,7 @@ namespace CSCore.Codecs.MP3
     {
         public long StreamPosition;
         public int SampleIndex;
-        public int SampleAmount;
-        public int Size;
+        //public int SampleAmount;
+        //public int Size;
     }
 }

@@ -37,8 +37,8 @@ namespace CSCore.Codecs.MP3
                 _frame = Mp3Frame.FromStream(stream);
                 if (_frame != null)
                 {
-                    info.SampleAmount = _frame.SampleCount;
-                    info.Size = Convert.ToInt32(stream.Position - info.StreamPosition);
+                    //info.SampleAmount = _frame.SampleCount;
+                    //info.Size = Convert.ToInt32(stream.Position - info.StreamPosition);
                     TotalSamples += _frame.SampleCount;
 
                     Add(info);
