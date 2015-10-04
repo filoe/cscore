@@ -1,4 +1,5 @@
 using CSCore.Streams;
+using CSCore.Streams.Effects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CSCore.Test.Streams
