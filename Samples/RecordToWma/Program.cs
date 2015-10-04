@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CSCore;
+using CSCore.Codecs.WAV;
 using CSCore.MediaFoundation;
 using CSCore.SoundIn;
 using CSCore.Streams;
@@ -20,7 +21,8 @@ namespace RecordToWma
                 var wasapiCaptureSource = new SoundInSource(wasapiCapture);
                 using(var stereoSource = wasapiCaptureSource.ToStereo())
                 {
-                    using (var writer = MediaFoundationEncoder.CreateWMAEncoder(stereoSource.WaveFormat, "output.wma"))
+                    //using (var writer = MediaFoundationEncoder.CreateWMAEncoder(stereoSource.WaveFormat, "output.wma"))
+                    using(var writer = new WaveWriter("output.wav", stereoSource.WaveFormat))
                     {
                         byte[] buffer = new byte[stereoSource.WaveFormat.BytesPerSecond];
                         wasapiCaptureSource.DataAvailable += (s, e) =>
