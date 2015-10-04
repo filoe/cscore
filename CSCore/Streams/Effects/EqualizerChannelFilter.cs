@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using CSCore.DSP;
 
-namespace CSCore.Streams
+namespace CSCore.Streams.Effects
 {
     /// <summary>
     ///     Represents an EqualizerFilter for a single channel.

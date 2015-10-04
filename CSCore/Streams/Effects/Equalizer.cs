@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace CSCore.Streams
+namespace CSCore.Streams.Effects
 {
     /// <summary>
     ///     Represents an equalizer which can be dynamically modified by adding, removing or modifying
