@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.Threading;
 using CSCore.Codecs;
+using CSCore.CoreAudioAPI;
+using CSCore.Win32;
 using CSCore.XAudio2;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -182,34 +184,63 @@ namespace CSCore.Test.XAudio2
         {
             for (int i = 0; i < 20; i++)
             {
-                using (var xaudio2 = new XAudio2_7())
+                using (var masteringVoice = _xaudio2.CreateMasteringVoice())
+                using (var source = GlobalTestConfig.TestWav2S())
+                using (var pool = new StreamingSourceVoiceListener())
+                using (var streamingSourceVoice = StreamingSourceVoice.Create(_xaudio2, source))
                 {
-                    xaudio2.StartEngine();
+                    var stoppedEvent = new ManualResetEvent(false);
+                    streamingSourceVoice.Stopped += (s, e) =>
+                        stoppedEvent.Set();
 
-                    using (var masteringVoice = xaudio2.CreateMasteringVoice())
-                    using (var source = GlobalTestConfig.TestWav2S())
-                    using (var pool = new StreamingSourceVoiceListener())
-                    using (var streamingSourceVoice = StreamingSourceVoice.Create(xaudio2, source))
-                    {
-                        var stoppedEvent = new ManualResetEvent(false);
-                        streamingSourceVoice.Stopped += (s, e) =>
-                            stoppedEvent.Set();
+                    streamingSourceVoice.Start();
 
-                        streamingSourceVoice.Start();
+                    pool.Add(streamingSourceVoice);
 
-                        pool.Add(streamingSourceVoice);
+                    Debug.WriteLine("All queued.");
 
-                        Debug.WriteLine("All queued.");
+                    stoppedEvent.WaitOne();
 
-                        stoppedEvent.WaitOne();
-
-                        pool.Remove(streamingSourceVoice);
-                    }
-
-                    xaudio2.StopEngine();
+                    pool.Remove(streamingSourceVoice);
                 }
 
                 Debug.WriteLine("All removed.");
+            }
+        }
+
+        [TestMethod]
+        public void CanSelectXAudioDevice()
+        {
+            object deviceId = null;
+            if (_xaudio2 is XAudio2_7)
+            {
+                var xaudio27 = ((XAudio2_7)_xaudio2);
+                int deviceCount = xaudio27.GetDeviceCount();
+                var deviceDetails = xaudio27.GetDeviceDetails(deviceCount - 1);
+
+                Debug.WriteLine(deviceDetails.DisplayName);
+
+                deviceId = 0; //deviceid for XAudio2.7 is the index of a device from 0 - (deviceCount - 1).
+            }
+            else if (_xaudio2 is XAudio2_8)
+            {
+                //deviceId =
+                //    MMDeviceEnumerator.DefaultAudioEndpoint(DataFlow.Render, Role.Console)
+                //        .PropertyStore.GetValue(PropertyStore.AudioEndpointPath)
+                //        .GetValue();
+                deviceId = MMDeviceEnumerator.DefaultAudioEndpoint(DataFlow.Render, Role.Console).DevicePath;
+                //deviceid for XAudio2.8 is the MMDeviceID of an MMDevice
+            }
+            else
+            {
+                Assert.Fail("Invalid XAudio Version");
+            }
+
+            using (
+                var masteringVoice = _xaudio2.CreateMasteringVoice(CSCore.XAudio2.XAudio2.DefaultChannels,
+                    CSCore.XAudio2.XAudio2.DefaultSampleRate, deviceId))
+            {
+                
             }
         }
 

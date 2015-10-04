@@ -58,6 +58,18 @@ namespace CSCore.CoreAudioAPI
         }
 
         /// <summary>
+        /// Gets the AudioEndpointPath of the device.
+        /// </summary>
+        /// <remarks>
+        ///     This value is stored in the <see cref="PropertyStore"/>.
+        ///     Use this value as the deviceid for XAudio2.8 device selection.
+        /// </remarks>
+        public string DevicePath
+        {
+            get { return (string) PropertyStore[PropertyStore.AudioEndpointPath].GetValue(); }
+        }
+
+        /// <summary>
         /// Gets the device state of the device.
         /// </summary>
         public DeviceState DeviceState

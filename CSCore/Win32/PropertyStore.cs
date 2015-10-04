@@ -49,6 +49,13 @@ namespace CSCore.Win32
             14);
 
         /// <summary>
+        /// Audio Endpoint Path - key
+        /// </summary>
+        public static readonly PropertyKey AudioEndpointPath = new PropertyKey(
+            new Guid(0x9c119480, 0xddc2, 0x4954, 0xa1, 0x50, 0x5b, 0xd2, 0x40, 0xd4, 0x54, 0xad), 
+            1);
+
+        /// <summary>
         ///     Initializes a new instance of the <see cref="PropertyStore" /> class.
         /// </summary>
         /// <param name="ptr">The native pointer of the COM object.</param>

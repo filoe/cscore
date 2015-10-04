@@ -350,6 +350,9 @@
     <Compile Include="Streams\Effects\DmoFlangerEffect.cs" />
     <Compile Include="Streams\Effects\DmoGargleEffect.cs" />
     <Compile Include="Streams\Effects\DmoWavesReverbEffect.cs" />
+    <Compile Include="Streams\Effects\Equalizer.cs" />
+    <Compile Include="Streams\Effects\EqualizerChannelFilter.cs" />
+    <Compile Include="Streams\Effects\EqualizerFilter.cs" />
     <Compile Include="Streams\Effects\FlangerPhase.cs" />
     <Compile Include="Streams\Effects\FlangerWaveform.cs" />
     <Compile Include="Streams\Effects\GargleWaveShape.cs" />
@@ -362,9 +365,6 @@
     <Compile Include="Streams\SynchronizedWaveSource.cs" />
     <Compile Include="Streams\WriteableBufferingSource.cs" />
     <Compile Include="Streams\BufferSource.cs" />
-    <Compile Include="Streams\EqualizerChannelFilter.cs" />
-    <Compile Include="Streams\EqualizerFilter.cs" />
-    <Compile Include="Streams\Equalizer.cs" />
     <Compile Include="Streams\SingleBlockNotificationStream.cs" />
     <Compile Include="Streams\SingleBlockReadEventArgs.cs" />
     <Compile Include="AudioEncoding.cs" />

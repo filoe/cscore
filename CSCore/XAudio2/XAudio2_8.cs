@@ -292,9 +292,9 @@ namespace CSCore.XAudio2
             IntPtr pdeviceId = IntPtr.Zero;
             try
             {
-                EffectChain value1 = effectChain.HasValue ? effectChain.Value : new EffectChain();
+                EffectChain value1 = effectChain ?? new EffectChain();
                 if (device != null)
-                    pdeviceId = Marshal.StringToHGlobalUni(device);
+                    pdeviceId = Marshal.StringToHGlobalAnsi(device);
 
                 fixed (void* ptr = &pMasteringVoice)
                 {

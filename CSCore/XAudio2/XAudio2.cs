@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using CSCore.CoreAudioAPI;
 using CSCore.Win32;
 
 namespace CSCore.XAudio2
@@ -584,8 +585,12 @@ namespace CSCore.XAudio2
         /// </param>
         /// <param name="flags">Flags that specify the behavior of the mastering voice. Must be 0.</param>
         /// <param name="device">
-        ///     Identifier of the device to receive the output audio. Specifying the default value of NULL (for XAudio2.8) or 0 (for XAudio2.7) causes
+        ///     Identifier of the device to receive the output audio. 
+        ///     Specifying the default value of NULL (for XAudio2.8) or 0 (for XAudio2.7) causes
         ///     XAudio2 to select the global default audio device.
+        ///     
+        ///     On XAudio2.7: Use the <see cref="XAudio2_7.GetDeviceCount"/> and the <see cref="XAudio2_7.GetDeviceDetails"/> method to enumerate device. Pass its index (valid range from 0 to <see cref="XAudio2_7.GetDeviceCount"/>) to the <paramref name="device"/> argument.
+        ///     On XAudio2.8: Use the <see cref="MMDeviceEnumerator"/> class to enumerate <see cref="MMDevice"/> objects. Pass its <see cref="MMDevice.DevicePath"/> to the <paramref name="device"/> argument.
         /// </param>
         /// <param name="effectChain">
         ///     <see cref="EffectChain" /> structure that describes an effect chain to use in the mastering
@@ -618,8 +623,12 @@ namespace CSCore.XAudio2
         /// </param>
         /// <param name="flags">Flags that specify the behavior of the mastering voice. Must be 0.</param>
         /// <param name="device">
-        ///     Identifier of the device to receive the output audio. Specifying the default value of NULL (for XAudio2.8) or 0 (for XAudio2.7) causes
+        ///     Identifier of the device to receive the output audio. 
+        ///     Specifying the default value of NULL (for XAudio2.8) or 0 (for XAudio2.7) causes
         ///     XAudio2 to select the global default audio device.
+        ///     
+        ///     On XAudio2.7: Use the <see cref="XAudio2_7.GetDeviceCount"/> and the <see cref="XAudio2_7.GetDeviceDetails"/> method to enumerate device. Pass its index (valid range from 0 to <see cref="XAudio2_7.GetDeviceCount"/>) to the <paramref name="device"/> argument.
+        ///     On XAudio2.8: Use the <see cref="MMDeviceEnumerator"/> class to enumerate <see cref="MMDevice"/> objects. Pass its <see cref="MMDevice.DevicePath"/> to the <paramref name="device"/> argument.
         /// </param>
         /// <param name="effectChain">
         ///     <see cref="EffectChain" /> structure that describes an effect chain to use in the mastering
@@ -656,8 +665,12 @@ namespace CSCore.XAudio2
         ///     platform.
         /// </param>
         /// <param name="device">
-        ///     Identifier of the device to receive the output audio. Specifying the default value of NULL (for XAudio2.8) or 0 (for XAudio2.7) causes
+        ///     Identifier of the device to receive the output audio. 
+        ///     Specifying the default value of NULL (for XAudio2.8) or 0 (for XAudio2.7) causes
         ///     XAudio2 to select the global default audio device.
+        ///     
+        ///     On XAudio2.7: Use the <see cref="XAudio2_7.GetDeviceCount"/> and the <see cref="XAudio2_7.GetDeviceDetails"/> method to enumerate device. Pass its index (valid range from 0 to <see cref="XAudio2_7.GetDeviceCount"/>) to the <paramref name="device"/> argument.
+        ///     On XAudio2.8: Use the <see cref="MMDeviceEnumerator"/> class to enumerate <see cref="MMDevice"/> objects. Pass its <see cref="MMDevice.DevicePath"/> to the <paramref name="device"/> argument.
         /// </param>
         /// <param name="effectChain">
         ///     <see cref="EffectChain" /> structure that describes an effect chain to use in the mastering
@@ -692,8 +705,12 @@ namespace CSCore.XAudio2
         ///     platform.
         /// </param>
         /// <param name="device">
-        ///     Identifier of the device to receive the output audio. Specifying the default value of NULL (for XAudio2.8) or 0 (for XAudio2.7) causes
+        ///     Identifier of the device to receive the output audio. 
+        ///     Specifying the default value of NULL (for XAudio2.8) or 0 (for XAudio2.7) causes
         ///     XAudio2 to select the global default audio device.
+        ///     
+        ///     On XAudio2.7: Use the <see cref="XAudio2_7.GetDeviceCount"/> and the <see cref="XAudio2_7.GetDeviceDetails"/> method to enumerate device. Pass its index (valid range from 0 to <see cref="XAudio2_7.GetDeviceCount"/>) to the <paramref name="device"/> argument.
+        ///     On XAudio2.8: Use the <see cref="MMDeviceEnumerator"/> class to enumerate <see cref="MMDevice"/> objects. Pass its <see cref="MMDevice.DevicePath"/> to the <paramref name="device"/> argument.
         /// </param>
         /// <returns>If successful, returns a new <see cref="XAudio2MasteringVoice" /> object.</returns>
         public XAudio2MasteringVoice CreateMasteringVoice(int inputChannels, int inputSampleRate,
