@@ -9,10 +9,6 @@ namespace CSCore.DMO.Effects
     public struct WavesReverbParameters
     {
         /// <summary>
-        /// The high freq rt ratio.
-        /// </summary>
-        public float HighFreqRTRatio;
-        /// <summary>
         /// The in gain.
         /// </summary>
         public float InGain;
@@ -24,5 +20,9 @@ namespace CSCore.DMO.Effects
         /// The reverb time.
         /// </summary>
         public float ReverbTime;
+        /// <summary>
+        /// The high freq rt ratio.
+        /// </summary>
+        public float HighFreqRTRatio;
     }
 }
