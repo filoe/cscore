@@ -23,6 +23,7 @@ namespace SimpleMixerSample
                 throw new ArgumentOutOfRangeException("sampleRate");
 
             _waveFormat = new WaveFormat(sampleRate, 32, channelCount, AudioEncoding.IeeeFloat);
+            FillWithZeros = false;
         }
 
         public void AddSource(ISampleSource source)
@@ -74,7 +75,7 @@ namespace SimpleMixerSample
                         int read = sampleSource.Read(_mixerBuffer, 0, count);
                         for (int i = offset, n = 0; n < read; i++, n++)
                         {
-                            if (numberOfStoredSamples < i)
+                            if (numberOfStoredSamples <= i)
                                 buffer[i] = _mixerBuffer[n];
                             else
                                 buffer[i] += _mixerBuffer[n];
@@ -152,7 +153,7 @@ namespace SimpleMixerSample
         {
             lock (_lockObj)
             {
-                foreach (var sampleSource in _sampleSources)
+                foreach (var sampleSource in _sampleSources.ToArray())
                 {
                     sampleSource.Dispose();
                     _sampleSources.Remove(sampleSource);
