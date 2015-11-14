@@ -49,7 +49,7 @@ namespace CSCore.Codecs.WAV
 
             _stream = stream;
             _waveStartPosition = stream.Position;
-	        _writer = new BinaryWriter(stream);
+            _writer = new BinaryWriter(stream);
             for (int i = 0; i < 44; i++)
             {
                 _writer.Write((byte) 0);
@@ -257,23 +257,23 @@ namespace CSCore.Codecs.WAV
         /// </param>
         protected virtual void Dispose(bool disposing)
         {
-			if (_writer != null)
-	        {
-				try
-				{
-					WriteHeader();
-				}
-				catch (Exception ex)
-				{
-					Debug.WriteLine("WaveWriter::Dispose: " + ex);
-				}
-				finally
-				{
-					_writer.Close();
-					_writer = null;
-					_stream = null;
-				}
-	        }
+            if (_writer != null)
+            {
+                try
+                {
+                    WriteHeader();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("WaveWriter::Dispose: " + ex);
+                }
+                finally
+                {
+                    _writer.Close();
+                    _writer = null;
+                    _stream = null;
+                }
+            }
         }
 
         /// <summary>
