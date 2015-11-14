@@ -318,7 +318,7 @@ namespace CSCore.SoundIn
 
                 if (Math.Max(buffer.Length - read, 0) < bytesAvailable && read > 0)
                 {
-                    RaiseDataAvilable(buffer, 0, read);
+                    RaiseDataAvailable(buffer, 0, read);
                     read = offset = 0;
                 }
 
@@ -338,7 +338,7 @@ namespace CSCore.SoundIn
                 nextPacketSize = captureClient.GetNextPacketSize();
             }
 
-            RaiseDataAvilable(buffer, 0, read);
+            RaiseDataAvailable(buffer, 0, read);
         }
 
         private void InitializeInternal()
@@ -400,7 +400,7 @@ namespace CSCore.SoundIn
             _audioCaptureClient = AudioCaptureClient.FromAudioClient(_audioClient);
         }
 
-        private void RaiseDataAvilable(byte[] buffer, int offset, int count)
+        private void RaiseDataAvailable(byte[] buffer, int offset, int count)
         {
             if (count <= 0)
                 return;
