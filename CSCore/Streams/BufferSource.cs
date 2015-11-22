@@ -143,6 +143,7 @@ namespace CSCore.Streams
 
                 lock (_lockObject)
                 {
+                    value -= (value % WaveFormat.BlockAlign);
                     base.Position = value;
                     ResetBuffer();
                 }

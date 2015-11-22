@@ -68,6 +68,7 @@ namespace CSCore.Streams
             }
             set
             {
+                value -= (value % WaveFormat.BlockAlign);
                 base.Position = value / 2;
             }
         }

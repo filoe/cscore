@@ -99,7 +99,7 @@ namespace CSCore.Streams
             set
             {
                 CheckForDisposed();
-
+                value -= (value % WaveFormat.BlockAlign);
                 _cache.Position = value;
             }
         }

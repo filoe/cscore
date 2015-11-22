@@ -74,10 +74,15 @@ namespace CSCore.Streams.SampleConverter
             get { return CanSeek ? Source.Position * WaveFormat.BytesPerSample : 0; }
             set
             {
-                if(CanSeek)
+                if (CanSeek)
+                {
+                    value -= (value % WaveFormat.BlockAlign);
                     Source.Position = value / WaveFormat.BytesPerSample;
+                }
                 else
+                {
                     throw new InvalidOperationException();
+                }
             }
         }
 

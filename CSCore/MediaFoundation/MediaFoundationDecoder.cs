@@ -302,6 +302,7 @@ namespace CSCore.MediaFoundation
             {
                 lock (_lockObj)
                 {
+                    value -= (value % WaveFormat.BlockAlign);
                     long hnsPos = SamplesToNanoSecond100Units(value);
                     var propertyVariant = new PropertyVariant {HValue = hnsPos, DataType = VarEnum.VT_I8};
                     _reader.SetCurrentPosition(Guid.Empty, propertyVariant);

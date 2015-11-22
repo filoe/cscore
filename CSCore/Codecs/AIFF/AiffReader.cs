@@ -209,6 +209,7 @@ namespace CSCore.Codecs.AIFF
                 CheckDisposed();
                 if (value > Length || value < 0)
                     throw new ArgumentOutOfRangeException("value");
+                value -= (value % WaveFormat.BlockAlign);
                 _stream.Position = value + _soundDataChunk.AudioDataStartPosition;
             }
         }

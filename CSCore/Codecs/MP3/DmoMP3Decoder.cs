@@ -190,8 +190,8 @@ namespace CSCore.Codecs.MP3
 
         private void SetPosition(long value)
         {
-            value = Math.Min(value, Length);
-            value = (value > 0) ? value : 0;
+            value = Math.Max(Math.Min(value, Length), 0);
+            value -= (value % WaveFormat.BlockAlign);
 
             //long n = value / WaveFormat.BytesPerBlock;
 

@@ -64,10 +64,15 @@ namespace CSCore
             get { return CanSeek ? BaseSource.Position : 0; }
             set
             {
-                if(CanSeek)
+                if (CanSeek)
+                {
+                    value -= (value % WaveFormat.BlockAlign);
                     BaseSource.Position = value;
+                }
                 else
+                {
                     throw new InvalidOperationException("Underlying BaseSource is not readable.");
+                }
             }
         }
 

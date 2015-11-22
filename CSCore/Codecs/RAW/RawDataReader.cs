@@ -87,6 +87,7 @@ namespace CSCore.Codecs.RAW
             set
             {
                 CheckForDisposed();
+                value -= (value % WaveFormat.BlockAlign);
                 _stream.Position = _startPosition + value;
             }
         }
