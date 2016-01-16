@@ -12,19 +12,7 @@ namespace AudioPlayerSample
         private ISoundOut _soundOut;
         private IWaveSource _waveSource;
 
-        public event EventHandler<PlaybackStoppedEventArgs> PlaybackStopped
-        {
-            add
-            {
-                if (_soundOut != null)
-                    _soundOut.Stopped += value;
-            }
-            remove
-            {
-                if (_soundOut != null)
-                    _soundOut.Stopped -= value;
-            }
-        }
+		public event EventHandler<PlaybackStoppedEventArgs> PlaybackStopped;
 
         public PlaybackState PlaybackState
         {
@@ -89,6 +77,7 @@ namespace AudioPlayerSample
                     .ToWaveSource();
             _soundOut = new WasapiOut() {Latency = 100, Device = device};
             _soundOut.Initialize(_waveSource);
+			if (PlaybackStopped != null) _soundOut.Stopped += PlaybackStopped;
         }
 
         public void Play()
