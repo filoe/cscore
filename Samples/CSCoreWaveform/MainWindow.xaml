@@ -1,0 +1,26 @@
+﻿<Window x:Class="CSCoreWaveform.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:waveform="clr-namespace:CSCoreWaveform"
+        DataContext="{Binding Mode=OneWay, RelativeSource={RelativeSource Self}}"
+        Title="MainWindow" Height="350" Width="1000"
+        Closing="MainWindow_OnClosing"
+        WindowState="Maximized">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Open" Click="Open_Click"/>
+        </Menu>
+        <ItemsControl ItemsSource="{Binding Channels}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="waveform:WaveformData">
+                    <waveform:Waveform PositionInPerc="{Binding PositionInPerc}" ChannelData="{Binding Data}" MinHeight="150" Margin="30" PositionChanged="Waveform_OnPositionChanged"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </DockPanel>
+</Window>

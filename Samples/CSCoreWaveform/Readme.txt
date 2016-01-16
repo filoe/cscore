@@ -1,0 +1,2 @@
+﻿Since some Microsoft Mediafoundation Decoders have some serious problems with returning the correct length of an audio source, this sample currently loads the whole audio source into a cache.
+That is just a temporary workaround.
