@@ -3,7 +3,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using CSCore.DMO;
-using CSCore.Win32;
+using CSCore.Tags.ID3;
 
 namespace CSCore.Codecs.MP3
 {
@@ -85,6 +85,8 @@ namespace CSCore.Codecs.MP3
         {
             Mp3Frame frame = null;
             long offsetOfFirstFrame = 0;
+
+            ID3v2.SkipTag(stream);
 
             while (frame == null && !stream.IsEndOfStream())
             {
