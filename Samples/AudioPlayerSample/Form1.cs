@@ -23,7 +23,10 @@ namespace AudioPlayerSample
             components.Add(_musicPlayer);
             _musicPlayer.PlaybackStopped += (s, args) =>
             {
-                btnPlay.Enabled = btnStop.Enabled = btnPause.Enabled = false;
+                //WasapiOut uses SynchronizationContext.Post to raise the event
+                //There might be already a new WasapiOut-instance in the background when the async Post method brings the PlaybackStopped-Event to us.
+                if(_musicPlayer.PlaybackState != PlaybackState.Stopped)
+                    btnPlay.Enabled = btnStop.Enabled = btnPause.Enabled = false;
             };
         }
 
