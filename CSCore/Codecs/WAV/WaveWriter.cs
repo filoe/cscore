@@ -14,7 +14,6 @@ namespace CSCore.Codecs.WAV
 
         private readonly long _waveStartPosition;
         private int _dataLength;
-        private bool _disposed;
         private Stream _stream;
         private BinaryWriter _writer;
 
@@ -258,7 +257,7 @@ namespace CSCore.Codecs.WAV
         /// </param>
         protected virtual void Dispose(bool disposing)
         {
-            if (!_disposed)
+            if (_writer != null)
             {
                 try
                 {
@@ -275,7 +274,6 @@ namespace CSCore.Codecs.WAV
                     _stream = null;
                 }
             }
-            _disposed = true;
         }
 
         /// <summary>
