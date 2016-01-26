@@ -91,22 +91,23 @@ namespace CSCore.Streams
             int read = base.Read(buffer, offset, count);
             int channels = WaveFormat.Channels;
 
-            if (BlockRead != null)
+            EventHandler blockRead = this.BlockRead;
+            if (blockRead != null)
             {
                 for (int i = 0; i < read / channels; i++)
                 {
                     _blocksRead++;
                     if (_blocksRead >= BlockCount)
                     {
-                        if (BlockRead != null)
-                            BlockRead(this, EventArgs.Empty);
+                        blockRead(this, EventArgs.Empty);
                         _blocksRead = 0;
                     }
                 }
             }
 
-            if (DataRead != null)
-                DataRead(this, EventArgs.Empty);
+            EventHandler dataRead = this.DataRead;
+            if (dataRead != null)
+                dataRead(this, EventArgs.Empty);
 
             return read;
         }
