@@ -18,7 +18,7 @@ namespace CSCore.DSP
         internal WMResampler Resampler;
         private bool _disposed;
         private int _quality = 30;
-        private byte[] readBuffer;
+        private byte[] _readBuffer;
 
         private static WaveFormat GetWaveFormatWithChangedSampleRate(IWaveSource source, int destSampleRate)
         {
@@ -149,8 +149,8 @@ namespace CSCore.DSP
                     if (mediaObject.IsReadyForInput(0))
                     {
                         var bytesToRead = (int) OutputToInput(count - read);
-                        this.readBuffer = this.readBuffer.CheckBuffer(bytesToRead);
-                        int bytesRead = base.Read(this.readBuffer, 0, this.readBuffer.Length);
+                        _readBuffer = _readBuffer.CheckBuffer(bytesToRead);
+                        int bytesRead = base.Read(_readBuffer, 0, _readBuffer.Length);
                         if (bytesRead <= 0)
                             break;
 
@@ -162,7 +162,7 @@ namespace CSCore.DSP
                             InputBuffer.Dispose();
                             InputBuffer = new MediaBuffer(bytesRead);
                         }
-                        InputBuffer.Write(this.readBuffer, 0, bytesRead);
+                        InputBuffer.Write(_readBuffer, 0, bytesRead);
 
                         mediaObject.ProcessInput(0, InputBuffer);
 
@@ -238,7 +238,7 @@ namespace CSCore.DSP
             DisposeAndReset(ref Resampler);
             OutputBuffer.Dispose();
             DisposeAndReset(ref InputBuffer);
-            this.readBuffer = null;
+            _readBuffer = null;
 
             _disposed = true;
         }
