@@ -107,7 +107,10 @@ namespace CSCore.XAudio2
             lock (_lockObj) //make sure that nothing gets disposed while anything is still in use.
             {
                 if (_disposed)
+                {
+                    _waitHandle.Close();
                     return;
+                }
 
                 int buffersQueued = GetState(GetVoiceStateFlags.NoSamplesPlayed).BuffersQueued;
                 if (buffersQueued >= MaxBufferCount)
@@ -151,7 +154,7 @@ namespace CSCore.XAudio2
                 if (_disposed)
                     return;
 
-                _waitHandle.Close();
+                _waitHandle.Reset();
                 Stop(SourceVoiceStopFlags.None, XAudio2.CommitNow);
 
                 foreach (XAudio2Buffer buffer in _buffers)
