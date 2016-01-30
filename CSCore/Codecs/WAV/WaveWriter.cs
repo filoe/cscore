@@ -14,9 +14,32 @@ namespace CSCore.Codecs.WAV
 
         private readonly long _waveStartPosition;
         private int _dataLength;
-        private bool _disposed;
+        private bool _isDisposed;
         private Stream _stream;
         private BinaryWriter _writer;
+        private bool _isDisposing;
+
+        /// <summary>
+        /// Signals if the object has already been disposed
+        /// </summary>
+        public bool IsDisposed
+        {
+            get
+            {
+                return _isDisposed;
+            }
+        }
+
+        /// <summary>
+        /// Signals if the object is in a disposing state
+        /// </summary>
+        public bool IsDisposing
+        {
+            get
+            {
+                return _isDisposing;
+            }
+        }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="WaveWriter" /> class.
@@ -42,12 +65,14 @@ namespace CSCore.Codecs.WAV
         public WaveWriter(Stream stream, WaveFormat waveFormat)
         {
             if (stream == null)
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             if (!stream.CanWrite)
-                throw new ArgumentException("Stream not writeable.", "stream");
+                throw new ArgumentException("Stream not writeable.", nameof(stream));
             if (!stream.CanSeek)
-                throw new ArgumentException("Stream not seekable.", "stream");
+                throw new ArgumentException("Stream not seekable.", nameof(stream));
 
+            _isDisposing = false;
+            _isDisposed = false;
             _stream = stream;
             _waveStartPosition = stream.Position;
             _writer = new BinaryWriter(stream);
@@ -107,6 +132,8 @@ namespace CSCore.Codecs.WAV
         /// <param name="sample">The sample to encode.</param>
         public void WriteSample(float sample)
         {
+            CheckObjectDisposed();
+
             if (_waveFormat.IsPCM())
             {
                 switch (_waveFormat.BitsPerSample)
@@ -146,6 +173,8 @@ namespace CSCore.Codecs.WAV
         /// <param name="count">Number of samples to encode.</param>
         public void WriteSamples(float[] samples, int offset, int count)
         {
+            CheckObjectDisposed();
+
             for (int i = offset; i < offset + count; i++)
             {
                 WriteSample(samples[i]);
@@ -160,6 +189,8 @@ namespace CSCore.Codecs.WAV
         /// <param name="count">Number of bytes to encode.</param>
         public void Write(byte[] buffer, int offset, int count)
         {
+            CheckObjectDisposed();
+
             _stream.Write(buffer, offset, count);
             _dataLength += count;
         }
@@ -170,6 +201,8 @@ namespace CSCore.Codecs.WAV
         /// <param name="value">Byte to write down.</param>
         public void Write(byte value)
         {
+            CheckObjectDisposed();
+
             _writer.Write(value);
             _dataLength++;
         }
@@ -180,6 +213,8 @@ namespace CSCore.Codecs.WAV
         /// <param name="value">Value to write down.</param>
         public void Write(short value)
         {
+            CheckObjectDisposed();
+
             _writer.Write(value);
             _dataLength += 2;
         }
@@ -190,6 +225,8 @@ namespace CSCore.Codecs.WAV
         /// <param name="value">Value to write down.</param>
         public void Write(int value)
         {
+            CheckObjectDisposed();
+
             _writer.Write(value);
             _dataLength += 4;
         }
@@ -200,6 +237,8 @@ namespace CSCore.Codecs.WAV
         /// <param name="value">Value to write down.</param>
         public void Write(float value)
         {
+            CheckObjectDisposed();
+
             _writer.Write(value);
             _dataLength += 4;
         }
@@ -249,6 +288,12 @@ namespace CSCore.Codecs.WAV
             _writer.Write(_dataLength);
         }
 
+        private void CheckObjectDisposed()
+        {
+            if (_isDisposed)
+                throw new ObjectDisposedException(nameof(WaveWriter));
+        }
+
         /// <summary>
         ///     Disposes the <see cref="WaveWriter" /> and writes down the wave header.
         /// </summary>
@@ -258,24 +303,38 @@ namespace CSCore.Codecs.WAV
         /// </param>
         protected virtual void Dispose(bool disposing)
         {
-            if (!_disposed)
+            if (_isDisposed) return;
+
+            if (!disposing) return;
+            
+            try
             {
-                try
-                {
-                    WriteHeader();
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine("WaveWriter::Dispose: " + ex);
-                }
-                finally
+                _isDisposing = true;
+                WriteHeader();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("WaveWriter::Dispose: " + ex);
+            }
+            finally
+            {
+                if (_writer != null)
                 {
                     _writer.Close();
                     _writer = null;
+                }
+
+                if (_stream != null)
+                {
+                    _stream.Close();
                     _stream = null;
                 }
+
+                _isDisposing = false;
             }
-            _disposed = true;
+            
+            
+            _isDisposed = true;
         }
 
         /// <summary>
