@@ -65,11 +65,11 @@ namespace CSCore.Codecs.WAV
         public WaveWriter(Stream stream, WaveFormat waveFormat)
         {
             if (stream == null)
-                throw new ArgumentNullException(nameof(stream));
+                throw new ArgumentNullException("stream");
             if (!stream.CanWrite)
-                throw new ArgumentException("Stream not writeable.", nameof(stream));
+                throw new ArgumentException("Stream not writeable.", "stream");
             if (!stream.CanSeek)
-                throw new ArgumentException("Stream not seekable.", nameof(stream));
+                throw new ArgumentException("Stream not seekable.", "stream");
 
             _isDisposing = false;
             _isDisposed = false;
@@ -291,7 +291,7 @@ namespace CSCore.Codecs.WAV
         private void CheckObjectDisposed()
         {
             if (_isDisposed)
-                throw new ObjectDisposedException(nameof(WaveWriter));
+                throw new ObjectDisposedException("WaveWriter");
         }
 
         /// <summary>
