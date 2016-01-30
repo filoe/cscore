@@ -96,10 +96,11 @@ namespace CSCore.Streams
                 }
                 if (_buffer.Count >= BlockCount * WaveFormat.Channels)
                 {
-                    if (BlockRead != null)
+                    EventHandler<BlockReadEventArgs<float>> blockRead = this.BlockRead;
+                    if (blockRead != null)
                     {
                         float[] b = _buffer.ToArray();
-                        BlockRead(this, new BlockReadEventArgs<float>(b, b.Length));
+                        blockRead(this, new BlockReadEventArgs<float>(b, b.Length));
                         _buffer.Clear();
                     }
                 }
