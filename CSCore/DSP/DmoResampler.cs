@@ -150,7 +150,7 @@ namespace CSCore.DSP
                     {
                         var bytesToRead = (int) OutputToInput(count - read);
                         _readBuffer = _readBuffer.CheckBuffer(bytesToRead);
-                        int bytesRead = base.Read(_readBuffer, 0, _readBuffer.Length);
+                        int bytesRead = base.Read(_readBuffer, 0, bytesToRead);
                         if (bytesRead <= 0)
                             break;
 
