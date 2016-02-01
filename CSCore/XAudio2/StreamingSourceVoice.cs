@@ -219,6 +219,8 @@ namespace CSCore.XAudio2
                 }
 
                 base.Dispose(disposing);
+                
+                _voiceCallback.Dispose();
 
                 _disposed = true;
             }
