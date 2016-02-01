@@ -122,11 +122,14 @@ namespace CSCore.XAudio2
 
             while (!_shutDown)
             {
-                if (_itemsChanged)
+                lock (_lockObject)
                 {
-                    itemsCopy = _items.ToArray();
-                    waitHandles = itemsCopy.Select(x => x.BufferEndWaitHandle).Cast<WaitHandle>().ToArray();
-                    _itemsChanged = false;
+                    if (_itemsChanged)
+                    {
+                        itemsCopy = _items.ToArray();
+                        waitHandles = itemsCopy.Select(x => x.BufferEndWaitHandle).Cast<WaitHandle>().ToArray();
+                        _itemsChanged = false;
+                    }
                 }
 
                 if (waitHandles.Length == 0)
