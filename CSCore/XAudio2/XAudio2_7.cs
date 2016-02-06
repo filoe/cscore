@@ -66,6 +66,7 @@ namespace CSCore.XAudio2
         /// </summary>
         /// <param name="ptr">Native pointer of the <see cref="XAudio2_7" /> object.</param>
         public XAudio2_7(IntPtr ptr)
+            : base(ptr, XAudio2Version.XAudio2_7)
         {
         }
 
@@ -91,6 +92,12 @@ namespace CSCore.XAudio2
         /// </param>
         /// <remarks>This constructor already calls <see cref="Initialize" />. Don't call it a second time.</remarks>
         public XAudio2_7(bool debug, XAudio2Processor processor)
+            : base(CreateXAudioInstance(debug), XAudio2Version.XAudio2_7)
+        {
+            Initialize(0, processor);
+        }
+
+        private static IntPtr CreateXAudioInstance(bool debug)
         {
             Guid guid = debug
                 ? new Guid("db05ea35-0329-4d4b-a53a-6dead03d3852")
@@ -98,15 +105,12 @@ namespace CSCore.XAudio2
 
             IntPtr ptr0;
             HResult result = Win32.NativeMethods.CoCreateInstance(guid,
-                IntPtr.Zero, CLSCTX.CLSCTX_INPROC_SERVER, typeof (XAudio2_7).GUID, out ptr0);
+                IntPtr.Zero, CLSCTX.CLSCTX_INPROC_SERVER, typeof(XAudio2_7).GUID, out ptr0);
 
             if (result != HResult.S_OK)
-                throw new Win32Exception((int) result, "Could not create XAudio2.7 instance.");
+                throw new Win32Exception((int)result, "Could not create XAudio2.7 instance.");
 
-
-            BasePtr = ptr0;
-            Version = XAudio2Version.XAudio2_7;
-            Initialize(0, processor);
+            return ptr0;
         }
 
 

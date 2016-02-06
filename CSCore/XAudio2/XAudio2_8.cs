@@ -81,15 +81,18 @@ namespace CSCore.XAudio2
         ///     Specifies which CPU to use. Use <see cref="XAudio2Processor.Xaudio28DefaultProcessor" /> as
         ///     default value.
         /// </param>
-        public unsafe XAudio2_8(XAudio2Processor processor)
+        public XAudio2_8(XAudio2Processor processor)
+            : base(CreateXAudio2Instance(processor), XAudio2Version.XAudio2_8)
+        {
+        }
+
+        private static unsafe IntPtr CreateXAudio2Instance(XAudio2Processor processor)
         {
             IntPtr ptr = IntPtr.Zero;
             var pptr = new IntPtr(&ptr);
             int result = NativeMethods.XAudio2Create(pptr, 0, processor);
             XAudio2Exception.Try(result, "Interop", "XAudio2Create");
-
-            Version = XAudio2Version.XAudio2_8;
-            BasePtr = ptr;
+            return ptr;
         }
 
         /// <summary>

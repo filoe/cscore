@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 using CSCore.CoreAudioAPI;
 using CSCore.Win32;
@@ -14,6 +13,7 @@ namespace CSCore.XAudio2
     public abstract class XAudio2 : ComObject
     {
         private XAudio2Version _version;
+        private XAudio2EngineCallback _engineCallback;
         private const string N = "IXAudio2";
 
         /// <summary>
@@ -73,6 +73,33 @@ namespace CSCore.XAudio2
         public const int CommitNow = 0;
 
         /// <summary>
+        ///     Fired by XAudio2 just before an audio processing pass begins.
+        /// </summary>
+        public event EventHandler ProcessingPassStart
+        {
+            add { _engineCallback.ProcessingPassStart += value; }
+            remove { _engineCallback.ProcessingPassStart -= value; }
+        }
+
+        /// <summary>
+        ///     Fired by XAudio2 just after an audio processing pass ends.
+        /// </summary>
+        public event EventHandler ProcessingPassEnd
+        {
+            add { _engineCallback.ProcessingPassEnd += value; }
+            remove { _engineCallback.ProcessingPassEnd -= value; }
+        }
+
+        /// <summary>
+        ///     Fired if a critical system error occurs that requires XAudio2 to be closed down and restarted.
+        /// </summary>
+        public event EventHandler<XAudio2CriticalErrorEventArgs> CriticalError
+        {
+            add { _engineCallback.CriticalError += value; }
+            remove { _engineCallback.CriticalError -= value; }
+        }
+
+        /// <summary>
         ///     Internal default ctor.
         /// </summary>
         internal XAudio2()
@@ -88,6 +115,7 @@ namespace CSCore.XAudio2
             : base(ptr)
         {
             _version = version;
+            InitializeEngineCallback();
         }
 
         /// <summary>
@@ -837,5 +865,26 @@ namespace CSCore.XAudio2
         /// </summary>
         /// <returns>The default device.</returns>
         protected abstract object GetDefaultDevice();
+
+        /// <summary>
+        /// Initializes the engine callback.
+        /// </summary>
+        private void InitializeEngineCallback()
+        {
+            //register an object for receiving engine callbacks
+            if (_engineCallback == null)
+            {
+                _engineCallback = new XAudio2EngineCallback();
+                RegisterForCallbacks(_engineCallback);
+            }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            //unregister the default callback object
+            UnregisterForCallbacks(_engineCallback);
+
+            base.Dispose(disposing);
+        }
     }
 }
