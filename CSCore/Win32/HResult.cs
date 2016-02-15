@@ -53,6 +53,11 @@
         /// <summary>
         /// AUDCLNT_E_UNSUPPORTED_FORMAT 
         /// </summary>
-        AUDCLNT_E_UNSUPPORTED_FORMAT = unchecked ((int)0x88890008)
+        AUDCLNT_E_UNSUPPORTED_FORMAT = unchecked ((int)0x88890008),
+
+        /// <summary>
+        /// AUDCLNT_S_BUFFER_EMPTY
+        /// </summary>
+        AUDCLNT_S_BUFFER_EMPTY = 0x08890001
     }
 }

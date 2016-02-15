@@ -18,7 +18,7 @@ namespace CSCore.CoreAudioAPI
         /// <param name="member">Name of the COM-function which returned the specified <paramref name="result"/>.</param>
         public new static void Try(int result, string interfaceName, string member)
         {
-            if (result != 0)
+            if (result != 0 && result != (int) Win32.HResult.AUDCLNT_S_BUFFER_EMPTY)
                 throw new CoreAudioAPIException(result, interfaceName, member);
         }
 
