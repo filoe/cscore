@@ -76,6 +76,18 @@ namespace CSCore.CoreAudioAPI
         }
 
         /// <summary>
+        ///     Gets or sets the muting state of the audio stream that enters or leaves the
+        ///     audio endpoint device. <c>True</c> indicates that the audio endpoint devie is muted. <c>False</c> indicates that the audio endpoint device is not muted.
+        ///     <seealso cref="GetMute"/>
+        ///     <seealso cref="SetMute"/>
+        /// </summary>
+        public bool IsMuted
+        {
+            get { return GetMute(); }
+            set { SetMute(value, Guid.Empty);}
+        }
+
+        /// <summary>
         ///     Gets all available channels.
         /// </summary>
         public ReadOnlyCollection<AudioEndpointVolumeChannel> Channels
