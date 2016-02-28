@@ -389,7 +389,7 @@ namespace CSCore.Codecs.FLAC
                         _frame = null;
                     }
 
-                    if (!_stream.IsClosed())
+                    if (_stream != null && !_stream.IsClosed())
                         _stream.Dispose();
 
                     _disposed = true;
