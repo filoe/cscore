@@ -95,7 +95,9 @@ Some projects using already using cscore:
 - ...
 
 "CSCore - Visualization" Sample:
-
 ![VIS_SAMPLE](http://download-codeplex.sec.s-msft.com/Download?ProjectName=cscore&DownloadId=970569)
+
+"CSCoreWaveform" Sample:
+![WAVFRM_SAMPLE](http://fs5.directupload.net/images/160229/adjvd9u9.png)
 
 #### As long as this document is in development, see [Codeplex](http://cscore.codeplex.com/) for more details.  ####
