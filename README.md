@@ -94,8 +94,16 @@ Some projects using already using cscore:
 - [HTLED](https://www.youtube.com/watch?v=tbrKepBgH3M): A audio visualization displayed on a selfmade 32x16 LED matrix.
 - ...
 
-"CSCore - Visualization" Sample:
+#### Samples: ####
+
+["CSCore - Visualization"](Samples/WinformsVisualization) Sample:
 
 ![VIS_SAMPLE](http://download-codeplex.sec.s-msft.com/Download?ProjectName=cscore&DownloadId=970569)
+
+["CSCoreWaveform"](Samples/CSCoreWaveform) Sample:
+
+![WAVFRM_SAMPLE](http://fs5.directupload.net/images/160229/adjvd9u9.png)
+
+For more samples see [Samples](Samples/)
 
 #### As long as this document is in development, see [Codeplex](http://cscore.codeplex.com/) for more details.  ####
