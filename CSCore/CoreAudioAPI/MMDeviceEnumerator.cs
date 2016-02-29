@@ -26,6 +26,52 @@ namespace CSCore.CoreAudioAPI
             }
         }
 
+        /// <summary>
+        /// Returns the default audio endpoint for the specified data-flow direction and role. If no device is available the <see cref="TryGetDefaultAudioEndpoint"/> method returns null.
+        /// </summary>
+        /// <param name="dataFlow">The data-flow direction for the endpoint device.</param>
+        /// <param name="role">The role of the endpoint device.</param>
+        /// <returns><see cref="MMDevice"/> instance of the endpoint object for the default audio endpoint device. If no device is available the <see cref="TryGetDefaultAudioEndpoint"/> method returns null.</returns>
+        public static MMDevice TryGetDefaultAudioEndpoint(DataFlow dataFlow, Role role)
+        {
+            try
+            {
+                return DefaultAudioEndpoint(dataFlow, role);
+            }
+            catch (CoreAudioAPIException exception)
+            {
+                if (exception.ErrorCode == (int)HResult.E_NOTFOUND)
+                {
+                    return null;
+                }
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Generates a collection of all active audio endpoint devices that meet the specified criteria.
+        /// </summary>
+        /// <param name="dataFlow">The data-flow direction for the endpoint device.</param>
+        /// <returns><see cref="MMDeviceCollection"/> which contains the enumerated devices.</returns>
+        public static MMDeviceCollection EnumerateDevices(DataFlow dataFlow)
+        {
+            return EnumerateDevices(dataFlow, DeviceState.All);
+        }
+
+        /// <summary>
+        /// Generates a collection of audio endpoint devices that meet the specified criteria.
+        /// </summary>
+        /// <param name="dataFlow">The data-flow direction for the endpoint device.</param>
+        /// <param name="stateMask">The state or states of the endpoints that are to be included in the collection.</param>
+        /// <returns><see cref="MMDeviceCollection"/> which contains the enumerated devices.</returns>
+        public static MMDeviceCollection EnumerateDevices(DataFlow dataFlow, DeviceState stateMask)
+        {
+            using (var enumerator = new MMDeviceEnumerator())
+            {
+                return enumerator.EnumAudioEndpoints(dataFlow, stateMask);
+            }
+        }
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MMDeviceEnumerator"/> class.

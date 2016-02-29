@@ -42,6 +42,10 @@
         /// </summary>
         E_NOTIMPL = unchecked((int)0x80004001),
         /// <summary>
+        /// E_NOTFOUND
+        /// </summary>
+        E_NOTFOUND = unchecked((int)0x80070490),
+        /// <summary>
         /// MF_E_ATTRIBUTENOTFOUND
         /// </summary>
         MF_E_ATTRIBUTENOTFOUND = unchecked((int)0xC00D36E6),
