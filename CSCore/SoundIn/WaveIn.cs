@@ -320,15 +320,17 @@ namespace CSCore.SoundIn
 
         private void RaiseStopped(Exception exception)
         {
-            if (Stopped != null)
-                Stopped(this, new RecordingStoppedEventArgs(exception));
+            EventHandler<RecordingStoppedEventArgs> handler = this.Stopped;
+            if (handler != null)
+                handler(this, new RecordingStoppedEventArgs(exception));
         }
 
         private void RaiseDataAvailable(WaveInBuffer buffer)
         {
-            if (DataAvailable != null && buffer.WaveHeader.bytesRecorded > 0)
+            EventHandler<DataAvailableEventArgs> handler = this.DataAvailable;
+            if (handler != null && buffer.WaveHeader.bytesRecorded > 0)
             {
-                DataAvailable(this,
+                handler(this,
                     new DataAvailableEventArgs(buffer.Buffer, 0, buffer.WaveHeader.bytesRecorded, WaveFormat));
             }
         }

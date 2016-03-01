@@ -31,8 +31,9 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT</returns>
         int IAudioVolumeDuckNotification.OnVolumeDuckNotification(string sessionId, int countCommunicationSessions)
         {
-            if (VolumeDuckNotification != null)
-                VolumeDuckNotification(this, new VolumeDuckNotificationEventArgs(sessionId, countCommunicationSessions));
+            EventHandler<VolumeDuckNotificationEventArgs> handler = this.VolumeDuckNotification;
+            if (handler != null)
+                handler(this, new VolumeDuckNotificationEventArgs(sessionId, countCommunicationSessions));
             return (int) HResult.S_OK;
         }
 
@@ -44,9 +45,10 @@ namespace CSCore.CoreAudioAPI
         /// <returns></returns>
         int IAudioVolumeDuckNotification.OnVolumeUnduckNotification(string sessionId, int countCommunicationSessions)
         {
-            if (VolumeUnDuckNotification != null)
+            EventHandler<VolumeDuckNotificationEventArgs> handler = this.VolumeUnDuckNotification;
+            if (handler != null)
             {
-                VolumeUnDuckNotification(this,
+                handler(this,
                     new VolumeDuckNotificationEventArgs(sessionId, countCommunicationSessions));
             }
             return (int) HResult.S_OK;

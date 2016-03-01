@@ -195,8 +195,9 @@ namespace CSCore.Codecs.MP3
 
                     success = resetEvent.WaitOne();
                 }
-                if (ConnectionEstablished != null && async)
-                    ConnectionEstablished(this, new ConnectionEstablishedEventArgs(_address, success));
+                EventHandler<ConnectionEstablishedEventArgs> handler = this.ConnectionEstablished;
+                if (handler != null && async)
+                    handler(this, new ConnectionEstablishedEventArgs(_address, success));
 
                 return success;
             };

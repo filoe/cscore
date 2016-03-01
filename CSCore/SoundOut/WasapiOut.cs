@@ -765,14 +765,14 @@ namespace CSCore.SoundOut
 
 		private void RaiseStopped(Exception exception)
 		{
-			if (Stopped == null)
-				return;
-
-			if (_syncContext != null)
-				//since Send could cause deadlocks better use Post instead
-				_syncContext.Post(x => Stopped(this, new PlaybackStoppedEventArgs(exception)), null);
-			else
-				Stopped(this, new PlaybackStoppedEventArgs(exception));
+            EventHandler<PlaybackStoppedEventArgs> handler = this.Stopped;
+            if (handler != null) {
+                if (_syncContext != null)
+                    //since Send could cause deadlocks better use Post instead
+                    _syncContext.Post(x => handler(this, new PlaybackStoppedEventArgs(exception)), null);
+                else
+                    handler(this, new PlaybackStoppedEventArgs(exception));
+            }
 		}
 
 		/// <summary>

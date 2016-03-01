@@ -27,8 +27,9 @@ namespace CSCore.CoreAudioAPI
 
             var data =
                 (AudioVolumeNotificationData) Marshal.PtrToStructure(notifyData, typeof (AudioVolumeNotificationData));
-            if (NotifyRecived != null)
-                NotifyRecived(this, new AudioEndpointVolumeCallbackEventArgs(data, notifyData));
+            EventHandler<AudioEndpointVolumeCallbackEventArgs> handler = this.NotifyRecived;
+            if (handler != null)
+                handler(this, new AudioEndpointVolumeCallbackEventArgs(data, notifyData));
 
             return (int) HResult.S_OK;
         }
