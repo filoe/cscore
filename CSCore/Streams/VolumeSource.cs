@@ -7,6 +7,11 @@ namespace CSCore.Streams
     /// </summary>
     public class VolumeSource : SampleAggregatorBase
     {
+        /// <summary>
+        /// The epsilon which is used to compare for almost-equality of the volume in <see cref="Read(float[], int, int)"/>.
+        /// </summary>
+        private const float Epsilon = 0.0001f;
+
         private float _volume = 1f;
 
         /// <summary>
@@ -55,10 +60,18 @@ namespace CSCore.Streams
         public override int Read(float[] buffer, int offset, int count)
         {
             int read = base.Read(buffer, offset, count);
-
-            for (int i = offset; i < read + offset; i++)
+            
+            float volume = Volume;
+            if (volume == 0f || (volume > -Epsilon && volume < Epsilon)) 
             {
-                buffer[i] *= Volume;
+                Array.Clear(buffer, offset, read);
+            } 
+            else if (volume != 1f && !(volume > (1f - Epsilon) && volume < (1f + Epsilon))) 
+            {
+                for (int i = offset; i < read + offset; i++) 
+                {
+                    buffer[i] *= volume;
+                }
             }
 
             return read;
