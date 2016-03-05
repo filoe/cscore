@@ -48,7 +48,7 @@ namespace CSCore.XAudio2
         /// <param name="member">Name of the COM-function which returned the specified <paramref name="result" />.</param>
         public new static void Try(int result, string interfaceName, string member)
         {
-            if (result != (int) Win32.HResult.S_OK)
+            if (result < 0)
                 throw new XAudio2Exception(result, interfaceName, member);
         }
     }

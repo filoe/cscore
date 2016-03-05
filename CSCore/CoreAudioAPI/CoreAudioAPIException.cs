@@ -11,14 +11,15 @@ namespace CSCore.CoreAudioAPI
     public class CoreAudioAPIException : Win32ComException
     {
         /// <summary>
-        /// Throws an <see cref="CoreAudioAPIException"/> if the <paramref name="result"/> is not <see cref="HResult.S_OK"/>.
+        /// Throws an <see cref="CoreAudioAPIException"/> if the <paramref name="result"/> represents an error.
         /// </summary>
-        /// <param name="result">Errorcode.</param>
+        /// <param name="result">The error code.</param>
         /// <param name="interfaceName">Name of the interface which contains the COM-function which returned the specified <paramref name="result"/>.</param>
         /// <param name="member">Name of the COM-function which returned the specified <paramref name="result"/>.</param>
         public new static void Try(int result, string interfaceName, string member)
         {
-            if (result != 0 && result != (int) Win32.HResult.AUDCLNT_S_BUFFER_EMPTY)
+            // < 0 means error, >= 0 means success
+            if (result < 0)
                 throw new CoreAudioAPIException(result, interfaceName, member);
         }
 
