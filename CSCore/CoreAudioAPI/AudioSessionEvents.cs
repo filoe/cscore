@@ -53,8 +53,9 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT</returns>
         int IAudioSessionEvents.OnDisplayNameChanged(string newDisplayName, ref Guid eventContext)
         {
-            if (DisplayNameChanged != null)
-                DisplayNameChanged(this, new AudioSessionDisplayNameChangedEventArgs(newDisplayName, eventContext));
+            EventHandler<AudioSessionDisplayNameChangedEventArgs> handler = this.DisplayNameChanged;
+            if (handler != null)
+                handler(this, new AudioSessionDisplayNameChangedEventArgs(newDisplayName, eventContext));
             return (int) Win32.HResult.S_OK;
         }
 
@@ -66,8 +67,9 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT</returns>
         int IAudioSessionEvents.OnIconPathChanged(string newIconPath, ref Guid eventContext)
         {
-            if (IconPathChanged != null)
-                IconPathChanged(this, new AudioSessionIconPathChangedEventArgs(newIconPath, eventContext));
+            EventHandler<AudioSessionIconPathChangedEventArgs> handler = this.IconPathChanged;
+            if (handler != null)
+                handler(this, new AudioSessionIconPathChangedEventArgs(newIconPath, eventContext));
             return (int) Win32.HResult.S_OK;
         }
 
@@ -80,8 +82,9 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT</returns>
         int IAudioSessionEvents.OnSimpleVolumeChanged(float newVolume, bool newMute, ref Guid eventContext)
         {
-            if (SimpleVolumeChanged != null)
-                SimpleVolumeChanged(this, new AudioSessionSimpleVolumeChangedEventArgs(newVolume, newMute, eventContext));
+            EventHandler<AudioSessionSimpleVolumeChangedEventArgs> handler = this.SimpleVolumeChanged;
+            if (handler != null)
+                handler(this, new AudioSessionSimpleVolumeChangedEventArgs(newVolume, newMute, eventContext));
             return (int) Win32.HResult.S_OK;
         }
 
@@ -96,9 +99,10 @@ namespace CSCore.CoreAudioAPI
         int IAudioSessionEvents.OnChannelVolumeChanged(int channelCount, float[] newChannelVolumeArray,
             int changedChannel, ref Guid eventContext)
         {
-            if (ChannelVolumeChanged != null)
+            EventHandler<AudioSessionChannelVolumeChangedEventArgs> handler = this.ChannelVolumeChanged;
+            if (handler != null)
             {
-                ChannelVolumeChanged(this,
+                handler(this,
                     new AudioSessionChannelVolumeChangedEventArgs(channelCount, newChannelVolumeArray, changedChannel,
                         eventContext));
             }
@@ -113,8 +117,9 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT</returns>
         int IAudioSessionEvents.OnGroupingParamChanged(ref Guid newGroupingParam, ref Guid eventContext)
         {
-            if (GroupingParamChanged != null)
-                GroupingParamChanged(this, new AudioSessionGroupingParamChangedEventArgs(newGroupingParam, eventContext));
+            EventHandler<AudioSessionGroupingParamChangedEventArgs> handler = this.GroupingParamChanged;
+            if (handler != null)
+                handler(this, new AudioSessionGroupingParamChangedEventArgs(newGroupingParam, eventContext));
             return (int) Win32.HResult.S_OK;
         }
 
@@ -125,8 +130,9 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT</returns>
         int IAudioSessionEvents.OnStateChanged(AudioSessionState newState)
         {
-            if (StateChanged != null)
-                StateChanged(this, new AudioSessionStateChangedEventArgs(newState));
+            EventHandler<AudioSessionStateChangedEventArgs> handler = this.StateChanged;
+            if (handler != null)
+                handler(this, new AudioSessionStateChangedEventArgs(newState));
             return (int) Win32.HResult.S_OK;
         }
 
@@ -137,8 +143,9 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT</returns>
         int IAudioSessionEvents.OnSessionDisconnected(AudioSessionDisconnectReason disconnectReason)
         {
-            if (SessionDisconnected != null)
-                SessionDisconnected(this, new AudioSessionDisconnectedEventArgs(disconnectReason));
+            EventHandler<AudioSessionDisconnectedEventArgs> handler = this.SessionDisconnected;
+            if (handler != null)
+                handler(this, new AudioSessionDisconnectedEventArgs(disconnectReason));
             return (int) Win32.HResult.S_OK;
         }
     }

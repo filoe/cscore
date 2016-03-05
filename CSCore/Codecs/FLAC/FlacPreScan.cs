@@ -87,8 +87,9 @@ namespace CSCore.Codecs.FLAC
 
         private void RaiseScanFinished(List<FlacFrameInformation> frames)
         {
-            if (ScanFinished != null)
-                ScanFinished(this, new FlacPreScanFinishedEventArgs(frames));
+            EventHandler<FlacPreScanFinishedEventArgs> handler = this.ScanFinished;
+            if (handler != null)
+                handler(this, new FlacPreScanFinishedEventArgs(frames));
         }
 
         private unsafe List<FlacFrameInformation> ScanThisShit(FlacMetadataStreamInfo streamInfo)

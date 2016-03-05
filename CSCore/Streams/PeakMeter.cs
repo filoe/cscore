@@ -119,8 +119,9 @@ namespace CSCore.Streams
 
         private void RaisePeakCalculated()
         {
-            if (PeakCalculated != null)
-                PeakCalculated(this, new PeakEventArgs(ChannelPeakValues, PeakValue));
+            EventHandler<PeakEventArgs> handler = this.PeakCalculated;
+            if (handler != null)
+                handler(this, new PeakEventArgs(ChannelPeakValues, PeakValue));
         }
     }
 }

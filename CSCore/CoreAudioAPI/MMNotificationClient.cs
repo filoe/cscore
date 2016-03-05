@@ -80,8 +80,9 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT</returns>
         void IMMNotificationClient.OnDeviceStateChanged(string deviceId, DeviceState deviceState)
         {
-            if (DeviceStateChanged != null)
-                DeviceStateChanged(this, new DeviceStateChangedEventArgs(deviceId, deviceState));
+            EventHandler<DeviceStateChangedEventArgs> handler = this.DeviceStateChanged;
+            if (handler != null)
+                handler(this, new DeviceStateChangedEventArgs(deviceId, deviceState));
 
             //return (int) HResult.S_OK;
         }
@@ -93,8 +94,9 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT</returns>
         void IMMNotificationClient.OnDeviceAdded(string deviceId)
         {
-            if (DeviceAdded != null)
-                DeviceAdded(this, new DeviceNotificationEventArgs(deviceId));
+            EventHandler<DeviceNotificationEventArgs> handler = this.DeviceAdded;
+            if (handler != null)
+                handler(this, new DeviceNotificationEventArgs(deviceId));
 
             //return (int) HResult.S_OK;
         }
@@ -106,8 +108,9 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT</returns>
         void IMMNotificationClient.OnDeviceRemoved(string deviceId)
         {
-            if (DeviceRemoved != null)
-                DeviceRemoved(this, new DeviceNotificationEventArgs(deviceId));
+            EventHandler<DeviceNotificationEventArgs> handler = this.DeviceRemoved;
+            if (handler != null)
+                handler(this, new DeviceNotificationEventArgs(deviceId));
 
             //return (int) HResult.S_OK;
         }
@@ -122,8 +125,9 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT</returns>
         void IMMNotificationClient.OnDefaultDeviceChanged(DataFlow dataFlow, Role role, string deviceId)
         {
-            if (DefaultDeviceChanged != null)
-                DefaultDeviceChanged(this, new DefaultDeviceChangedEventArgs(deviceId, dataFlow, role));
+            EventHandler<DefaultDeviceChangedEventArgs> handler = this.DefaultDeviceChanged;
+            if (handler != null)
+                handler(this, new DefaultDeviceChangedEventArgs(deviceId, dataFlow, role));
 
             //return (int) HResult.S_OK;
         }
@@ -137,8 +141,9 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT</returns>
         void IMMNotificationClient.OnPropertyValueChanged(string deviceId, PropertyKey key)
         {
-            if (DevicePropertyChanged != null)
-                DevicePropertyChanged(this, new DevicePropertyChangedEventArgs(deviceId, key));
+            EventHandler<DevicePropertyChangedEventArgs> handler = this.DevicePropertyChanged;
+            if (handler != null)
+                handler(this, new DevicePropertyChangedEventArgs(deviceId, key));
 
             //return (int) HResult.S_OK;
         }

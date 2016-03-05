@@ -282,8 +282,9 @@ namespace CSCore.SoundOut
 
         private void RaiseStopped(Exception exception)
         {
-            if (Stopped != null)
-                Stopped(this, new PlaybackStoppedEventArgs(exception));
+            EventHandler<PlaybackStoppedEventArgs> handler = this.Stopped;
+            if (handler != null)
+                handler(this, new PlaybackStoppedEventArgs(exception));
         }
 
         private void CheckForIsInitialized()

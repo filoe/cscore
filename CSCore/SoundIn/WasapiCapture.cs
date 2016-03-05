@@ -404,25 +404,28 @@ namespace CSCore.SoundIn
         {
             if (count <= 0)
                 return;
-            if (DataAvailable != null)
+
+            EventHandler<DataAvailableEventArgs> handler = this.DataAvailable;
+            if (handler != null)
             {
                 var e = new DataAvailableEventArgs(buffer, offset, count, WaveFormat);
                 if (_synchronizationContext != null)
-                    _synchronizationContext.Post(o => DataAvailable(this, e), null); //use post instead of send to avoid deadlocks
+                    _synchronizationContext.Post(o => handler(this, e), null); //use post instead of send to avoid deadlocks
                 else
-                    DataAvailable(this, e);
+                    handler(this, e);
             }
         }
 
         private void RaiseStopped(Exception exception)
         {
-            if (Stopped != null)
+            EventHandler<RecordingStoppedEventArgs> handler = this.Stopped;
+            if (handler != null)
             {
                 var e = new RecordingStoppedEventArgs(exception);
                 if(_synchronizationContext != null)
-                    _synchronizationContext.Post(o => Stopped(this, e), null); //use post instead of send to avoid deadlocks
+                    _synchronizationContext.Post(o => handler(this, e), null); //use post instead of send to avoid deadlocks
                 else
-                    Stopped(this, e);
+                    handler(this, e);
             }
         }
 
