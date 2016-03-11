@@ -43,18 +43,25 @@ namespace CSCore.Tags.ID3
             return null;
         }
 
-        public static void SkipTag(Stream stream)
+        public static bool SkipTag(Stream stream)
         {
             long streamOffset = stream.Position;
             if (FromStream(stream, false) == null)
-                stream.Position = streamOffset;
+            {
+                if (stream.CanSeek)
+                {
+                    stream.Position = streamOffset;
+                }
+                return false;
+            }
+            return true;
         }
 
-        private Stream _stream;
+        private readonly Stream _stream;
         private ID3v2Header _header;
         private ID3v2ExtendedHeader _extendedHeader;
         private ID3v2Footer _footer;
-        private List<Frame> _frames = new List<Frame>();
+        private readonly List<Frame> _frames;
         private ID3v2QuickInfo _quickInfo;
 
         private byte[] _content;
@@ -79,7 +86,7 @@ namespace CSCore.Tags.ID3
         {
             get
             {
-                return _frames.Where((o) => o.FrameId == id).FirstOrDefault();
+                return _frames.FirstOrDefault(o => o.FrameId == id);
             }
         }
 
