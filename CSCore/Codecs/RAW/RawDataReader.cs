@@ -58,7 +58,7 @@ namespace CSCore.Codecs.RAW
         public int Read(byte[] buffer, int offset, int count)
         {
             CheckForDisposed();
-            count -= (count & WaveFormat.BlockAlign);
+            count -= (count % WaveFormat.BlockAlign);
             return _stream.Read(buffer, offset, count);
         }
 
