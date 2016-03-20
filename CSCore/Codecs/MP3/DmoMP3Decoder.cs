@@ -86,6 +86,7 @@ namespace CSCore.Codecs.MP3
         {
             Mp3Frame frame = null;
             long offsetOfFirstFrame = 0;
+            stream = new BufferedStream(stream);
 
             while (ID3v2.SkipTag(stream))
             {
