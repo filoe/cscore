@@ -84,12 +84,23 @@ namespace CSCore.CoreAudioAPI
             int result = 0;
             if (!_sessionNotifications.Contains(sessionNotification))
             {
-                result = InteropCalls.CallI(
-                    UnsafeBasePtr,
-                    sessionNotification != null
-                        ? Marshal.GetComInterfaceForObject(sessionNotification, typeof (IAudioSessionNotification))
-                        : IntPtr.Zero,
-                    ((void**) (*(void**) UnsafeBasePtr))[6]);
+                IntPtr ptr = sessionNotification != null
+                    ? Marshal.GetComInterfaceForObject(sessionNotification, typeof (IAudioSessionNotification))
+                    : IntPtr.Zero;
+                try
+                {
+                    result = InteropCalls.CallI(
+                        UnsafeBasePtr,
+                        ptr,
+                        ((void**) (*(void**) UnsafeBasePtr))[6]);
+                }
+                finally
+                {
+                    if (ptr != IntPtr.Zero)
+                    {
+                        Marshal.Release(ptr);
+                    }
+                }
                 _sessionNotifications.Add(sessionNotification);
             }
             return result;
@@ -125,12 +136,23 @@ namespace CSCore.CoreAudioAPI
             int result = 0;
             if (_sessionNotifications.Contains(sessionNotification))
             {
-                result = InteropCalls.CallI(
-                    UnsafeBasePtr,
-                    sessionNotification != null
-                        ? Marshal.GetComInterfaceForObject(sessionNotification, typeof (IAudioSessionNotification))
-                        : IntPtr.Zero,
-                    ((void**) (*(void**) UnsafeBasePtr))[7]);
+                IntPtr ptr = sessionNotification != null
+                    ? Marshal.GetComInterfaceForObject(sessionNotification, typeof (IAudioSessionNotification))
+                    : IntPtr.Zero;
+                try
+                {
+                    result = InteropCalls.CallI(
+                        UnsafeBasePtr,
+                        ptr,
+                        ((void**) (*(void**) UnsafeBasePtr))[7]);
+                }
+                finally
+                {
+                    if (ptr != IntPtr.Zero)
+                    {
+                        Marshal.Release(ptr);
+                    }
+                }
                 _sessionNotifications.Remove(sessionNotification);
             }
             return result;
@@ -168,10 +190,18 @@ namespace CSCore.CoreAudioAPI
                     ? Marshal.GetComInterfaceForObject(sessionNotification, typeof (IAudioVolumeDuckNotification))
                     : IntPtr.Zero;
                 IntPtr ptr0 = sessionId != null ? Marshal.StringToHGlobalUni(sessionId) : IntPtr.Zero;
-                result = InteropCalls.CallI(UnsafeBasePtr, (void*) ptr0, (void*) ptr,
-                    ((void**) (*(void**) UnsafeBasePtr))[8]);
-                if (ptr0 != IntPtr.Zero)
-                    Marshal.FreeHGlobal(ptr0);
+                try
+                {
+                    result = InteropCalls.CallI(UnsafeBasePtr, (void*) ptr0, (void*) ptr,
+                        ((void**) (*(void**) UnsafeBasePtr))[8]);
+                }
+                finally
+                {
+                    if (ptr != IntPtr.Zero)
+                        Marshal.Release(ptr);                        
+                    if (ptr0 != IntPtr.Zero)
+                        Marshal.FreeHGlobal(ptr0);
+                }
 
                 _volumeDuckNotifications.Add(sessionNotification);
             }
@@ -206,7 +236,17 @@ namespace CSCore.CoreAudioAPI
                 IntPtr ptr = sessionNotification != null
                     ? Marshal.GetComInterfaceForObject(sessionNotification, typeof (IAudioVolumeDuckNotification))
                     : IntPtr.Zero;
-                result = InteropCalls.CallI(UnsafeBasePtr, (void*) ptr, ((void**) (*(void**) UnsafeBasePtr))[9]);
+                try
+                {
+                    result = InteropCalls.CallI(UnsafeBasePtr, (void*) ptr, ((void**) (*(void**) UnsafeBasePtr))[9]);
+                }
+                finally
+                {
+                    if (ptr != IntPtr.Zero)
+                    {
+                        Marshal.Release(ptr);
+                    }
+                }
                 _volumeDuckNotifications.Remove(sessionNotification);
             }
             return result;

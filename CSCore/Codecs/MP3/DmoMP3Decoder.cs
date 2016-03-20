@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -154,8 +155,16 @@ namespace CSCore.Codecs.MP3
 
             _comObj = new DmoMP3DecoderObject();
             var ptr = Marshal.GetComInterfaceForObject(_comObj, typeof (IMediaObject));
-
-            return new MediaObject(ptr);
+            try
+            {
+                return new MediaObject(ptr);
+            }
+            catch (Exception)
+            {
+                Marshal.Release(ptr);
+                Marshal.ReleaseComObject(_comObj);
+                throw;
+            }
         }
 
         /// <summary>

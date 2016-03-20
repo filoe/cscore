@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace CSCore.XAudio2
@@ -22,6 +23,60 @@ namespace CSCore.XAudio2
         private volatile bool _disposed;
         private EventWaitHandle _waitHandle;
 
+        private static IntPtr CreateSourceVoice(XAudio2 xaudio2, IWaveSource waveSource, VoiceCallback callback)
+        {
+            if (xaudio2 == null)
+                throw new ArgumentNullException("xaudio2");
+            if (waveSource == null)
+                throw new ArgumentNullException("waveSource");
+
+            return xaudio2.CreateSourceVoicePtr(waveSource.WaveFormat, VoiceFlags.None,
+                XAudio2.DefaultFrequencyRatio, callback,
+                null, null);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StreamingSourceVoice"/> class with a default buffer size of 100ms.
+        /// </summary>
+        /// <param name="xaudio2">Instance of the <see cref="XAudio2" /> class, used to create the <see cref="XAudio2SourceVoice"/>.</param>
+        /// <param name="waveSource">The <see cref="IWaveSource" /> instance which provides audio data to play.</param>
+        public StreamingSourceVoice(XAudio2 xaudio2, IWaveSource waveSource)
+            : this(xaudio2, waveSource, 100)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StreamingSourceVoice"/> class.
+        /// </summary>
+        /// <param name="xaudio2">Instance of the <see cref="XAudio2" /> class, used to create the <see cref="XAudio2SourceVoice"/>.</param>
+        /// <param name="waveSource">The <see cref="IWaveSource" /> instance which provides audio data to play.</param>
+        /// <param name="bufferSize">
+        ///     Buffersize of the internal buffers, in milliseconds. Values in the range from 70ms to
+        ///     200ms are recommended.
+        /// </param>
+        public StreamingSourceVoice(XAudio2 xaudio2, IWaveSource waveSource, int bufferSize)
+            : this(xaudio2, waveSource, new VoiceCallback(), bufferSize)
+        {
+        }
+
+        internal StreamingSourceVoice(XAudio2 xaudio2, IWaveSource waveSource, VoiceCallback voiceCallback, int bufferSize)
+            : base(CreateSourceVoice(xaudio2, waveSource, voiceCallback), xaudio2.Version)
+        {
+            _voiceCallback = voiceCallback;
+            _waveSource = waveSource;
+
+            var maxBufferBytes = (int)waveSource.WaveFormat.MillisecondsToBytes(bufferSize);
+            _buffer = new byte[maxBufferBytes];
+
+            for (int i = 0; i < _buffers.Length; i++)
+            {
+                var buffer = new XAudio2Buffer(maxBufferBytes);
+                _buffers[i] = buffer;
+            }
+
+            InitializeForStreaming();
+        }
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="StreamingSourceVoice" /> class.
         /// </summary>
@@ -35,8 +90,8 @@ namespace CSCore.XAudio2
         ///     Buffersize of the internal used buffers in milliseconds. Values in the range from 70ms to
         ///     200ms are recommended.
         /// </param>
-        /// <remarks>It is recommended to use the <see cref="Create" /> method instead of the this constructor.</remarks>
-        public StreamingSourceVoice(IntPtr ptr, VoiceCallback voiceCallback, IWaveSource waveSource, int bufferSize)
+        /// <remarks>It is recommended to use the <see cref="Create(XAudio2,IWaveSource,int)" /> method instead of the this constructor.</remarks>
+        internal StreamingSourceVoice(IntPtr ptr, VoiceCallback voiceCallback, IWaveSource waveSource, int bufferSize)
         {
             BasePtr = ptr;
             _voiceCallback = voiceCallback;
@@ -69,6 +124,7 @@ namespace CSCore.XAudio2
         ///     200ms are recommended.
         /// </param>
         /// <returns>Configured <see cref="StreamingSourceVoice" /> instance.</returns>
+        [Obsolete("Use the constructor of the StreamingSourceVoice-class.")]
         public static StreamingSourceVoice Create(XAudio2 xaudio2, IWaveSource waveSource, int bufferSize = 100)
         {
             var voiceCallback = new VoiceCallback();

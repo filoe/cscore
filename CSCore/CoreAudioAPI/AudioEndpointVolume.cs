@@ -123,9 +123,15 @@ namespace CSCore.CoreAudioAPI
             int result = 0;
             if (!_notifies.Contains(notify))
             {
-                result = InteropCalls.CallI(UnsafeBasePtr,
-                    Marshal.GetComInterfaceForObject(notify, typeof (IAudioEndpointVolumeCallback)),
-                    ((void**) (*(void**) UnsafeBasePtr))[3]);
+                var ptr = Marshal.GetComInterfaceForObject(notify, typeof (IAudioEndpointVolumeCallback));
+                try
+                {
+                    result = InteropCalls.CallI(UnsafeBasePtr, ptr, ((void**) (*(void**) UnsafeBasePtr))[3]);
+                }
+                finally
+                {
+                    Marshal.Release(ptr);
+                }
                 _notifies.Add(notify);
             }
             return result;
@@ -143,6 +149,9 @@ namespace CSCore.CoreAudioAPI
         /// </remarks>
         public void RegisterControlChangeNotify(IAudioEndpointVolumeCallback notify)
         {
+            if (notify == null)
+                throw new ArgumentNullException("notify");
+
             CoreAudioAPIException.Try(RegisterControlChangeNotifyNative(notify), C, "RegisterControlChangeNotify");
         }
 
@@ -161,9 +170,15 @@ namespace CSCore.CoreAudioAPI
             int result = 0;
             if (_notifies.Contains(notify))
             {
-                result = InteropCalls.CallI(UnsafeBasePtr,
-                    Marshal.GetComInterfaceForObject(notify, typeof (IAudioEndpointVolumeCallback)),
-                    ((void**) (*(void**) UnsafeBasePtr))[4]);
+                var ptr = Marshal.GetComInterfaceForObject(notify, typeof (IAudioEndpointVolumeCallback));
+                try
+                {
+                    result = InteropCalls.CallI(UnsafeBasePtr, ptr, ((void**) (*(void**) UnsafeBasePtr))[4]);
+                }
+                finally
+                {
+                    Marshal.Release(ptr);
+                }
                 _notifies.Remove(notify);
             }
             return result;
@@ -180,6 +195,8 @@ namespace CSCore.CoreAudioAPI
         /// </param>
         public void UnregisterControlChangeNotify(IAudioEndpointVolumeCallback notify)
         {
+            if (notify == null)
+                throw new ArgumentNullException("notify");
             CoreAudioAPIException.Try(UnregisterControlChangeNotifyNative(notify), C, "UnregisterControlChangeNotify");
         }
 

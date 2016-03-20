@@ -72,14 +72,18 @@ namespace CSCore.CoreAudioAPI
             }
         }
 
+        private static IntPtr CreateMmDeviceEnumerator()
+        {
+            var mmde = new MMDeviceEnumeratorObject() as IMMDeviceEnumerator;
+            return Marshal.GetComInterfaceForObject(mmde, typeof(IMMDeviceEnumerator));
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MMDeviceEnumerator"/> class.
         /// </summary>
         public MMDeviceEnumerator()
+            : base(CreateMmDeviceEnumerator())
         {
-            var mmde = new MMDeviceEnumeratorObject() as IMMDeviceEnumerator;
-            BasePtr = Marshal.GetComInterfaceForObject(mmde, typeof (IMMDeviceEnumerator));
         }
 
         /// <summary>

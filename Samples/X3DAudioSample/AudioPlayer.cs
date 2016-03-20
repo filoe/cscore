@@ -29,7 +29,7 @@ namespace X3DAudioSample
 
             _waveSource = CodecFactory.Instance.GetCodec(filename).ToMono();
             _masteringVoice = _xaudio2.CreateMasteringVoice(XAudio2.DefaultChannels, XAudio2.DefaultSampleRate);
-            _streamingSourceVoice = StreamingSourceVoice.Create(_xaudio2, _waveSource, 150);
+            _streamingSourceVoice = new StreamingSourceVoice(_xaudio2, _waveSource, 150);
 
             object defaultDevice = _xaudio2.DefaultDevice;
             ChannelMask channelMask;

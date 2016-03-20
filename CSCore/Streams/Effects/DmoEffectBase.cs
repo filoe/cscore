@@ -44,9 +44,19 @@ namespace CSCore.Streams.Effects
         protected override MediaObject CreateMediaObject(WaveFormat inputFormat, WaveFormat outputFormat)
         {
             _comObj = CreateComObject();
-            var mediaObject = new MediaObject(Marshal.GetComInterfaceForObject(_comObj, typeof(IMediaObject)));
-            _effect = mediaObject.QueryInterface<TDXEffect>();
-            return mediaObject;
+            var ptr = Marshal.GetComInterfaceForObject(_comObj, typeof (IMediaObject));
+            try
+            {
+                var mediaObject = new MediaObject(ptr);
+                _effect = mediaObject.QueryInterface<TDXEffect>();
+                return mediaObject;
+            }
+            catch (Exception)
+            {
+                Marshal.Release(ptr);
+                Marshal.ReleaseComObject(_comObj);
+                throw;
+            }
         }
 
         /// <summary>

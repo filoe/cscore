@@ -216,7 +216,17 @@ namespace CSCore.CoreAudioAPI
                 IntPtr ptr = notifications != null
                     ? Marshal.GetComInterfaceForObject(notifications, typeof (IAudioSessionEvents))
                     : IntPtr.Zero;
-                result = InteropCalls.CallI(UnsafeBasePtr, ptr.ToPointer(), ((void**) (*(void**) UnsafeBasePtr))[10]);
+                try
+                {
+                    result = InteropCalls.CallI(UnsafeBasePtr, ptr.ToPointer(), ((void**) (*(void**) UnsafeBasePtr))[10]);
+                }
+                finally
+                {
+                    if (ptr != IntPtr.Zero)
+                    {
+                        Marshal.Release(ptr);
+                    }
+                }
                 _sessionEventHandler.Add(notifications);
             }
             return result;
@@ -245,7 +255,17 @@ namespace CSCore.CoreAudioAPI
                 IntPtr ptr = notifications != null
                     ? Marshal.GetComInterfaceForObject(notifications, typeof (IAudioSessionEvents))
                     : IntPtr.Zero;
-                result = InteropCalls.CallI(UnsafeBasePtr, ptr.ToPointer(), ((void**) (*(void**) UnsafeBasePtr))[11]);
+                try
+                {
+                    result = InteropCalls.CallI(UnsafeBasePtr, ptr.ToPointer(), ((void**) (*(void**) UnsafeBasePtr))[11]);
+                }
+                finally
+                {
+                    if (ptr != IntPtr.Zero)
+                    {
+                        Marshal.Release(ptr);
+                    }
+                }
                 _sessionEventHandler.Remove(notifications);
             }
             return result;

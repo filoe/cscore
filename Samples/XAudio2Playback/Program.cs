@@ -23,7 +23,7 @@ namespace XAudio2Playback
                     using (var xaudio2 = XAudio2.CreateXAudio2())
                     using (var masteringVoice = xaudio2.CreateMasteringVoice())
                     //ALWAYS create at least one masteringVoice.
-                    using (var streamingSourceVoice = StreamingSourceVoice.Create(xaudio2, source))
+                    using (var streamingSourceVoice = new StreamingSourceVoice(xaudio2, source))
                     {
                         StreamingSourceVoiceListener.Default.Add(streamingSourceVoice);
                         //add the streamingSourceVoice to the default sourcevoicelistener which processes the data requests.
