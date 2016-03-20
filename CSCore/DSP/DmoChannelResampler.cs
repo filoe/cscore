@@ -1,4 +1,5 @@
 ﻿using System;
+using CSCore.DMO;
 
 namespace CSCore.DSP
 {
@@ -109,7 +110,11 @@ namespace CSCore.DSP
         /// </summary>
         public void CommitChannelMatrixChanges()
         {
-            Resampler.ResamplerProps.SetUserChannelMtx(_channelMatrix.GetOneDimensionalMatrix());
+            using (Resampler.MediaObject.Lock())
+            {
+                Resampler.MediaObject.SetOutputType(0, Resampler.MediaObject.GetOutputCurrentType(0), SetTypeFlags.None);
+                Resampler.ResamplerProps.SetUserChannelMtx(_channelMatrix.GetOneDimensionalMatrix());
+            }
         }
     }
 }

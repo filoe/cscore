@@ -96,7 +96,10 @@ namespace CSCore.DSP
                 if (value < 1 || value > 60)
                     throw new ArgumentOutOfRangeException("value");
                 _quality = value;
-                Resampler.ResamplerProps.SetHalfFilterLength(value);
+                using (Resampler.MediaObject.Lock())
+                {
+                    Resampler.ResamplerProps.SetHalfFilterLength(value);
+                }
             }
         }
 
