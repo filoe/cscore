@@ -104,12 +104,12 @@ namespace CSCore.Codecs.MP3
             byte[] data = null;
             if (frame.ReadData(ref data, 0) < 4)
                 return false;
-            if (data[offset + 0] == 'X' && data[offset + 1] == 'i' && data[offset + 2] == 'n' && data[offset + 3] == 'g')
+            if ((data[offset + 0] == 'X' && data[offset + 1] == 'i' && data[offset + 2] == 'n' && data[offset + 3] == 'g') ||
+                (data[offset + 0] == 'I' && data[offset + 1] == 'n' && data[offset + 3] == 'f' && data[offset + 3] == 'o'))
             {
                 return true;
             }
-            else
-                return false;
+            return false;
         }
 
         private static int ReadHeaderFlags(Mp3Frame frame, int offset)
