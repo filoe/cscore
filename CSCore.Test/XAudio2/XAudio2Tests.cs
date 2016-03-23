@@ -187,7 +187,7 @@ namespace CSCore.Test.XAudio2
                 using (var masteringVoice = _xaudio2.CreateMasteringVoice())
                 using (var source = GlobalTestConfig.TestWav2S())
                 using (var pool = new StreamingSourceVoiceListener())
-                using (var streamingSourceVoice = StreamingSourceVoice.Create(_xaudio2, source))
+                using (var streamingSourceVoice = new StreamingSourceVoice(_xaudio2, source))
                 {
                     var stoppedEvent = new ManualResetEvent(false);
                     streamingSourceVoice.Stopped += (s, e) =>

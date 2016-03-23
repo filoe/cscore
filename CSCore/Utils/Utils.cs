@@ -17,12 +17,12 @@ namespace CSCore.Utils
             IntPtr z = new IntPtr(pp);
 
             //since the same vtable applies to all com objects of the same type -> make sure to only patch it once
-            if (_patchedVtables.ContainsKey(ptr))
+            if (_patchedVtables.ContainsKey(z))
             {
                 return ptr;
             }
 
-            _patchedVtables.Add(ptr, new PatchedVtable(ptr, pp));
+            _patchedVtables.Add(z, new PatchedVtable(ptr, pp));
 
             for (int i = 0; i < finalVtableLength; i++)
             {
