@@ -47,6 +47,10 @@ namespace CSCore.XAudio2.X3DAudio
             _hModule = Win32.NativeMethods.LoadLibrary("X3DAudio1_7.dll");
             if (_hModule == IntPtr.Zero)
                 _hModule = Win32.NativeMethods.LoadLibrary("X3DAudio2_8.dll");
+            if (_hModule == IntPtr.Zero)
+                _hModule = Win32.NativeMethods.LoadLibrary("XAudio2_8.dll");
+            if (_hModule == IntPtr.Zero)
+                _hModule = Win32.NativeMethods.LoadLibrary("XAudio2_9.dll");
 
             if (_hModule == IntPtr.Zero)
                 throw new NotSupportedException("No supported X3DAudio version could be found.");
