@@ -132,7 +132,7 @@
     <Compile Include="SoundOut\WaveOutBehaviourTests.cs" />
     <Compile Include="Streams\BufferSourceTests.cs" />
     <Compile Include="Streams\CachedSoundSourceTests.cs" />
-    <Compile Include="Streams\EqualizerTests.cs" />
+    <None Include="Streams\EqualizerTests.cs" />
     <Compile Include="Streams\FadeInOutTests.cs" />
     <Compile Include="Streams\GainSourceTests.cs" />
     <Compile Include="Streams\GenericSourceTests.cs" />

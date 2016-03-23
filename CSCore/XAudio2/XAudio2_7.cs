@@ -229,7 +229,11 @@ namespace CSCore.XAudio2
             {
                 if (ptr != IntPtr.Zero)
                 {
-                    Marshal.Release(ptr);   
+                    //while patching the IUnknown-members out of the vtable, we've made a backup of the release pointer,
+                    //which gets called here -> the Marshal.Release method would call any function on index 2 of the vtable
+                    //we've patched there
+                    Utils.Utils.Release(ptr);
+                    //Marshal.Release(ptr);   
                 }
             }
         }
@@ -325,7 +329,11 @@ namespace CSCore.XAudio2
             {
                 if (p != IntPtr.Zero)
                 {
-                    Marshal.Release(p);
+                    //while patching the IUnknown-members out of the vtable, we've made a backup of the release pointer,
+                    //which gets called here -> the Marshal.Release method would call any function on index 2 of the vtable
+                    //we've patched there
+                    Utils.Utils.Release(p);
+                    //Marshal.Release(p);
                 }
             }
         }

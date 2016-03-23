@@ -51,15 +51,5 @@ namespace CSCore.DMO
             if (result < 0)
                 throw new DmoException(result, interfaceName, member);
         }
-
-        /*private static string TryGetFriendlyName(int result)
-        {
-            if (Enum.IsDefined(typeof(DmoErrorCodes), result))
-                return String.Format(" ({0})", Enum.GetName(typeof(DmoErrorCodes), result));
-            else if (Enum.IsDefined(typeof(Win32.HResult), result))
-                return String.Format(" ({0})", Enum.GetName(typeof(Win32.HResult), result));
-            else
-                return String.Empty;
-        }*/
     }
 }

@@ -208,7 +208,7 @@ namespace CSCore.Test.XAudio2
             }
         }
 
-        [TestMethod]
+        [TestMethod, TestCategory("XAudio2")]
         public void CanSelectXAudioDevice()
         {
             object deviceId = null;
@@ -229,7 +229,6 @@ namespace CSCore.Test.XAudio2
                 //        .PropertyStore.GetValue(PropertyStore.AudioEndpointPath)
                 //        .GetValue();
                 deviceId = MMDeviceEnumerator.DefaultAudioEndpoint(DataFlow.Render, Role.Console).DevicePath;
-                //deviceid for XAudio2.8 is the MMDeviceID of an MMDevice
             }
             else
             {
@@ -240,7 +239,7 @@ namespace CSCore.Test.XAudio2
                 var masteringVoice = _xaudio2.CreateMasteringVoice(CSCore.XAudio2.XAudio2.DefaultChannels,
                     CSCore.XAudio2.XAudio2.DefaultSampleRate, deviceId))
             {
-                
+                Debug.WriteLine("MasteringVoice created.");
             }
         }
 

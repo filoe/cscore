@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace CSCore.Utils
 {
     internal static class Utils
     {
-        private static readonly List<IntPtr> _patchedVtables = new List<IntPtr>();
+        private static readonly Dictionary<IntPtr, PatchedVtable> _patchedVtables = new Dictionary<IntPtr, PatchedVtable>();
 
-        public unsafe static IntPtr GetComInterfaceForObjectWithAdjustedVtable(IntPtr ptr, int finalVtableLength, int replaceCount)
+        public static unsafe IntPtr GetComInterfaceForObjectWithAdjustedVtable(IntPtr ptr, int finalVtableLength, int replaceCount, bool isIUnknown = true)
         {
             var pp = (IntPtr*)(void*)ptr;
             pp = (IntPtr*)pp[0];
@@ -16,12 +17,12 @@ namespace CSCore.Utils
             IntPtr z = new IntPtr(pp);
 
             //since the same vtable applies to all com objects of the same type -> make sure to only patch it once
-            if (_patchedVtables.Contains(z))
+            if (_patchedVtables.ContainsKey(ptr))
             {
                 return ptr;
             }
 
-            _patchedVtables.Add(z);
+            _patchedVtables.Add(ptr, new PatchedVtable(ptr, pp));
 
             for (int i = 0; i < finalVtableLength; i++)
             {
@@ -36,6 +37,37 @@ namespace CSCore.Utils
 #endif
             }
             return ptr;
+        }
+
+        public static int Release(IntPtr ptr)
+        {
+            PatchedVtable vtable;
+            if (_patchedVtables.TryGetValue(ptr, out vtable))
+            {
+                return vtable.ReleaseFunc(vtable.Ptr);
+            }
+
+            return 0;
+        }
+
+        private class PatchedVtable
+        {
+            [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+            public delegate int Release(IntPtr thisPtr);
+
+            public IntPtr Ptr { get; private set; }
+
+            private IntPtr ReleasePtr { get; set; }
+
+            public Release ReleaseFunc { get; private set; }
+
+            public unsafe PatchedVtable(IntPtr thisPtr, IntPtr* ptr)
+            {
+                Ptr = thisPtr;
+
+                ReleasePtr = ptr[2];
+                ReleaseFunc = (Release)Marshal.GetDelegateForFunctionPointer(ReleasePtr, typeof (Release));
+            }
         }
     }
 }

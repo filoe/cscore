@@ -113,13 +113,17 @@ namespace CSCore.XAudio2
             }
             try
             {
-                return InteropCalls.CallI(UnsafeBasePtr, ptr.ToPointer(), ((void**) (*(void**) UnsafeBasePtr))[3]);
+                return InteropCalls.CallI(UnsafeBasePtr, (void*)ptr, ((void**) (*(void**) UnsafeBasePtr))[3]);
             }
             finally
             {
                 if (ptr != IntPtr.Zero)
                 {
-                    Marshal.Release(ptr);
+                    //while patching the IUnknown-members out of the vtable, we've made a backup of the release pointer,
+                    //which gets called here -> the Marshal.Release method would call any function on index 2 of the vtable
+                    //we've patched there
+                    Utils.Utils.Release(ptr);
+                    //Marshal.Release(ptr);
                 }
             }
         }
@@ -134,7 +138,27 @@ namespace CSCore.XAudio2
         /// </param>
         public override unsafe void UnregisterForCallbacks(IXAudio2EngineCallback callback)
         {
-            InteropCalls.CallI6(UnsafeBasePtr, callback, ((void**) (*(void**) UnsafeBasePtr))[4]);
+            IntPtr ptr = IntPtr.Zero;
+            if (callback != null)
+            {
+                ptr = Marshal.GetComInterfaceForObject(callback, typeof (IXAudio2EngineCallback));
+                ptr = Utils.Utils.GetComInterfaceForObjectWithAdjustedVtable(ptr, 3, 3);
+            }
+            try
+            {
+                InteropCalls.CallI(UnsafeBasePtr, (void*)ptr, ((void**) (*(void**) UnsafeBasePtr))[4]);
+            }
+            finally
+            {
+                if (ptr != IntPtr.Zero)
+                {
+                    //while patching the IUnknown-members out of the vtable, we've made a backup of the release pointer,
+                    //which gets called here -> the Marshal.Release method would call any function on index 2 of the vtable
+                    //we've patched there
+                    Utils.Utils.Release(ptr);
+                    //Marshal.Release(ptr);
+                }
+            }
         }
 
         /// <summary>
@@ -216,7 +240,11 @@ namespace CSCore.XAudio2
             {
                 if (p != IntPtr.Zero)
                 {
-                    Marshal.Release(p);
+                    //while patching the IUnknown-members out of the vtable, we've made a backup of the release pointer,
+                    //which gets called here -> the Marshal.Release method would call any function on index 2 of the vtable
+                    //we've patched there
+                    Utils.Utils.Release(p);
+                    //Marshal.Release(p);
                 }
             }
         }
@@ -317,7 +345,7 @@ namespace CSCore.XAudio2
             {
                 EffectChain value1 = effectChain ?? new EffectChain();
                 if (device != null)
-                    pdeviceId = Marshal.StringToHGlobalAnsi(device);
+                    pdeviceId = Marshal.StringToHGlobalUni(device);
 
                 fixed (void* ptr = &pMasteringVoice)
                 {

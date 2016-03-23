@@ -63,6 +63,11 @@ namespace CSCore.XAudio2
         /// <summary>
         ///     Log audio streaming information.
         /// </summary>
-        LogStreaming = 0x1000
+        LogStreaming = 0x1000,
+
+        /// <summary>
+        /// All
+        /// </summary>
+        All = LogErrors | LogWarnings | LogInfo | LogDetail | LogApiCalls | LogFuncCalls | LogTiming | LogLocks | LogMemory | LogStreaming
     }
 }
