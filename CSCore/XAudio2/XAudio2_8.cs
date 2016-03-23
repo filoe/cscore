@@ -317,7 +317,7 @@ namespace CSCore.XAudio2
             {
                 EffectChain value1 = effectChain ?? new EffectChain();
                 if (device != null)
-                    pdeviceId = Marshal.StringToHGlobalAnsi(device);
+                    pdeviceId = Marshal.StringToHGlobalUni(device);
 
                 fixed (void* ptr = &pMasteringVoice)
                 {
