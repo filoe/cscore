@@ -8,7 +8,7 @@ namespace CSCore.XAudio2
     ///     Default implementation of the <see cref="IXAudio2VoiceCallback" /> interface.
     /// </summary>
     [ComVisible(true)]
-    public sealed class VoiceCallback : IXAudio2VoiceCallback
+    public sealed class VoiceCallback : IXAudio2VoiceCallback, IDisposable
     {
         void IXAudio2VoiceCallback.OnVoiceProcessingPassStart(int bytesRequired)
         {
@@ -110,5 +110,20 @@ namespace CSCore.XAudio2
         ///     The second argument passed to the eventhandler is the HRESULT error code of the critical error.
         /// </summary>
         public event EventHandler<XAudio2VoiceErrorEventArgs> VoiceError;
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <filterpriority>2</filterpriority>
+        public void Dispose()
+        {
+            ProcessingPassStart = null;
+            ProcessingPassEnd = null;
+            StreamEnd = null;
+            BufferStart = null;
+            BufferEnd = null;
+            LoopEnd = null;
+            VoiceError = null;
+        }
     }
 }
