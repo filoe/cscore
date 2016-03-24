@@ -10,7 +10,7 @@ namespace CSCore.Streams.Effects
     [DebuggerDisplay("{Frequency}Hz")]
     public class EqualizerChannelFilter : ICloneable
     {
-        private readonly EqualizerBiQuadFilter _biQuadFilter;
+        private readonly PeakFilter _biQuadFilter;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="EqualizerChannelFilter" /> class.
@@ -28,7 +28,7 @@ namespace CSCore.Streams.Effects
             if (bandWidth <= 0)
                 throw new ArgumentOutOfRangeException("bandWidth");
 
-            _biQuadFilter = new EqualizerBiQuadFilter(sampleRate, centerFrequency, bandWidth, gain);
+            _biQuadFilter = new PeakFilter(sampleRate, centerFrequency, bandWidth, gain);
         }
 
         /// <summary>
