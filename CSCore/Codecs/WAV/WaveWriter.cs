@@ -142,7 +142,7 @@ namespace CSCore.Codecs.WAV
                         Write((byte) (byte.MaxValue * sample));
                         break;
                     case 16:
-                        Write((short) sample);
+                        Write((short) (short.MaxValue * sample));
                         break;
                     case 24:
                         byte[] buffer = BitConverter.GetBytes((int) (int.MaxValue * sample));
