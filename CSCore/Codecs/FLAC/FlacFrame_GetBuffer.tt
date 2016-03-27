@@ -46,12 +46,12 @@ namespace CSCore.Codecs.FLAC
 	    {
 			case 8:
 #>
-									*(ptr++) = (byte)(_subFrames[<#= i #>].DestinationBuffer[i] + 0x80);
+									*(ptr++) = (byte)(_subFrameData[<#= i #>].DestinationBuffer[i] + 0x80);
 <#
 	            break;
 			case 16:
 #>
-									vals = (short)(_subFrames[<#= i #>].DestinationBuffer[i]);
+									vals = (short)(_subFrameData[<#= i #>].DestinationBuffer[i]);
 									*(ptr++) = (byte)(vals & 0xFF);
 									*(ptr++) = (byte)((vals >> 8) & 0xFF);
 
@@ -59,7 +59,7 @@ namespace CSCore.Codecs.FLAC
 	            break;
 			case 24:
 #>
-									vali = (_subFrames[<#= i #>].DestinationBuffer[i]);
+									vali = (_subFrameData[<#= i #>].DestinationBuffer[i]);
 									*(ptr++) = (byte)(vali & 0xFF);
 									*(ptr++) = (byte)((vali >> 8) & 0xFF);
 									*(ptr++) = (byte)((vali >> 16) & 0xFF);
@@ -86,7 +86,7 @@ namespace CSCore.Codecs.FLAC
 								{
 									for (int c = 0; c < Header.Channels; c++)
 									{
-										*(ptr++) = (byte)(_subFrames[c].DestinationBuffer[i] + 0x80);
+										*(ptr++) = (byte)(_subFrameData[c].DestinationBuffer[i] + 0x80);
 									}
 								}
 <#
@@ -97,7 +97,7 @@ namespace CSCore.Codecs.FLAC
 								{
 									for (int c = 0; c < Header.Channels; c++)
 									{
-										short val = (short)(_subFrames[c].DestinationBuffer[i]);
+										short val = (short)(_subFrameData[c].DestinationBuffer[i]);
 										*(ptr++) = (byte)(val & 0xFF);
 										*(ptr++) = (byte)((val >> 8) & 0xFF);
 									}
@@ -110,7 +110,7 @@ namespace CSCore.Codecs.FLAC
 								{
 									for (int c = 0; c < Header.Channels; c++)
 									{
-										int val = (_subFrames[c].DestinationBuffer[i]);
+										int val = (_subFrameData[c].DestinationBuffer[i]);
 										*(ptr++) = (byte)(val & 0xFF);
 										*(ptr++) = (byte)((val >> 8) & 0xFF);
 										*(ptr++) = (byte)((val >> 16) & 0xFF);
