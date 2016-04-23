@@ -160,7 +160,6 @@ namespace CSCore.Win32
             {
                 if (!_disposed)
                 {
-                    _disposed = true;
                     Dispose(true);
                     GC.SuppressFinalize(this);
                 }
@@ -178,6 +177,7 @@ namespace CSCore.Win32
                 ((IUnknown)this).Release();
                 UnsafeBasePtr = IntPtr.Zero.ToPointer();
             }
+            _disposed = true;
         }
 
         /// <summary>
