@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using CSCore;
 using CSCore.Codecs;
+using CSCore.MediaFoundation;
 using CSCore.SoundOut;
 using CSCore.Streams;
 using CSCoreWaveform.Annotations;
@@ -55,7 +57,21 @@ namespace CSCoreWaveform
                     _notificationSource.Dispose();
 
                 var source = CodecFactory.Instance.GetCodec(ofn.FileName);
-                source = new CachedSoundSource(source);
+                //if (source.Length < 0x320000) //< 50MB
+                if (source is MediaFoundationDecoder)
+                {
+                    if (source.Length < 10485760) //10MB
+                    {
+                        source = new CachedSoundSource(source);
+                    }
+                    else
+                    {
+                        Stopwatch stopwatch = Stopwatch.StartNew();
+                        source = new FileCachedSoundSource(source);
+                        stopwatch.Stop();
+                        Debug.WriteLine(stopwatch.Elapsed.ToString());
+                    }
+                }
                 source.Position = 0;
                 await LoadWaveformsAsync(source);
                 source.Position = 0;

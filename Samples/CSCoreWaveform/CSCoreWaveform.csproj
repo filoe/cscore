@@ -53,6 +53,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="FileCachedSoundSource.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Waveform.xaml.cs">
       <DependentUpon>Waveform.xaml</DependentUpon>
