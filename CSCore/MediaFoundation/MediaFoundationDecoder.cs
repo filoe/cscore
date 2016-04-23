@@ -125,8 +125,12 @@ namespace CSCore.MediaFoundation
                         var sampleTime = sample.GetSampleTime();
                         if (_positionChanged && timestamp > 0)
                         {
-                            _position = NanoSecond100UnitsToSamples(sampleTime);
+                            long actualPosition = NanoSecond100UnitsToBytes(sampleTime);
+                            int bytesToSkip = (int) (_position - actualPosition);
+                            _position = actualPosition;
                             _positionChanged = false;
+
+                            SkipBytes(bytesToSkip);
                         }
 
                         using (MFMediaBuffer mediaBuffer = sample.ConvertToContiguousBuffer())
@@ -148,6 +152,23 @@ namespace CSCore.MediaFoundation
                 _position += read;
 
                 return read;
+            }
+        }
+
+        private void SkipBytes(int numberOfBytes)
+        {
+            numberOfBytes += numberOfBytes % WaveFormat.BlockAlign;
+
+            int read;
+            byte[] buffer = new byte[Math.Min(WaveFormat.BytesPerSecond * 2, numberOfBytes)];
+
+            while ((read = Read(buffer, 0, Math.Min(WaveFormat.BytesPerSecond * 2, numberOfBytes))) > 0)
+            {
+                numberOfBytes -= read;
+                if (numberOfBytes <= 0)
+                {
+                    break;
+                }
             }
         }
 
@@ -266,7 +287,7 @@ namespace CSCore.MediaFoundation
             }
             catch (Exception)
             {
-                DisposeInternal(true);
+                DisposeInternal();
                 throw;
             }
         }
@@ -286,7 +307,7 @@ namespace CSCore.MediaFoundation
                                 MediaFoundationAttributes.MF_PD_DURATION))
                     {
                         //bug: still, depending on the decoder, this returns imprecise values.
-                        return NanoSecond100UnitsToSamples(value.HValue);
+                        return NanoSecond100UnitsToBytes(value.HValue);
                     }
                 }
                 catch (Exception)
@@ -303,7 +324,7 @@ namespace CSCore.MediaFoundation
                 lock (_lockObj)
                 {
                     value -= (value % WaveFormat.BlockAlign);
-                    long hnsPos = SamplesToNanoSecond100Units(value);
+                    long hnsPos = BytesToNanoSecond100Units(value);
                     var propertyVariant = new PropertyVariant {HValue = hnsPos, DataType = VarEnum.VT_I8};
                     _reader.SetCurrentPosition(Guid.Empty, propertyVariant);
                     _decoderBufferCount = 0;
@@ -328,14 +349,16 @@ namespace CSCore.MediaFoundation
             return count;
         }
 
-        private long NanoSecond100UnitsToSamples(long nanoSeconds100Units)
+        private long NanoSecond100UnitsToBytes(long nanoSeconds100Units)
         {
-            return (nanoSeconds100Units * WaveFormat.BytesPerSecond) / 10000000L;
+            long result = (nanoSeconds100Units * WaveFormat.BytesPerSecond) / 10000000L;
+            result += result % WaveFormat.BlockAlign;
+            return result;
         }
 
-        private long SamplesToNanoSecond100Units(long samples)
+        private long BytesToNanoSecond100Units(long bytes)
         {
-            return (10000000L * samples) / WaveFormat.BytesPerSecond;
+            return (10000000L * bytes) / WaveFormat.BytesPerSecond;
         }
 
         /// <summary>
@@ -349,11 +372,11 @@ namespace CSCore.MediaFoundation
         {
             lock (_lockObj)
             {
-                DisposeInternal(disposing);
+                DisposeInternal();
             }
         }
 
-        private void DisposeInternal(bool disposing)
+        private void DisposeInternal()
         {
             if (_reader != null)
             {
