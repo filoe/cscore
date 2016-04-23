@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace CSCore.Streams
 {
@@ -11,7 +8,7 @@ namespace CSCore.Streams
     /// </summary>
     public class CachedSoundSource : IWaveSource
     {
-        private MemoryStream _cache;
+        private Stream _cache;
         private readonly WaveFormat _waveFormat;
 
         /// <summary>
@@ -30,10 +27,19 @@ namespace CSCore.Streams
             CacheSource(source);
         }
 
+        /// <summary>
+        /// Creates a stream to buffer data in.
+        /// </summary>
+        /// <returns>An empty stream to use as buffer.</returns>
+        protected virtual Stream CreateStream()
+        {
+            return new MemoryStream() {Position = 0};
+        }
+
         private void CacheSource(IWaveSource source)
         {
-            _cache = new MemoryStream {Position = 0};
-            int read = 0;
+            _cache = CreateStream();
+            int read;
             int count = (int)Math.Min(source.WaveFormat.BytesPerSecond * 5, source.Length);
             byte[] buffer = new byte[count];
 
