@@ -237,7 +237,7 @@ namespace CSCore.MediaFoundation
         {
             if (!_disposed)
             {
-                if (_sinkWriter != null)
+                if (_sinkWriter != null && !_sinkWriter.IsDisposed)
                 {
                     //thanks to martin48 (and naudio??) for providing the following source code (see http://cscore.codeplex.com/discussions/574280):
                     MFSinkWriterStatistics statistics = _sinkWriter.GetStatistics(_streamIndex);
@@ -292,6 +292,47 @@ namespace CSCore.MediaFoundation
                 Debug.WriteLine(String.Format("{0:#00.00}%", source.Position / (double) source.Length * 100));
                 encoder.Write(buffer, 0, read);
             }
+        }
+
+        /// <summary>
+        ///     Returns a new instance of the <see cref="MediaFoundationEncoder"/> class, configured as flac encoder.
+        /// </summary>
+        /// <param name="sourceFormat">The input format, of the data to encode.</param>
+        /// <param name="bitRate">The bitrate to use. The final bitrate can differ from the specified value.</param>        
+        /// <param name="targetFilename">The file to write to.</param>
+        /// <returns>A new instance of the <see cref="MediaFoundationEncoder"/> class, configured as flac encoder.</returns>        
+        // ReSharper disable once InconsistentNaming
+        public static MediaFoundationEncoder CreateFlacEncoder(WaveFormat sourceFormat, string targetFilename,
+            int bitRate = 192000)
+        {
+            return CreateFlacEncoder(sourceFormat, File.Open(targetFilename, FileMode.OpenOrCreate, FileAccess.ReadWrite),
+                bitRate);
+        }
+
+        /// <summary>
+        ///     Returns a new instance of the <see cref="MediaFoundationEncoder"/> class, configured as flac encoder.
+        /// </summary>
+        /// <param name="sourceFormat">The input format, of the data to encode.</param>
+        /// <param name="bitRate">The bitrate to use. The final bitrate can differ from the specified value.</param>        
+        /// <param name="targetStream">The stream to write to.</param>
+        /// <returns>A new instance of the <see cref="MediaFoundationEncoder"/> class, configured as flac encoder.</returns>
+        public static MediaFoundationEncoder CreateFlacEncoder(WaveFormat sourceFormat, Stream targetStream, 
+            int bitRate = 192000)
+        {
+            if (sourceFormat == null)
+                throw new ArgumentNullException("sourceFormat");
+            if (targetStream == null)
+                throw new ArgumentNullException("targetStream");
+            if (targetStream.CanWrite != true)
+                throw new ArgumentException("Stream not writeable.", "targetStream");
+            MFMediaType targetMediaType = FindBestMediaType(AudioSubTypes.WAVE_FORMAT_FLAC, sourceFormat.SampleRate,
+                sourceFormat.Channels, bitRate);
+            MFMediaType sourceMediaType = MediaFoundationCore.MediaTypeFromWaveFormat(sourceFormat);
+
+            if (targetMediaType == null)
+                throw new PlatformNotSupportedException("No FLAC-Encoder was found.");
+
+            return new MediaFoundationEncoder(targetStream, sourceMediaType, targetMediaType, TranscodeContainerTypes.MFTranscodeContainerType_AMR);
         }
 
         /// <summary>
