@@ -56,6 +56,12 @@ namespace CSCore.Win32
             1);
 
         /// <summary>
+        /// Audio Engine Device Format
+        /// </summary>
+        public static readonly PropertyKey AudioEngineDeviceFormat = new PropertyKey(
+            new Guid(0xf19f064d, 0x82c, 0x4e27, 0xbc, 0x73, 0x68, 0x82, 0xa1, 0xbb, 0x8e, 0x4c), 0);
+
+        /// <summary>
         ///     Initializes a new instance of the <see cref="PropertyStore" /> class.
         /// </summary>
         /// <param name="ptr">The native pointer of the COM object.</param>

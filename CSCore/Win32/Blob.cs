@@ -40,5 +40,21 @@ namespace CSCore.Win32
         {
             return encoding.GetString(GetData());
         }
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents the data stored in the <see cref="Blob"/> as hex string.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents the data stored in the <see cref="Blob"/> as hex string.
+        /// </returns>
+        public override string ToString()
+        {
+            StringBuilder builder = new StringBuilder();
+            foreach (var b in GetData())
+            {
+                builder.AppendFormat("{0:x2}", b);
+            }
+            return builder.ToString();
+        }
     }
 }

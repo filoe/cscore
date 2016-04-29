@@ -83,6 +83,20 @@ namespace CSCore.CoreAudioAPI
         }
 
         /// <summary>
+        /// Gets the device format.
+        /// </summary>
+        /// <remarks>Specifies the device format, which is the format that the user has selected for the stream that flows between the audio engine and the audio endpoint device when the device operates in shared mode.</remarks>
+        public WaveFormat DeviceFormat
+        {
+            get
+            {
+                var value = PropertyStore[PropertyStore.AudioEngineDeviceFormat].BlobValue;
+                var waveFormat = WaveFormatMarshaler.PointerToWaveFormat(value.Data);
+                return waveFormat;
+            }
+        }
+
+        /// <summary>
         /// Creates a COM object with the specified interface.
         /// </summary>
         /// <param name="iid">The interface identifier. This parameter is a reference to a GUID that identifies the interface that the caller requests be activated. The caller will use this interface to communicate with the COM object.</param>
