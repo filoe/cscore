@@ -131,6 +131,19 @@ namespace CSCore.SoundOut
 			get { return Environment.OSVersion.Version.Major >= 6; }
 		}
 
+	    /// <summary>
+	    /// Sets a value indicating whether the Desktop Window Manager (DWM) has to opt in to or out of Multimedia Class Schedule Service (MMCSS)
+	    /// scheduling while the current process is alive.
+	    /// </summary>
+	    /// <value>
+        /// <c>True</c> to instruct the Desktop Window Manager to participate in MMCSS scheduling; <c>False</c> to opt out or end participation in MMCSS scheduling.
+	    /// </value>
+        /// <remarks>DWM will be scheduled by the MMCSS as long as any process that called DwmEnableMMCSS to enable MMCSS is active and has not previously called DwmEnableMMCSS to disable MMCSS.</remarks>
+	    public static bool EnableDwmMmcssScheduling
+	    {
+	        set { Marshal.ThrowExceptionForHR(NativeMethods.DwmEnableMMCSS(value)); }
+	    }
+
 		/// <summary>
 		///     Gets or sets the <see cref="Device" /> which should be used for playback.
 		///     The <see cref="Device" /> property has to be set before initializing. The systems default playback device is used
@@ -376,6 +389,8 @@ namespace CSCore.SoundOut
 		{
 			Exception exception = null;
 			IntPtr avrtHandle = IntPtr.Zero;
+            string mmcssType = Latency > 25 ? "Audio" : "Pro Audio";
+            int taskIndex = 0;
 			try
 			{
 				int bufferSize = _audioClient.BufferSize;
@@ -385,25 +400,10 @@ namespace CSCore.SoundOut
 
 				WaitHandle[] eventWaitHandleArray = { _eventWaitHandle };
 
-				//001
-				/*if (!FeedBuffer(_renderClient, buffer, bufferSize, frameSize)) //todo: might cause a deadlock: play() is waiting on eventhandle but FeedBuffer got already called
-				{
-					_playbackState = PlaybackState.Stopped;
-					if (playbackStartedEventWaithandle is EventWaitHandle)
-					{
-						((EventWaitHandle)playbackStartedEventWaithandle).Set();
-						playbackStartedEventWaithandle = null;
-					}
-				}
-				else
-				{*/
 				_audioClient.Start();
 				_playbackState = PlaybackState.Playing;
 
-				string mmcssType = Latency > 25 ? "Audio" : "Pro Audio";
-
-				int taskIndex;
-				avrtHandle = NativeMethods.AvSetMmThreadCharacteristics(mmcssType, out taskIndex);
+				avrtHandle = NativeMethods.AvSetMmThreadCharacteristics(mmcssType, ref taskIndex);
 
 
 				if (playbackStartedEventWaithandle is EventWaitHandle)
@@ -491,12 +491,11 @@ namespace CSCore.SoundOut
 
 				_audioClient.Stop();
 				_audioClient.Reset();
-				//}
 			}
-			catch (Exception ex)
-			{
-				exception = ex;
-			}
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
 			finally
 			{
 				//set the playbackstate to stopped
@@ -765,7 +764,7 @@ namespace CSCore.SoundOut
 
 		private void RaiseStopped(Exception exception)
 		{
-            EventHandler<PlaybackStoppedEventArgs> handler = this.Stopped;
+            EventHandler<PlaybackStoppedEventArgs> handler = Stopped;
             if (handler != null) {
                 if (_syncContext != null)
                     //since Send could cause deadlocks better use Post instead

@@ -22,10 +22,13 @@ namespace CSCore.Win32
         internal static extern IntPtr GetProcAddress(IntPtr hModule, [MarshalAs(UnmanagedType.LPStr)] string procName);
 
         [DllImport("Avrt.dll", CharSet = CharSet.Unicode)]
-        internal static extern IntPtr AvSetMmThreadCharacteristics([MarshalAs(UnmanagedType.LPWStr)] string proAudio, out int taskIndex);
+        internal static extern IntPtr AvSetMmThreadCharacteristics([MarshalAs(UnmanagedType.LPWStr)] string proAudio, [Out, In]ref int taskIndex);
 
         [DllImport("Avrt.dll")]
         internal static extern bool AvRevertMmThreadCharacteristics(IntPtr avrtHandle);
+
+        [DllImport("dwmapi.dll")]
+        public static extern int DwmEnableMMCSS(bool fEnable);
 
         [DllImport("ole32.dll")]
         public static extern int PropVariantClear(ref PropertyVariant propertyVariant);
