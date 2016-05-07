@@ -158,6 +158,8 @@ namespace CSCore.MediaFoundation
         private void SkipBytes(int numberOfBytes)
         {
             numberOfBytes += numberOfBytes % WaveFormat.BlockAlign;
+            if (numberOfBytes <= 0)
+                return;
 
             int read;
             byte[] buffer = new byte[Math.Min(WaveFormat.BytesPerSecond * 2, numberOfBytes)];
