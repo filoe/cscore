@@ -535,6 +535,11 @@ namespace CSCore
 
         /// <summary>WAVE_FORMAT_DEVELOPMENT</summary>
         WAVE_FORMAT_DEVELOPMENT = unchecked((short)0xFFFF),
+
+        /// <summary>
+        /// FLAC
+        /// </summary>
+        WAVE_FORMAT_FLAC = unchecked((short)0xF1AC)
     }
 }
 

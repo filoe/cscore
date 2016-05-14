@@ -34,12 +34,12 @@ namespace CSCore
 		{
 			var splittedLine = line.Split('=');
 
-			WriteLine("{3}public static readonly Guid {0} = new Guid((int){2}.{1}, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);",
+			WriteLine("{3}public static readonly Guid {0} = new Guid((short){2}.{1} & 0x0000FFFF, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);",
 				splittedLine[0].Trim(), splittedLine[0].Trim(), enumName, tab);
 		}
 	}
 #>
 
-// ReSharper restore InconsistentNaming
+// ReSharper restore InconsistentNaming 
 	}
 }
