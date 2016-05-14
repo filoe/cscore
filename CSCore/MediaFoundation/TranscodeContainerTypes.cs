@@ -39,5 +39,17 @@ namespace CSCore.MediaFoundation
         /// FMPEG4
         /// </summary>
         public static readonly Guid MFTranscodeContainerType_FMPEG4 = new Guid(0x9ba876f1, 0x419f, 0x4b77, 0xa1, 0xe0, 0x35, 0x95, 0x9d, 0x9d, 0x40, 0x4);
+        /// <summary>
+        /// AMR
+        /// </summary>
+        public static readonly Guid MFTranscodeContainerType_AMR = new Guid(0x025d5ad3, 0x621a, 0x475b, 0x96, 0x4d, 0x66, 0xb1, 0xc8, 0x24, 0xf0, 0x79);
+        /// <summary>
+        /// WAVE
+        /// </summary>
+        public static readonly Guid MFTranscodeContainerType_WAVE = new Guid(0x64c3453c, 0x0f26, 0x4741, 0xbe, 0x63, 0x87, 0xbd, 0xf8, 0xbb, 0x93, 0x5b);
+        /// <summary>
+        /// AVI
+        /// </summary>
+        public static readonly Guid MFTranscodeContainerType_AVI = new Guid(0x7edfe8af, 0x402f, 0x4d76, 0xa3, 0x3c, 0x61, 0x9f, 0xd1, 0x57, 0xd0, 0xf1);
     }
 }
