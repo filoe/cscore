@@ -99,13 +99,6 @@ namespace CSCore.DMO
 
                     _mediaObject.ProcessInput(0, _inputDataBuffer);
                 }
-                else if (isReadyForInput == false && isIncomplete == false) //no data available and not ready for input
-                {
-                    Debug.WriteLine("Unknown behavior: No data available and not ready for input.");
-                    break; //todo: implement any better solution
-                }
-                else
-                    Debugger.Break();
 
                 //If there is no data left
                 //   -> reset the outputDataBuffer
