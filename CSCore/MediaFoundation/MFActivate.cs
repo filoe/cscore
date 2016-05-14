@@ -1,5 +1,6 @@
 ﻿using CSCore.Win32;
 using System;
+using System.Collections.Generic;
 
 namespace CSCore.MediaFoundation
 {
@@ -94,6 +95,86 @@ namespace CSCore.MediaFoundation
         public void DetachObject()
         {
             MediaFoundationException.Try(DetachObjectNative(), InterfaceName, "DetachObject");
+        }
+
+        /// <summary>
+        /// Gets the name of the MFT.
+        /// </summary>
+        public string FriendlyName
+        {
+            get
+            {
+                string value;
+                if (TryGet(MediaFoundationAttributes.MFT_FRIENDLY_NAME, out value))
+                {
+                    return value;
+                }
+                return String.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Gets the available input types.
+        /// </summary>
+        public RegisterTypeInfo[] InputTypes
+        {
+            get
+            {
+                byte[] bytes;
+                if (TryGet(MediaFoundationAttributes.MFT_INPUT_TYPES, out bytes))
+                {
+                    return RegisterTypeInfo.FromByteArray(bytes);
+                }
+                return new RegisterTypeInfo[0];
+            }
+        }
+
+        /// <summary>
+        /// Gets the available output types.
+        /// </summary>
+        public RegisterTypeInfo[] OutputTypes
+        {
+            get
+            {
+                byte[] bytes;
+                if (TryGet(MediaFoundationAttributes.MFT_OUTPUT_TYPES_Attributes, out bytes))
+                {
+                    return RegisterTypeInfo.FromByteArray(bytes);
+                }
+                return new RegisterTypeInfo[0];
+            }
+        }
+
+        /// <summary>
+        /// Contains media type information for registering a Media Foundation transform (MFT).
+        /// </summary>
+        public class RegisterTypeInfo
+        {
+            /// <summary>
+            /// The major media type.
+            /// </summary>
+            public Guid MajorType { get; set; }
+            /// <summary>
+            /// The media subtype.
+            /// </summary>
+            public Guid SubType { get; set; }
+
+            internal static RegisterTypeInfo[] FromByteArray(byte[] array)
+            {
+                List<RegisterTypeInfo> types = new List<RegisterTypeInfo>();
+                byte[] bytes = new byte[16];
+                for (int i = 0; i + 31 < array.Length; i += 32)
+                {
+                    RegisterTypeInfo type = new RegisterTypeInfo();
+                    Array.Copy(array, i, bytes, 0, bytes.Length);
+                    type.MajorType = new Guid(bytes);
+                    Array.Copy(array, i + 16, bytes, 0, bytes.Length);
+                    type.SubType = new Guid(bytes);
+                    types.Add(type);
+                }
+
+                return types.ToArray();
+            }
         }
     }
 }

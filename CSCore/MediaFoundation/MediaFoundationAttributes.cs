@@ -23,5 +23,10 @@ namespace CSCore.MediaFoundation
         public static readonly Guid MF_READWRITE_ENABLE_HARDWARE_TRANSFORMS = new Guid("a634a91c-822b-41b9-a494-4de4643612b0");
         public static readonly Guid MF_TRANSCODE_CONTAINERTYPE = new Guid("150ff23f-4abc-478b-ac4f-e1916fba1cca");
         public static readonly Guid MF_MT_AUDIO_CHANNEL_MASK = new Guid("55fb5765-644a-4caf-8479-938983bb1588");
+
+        public static readonly Guid MFT_INPUT_TYPES = new Guid("4276c9b1-759d-4bf3-9cd0-0d723d138f96");
+        public static readonly Guid MFT_OUTPUT_TYPES_Attributes = new Guid("8eae8cf3-a44f-4306-ba5c-bf5dda242818");
+
+        public static readonly Guid MFT_FRIENDLY_NAME = new Guid("314ffbae-5b41-4c95-9c19-4e7d586face3");
     }
 }
