@@ -48,25 +48,28 @@ namespace CSCore.SoundOut
 
         public event EventHandler<PlaybackStoppedEventArgs> Stopped;
 
+        public int Latency { get; set; }
+
         private ALPlayback _alPlayback;
         private VolumeSource _volumeSource;
         private readonly ALDevice _alDevice;
 
         /// <summary>
-        /// Initializes a new ALSoundOut class
+        /// Initializes a new ALSoundOut class with the default device and a latency of 150 ms
         /// </summary>
         public ALSoundOut() : this(ALDevice.DefaultDevice)
         {
         }
 
         /// <summary>
-        /// Initializes a new ALSoundOut class
+        /// Initializes a new ALSoundOut class with a latency of 150 ms
         /// </summary>
         /// <param name="device">The openal device</param>
         public ALSoundOut(ALDevice device)
         {
             _alDevice = device;
             _alDevice.Initialize();
+            Latency = 150;
         }
 
         ~ALSoundOut()
