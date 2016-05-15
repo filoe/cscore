@@ -173,42 +173,48 @@ namespace CSCore.SoundOut.AL
 
             ALInterops.alSourcePlay(_source.Id);
 
-            while (_playbackStream.Position < _playbackStream.Length)
+            try
             {
-                switch (PlaybackState)
+                while (_playbackStream.Position < _playbackStream.Length)
                 {
-                    case PlaybackState.Paused:
+                    switch (PlaybackState)
+                    {
+                        case PlaybackState.Paused:
+                            Thread.Sleep(Latency);
+                            continue;
+                        case PlaybackState.Stopped:
+                            return;
+                    }
+
+                    int finishedBuffersAmount;
+                    ALInterops.alGetSourcei(_source.Id, ALSourceParameters.BuffersProcessed, out finishedBuffersAmount);
+
+                    if (finishedBuffersAmount == 0)
+                    {
                         Thread.Sleep(Latency);
                         continue;
-                    case PlaybackState.Stopped:
-                        return;
+                    }
+
+                    var finishedBuffers = new uint[finishedBuffersAmount];
+                    ALInterops.alSourceUnqueueBuffers(_source.Id, finishedBuffersAmount, finishedBuffers);
+
+                    foreach (var finishedBuffer in finishedBuffers)
+                    {
+                        FillBuffer(finishedBuffer);
+                    }
+
+                    Position = _playbackStream.Position / _waveFormat.BytesPerSecond * 1000;
+
+                    int sourceState;
+                    ALInterops.alGetSourcei(_source.Id, ALSourceParameters.SourceState, out sourceState);
+                    if ((ALSourceState)sourceState == ALSourceState.Stopped)
+                    {
+                        ALInterops.alSourcePlay(_source.Id);
+                    }
                 }
-
-                int finishedBuffersAmount;
-                ALInterops.alGetSourcei(_source.Id, ALSourceParameters.BuffersProcessed, out finishedBuffersAmount);
-
-                if (finishedBuffersAmount == 0)
-                {
-                    Thread.Sleep(Latency);
-                    continue;
-                }
-
-                var finishedBuffers = new uint[finishedBuffersAmount];
-                ALInterops.alSourceUnqueueBuffers(_source.Id, finishedBuffersAmount, finishedBuffers);
-
-                foreach (var finishedBuffer in finishedBuffers)
-                {
-                    FillBuffer(finishedBuffer);
-                }
-
-                Position = _playbackStream.Position/_waveFormat.BytesPerSecond*1000;
-
-                int sourceState;
-                ALInterops.alGetSourcei(_source.Id, ALSourceParameters.SourceState, out sourceState);
-                if ((ALSourceState)sourceState == ALSourceState.Stopped)
-                {
-                    ALInterops.alSourcePlay(_source.Id);
-                }
+            }
+            catch (Exception ex)
+            {
             }
 
             PlaybackState = PlaybackState.Stopped;
