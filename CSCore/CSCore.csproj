@@ -328,6 +328,7 @@
     <Compile Include="SoundIn\WaveInBuffer.cs" />
     <Compile Include="SoundIn\WaveInDevice.cs" />
     <Compile Include="SoundOut\ALSoundOut.cs" />
+    <Compile Include="SoundOut\AL\ALErrorCode.cs" />
     <Compile Include="SoundOut\DirectSoundOut.cs" />
     <Compile Include="SoundOut\MMInterop\Utils.cs" />
     <Compile Include="SoundOut\MMInterop\WaveCallback.cs" />
