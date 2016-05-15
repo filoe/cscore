@@ -131,7 +131,20 @@ namespace CSCore.SoundOut
 
             _alPlayback = new ALPlayback(_alDevice);
             _alPlayback.PlaybackChanged += PlaybackChanged;
-            _alPlayback.Initialize(_volumeSource.ToWaveSource(), source.WaveFormat);
+
+            //choose right bit depth - openal requires PCM format
+            int bits = 16;
+            switch (source.WaveFormat.BitsPerSample)
+            {
+                case 8:
+                    bits = 8;
+                    break;
+                case 16:
+                default:
+                    bits = 16;
+                    break;
+            }
+            _alPlayback.Initialize(_volumeSource.ToWaveSource(bits), source.WaveFormat, Latency);
         }
 
         private void PlaybackChanged(object sender, EventArgs e)
