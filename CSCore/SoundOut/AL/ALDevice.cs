@@ -46,7 +46,7 @@ namespace CSCore.SoundOut.AL
 
         internal ALErrorCode GetLastError()
         {
-            return ALInterops.alGetError(_deviceHandle);
+            return ALInterops.alGetError();
         }
 
         /// <summary>

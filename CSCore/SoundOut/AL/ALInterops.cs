@@ -130,7 +130,10 @@ namespace CSCore.SoundOut.AL
         internal static extern void alGetListenerfv(ALSourceParameters param, float[] val);
 
         [DllImport("OpenAL32.dll", CallingConvention = CallingConvention.Cdecl)]
-        internal static extern ALErrorCode alGetError(IntPtr handle);
+        internal static extern ALErrorCode alGetError();
+
+        [DllImport("OpenAL32.dll", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern ALErrorCode alcGetError(IntPtr handle);
 
         public const int DeviceSpecifier = 0x1005;
 
