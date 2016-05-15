@@ -44,6 +44,11 @@ namespace CSCore.SoundOut.AL
             }
         }
 
+        internal ALErrorCode GetLastError()
+        {
+            return ALInterops.alGetError(_deviceHandle);
+        }
+
         /// <summary>
         /// Generates a new openal source
         /// </summary>

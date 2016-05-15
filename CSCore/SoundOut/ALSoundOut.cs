@@ -158,6 +158,15 @@ namespace CSCore.SoundOut
             }
         }
 
+        /// <summary>
+        /// Returns the last error code
+        /// </summary>
+        /// <returns></returns>
+        public ALErrorCode GetLastError()
+        {
+            return _alDevice.GetLastError();
+        }
+
         public void Dispose()
         {
             Dispose(true);
