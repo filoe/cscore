@@ -14,9 +14,9 @@ namespace CSCore.SoundOut.AL
         BuffersQueued = 0x1015,
 
         /// <summary>
-        /// AllBuffersProcessed
+        /// BuffersProcessed
         /// </summary>
-        AllBuffersProcessed = 0x1016,
+        BuffersProcessed = 0x1016,
 
         /// <summary>
         /// Pitch

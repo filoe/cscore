@@ -175,7 +175,7 @@ namespace CSCore.SoundOut.AL
                 }
 
                 int finishedBuffersAmount;
-                ALInterops.alGetSourcei(_source.Id, ALSourceParameters.AllBuffersProcessed, out finishedBuffersAmount);
+                ALInterops.alGetSourcei(_source.Id, ALSourceParameters.BuffersProcessed, out finishedBuffersAmount);
 
                 if (finishedBuffersAmount == 0)
                 {
@@ -292,7 +292,7 @@ namespace CSCore.SoundOut.AL
             }
 
             int finishedBuffersAmount;
-            ALInterops.alGetSourcei(_source.Id, ALSourceParameters.AllBuffersProcessed, out finishedBuffersAmount);
+            ALInterops.alGetSourcei(_source.Id, ALSourceParameters.BuffersProcessed, out finishedBuffersAmount);
 
             var finishedBuffers = new uint[finishedBuffersAmount];
             ALInterops.alSourceUnqueueBuffers(_source.Id, finishedBuffersAmount, finishedBuffers);
