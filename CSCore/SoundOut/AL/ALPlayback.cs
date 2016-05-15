@@ -100,6 +100,16 @@ namespace CSCore.SoundOut.AL
                 _playbackThread = new Thread(PlaybackThread) {IsBackground = true};
                 _playbackThread.Start();
             }
+            if (PlaybackState == PlaybackState.Paused)
+            {
+                lock (_locker)
+                {
+                    Device.Context.MakeCurrent();
+                    ALInterops.alSourcePlay(_source.Id);
+                    PlaybackState = PlaybackState.Playing;
+                    RaisePlaybackChanged();
+                }
+            }
         }
 
         /// <summary>
