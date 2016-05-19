@@ -166,10 +166,7 @@ namespace CSCore.SoundOut.AL
 
             var buffers = CreateBuffers(4);
 
-            FillBuffer(buffers[0]);
-            FillBuffer(buffers[1]);
-            FillBuffer(buffers[2]);
-            FillBuffer(buffers[3]);
+			FillBuffers(buffers);
 
             ALInterops.alSourcePlay(_source.Id);
 
@@ -195,13 +192,9 @@ namespace CSCore.SoundOut.AL
                         continue;
                     }
 
-                    var finishedBuffers = new uint[finishedBuffersAmount];
-                    ALInterops.alSourceUnqueueBuffers(_source.Id, finishedBuffersAmount, finishedBuffers);
+					var unqueuedBuffers = UnqueueBuffers(finishedBuffersAmount);
 
-                    foreach (var finishedBuffer in finishedBuffers)
-                    {
-                        FillBuffer(finishedBuffer);
-                    }
+					FillBuffers(unqueuedBuffers);
 
                     Position = _playbackStream.Position / _waveFormat.BytesPerSecond * 1000;
 
@@ -234,15 +227,36 @@ namespace CSCore.SoundOut.AL
             return bufferIds;
         }
 
+		/// <summary>
+		/// Unqueues count buffers
+		/// </summary>
+		/// <returns>The buffers.</returns>
+		/// <param name="count">Count.</param>
+		private uint[] UnqueueBuffers(int count)
+		{
+			var unqueueBuffers = new uint[count];
+			ALInterops.alSourceUnqueueBuffers(_source.Id, count, unqueueBuffers);
+			return unqueueBuffers;
+		}
+
+		/// <summary>
+		/// Fills the buffers from the playback stream
+		/// </summary>
+		/// <param name="buffers">Buffers.</param>
+		private void FillBuffers(uint[] buffers)
+		{
+			for (int i = 0; i < buffers.Length; i++) 
+			{
+				FillBuffer(buffers[i]);
+			}
+		}
+
         /// <summary>
         /// Fills the buffer from the playback stream
         /// </summary>
         /// <param name="buffer">The buffer</param>
         private void FillBuffer(uint buffer)
         {
-            var unqueueBuffer = new uint[1];
-            ALInterops.alSourceUnqueueBuffers(_source.Id, 1, unqueueBuffer);
-
             var data = new byte[_bufferSize];
 
             var dataLength = _playbackStream.Length - _playbackStream.Position < _bufferSize
@@ -251,8 +265,8 @@ namespace CSCore.SoundOut.AL
 
             if (dataLength == 0) return;
 
-            ALInterops.alBufferData(buffer, _alFormat, data, dataLength, (uint)_waveFormat.SampleRate);
-            ALInterops.alSourceQueueBuffers(_source.Id, 1, new[] { buffer });
+			ALInterops.alBufferData(buffer, _alFormat, data, dataLength, (uint)_waveFormat.SampleRate);
+			ALInterops.alSourceQueueBuffers(_source.Id, 1, new [] {buffer});
         }
 
         /// <summary>
@@ -310,8 +324,7 @@ namespace CSCore.SoundOut.AL
             int finishedBuffersAmount;
             ALInterops.alGetSourcei(_source.Id, ALSourceParameters.BuffersProcessed, out finishedBuffersAmount);
 
-            var finishedBuffers = new uint[finishedBuffersAmount];
-            ALInterops.alSourceUnqueueBuffers(_source.Id, finishedBuffersAmount, finishedBuffers);
+			var finishedBuffers = UnqueueBuffers (finishedBuffersAmount);
 
             ALInterops.alDeleteBuffers(finishedBuffersAmount, finishedBuffers);
         }
