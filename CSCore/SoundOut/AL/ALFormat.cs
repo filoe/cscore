@@ -25,6 +25,18 @@ namespace CSCore.SoundOut.AL
         /// <summary>
         /// Stereo, 16Bit.
         /// </summary>
-        Stereo16Bit = 0x1103
+        Stereo16Bit = 0x1103,
+
+        /// <summary>
+        /// Mono, float 32Bit.
+        /// This is not required to be supported on all implementations
+        /// </summary>
+        MonoFloat32Bit = 0x10010,
+
+        /// <summary>
+        /// Stereo, float 32bit
+        /// This is not required to be supported on all implementations
+        /// </summary>
+        StereoFloat32Bit = 0x10011
     }
 }

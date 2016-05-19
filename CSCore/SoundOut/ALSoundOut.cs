@@ -135,19 +135,24 @@ namespace CSCore.SoundOut
             _alPlayback = new ALPlayback(_alDevice);
             _alPlayback.PlaybackChanged += PlaybackChanged;
 
-            //choose right bit depth - openal requires PCM format
-            int bits = 16;
+            //choose right bit depth - openal possibly requires PCM format
+            int maxBitDepth = IsFloat32BitSupported() ? 32 : 16;
+            int bitDepth = 16;
             switch (source.WaveFormat.BitsPerSample)
             {
                 case 8:
-                    bits = 8;
+                    bitDepth = 8;
                     break;
                 case 16:
+                    bitDepth = 16;
+                    break;
+                case 24:
+                case 32:
                 default:
-                    bits = 16;
+                    bitDepth = maxBitDepth;
                     break;
             }
-            _alPlayback.Initialize(_volumeSource.ToWaveSource(bits), source.WaveFormat, Latency);
+            _alPlayback.Initialize(_volumeSource.ToWaveSource(bitDepth), source.WaveFormat, Latency);
         }
 
         private void PlaybackChanged(object sender, EventArgs e)
@@ -168,6 +173,15 @@ namespace CSCore.SoundOut
         public ALErrorCode GetLastError()
         {
             return _alDevice.GetLastError();
+        }
+
+        /// <summary>
+        /// Determines whether this OpenAL implementation supports float32bit audio format.
+        /// </summary>
+        /// <returns><c>true</c> if this implementation supports float32bit; otherwise, <c>false</c>.</returns>
+        public bool IsFloat32BitSupported()
+        {
+            return ALInterops.IsExtensionPresent("AL_EXT_float32");
         }
 
         public void Dispose()

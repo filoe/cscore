@@ -83,11 +83,11 @@ namespace CSCore.SoundOut.AL
         public void Initialize(IWaveSource stream, WaveFormat format, int latency)
         {
             _playbackStream = stream;
-            _waveFormat = format;
+			_waveFormat = stream.WaveFormat;
             Latency = latency;
             Length = stream.Length / format.BytesPerSecond * 1000;
             _bufferSize = format.BytesPerSecond / 1000 * latency;
-            _alFormat = DetectAudioFormat(format);
+			_alFormat = DetectAudioFormat(_waveFormat);
         }
 
         /// <summary>
@@ -276,16 +276,34 @@ namespace CSCore.SoundOut.AL
         /// <returns>ALFormat</returns>
         private ALFormat DetectAudioFormat(WaveFormat format)
         {
-            if (format.Channels > 1)
-            {
-                return format.BitsPerSample == 8
-                    ? ALFormat.Stereo8Bit
-                    : ALFormat.Stereo16Bit;
-            }
-
-            return format.BitsPerSample == 8
-                ? ALFormat.Mono8Bit
-                : ALFormat.Mono16Bit;
+			if (format.Channels > 1)
+			{
+				switch (format.BitsPerSample)
+				{
+					case 8:
+						return ALFormat.Stereo8Bit;
+					case 16:
+						return ALFormat.Stereo16Bit;
+					case 32:
+						return ALFormat.StereoFloat32Bit;
+					default:
+						throw new Exception("Unrecognized bitdepth requested: " + format.BitsPerSample);
+				}
+			}
+			else
+			{
+				switch (format.BitsPerSample)
+				{
+					case 8:
+						return ALFormat.Stereo8Bit;
+					case 16:
+						return ALFormat.Stereo16Bit;
+					case 32:
+						return ALFormat.StereoFloat32Bit;
+					default:
+						throw new Exception("Unrecognized bitdepth requested: " + format.BitsPerSample);
+				}
+			}
         }
 
         /// <summary>
