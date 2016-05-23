@@ -1,5 +1,4 @@
 ﻿using System;
-using System.CodeDom;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -113,7 +112,6 @@ namespace CSCore.Codecs.MP3
                     offsetOfFirstFrame = stream.Position;
             }
             _inputFormat = new Mp3Format(frame.SampleRate, frame.ChannelCount, frame.FrameLength, frame.BitRate);
-            //todo: implement VBR
 
             //Prescan stream
             if (enableSeeking)
@@ -212,16 +210,25 @@ namespace CSCore.Codecs.MP3
             value = Math.Max(Math.Min(value, Length), 0);
             value -= (value % WaveFormat.BlockAlign);
 
-            //long n = value / WaveFormat.BytesPerBlock;
-
             for (int i = 0; i < _frameInfoCollection.Count; i++)
             {
-                if ((value / WaveFormat.BytesPerBlock) <= _frameInfoCollection[i].SampleIndex)
+                if (value / WaveFormat.BytesPerBlock <= _frameInfoCollection[i].SampleIndex)
                 {
-                    _stream.Position = _frameInfoCollection[i].StreamPosition;
-                    _frameInfoCollection.PlaybackIndex = i;
+                    int index = i;
+                    if (value / WaveFormat.BytesPerBlock < _frameInfoCollection[i].SampleIndex)
+                        index = Math.Max(0, i - 1);
 
-                    _position = _frameInfoCollection[i].SampleIndex * WaveFormat.BlockAlign;
+                    _stream.Position = _frameInfoCollection[index].StreamPosition;
+                    _frameInfoCollection.PlaybackIndex = index;
+
+                    _position = _frameInfoCollection[index].SampleIndex * WaveFormat.BlockAlign;
+
+                    int diff = (int) (value - _position);
+                    diff -= diff % WaveFormat.BlockAlign;
+                    if (diff > 0)
+                    {
+                        this.ReadBytes(diff);
+                    }
 
                     break;
                 }
