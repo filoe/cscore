@@ -663,7 +663,7 @@
       echo.
       echo.
       echo Calling the inline-il-compiler ...
-      call %25inlineILCompiler%25
+      call "%25inlineILCompiler%25"
 
       echo.
       echo.
@@ -676,7 +676,7 @@
       :EXIT_ERR
       set errorCode=-1
       REM goto EXIT
-    </PostBuildEvent>
+</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>
