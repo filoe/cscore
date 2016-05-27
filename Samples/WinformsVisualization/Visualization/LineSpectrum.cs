@@ -117,7 +117,7 @@ namespace WinformsVisualization.Visualization
             {
                 SpectrumPointData p = spectrumPoints[i];
                 int barIndex = p.SpectrumPointIndex;
-                double xCoord = (_barWidth * barIndex) + (BarSpacing * barIndex) + 1 + _barWidth / 2;
+                double xCoord = BarSpacing * (barIndex + 1) + (_barWidth * barIndex) + _barWidth / 2;
 
                 var p1 = new PointF((float) xCoord, height);
                 var p2 = new PointF((float) xCoord, height - (float) p.Value - 1);
@@ -128,7 +128,7 @@ namespace WinformsVisualization.Visualization
 
         protected override void UpdateFrequencyMapping()
         {
-            _barWidth = Math.Max(((_currentSize.Width - (BarSpacing * (BarCount - 1))) / BarCount), 0.00001);
+            _barWidth = Math.Max(((_currentSize.Width - (BarSpacing * (BarCount + 1))) / BarCount), 0.00001);
             base.UpdateFrequencyMapping();
         }
 
