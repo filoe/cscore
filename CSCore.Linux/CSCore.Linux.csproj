@@ -241,12 +241,6 @@
     <Compile Include="..\CSCore\IWriteable.cs">
       <Link>IWriteable.cs</Link>
     </Compile>
-    <Compile Include="..\CSCore\MmException.cs">
-      <Link>MmException.cs</Link>
-    </Compile>
-    <Compile Include="..\CSCore\MmResult.cs">
-      <Link>MmResult.cs</Link>
-    </Compile>
     <Compile Include="..\CSCore\SampleAggregatorBase.cs">
       <Link>SampleAggregatorBase.cs</Link>
     </Compile>
@@ -596,6 +590,7 @@
     <None Include="..\CSCore\cscore.publickey">
       <Link>cscore.publickey</Link>
     </None>
+    <None Include="CSCore.dll.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\CSCore\AudioSubTypes.tt">
