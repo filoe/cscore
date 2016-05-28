@@ -529,9 +529,6 @@
     <Compile Include="..\CSCore\Utils\FlacBitReader.cs">
       <Link>Utils\FlacBitReader.cs</Link>
     </Compile>
-    <Compile Include="..\CSCore\Utils\ILUtils.cs">
-      <Link>Utils\ILUtils.cs</Link>
-    </Compile>
     <Compile Include="..\CSCore\Utils\ReadBlockStream.cs">
       <Link>Utils\ReadBlockStream.cs</Link>
     </Compile>
