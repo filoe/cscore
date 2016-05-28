@@ -1,0 +1,1694 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>CSCore - DirectSoundCapabilities</title>
+        <meta name="viewport" content="width=device-width">
+
+		
+			<link rel="stylesheet" type="text/css" href="../assets/css/font.css?version=0.9.5.10" />
+			<link rel="stylesheet" type="text/css" href="../assets/css/font-awesome.css?version=0.9.5.10" />
+			<link rel="stylesheet" type="text/css" href="../assets/css/style.css?version=0.9.5.10" />
+			
+			<!--[if IE 8]>
+				<script src="../assets/js/vendor.ie8.js?version=0.9.5.10"></script>
+			<![endif]-->
+			<![if !IE 8]>
+				<script src="../assets/js/vendor.js?version=0.9.5.10"></script>
+			<![endif]>
+
+			<script src="../assets/js/frame.js?version=0.9.5.10"></script>
+		
+
+		<script>hljs.initHighlightingOnLoad();</script>
+
+    </head>
+    <body>        
+        
+		<!-- DropDowns -->
+		<div id="dropdown-1" class="dropdown dropdown-tip">
+			<ul class="dropdown-menu">
+				
+
+					<li><a href="#Flags"><img alt="Field-Icon" src="../assets/images/icons/field_public.png"> Flags</a></li>
+
+				
+
+					<li><a href="#FreeHardware3DAllBuffers"><img alt="Field-Icon" src="../assets/images/icons/field_public.png"> FreeHardware3DAllBuffers</a></li>
+
+				
+
+					<li><a href="#FreeHardware3DStaticBuffers"><img alt="Field-Icon" src="../assets/images/icons/field_public.png"> FreeHardware3DStaticBuffers</a></li>
+
+				
+
+					<li><a href="#FreeHardware3DStreamingBuffers"><img alt="Field-Icon" src="../assets/images/icons/field_public.png"> FreeHardware3DStreamingBuffers</a></li>
+
+				
+
+					<li><a href="#FreeHardwareMemBytes"><img alt="Field-Icon" src="../assets/images/icons/field_public.png"> FreeHardwareMemBytes</a></li>
+
+				
+
+					<li><a href="#FreeHardwareMixingAllBuffers"><img alt="Field-Icon" src="../assets/images/icons/field_public.png"> FreeHardwareMixingAllBuffers</a></li>
+
+				
+
+					<li><a href="#FreeHardwareMixingStaticBuffers"><img alt="Field-Icon" src="../assets/images/icons/field_public.png"> FreeHardwareMixingStaticBuffers</a></li>
+
+				
+
+					<li><a href="#FreeHardwareMixingStreamingBuffers"><img alt="Field-Icon" src="../assets/images/icons/field_public.png"> FreeHardwareMixingStreamingBuffers</a></li>
+
+				
+
+					<li><a href="#MaxContigFreeHardwareMemBytes"><img alt="Field-Icon" src="../assets/images/icons/field_public.png"> MaxContigFreeHardwareMemBytes</a></li>
+
+				
+
+					<li><a href="#MaxHardware3DAllBuffers"><img alt="Field-Icon" src="../assets/images/icons/field_public.png"> MaxHardware3DAllBuffers</a></li>
+
+				
+
+					<li><a href="#MaxHardware3DStaticBuffers"><img alt="Field-Icon" src="../assets/images/icons/field_public.png"> MaxHardware3DStaticBuffers</a></li>
+
+				
+
+					<li><a href="#MaxHardware3DStreamingBuffers"><img alt="Field-Icon" src="../assets/images/icons/field_public.png"> MaxHardware3DStreamingBuffers</a></li>
+
+				
+
+					<li><a href="#MaxHardwareMixingAllBuffers"><img alt="Field-Icon" src="../assets/images/icons/field_public.png"> MaxHardwareMixingAllBuffers</a></li>
+
+				
+
+					<li><a href="#MaxHardwareMixingStaticBuffers"><img alt="Field-Icon" src="../assets/images/icons/field_public.png"> MaxHardwareMixingStaticBuffers</a></li>
+
+				
+
+					<li><a href="#MaxHardwareMixingStreamingBuffers"><img alt="Field-Icon" src="../assets/images/icons/field_public.png"> MaxHardwareMixingStreamingBuffers</a></li>
+
+				
+
+					<li><a href="#MaxSecondarySampleRate"><img alt="Field-Icon" src="../assets/images/icons/field_public.png"> MaxSecondarySampleRate</a></li>
+
+				
+
+					<li><a href="#MinSecondarySampleRate"><img alt="Field-Icon" src="../assets/images/icons/field_public.png"> MinSecondarySampleRate</a></li>
+
+				
+
+					<li><a href="#PlayCpuOverheadSwBuffers"><img alt="Field-Icon" src="../assets/images/icons/field_public.png"> PlayCpuOverheadSwBuffers</a></li>
+
+				
+
+					<li><a href="#PrimaryBuffers"><img alt="Field-Icon" src="../assets/images/icons/field_public.png"> PrimaryBuffers</a></li>
+
+				
+
+					<li><a href="#Size"><img alt="Field-Icon" src="../assets/images/icons/field_public.png"> Size</a></li>
+
+				
+
+					<li><a href="#TotalHardwareMemBytes"><img alt="Field-Icon" src="../assets/images/icons/field_public.png"> TotalHardwareMemBytes</a></li>
+
+				
+
+					<li><a href="#UnlockTransferRateHardwareBuffers"><img alt="Field-Icon" src="../assets/images/icons/field_public.png"> UnlockTransferRateHardwareBuffers</a></li>
+
+				
+			</ul>
+		</div>
+
+		<div id="dropdown-2" class="dropdown dropdown-tip">
+			<ul class="dropdown-menu">
+				
+			</ul>
+		</div>
+
+		<div id="dropdown-3" class="dropdown dropdown-tip">
+			<ul class="dropdown-menu">
+				
+
+					<li><a href="#DirectSoundCapabilities"><img alt="Method-Icon" src="../assets/images/icons/method_public.png"> DirectSoundCapabilities()</a></li>
+
+				
+
+				
+			</ul>
+		</div>
+
+		<div id="dropdown-4" class="dropdown dropdown-tip">
+			<ul class="dropdown-menu">
+				
+			</ul>
+		</div>
+		<!-- DropDowns Ende -->
+
+	    <div class="ui-layout-north">
+			<div class="toolbar">
+
+				
+					<a href="#" data-dropdown="#dropdown-1" class="button"><img src="../assets/images/icons/field_public.png"/> Fields <span class="info">(22)</span> <i class="icon-caret-down"></i></a>
+				
+					<a href="#" data-dropdown="#dropdown-3" class="button"><img src="../assets/images/icons/method_public.png"/> Methods <span class="info">(1)</span> <i class="icon-caret-down"></i></a>
+				
+
+				<div class="right">
+					<span class="toolbar-info"> Namespace: CSCore.DirectSound</span>
+					<a href="#" id="expand-all-button" class="button"><i class="icon-align-justify" title="expand all"></i></a>
+					<a href="#" id="print-button" class="button"><i class="icon-print" title="print"></i></a>
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+		</div>
+        
+		<div class="ui-layout-center">
+
+			<div>
+				<h3 class="box-title first-heading">Syntax</h3>					
+				<div class="syntax-box">
+					<pre class="wrap-pre"><code>public struct DirectSoundCapabilities : ValueType</code></pre>
+				</div>
+
+				
+					<h3 class="box-title">Base Type</h3>
+					<div class="list-box">
+						<ul>
+						
+								<li>System.ValueType</a></li>
+							
+						
+						</ul>
+					</div>
+				
+
+				
+        
+				
+
+					
+						<h3 class="box-title">Summary</h3>
+						<div class="doc-box markdown">
+							<p>Describes the capabilities of a device.</p>
+
+						</div>
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+				
+
+				
+
+				
+
+				
+					<h3 class="box-title">Fields</h3>
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="Flags" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/field_public.png"/> <p>Flags</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>Flags describing device capabilities.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public  DSCapabilitiesFlags Flags</code></pre>
+		</div>		
+        
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="FreeHardware3DAllBuffers" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/field_public.png"/> <p>FreeHardware3DAllBuffers</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>Number of unallocated 3D buffers.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public  Int32 FreeHardware3DAllBuffers</code></pre>
+		</div>		
+        
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="FreeHardware3DStaticBuffers" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/field_public.png"/> <p>FreeHardware3DStaticBuffers</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>Number of unallocated static 3D buffers.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public  Int32 FreeHardware3DStaticBuffers</code></pre>
+		</div>		
+        
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="FreeHardware3DStreamingBuffers" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/field_public.png"/> <p>FreeHardware3DStreamingBuffers</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>Number of unallocated streaming 3D buffers.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public  Int32 FreeHardware3DStreamingBuffers</code></pre>
+		</div>		
+        
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="FreeHardwareMemBytes" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/field_public.png"/> <p>FreeHardwareMemBytes</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>Size, in bytes, of the free memory on the sound card.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public  Int32 FreeHardwareMemBytes</code></pre>
+		</div>		
+        
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="FreeHardwareMixingAllBuffers" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/field_public.png"/> <p>FreeHardwareMixingAllBuffers</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>Number of unallocated buffers. On WDM drivers, this includes FreeHardware3DAllBuffers.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public  Int32 FreeHardwareMixingAllBuffers</code></pre>
+		</div>		
+        
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="FreeHardwareMixingStaticBuffers" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/field_public.png"/> <p>FreeHardwareMixingStaticBuffers</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>Number of unallocated static buffers.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public  Int32 FreeHardwareMixingStaticBuffers</code></pre>
+		</div>		
+        
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="FreeHardwareMixingStreamingBuffers" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/field_public.png"/> <p>FreeHardwareMixingStreamingBuffers</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>Number of unallocated streaming buffers.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public  Int32 FreeHardwareMixingStreamingBuffers</code></pre>
+		</div>		
+        
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="MaxContigFreeHardwareMemBytes" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/field_public.png"/> <p>MaxContigFreeHardwareMemBytes</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>Size, in bytes, of the largest contiguous block of free memory on the sound card.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public  Int32 MaxContigFreeHardwareMemBytes</code></pre>
+		</div>		
+        
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="MaxHardware3DAllBuffers" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/field_public.png"/> <p>MaxHardware3DAllBuffers</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>Maximum number of 3D buffers.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public  Int32 MaxHardware3DAllBuffers</code></pre>
+		</div>		
+        
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="MaxHardware3DStaticBuffers" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/field_public.png"/> <p>MaxHardware3DStaticBuffers</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>Maximum number of static 3D buffers.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public  Int32 MaxHardware3DStaticBuffers</code></pre>
+		</div>		
+        
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="MaxHardware3DStreamingBuffers" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/field_public.png"/> <p>MaxHardware3DStreamingBuffers</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>Maximum number of streaming 3D buffers.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public  Int32 MaxHardware3DStreamingBuffers</code></pre>
+		</div>		
+        
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="MaxHardwareMixingAllBuffers" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/field_public.png"/> <p>MaxHardwareMixingAllBuffers</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>Number of buffers that can be mixed in hardware. This member can be less than the sum of MaxHardwareMixingStaticBuffers and MaxHardwareMixingStreamingBuffers. Resource tradeoffs frequently occur.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public  Int32 MaxHardwareMixingAllBuffers</code></pre>
+		</div>		
+        
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="MaxHardwareMixingStaticBuffers" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/field_public.png"/> <p>MaxHardwareMixingStaticBuffers</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>Maximum number of static buffers.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public  Int32 MaxHardwareMixingStaticBuffers</code></pre>
+		</div>		
+        
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="MaxHardwareMixingStreamingBuffers" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/field_public.png"/> <p>MaxHardwareMixingStreamingBuffers</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>Maximum number of streaming sound buffers.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public  Int32 MaxHardwareMixingStreamingBuffers</code></pre>
+		</div>		
+        
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="MaxSecondarySampleRate" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/field_public.png"/> <p>MaxSecondarySampleRate</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>Maximum sample rate specification that is supported by this device's hardware secondary sound buffers.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public  Int32 MaxSecondarySampleRate</code></pre>
+		</div>		
+        
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="MinSecondarySampleRate" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/field_public.png"/> <p>MinSecondarySampleRate</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>Minimum sample rate specification that is supported by this device's hardware secondary sound buffers.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public  Int32 MinSecondarySampleRate</code></pre>
+		</div>		
+        
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="PlayCpuOverheadSwBuffers" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/field_public.png"/> <p>PlayCpuOverheadSwBuffers</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>The processing overhead, as a percentage of main processor cycles, needed to mix software buffers. This varies according to the bus type, the processor type, and the clock speed.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public  Int32 PlayCpuOverheadSwBuffers</code></pre>
+		</div>		
+        
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="PrimaryBuffers" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/field_public.png"/> <p>PrimaryBuffers</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>Number of primary buffers supported. This value will always be 1.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public  Int32 PrimaryBuffers</code></pre>
+		</div>		
+        
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="Size" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/field_public.png"/> <p>Size</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>Size of the structure, in bytes. This member must be initialized before the structure is used.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public  Int32 Size</code></pre>
+		</div>		
+        
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="TotalHardwareMemBytes" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/field_public.png"/> <p>TotalHardwareMemBytes</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>Size, in bytes, of the amount of memory on the sound card that stores static sound buffers.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public  Int32 TotalHardwareMemBytes</code></pre>
+		</div>		
+        
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="UnlockTransferRateHardwareBuffers" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/field_public.png"/> <p>UnlockTransferRateHardwareBuffers</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>The rate, in kilobytes per second, at which data can be transferred to hardware static sound buffers. This and the number of bytes transferred determines the duration of a call to the Unlock method.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public  Int32 UnlockTransferRateHardwareBuffers</code></pre>
+		</div>		
+        
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+				
+
+				
+
+				
+					<h3 class="box-title">Methods</h3>
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="DirectSoundCapabilities" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/method_public.png"/> <p>DirectSoundCapabilities()</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>Describes the capabilities of a device.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public void DirectSoundCapabilities()</code></pre>
+		</div>		
+        
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+				
+
+				
+
+				
+					<div class="svg-diagram">
+						<h3 class="box-title">Class Diagram</h3>
+						<div id="sd-class-diagram" class="svgpan">
+							
+							<svg><g transform="translate(0.00, 100.50)"><rect height="636" width="331" x="0.55" y="0.55" fill="#FFFFFF" stroke="#979797" stroke-width="1" /><text x="129.53" y="20.50" fill="" style="" text-anchor="" font-family="" font-size="11.00" onmouseover="" onmouseout=""><![CDATA[public  struct]]></text><a xlink:href="../type/DirectSoundCapabilities.html" xmlns:xlink="xlink"><text x="82.09" y="35.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[DirectSoundCapabilities]]></text></a><path d="M0.5,45.50L331.00,45.50" stroke="#979797" stroke-width="1" stroke-dasharray="" /><image width="16.00" height="16.00" x="15.00" y="53.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAIdQTFRF/wD/0ub4fbLl5/H7zeP5eK/jir3uebDj3u360+f6ebDkkMT2mc3/jsLz0ub51ej7e7Lli8D0odD+ncnyKVqwfLPnkcPxnc/+n9D+stj7Hk6pADOZW5vYgrfqo9H+KFevfLTpr9b8NWO1+vv9XJvYvsvlv9jvWprXtcThwtnwxdvxrL3e////zYeNhAAAAAF0Uk5TAEDm2GYAAAABYktHRCy63XGrAAAACXBIWXMAAAsSAAALEgHS3X78AAAAY0lEQVQY042PRw6AIBREsTfsFT/2rve/n7qQgCtm914mmQxC0lFUTWDdMC2bY8f1sG8FjMMoxjhJMybyosQVqYEJ2pCWdMAJ2g8jAEyfmCl9EBbWWLdX7NzssYmM0AmX/Ktfbim3BoCVQkjeAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEyLTA3LTI5VDExOjUyOjM3KzAyOjAww0o2dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMC0wNC0wM1QwNToxMToyMCswMjowMBDLlngAAAAASUVORK5CYII=" xmlns:xlink="xlink" /><a xlink:href="../type/DirectSoundCapabilities.html#Flags" xmlns:xlink="xlink"><text x="40.00" y="65.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[Flags]]></text></a><image width="16.00" height="16.00" x="15.00" y="78.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAIdQTFRF/wD/0ub4fbLl5/H7zeP5eK/jir3uebDj3u360+f6ebDkkMT2mc3/jsLz0ub51ej7e7Lli8D0odD+ncnyKVqwfLPnkcPxnc/+n9D+stj7Hk6pADOZW5vYgrfqo9H+KFevfLTpr9b8NWO1+vv9XJvYvsvlv9jvWprXtcThwtnwxdvxrL3e////zYeNhAAAAAF0Uk5TAEDm2GYAAAABYktHRCy63XGrAAAACXBIWXMAAAsSAAALEgHS3X78AAAAY0lEQVQY042PRw6AIBREsTfsFT/2rve/n7qQgCtm914mmQxC0lFUTWDdMC2bY8f1sG8FjMMoxjhJMybyosQVqYEJ2pCWdMAJ2g8jAEyfmCl9EBbWWLdX7NzssYmM0AmX/Ktfbim3BoCVQkjeAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEyLTA3LTI5VDExOjUyOjM3KzAyOjAww0o2dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMC0wNC0wM1QwNToxMToyMCswMjowMBDLlngAAAAASUVORK5CYII=" xmlns:xlink="xlink" /><a xlink:href="../type/DirectSoundCapabilities.html#FreeHardware3DAllBuffers" xmlns:xlink="xlink"><text x="40.00" y="90.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[FreeHardware3DAllBuffers]]></text></a><image width="16.00" height="16.00" x="15.00" y="103.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAIdQTFRF/wD/0ub4fbLl5/H7zeP5eK/jir3uebDj3u360+f6ebDkkMT2mc3/jsLz0ub51ej7e7Lli8D0odD+ncnyKVqwfLPnkcPxnc/+n9D+stj7Hk6pADOZW5vYgrfqo9H+KFevfLTpr9b8NWO1+vv9XJvYvsvlv9jvWprXtcThwtnwxdvxrL3e////zYeNhAAAAAF0Uk5TAEDm2GYAAAABYktHRCy63XGrAAAACXBIWXMAAAsSAAALEgHS3X78AAAAY0lEQVQY042PRw6AIBREsTfsFT/2rve/n7qQgCtm914mmQxC0lFUTWDdMC2bY8f1sG8FjMMoxjhJMybyosQVqYEJ2pCWdMAJ2g8jAEyfmCl9EBbWWLdX7NzssYmM0AmX/Ktfbim3BoCVQkjeAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEyLTA3LTI5VDExOjUyOjM3KzAyOjAww0o2dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMC0wNC0wM1QwNToxMToyMCswMjowMBDLlngAAAAASUVORK5CYII=" xmlns:xlink="xlink" /><a xlink:href="../type/DirectSoundCapabilities.html#FreeHardware3DStaticBuffers" xmlns:xlink="xlink"><text x="40.00" y="115.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[FreeHardware3DStaticBuffers]]></text></a><image width="16.00" height="16.00" x="15.00" y="128.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAIdQTFRF/wD/0ub4fbLl5/H7zeP5eK/jir3uebDj3u360+f6ebDkkMT2mc3/jsLz0ub51ej7e7Lli8D0odD+ncnyKVqwfLPnkcPxnc/+n9D+stj7Hk6pADOZW5vYgrfqo9H+KFevfLTpr9b8NWO1+vv9XJvYvsvlv9jvWprXtcThwtnwxdvxrL3e////zYeNhAAAAAF0Uk5TAEDm2GYAAAABYktHRCy63XGrAAAACXBIWXMAAAsSAAALEgHS3X78AAAAY0lEQVQY042PRw6AIBREsTfsFT/2rve/n7qQgCtm914mmQxC0lFUTWDdMC2bY8f1sG8FjMMoxjhJMybyosQVqYEJ2pCWdMAJ2g8jAEyfmCl9EBbWWLdX7NzssYmM0AmX/Ktfbim3BoCVQkjeAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEyLTA3LTI5VDExOjUyOjM3KzAyOjAww0o2dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMC0wNC0wM1QwNToxMToyMCswMjowMBDLlngAAAAASUVORK5CYII=" xmlns:xlink="xlink" /><a xlink:href="../type/DirectSoundCapabilities.html#FreeHardware3DStreamingBuffers" xmlns:xlink="xlink"><text x="40.00" y="140.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[FreeHardware3DStreamingBuffers]]></text></a><image width="16.00" height="16.00" x="15.00" y="153.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAIdQTFRF/wD/0ub4fbLl5/H7zeP5eK/jir3uebDj3u360+f6ebDkkMT2mc3/jsLz0ub51ej7e7Lli8D0odD+ncnyKVqwfLPnkcPxnc/+n9D+stj7Hk6pADOZW5vYgrfqo9H+KFevfLTpr9b8NWO1+vv9XJvYvsvlv9jvWprXtcThwtnwxdvxrL3e////zYeNhAAAAAF0Uk5TAEDm2GYAAAABYktHRCy63XGrAAAACXBIWXMAAAsSAAALEgHS3X78AAAAY0lEQVQY042PRw6AIBREsTfsFT/2rve/n7qQgCtm914mmQxC0lFUTWDdMC2bY8f1sG8FjMMoxjhJMybyosQVqYEJ2pCWdMAJ2g8jAEyfmCl9EBbWWLdX7NzssYmM0AmX/Ktfbim3BoCVQkjeAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEyLTA3LTI5VDExOjUyOjM3KzAyOjAww0o2dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMC0wNC0wM1QwNToxMToyMCswMjowMBDLlngAAAAASUVORK5CYII=" xmlns:xlink="xlink" /><a xlink:href="../type/DirectSoundCapabilities.html#FreeHardwareMemBytes" xmlns:xlink="xlink"><text x="40.00" y="165.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[FreeHardwareMemBytes]]></text></a><image width="16.00" height="16.00" x="15.00" y="178.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAIdQTFRF/wD/0ub4fbLl5/H7zeP5eK/jir3uebDj3u360+f6ebDkkMT2mc3/jsLz0ub51ej7e7Lli8D0odD+ncnyKVqwfLPnkcPxnc/+n9D+stj7Hk6pADOZW5vYgrfqo9H+KFevfLTpr9b8NWO1+vv9XJvYvsvlv9jvWprXtcThwtnwxdvxrL3e////zYeNhAAAAAF0Uk5TAEDm2GYAAAABYktHRCy63XGrAAAACXBIWXMAAAsSAAALEgHS3X78AAAAY0lEQVQY042PRw6AIBREsTfsFT/2rve/n7qQgCtm914mmQxC0lFUTWDdMC2bY8f1sG8FjMMoxjhJMybyosQVqYEJ2pCWdMAJ2g8jAEyfmCl9EBbWWLdX7NzssYmM0AmX/Ktfbim3BoCVQkjeAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEyLTA3LTI5VDExOjUyOjM3KzAyOjAww0o2dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMC0wNC0wM1QwNToxMToyMCswMjowMBDLlngAAAAASUVORK5CYII=" xmlns:xlink="xlink" /><a xlink:href="../type/DirectSoundCapabilities.html#FreeHardwareMixingAllBuffers" xmlns:xlink="xlink"><text x="40.00" y="190.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[FreeHardwareMixingAllBuffers]]></text></a><image width="16.00" height="16.00" x="15.00" y="203.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAIdQTFRF/wD/0ub4fbLl5/H7zeP5eK/jir3uebDj3u360+f6ebDkkMT2mc3/jsLz0ub51ej7e7Lli8D0odD+ncnyKVqwfLPnkcPxnc/+n9D+stj7Hk6pADOZW5vYgrfqo9H+KFevfLTpr9b8NWO1+vv9XJvYvsvlv9jvWprXtcThwtnwxdvxrL3e////zYeNhAAAAAF0Uk5TAEDm2GYAAAABYktHRCy63XGrAAAACXBIWXMAAAsSAAALEgHS3X78AAAAY0lEQVQY042PRw6AIBREsTfsFT/2rve/n7qQgCtm914mmQxC0lFUTWDdMC2bY8f1sG8FjMMoxjhJMybyosQVqYEJ2pCWdMAJ2g8jAEyfmCl9EBbWWLdX7NzssYmM0AmX/Ktfbim3BoCVQkjeAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEyLTA3LTI5VDExOjUyOjM3KzAyOjAww0o2dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMC0wNC0wM1QwNToxMToyMCswMjowMBDLlngAAAAASUVORK5CYII=" xmlns:xlink="xlink" /><a xlink:href="../type/DirectSoundCapabilities.html#FreeHardwareMixingStaticBuffers" xmlns:xlink="xlink"><text x="40.00" y="215.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[FreeHardwareMixingStaticBuffers]]></text></a><image width="16.00" height="16.00" x="15.00" y="228.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAIdQTFRF/wD/0ub4fbLl5/H7zeP5eK/jir3uebDj3u360+f6ebDkkMT2mc3/jsLz0ub51ej7e7Lli8D0odD+ncnyKVqwfLPnkcPxnc/+n9D+stj7Hk6pADOZW5vYgrfqo9H+KFevfLTpr9b8NWO1+vv9XJvYvsvlv9jvWprXtcThwtnwxdvxrL3e////zYeNhAAAAAF0Uk5TAEDm2GYAAAABYktHRCy63XGrAAAACXBIWXMAAAsSAAALEgHS3X78AAAAY0lEQVQY042PRw6AIBREsTfsFT/2rve/n7qQgCtm914mmQxC0lFUTWDdMC2bY8f1sG8FjMMoxjhJMybyosQVqYEJ2pCWdMAJ2g8jAEyfmCl9EBbWWLdX7NzssYmM0AmX/Ktfbim3BoCVQkjeAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEyLTA3LTI5VDExOjUyOjM3KzAyOjAww0o2dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMC0wNC0wM1QwNToxMToyMCswMjowMBDLlngAAAAASUVORK5CYII=" xmlns:xlink="xlink" /><a xlink:href="../type/DirectSoundCapabilities.html#FreeHardwareMixingStreamingBuffers" xmlns:xlink="xlink"><text x="40.00" y="240.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[FreeHardwareMixingStreamingBuffers]]></text></a><image width="16.00" height="16.00" x="15.00" y="253.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAIdQTFRF/wD/0ub4fbLl5/H7zeP5eK/jir3uebDj3u360+f6ebDkkMT2mc3/jsLz0ub51ej7e7Lli8D0odD+ncnyKVqwfLPnkcPxnc/+n9D+stj7Hk6pADOZW5vYgrfqo9H+KFevfLTpr9b8NWO1+vv9XJvYvsvlv9jvWprXtcThwtnwxdvxrL3e////zYeNhAAAAAF0Uk5TAEDm2GYAAAABYktHRCy63XGrAAAACXBIWXMAAAsSAAALEgHS3X78AAAAY0lEQVQY042PRw6AIBREsTfsFT/2rve/n7qQgCtm914mmQxC0lFUTWDdMC2bY8f1sG8FjMMoxjhJMybyosQVqYEJ2pCWdMAJ2g8jAEyfmCl9EBbWWLdX7NzssYmM0AmX/Ktfbim3BoCVQkjeAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEyLTA3LTI5VDExOjUyOjM3KzAyOjAww0o2dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMC0wNC0wM1QwNToxMToyMCswMjowMBDLlngAAAAASUVORK5CYII=" xmlns:xlink="xlink" /><a xlink:href="../type/DirectSoundCapabilities.html#MaxContigFreeHardwareMemBytes" xmlns:xlink="xlink"><text x="40.00" y="265.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[MaxContigFreeHardwareMemBytes]]></text></a><image width="16.00" height="16.00" x="15.00" y="278.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAIdQTFRF/wD/0ub4fbLl5/H7zeP5eK/jir3uebDj3u360+f6ebDkkMT2mc3/jsLz0ub51ej7e7Lli8D0odD+ncnyKVqwfLPnkcPxnc/+n9D+stj7Hk6pADOZW5vYgrfqo9H+KFevfLTpr9b8NWO1+vv9XJvYvsvlv9jvWprXtcThwtnwxdvxrL3e////zYeNhAAAAAF0Uk5TAEDm2GYAAAABYktHRCy63XGrAAAACXBIWXMAAAsSAAALEgHS3X78AAAAY0lEQVQY042PRw6AIBREsTfsFT/2rve/n7qQgCtm914mmQxC0lFUTWDdMC2bY8f1sG8FjMMoxjhJMybyosQVqYEJ2pCWdMAJ2g8jAEyfmCl9EBbWWLdX7NzssYmM0AmX/Ktfbim3BoCVQkjeAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEyLTA3LTI5VDExOjUyOjM3KzAyOjAww0o2dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMC0wNC0wM1QwNToxMToyMCswMjowMBDLlngAAAAASUVORK5CYII=" xmlns:xlink="xlink" /><a xlink:href="../type/DirectSoundCapabilities.html#MaxHardware3DAllBuffers" xmlns:xlink="xlink"><text x="40.00" y="290.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[MaxHardware3DAllBuffers]]></text></a><image width="16.00" height="16.00" x="15.00" y="303.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAIdQTFRF/wD/0ub4fbLl5/H7zeP5eK/jir3uebDj3u360+f6ebDkkMT2mc3/jsLz0ub51ej7e7Lli8D0odD+ncnyKVqwfLPnkcPxnc/+n9D+stj7Hk6pADOZW5vYgrfqo9H+KFevfLTpr9b8NWO1+vv9XJvYvsvlv9jvWprXtcThwtnwxdvxrL3e////zYeNhAAAAAF0Uk5TAEDm2GYAAAABYktHRCy63XGrAAAACXBIWXMAAAsSAAALEgHS3X78AAAAY0lEQVQY042PRw6AIBREsTfsFT/2rve/n7qQgCtm914mmQxC0lFUTWDdMC2bY8f1sG8FjMMoxjhJMybyosQVqYEJ2pCWdMAJ2g8jAEyfmCl9EBbWWLdX7NzssYmM0AmX/Ktfbim3BoCVQkjeAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEyLTA3LTI5VDExOjUyOjM3KzAyOjAww0o2dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMC0wNC0wM1QwNToxMToyMCswMjowMBDLlngAAAAASUVORK5CYII=" xmlns:xlink="xlink" /><a xlink:href="../type/DirectSoundCapabilities.html#MaxHardware3DStaticBuffers" xmlns:xlink="xlink"><text x="40.00" y="315.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[MaxHardware3DStaticBuffers]]></text></a><image width="16.00" height="16.00" x="15.00" y="328.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAIdQTFRF/wD/0ub4fbLl5/H7zeP5eK/jir3uebDj3u360+f6ebDkkMT2mc3/jsLz0ub51ej7e7Lli8D0odD+ncnyKVqwfLPnkcPxnc/+n9D+stj7Hk6pADOZW5vYgrfqo9H+KFevfLTpr9b8NWO1+vv9XJvYvsvlv9jvWprXtcThwtnwxdvxrL3e////zYeNhAAAAAF0Uk5TAEDm2GYAAAABYktHRCy63XGrAAAACXBIWXMAAAsSAAALEgHS3X78AAAAY0lEQVQY042PRw6AIBREsTfsFT/2rve/n7qQgCtm914mmQxC0lFUTWDdMC2bY8f1sG8FjMMoxjhJMybyosQVqYEJ2pCWdMAJ2g8jAEyfmCl9EBbWWLdX7NzssYmM0AmX/Ktfbim3BoCVQkjeAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEyLTA3LTI5VDExOjUyOjM3KzAyOjAww0o2dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMC0wNC0wM1QwNToxMToyMCswMjowMBDLlngAAAAASUVORK5CYII=" xmlns:xlink="xlink" /><a xlink:href="../type/DirectSoundCapabilities.html#MaxHardware3DStreamingBuffers" xmlns:xlink="xlink"><text x="40.00" y="340.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[MaxHardware3DStreamingBuffers]]></text></a><image width="16.00" height="16.00" x="15.00" y="353.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAIdQTFRF/wD/0ub4fbLl5/H7zeP5eK/jir3uebDj3u360+f6ebDkkMT2mc3/jsLz0ub51ej7e7Lli8D0odD+ncnyKVqwfLPnkcPxnc/+n9D+stj7Hk6pADOZW5vYgrfqo9H+KFevfLTpr9b8NWO1+vv9XJvYvsvlv9jvWprXtcThwtnwxdvxrL3e////zYeNhAAAAAF0Uk5TAEDm2GYAAAABYktHRCy63XGrAAAACXBIWXMAAAsSAAALEgHS3X78AAAAY0lEQVQY042PRw6AIBREsTfsFT/2rve/n7qQgCtm914mmQxC0lFUTWDdMC2bY8f1sG8FjMMoxjhJMybyosQVqYEJ2pCWdMAJ2g8jAEyfmCl9EBbWWLdX7NzssYmM0AmX/Ktfbim3BoCVQkjeAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEyLTA3LTI5VDExOjUyOjM3KzAyOjAww0o2dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMC0wNC0wM1QwNToxMToyMCswMjowMBDLlngAAAAASUVORK5CYII=" xmlns:xlink="xlink" /><a xlink:href="../type/DirectSoundCapabilities.html#MaxHardwareMixingAllBuffers" xmlns:xlink="xlink"><text x="40.00" y="365.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[MaxHardwareMixingAllBuffers]]></text></a><image width="16.00" height="16.00" x="15.00" y="378.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAIdQTFRF/wD/0ub4fbLl5/H7zeP5eK/jir3uebDj3u360+f6ebDkkMT2mc3/jsLz0ub51ej7e7Lli8D0odD+ncnyKVqwfLPnkcPxnc/+n9D+stj7Hk6pADOZW5vYgrfqo9H+KFevfLTpr9b8NWO1+vv9XJvYvsvlv9jvWprXtcThwtnwxdvxrL3e////zYeNhAAAAAF0Uk5TAEDm2GYAAAABYktHRCy63XGrAAAACXBIWXMAAAsSAAALEgHS3X78AAAAY0lEQVQY042PRw6AIBREsTfsFT/2rve/n7qQgCtm914mmQxC0lFUTWDdMC2bY8f1sG8FjMMoxjhJMybyosQVqYEJ2pCWdMAJ2g8jAEyfmCl9EBbWWLdX7NzssYmM0AmX/Ktfbim3BoCVQkjeAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEyLTA3LTI5VDExOjUyOjM3KzAyOjAww0o2dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMC0wNC0wM1QwNToxMToyMCswMjowMBDLlngAAAAASUVORK5CYII=" xmlns:xlink="xlink" /><a xlink:href="../type/DirectSoundCapabilities.html#MaxHardwareMixingStaticBuffers" xmlns:xlink="xlink"><text x="40.00" y="390.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[MaxHardwareMixingStaticBuffers]]></text></a><image width="16.00" height="16.00" x="15.00" y="403.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAIdQTFRF/wD/0ub4fbLl5/H7zeP5eK/jir3uebDj3u360+f6ebDkkMT2mc3/jsLz0ub51ej7e7Lli8D0odD+ncnyKVqwfLPnkcPxnc/+n9D+stj7Hk6pADOZW5vYgrfqo9H+KFevfLTpr9b8NWO1+vv9XJvYvsvlv9jvWprXtcThwtnwxdvxrL3e////zYeNhAAAAAF0Uk5TAEDm2GYAAAABYktHRCy63XGrAAAACXBIWXMAAAsSAAALEgHS3X78AAAAY0lEQVQY042PRw6AIBREsTfsFT/2rve/n7qQgCtm914mmQxC0lFUTWDdMC2bY8f1sG8FjMMoxjhJMybyosQVqYEJ2pCWdMAJ2g8jAEyfmCl9EBbWWLdX7NzssYmM0AmX/Ktfbim3BoCVQkjeAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEyLTA3LTI5VDExOjUyOjM3KzAyOjAww0o2dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMC0wNC0wM1QwNToxMToyMCswMjowMBDLlngAAAAASUVORK5CYII=" xmlns:xlink="xlink" /><a xlink:href="../type/DirectSoundCapabilities.html#MaxHardwareMixingStreamingBuffers" xmlns:xlink="xlink"><text x="40.00" y="415.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[MaxHardwareMixingStreamingBuffers]]></text></a><image width="16.00" height="16.00" x="15.00" y="428.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAIdQTFRF/wD/0ub4fbLl5/H7zeP5eK/jir3uebDj3u360+f6ebDkkMT2mc3/jsLz0ub51ej7e7Lli8D0odD+ncnyKVqwfLPnkcPxnc/+n9D+stj7Hk6pADOZW5vYgrfqo9H+KFevfLTpr9b8NWO1+vv9XJvYvsvlv9jvWprXtcThwtnwxdvxrL3e////zYeNhAAAAAF0Uk5TAEDm2GYAAAABYktHRCy63XGrAAAACXBIWXMAAAsSAAALEgHS3X78AAAAY0lEQVQY042PRw6AIBREsTfsFT/2rve/n7qQgCtm914mmQxC0lFUTWDdMC2bY8f1sG8FjMMoxjhJMybyosQVqYEJ2pCWdMAJ2g8jAEyfmCl9EBbWWLdX7NzssYmM0AmX/Ktfbim3BoCVQkjeAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEyLTA3LTI5VDExOjUyOjM3KzAyOjAww0o2dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMC0wNC0wM1QwNToxMToyMCswMjowMBDLlngAAAAASUVORK5CYII=" xmlns:xlink="xlink" /><a xlink:href="../type/DirectSoundCapabilities.html#MaxSecondarySampleRate" xmlns:xlink="xlink"><text x="40.00" y="440.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[MaxSecondarySampleRate]]></text></a><image width="16.00" height="16.00" x="15.00" y="453.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAIdQTFRF/wD/0ub4fbLl5/H7zeP5eK/jir3uebDj3u360+f6ebDkkMT2mc3/jsLz0ub51ej7e7Lli8D0odD+ncnyKVqwfLPnkcPxnc/+n9D+stj7Hk6pADOZW5vYgrfqo9H+KFevfLTpr9b8NWO1+vv9XJvYvsvlv9jvWprXtcThwtnwxdvxrL3e////zYeNhAAAAAF0Uk5TAEDm2GYAAAABYktHRCy63XGrAAAACXBIWXMAAAsSAAALEgHS3X78AAAAY0lEQVQY042PRw6AIBREsTfsFT/2rve/n7qQgCtm914mmQxC0lFUTWDdMC2bY8f1sG8FjMMoxjhJMybyosQVqYEJ2pCWdMAJ2g8jAEyfmCl9EBbWWLdX7NzssYmM0AmX/Ktfbim3BoCVQkjeAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEyLTA3LTI5VDExOjUyOjM3KzAyOjAww0o2dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMC0wNC0wM1QwNToxMToyMCswMjowMBDLlngAAAAASUVORK5CYII=" xmlns:xlink="xlink" /><a xlink:href="../type/DirectSoundCapabilities.html#MinSecondarySampleRate" xmlns:xlink="xlink"><text x="40.00" y="465.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[MinSecondarySampleRate]]></text></a><image width="16.00" height="16.00" x="15.00" y="478.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAIdQTFRF/wD/0ub4fbLl5/H7zeP5eK/jir3uebDj3u360+f6ebDkkMT2mc3/jsLz0ub51ej7e7Lli8D0odD+ncnyKVqwfLPnkcPxnc/+n9D+stj7Hk6pADOZW5vYgrfqo9H+KFevfLTpr9b8NWO1+vv9XJvYvsvlv9jvWprXtcThwtnwxdvxrL3e////zYeNhAAAAAF0Uk5TAEDm2GYAAAABYktHRCy63XGrAAAACXBIWXMAAAsSAAALEgHS3X78AAAAY0lEQVQY042PRw6AIBREsTfsFT/2rve/n7qQgCtm914mmQxC0lFUTWDdMC2bY8f1sG8FjMMoxjhJMybyosQVqYEJ2pCWdMAJ2g8jAEyfmCl9EBbWWLdX7NzssYmM0AmX/Ktfbim3BoCVQkjeAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEyLTA3LTI5VDExOjUyOjM3KzAyOjAww0o2dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMC0wNC0wM1QwNToxMToyMCswMjowMBDLlngAAAAASUVORK5CYII=" xmlns:xlink="xlink" /><a xlink:href="../type/DirectSoundCapabilities.html#PlayCpuOverheadSwBuffers" xmlns:xlink="xlink"><text x="40.00" y="490.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[PlayCpuOverheadSwBuffers]]></text></a><image width="16.00" height="16.00" x="15.00" y="503.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAIdQTFRF/wD/0ub4fbLl5/H7zeP5eK/jir3uebDj3u360+f6ebDkkMT2mc3/jsLz0ub51ej7e7Lli8D0odD+ncnyKVqwfLPnkcPxnc/+n9D+stj7Hk6pADOZW5vYgrfqo9H+KFevfLTpr9b8NWO1+vv9XJvYvsvlv9jvWprXtcThwtnwxdvxrL3e////zYeNhAAAAAF0Uk5TAEDm2GYAAAABYktHRCy63XGrAAAACXBIWXMAAAsSAAALEgHS3X78AAAAY0lEQVQY042PRw6AIBREsTfsFT/2rve/n7qQgCtm914mmQxC0lFUTWDdMC2bY8f1sG8FjMMoxjhJMybyosQVqYEJ2pCWdMAJ2g8jAEyfmCl9EBbWWLdX7NzssYmM0AmX/Ktfbim3BoCVQkjeAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEyLTA3LTI5VDExOjUyOjM3KzAyOjAww0o2dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMC0wNC0wM1QwNToxMToyMCswMjowMBDLlngAAAAASUVORK5CYII=" xmlns:xlink="xlink" /><a xlink:href="../type/DirectSoundCapabilities.html#PrimaryBuffers" xmlns:xlink="xlink"><text x="40.00" y="515.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[PrimaryBuffers]]></text></a><image width="16.00" height="16.00" x="15.00" y="528.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAIdQTFRF/wD/0ub4fbLl5/H7zeP5eK/jir3uebDj3u360+f6ebDkkMT2mc3/jsLz0ub51ej7e7Lli8D0odD+ncnyKVqwfLPnkcPxnc/+n9D+stj7Hk6pADOZW5vYgrfqo9H+KFevfLTpr9b8NWO1+vv9XJvYvsvlv9jvWprXtcThwtnwxdvxrL3e////zYeNhAAAAAF0Uk5TAEDm2GYAAAABYktHRCy63XGrAAAACXBIWXMAAAsSAAALEgHS3X78AAAAY0lEQVQY042PRw6AIBREsTfsFT/2rve/n7qQgCtm914mmQxC0lFUTWDdMC2bY8f1sG8FjMMoxjhJMybyosQVqYEJ2pCWdMAJ2g8jAEyfmCl9EBbWWLdX7NzssYmM0AmX/Ktfbim3BoCVQkjeAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEyLTA3LTI5VDExOjUyOjM3KzAyOjAww0o2dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMC0wNC0wM1QwNToxMToyMCswMjowMBDLlngAAAAASUVORK5CYII=" xmlns:xlink="xlink" /><a xlink:href="../type/DirectSoundCapabilities.html#Size" xmlns:xlink="xlink"><text x="40.00" y="540.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[Size]]></text></a><image width="16.00" height="16.00" x="15.00" y="553.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAIdQTFRF/wD/0ub4fbLl5/H7zeP5eK/jir3uebDj3u360+f6ebDkkMT2mc3/jsLz0ub51ej7e7Lli8D0odD+ncnyKVqwfLPnkcPxnc/+n9D+stj7Hk6pADOZW5vYgrfqo9H+KFevfLTpr9b8NWO1+vv9XJvYvsvlv9jvWprXtcThwtnwxdvxrL3e////zYeNhAAAAAF0Uk5TAEDm2GYAAAABYktHRCy63XGrAAAACXBIWXMAAAsSAAALEgHS3X78AAAAY0lEQVQY042PRw6AIBREsTfsFT/2rve/n7qQgCtm914mmQxC0lFUTWDdMC2bY8f1sG8FjMMoxjhJMybyosQVqYEJ2pCWdMAJ2g8jAEyfmCl9EBbWWLdX7NzssYmM0AmX/Ktfbim3BoCVQkjeAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEyLTA3LTI5VDExOjUyOjM3KzAyOjAww0o2dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMC0wNC0wM1QwNToxMToyMCswMjowMBDLlngAAAAASUVORK5CYII=" xmlns:xlink="xlink" /><a xlink:href="../type/DirectSoundCapabilities.html#TotalHardwareMemBytes" xmlns:xlink="xlink"><text x="40.00" y="565.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[TotalHardwareMemBytes]]></text></a><image width="16.00" height="16.00" x="15.00" y="578.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAIdQTFRF/wD/0ub4fbLl5/H7zeP5eK/jir3uebDj3u360+f6ebDkkMT2mc3/jsLz0ub51ej7e7Lli8D0odD+ncnyKVqwfLPnkcPxnc/+n9D+stj7Hk6pADOZW5vYgrfqo9H+KFevfLTpr9b8NWO1+vv9XJvYvsvlv9jvWprXtcThwtnwxdvxrL3e////zYeNhAAAAAF0Uk5TAEDm2GYAAAABYktHRCy63XGrAAAACXBIWXMAAAsSAAALEgHS3X78AAAAY0lEQVQY042PRw6AIBREsTfsFT/2rve/n7qQgCtm914mmQxC0lFUTWDdMC2bY8f1sG8FjMMoxjhJMybyosQVqYEJ2pCWdMAJ2g8jAEyfmCl9EBbWWLdX7NzssYmM0AmX/Ktfbim3BoCVQkjeAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEyLTA3LTI5VDExOjUyOjM3KzAyOjAww0o2dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMC0wNC0wM1QwNToxMToyMCswMjowMBDLlngAAAAASUVORK5CYII=" xmlns:xlink="xlink" /><a xlink:href="../type/DirectSoundCapabilities.html#UnlockTransferRateHardwareBuffers" xmlns:xlink="xlink"><text x="40.00" y="590.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[UnlockTransferRateHardwareBuffers]]></text></a><path d="M0.5,605.50L331.00,605.50" stroke="#979797" stroke-width="1" stroke-dasharray="" /><image width="16.00" height="16.00" x="15.00" y="613.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAANtQTFRF/wD//vv+8tvyz4jP8OPw46zj8+Pz8NTw7r7u+q7765Hs8uDz9/Cr1dWsrLSuipmu/f394q/i+qv7+pj76ZDq9Ob0plCnu2+87qXv+pv7+pn75pjnkE6R6eWrwcSsrLWtmKSup0+o0W3S+p/77p3vllKXfC58qVKq0WrS1W/VvHC93ZjejkaPnDydfi5+5eKrzM6stbutnKeu5MrkqFCp0mvT027UfjB/nzyfjTWOfC196NHoqVCqy2fMlTiWeit78NXw7djtfzCAdSd169Hr7NLscSRy5szm////y4eOhgAAAAF0Uk5TAEDm2GYAAAABYktHREjwAtTqAAAACXBIWXMAAAsSAAALEgHS3X78AAAAeUlEQVQY02NgwAMY0fhMzCxofFZmNiQ+OzMHJxczN5jNw8vHL8AsKCQsLMIsClchJi4hKSwlLQOUl+WVk1dgUFQSl1BWUVWDq1DX0NTS1tHVAxmhb2BoxGBsYmpmbmFphbDG2sZWz87eAcliRxMnZxcUp7m6uTOQAwDo6wrtzia2FQAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxMi0wNy0yOVQxMTo1MzowNiswMjowMARwUR4AAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTAtMDQtMDNUMDU6MTE6MjArMDI6MDAQy5Z4AAAAAElFTkSuQmCC" xmlns:xlink="xlink" /><a xlink:href="../type/DirectSoundCapabilities.html#DirectSoundCapabilities" xmlns:xlink="xlink"><text x="40.00" y="625.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[DirectSoundCapabilities]]></text></a></g><g transform="translate(0.00, 0.00)"><rect height="51" width="176" x="0.55" y="0.55" fill="#FFFFFF" stroke="#979797" stroke-width="1" /><text x="32.06" y="20.50" fill="" style="" text-anchor="" font-family="" font-size="11.00" onmouseover="" onmouseout=""><![CDATA[public abstract class]]></text><text x="53.01" y="35.50" fill="" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="" onmouseout=""><![CDATA[ValueType]]></text><path d="M0.5,45.50L176.00,45.50" stroke="#979797" stroke-width="1" stroke-dasharray="" /></g><g><path d="M50.00,50.50L50.00,100.50" stroke="#979797" stroke-width="1" stroke-dasharray="" /><polygon points="50.00,50.50 45.00,60.50 55.00,60.50" fill="#FFFFFF" stroke="#979797" stroke-width="" /></g></svg>
+						</div>
+						<div class="legend">
+							<p class="save"><a href="#"><i class="icon-save"></i>save</a></p>
+							<p class="resetZoom"><a href="#"><i class="icon-refresh"></i>reset</a></p>
+							<p>Drag to pan - Use Mousewheel + Ctrl to zoom</p>
+						</div>
+					</div>
+				
+			</div>
+		</div>
+
+    </body>
+</html>
+

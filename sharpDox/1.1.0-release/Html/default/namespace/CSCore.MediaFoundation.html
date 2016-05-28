@@ -1,0 +1,681 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>CSCore - CSCore.MediaFoundation</title>
+        <meta name="viewport" content="width=device-width">
+
+		
+			<link rel="stylesheet" type="text/css" href="../assets/css/font.css?version=0.9.5.10" />
+			<link rel="stylesheet" type="text/css" href="../assets/css/font-awesome.css?version=0.9.5.10" />
+			<link rel="stylesheet" type="text/css" href="../assets/css/style.css?version=0.9.5.10" />
+			
+			<!--[if IE 8]>
+				<script src="../assets/js/vendor.ie8.js?version=0.9.5.10"></script>
+			<![endif]-->
+			<![if !IE 8]>
+				<script src="../assets/js/vendor.js?version=0.9.5.10"></script>
+			<![endif]>
+
+			<script src="../assets/js/frame.js?version=0.9.5.10"></script>
+		
+
+		<script>hljs.initHighlightingOnLoad();</script>
+
+    </head>
+    <body>        
+       
+	    <div id="dropdown-1" class="dropdown dropdown-tip">
+			<ul class="dropdown-menu">
+				
+					<li><a href="../type/CommonAudioDecoderGuids.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> CommonAudioDecoderGuids</a></li>
+
+				
+					<li><a href="../type/MediaFoundationDecoder.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MediaFoundationDecoder</a></li>
+
+				
+					<li><a href="../type/MediaFoundationEncoder.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MediaFoundationEncoder</a></li>
+
+				
+					<li><a href="../type/MediaFoundationException.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MediaFoundationException</a></li>
+
+				
+					<li><a href="../type/MediaTypeEqualFlags.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MediaTypeEqualFlags</a></li>
+
+				
+					<li><a href="../type/MFActivate.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MFActivate</a></li>
+
+				
+					<li><a href="../type/MFAttribute.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MFAttribute</a></li>
+
+				
+					<li><a href="../type/MFAttributeMatchType.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MFAttributeMatchType</a></li>
+
+				
+					<li><a href="../type/MFAttributes.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MFAttributes</a></li>
+
+				
+					<li><a href="../type/MFAttributeType.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MFAttributeType</a></li>
+
+				
+					<li><a href="../type/MFByteStream.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MFByteStream</a></li>
+
+				
+					<li><a href="../type/MFByteStreamCapsFlags.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MFByteStreamCapsFlags</a></li>
+
+				
+					<li><a href="../type/MFByteStreamSeekOrigin.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MFByteStreamSeekOrigin</a></li>
+
+				
+					<li><a href="../type/MFMediaBuffer.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MFMediaBuffer</a></li>
+
+				
+					<li><a href="../type/MFMediaSourceCharacteristics.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MFMediaSourceCharacteristics</a></li>
+
+				
+					<li><a href="../type/MFMediaType.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MFMediaType</a></li>
+
+				
+					<li><a href="../type/MFMediaTypes.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MFMediaTypes</a></li>
+
+				
+					<li><a href="../type/MFSample.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MFSample</a></li>
+
+				
+					<li><a href="../type/MFSampleFlags.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MFSampleFlags</a></li>
+
+				
+					<li><a href="../type/MFSinkWriter.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MFSinkWriter</a></li>
+
+				
+					<li><a href="../type/MFSinkWriterStatistics.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MFSinkWriterStatistics</a></li>
+
+				
+					<li><a href="../type/MFSourceReader.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MFSourceReader</a></li>
+
+				
+					<li><a href="../type/MFSourceReaderFlags.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MFSourceReaderFlags</a></li>
+
+				
+					<li><a href="../type/MFTCategories.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MFTCategories</a></li>
+
+				
+					<li><a href="../type/MFTEnumerator.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MFTEnumerator</a></li>
+
+				
+					<li><a href="../type/MFTEnumFlags.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MFTEnumFlags</a></li>
+
+				
+					<li><a href="../type/MFWaveFormatExConvertFlags.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MFWaveFormatExConvertFlags</a></li>
+
+				
+					<li><a href="../type/SourceReaderControlFlags.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> SourceReaderControlFlags</a></li>
+
+				
+					<li><a href="../type/TranscodeContainerTypes.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> TranscodeContainerTypes</a></li>
+
+				
+			</ul>
+		</div>
+	   
+	    <div class="ui-layout-north">
+			<div class="toolbar">
+				<a href="#" data-dropdown="#dropdown-1" class="button"><img src="../assets/images/icons/class_public.png"/> Types <span class="info">(29)</span> <i class="icon-caret-down"></i></a>
+				<div class="right">
+					<span class="toolbar-info"> Assembly: CSCore</span>
+					<a href="#" id="print-button" class="button" title="print"><i class="icon-print"></i></a>
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+		</div>
+        
+		<div class="ui-layout-center">
+			<div>
+				
+
+					<h3 class="box-title first-heading">Types</h3>
+
+				
+
+				<div class="table-box">
+					<table>
+						<thead>
+							<tr>
+								<td></td>
+								<td>Name</td>
+								<td>Description</td>
+							</tr>
+						</thead>
+						<tbody>			
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="CommonAudioDecoderGuids" href="../type/CommonAudioDecoderGuids.html">CommonAudioDecoderGuids</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Defines the CLSID values for several common mediafoundation audio decoders.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MediaFoundationDecoder" href="../type/MediaFoundationDecoder.html">MediaFoundationDecoder</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>The MediaFoundationDecoder is a generic decoder for all installed Mediafoundation codecs.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MediaFoundationEncoder" href="../type/MediaFoundationEncoder.html">MediaFoundationEncoder</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>A generic encoder for all installed Mediafoundation-Encoders.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MediaFoundationException" href="../type/MediaFoundationException.html">MediaFoundationException</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Mediafoundation COM Exception</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MediaTypeEqualFlags" href="../type/MediaTypeEqualFlags.html">MediaTypeEqualFlags</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Indicates the degree of similarity between the two media types.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MFActivate" href="../type/MFActivate.html">MFActivate</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Enables the application to defer the creation of an object. This interface is exposed by activation objects.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MFAttribute" href="../type/MFAttribute.html">MFAttribute</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Represents a MediaFoundation-attribute.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MFAttributeMatchType" href="../type/MFAttributeMatchType.html">MFAttributeMatchType</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Specifies how to compare the attributes on two objects.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MFAttributes" href="../type/MFAttributes.html">MFAttributes</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Provides a generic way to store key/value pairs on an object.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MFAttributeType" href="../type/MFAttributeType.html">MFAttributeType</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Defines data types for MFAttribute key/value pairs.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MFByteStream" href="../type/MFByteStream.html">MFByteStream</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Represents a byte stream from some data source, which might be a local file, a network file, or some other source. The MFByteStream interface supports the typical stream operations, such as reading, writing, and seeking.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MFByteStreamCapsFlags" href="../type/MFByteStreamCapsFlags.html">MFByteStreamCapsFlags</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Defines the characteristics of a MFByteStream.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MFByteStreamSeekOrigin" href="../type/MFByteStreamSeekOrigin.html">MFByteStreamSeekOrigin</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Specifies the origin for a seek request.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MFMediaBuffer" href="../type/MFMediaBuffer.html">MFMediaBuffer</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Represents a block of memory that contains media data. Use this interface to access the data in the buffer.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MFMediaSourceCharacteristics" href="../type/MFMediaSourceCharacteristics.html">MFMediaSourceCharacteristics</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Defines the characteristics of a media source.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MFMediaType" href="../type/MFMediaType.html">MFMediaType</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Represents a description of a media format.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MFMediaTypes" href="../type/MFMediaTypes.html">MFMediaTypes</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Defines common audio subtypes.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MFSample" href="../type/MFSample.html">MFSample</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Represents a media sample, which is a container object for media data. For video, a sample typically contains one video frame. For audio data, a sample typically contains multiple audio samples, rather than a single sample of audio.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MFSampleFlags" href="../type/MFSampleFlags.html">MFSampleFlags</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Currently no flags are defined.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MFSinkWriter" href="../type/MFSinkWriter.html">MFSinkWriter</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Implemented by the Microsoft Media Foundation sink writer object.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MFSinkWriterStatistics" href="../type/MFSinkWriterStatistics.html">MFSinkWriterStatistics</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Contains statistics about the performance of the sink writer.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MFSourceReader" href="../type/MFSourceReader.html">MFSourceReader</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Implemented by the Microsoft Media Foundation source reader object.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MFSourceReaderFlags" href="../type/MFSourceReaderFlags.html">MFSourceReaderFlags</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Defines flags that indicate the status of the ReadSample method.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MFTCategories" href="../type/MFTCategories.html">MFTCategories</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Defines categories for Media Foundation transforms (MFTs). These categories are used to register and enumerate MFTs.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MFTEnumerator" href="../type/MFTEnumerator.html">MFTEnumerator</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Provides the functionality to enumerate Mediafoundation-Transforms.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MFTEnumFlags" href="../type/MFTEnumFlags.html">MFTEnumFlags</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Defines flags for registering and enumeration Media Foundation transforms (MFTs).</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MFWaveFormatExConvertFlags" href="../type/MFWaveFormatExConvertFlags.html">MFWaveFormatExConvertFlags</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Defines flags that specify how to convert an audio media type.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="SourceReaderControlFlags" href="../type/SourceReaderControlFlags.html">SourceReaderControlFlags</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Defines flags for the ReadSample method.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="TranscodeContainerTypes" href="../type/TranscodeContainerTypes.html">TranscodeContainerTypes</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Defines the GUIDs for different types of container formats.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+						</tbody>
+					</table>
+				</div>
+
+				
+					<h3 class="box-title">Uses</h3>
+					<div class="list-box">
+						<ul>
+						
+							<li><a href="../namespace/CSCore.Win32.html">CSCore.Win32</a></li>
+						
+						</ul>
+					</div>
+				
+
+				
+			</div>
+		</div>
+	   
+    </body>
+</html>
+

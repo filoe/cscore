@@ -1,0 +1,965 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>CSCore - MFByteStreamCapsFlags</title>
+        <meta name="viewport" content="width=device-width">
+
+		
+			<link rel="stylesheet" type="text/css" href="../assets/css/font.css?version=0.9.5.10" />
+			<link rel="stylesheet" type="text/css" href="../assets/css/font-awesome.css?version=0.9.5.10" />
+			<link rel="stylesheet" type="text/css" href="../assets/css/style.css?version=0.9.5.10" />
+			
+			<!--[if IE 8]>
+				<script src="../assets/js/vendor.ie8.js?version=0.9.5.10"></script>
+			<![endif]-->
+			<![if !IE 8]>
+				<script src="../assets/js/vendor.js?version=0.9.5.10"></script>
+			<![endif]>
+
+			<script src="../assets/js/frame.js?version=0.9.5.10"></script>
+		
+
+		<script>hljs.initHighlightingOnLoad();</script>
+
+    </head>
+    <body>        
+        
+		<!-- DropDowns -->
+		<div id="dropdown-1" class="dropdown dropdown-tip">
+			<ul class="dropdown-menu">
+				
+
+					<li><a href="#DoesNotUseNetwork"><img alt="Field-Icon" src="../assets/images/icons/field_public.png"> DoesNotUseNetwork</a></li>
+
+				
+
+					<li><a href="#HasSlowSeek"><img alt="Field-Icon" src="../assets/images/icons/field_public.png"> HasSlowSeek</a></li>
+
+				
+
+					<li><a href="#IsDirectory"><img alt="Field-Icon" src="../assets/images/icons/field_public.png"> IsDirectory</a></li>
+
+				
+
+					<li><a href="#IsPartiallyDownloaded"><img alt="Field-Icon" src="../assets/images/icons/field_public.png"> IsPartiallyDownloaded</a></li>
+
+				
+
+					<li><a href="#IsReadable"><img alt="Field-Icon" src="../assets/images/icons/field_public.png"> IsReadable</a></li>
+
+				
+
+					<li><a href="#IsRemote"><img alt="Field-Icon" src="../assets/images/icons/field_public.png"> IsRemote</a></li>
+
+				
+
+					<li><a href="#IsSeekable"><img alt="Field-Icon" src="../assets/images/icons/field_public.png"> IsSeekable</a></li>
+
+				
+
+					<li><a href="#IsWriteable"><img alt="Field-Icon" src="../assets/images/icons/field_public.png"> IsWriteable</a></li>
+
+				
+
+					<li><a href="#None"><img alt="Field-Icon" src="../assets/images/icons/field_public.png"> None</a></li>
+
+				
+
+					<li><a href="#ShareWrite"><img alt="Field-Icon" src="../assets/images/icons/field_public.png"> ShareWrite</a></li>
+
+				
+			</ul>
+		</div>
+
+		<div id="dropdown-2" class="dropdown dropdown-tip">
+			<ul class="dropdown-menu">
+				
+			</ul>
+		</div>
+
+		<div id="dropdown-3" class="dropdown dropdown-tip">
+			<ul class="dropdown-menu">
+				
+
+					<li><a href="#MFByteStreamCapsFlags"><img alt="Method-Icon" src="../assets/images/icons/method_public.png"> MFByteStreamCapsFlags()</a></li>
+
+				
+
+				
+			</ul>
+		</div>
+
+		<div id="dropdown-4" class="dropdown dropdown-tip">
+			<ul class="dropdown-menu">
+				
+			</ul>
+		</div>
+		<!-- DropDowns Ende -->
+
+	    <div class="ui-layout-north">
+			<div class="toolbar">
+
+				
+					<a href="#" data-dropdown="#dropdown-1" class="button"><img src="../assets/images/icons/field_public.png"/> Fields <span class="info">(10)</span> <i class="icon-caret-down"></i></a>
+				
+					<a href="#" data-dropdown="#dropdown-3" class="button"><img src="../assets/images/icons/method_public.png"/> Methods <span class="info">(1)</span> <i class="icon-caret-down"></i></a>
+				
+
+				<div class="right">
+					<span class="toolbar-info"> Namespace: CSCore.MediaFoundation</span>
+					<a href="#" id="expand-all-button" class="button"><i class="icon-align-justify" title="expand all"></i></a>
+					<a href="#" id="print-button" class="button"><i class="icon-print" title="print"></i></a>
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+		</div>
+        
+		<div class="ui-layout-center">
+
+			<div>
+				<h3 class="box-title first-heading">Syntax</h3>					
+				<div class="syntax-box">
+					<pre class="wrap-pre"><code>public enum MFByteStreamCapsFlags : Enum</code></pre>
+				</div>
+
+				
+					<h3 class="box-title">Base Type</h3>
+					<div class="list-box">
+						<ul>
+						
+								<li>System.Enum</a></li>
+							
+						
+						</ul>
+					</div>
+				
+
+				
+        
+				
+
+					
+						<h3 class="box-title">Summary</h3>
+						<div class="doc-box markdown">
+							<p>Defines the characteristics of a MFByteStream.</p>
+
+						</div>
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+				
+
+				
+
+				
+
+				
+					<h3 class="box-title">Fields</h3>
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="DoesNotUseNetwork" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/field_public.png"/> <p>DoesNotUseNetwork</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>The byte stream is not currently using the network to receive the content. Networking hardware may enter a power saving state when this bit is set.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public const MFByteStreamCapsFlags DoesNotUseNetwork</code></pre>
+		</div>		
+        
+		
+			<p class="member-box-title">Constant Value</p>
+			<div class="member-doc-box markdown">
+				2048
+			</div>
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+				<p class="member-box-title">Remarks</p>
+				<div class="member-doc-box markdown">
+					<p>Requires Windows 8 or later.</p>
+
+				</div>
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="HasSlowSeek" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/field_public.png"/> <p>HasSlowSeek</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>Seeking within this stream might be slow. For example, the byte stream might download from a network.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public const MFByteStreamCapsFlags HasSlowSeek</code></pre>
+		</div>		
+        
+		
+			<p class="member-box-title">Constant Value</p>
+			<div class="member-doc-box markdown">
+				256
+			</div>
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="IsDirectory" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/field_public.png"/> <p>IsDirectory</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>The byte stream represents a file directory.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public const MFByteStreamCapsFlags IsDirectory</code></pre>
+		</div>		
+        
+		
+			<p class="member-box-title">Constant Value</p>
+			<div class="member-doc-box markdown">
+				128
+			</div>
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="IsPartiallyDownloaded" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/field_public.png"/> <p>IsPartiallyDownloaded</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>The byte stream is currently downloading data to a local cache. Read operations on the byte stream might take longer until the data is completely downloaded.This flag is cleared after all of the data has been downloaded.
+If the HasSlowSeek flag is also set, it means the byte stream must download the entire file sequentially. Otherwise, the byte stream can respond to seek requests by restarting the download from a new point in the stream.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public const MFByteStreamCapsFlags IsPartiallyDownloaded</code></pre>
+		</div>		
+        
+		
+			<p class="member-box-title">Constant Value</p>
+			<div class="member-doc-box markdown">
+				512
+			</div>
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="IsReadable" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/field_public.png"/> <p>IsReadable</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>The byte stream can be read.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public const MFByteStreamCapsFlags IsReadable</code></pre>
+		</div>		
+        
+		
+			<p class="member-box-title">Constant Value</p>
+			<div class="member-doc-box markdown">
+				1
+			</div>
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="IsRemote" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/field_public.png"/> <p>IsRemote</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>The byte stream is from a remote source, such as a network.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public const MFByteStreamCapsFlags IsRemote</code></pre>
+		</div>		
+        
+		
+			<p class="member-box-title">Constant Value</p>
+			<div class="member-doc-box markdown">
+				8
+			</div>
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="IsSeekable" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/field_public.png"/> <p>IsSeekable</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>The byte stream can be seeked.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public const MFByteStreamCapsFlags IsSeekable</code></pre>
+		</div>		
+        
+		
+			<p class="member-box-title">Constant Value</p>
+			<div class="member-doc-box markdown">
+				4
+			</div>
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="IsWriteable" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/field_public.png"/> <p>IsWriteable</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>The byte stream can be written to.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public const MFByteStreamCapsFlags IsWriteable</code></pre>
+		</div>		
+        
+		
+			<p class="member-box-title">Constant Value</p>
+			<div class="member-doc-box markdown">
+				2
+			</div>
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="None" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/field_public.png"/> <p>None</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>None</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public const MFByteStreamCapsFlags None</code></pre>
+		</div>		
+        
+		
+			<p class="member-box-title">Constant Value</p>
+			<div class="member-doc-box markdown">
+				0
+			</div>
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="ShareWrite" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/field_public.png"/> <p>ShareWrite</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>Another thread or process can open this byte stream for writing. If this flag is present, the length of the byte stream could change while it is being read.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public const MFByteStreamCapsFlags ShareWrite</code></pre>
+		</div>		
+        
+		
+			<p class="member-box-title">Constant Value</p>
+			<div class="member-doc-box markdown">
+				1024
+			</div>
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+				<p class="member-box-title">Remarks</p>
+				<div class="member-doc-box markdown">
+					<p>Requires Windows 7 or later.</p>
+
+				</div>
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+				
+
+				
+
+				
+					<h3 class="box-title">Methods</h3>
+					
+						
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="MFByteStreamCapsFlags" class="member">
+	<div class="member-header">		
+		<a href="#"><i class="icon-caret-right"></i><img src="../assets/images/icons/method_public.png"/> <p>MFByteStreamCapsFlags()</p></a>
+		
+			
+				<div class="summary markdown">
+					<p>Defines the characteristics of a MFByteStream.</p>
+
+				</div>
+			
+		
+	</div>
+
+	<div class="member-content">
+
+		<div class="syntax-box">
+			<pre class="wrap-pre"><code>public void MFByteStreamCapsFlags()</code></pre>
+		</div>		
+        
+		
+
+		
+		
+			
+
+			
+
+			
+
+			
+
+			
+
+			
+						
+			
+
+		
+
+		
+
+	</div>
+</div>
+
+
+					
+				
+
+				
+
+				
+					<div class="svg-diagram">
+						<h3 class="box-title">Class Diagram</h3>
+						<div id="sd-class-diagram" class="svgpan">
+							
+							<svg><g transform="translate(0.00, 100.50)"><rect height="336" width="238" x="0.55" y="0.55" fill="#FFFFFF" stroke="#979797" stroke-width="1" /><text x="83.33" y="20.50" fill="" style="" text-anchor="" font-family="" font-size="11.00" onmouseover="" onmouseout=""><![CDATA[public  enum]]></text><a xlink:href="../type/MFByteStreamCapsFlags.html" xmlns:xlink="xlink"><text x="32.24" y="35.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[MFByteStreamCapsFlags]]></text></a><path d="M0.5,45.50L238.00,45.50" stroke="#979797" stroke-width="1" stroke-dasharray="" /><image width="16.00" height="16.00" x="15.00" y="53.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAIdQTFRF/wD/0ub4fbLl5/H7zeP5eK/jir3uebDj3u360+f6ebDkkMT2mc3/jsLz0ub51ej7e7Lli8D0odD+ncnyKVqwfLPnkcPxnc/+n9D+stj7Hk6pADOZW5vYgrfqo9H+KFevfLTpr9b8NWO1+vv9XJvYvsvlv9jvWprXtcThwtnwxdvxrL3e////zYeNhAAAAAF0Uk5TAEDm2GYAAAABYktHRCy63XGrAAAACXBIWXMAAAsSAAALEgHS3X78AAAAY0lEQVQY042PRw6AIBREsTfsFT/2rve/n7qQgCtm914mmQxC0lFUTWDdMC2bY8f1sG8FjMMoxjhJMybyosQVqYEJ2pCWdMAJ2g8jAEyfmCl9EBbWWLdX7NzssYmM0AmX/Ktfbim3BoCVQkjeAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEyLTA3LTI5VDExOjUyOjM3KzAyOjAww0o2dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMC0wNC0wM1QwNToxMToyMCswMjowMBDLlngAAAAASUVORK5CYII=" xmlns:xlink="xlink" /><a xlink:href="../type/MFByteStreamCapsFlags.html#DoesNotUseNetwork" xmlns:xlink="xlink"><text x="40.00" y="65.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[DoesNotUseNetwork]]></text></a><image width="16.00" height="16.00" x="15.00" y="78.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAIdQTFRF/wD/0ub4fbLl5/H7zeP5eK/jir3uebDj3u360+f6ebDkkMT2mc3/jsLz0ub51ej7e7Lli8D0odD+ncnyKVqwfLPnkcPxnc/+n9D+stj7Hk6pADOZW5vYgrfqo9H+KFevfLTpr9b8NWO1+vv9XJvYvsvlv9jvWprXtcThwtnwxdvxrL3e////zYeNhAAAAAF0Uk5TAEDm2GYAAAABYktHRCy63XGrAAAACXBIWXMAAAsSAAALEgHS3X78AAAAY0lEQVQY042PRw6AIBREsTfsFT/2rve/n7qQgCtm914mmQxC0lFUTWDdMC2bY8f1sG8FjMMoxjhJMybyosQVqYEJ2pCWdMAJ2g8jAEyfmCl9EBbWWLdX7NzssYmM0AmX/Ktfbim3BoCVQkjeAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEyLTA3LTI5VDExOjUyOjM3KzAyOjAww0o2dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMC0wNC0wM1QwNToxMToyMCswMjowMBDLlngAAAAASUVORK5CYII=" xmlns:xlink="xlink" /><a xlink:href="../type/MFByteStreamCapsFlags.html#HasSlowSeek" xmlns:xlink="xlink"><text x="40.00" y="90.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[HasSlowSeek]]></text></a><image width="16.00" height="16.00" x="15.00" y="103.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAIdQTFRF/wD/0ub4fbLl5/H7zeP5eK/jir3uebDj3u360+f6ebDkkMT2mc3/jsLz0ub51ej7e7Lli8D0odD+ncnyKVqwfLPnkcPxnc/+n9D+stj7Hk6pADOZW5vYgrfqo9H+KFevfLTpr9b8NWO1+vv9XJvYvsvlv9jvWprXtcThwtnwxdvxrL3e////zYeNhAAAAAF0Uk5TAEDm2GYAAAABYktHRCy63XGrAAAACXBIWXMAAAsSAAALEgHS3X78AAAAY0lEQVQY042PRw6AIBREsTfsFT/2rve/n7qQgCtm914mmQxC0lFUTWDdMC2bY8f1sG8FjMMoxjhJMybyosQVqYEJ2pCWdMAJ2g8jAEyfmCl9EBbWWLdX7NzssYmM0AmX/Ktfbim3BoCVQkjeAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEyLTA3LTI5VDExOjUyOjM3KzAyOjAww0o2dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMC0wNC0wM1QwNToxMToyMCswMjowMBDLlngAAAAASUVORK5CYII=" xmlns:xlink="xlink" /><a xlink:href="../type/MFByteStreamCapsFlags.html#IsDirectory" xmlns:xlink="xlink"><text x="40.00" y="115.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[IsDirectory]]></text></a><image width="16.00" height="16.00" x="15.00" y="128.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAIdQTFRF/wD/0ub4fbLl5/H7zeP5eK/jir3uebDj3u360+f6ebDkkMT2mc3/jsLz0ub51ej7e7Lli8D0odD+ncnyKVqwfLPnkcPxnc/+n9D+stj7Hk6pADOZW5vYgrfqo9H+KFevfLTpr9b8NWO1+vv9XJvYvsvlv9jvWprXtcThwtnwxdvxrL3e////zYeNhAAAAAF0Uk5TAEDm2GYAAAABYktHRCy63XGrAAAACXBIWXMAAAsSAAALEgHS3X78AAAAY0lEQVQY042PRw6AIBREsTfsFT/2rve/n7qQgCtm914mmQxC0lFUTWDdMC2bY8f1sG8FjMMoxjhJMybyosQVqYEJ2pCWdMAJ2g8jAEyfmCl9EBbWWLdX7NzssYmM0AmX/Ktfbim3BoCVQkjeAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEyLTA3LTI5VDExOjUyOjM3KzAyOjAww0o2dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMC0wNC0wM1QwNToxMToyMCswMjowMBDLlngAAAAASUVORK5CYII=" xmlns:xlink="xlink" /><a xlink:href="../type/MFByteStreamCapsFlags.html#IsPartiallyDownloaded" xmlns:xlink="xlink"><text x="40.00" y="140.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[IsPartiallyDownloaded]]></text></a><image width="16.00" height="16.00" x="15.00" y="153.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAIdQTFRF/wD/0ub4fbLl5/H7zeP5eK/jir3uebDj3u360+f6ebDkkMT2mc3/jsLz0ub51ej7e7Lli8D0odD+ncnyKVqwfLPnkcPxnc/+n9D+stj7Hk6pADOZW5vYgrfqo9H+KFevfLTpr9b8NWO1+vv9XJvYvsvlv9jvWprXtcThwtnwxdvxrL3e////zYeNhAAAAAF0Uk5TAEDm2GYAAAABYktHRCy63XGrAAAACXBIWXMAAAsSAAALEgHS3X78AAAAY0lEQVQY042PRw6AIBREsTfsFT/2rve/n7qQgCtm914mmQxC0lFUTWDdMC2bY8f1sG8FjMMoxjhJMybyosQVqYEJ2pCWdMAJ2g8jAEyfmCl9EBbWWLdX7NzssYmM0AmX/Ktfbim3BoCVQkjeAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEyLTA3LTI5VDExOjUyOjM3KzAyOjAww0o2dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMC0wNC0wM1QwNToxMToyMCswMjowMBDLlngAAAAASUVORK5CYII=" xmlns:xlink="xlink" /><a xlink:href="../type/MFByteStreamCapsFlags.html#IsReadable" xmlns:xlink="xlink"><text x="40.00" y="165.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[IsReadable]]></text></a><image width="16.00" height="16.00" x="15.00" y="178.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAIdQTFRF/wD/0ub4fbLl5/H7zeP5eK/jir3uebDj3u360+f6ebDkkMT2mc3/jsLz0ub51ej7e7Lli8D0odD+ncnyKVqwfLPnkcPxnc/+n9D+stj7Hk6pADOZW5vYgrfqo9H+KFevfLTpr9b8NWO1+vv9XJvYvsvlv9jvWprXtcThwtnwxdvxrL3e////zYeNhAAAAAF0Uk5TAEDm2GYAAAABYktHRCy63XGrAAAACXBIWXMAAAsSAAALEgHS3X78AAAAY0lEQVQY042PRw6AIBREsTfsFT/2rve/n7qQgCtm914mmQxC0lFUTWDdMC2bY8f1sG8FjMMoxjhJMybyosQVqYEJ2pCWdMAJ2g8jAEyfmCl9EBbWWLdX7NzssYmM0AmX/Ktfbim3BoCVQkjeAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEyLTA3LTI5VDExOjUyOjM3KzAyOjAww0o2dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMC0wNC0wM1QwNToxMToyMCswMjowMBDLlngAAAAASUVORK5CYII=" xmlns:xlink="xlink" /><a xlink:href="../type/MFByteStreamCapsFlags.html#IsRemote" xmlns:xlink="xlink"><text x="40.00" y="190.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[IsRemote]]></text></a><image width="16.00" height="16.00" x="15.00" y="203.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAIdQTFRF/wD/0ub4fbLl5/H7zeP5eK/jir3uebDj3u360+f6ebDkkMT2mc3/jsLz0ub51ej7e7Lli8D0odD+ncnyKVqwfLPnkcPxnc/+n9D+stj7Hk6pADOZW5vYgrfqo9H+KFevfLTpr9b8NWO1+vv9XJvYvsvlv9jvWprXtcThwtnwxdvxrL3e////zYeNhAAAAAF0Uk5TAEDm2GYAAAABYktHRCy63XGrAAAACXBIWXMAAAsSAAALEgHS3X78AAAAY0lEQVQY042PRw6AIBREsTfsFT/2rve/n7qQgCtm914mmQxC0lFUTWDdMC2bY8f1sG8FjMMoxjhJMybyosQVqYEJ2pCWdMAJ2g8jAEyfmCl9EBbWWLdX7NzssYmM0AmX/Ktfbim3BoCVQkjeAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEyLTA3LTI5VDExOjUyOjM3KzAyOjAww0o2dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMC0wNC0wM1QwNToxMToyMCswMjowMBDLlngAAAAASUVORK5CYII=" xmlns:xlink="xlink" /><a xlink:href="../type/MFByteStreamCapsFlags.html#IsSeekable" xmlns:xlink="xlink"><text x="40.00" y="215.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[IsSeekable]]></text></a><image width="16.00" height="16.00" x="15.00" y="228.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAIdQTFRF/wD/0ub4fbLl5/H7zeP5eK/jir3uebDj3u360+f6ebDkkMT2mc3/jsLz0ub51ej7e7Lli8D0odD+ncnyKVqwfLPnkcPxnc/+n9D+stj7Hk6pADOZW5vYgrfqo9H+KFevfLTpr9b8NWO1+vv9XJvYvsvlv9jvWprXtcThwtnwxdvxrL3e////zYeNhAAAAAF0Uk5TAEDm2GYAAAABYktHRCy63XGrAAAACXBIWXMAAAsSAAALEgHS3X78AAAAY0lEQVQY042PRw6AIBREsTfsFT/2rve/n7qQgCtm914mmQxC0lFUTWDdMC2bY8f1sG8FjMMoxjhJMybyosQVqYEJ2pCWdMAJ2g8jAEyfmCl9EBbWWLdX7NzssYmM0AmX/Ktfbim3BoCVQkjeAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEyLTA3LTI5VDExOjUyOjM3KzAyOjAww0o2dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMC0wNC0wM1QwNToxMToyMCswMjowMBDLlngAAAAASUVORK5CYII=" xmlns:xlink="xlink" /><a xlink:href="../type/MFByteStreamCapsFlags.html#IsWriteable" xmlns:xlink="xlink"><text x="40.00" y="240.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[IsWriteable]]></text></a><image width="16.00" height="16.00" x="15.00" y="253.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAIdQTFRF/wD/0ub4fbLl5/H7zeP5eK/jir3uebDj3u360+f6ebDkkMT2mc3/jsLz0ub51ej7e7Lli8D0odD+ncnyKVqwfLPnkcPxnc/+n9D+stj7Hk6pADOZW5vYgrfqo9H+KFevfLTpr9b8NWO1+vv9XJvYvsvlv9jvWprXtcThwtnwxdvxrL3e////zYeNhAAAAAF0Uk5TAEDm2GYAAAABYktHRCy63XGrAAAACXBIWXMAAAsSAAALEgHS3X78AAAAY0lEQVQY042PRw6AIBREsTfsFT/2rve/n7qQgCtm914mmQxC0lFUTWDdMC2bY8f1sG8FjMMoxjhJMybyosQVqYEJ2pCWdMAJ2g8jAEyfmCl9EBbWWLdX7NzssYmM0AmX/Ktfbim3BoCVQkjeAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEyLTA3LTI5VDExOjUyOjM3KzAyOjAww0o2dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMC0wNC0wM1QwNToxMToyMCswMjowMBDLlngAAAAASUVORK5CYII=" xmlns:xlink="xlink" /><a xlink:href="../type/MFByteStreamCapsFlags.html#None" xmlns:xlink="xlink"><text x="40.00" y="265.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[None]]></text></a><image width="16.00" height="16.00" x="15.00" y="278.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAIdQTFRF/wD/0ub4fbLl5/H7zeP5eK/jir3uebDj3u360+f6ebDkkMT2mc3/jsLz0ub51ej7e7Lli8D0odD+ncnyKVqwfLPnkcPxnc/+n9D+stj7Hk6pADOZW5vYgrfqo9H+KFevfLTpr9b8NWO1+vv9XJvYvsvlv9jvWprXtcThwtnwxdvxrL3e////zYeNhAAAAAF0Uk5TAEDm2GYAAAABYktHRCy63XGrAAAACXBIWXMAAAsSAAALEgHS3X78AAAAY0lEQVQY042PRw6AIBREsTfsFT/2rve/n7qQgCtm914mmQxC0lFUTWDdMC2bY8f1sG8FjMMoxjhJMybyosQVqYEJ2pCWdMAJ2g8jAEyfmCl9EBbWWLdX7NzssYmM0AmX/Ktfbim3BoCVQkjeAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDEyLTA3LTI5VDExOjUyOjM3KzAyOjAww0o2dwAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxMC0wNC0wM1QwNToxMToyMCswMjowMBDLlngAAAAASUVORK5CYII=" xmlns:xlink="xlink" /><a xlink:href="../type/MFByteStreamCapsFlags.html#ShareWrite" xmlns:xlink="xlink"><text x="40.00" y="290.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[ShareWrite]]></text></a><path d="M0.5,305.50L238.00,305.50" stroke="#979797" stroke-width="1" stroke-dasharray="" /><image width="16.00" height="16.00" x="15.00" y="313.50" preserveAspectRatio="" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAANtQTFRF/wD//vv+8tvyz4jP8OPw46zj8+Pz8NTw7r7u+q7765Hs8uDz9/Cr1dWsrLSuipmu/f394q/i+qv7+pj76ZDq9Ob0plCnu2+87qXv+pv7+pn75pjnkE6R6eWrwcSsrLWtmKSup0+o0W3S+p/77p3vllKXfC58qVKq0WrS1W/VvHC93ZjejkaPnDydfi5+5eKrzM6stbutnKeu5MrkqFCp0mvT027UfjB/nzyfjTWOfC196NHoqVCqy2fMlTiWeit78NXw7djtfzCAdSd169Hr7NLscSRy5szm////y4eOhgAAAAF0Uk5TAEDm2GYAAAABYktHREjwAtTqAAAACXBIWXMAAAsSAAALEgHS3X78AAAAeUlEQVQY02NgwAMY0fhMzCxofFZmNiQ+OzMHJxczN5jNw8vHL8AsKCQsLMIsClchJi4hKSwlLQOUl+WVk1dgUFQSl1BWUVWDq1DX0NTS1tHVAxmhb2BoxGBsYmpmbmFphbDG2sZWz87eAcliRxMnZxcUp7m6uTOQAwDo6wrtzia2FQAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxMi0wNy0yOVQxMTo1MzowNiswMjowMARwUR4AAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTAtMDQtMDNUMDU6MTE6MjArMDI6MDAQy5Z4AAAAAElFTkSuQmCC" xmlns:xlink="xlink" /><a xlink:href="../type/MFByteStreamCapsFlags.html#MFByteStreamCapsFlags" xmlns:xlink="xlink"><text x="40.00" y="325.50" fill="#1382CE" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="this.setAttribute('fill', '#F58026')" onmouseout="this.setAttribute('fill', '#1382CE')"><![CDATA[MFByteStreamCapsFlags]]></text></a></g><g transform="translate(0.00, 0.00)"><rect height="51" width="176" x="0.55" y="0.55" fill="#FFFFFF" stroke="#979797" stroke-width="1" /><text x="32.06" y="20.50" fill="" style="" text-anchor="" font-family="" font-size="11.00" onmouseover="" onmouseout=""><![CDATA[public abstract class]]></text><text x="67.91" y="35.50" fill="" style="" text-anchor="" font-family="" font-size="14.00" onmouseover="" onmouseout=""><![CDATA[Enum]]></text><path d="M0.5,45.50L176.00,45.50" stroke="#979797" stroke-width="1" stroke-dasharray="" /></g><g><path d="M50.00,50.50L50.00,100.50" stroke="#979797" stroke-width="1" stroke-dasharray="" /><polygon points="50.00,50.50 45.00,60.50 55.00,60.50" fill="#FFFFFF" stroke="#979797" stroke-width="" /></g></svg>
+						</div>
+						<div class="legend">
+							<p class="save"><a href="#"><i class="icon-save"></i>save</a></p>
+							<p class="resetZoom"><a href="#"><i class="icon-refresh"></i>reset</a></p>
+							<p>Drag to pan - Use Mousewheel + Ctrl to zoom</p>
+						</div>
+					</div>
+				
+			</div>
+		</div>
+
+    </body>
+</html>
+

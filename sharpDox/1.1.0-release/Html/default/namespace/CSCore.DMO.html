@@ -1,0 +1,644 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>CSCore - CSCore.DMO</title>
+        <meta name="viewport" content="width=device-width">
+
+		
+			<link rel="stylesheet" type="text/css" href="../assets/css/font.css?version=0.9.5.10" />
+			<link rel="stylesheet" type="text/css" href="../assets/css/font-awesome.css?version=0.9.5.10" />
+			<link rel="stylesheet" type="text/css" href="../assets/css/style.css?version=0.9.5.10" />
+			
+			<!--[if IE 8]>
+				<script src="../assets/js/vendor.ie8.js?version=0.9.5.10"></script>
+			<![endif]-->
+			<![if !IE 8]>
+				<script src="../assets/js/vendor.js?version=0.9.5.10"></script>
+			<![endif]>
+
+			<script src="../assets/js/frame.js?version=0.9.5.10"></script>
+		
+
+		<script>hljs.initHighlightingOnLoad();</script>
+
+    </head>
+    <body>        
+       
+	    <div id="dropdown-1" class="dropdown dropdown-tip">
+			<ul class="dropdown-menu">
+				
+					<li><a href="../type/DmoAggregator.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> DmoAggregator</a></li>
+
+				
+					<li><a href="../type/DmoEnumeratorCategories.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> DmoEnumeratorCategories</a></li>
+
+				
+					<li><a href="../type/DmoEnumFlags.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> DmoEnumFlags</a></li>
+
+				
+					<li><a href="../type/DmoEnumItem.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> DmoEnumItem</a></li>
+
+				
+					<li><a href="../type/DmoErrorCodes.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> DmoErrorCodes</a></li>
+
+				
+					<li><a href="../type/DmoException.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> DmoException</a></li>
+
+				
+					<li><a href="../type/DmoInputSizeInfo.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> DmoInputSizeInfo</a></li>
+
+				
+					<li><a href="../type/DmoInputStreamInfoFlags.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> DmoInputStreamInfoFlags</a></li>
+
+				
+					<li><a href="../type/DmoOutputDataBuffer.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> DmoOutputDataBuffer</a></li>
+
+				
+					<li><a href="../type/DmoOutputStreamInfoFlags.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> DmoOutputStreamInfoFlags</a></li>
+
+				
+					<li><a href="../type/DmoPartialMediaType.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> DmoPartialMediaType</a></li>
+
+				
+					<li><a href="../type/DmoSizeInfo.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> DmoSizeInfo</a></li>
+
+				
+					<li><a href="../type/DmoStream.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> DmoStream</a></li>
+
+				
+					<li><a href="../type/EnumDmo.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> EnumDmo</a></li>
+
+				
+					<li><a href="../type/IMediaBuffer.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> IMediaBuffer</a></li>
+
+				
+					<li><a href="../type/InputDataBufferFlags.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> InputDataBufferFlags</a></li>
+
+				
+					<li><a href="../type/InputStatusFlags.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> InputStatusFlags</a></li>
+
+				
+					<li><a href="../type/InputStreamInfoFlags.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> InputStreamInfoFlags</a></li>
+
+				
+					<li><a href="../type/MediaBuffer.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MediaBuffer</a></li>
+
+				
+					<li><a href="../type/MediaObject.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MediaObject</a></li>
+
+				
+					<li><a href="../type/MediaType.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MediaType</a></li>
+
+				
+					<li><a href="../type/OutputDataBufferFlags.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> OutputDataBufferFlags</a></li>
+
+				
+					<li><a href="../type/OutputStreamInfoFlags.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> OutputStreamInfoFlags</a></li>
+
+				
+					<li><a href="../type/ProcessOutputFlags.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> ProcessOutputFlags</a></li>
+
+				
+					<li><a href="../type/SetTypeFlags.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> SetTypeFlags</a></li>
+
+				
+					<li><a href="../type/WMResamplerProps.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> WMResamplerProps</a></li>
+
+				
+			</ul>
+		</div>
+	   
+	    <div class="ui-layout-north">
+			<div class="toolbar">
+				<a href="#" data-dropdown="#dropdown-1" class="button"><img src="../assets/images/icons/class_public.png"/> Types <span class="info">(26)</span> <i class="icon-caret-down"></i></a>
+				<div class="right">
+					<span class="toolbar-info"> Assembly: CSCore</span>
+					<a href="#" id="print-button" class="button" title="print"><i class="icon-print"></i></a>
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+		</div>
+        
+		<div class="ui-layout-center">
+			<div>
+				
+
+					<h3 class="box-title first-heading">Types</h3>
+
+				
+
+				<div class="table-box">
+					<table>
+						<thead>
+							<tr>
+								<td></td>
+								<td>Name</td>
+								<td>Description</td>
+							</tr>
+						</thead>
+						<tbody>			
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="DmoAggregator" href="../type/DmoAggregator.html">DmoAggregator</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>IWaveAggregator implementation for Dmo based streams.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="DmoEnumeratorCategories" href="../type/DmoEnumeratorCategories.html">DmoEnumeratorCategories</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Defines DMO-Categories for enumerating DMOs.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="DmoEnumFlags" href="../type/DmoEnumFlags.html">DmoEnumFlags</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Defines flags that specify search criteria when enumerating Microsoft DirectX Media Objects.
+For more information, see .</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="DmoEnumItem" href="../type/DmoEnumItem.html">DmoEnumItem</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Encapsulates the properties of an enumerated dmo.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="DmoErrorCodes" href="../type/DmoErrorCodes.html">DmoErrorCodes</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Error codes that are specific to Microsoft DirectX Media Objects.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="DmoException" href="../type/DmoException.html">DmoException</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>DirectX Media Object COM Exception</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="DmoInputSizeInfo" href="../type/DmoInputSizeInfo.html">DmoInputSizeInfo</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Encapsulates the values retrieved by the GetInputSizeInfo method.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="DmoInputStreamInfoFlags" href="../type/DmoInputStreamInfoFlags.html">DmoInputStreamInfoFlags</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Defines flags that describe an input stream.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="DmoOutputDataBuffer" href="../type/DmoOutputDataBuffer.html">DmoOutputDataBuffer</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Represents a Dmo output data buffer. For more details see .</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="DmoOutputStreamInfoFlags" href="../type/DmoOutputStreamInfoFlags.html">DmoOutputStreamInfoFlags</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>The DmoOutputStreamInfoFlags enumeration defines flags that describe an output stream.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="DmoPartialMediaType" href="../type/DmoPartialMediaType.html">DmoPartialMediaType</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Describes a media type used by a Microsoft DirectX Media Object.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="DmoSizeInfo" href="../type/DmoSizeInfo.html">DmoSizeInfo</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Encapsulates the values retrieved by the GetInputSizeInfo- and the GetOutputSizeInfo- method.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="DmoStream" href="../type/DmoStream.html">DmoStream</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Base class for all Dmo based streams.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="EnumDmo" href="../type/EnumDmo.html">EnumDmo</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Provides methods for enumerating Microsoft DirectX Media Objects.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="IMediaBuffer" href="../type/IMediaBuffer.html">IMediaBuffer</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>The IMediaBuffer interface provides methods for manipulating a data buffer.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="InputDataBufferFlags" href="../type/InputDataBufferFlags.html">InputDataBufferFlags</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Defines flags that describe an input buffer.
+See http://msdn.microsoft.com/en-us/library/windows/desktop/dd375501(v=vs.85).aspx</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="InputStatusFlags" href="../type/InputStatusFlags.html">InputStatusFlags</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>InputStatusFlags.
+See also: http://msdn.microsoft.com/en-us/library/windows/desktop/dd406950(v=vs.85).aspx</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="InputStreamInfoFlags" href="../type/InputStreamInfoFlags.html">InputStreamInfoFlags</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Defines flags that describe an input stream.
+See http://msdn.microsoft.com/en-us/library/windows/desktop/dd375502(v=vs.85).aspx.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MediaBuffer" href="../type/MediaBuffer.html">MediaBuffer</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Default-Implementation of the IMediaBuffer interface.
+For more information, see .</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MediaObject" href="../type/MediaObject.html">MediaObject</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Represents a DMO MediaObject.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MediaType" href="../type/MediaType.html">MediaType</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>The MediaType structure describes the format of the data used by a stream in a Microsoft DirectX Media Object (DMO).
+For more information, .</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="OutputDataBufferFlags" href="../type/OutputDataBufferFlags.html">OutputDataBufferFlags</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Defines flags that describe an output buffer.
+See http://msdn.microsoft.com/en-us/library/windows/desktop/dd375508(v=vs.85).aspx.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="OutputStreamInfoFlags" href="../type/OutputStreamInfoFlags.html">OutputStreamInfoFlags</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Flags that describe an output stream.
+See http://msdn.microsoft.com/en-us/library/windows/desktop/dd375509(v=vs.85).aspx.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="ProcessOutputFlags" href="../type/ProcessOutputFlags.html">ProcessOutputFlags</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Defines flags that specify output processing requests.
+See http://msdn.microsoft.com/en-us/library/windows/desktop/dd375511(v=vs.85).aspx</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="SetTypeFlags" href="../type/SetTypeFlags.html">SetTypeFlags</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Defines flags for setting the media type on a stream.
+See http://msdn.microsoft.com/en-us/library/windows/desktop/dd375514(v=vs.85).aspx.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="WMResamplerProps" href="../type/WMResamplerProps.html">WMResamplerProps</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Sets properties on the audio resampler DSP.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+						</tbody>
+					</table>
+				</div>
+
+				
+					<h3 class="box-title">Uses</h3>
+					<div class="list-box">
+						<ul>
+						
+							<li><a href="../namespace/CSCore.html">CSCore</a></li>
+						
+						</ul>
+					</div>
+				
+
+				
+					<h3 class="box-title">Used by</h3>
+					<div class="list-box">
+						<ul>
+						
+							<li><a href="../namespace/CSCore.Codecs.MP3.html">CSCore.Codecs.MP3</a></li>
+						
+							<li><a href="../namespace/CSCore.DSP.html">CSCore.DSP</a></li>
+						
+							<li><a href="../namespace/CSCore.Streams.Effects.html">CSCore.Streams.Effects</a></li>
+						
+						</ul>
+					</div>
+				
+			</div>
+		</div>
+	   
+    </body>
+</html>
+
