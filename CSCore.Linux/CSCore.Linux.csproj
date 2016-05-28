@@ -1,0 +1,597 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C147FD94-4670-4937-A65D-3C4DA811EFA4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CSCore.Linux</RootNamespace>
+    <AssemblyName>CSCore.Linux</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\CSCore\AudioEncoding.cs">
+      <Link>AudioEncoding.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\AudioSubTypes.Utils.cs">
+      <Link>AudioSubTypes.Utils.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\AudioSubTypes.cs">
+      <Link>AudioSubTypes.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AudioSubTypes.tt</DependentUpon>
+    </Compile>
+    <Compile Include="..\CSCore\ChannelMask.cs">
+      <Link>ChannelMask.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\ChannelMasks.cs">
+      <Link>ChannelMasks.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\AIFF\AiffBinaryReader.cs">
+      <Link>Codecs\AIFF\AiffBinaryReader.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\AIFF\AiffChunk.cs">
+      <Link>Codecs\AIFF\AiffChunk.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\AIFF\AiffChunkContainer.cs">
+      <Link>Codecs\AIFF\AiffChunkContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\AIFF\AiffException.cs">
+      <Link>Codecs\AIFF\AiffException.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\AIFF\AiffReader.cs">
+      <Link>Codecs\AIFF\AiffReader.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\AIFF\CommonChunk.cs">
+      <Link>Codecs\AIFF\CommonChunk.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\AIFF\FormatVersionChunk.cs">
+      <Link>Codecs\AIFF\FormatVersionChunk.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\AIFF\SoundDataChunk.cs">
+      <Link>Codecs\AIFF\SoundDataChunk.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\CodecFactory.cs">
+      <Link>Codecs\CodecFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\CodecFactoryEntry.cs">
+      <Link>Codecs\CodecFactoryEntry.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\ConnectionEstablishedEventArgs.cs">
+      <Link>Codecs\ConnectionEstablishedEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\FLAC\BlockingStrategy.cs">
+      <Link>Codecs\FLAC\BlockingStrategy.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\FLAC\ChannelAssignment.cs">
+      <Link>Codecs\FLAC\ChannelAssignment.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\FLAC\FlacConstant.cs">
+      <Link>Codecs\FLAC\FlacConstant.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\FLAC\FlacException.cs">
+      <Link>Codecs\FLAC\FlacException.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\FLAC\FlacFile.cs">
+      <Link>Codecs\FLAC\FlacFile.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\FLAC\FlacFrame.cs">
+      <Link>Codecs\FLAC\FlacFrame.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\FLAC\FlacFrameHeader.cs">
+      <Link>Codecs\FLAC\FlacFrameHeader.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\FLAC\FlacFrameInformation.cs">
+      <Link>Codecs\FLAC\FlacFrameInformation.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\FLAC\FlacFrame_GetBuffer.cs">
+      <Link>Codecs\FLAC\FlacFrame_GetBuffer.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FlacFrame_GetBuffer.tt</DependentUpon>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\FLAC\FlacLayer.cs">
+      <Link>Codecs\FLAC\FlacLayer.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\FLAC\FlacPartitionedRice.cs">
+      <Link>Codecs\FLAC\FlacPartitionedRice.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\FLAC\FlacPartitionedRiceContent.cs">
+      <Link>Codecs\FLAC\FlacPartitionedRiceContent.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\FLAC\FlacPreScan.cs">
+      <Link>Codecs\FLAC\FlacPreScan.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\FLAC\FlacPreScanFinishedEventArgs.cs">
+      <Link>Codecs\FLAC\FlacPreScanFinishedEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\FLAC\FlacPreScanMode.cs">
+      <Link>Codecs\FLAC\FlacPreScanMode.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\FLAC\FlacResidualCodingMethod.cs">
+      <Link>Codecs\FLAC\FlacResidualCodingMethod.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\FLAC\FlacSubFrameData.cs">
+      <Link>Codecs\FLAC\FlacSubFrameData.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\FLAC\Metadata\FlacMetadata.cs">
+      <Link>Codecs\FLAC\Metadata\FlacMetadata.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\FLAC\Metadata\FlacMetadataSeekTable.cs">
+      <Link>Codecs\FLAC\Metadata\FlacMetadataSeekTable.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\FLAC\Metadata\FlacMetadataStreamInfo.cs">
+      <Link>Codecs\FLAC\Metadata\FlacMetadataStreamInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\FLAC\Metadata\FlacMetaDataType.cs">
+      <Link>Codecs\FLAC\Metadata\FlacMetaDataType.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\FLAC\Metadata\FlacSeekPoint.cs">
+      <Link>Codecs\FLAC\Metadata\FlacSeekPoint.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\FLAC\SubFrames\FlacResidual.cs">
+      <Link>Codecs\FLAC\SubFrames\FlacResidual.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\FLAC\SubFrames\FlacSubFrameBase.cs">
+      <Link>Codecs\FLAC\SubFrames\FlacSubFrameBase.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\FLAC\SubFrames\FlacSubFrameConstant.cs">
+      <Link>Codecs\FLAC\SubFrames\FlacSubFrameConstant.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\FLAC\SubFrames\FlacSubFrameFixed.cs">
+      <Link>Codecs\FLAC\SubFrames\FlacSubFrameFixed.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\FLAC\SubFrames\FlacSubFrameLPC.cs">
+      <Link>Codecs\FLAC\SubFrames\FlacSubFrameLPC.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\FLAC\SubFrames\FlacSubFrameLPC_Calculation.cs">
+      <Link>Codecs\FLAC\SubFrames\FlacSubFrameLPC_Calculation.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\FLAC\SubFrames\FlacSubFrameVerbatim.cs">
+      <Link>Codecs\FLAC\SubFrames\FlacSubFrameVerbatim.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\GetCodecAction.cs">
+      <Link>Codecs\GetCodecAction.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\RAW\RawDataReader.cs">
+      <Link>Codecs\RAW\RawDataReader.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\WAV\DataChunk.cs">
+      <Link>Codecs\WAV\DataChunk.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\WAV\FMTChunk.cs">
+      <Link>Codecs\WAV\FMTChunk.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\WAV\WaveFileChunk.cs">
+      <Link>Codecs\WAV\WaveFileChunk.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\WAV\WaveFileReader.cs">
+      <Link>Codecs\WAV\WaveFileReader.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Codecs\WAV\WaveWriter.cs">
+      <Link>Codecs\WAV\WaveWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\DSP\BiQuad.cs">
+      <Link>DSP\BiQuad.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\DSP\FastFourierTransformation.cs">
+      <Link>DSP\FastFourierTransformation.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\DSP\FftMode.cs">
+      <Link>DSP\FftMode.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\DSP\FftProvider.cs">
+      <Link>DSP\FftProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\DSP\FftSize.cs">
+      <Link>DSP\FftSize.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Extensions.cs">
+      <Link>Extensions.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\FluentExtensions.cs">
+      <Link>FluentExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\GlobalSuppressions.cs">
+      <Link>GlobalSuppressions.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\IAudioSource.cs">
+      <Link>IAudioSource.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\IReadableAudioSource.cs">
+      <Link>IReadableAudioSource.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\ISampleSource.cs">
+      <Link>ISampleSource.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\IWaveSource.cs">
+      <Link>IWaveSource.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\IWriteable.cs">
+      <Link>IWriteable.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\MmException.cs">
+      <Link>MmException.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\MmResult.cs">
+      <Link>MmResult.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\SampleAggregatorBase.cs">
+      <Link>SampleAggregatorBase.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\SoundIn\DataAvailableEventArgs.cs">
+      <Link>SoundIn\DataAvailableEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\SoundIn\ISoundIn.cs">
+      <Link>SoundIn\ISoundIn.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\SoundIn\RecordingState.cs">
+      <Link>SoundIn\RecordingState.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\SoundIn\RecordingStoppedEventArgs.cs">
+      <Link>SoundIn\RecordingStoppedEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\SoundOut\ISoundOut.cs">
+      <Link>SoundOut\ISoundOut.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\SoundOut\PlaybackState.cs">
+      <Link>SoundOut\PlaybackState.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\SoundOut\PlaybackStoppedEventArgs.cs">
+      <Link>SoundOut\PlaybackStoppedEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\StoppedEventArgs.cs">
+      <Link>StoppedEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\BlockReadEventArgs.cs">
+      <Link>Streams\BlockReadEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\BufferSource.cs">
+      <Link>Streams\BufferSource.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\CachedSoundSource.cs">
+      <Link>Streams\CachedSoundSource.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\Effects\Equalizer.cs">
+      <Link>Streams\Effects\Equalizer.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\Effects\EqualizerChannelFilter.cs">
+      <Link>Streams\Effects\EqualizerChannelFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\Effects\EqualizerFilter.cs">
+      <Link>Streams\Effects\EqualizerFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\FadeInOut.cs">
+      <Link>Streams\FadeInOut.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\GainSource.cs">
+      <Link>Streams\GainSource.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\IFadeStrategy.cs">
+      <Link>Streams\IFadeStrategy.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\LinearFadeStrategy.cs">
+      <Link>Streams\LinearFadeStrategy.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\LoopStream.cs">
+      <Link>Streams\LoopStream.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\MonoToStereoSource.cs">
+      <Link>Streams\MonoToStereoSource.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\NotificationSource.cs">
+      <Link>Streams\NotificationSource.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\PanSource.cs">
+      <Link>Streams\PanSource.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\PeakEventArgs.cs">
+      <Link>Streams\PeakEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\PeakMeter.cs">
+      <Link>Streams\PeakMeter.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\SampleConverter\IeeeFloatToSample.cs">
+      <Link>Streams\SampleConverter\IeeeFloatToSample.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\SampleConverter\Pcm16BitToSample.cs">
+      <Link>Streams\SampleConverter\Pcm16BitToSample.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\SampleConverter\Pcm24BitToSample.cs">
+      <Link>Streams\SampleConverter\Pcm24BitToSample.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\SampleConverter\Pcm8BitToSample.cs">
+      <Link>Streams\SampleConverter\Pcm8BitToSample.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\SampleConverter\SampleToIeeeFloat32.cs">
+      <Link>Streams\SampleConverter\SampleToIeeeFloat32.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\SampleConverter\SampleToPcm16.cs">
+      <Link>Streams\SampleConverter\SampleToPcm16.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\SampleConverter\SampleToPcm24.cs">
+      <Link>Streams\SampleConverter\SampleToPcm24.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\SampleConverter\SampleToPcm8.cs">
+      <Link>Streams\SampleConverter\SampleToPcm8.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\SampleConverter\SampleToWaveBase.cs">
+      <Link>Streams\SampleConverter\SampleToWaveBase.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\SampleConverter\WaveToSampleBase.cs">
+      <Link>Streams\SampleConverter\WaveToSampleBase.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\SimpleNotificationSource.cs">
+      <Link>Streams\SimpleNotificationSource.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\SineGenerator.cs">
+      <Link>Streams\SineGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\SingleBlockNotificationStream.cs">
+      <Link>Streams\SingleBlockNotificationStream.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\SingleBlockReadEventArgs.cs">
+      <Link>Streams\SingleBlockReadEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\SoundInSource.cs">
+      <Link>Streams\SoundInSource.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\StereoToMonoSource.cs">
+      <Link>Streams\StereoToMonoSource.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\SynchronizedWaveSource.cs">
+      <Link>Streams\SynchronizedWaveSource.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\VolumeSource.cs">
+      <Link>Streams\VolumeSource.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Streams\WriteableBufferingSource.cs">
+      <Link>Streams\WriteableBufferingSource.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\Frames\BinaryFrame.cs">
+      <Link>Tags\Frames\BinaryFrame.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\Frames\CommentAndLyricsFrame.cs">
+      <Link>Tags\Frames\CommentAndLyricsFrame.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\Frames\CommercialFrame.cs">
+      <Link>Tags\Frames\CommercialFrame.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\Frames\DataFrame.cs">
+      <Link>Tags\Frames\DataFrame.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\Frames\Frame.cs">
+      <Link>Tags\Frames\Frame.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\Frames\FrameFactory.cs">
+      <Link>Tags\Frames\FrameFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\Frames\FrameFlags.cs">
+      <Link>Tags\Frames\FrameFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\Frames\FrameHeader.cs">
+      <Link>Tags\Frames\FrameHeader.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\Frames\FrameID.cs">
+      <Link>Tags\Frames\FrameID.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\Frames\FrameIDFactory.cs">
+      <Link>Tags\Frames\FrameIDFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\Frames\FrameIDFactory2.cs">
+      <Link>Tags\Frames\FrameIDFactory2.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\Frames\MultiStringTextFrame.cs">
+      <Link>Tags\Frames\MultiStringTextFrame.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\Frames\NumericTextFrame.cs">
+      <Link>Tags\Frames\NumericTextFrame.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\Frames\OwnershipFrame.cs">
+      <Link>Tags\Frames\OwnershipFrame.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\Frames\PictureFormat.cs">
+      <Link>Tags\Frames\PictureFormat.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\Frames\PictureFrame.cs">
+      <Link>Tags\Frames\PictureFrame.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\Frames\Popularimeter.cs">
+      <Link>Tags\Frames\Popularimeter.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\Frames\ReceivedType.cs">
+      <Link>Tags\Frames\ReceivedType.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\Frames\TermsOfUseFrame.cs">
+      <Link>Tags\Frames\TermsOfUseFrame.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\Frames\TextFrame.cs">
+      <Link>Tags\Frames\TextFrame.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\Frames\TimestampTextFrame.cs">
+      <Link>Tags\Frames\TimestampTextFrame.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\Frames\UserDefiniedTextFrame.cs">
+      <Link>Tags\Frames\UserDefiniedTextFrame.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\ID3Exception.cs">
+      <Link>Tags\ID3Exception.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\ID3Genre.cs">
+      <Link>Tags\ID3Genre.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\ID3Utils.cs">
+      <Link>Tags\ID3Utils.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\ID3v1.cs">
+      <Link>Tags\ID3v1.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\ID3v2.cs">
+      <Link>Tags\ID3v2.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\ID3v2ExtendedHeader.cs">
+      <Link>Tags\ID3v2ExtendedHeader.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\ID3v2ExtendedHeaderFlags.cs">
+      <Link>Tags\ID3v2ExtendedHeaderFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\ID3v2Footer.cs">
+      <Link>Tags\ID3v2Footer.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\ID3v2Header.cs">
+      <Link>Tags\ID3v2Header.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\ID3v2HeaderFlags.cs">
+      <Link>Tags\ID3v2HeaderFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\ID3v2ImageEncodingRestriction.cs">
+      <Link>Tags\ID3v2ImageEncodingRestriction.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\ID3v2ImageSizeRestriction.cs">
+      <Link>Tags\ID3v2ImageSizeRestriction.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\ID3v2QuickInfo.cs">
+      <Link>Tags\ID3v2QuickInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\ID3v2TagSizeRestriction.cs">
+      <Link>Tags\ID3v2TagSizeRestriction.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\ID3v2TextEncodingRestriction.cs">
+      <Link>Tags\ID3v2TextEncodingRestriction.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\ID3v2TextFieldSizeRestriction.cs">
+      <Link>Tags\ID3v2TextFieldSizeRestriction.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\ID3Version.cs">
+      <Link>Tags\ID3Version.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Tags\ID3\UnsyncStream.cs">
+      <Link>Tags\UnsyncStream.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\TimeConverter.cs">
+      <Link>TimeConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\TimeConverterAttribute.cs">
+      <Link>TimeConverterAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\TimeConverterFactory.cs">
+      <Link>TimeConverterFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Utils\BitReader.cs">
+      <Link>Utils\BitReader.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Utils\Buffer\FixedSizeBuffer.cs">
+      <Link>Utils\Buffer\FixedSizeBuffer.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Utils\Complex.cs">
+      <Link>Utils\Complex.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Utils\CRC16.cs">
+      <Link>Utils\CRC16.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Utils\CRC8.cs">
+      <Link>Utils\CRC8.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Utils\CRCBase.cs">
+      <Link>Utils\CRCBase.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Utils\FlacBitReader.cs">
+      <Link>Utils\FlacBitReader.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Utils\ILUtils.cs">
+      <Link>Utils\ILUtils.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Utils\ReadBlockStream.cs">
+      <Link>Utils\ReadBlockStream.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Utils\UintOffsets.cs">
+      <Link>Utils\UintOffsets.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Utils\Utils.cs">
+      <Link>Utils\Utils.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\Utils\Vector3.cs">
+      <Link>Utils\Vector3.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\WaveAggregatorBase.cs">
+      <Link>WaveAggregatorBase.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\WaveFormat.cs">
+      <Link>WaveFormat.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\WaveFormatExtensible.cs">
+      <Link>WaveFormatExtensible.cs</Link>
+    </Compile>
+    <Compile Include="DSP\Resampler.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\CSCore\.gitattributes">
+      <Link>.gitattributes</Link>
+    </None>
+    <None Include="..\CSCore\.gitignore">
+      <Link>.gitignore</Link>
+    </None>
+    <None Include="..\CSCore\Base.cd">
+      <Link>Base.cd</Link>
+    </None>
+    <None Include="..\CSCore\cscore.publickey">
+      <Link>cscore.publickey</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\CSCore\AudioSubTypes.tt">
+      <Link>AudioSubTypes.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AudioSubTypes.cs</LastGenOutput>
+    </Content>
+    <Content Include="..\CSCore\Codecs\FLAC\FlacFrame_GetBuffer.tt">
+      <Link>Codecs\FLAC\SubFrames\FlacFrame_GetBuffer.tt</Link>
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>FlacFrame_GetBuffer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

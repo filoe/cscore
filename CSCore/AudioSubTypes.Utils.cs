@@ -1,13 +1,19 @@
 ﻿using System;
+#if WINDOWS
 using CSCore.DMO;
 using CSCore.MediaFoundation;
+#endif
 
 namespace CSCore
 {
     /// <summary>
     /// Defines <see cref="AudioSubTypes"/> and provides methods to convert between <see cref="AudioEncoding"/>-values and <see cref="AudioSubTypes"/>-values.
     /// </summary>
+#if WINDOWS
     /// <remarks><see cref="AudioSubTypes"/> are used by the <see cref="WaveFormatExtensible"/>, the <see cref="MFMediaType"/> and the <see cref="MediaType"/> class.</remarks>
+#else
+    /// <remarks><see cref="AudioSubTypes"/> are used by the <see cref="WaveFormatExtensible"/> class.</remarks>
+#endif
     public static partial class AudioSubTypes
     {
         /// <summary>
@@ -42,10 +48,5 @@ namespace CSCore
         /// The Major Type for <c>Audio</c> media types.
         /// </summary>
         public static readonly Guid MediaTypeAudio = new Guid("73647561-0000-0010-8000-00AA00389B71");
-
-        ///// <summary>
-        ///// FLAC
-        ///// </summary>
-        //public static readonly Guid WAVE_FORMAT_FLAC = new Guid("0000f1ac-0000-0010-8000-00aa00389b71");
     }
 }

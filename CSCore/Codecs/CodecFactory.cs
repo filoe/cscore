@@ -4,16 +4,18 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using CSCore.Codecs.AAC;
 using CSCore.Codecs.AIFF;
-using CSCore.Codecs.DDP;
 using CSCore.Codecs.FLAC;
+using CSCore.Codecs.WAV;
+#if WINDOWS
+using CSCore.Codecs.AAC;
+using CSCore.Codecs.DDP;
 using CSCore.Codecs.MP1;
 using CSCore.Codecs.MP2;
 using CSCore.Codecs.MP3;
-using CSCore.Codecs.WAV;
 using CSCore.Codecs.WMA;
 using CSCore.MediaFoundation;
+#endif
 
 namespace CSCore.Codecs
 {
@@ -30,6 +32,27 @@ namespace CSCore.Codecs
         private CodecFactory()
         {
             _codecs = new Dictionary<object, CodecFactoryEntry>();
+            Register("wave", new CodecFactoryEntry(s =>
+            {
+                IWaveSource res = new WaveFileReader(s);
+#if WINDOWS
+                if (res.WaveFormat.WaveFormatTag != AudioEncoding.Pcm &&
+                    res.WaveFormat.WaveFormatTag != AudioEncoding.IeeeFloat &&
+                    res.WaveFormat.WaveFormatTag != AudioEncoding.Extensible)
+                {
+                    res.Dispose();
+                    res = new MediaFoundationDecoder(s);
+                }
+#endif
+                return res;
+            },
+                "wav", "wave"));
+            Register("flac", new CodecFactoryEntry(s => new FlacFile(s),
+                "flac", "fla"));
+            Register("aiff", new CodecFactoryEntry(s => new AiffReader(s),
+                "aiff", "aif", "aifc"));
+
+#if WINDOWS
             Register("mp3", new CodecFactoryEntry(s =>
             {
                 try
@@ -44,24 +67,6 @@ namespace CSCore.Codecs
                 }
             },
                 "mp3", "mpeg3"));
-            Register("wave", new CodecFactoryEntry(s =>
-            {
-                IWaveSource res = new WaveFileReader(s);
-                if (res.WaveFormat.WaveFormatTag != AudioEncoding.Pcm &&
-                    res.WaveFormat.WaveFormatTag != AudioEncoding.IeeeFloat &&
-                    res.WaveFormat.WaveFormatTag != AudioEncoding.Extensible)
-                {
-                    res.Dispose();
-                    res = new MediaFoundationDecoder(s);
-                }
-                return res;
-            },
-                "wav", "wave"));
-            Register("flac", new CodecFactoryEntry(s => new FlacFile(s),
-                "flac", "fla"));
-            Register("aiff", new CodecFactoryEntry(s => new AiffReader(s),
-                "aiff", "aif", "aifc"));
-
             if (AacDecoder.IsSupported)
             {
                 Register("aac", new CodecFactoryEntry(s => new AacDecoder(s),
@@ -92,6 +97,7 @@ namespace CSCore.Codecs
                 Register("ddp", new CodecFactoryEntry(s => new DDPDecoder(s),
                     "mp2", "m2ts", "m4a", "m4v", "mp4v", "mp4", "mov", "asf", "wm", "wmv", "wma", "avi", "ac3", "ec3"));
             }
+#endif
         }
 
         /// <summary>
@@ -200,6 +206,7 @@ namespace CSCore.Codecs
 
         private IWaveSource OpenWebStream(string url)
         {
+#if WINDOWS
             try
             {
                 return Default(url);
@@ -218,11 +225,18 @@ namespace CSCore.Codecs
                 }
                 throw; //better throw the exception of the MediaFoundationDecoder. We just try to use the Mp3WebStream class since a few mp3 streams are not supported by the mediafoundation.
             }
+#else
+            throw new NotImplementedException();
+#endif
         }
 
         private static IWaveSource Default(string url)
         {
+#if WINDOWS
             return new MediaFoundationDecoder(url);
+#else
+            throw new NotImplementedException();
+#endif
         }
 
         /// <summary>

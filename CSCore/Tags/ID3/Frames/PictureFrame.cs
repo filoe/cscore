@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
+#if WINDOWS
 using System.Drawing;
+#endif
 
 namespace CSCore.Tags.ID3.Frames
 {
@@ -14,6 +16,7 @@ namespace CSCore.Tags.ID3.Frames
 
         internal byte[] RawData { get; private set; }
 
+#if WINDOWS
         private Image _image;
 
         /// <summary>
@@ -30,6 +33,7 @@ namespace CSCore.Tags.ID3.Frames
         {
             return ID3Utils.DecodeImage(RawData, MimeType);
         }
+#endif
 
         private ID3Version _version;
 

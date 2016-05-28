@@ -1,5 +1,4 @@
 ﻿using System;
-using CSCore.Codecs.MP3;
 
 namespace CSCore.Codecs
 {

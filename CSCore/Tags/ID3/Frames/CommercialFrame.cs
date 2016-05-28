@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace CSCore.Tags.ID3.Frames
 {
@@ -18,7 +19,10 @@ namespace CSCore.Tags.ID3.Frames
 
         public string LogoMimeType { get; private set; }
 
+#if WINDOWS
         public System.Drawing.Image Image { get; private set; }
+#endif
+        public Stream ImageAsStream { get; private set; }
 
         public CommercialFrame(FrameHeader header)
             : base(header)
@@ -59,7 +63,10 @@ namespace CSCore.Tags.ID3.Frames
                 var logoData = new byte[content.Length - offset];
                 Array.Copy(content, offset, logoData, 0, logoData.Length);
 
-                Image = ID3Utils.DecodeImage(logoData, LogoMimeType);
+                ImageAsStream = ID3Utils.GetImageAsStream(logoData, LogoMimeType);
+#if WINDOWS
+                Image = System.Drawing.Image.FromStream(ImageAsStream);
+#endif
             }
         }
     }

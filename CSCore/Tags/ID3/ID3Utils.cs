@@ -1,5 +1,7 @@
 ﻿using System;
+#if WINDOWS
 using System.Drawing;
+#endif
 using System.IO;
 using System.Net;
 using System.Text;
@@ -8,12 +10,12 @@ namespace CSCore.Tags.ID3
 {
     internal static class ID3Utils
     {
-        public readonly static Encoding Iso88591 = Encoding.GetEncoding("ISO-8859-1");
-        public readonly static Encoding Utf16 = new UnicodeEncoding(false, true);
-        public readonly static Encoding Utf16Big = new UnicodeEncoding(true, true);
+        public static readonly Encoding Iso88591 = Encoding.GetEncoding("ISO-8859-1");
+        public static readonly Encoding Utf16 = new UnicodeEncoding(false, true);
+        public static readonly Encoding Utf16Big = new UnicodeEncoding(true, true);
         public static readonly Encoding Utf8 = new UTF8Encoding();
 
-        public unsafe static Int32 ReadInt32(byte[] array, int offset, bool sync, int length = 4)
+        public static Int32 ReadInt32(byte[] array, int offset, bool sync, int length = 4)
         {
             /*fixed (byte* ptr = array)
             {
@@ -95,15 +97,15 @@ namespace CSCore.Tags.ID3
 
                 if (buffer[stringOffset] == 0xFE && buffer[stringOffset + 1] == 0xFF)
                     return Utf16Big;
-                else if (buffer[stringOffset] == 0xFF && buffer[stringOffset + 1] == 0xFE)
+                if (buffer[stringOffset] == 0xFF && buffer[stringOffset + 1] == 0xFE)
                     return Utf16;
-                else throw new ID3Exception("Can't detected UTF encoding");
+                throw new ID3Exception("Can't detected UTF encoding");
             }
-            else if (encodingByte == 2)
+            if (encodingByte == 2)
                 return Utf16Big;
-            else if (encodingByte == 3)
+            if (encodingByte == 3)
                 return Utf8;
-            else throw new ID3Exception("Invalid Encodingbyte");
+            throw new ID3Exception("Invalid Encodingbyte");
         }
 
         private static int CalculateStringLength(byte[] buffer, int offset, int count, int sizeofsymbol)
@@ -132,12 +134,19 @@ namespace CSCore.Tags.ID3
 
             if (newoffset == prem.Length)
                 return offset + newoffset;
-            else return offset;
+            return offset;
         }
 
         public const string MimeURL = "-->";
 
+#if WINDOWS
         public static System.Drawing.Image DecodeImage(byte[] rawdata, string mimetype)
+        {
+            return MediaTypeNames.Image.FromStream(GetImageAsStream(rawdata, mimetype));
+        }
+#endif
+
+        public static Stream GetImageAsStream(byte[] rawdata, string mimetype)
         {
             Stream stream;
             if (mimetype.Trim() == MimeURL)
@@ -150,8 +159,7 @@ namespace CSCore.Tags.ID3
             {
                 stream = new MemoryStream(rawdata, false);
             }
-
-            return Image.FromStream(stream);
+            return stream;
         }
 
         public static string GetURL(byte[] RawData, string MimeType)
@@ -161,7 +169,7 @@ namespace CSCore.Tags.ID3
             if (MimeType != MimeURL)
                 throw new InvalidOperationException("MimeType != " + MimeURL);
 
-            return ID3Utils.ReadString(RawData, 0, -1, ID3Utils.Iso88591);
+            return ReadString(RawData, 0, -1, ID3Utils.Iso88591);
         }
     }
 }
