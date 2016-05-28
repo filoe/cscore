@@ -38,6 +38,7 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\CSCore\AudioEncoding.cs">
@@ -590,7 +591,9 @@
     <None Include="..\CSCore\cscore.publickey">
       <Link>cscore.publickey</Link>
     </None>
-    <None Include="CSCore.dll.config" />
+    <None Include="CSCore.Linux.dll.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\CSCore\AudioSubTypes.tt">
