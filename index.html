@@ -34,11 +34,13 @@
         <p><img src="http://fs1.directupload.net/images/150528/h8n8qwyc.png" alt="CSCore Logo"></p>
 
 <h1>
-<a id="cscore---net-audio-library" class="anchor" href="#cscore---net-audio-library" aria-hidden="true"><span class="octicon octicon-link"></span></a>CSCore - .NET Audio Library</h1>
+<a id="cscore---net-audio-library" class="anchor" href="#cscore---net-audio-library" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>CSCore - .NET Audio Library</h1>
 
 <p>CSCore is a free .NET audio library which is completely written in C#. Although it is still a rather young project, it offers tons of features like playing or capturing audio, en- or decoding many different codecs, effects and much more!</p>
 
 <p>CSCore is based on a very extensible architecture which allows you to make it fit to your needs without any major effort. You can build music players, voice chats, audio recorders and so on!</p>
+
+<p>For more details, take a look at the source or the <a href="http://filoe.github.io/cscore/sharpDox/">online documentation</a>.</p>
 
 <p>Feel free to download or clone the source code:</p>
 
@@ -51,7 +53,7 @@
 </code></pre>
 
 <h3>
-<a id="why-cscore" class="anchor" href="#why-cscore" aria-hidden="true"><span class="octicon octicon-link"></span></a>Why CSCore?</h3>
+<a id="why-cscore" class="anchor" href="#why-cscore" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Why CSCore?</h3>
 
 <ul>
 <li>
@@ -68,8 +70,135 @@
 for commercial products)</li>
 </ul>
 
+<h3>
+<a id="supported-features" class="anchor" href="#supported-features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Supported Features</h3>
+
+<p>Currently the following features are implemented:</p>
+
+<ul>
+<li>
+<strong>Realtime audio processing</strong>
+
+<ul>
+<li>Process audio data in realtime</li>
+<li>Apply any processors in any order you want in realtime</li>
+<li>Create custom processors (e.g. effects, analyzes, decoders,...)</li>
+</ul>
+</li>
+<li>
+<strong>Codecs</strong> *1
+
+<ul>
+<li>MP3</li>
+<li>WAVE (PCM, IeeeFloat, GSM, ADPCM,...)</li>
+<li>FLAC</li>
+<li>AAC</li>
+<li>AC3</li>
+<li>WMA</li>
+<li>Raw data</li>
+<li>OGG-Vorbis (through NVorbis)</li>
+</ul>
+</li>
+<li>
+<strong>Speaker Output</strong>
+
+<ul>
+<li>WaveOut</li>
+<li>DirectSoundOut (realtime streaming)</li>
+<li>WASAPI (loop- and event-callback + exclusive mode available)</li>
+<li>XAudio2</li>
+</ul>
+</li>
+<li>
+<strong>Recording</strong>
+
+<ul>
+<li>WaveIn</li>
+<li>WASAPI (loop- and event-callback + exclusive mode available)</li>
+<li>WASAPI loopback capture (capture output from soundcard)</li>
+</ul>
+</li>
+<li>
+<strong>DSP Algorithms</strong>
+
+<ul>
+<li>Fastfouriertransform (FFT)</li>
+<li>Effects (Echo, Compressor, Reverb, Chorus, Gargle, Flanger,...)</li>
+<li>Resampler</li>
+<li>Channel-mixing using custom channel-matrices</li>
+<li>Generic Equalizer</li>
+<li>...</li>
+</ul>
+</li>
+<li>
+<strong>XAudio2 support</strong>
+
+<ul>
+<li>XAudio2.7 and XAudio2.8 support</li>
+<li>3D Audio support (see X3DAudio sample)</li>
+<li>Streaming source voice implementation allowing
+the client to stream any codec, custom effect,... to XAudio2</li>
+<li>Optimized for games</li>
+</ul>
+</li>
+<li><strong>Mediafoundation encoding and decoding</strong></li>
+<li><strong>DirectX Media Objects Wrapper</strong></li>
+<li>
+<strong>CoreAudioAPI Wrapper</strong>
+
+<ul>
+<li>WASAPI</li>
+<li>Windows Multimedia Devices</li>
+<li>Windows Audio Session</li>
+<li>Endpoint Volume,...</li>
+</ul>
+</li>
+<li><strong>Multi-Channel support</strong></li>
+<li>
+<strong>Flexible</strong>
+
+<ul>
+<li>Configure and customize any parts of CSCore</li>
+<li>Use low latency values for realtime performance, high latency values for stability</li>
+<li>Adjust the audio quality</li>
+<li>Configure custom channel matrices</li>
+<li>Create custom effects</li>
+<li>...</li>
+<li>Or simply: <strong>Make CSCore fit your needs!</strong>
+</li>
+</ul>
+</li>
+<li>
+<strong>Tags</strong> (ID3v1, ID3v2, FLAC)</li>
+<li><strong>Sample Winforms Visualizations</strong></li>
+<li><strong>Optimized performance though the usage of CLI instructions provided by a custom post compiler</strong></li>
+</ul>
+
+<p><strong>*1</strong> Some Codecs are only available on certain platforms. For more details, see <a href="http://cscore.codeplex.com/">Codeplex-Page</a>.</p>
+
+<p>Some projects using already using cscore:</p>
+
+<ul>
+<li>
+<a href="http://raphaelgodart.tumblr.com/dopamine">Dopamine</a>: <em>An music player which tries to keep listening to music clean and simple.</em>
+</li>
+<li>
+<a href="https://github.com/Alkalinee/Hurricane">Hurricane</a>: <em>Is a powerful music player written in C# based on <a href="https://github.com/filoe/cscore">CSCore sound library</a>.</em>
+</li>
+<li>
+<a href="https://github.com/ThuCommix/Sharpex2D">Sharpex2D</a>: A game engine which <em>allows you to create beautiful 2D games under .NET for Windows and Mono compatible systems</em>
+</li>
+<li>
+<a href="https://www.youtube.com/watch?v=tbrKepBgH3M">HTLED</a>: A audio visualization displayed on a selfmade 32x16 LED matrix.</li>
+<li>...</li>
+</ul>
+
+<p>"CSCore - Visualization" Sample:</p>
+
+<p><img src="http://fs5.directupload.net/images/160215/v7eo337x.gif" alt="VIS_SAMPLE"></p>
+
 <h4>
-<a id="as-long-as-this-document-is-in-development-see-codeplex-for-more-details" class="anchor" href="#as-long-as-this-document-is-in-development-see-codeplex-for-more-details" aria-hidden="true"><span class="octicon octicon-link"></span></a>As long as this document is in development, see <a href="http://cscore.codeplex.com/">Codeplex</a> for more details.</h4>
+<a id="as-long-as-this-document-is-in-development-see-codeplex-for-more-details" class="anchor" href="#as-long-as-this-document-is-in-development-see-codeplex-for-more-details" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>As long as this document is in development, see <a href="http://cscore.codeplex.com/">Codeplex</a> for more details.</h4>
       </section>
     </div>
 
