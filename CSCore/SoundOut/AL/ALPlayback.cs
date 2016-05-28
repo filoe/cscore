@@ -9,7 +9,7 @@ namespace CSCore.SoundOut.AL
         /// <summary>
         /// Gets the openal device
         /// </summary>
-        public ALDevice Device { get; }
+        public ALDevice Device { get; private set; }
 
         /// <summary>
         /// Gets the playback state
@@ -295,11 +295,11 @@ namespace CSCore.SoundOut.AL
 				switch (format.BitsPerSample)
 				{
 					case 8:
-						return ALFormat.Stereo8Bit;
+						return ALFormat.Mono8Bit;
 					case 16:
-						return ALFormat.Stereo16Bit;
+						return ALFormat.Mono16Bit;
 					case 32:
-						return ALFormat.StereoFloat32Bit;
+						return ALFormat.MonoFloat32Bit;
 					default:
 						throw new Exception("Unrecognized bitdepth requested: " + format.BitsPerSample);
 				}
