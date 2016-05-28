@@ -155,13 +155,14 @@ namespace CSCore.SoundOut
             _alPlayback.Initialize(_volumeSource.ToWaveSource(bitDepth), source.WaveFormat, Latency);
         }
 
-        private void PlaybackChanged(object sender, EventArgs e)
+        private void PlaybackChanged(object sender, EventArgs eventArgs)
         {
-            if (_alPlayback != null && _alPlayback.PlaybackState == PlaybackState.Stopped)
+            if (_alPlayback != null && eventArgs is PlaybackStoppedEventArgs)
             {
-                if (Stopped != null)
+                var stopped = Stopped;
+                if (stopped != null)
                 {
-                    Stopped(this, new PlaybackStoppedEventArgs());
+                    stopped(this, (PlaybackStoppedEventArgs)eventArgs);
                 }
             }
         }

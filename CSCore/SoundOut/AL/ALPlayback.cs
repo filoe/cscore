@@ -34,7 +34,7 @@ namespace CSCore.SoundOut.AL
         /// <summary>
         /// Raises when the playback state changed
         /// </summary>
-        public event EventHandler<EventArgs> PlaybackChanged;
+        public event EventHandler<EventArgs> PlaybackChanged; 
 
         private readonly ALSource _source;
         private Thread _playbackThread;
@@ -159,6 +159,8 @@ namespace CSCore.SoundOut.AL
         /// </summary>
         private void PlaybackThread()
         {
+            Exception exception = null;
+
             PlaybackState = PlaybackState.Playing;
             RaisePlaybackChanged();
 
@@ -208,10 +210,11 @@ namespace CSCore.SoundOut.AL
             }
             catch (Exception ex)
             {
+                exception = ex;
             }
 
             PlaybackState = PlaybackState.Stopped;
-            RaisePlaybackChanged();
+            RaisePlaybackChanged(exception);
         }
 
         /// <summary>
@@ -306,14 +309,19 @@ namespace CSCore.SoundOut.AL
 			}
         }
 
-        /// <summary>
-        /// Raises the playback changed event
-        /// </summary>
-        private void RaisePlaybackChanged()
+        private void RaisePlaybackChanged(Exception stoppedException = null)
         {
-            if (PlaybackChanged != null)
+            var playbackChangedEvent = PlaybackChanged;
+            if (playbackChangedEvent != null)
             {
-                PlaybackChanged.Invoke(this, EventArgs.Empty);
+                if (stoppedException != null)
+                {
+                    playbackChangedEvent(this, new PlaybackStoppedEventArgs(stoppedException));
+                }
+                else
+                {
+                    playbackChangedEvent(this, EventArgs.Empty);
+                }
             }
         }
 
