@@ -69,7 +69,7 @@ namespace CSCore.SoundOut
         {
             _alDevice = device;
             _alDevice.Initialize();
-            Latency = 150;
+            Latency = 30;
         }
 
         ~ALSoundOut()

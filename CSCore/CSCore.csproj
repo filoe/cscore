@@ -59,6 +59,8 @@
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
@@ -69,6 +71,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -79,6 +82,8 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -89,21 +94,15 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AudioSubTypes.cs">
@@ -118,7 +117,6 @@
     <Compile Include="ChannelMask.cs" />
     <Compile Include="ChannelMasks.cs" />
     <Compile Include="Codecs\AAC\AacAudioProfileLevelIndication.cs" />
-    <Compile Include="Codecs\AAC\AacEncoder.cs" />
     <Compile Include="Codecs\AIFF\AiffBinaryReader.cs" />
     <Compile Include="Codecs\AIFF\AiffChunk.cs" />
     <Compile Include="Codecs\AIFF\AiffChunkContainer.cs" />
@@ -128,7 +126,6 @@
     <Compile Include="Codecs\AIFF\FormatVersionChunk.cs" />
     <Compile Include="Codecs\AIFF\SoundDataChunk.cs" />
     <Compile Include="Codecs\CodecFactoryEntry.cs" />
-    <Compile Include="Codecs\AAC\AacDecoder.cs" />
     <Compile Include="Codecs\ConnectionEstablishedEventArgs.cs" />
     <Compile Include="Codecs\DDP\DDPDecoder.cs" />
     <Compile Include="Codecs\CodecFactory.cs" />
@@ -170,23 +167,16 @@
     </Compile>
     <Compile Include="Codecs\FLAC\SubFrames\FlacSubFrameVerbatim.cs" />
     <Compile Include="Codecs\GetCodecAction.cs" />
-    <Compile Include="Codecs\MP1\Mp1Decoder.cs" />
-    <Compile Include="Codecs\MP2\Mp2Decoder.cs" />
-    <Compile Include="Codecs\MP3\DmoMp3Decoder.cs" />
     <Compile Include="Codecs\MP3\FrameInfoCollection.cs" />
-    <Compile Include="Codecs\MP3\Mp3ChannelMode.cs" />
     <Compile Include="Codecs\MP3\Mp3Format.cs" />
     <Compile Include="Codecs\MP3\Mp3FormatId.cs" />
     <Compile Include="Codecs\MP3\Mp3Frame.cs" />
-    <Compile Include="Codecs\MP3\Mp3FrameInfo.cs" />
-    <Compile Include="Codecs\MP3\Mp3MediafoundationDecoder.cs" />
     <Compile Include="Codecs\MP3\Mp3PaddingFlags.cs" />
     <Compile Include="Codecs\MP3\Mp3WebStream.cs" />
     <Compile Include="Codecs\MP3\MpegLayer.cs" />
     <Compile Include="Codecs\MP3\MpegVersion.cs" />
     <Compile Include="Codecs\MP3\XingHeader.cs" />
     <Compile Include="Codecs\MP3\XingHeaderFlags.cs" />
-    <Compile Include="Codecs\WMA\WmaDecoder.cs" />
     <Compile Include="CoreAudioAPI\AudioCaptureClient.cs" />
     <Compile Include="CoreAudioAPI\AudioClientBufferFlags.cs" />
     <Compile Include="CoreAudioAPI\AudioClientSessionFlags.cs" />
@@ -329,11 +319,8 @@
     <Compile Include="SoundOut\ALSoundOut.cs" />
     <Compile Include="SoundOut\AL\ALErrorCodes.cs" />
     <Compile Include="SoundOut\DirectSoundOut.cs" />
-    <Compile Include="SoundOut\MMInterop\Utils.cs" />
-    <Compile Include="SoundOut\MMInterop\WaveCallback.cs" />
     <Compile Include="SoundOut\MmDeviceFormats.cs" />
     <Compile Include="SoundOut\MmDeviceSupported.cs" />
-    <Compile Include="SoundOut\MMInterop\WaveHeaderFlags.cs" />
     <Compile Include="SoundOut\AL\ALContext.cs" />
     <Compile Include="SoundOut\AL\ALDevice.cs" />
     <Compile Include="SoundOut\AL\ALFormat.cs" />
@@ -507,7 +494,6 @@
     <Compile Include="Utils\PostCompiler\RemoveObjAttribute.cs" />
     <Compile Include="WaveFormatExtensible.cs" />
     <Compile Include="Codecs\WAV\DataChunk.cs" />
-    <Compile Include="Codecs\WAV\FmtChunk.cs" />
     <Compile Include="Codecs\WAV\WaveFileChunk.cs" />
     <Compile Include="Codecs\WAV\WaveFileReader.cs" />
     <Compile Include="Codecs\WAV\WaveWriter.cs" />
@@ -564,13 +550,8 @@
     <Compile Include="Tags\ID3\UnsyncStream.cs" />
     <Compile Include="Utils\BitReader.cs" />
     <Compile Include="Win32\ComObject.cs" />
-    <Compile Include="SoundOut\MMInterop\NativeMethods.cs" />
     <Compile Include="Utils\FlacBitReader.cs" />
     <Compile Include="Win32\IUnknown.cs" />
-    <Compile Include="SoundOut\MMInterop\WaveHeader.cs" />
-    <Compile Include="SoundOut\MMInterop\WaveInCaps.cs" />
-    <Compile Include="SoundOut\MMInterop\WaveMsg.cs" />
-    <Compile Include="SoundOut\MMInterop\WaveOutCaps.cs" />
     <Compile Include="SoundOut\ISoundOut.cs" />
     <Compile Include="SoundOut\PlaybackState.cs" />
     <Compile Include="Streams\LoopStream.cs" />
@@ -607,6 +588,24 @@
     <None Include="cscore.snk">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Include="Codecs\AAC\AACEncoder.cs" />
+    <Compile Include="Codecs\AAC\AACDecoder.cs" />
+    <Compile Include="Codecs\MP1\MP1Decoder.cs" />
+    <Compile Include="Codecs\MP2\MP2Decoder.cs" />
+    <Compile Include="Codecs\MP3\DmoMP3Decoder.cs" />
+    <Compile Include="Codecs\MP3\MP3ChannelMode.cs" />
+    <Compile Include="Codecs\MP3\MP3FrameInfo.cs" />
+    <Compile Include="Codecs\MP3\MP3MediafoundationDecoder.cs" />
+    <Compile Include="Codecs\WMA\WMADecoder.cs" />
+    <Compile Include="SoundOut\MmInterop\Utils.cs" />
+    <Compile Include="SoundOut\MmInterop\WaveCallback.cs" />
+    <Compile Include="SoundOut\MmInterop\WaveHeaderFlags.cs" />
+    <Compile Include="Codecs\WAV\FMTChunk.cs" />
+    <Compile Include="SoundOut\MmInterop\NativeMethods.cs" />
+    <Compile Include="SoundOut\MmInterop\WaveHeader.cs" />
+    <Compile Include="SoundOut\MmInterop\WaveInCaps.cs" />
+    <Compile Include="SoundOut\MmInterop\WaveMsg.cs" />
+    <Compile Include="SoundOut\MmInterop\WaveOutCaps.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

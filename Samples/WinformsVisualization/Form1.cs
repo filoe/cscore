@@ -66,7 +66,7 @@ namespace WinformsVisualization
 
                 _source = notificationSource.ToWaveSource(16);
 
-                _soundOut = new WasapiOut();
+                _soundOut = new ALSoundOut();
                 _soundOut.Initialize(_source.ToMono());
                 _soundOut.Play();
 

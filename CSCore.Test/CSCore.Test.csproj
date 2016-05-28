@@ -138,8 +138,6 @@
     <Compile Include="Streams\GainSourceTests.cs" />
     <Compile Include="Streams\GenericSourceTests.cs" />
     <Compile Include="Streams\LoopStreamTests.cs" />
-    <Compile Include="Streams\Obsolete\StereoToMonoSourceTest.cs" />
-    <Compile Include="Streams\Obsolete\MonoToStereoSourceTest.cs" />
     <Compile Include="Streams\AiffDecoderTests.cs" />
     <Compile Include="TimeConverterTests.cs" />
     <Compile Include="Utils\BitReaderTests.cs" />
@@ -148,12 +146,12 @@
     <Compile Include="DMO\ResamplerTests.cs" />
     <Compile Include="CoreAudioAPI\AudioClientTests.cs" />
     <Compile Include="Utils\DisposableSource.cs" />
-    <Compile Include="Utils\ILUtilsTests.cs" />
-    <Compile Include="Utils\TrimmedWaveSource.cs" />
     <Compile Include="WaveInOut\WaveInTests.cs" />
     <Compile Include="XAudio2\XAudio2Tests.cs" />
     <None Include="cscore.snk" />
     <None Include="WaveInOut\WaveOutTests.cs" />
+    <Compile Include="Streams\obsolete\StereoToMonoSourceTest.cs" />
+    <Compile Include="Streams\obsolete\MonoToStereoSourceTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CSCore\CSCore.csproj">
