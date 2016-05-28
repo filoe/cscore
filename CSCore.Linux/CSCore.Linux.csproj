@@ -262,6 +262,36 @@
     <Compile Include="..\CSCore\SoundIn\RecordingStoppedEventArgs.cs">
       <Link>SoundIn\RecordingStoppedEventArgs.cs</Link>
     </Compile>
+    <Compile Include="..\CSCore\SoundOut\ALSoundOut.cs">
+      <Link>SoundOut\ALSoundOut.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\SoundOut\AL\ALContext.cs">
+      <Link>SoundOut\AL\ALContext.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\SoundOut\AL\ALDevice.cs">
+      <Link>SoundOut\AL\ALDevice.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\SoundOut\AL\ALErrorCodes.cs">
+      <Link>SoundOut\AL\ALErrorCodes.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\SoundOut\AL\ALFormat.cs">
+      <Link>SoundOut\AL\ALFormat.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\SoundOut\AL\ALInterops.cs">
+      <Link>SoundOut\AL\ALInterops.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\SoundOut\AL\ALPlayback.cs">
+      <Link>SoundOut\AL\ALPlayback.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\SoundOut\AL\ALSource.cs">
+      <Link>SoundOut\AL\ALSource.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\SoundOut\AL\ALSourceParameters.cs">
+      <Link>SoundOut\AL\ALSourceParameters.cs</Link>
+    </Compile>
+    <Compile Include="..\CSCore\SoundOut\AL\ALSourceState.cs">
+      <Link>SoundOut\AL\ALSourceState.cs</Link>
+    </Compile>
     <Compile Include="..\CSCore\SoundOut\ISoundOut.cs">
       <Link>SoundOut\ISoundOut.cs</Link>
     </Compile>
