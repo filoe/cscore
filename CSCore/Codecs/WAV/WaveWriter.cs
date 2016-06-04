@@ -134,6 +134,9 @@ namespace CSCore.Codecs.WAV
         {
             CheckObjectDisposed();
 
+            if (sample < -1 || sample > 1)
+                sample = Math.Max(-1, Math.Min(1, sample));
+
             if (_waveFormat.IsPCM())
             {
                 switch (_waveFormat.BitsPerSample)
@@ -145,8 +148,11 @@ namespace CSCore.Codecs.WAV
                         Write((short) (short.MaxValue * sample));
                         break;
                     case 24:
-                        byte[] buffer = BitConverter.GetBytes((int) (int.MaxValue * sample));
+                        byte[] buffer = BitConverter.GetBytes((int)(0x7fffff * sample));
                         Write(new[] {buffer[0], buffer[1], buffer[2]}, 0, 3);
+                        break;
+                    case 32:
+                        Write((int) (int.MaxValue * sample));
                         break;
 
                     default:
@@ -154,10 +160,10 @@ namespace CSCore.Codecs.WAV
                             new InvalidOperationException("Invalid BitsPerSample while using PCM encoding."));
                 }
             }
-            else if (_waveFormat.WaveFormatTag == AudioEncoding.Extensible && _waveFormat.BitsPerSample == 32)
-                Write(UInt16.MaxValue * (int) sample);
-            else if (_waveFormat.WaveFormatTag == AudioEncoding.IeeeFloat)
+            else if (_waveFormat.IsIeeeFloat())
                 Write(sample);
+            else if (_waveFormat.WaveFormatTag == AudioEncoding.Extensible && _waveFormat.BitsPerSample == 32)
+                Write(UInt16.MaxValue * (int)sample);
             else
             {
                 throw new InvalidOperationException(
