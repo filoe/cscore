@@ -13,7 +13,7 @@ namespace CSCore.CoreAudioAPI
     public class AudioSessionManager2 : AudioSessionManager
     {
         private const string InterfaceName = "IAudioSessionManager2";
-// ReSharper disable once InconsistentNaming
+        // ReSharper disable once InconsistentNaming
         private static readonly Guid IID_IAudioSessionManager2 = new Guid("77AA99A0-1BD6-484F-8BC7-2C654C9A9B6F");
         private readonly List<IAudioSessionNotification> _sessionNotifications;
         private readonly List<IAudioVolumeDuckNotification> _volumeDuckNotifications;
@@ -23,7 +23,7 @@ namespace CSCore.CoreAudioAPI
         /// </summary>
         /// <param name="device">Device to use to activate the <see cref="AudioSessionManager2"/>.</param>
         /// <returns><see cref="AudioSessionManager2"/> instance for the specified <paramref name="device"/>.</returns>
-// ReSharper disable once InconsistentNaming
+        // ReSharper disable once InconsistentNaming
         public static AudioSessionManager2 FromMMDevice(MMDevice device)
         {
             return new AudioSessionManager2(device.Activate(IID_IAudioSessionManager2, CLSCTX.CLSCTX_ALL, IntPtr.Zero));
@@ -50,7 +50,7 @@ namespace CSCore.CoreAudioAPI
         public unsafe int GetSessionEnumeratorNative(out AudioSessionEnumerator sessionEnumerator)
         {
             IntPtr ptr = IntPtr.Zero;
-            int result = InteropCalls.CallI(UnsafeBasePtr, &ptr, ((void**) (*(void**) UnsafeBasePtr))[5]);
+            int result = InteropCalls.CallI(UnsafeBasePtr, &ptr, ((void**)(*(void**)UnsafeBasePtr))[5]);
             sessionEnumerator = ptr != IntPtr.Zero ? new AudioSessionEnumerator(ptr) : null;
             return result;
         }
@@ -85,14 +85,14 @@ namespace CSCore.CoreAudioAPI
             if (!_sessionNotifications.Contains(sessionNotification))
             {
                 IntPtr ptr = sessionNotification != null
-                    ? Marshal.GetComInterfaceForObject(sessionNotification, typeof (IAudioSessionNotification))
+                    ? Marshal.GetComInterfaceForObject(sessionNotification, typeof(IAudioSessionNotification))
                     : IntPtr.Zero;
                 try
                 {
                     result = InteropCalls.CallI(
                         UnsafeBasePtr,
                         ptr,
-                        ((void**) (*(void**) UnsafeBasePtr))[6]);
+                        ((void**)(*(void**)UnsafeBasePtr))[6]);
                 }
                 finally
                 {
@@ -137,14 +137,14 @@ namespace CSCore.CoreAudioAPI
             if (_sessionNotifications.Contains(sessionNotification))
             {
                 IntPtr ptr = sessionNotification != null
-                    ? Marshal.GetComInterfaceForObject(sessionNotification, typeof (IAudioSessionNotification))
+                    ? Marshal.GetComInterfaceForObject(sessionNotification, typeof(IAudioSessionNotification))
                     : IntPtr.Zero;
                 try
                 {
                     result = InteropCalls.CallI(
                         UnsafeBasePtr,
                         ptr,
-                        ((void**) (*(void**) UnsafeBasePtr))[7]);
+                        ((void**)(*(void**)UnsafeBasePtr))[7]);
                 }
                 finally
                 {
@@ -187,18 +187,18 @@ namespace CSCore.CoreAudioAPI
             if (!_volumeDuckNotifications.Contains(sessionNotification))
             {
                 IntPtr ptr = sessionNotification != null
-                    ? Marshal.GetComInterfaceForObject(sessionNotification, typeof (IAudioVolumeDuckNotification))
+                    ? Marshal.GetComInterfaceForObject(sessionNotification, typeof(IAudioVolumeDuckNotification))
                     : IntPtr.Zero;
                 IntPtr ptr0 = sessionId != null ? Marshal.StringToHGlobalUni(sessionId) : IntPtr.Zero;
                 try
                 {
-                    result = InteropCalls.CallI(UnsafeBasePtr, (void*) ptr0, (void*) ptr,
-                        ((void**) (*(void**) UnsafeBasePtr))[8]);
+                    result = InteropCalls.CallI(UnsafeBasePtr, (void*)ptr0, (void*)ptr,
+                        ((void**)(*(void**)UnsafeBasePtr))[8]);
                 }
                 finally
                 {
                     if (ptr != IntPtr.Zero)
-                        Marshal.Release(ptr);                        
+                        Marshal.Release(ptr);
                     if (ptr0 != IntPtr.Zero)
                         Marshal.FreeHGlobal(ptr0);
                 }
@@ -234,11 +234,11 @@ namespace CSCore.CoreAudioAPI
             if (_volumeDuckNotifications.Contains(sessionNotification))
             {
                 IntPtr ptr = sessionNotification != null
-                    ? Marshal.GetComInterfaceForObject(sessionNotification, typeof (IAudioVolumeDuckNotification))
+                    ? Marshal.GetComInterfaceForObject(sessionNotification, typeof(IAudioVolumeDuckNotification))
                     : IntPtr.Zero;
                 try
                 {
-                    result = InteropCalls.CallI(UnsafeBasePtr, (void*) ptr, ((void**) (*(void**) UnsafeBasePtr))[9]);
+                    result = InteropCalls.CallI(UnsafeBasePtr, (void*)ptr, ((void**)(*(void**)UnsafeBasePtr))[9]);
                 }
                 finally
                 {
@@ -276,13 +276,11 @@ namespace CSCore.CoreAudioAPI
             for (int i = _sessionNotifications.Count - 1; i >= 0; i--)
             {
                 UnregisterSessionNotification(_sessionNotifications[i]);
-                _sessionNotifications.RemoveAt(i);
             }
 
             for (int i = _volumeDuckNotifications.Count - 1; i >= 0; i--)
             {
                 UnregisterDuckNotification(_volumeDuckNotifications[i]);
-                _volumeDuckNotifications.RemoveAt(i);
             }
             _disposed = true;
             base.Dispose(disposing);
