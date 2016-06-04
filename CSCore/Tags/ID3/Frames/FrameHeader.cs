@@ -17,9 +17,9 @@ namespace CSCore.Tags.ID3.Frames
         private int _uncompressedSize, _dataLengthIndicator;
         private byte _encryptionMethod;
 
-        public FrameIDFactory2.ID3v2FrameEntry GetFrameInformation()
+        public FrameIDFactory.ID3v2FrameEntry GetFrameInformation()
         {
-            return FrameIDFactory2.Frames.Where((x) => x.ID3v4ID == FrameID || x.ID3v3ID == FrameID || x.ID3v2ID == FrameID).First();
+            return FrameIDFactory.Frames.Where((x) => x.ID3v4ID == FrameID || x.ID3v3ID == FrameID || x.ID3v2ID == FrameID).First();
         }
 
         public FrameHeader(Stream stream, ID3Version version)

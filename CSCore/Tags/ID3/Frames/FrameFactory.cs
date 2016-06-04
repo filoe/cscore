@@ -40,7 +40,7 @@ namespace CSCore.Tags.ID3.Frames
 
         private Frame GetFrame(string id, ID3Version version, FrameHeader header)
         {
-            FrameID frameID = FrameIDFactory2.GetFrameEntry(id, version).ID;
+            FrameID frameID = FrameIDFactory.GetFrameEntry(id, version).ID;
             switch (frameID)
             {
                 case FrameID.Length:

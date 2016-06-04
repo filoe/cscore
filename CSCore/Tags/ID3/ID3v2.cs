@@ -78,7 +78,7 @@ namespace CSCore.Tags.ID3
         {
             get
             {
-                return this[FrameIDFactory2.GetID(id, Header.Version)];
+                return this[FrameIDFactory.GetID(id, Header.Version)];
             }
         }
 

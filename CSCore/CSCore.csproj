@@ -480,7 +480,7 @@
     <Compile Include="Tags\ID3\Frames\CommentAndLyricsFrame.cs" />
     <Compile Include="Tags\ID3\Frames\CommercialFrame.cs" />
     <Compile Include="Tags\ID3\Frames\DataFrame.cs" />
-    <Compile Include="Tags\ID3\Frames\FrameIDFactory2.cs" />
+    <Compile Include="Tags\ID3\Frames\FrameIDFactory.cs" />
     <Compile Include="Tags\ID3\Frames\MultiStringTextFrame.cs" />
     <Compile Include="Tags\ID3\Frames\NumericTextFrame.cs" />
     <Compile Include="Tags\ID3\Frames\OwnershipFrame.cs" />

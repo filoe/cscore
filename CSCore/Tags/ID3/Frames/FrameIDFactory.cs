@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace CSCore.Tags.ID3.Frames
 {
-    public static class FrameIDFactory2
+    public static class FrameIDFactory
     {
         private static List<ID3v2FrameEntry> _entries = new List<ID3v2FrameEntry>();
 
@@ -35,7 +35,7 @@ namespace CSCore.Tags.ID3.Frames
             }
         }
 
-        static FrameIDFactory2()
+        static FrameIDFactory()
         {
             CreateEntries();
 #if generate
