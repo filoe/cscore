@@ -150,7 +150,7 @@ namespace CSCore.Codecs
             {
                 try
                 {
-                    if (codecEntry.Value.FileExtensions.Contains(extension))
+                    if (codecEntry.Value.FileExtensions.Any(x => x.Equals(extension, StringComparison.OrdinalIgnoreCase)))
                         return codecEntry.Value.GetCodecAction(File.OpenRead(filename));
                 }
                 catch (Exception ex)
