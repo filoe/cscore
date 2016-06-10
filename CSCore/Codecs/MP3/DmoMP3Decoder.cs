@@ -223,6 +223,7 @@ namespace CSCore.Codecs.MP3
 
                     _position = _frameInfoCollection[index].SampleIndex * WaveFormat.BlockAlign;
 
+                    ResetOverflowBuffer();
                     int diff = (int) (value - _position);
                     diff -= diff % WaveFormat.BlockAlign;
                     if (diff > 0)
@@ -233,8 +234,6 @@ namespace CSCore.Codecs.MP3
                     break;
                 }
             }
-
-            ResetOverflowBuffer();
         }
 
 // ReSharper disable once InconsistentNaming
