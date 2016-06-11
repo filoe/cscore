@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F4E6168A-B2CB-413C-AE0E-0D8B856B425E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CSCore.Ffmpeg</RootNamespace>
+    <AssemblyName>CSCore.Ffmpeg</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AVCodecID.cs" />
+    <Compile Include="FfmpegDecoder.cs" />
+    <Compile Include="FfmpegException.cs" />
+    <Compile Include="InteropCalls.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CSCore\CSCore.csproj">
+      <Project>{c3dccfe3-dd3f-4eee-849b-33e355b1e064}</Project>
+      <Name>CSCore</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ffmpeg\3.0.2\licenses\bzip2.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\fontconfig.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\freetype.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\frei0r.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\gme.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\gnutls.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\lame.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\libass.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\libbluray.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\libbs2b.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\libcaca.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\libgsm.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\libiconv.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\libilbc.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\libmfx.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\libmodplug.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\libtheora.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\libvorbis.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\libvpx.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\libwebp.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\opencore-amr.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\openjpeg.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\opus.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\rtmpdump.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\schroedinger.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\snappy.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\soxr.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\speex.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\twolame.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\vid.stab.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\vo-amrwbenc.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\wavpack.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\x264.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\x265.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\xavs.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\xvid.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\xz.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\zimg.txt" />
+    <Content Include="ffmpeg\3.0.2\licenses\zlib.txt" />
+    <Content Include="ffmpeg\3.0.2\x64\avcodec-57.dll" />
+    <Content Include="ffmpeg\3.0.2\x64\avdevice-57.dll" />
+    <Content Include="ffmpeg\3.0.2\x64\avfilter-6.dll" />
+    <Content Include="ffmpeg\3.0.2\x64\avformat-57.dll" />
+    <Content Include="ffmpeg\3.0.2\x64\avutil-55.dll" />
+    <Content Include="ffmpeg\3.0.2\x64\postproc-54.dll" />
+    <Content Include="ffmpeg\3.0.2\x64\swresample-2.dll" />
+    <Content Include="ffmpeg\3.0.2\x64\swscale-4.dll" />
+    <Content Include="ffmpeg\3.0.2\x86\avcodec-57.dll" />
+    <Content Include="ffmpeg\3.0.2\x86\avdevice-57.dll" />
+    <Content Include="ffmpeg\3.0.2\x86\avfilter-6.dll" />
+    <Content Include="ffmpeg\3.0.2\x86\avformat-57.dll" />
+    <Content Include="ffmpeg\3.0.2\x86\avutil-55.dll" />
+    <Content Include="ffmpeg\3.0.2\x86\postproc-54.dll" />
+    <Content Include="ffmpeg\3.0.2\x86\swresample-2.dll" />
+    <Content Include="ffmpeg\3.0.2\x86\swscale-4.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
