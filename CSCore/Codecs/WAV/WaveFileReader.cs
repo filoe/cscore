@@ -47,7 +47,7 @@ namespace CSCore.Codecs.WAV
             if (new String(reader.ReadChars(4)) == "RIFF")
             {
                 reader.ReadInt32(); //FileLength
-                char[] rifftype = reader.ReadChars(4); //RiffType WAVE
+                reader.ReadChars(4);
             }
 
             _chunks = ReadChunks(stream);
@@ -158,7 +158,7 @@ namespace CSCore.Codecs.WAV
                 {
                     _waveFormat = fmtChunk.WaveFormat;
                 }
-                else if (tmp is DataChunk)
+                else
                 {
                     stream.Position += tmp.ChunkDataSize;
                 }
