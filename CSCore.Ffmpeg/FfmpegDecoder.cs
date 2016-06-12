@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace CSCore.Ffmpeg
 {
@@ -12,6 +14,8 @@ namespace CSCore.Ffmpeg
     /// </remarks>
     public class FfmpegDecoder : IWaveSource
     {
+        private readonly Uri _uri;
+
         static FfmpegDecoder()
         {
             InteropCalls.av_register_all();
@@ -20,6 +24,7 @@ namespace CSCore.Ffmpeg
 
         private unsafe InteropCalls.AVFormatContext* _formatContext = null;
         private unsafe InteropCalls.AVStream* _stream = null;
+        private readonly Stream _ioStream;
 
         private int _streamIndex;
         private readonly object _lockObject = new object();
@@ -29,10 +34,49 @@ namespace CSCore.Ffmpeg
         private int _overflowOffset;
         private long _position;
 
+        private FfmpegStream _ffmpegStream;
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="FfmpegDecoder"/> class.
+        /// Initializes a new instance of the <see cref="FfmpegDecoder"/> class based on a <see cref="Stream"/>.
         /// </summary>
-        /// <param name="filename">The filename.</param>
+        /// <param name="stream">The stream.</param>
+        /// <exception cref="FfmpegException">Any ffmpeg error.</exception>
+        /// <exception cref="System.ArgumentNullException">stream</exception>
+        /// <exception cref="ArgumentException">Stream is not readable.</exception>
+        /// <exception cref="System.OutOfMemoryException">Could not allocate FormatContext.</exception>
+        /// <exception cref="System.NotSupportedException">
+        /// DBL format is not supported.
+        /// or
+        /// Audio Sample Format not supported.
+        /// </exception>
+        public unsafe FfmpegDecoder(Stream stream)
+        {
+            if (stream == null)
+                throw new ArgumentNullException("stream");
+            _ioStream = stream;
+
+            _ffmpegStream = new FfmpegStream(stream);
+            InteropCalls.AVIOContext* avioContext = (InteropCalls.AVIOContext*) _ffmpegStream.AvioContext;
+
+            _formatContext = InteropCalls.avformat_alloc_context();
+            if (_formatContext == null)
+            {
+                throw new OutOfMemoryException("Could not allocate FormatContext.");
+            }
+
+            _formatContext->pb = avioContext;
+            fixed (InteropCalls.AVFormatContext** formatContext = &_formatContext)
+            {
+                InteropCalls.avformat_open_input(formatContext, "DUMMY-FILENAME", null, null);
+
+                Initialize();
+            }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FfmpegDecoder"/> class based on a specified filename or url.
+        /// </summary>
+        /// <param name="uri">A uri containing a filename or url. </param>
         /// <exception cref="FfmpegException">
         /// Any ffmpeg error.
         /// </exception>
@@ -41,53 +85,62 @@ namespace CSCore.Ffmpeg
         /// or
         /// Audio Sample Format not supported.
         /// </exception>
-        public unsafe FfmpegDecoder(string filename)
+        /// <exception cref="ArgumentNullException">uri</exception>
+        public unsafe FfmpegDecoder(Uri uri)
         {
+            if (uri == null)
+                throw new ArgumentNullException("uri");
+            _uri = uri;
             fixed (InteropCalls.AVFormatContext** formatContext = &_formatContext)
             {
-                int result = InteropCalls.avformat_open_input(formatContext, filename, null, null);
+                int result = InteropCalls.avformat_open_input(formatContext, uri.AbsoluteUri, null, null);
                 FfmpegException.Try(result, "avformat_open_input");
 
-                result = InteropCalls.avformat_find_stream_info(_formatContext, null);
-                FfmpegException.Try(result, "avformat_find_stream_info");
-
-                OpenCodecContext();
-
-                int bitsPerSample;
-                AudioEncoding encoding;
-                switch (_stream->codec->sample_fmt)
-                {
-                    case InteropCalls.AVSampleFormat.AV_SAMPLE_FMT_U8:
-                    case InteropCalls.AVSampleFormat.AV_SAMPLE_FMT_U8P:
-                        bitsPerSample = 8;
-                        encoding = AudioEncoding.Pcm;
-                        break;
-                    case InteropCalls.AVSampleFormat.AV_SAMPLE_FMT_S16:
-                    case InteropCalls.AVSampleFormat.AV_SAMPLE_FMT_S16P:
-                        bitsPerSample = 16;
-                        encoding = AudioEncoding.Pcm;
-                        break;
-                    case InteropCalls.AVSampleFormat.AV_SAMPLE_FMT_S32:
-                    case InteropCalls.AVSampleFormat.AV_SAMPLE_FMT_S32P:
-                        bitsPerSample = 32;
-                        encoding = AudioEncoding.Pcm;
-                        break;
-                    case InteropCalls.AVSampleFormat.AV_SAMPLE_FMT_FLT:
-                    case InteropCalls.AVSampleFormat.AV_SAMPLE_FMT_FLTP:
-                        bitsPerSample = 32;
-                        encoding = AudioEncoding.IeeeFloat;
-                        break;
-                    case InteropCalls.AVSampleFormat.AV_SAMPLE_FMT_DBL:
-                    case InteropCalls.AVSampleFormat.AV_SAMPLE_FMT_DBLP:
-                        throw new NotSupportedException("DBL format is not supported.");
-                    default:
-                        throw new NotSupportedException("Audio Sample Format not supported.");
-                }
-
-                var waveFormat = new WaveFormat(_stream->codec->sample_rate, bitsPerSample, _stream->codec->channels,
-                    encoding);
-                WaveFormat = waveFormat;
+                Initialize();
             }
+        }
+
+        private unsafe void Initialize()
+        {
+            int result = InteropCalls.avformat_find_stream_info(_formatContext, null);
+            FfmpegException.Try(result, "avformat_find_stream_info");
+
+            OpenCodecContext();
+
+            int bitsPerSample;
+            AudioEncoding encoding;
+            switch (_stream->codec->sample_fmt)
+            {
+                case InteropCalls.AVSampleFormat.AV_SAMPLE_FMT_U8:
+                case InteropCalls.AVSampleFormat.AV_SAMPLE_FMT_U8P:
+                    bitsPerSample = 8;
+                    encoding = AudioEncoding.Pcm;
+                    break;
+                case InteropCalls.AVSampleFormat.AV_SAMPLE_FMT_S16:
+                case InteropCalls.AVSampleFormat.AV_SAMPLE_FMT_S16P:
+                    bitsPerSample = 16;
+                    encoding = AudioEncoding.Pcm;
+                    break;
+                case InteropCalls.AVSampleFormat.AV_SAMPLE_FMT_S32:
+                case InteropCalls.AVSampleFormat.AV_SAMPLE_FMT_S32P:
+                    bitsPerSample = 32;
+                    encoding = AudioEncoding.Pcm;
+                    break;
+                case InteropCalls.AVSampleFormat.AV_SAMPLE_FMT_FLT:
+                case InteropCalls.AVSampleFormat.AV_SAMPLE_FMT_FLTP:
+                    bitsPerSample = 32;
+                    encoding = AudioEncoding.IeeeFloat;
+                    break;
+                case InteropCalls.AVSampleFormat.AV_SAMPLE_FMT_DBL:
+                case InteropCalls.AVSampleFormat.AV_SAMPLE_FMT_DBLP:
+                    throw new NotSupportedException("DBL format is not supported.");
+                default:
+                    throw new NotSupportedException("Audio Sample Format not supported.");
+            }
+
+            var waveFormat = new WaveFormat(_stream->codec->sample_rate, bitsPerSample, _stream->codec->channels,
+                encoding);
+            WaveFormat = waveFormat;
         }
 
         private unsafe void OpenCodecContext()
@@ -146,7 +199,17 @@ namespace CSCore.Ffmpeg
                     bufferLength = DecodeNextFrame(ref _overflowBuffer, out packetPosition);
                 }
                 if (bufferLength <= 0)
-                    return read;
+                {
+                    if (_uri != null && !_uri.IsFile)
+                    {
+                        //webstream: don't exit, maybe the connection was lost -> give it a try to recover
+                        Thread.Sleep(10);
+                    }
+                    else
+                    {
+                        break; //no webstream -> exit
+                    }
+                }
                 int bytesToCopy = Math.Min(count - read, bufferLength);
                 Array.Copy(_overflowBuffer, 0, buffer, offset, bytesToCopy);
                 read += bytesToCopy;
@@ -324,9 +387,14 @@ namespace CSCore.Ffmpeg
         /// <summary>
         ///     Gets a value indicating whether the <see cref="FfmpegDecoder" /> supports seeking.
         /// </summary>
-        public bool CanSeek
+        public unsafe bool CanSeek
         {
-            get { return true; }
+            get
+            {
+                if (_formatContext == null || _formatContext->pb == null)
+                    return false;
+                return _formatContext->pb->seekable == 1;
+            }
         }
 
         /// <summary>
@@ -367,10 +435,19 @@ namespace CSCore.Ffmpeg
 
             if (_formatContext != null)
             {
+                //formatContext got opened through a filename
                 fixed (InteropCalls.AVFormatContext** p = &_formatContext)
                 {
                     InteropCalls.avformat_close_input(p);
                 }
+
+                _formatContext = null;
+            }
+
+            if (_ffmpegStream != null)
+            {
+                _ffmpegStream.Dispose();
+                _ffmpegStream = null;
             }
         }
 

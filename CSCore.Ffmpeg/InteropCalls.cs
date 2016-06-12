@@ -23,6 +23,37 @@ namespace CSCore.Ffmpeg
         private const string LibAvCodec = "avcodec-57";
         private const string LibAvFormat = "avformat-57";
 
+        public delegate int AvioReadData(IntPtr opaque, IntPtr buffer, int bufferSize);
+
+        public delegate int AvioWriteData(IntPtr opaque, IntPtr buffer, int bufferSize);
+
+        public delegate long AvioSeek(IntPtr opaque, long offset, SeekFlags whence);
+
+        [Flags]
+        public enum SeekFlags
+        {
+            SeekSet = 0,
+            SeekCur = 1,
+            SeekEnd = 2,
+            SeekSize = 0x10000,
+            SeekForce = 0x20000
+        }
+
+        [DllImport(LibAvUtil, EntryPoint = "av_malloc", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void* av_malloc(ulong @size);
+
+        [DllImport(LibAvFormat, EntryPoint = "avio_alloc_context", CallingConvention = CallingConvention.Cdecl)]
+        public static extern AVIOContext* avio_alloc_context(byte* @buffer, int @buffer_size, int @write_flag, void* @opaque, 
+            [MarshalAs(UnmanagedType.FunctionPtr)]AvioReadData @read_packet,
+            [MarshalAs(UnmanagedType.FunctionPtr)]AvioWriteData @write_packet, 
+            [MarshalAs(UnmanagedType.FunctionPtr)]AvioSeek @seek);
+
+        [DllImport(LibAvFormat, EntryPoint = "avformat_alloc_context", CallingConvention = CallingConvention.Cdecl)]
+        public static extern AVFormatContext* avformat_alloc_context();
+
+        [DllImport(LibAvFormat, EntryPoint = "avformat_free_context", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void avformat_free_context(AVFormatContext* @s);
+
         [DllImport(LibAvFormat, EntryPoint = "avformat_open_input", CallingConvention = CallingConvention.Cdecl)]
         public static extern int avformat_open_input(AVFormatContext** ps, [MarshalAs(UnmanagedType.LPStr)] string url, AVInputFormat* fmt, AVDictionary** options);
 
