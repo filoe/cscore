@@ -53,45 +53,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ffmpeg\3.0.2\licenses\bzip2.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\fontconfig.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\freetype.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\frei0r.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\gme.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\gnutls.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\lame.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\libass.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\libbluray.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\libbs2b.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\libcaca.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\libgsm.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\libiconv.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\libilbc.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\libmfx.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\libmodplug.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\libtheora.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\libvorbis.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\libvpx.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\libwebp.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\opencore-amr.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\openjpeg.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\opus.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\rtmpdump.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\schroedinger.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\snappy.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\soxr.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\speex.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\twolame.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\vid.stab.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\vo-amrwbenc.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\wavpack.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\x264.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\x265.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\xavs.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\xvid.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\xz.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\zimg.txt" />
-    <Content Include="ffmpeg\3.0.2\licenses\zlib.txt" />
     <Content Include="ffmpeg\3.0.2\x64\avcodec-57.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -140,6 +101,9 @@
     <Content Include="ffmpeg\3.0.2\x86\swscale-4.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Readme.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
