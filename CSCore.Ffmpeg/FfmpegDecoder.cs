@@ -24,7 +24,6 @@ namespace CSCore.Ffmpeg
 
         private unsafe InteropCalls.AVFormatContext* _formatContext = null;
         private unsafe InteropCalls.AVStream* _stream = null;
-        private readonly Stream _ioStream;
 
         private int _streamIndex;
         private readonly object _lockObject = new object();
@@ -53,7 +52,6 @@ namespace CSCore.Ffmpeg
         {
             if (stream == null)
                 throw new ArgumentNullException("stream");
-            _ioStream = stream;
 
             _ffmpegStream = new FfmpegStream(stream);
             InteropCalls.AVIOContext* avioContext = (InteropCalls.AVIOContext*) _ffmpegStream.AvioContext;

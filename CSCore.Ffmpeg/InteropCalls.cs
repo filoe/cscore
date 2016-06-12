@@ -13,15 +13,59 @@
  */
 
 using System;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 namespace CSCore.Ffmpeg
 {
-    internal unsafe class InteropCalls
+    internal static unsafe class InteropCalls
     {
+        private static readonly string DllPathWinx86 = Path.Combine(
+            Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
+            Path.Combine(Path.Combine("ffmpeg", "3.0.2"), "x86"));
+
+        private static readonly string DllPathWinx64 = Path.Combine(
+            Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
+            Path.Combine(Path.Combine("ffmpeg", "3.0.2"), "x64"));
+
+        [DllImport("kernel32", SetLastError = true, CharSet = CharSet.Ansi)]
+        static extern IntPtr LoadLibrary([MarshalAs(UnmanagedType.LPStr)]string lpFileName);
+
+        static InteropCalls()
+        {
+            bool x64 = IntPtr.Size == 8;
+            //the order is important!
+            string[] librariesToLoad = { 
+                LibAvUtil,
+                LibSwResample,
+                LibAvCodec,
+                LibAvFormat
+            };
+
+            if (Environment.OSVersion.Platform == PlatformID.Win32Windows ||
+                Environment.OSVersion.Platform == PlatformID.Win32NT ||
+                Environment.OSVersion.Platform == PlatformID.Win32S ||
+                Environment.OSVersion.Platform == PlatformID.WinCE)
+            {
+                foreach (var libary in librariesToLoad)
+                {
+                    var path = Path.Combine(x64 ? DllPathWinx64 : DllPathWinx86, Path.ChangeExtension(libary, ".dll"));
+                    IntPtr ptr = LoadLibrary(path);
+                    if (ptr == IntPtr.Zero)
+                    {
+                        throw new DllNotFoundException(String.Format("{0} was not found.", libary),
+                            new FileNotFoundException("Dll not found.", path));
+                    }
+                }
+            }
+        }
+
         private const string LibAvUtil = "avutil-55";
         private const string LibAvCodec = "avcodec-57";
         private const string LibAvFormat = "avformat-57";
+        private const string LibSwResample = "swresample-2";
 
         public delegate int AvioReadData(IntPtr opaque, IntPtr buffer, int bufferSize);
 
