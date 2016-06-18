@@ -671,11 +671,11 @@
       call "%25cscli%25" -file:"$(TargetPath)" -r:"RemoveObjAttribute" -c:"CSCalliAttribute"
 
       :EXIT
-      REM EXIT /B %25errorCode%25
+      EXIT /B %25errorCode%25
 
       :EXIT_ERR
       set errorCode=-1
-      REM goto EXIT
+      goto EXIT
 </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
