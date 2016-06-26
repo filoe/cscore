@@ -13,12 +13,15 @@ namespace CSCore.DSP
         internal object LockObj = new object();
         internal DmoOutputDataBuffer OutputBuffer;
         internal WaveFormat Outputformat;
+        private readonly bool _ignoreBaseStreamPosition;
 
-        internal double Ratio;
+        internal decimal Ratio;
         internal WMResampler Resampler;
         private bool _disposed;
         private int _quality = 30;
         private byte[] _readBuffer;
+
+        private long _position;
 
         private static WaveFormat GetWaveFormatWithChangedSampleRate(IWaveSource source, int destSampleRate)
         {
@@ -48,6 +51,24 @@ namespace CSCore.DSP
         /// <param name="source"><see cref="IWaveSource" /> which has to get resampled.</param>
         /// <param name="outputFormat">Waveformat, which specifies the new format. Note, that by far not all formats are supported.</param>
         public DmoResampler(IWaveSource source, WaveFormat outputFormat)
+            : this(source, outputFormat, true)
+        {
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="DmoResampler" /> class.
+        /// </summary>
+        /// <param name="source"><see cref="IWaveSource" /> which has to get resampled.</param>
+        /// <param name="outputFormat">Waveformat, which specifies the new format. Note, that by far not all formats are supported.</param>
+        /// <param name="ignoreBaseStreamPosition">
+        /// <b>True</b> to ignore the position of the <see cref="WaveAggregatorBase.BaseSource"/> for more accurate seeking. The default value is <b>True</b>.
+        /// For more details see remarks.
+        /// </param>
+        /// <remarks>Since the resampler transforms the audio data of the <see cref="WaveAggregatorBase.BaseSource"/> to a different samplerate, 
+        /// the position might differ from the actual amount of read data. In order to avoid that behavior set <paramref name="ignoreBaseStreamPosition"/>
+        /// to <b>True</b>. This will cause the <see cref="Position"/> property to return the number of actually read bytes. 
+        /// Note that seeking the <see cref="WaveAggregatorBase.BaseSource"/> won't have any effect on the <see cref="Position"/> of the <see cref="DmoResampler"/>.</remarks>
+        public DmoResampler(IWaveSource source, WaveFormat outputFormat, bool ignoreBaseStreamPosition)
             : base(source)
         {
             if (source == null)
@@ -57,6 +78,7 @@ namespace CSCore.DSP
 
             Initialize(source.WaveFormat, outputFormat);
             Outputformat = outputFormat;
+            _ignoreBaseStreamPosition = ignoreBaseStreamPosition;
         }
 
         /// <summary>
@@ -72,8 +94,23 @@ namespace CSCore.DSP
         /// </summary>
         public override long Position
         {
-            get { return InputToOutput(base.Position); }
-            set { base.Position = OutputToInput(value); }
+            get
+            {
+                if (_ignoreBaseStreamPosition)
+                {
+                    return _position;
+                }
+                return InputToOutput(base.Position);
+            }
+            set
+            {
+                
+                base.Position = OutputToInput(value);
+                if (_ignoreBaseStreamPosition)
+                {
+                    _position = InputToOutput(base.Position);
+                }
+            }
         }
 
         /// <summary>
@@ -105,7 +142,7 @@ namespace CSCore.DSP
 
         internal void Initialize(WaveFormat inputformat, WaveFormat outputformat)
         {
-            Ratio = (double) outputformat.BytesPerSecond / inputformat.BytesPerSecond;
+            Ratio = (decimal) outputformat.BytesPerSecond / inputformat.BytesPerSecond;
             lock (LockObj)
             {
                 Resampler = new WMResampler();
@@ -193,7 +230,14 @@ namespace CSCore.DSP
                         } while ( /*_outputBuffer.DataAvailable*/false); //todo: Implement DataAvailable
                     }
                     else
+                    {
                         Debug.WriteLine("Case of not ready for input is not implemented yet."); //todo: .
+                    }
+                }
+
+                if (_ignoreBaseStreamPosition)
+                {
+                    _position += read;
                 }
 
                 return read;
@@ -202,7 +246,6 @@ namespace CSCore.DSP
 
         internal long InputToOutput(long position)
         {
-            //long result = (long)(position * _ratio);
             var result = (long) (position * Ratio);
             result -= (result % Outputformat.BlockAlign);
             return result;
@@ -210,7 +253,6 @@ namespace CSCore.DSP
 
         internal long OutputToInput(long position)
         {
-            //long result = (long)(position * _ratio);
             var result = (long) (position / Ratio);
             result -= (result % BaseSource.WaveFormat.BlockAlign);
             return result;
