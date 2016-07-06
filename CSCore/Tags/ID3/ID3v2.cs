@@ -45,7 +45,14 @@ namespace CSCore.Tags.ID3
 
         public static bool SkipTag(Stream stream)
         {
-            long streamOffset = stream.Position;
+            if (stream == null)
+                throw new ArgumentNullException("stream");
+            long streamOffset = 0;
+            if (stream.CanSeek)
+            {
+                streamOffset = stream.Position;
+            }
+
             if (FromStream(stream, false) == null)
             {
                 if (stream.CanSeek)
