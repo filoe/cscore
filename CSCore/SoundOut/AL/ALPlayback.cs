@@ -35,8 +35,9 @@ namespace CSCore.SoundOut.AL
         /// <summary>
         /// Raises when the playback state changed
         /// </summary>
-        public event EventHandler<EventArgs> PlaybackChanged; 
+        public event EventHandler<EventArgs> PlaybackChanged;
 
+        private const int BUFFER_COUNT = 4;
         private readonly ALSource _source;
         private Thread _playbackThread;
         private readonly object _locker;
@@ -188,7 +189,7 @@ namespace CSCore.SoundOut.AL
             // Create our buffers if they do not exist
             if (_buffers == null)
             {
-                _buffers = CreateBuffers(4);
+                _buffers = CreateBuffers(BUFFER_COUNT);
             }
 
             // Fill the buffers - this fills all of them, which is safe because this method
