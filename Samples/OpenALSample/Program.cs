@@ -21,11 +21,11 @@ namespace OpenALSample
 				path = Console.ReadLine();
 			}
 
-			_waveSource = new WaveFileReader (path);
-			_soundOut = new ALSoundOut ();
-			_soundOut.Initialize (_waveSource);
+            _waveSource = CSCore.Codecs.CodecFactory.Instance.GetCodec(path);
+			_soundOut = new ALSoundOut();
+			_soundOut.Initialize(_waveSource);
 
-			_soundOut.Play ();
+			_soundOut.Play();
 
 			while (true)
 			{
@@ -36,20 +36,20 @@ namespace OpenALSample
 						break;
 				}
 
-				var str = String.Format (@"{0:mm\:ss\.f}/{1:mm\:ss\.f}",
+				var str = string.Format (@"{0:mm\:ss\.f}/{1:mm\:ss\.f}",
 					          TimeConverterFactory.Instance.GetTimeConverterForSource (_waveSource)
 					.ToTimeSpan (_waveSource.WaveFormat, _waveSource.Position),
 					          TimeConverterFactory.Instance.GetTimeConverterForSource (_waveSource)
 					.ToTimeSpan (_waveSource.WaveFormat, _waveSource.Length));
-				str += String.Concat (Enumerable.Repeat (" ", Console.BufferWidth - 1 - str.Length));
+				str += string.Concat (Enumerable.Repeat (" ", Console.BufferWidth - 1 - str.Length));
 				Console.SetCursorPosition (0, Console.CursorTop);
 				Console.Write (str);
 				Thread.Sleep (100);
 			}
-			_soundOut.Stop ();
-			_soundOut.Dispose ();
-			_waveSource.Dispose ();
-			CSCore.SoundOut.AL.ALDevice.DefaultDevice.Dispose ();
+			_soundOut.Stop();
+			_soundOut.Dispose();
+			_waveSource.Dispose();
+			CSCore.SoundOut.AL.ALDevice.DefaultDevice.Dispose();
 		}
 	}
 }
