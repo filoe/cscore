@@ -48,6 +48,13 @@ namespace CSCore.SoundOut
 
         public event EventHandler<PlaybackStoppedEventArgs> Stopped;
 
+        /// <summary>
+        /// The latency of this <see cref="ALSoundOut"/> in ms
+        /// <para></para>
+        /// Note that the observed latency is <see cref="Latency"/> * NUMBER_OF_OPENAL_BUFFERS,
+        /// which is set to 4. So a <see cref="Latency"/> of 50 will produce an observed
+        /// latency of 200 ms.
+        /// </summary>
         public int Latency { get; set; }
 
         private ALPlayback _alPlayback;
@@ -55,21 +62,21 @@ namespace CSCore.SoundOut
         private readonly ALDevice _alDevice;
 
         /// <summary>
-        /// Initializes a new ALSoundOut class with the default device and a latency of 150 ms
+        /// Initializes a new ALSoundOut class with the default device and a latency of 50 ms
         /// </summary>
         public ALSoundOut() : this(ALDevice.DefaultDevice)
         {
         }
 
         /// <summary>
-        /// Initializes a new ALSoundOut class with a latency of 150 ms
+        /// Initializes a new ALSoundOut class with a latency of 50 ms
         /// </summary>
         /// <param name="device">The openal device</param>
         public ALSoundOut(ALDevice device)
         {
             _alDevice = device;
             _alDevice.Initialize();
-            Latency = 150;
+            Latency = 50;
         }
 
         ~ALSoundOut()
