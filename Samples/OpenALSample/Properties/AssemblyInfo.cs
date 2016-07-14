@@ -5,11 +5,11 @@ using System.Runtime.CompilerServices;
 // Change them to the values specific to your project.
 
 [assembly: AssemblyTitle ("OpenALSample")]
-[assembly: AssemblyDescription ("")]
+[assembly: AssemblyDescription("An OpenAL sample application")]
 [assembly: AssemblyConfiguration ("")]
 [assembly: AssemblyCompany ("")]
-[assembly: AssemblyProduct ("")]
-[assembly: AssemblyCopyright ("patrick")]
+[assembly: AssemblyProduct("OpenALSample")]
+[assembly: AssemblyCopyright("Copyright ©  CSCore 2016")]
 [assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture ("")]
 

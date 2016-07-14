@@ -1,7 +1,6 @@
 ﻿using System;
 using CSCore;
 using CSCore.SoundOut;
-using CSCore.Codecs.WAV;
 using System.Threading;
 using System.Linq;
 
@@ -36,11 +35,9 @@ namespace OpenALSample
 						break;
 				}
 
-				var str = string.Format (@"{0:mm\:ss\.f}/{1:mm\:ss\.f}",
-					          TimeConverterFactory.Instance.GetTimeConverterForSource (_waveSource)
-					.ToTimeSpan (_waveSource.WaveFormat, _waveSource.Position),
-					          TimeConverterFactory.Instance.GetTimeConverterForSource (_waveSource)
-					.ToTimeSpan (_waveSource.WaveFormat, _waveSource.Length));
+                var str = string.Format(@"{0:mm\:ss\.f}/{1:mm\:ss\.f}",
+                                _waveSource.GetPosition(),
+                                _waveSource.GetLength());
 				str += string.Concat (Enumerable.Repeat (" ", Console.BufferWidth - 1 - str.Length));
 				Console.SetCursorPosition (0, Console.CursorTop);
 				Console.Write (str);
