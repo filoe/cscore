@@ -68,20 +68,19 @@ namespace CSCore.SoundOut.AL
         /// Initializes the openal playback
         /// </summary>
         /// <param name="stream">The stream</param>
-        /// <param name="format">The format</param>
-        public void Initialize(IWaveSource stream, WaveFormat format)
+        public void Initialize(IWaveSource stream)
         {
-            Initialize(stream, format, 150);
+            Initialize(stream, 150);
         }
 
         /// <summary>
         /// Initializes the openal playback
         /// </summary>
         /// <param name="stream">The stream</param>
-        /// <param name="format">The format</param>
         /// <param name="latency">The latency</param>
-        public void Initialize(IWaveSource stream, WaveFormat format, int latency)
+        public void Initialize(IWaveSource stream, int latency)
         {
+            var format = stream.WaveFormat;   
             _playbackStream = stream;
 			_waveFormat = stream.WaveFormat;
             Latency = latency;
