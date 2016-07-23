@@ -5,7 +5,7 @@ namespace CSCore
     /// <summary>
     ///     Base class for all wave aggregators.
     /// </summary>
-    public abstract class WaveAggregatorBase : IWaveSource, IAggregator<byte, IWaveSource>
+    public abstract class WaveAggregatorBase : IWaveAggregator
     {
         private IWaveSource _baseSource;
         private bool _disposed;
@@ -77,6 +77,11 @@ namespace CSCore
         /// <returns>The total number of bytes read into the buffer.</returns>
         public virtual int Read(byte[] buffer, int offset, int count)
         {
+            if (offset % WaveFormat.Channels != 0)
+                offset -= offset % WaveFormat.Channels;
+            if (count % WaveFormat.Channels != 0)
+                count -= count % WaveFormat.Channels;
+
             return BaseSource.Read(buffer, offset, count);
         }
 
