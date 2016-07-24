@@ -81,7 +81,7 @@ namespace CSCore.Codecs.MP3
         public static Mp3Frame FromStream(Stream stream)
         {
             Mp3Frame frame = new Mp3Frame(stream);
-            return frame.FindFrame(stream, true) ? frame : null;
+            return frame.FindFrame(stream, stream.CanSeek) ? frame : null;
         }
 
         /// <summary>
@@ -129,7 +129,8 @@ namespace CSCore.Codecs.MP3
 
             //int totalRead = 0;
 
-            _streamPosition = stream.Position;
+            if(stream.CanSeek)
+                _streamPosition = stream.Position;
 
             while (!ParseFrame(buffer) || MPEGLayer != MpegLayer.Layer3)
             {
@@ -149,11 +150,13 @@ namespace CSCore.Codecs.MP3
                     return false;
                 }*/
 
-                _streamPosition = stream.Position;
+                if(stream.CanSeek)
+                    _streamPosition = stream.Position;
             }
 
             _headerBuffer = buffer;
-            _dataPosition = stream.Position;
+            if(stream.CanSeek)
+                _dataPosition = stream.Position;
 
             if (_stream.CanSeek && seek)
                 _stream.Position += FrameLength - 4;
@@ -172,13 +175,18 @@ namespace CSCore.Codecs.MP3
         /// <returns>The number of read bytes.</returns>
         public int ReadData(ref byte[] buffer, int offset)
         {
-            long currentPosition = _stream.Position;
+            long currentPosition = 0;
+            if (_stream.CanSeek)
+            {
+                currentPosition = _stream.Position;
+                _stream.Position = _streamPosition;
+            }
 
             buffer = buffer.CheckBuffer(FrameLength + offset);
-            _stream.Position = _streamPosition;
             int read = _stream.Read(buffer, offset, FrameLength);
 
-            _stream.Position = currentPosition;
+            if(_stream.CanSeek)
+                _stream.Position = currentPosition;
 
             return read;
         }

@@ -194,6 +194,8 @@ namespace CSCore.Codecs.MP3
                     _bufferThread.Start(resetEvent);
 
                     success = resetEvent.WaitOne();
+                    if(success)
+                        _decoder = new DmoMp3Decoder(new ReadBlockStream(_buffer.ToStream()), false);
                 }
                 EventHandler<ConnectionEstablishedEventArgs> handler = this.ConnectionEstablished;
                 if (handler != null && async)
@@ -271,13 +273,12 @@ namespace CSCore.Codecs.MP3
                         frame.BitRate);
                 } while (_buffer.Buffered < _buffer.Length / 10 || !format.Equals(prevFormat));
 
-                _decoder = new DmoMp3Decoder(new ReadBlockStream(_buffer.ToStream()), false);
-
                 if (resetEvent != null)
                     resetEvent.Set();
 
                 do
                 {
+                    Debug.WriteLine("Buffering");
                     if (_buffer.Buffered >= _buffer.Length * 0.85 && !_disposing)
                         Thread.Sleep(250);
                     else
