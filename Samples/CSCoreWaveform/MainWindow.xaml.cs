@@ -57,7 +57,9 @@ namespace CSCoreWaveform
                     _notificationSource.Dispose();
 
                 var source = CodecFactory.Instance.GetCodec(ofn.FileName);
-                //if (source.Length < 0x320000) //< 50MB
+                
+                //since the mediafoundationdecoder isn't really accurate what position and length concerns
+                //read the whole file into a cache
                 if (source is MediaFoundationDecoder)
                 {
                     if (source.Length < 10485760) //10MB
@@ -73,6 +75,7 @@ namespace CSCoreWaveform
                     }
                 }
                 source.Position = 0;
+                //load the waveform
                 await LoadWaveformsAsync(source);
                 source.Position = 0;
 
@@ -87,7 +90,9 @@ namespace CSCoreWaveform
         private async Task LoadWaveformsAsync(IWaveSource waveSource)
         {
             Channels = null;
+            //read the specified waveSource into n arrays of samples where n is the number of channels of the waveSource
             var channelData = await WaveformData.GetData(waveSource);
+            //by setting the Channels property, the Waveform Control automatically renders the waveform
             Channels =
                 new ObservableCollection<WaveformDataModel>(channelData.Select(x => new WaveformDataModel {Data = x}));
         }

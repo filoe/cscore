@@ -74,9 +74,9 @@ namespace WinformsVisualization.Visualization
 
             var fftBuffer = new float[(int) FftSize];
 
+            //get the fft result from the spectrum provider
             if (SpectrumProvider.GetFftData(fftBuffer, this))
             {
-
                 using (var pen = new Pen(brush, (float) _barWidth))
                 {
                     var bitmap = new Bitmap(size.Width, size.Height);
@@ -111,8 +111,10 @@ namespace WinformsVisualization.Visualization
         private void CreateSpectrumLineInternal(Graphics graphics, Pen pen, float[] fftBuffer, Size size)
         {
             int height = size.Height;
+            //prepare the fft result for rendering 
             SpectrumPointData[] spectrumPoints = CalculateSpectrumPoints(height, fftBuffer);
 
+            //connect the calculated points with lines
             for (int i = 0; i < spectrumPoints.Length; i++)
             {
                 SpectrumPointData p = spectrumPoints[i];

@@ -39,10 +39,15 @@ namespace WinformsVisualization
 
                 const FftSize fftSize = FftSize.Fft4096;
 
+                //open the selected file
                 IWaveSource source = CodecFactory.Instance.GetCodec(openFileDialog.FileName);
 
+                //create a spectrum provider which provides fft data based on some input
                 var spectrumProvider = new BasicSpectrumProvider(source.WaveFormat.Channels,
                     source.WaveFormat.SampleRate, fftSize);
+
+                //linespectrum and voiceprint3dspectrum used for rendering some fft data
+                //in oder to get some fft data, set the previously created spectrumprovider 
                 _lineSpectrum = new LineSpectrum(fftSize)
                 {
                     SpectrumProvider = spectrumProvider,
@@ -61,13 +66,16 @@ namespace WinformsVisualization
                     ScalingStrategy = ScalingStrategy.Sqrt
                 };
 
+                //the SingleBlockNotificationStream is used to intercept the played samples
                 var notificationSource = new SingleBlockNotificationStream(source.ToSampleSource());
+                //pass the intercepted samples as input data to the spectrumprovider (which will calculate a fft based on them)
                 notificationSource.SingleBlockRead += (s, a) => spectrumProvider.Add(a.Left, a.Right);
 
                 _source = notificationSource.ToWaveSource(16);
 
+                //play the audio
                 _soundOut = new WasapiOut();
-                _soundOut.Initialize(_source.ToMono());
+                _soundOut.Initialize(_source);
                 _soundOut.Play();
 
                 timer1.Start();
@@ -102,6 +110,7 @@ namespace WinformsVisualization
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            //render the spectrum
             GenerateLineSpectrum();
             GenerateVoice3DPrintSpectrum();   
         }

@@ -53,13 +53,16 @@ namespace WinformsVisualization.Visualization
 
             var fftBuffer = new float[(int) FftSize];
 
+            //get the fft result from the spectrumprovider
             if (SpectrumProvider.GetFftData(fftBuffer, this))
             {
+                //prepare the fft result for rendering
                 SpectrumPointData[] spectrumPoints = CalculateSpectrumPoints(1.0, fftBuffer);
                 using (var pen = new Pen(background, lineThickness))
                 {
                     float currentYOffset = clipRectangle.Y + clipRectangle.Height;
 
+                    //render the fft result
                     for (int i = 0; i < spectrumPoints.Length; i++)
                     {
                         SpectrumPointData p = spectrumPoints[i];
@@ -67,8 +70,8 @@ namespace WinformsVisualization.Visualization
                         float xCoord = clipRectangle.X + xPos;
                         float pointHeight = clipRectangle.Height / spectrumPoints.Length;
 
+                        //get the color based on the fft band value
                         pen.Color = _colorCalculator.GetColor((float) p.Value);
-                        //pen.Color = Color.FromArgb(255, pen.Color.R, pen.Color.G, pen.Color.B);
 
                         var p1 = new PointF(xCoord, currentYOffset);
                         var p2 = new PointF(xCoord, currentYOffset - pointHeight);
