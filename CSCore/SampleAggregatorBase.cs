@@ -41,9 +41,9 @@ namespace CSCore
         public virtual int Read(float[] buffer, int offset, int count)
         {
             if (offset % WaveFormat.Channels != 0)
-                throw new ArgumentOutOfRangeException("offset");
+                offset -= offset % WaveFormat.Channels;
             if (count % WaveFormat.Channels != 0)
-                throw new ArgumentOutOfRangeException("count");
+                count -= count % WaveFormat.Channels;
 
             return BaseSource.Read(buffer, offset, count);
         }

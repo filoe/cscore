@@ -45,6 +45,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSCoreWaveform", "Samples\C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BiQuadFilterSample", "Samples\BiQuadFilterSample\BiQuadFilterSample.csproj", "{F8733117-DA1D-40DC-AEF8-98051B86E219}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenALMultiContext", "Samples\OpenALMultiContext\OpenALMultiContext.csproj", "{7D28F77E-FEA0-418A-9F5B-966FBBE44BA4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -226,6 +228,16 @@ Global
 		{F8733117-DA1D-40DC-AEF8-98051B86E219}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{F8733117-DA1D-40DC-AEF8-98051B86E219}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F8733117-DA1D-40DC-AEF8-98051B86E219}.Release|Win32.ActiveCfg = Release|Any CPU
+		{7D28F77E-FEA0-418A-9F5B-966FBBE44BA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D28F77E-FEA0-418A-9F5B-966FBBE44BA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D28F77E-FEA0-418A-9F5B-966FBBE44BA4}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7D28F77E-FEA0-418A-9F5B-966FBBE44BA4}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7D28F77E-FEA0-418A-9F5B-966FBBE44BA4}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{7D28F77E-FEA0-418A-9F5B-966FBBE44BA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D28F77E-FEA0-418A-9F5B-966FBBE44BA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D28F77E-FEA0-418A-9F5B-966FBBE44BA4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7D28F77E-FEA0-418A-9F5B-966FBBE44BA4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7D28F77E-FEA0-418A-9F5B-966FBBE44BA4}.Release|Win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -246,5 +258,6 @@ Global
 		{000B0B0B-A12D-4EED-A261-7F95422E386A} = {41D1D336-13B2-488B-8A85-C0F744035F8B}
 		{529DEB01-14A3-4FEC-AD89-6D4D0DC433C3} = {41D1D336-13B2-488B-8A85-C0F744035F8B}
 		{F8733117-DA1D-40DC-AEF8-98051B86E219} = {41D1D336-13B2-488B-8A85-C0F744035F8B}
+		{7D28F77E-FEA0-418A-9F5B-966FBBE44BA4} = {41D1D336-13B2-488B-8A85-C0F744035F8B}
 	EndGlobalSection
 EndGlobal

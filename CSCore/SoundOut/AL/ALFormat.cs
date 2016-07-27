@@ -1,5 +1,9 @@
 namespace CSCore.SoundOut.AL
 {
+    /// <summary>
+    /// Defines different OpenAL formats.
+    /// </summary>
+    // ReSharper disable once InconsistentNaming
     internal enum ALFormat
     {
         /// <summary>
