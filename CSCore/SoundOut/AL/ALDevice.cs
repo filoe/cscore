@@ -1,26 +1,40 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+// ReSharper disable InconsistentNaming
 
 namespace CSCore.SoundOut.AL
 {
+    /// <summary>
+    /// Represents an OpenAL Device.
+    /// </summary>
     public class ALDevice : IDisposable
     {
         private static ALDevice[] _devices;
 
         /// <summary>
-        /// Gets the name
+        /// Gets the name of the device.
         /// </summary>
         public string Name { private set; get; }
 
         /// <summary>
-        /// Gets the openal context
+        /// Gets the device handle.
         /// </summary>
-        internal ALContext Context { get; private set; }
+        public IntPtr DeviceHandle
+        {
+            get
+            {
+                if (_deviceHandle == IntPtr.Zero)
+                {
+                    _deviceHandle = ALInterops.alcOpenDevice(Name);
+                    if (_deviceHandle == IntPtr.Zero)
+                        throw new ALException(String.Format("Could not open device \"{0}\".", Name));
+                }
+                return _deviceHandle;
+            }
+        }
 
         private IntPtr _deviceHandle;
-        private readonly List<ALSource> _sources;
-        private bool _isInitialized;
 
         /// <summary>
         /// Initializes a new ALDevice class
@@ -28,79 +42,36 @@ namespace CSCore.SoundOut.AL
         internal ALDevice(string deviceName)
         {
             Name = deviceName;
-            _sources = new List<ALSource>();
         }
 
         /// <summary>
-        /// Initializes the openal device
+        /// Enumerates all OpenAL devices.
         /// </summary>
-        public void Initialize()
-        {
-            if (!_isInitialized)
-            {
-                _deviceHandle = ALInterops.alcOpenDevice(Name);
-                Context = ALContext.CreateContext(_deviceHandle);
-                _isInitialized = true;
-            }
-        }
-
-        internal ALErrorCode GetLastError()
-        {
-            return ALInterops.alGetError();
-        }
-
-        /// <summary>
-        /// Generates a new openal source
-        /// </summary>
-        /// <returns></returns>
-        internal ALSource GenerateALSource()
-        {
-            Context.MakeCurrent();
-
-            var sources = new uint[1];
-            ALInterops.alGenSources(1, sources);
-
-            return new ALSource(this, sources[0]);
-        }
-
-        /// <summary>
-        /// Deletes the specified openal source
-        /// </summary>
-        /// <param name="source">The source</param>
-        internal void DeleteALSource(ALSource source)
-        {
-            Context.MakeCurrent();
-
-            var sources = new uint[1];
-            sources[0] = source.Id;
-
-            ALInterops.alDeleteSources(1, sources);
-        }
-
-        /// <summary>
-        /// Enumerates the openal devices
-        /// </summary>
-        /// <returns></returns>
+        /// <returns>An array containing all found OpenAL devices.</returns>
         public static ALDevice[] EnumerateALDevices()
         {
+            var deviceNames = ALInterops.GetALDeviceNames();
+            var devices = deviceNames.Select(deviceName => new ALDevice(deviceName));
+
             if (_devices == null)
             {
-                var deviceNames = ALInterops.GetALDeviceNames();
-                var devices = new ALDevice[deviceNames.Length];
+                _devices = devices.ToArray();
+            }
+            else
+            {
+                //devices which were and are still present in _devices
+                var result = _devices.Where(x => devices.Any(d => d.Name == x.Name)).ToList();
 
-                for (int i = 0; i < devices.Length; i++)
-                {
-                    devices[i] = new ALDevice(deviceNames[i]);
-                }
-
-                _devices = devices;
+                //add new devices which were not present in _devices
+                result.AddRange(devices.Where(x => result.All(d => x.Name != d.Name)));
+                _devices = result.ToArray();
             }
 
             return _devices;
         }
 
         /// <summary>
-        /// Gets the default playback device
+        /// Gets the default playback device.
         /// </summary>
         public static ALDevice DefaultDevice
         {
@@ -122,14 +93,12 @@ namespace CSCore.SoundOut.AL
         /// <param name="disposing">The disposing state</param>
         protected void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                Context.Dispose();
-            }
-
             if (_deviceHandle != IntPtr.Zero)
             {
-                ALInterops.alcCloseDevice(_deviceHandle);
+                if (!ALInterops.alcCloseDevice(_deviceHandle))
+                {
+                    Debug.WriteLine("Failed to close ALDevice. Check whether there are still some active Contexts or Buffers.");
+                }
                 _deviceHandle = IntPtr.Zero;
             }
         }

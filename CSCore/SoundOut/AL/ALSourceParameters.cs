@@ -1,7 +1,11 @@
 ﻿
 namespace CSCore.SoundOut.AL
 {
-    internal enum ALSourceParameters
+    /// <summary>
+    /// Defines ALSource parameters.
+    /// </summary>
+    // ReSharper disable once InconsistentNaming
+    public enum ALSourceParameters
     {
         /// <summary>
         /// SourceState

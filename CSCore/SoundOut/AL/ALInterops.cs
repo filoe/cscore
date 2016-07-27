@@ -1,10 +1,11 @@
-
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+// ReSharper disable InconsistentNaming
 
 namespace CSCore.SoundOut.AL
 {
+    [CLSCompliant(false)]
     internal class ALInterops
     {
         [DllImport("openal32.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -171,7 +172,7 @@ namespace CSCore.SoundOut.AL
                     lastNull = true;
 
                     strings.Add(Marshal.PtrToStringAnsi(location, i));
-                    location = new IntPtr((long) location + i + 1);
+                    location = new IntPtr((long)location + i + 1);
                     i = -1;
                 }
                 else
@@ -187,7 +188,7 @@ namespace CSCore.SoundOut.AL
                 ? alcIsExtensionPresent(IntPtr.Zero, extension)
                 : alIsExtensionPresent(extension);
 
-            return (result == 1);
+            return result == 1;
         }
 
         internal static bool IsSupported()

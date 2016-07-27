@@ -177,7 +177,7 @@ namespace CSCore.SoundOut
 
 		/// <summary>
 		///     Gets or sets the latency of the playback specified in milliseconds.
-		/// The <see cref="Latency" /> property has to be set before initializing.
+		///     The <see cref="Latency" /> property has to be set before initializing.
 		/// </summary>
 		public int Latency
 		{
@@ -196,9 +196,9 @@ namespace CSCore.SoundOut
 		public event EventHandler<PlaybackStoppedEventArgs> Stopped;
 
 		/// <summary>
-		///     Initializes WasapiOut instance and prepares all resources for playback.
-		///     Note that properties like <see cref="Device" />, <see cref="Latency" />,... won't affect WasapiOut after calling
-		///     <see cref="Initialize" />.
+		///     Initializes the <see cref="WasapiOut"/> instance.
+		///     Note that properties like <see cref="Device" />, <see cref="Latency" />,... 
+		///     won't affect <see cref="WasapiOut"/> after calling <see cref="Initialize" />.
 		/// </summary>
 		/// <param name="source">The source to prepare for playback.</param>
 		public void Initialize(IWaveSource source)
@@ -232,9 +232,9 @@ namespace CSCore.SoundOut
 
 		/// <summary>
 		///     Starts the playback.
-		///     Note: <see cref="Initialize" /> has to get called before calling Play.
-		///     If <see cref="PlaybackState" /> is <see cref="SoundOut.PlaybackState.Paused" />, <see cref="Resume" /> will be
-		///     called automatically.
+        ///     Note: The <see cref="Initialize"/> method has to get called before calling <see cref="Play"/>.
+        ///     If the <see cref="PlaybackState"/> is <see cref="CSCore.SoundOut.PlaybackState.Paused"/>, the <see cref="Resume"/>
+        ///     will be called automatically.
 		/// </summary>
 		public void Play()
 		{
@@ -269,7 +269,7 @@ namespace CSCore.SoundOut
 		}
 
 		/// <summary>
-		///     Stops the playback and frees most of allocated resources.
+		///     Stops the playback and releases most of allocated resources.
 		/// </summary>
 		public void Stop()
 		{
@@ -377,7 +377,7 @@ namespace CSCore.SoundOut
 		public bool UseChannelMixingMatrices { get; set; }
 
 		/// <summary>
-		///     Stops the playback (if playing) and cleans up all used resources.
+        ///     Stops the playback (if playing) and releases all allocated resources.
 		/// </summary>
 		public void Dispose()
 		{
