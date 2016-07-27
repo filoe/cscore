@@ -1,4 +1,5 @@
-﻿using CSCore.CoreAudioAPI;
+﻿using System.Threading;
+using CSCore.CoreAudioAPI;
 
 namespace CSCore.SoundIn
 {
@@ -15,6 +16,45 @@ namespace CSCore.SoundIn
         public WasapiLoopbackCapture()
             : base(false, AudioClientShareMode.Shared)
         {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WasapiLoopbackCapture"/> class with the <paramref name="latency"/> specified in milliseconds.
+        /// </summary>
+        /// <param name="latency">The latency specified in milliseconds. The default value is 100ms.</param>
+        public WasapiLoopbackCapture(int latency)
+            : this(latency, null)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WasapiLoopbackCapture"/> class with the <paramref name="latency"/> specified in milliseconds
+        /// and the <paramref name="defaultFormat"/> to use.
+        /// </summary>
+        /// <param name="latency">The latency specified in milliseconds. The default value is 100ms.</param>
+        /// <param name="defaultFormat">The default <see cref="WaveFormat"/> to use. 
+        /// Note: The <paramref name="defaultFormat"/> is just a suggestion. If the driver does not support this format, 
+        /// any other format will be picked. After calling <see cref="WasapiCapture.Initialize"/>, the <see cref="WasapiCapture.WaveFormat"/> 
+        /// property will return the actually picked <see cref="WaveFormat"/>.</param>
+        public WasapiLoopbackCapture(int latency, WaveFormat defaultFormat)
+            : this(latency, defaultFormat, ThreadPriority.AboveNormal)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WasapiLoopbackCapture"/> class with the <paramref name="latency"/> specified in milliseconds,
+        /// the <paramref name="defaultFormat"/> to use and the <see cref="ThreadPriority"/> of the internal capture thread.
+        /// </summary>
+        /// <param name="latency">The latency specified in milliseconds. The default value is 100ms.</param>
+        /// <param name="defaultFormat">The default <see cref="WaveFormat"/> to use. 
+        /// Note: The <paramref name="defaultFormat"/> is just a suggestion. If the driver does not support this format, 
+        /// any other format will be picked. After calling <see cref="WasapiCapture.Initialize"/>, the <see cref="WasapiCapture.WaveFormat"/> 
+        /// property will return the actually picked <see cref="WaveFormat"/>.</param>
+        /// <param name="captureThreadPriority">The <see cref="ThreadPriority"/>, the internal capture thread will run on.</param>
+        public WasapiLoopbackCapture(int latency, WaveFormat defaultFormat, ThreadPriority captureThreadPriority)
+            : base(false, AudioClientShareMode.Shared, latency, defaultFormat, captureThreadPriority)
+        {
+            
         }
 
         /// <summary>
