@@ -175,7 +175,7 @@ namespace CSCore.SoundOut.AL
                     lastNull = true;
 
                     strings.Add(Marshal.PtrToStringAnsi(location, i));
-                    location = new IntPtr((long) location + i + 1);
+                    location = new IntPtr((long)location + i + 1);
                     i = -1;
                 }
                 else
