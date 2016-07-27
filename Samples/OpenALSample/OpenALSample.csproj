@@ -36,9 +36,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\..\CSCore\CSCore.csproj">
-      <Project>{C3DCCFE3-DD3F-4EEE-849B-33E355B1E064}</Project>
-      <Name>CSCore</Name>
+    <ProjectReference Include="..\..\CSCore.Linux\CSCore.Linux.csproj">
+      <Project>{C147FD94-4670-4937-A65D-3C4DA811EFA4}</Project>
+      <Name>CSCore.Linux</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>
