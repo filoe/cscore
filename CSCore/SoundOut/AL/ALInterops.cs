@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace CSCore.SoundOut.AL
 {
+    [CLSCompliant(false)]
     internal class ALInterops
     {
         [DllImport("OpenAL32.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -191,7 +192,7 @@ namespace CSCore.SoundOut.AL
                 ? alcIsExtensionPresent(IntPtr.Zero, extension)
                 : alIsExtensionPresent(extension);
 
-            return (result == 1);
+            return result == 1;
         }
 
         internal static bool IsSupported()

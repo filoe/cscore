@@ -9,16 +9,16 @@ namespace CSCore.SoundOut.AL
     public class ALSource : IDisposable
     {
         /// <summary>
-        /// Gets the openal source id
+        /// Gets the openal source id.
         /// </summary>
         public uint Id { private set; get; }
 
         private readonly ALContext _context;
 
         /// <summary>
-        /// Initializes a new ALSource class
+        /// Initializes a new instance of the <see cref="ALSource"/> class.
         /// </summary>
-        /// <param name="context">The context used to create the source.</param>
+        /// <param name="context">The context used to create the <see cref="ALSource"/>.</param>
         /// <exception cref="System.ArgumentNullException">context</exception>
         public ALSource(ALContext context)
         {

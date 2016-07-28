@@ -1,5 +1,4 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -350,8 +349,6 @@ namespace CSCore.SoundOut
 
         private void PlaybackProc(object args)
         {
-            Debug.WriteLine("Start Source" + _alSource.Id);
-
             Exception exception = null;
             EventWaitHandle waitHandle = args as EventWaitHandle;
             IList<BufferedAudioData> byteBuffers;
@@ -446,11 +443,6 @@ namespace CSCore.SoundOut
             }
         }
 
-        private void PrepareForPlayback()
-        {
-            _alSource.UnqueueBuffers(_alSource.BuffersProcessed);
-        }
-
         private void RaiseStopped(Exception exception)
         {
             EventHandler<PlaybackStoppedEventArgs> handler = Stopped;
@@ -475,10 +467,6 @@ namespace CSCore.SoundOut
                     () =>
                         ALInterops.alGenBuffers(_buffers.Length, _buffers),
                     "alGenBuffers");
-                foreach (var buffer in _buffers)
-                {
-                    Debug.WriteLine("Created:" + buffer);
-                }
             }
             _bufferSize = (int)_source.WaveFormat.MillisecondsToBytes(_latency);
         }
@@ -497,19 +485,10 @@ namespace CSCore.SoundOut
                     {
                         //sometimes there are duplicates on window??
                         var finishedBuffers = _alSource.UnqueueBuffers(numberOfProcessedBuffers).Distinct().ToArray();
-                        int buffersQueued = -1;
-                        ALInterops.alGetSourcei(_alSource.Id, ALSourceParameters.BuffersQueued, out buffersQueued);
-                        Debug.WriteLine(buffersQueued + "|" + numberOfProcessedBuffers);
-                        Debug.WriteLine("Del Source:" + _alSource.Id);
                         ALException.Try(
                             () =>
                                 ALInterops.alDeleteBuffers(finishedBuffers.Length, finishedBuffers),
                             "alDeleteBuffers");
-
-                        foreach (var finishedBuffer in finishedBuffers)
-                        {
-                            Debug.WriteLine("Deleted:" + finishedBuffer);
-                        }
                     }
 
                     _alSource.Dispose();
