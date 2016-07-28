@@ -68,7 +68,7 @@ namespace CSCore.SoundOut.AL
                 {
                     Handle = ALInterops.alcCreateContext(device.DeviceHandle, IntPtr.Zero);
                     if (Handle == IntPtr.Zero)
-                        throw new ALException("Could not create ALContext.");
+                        throw new ALException("Could not create ALContext.", ALInterops.alcGetError(device.DeviceHandle));
 
                     ContextDictionary.Add(device, new ContextRef()
                     {
@@ -97,7 +97,12 @@ namespace CSCore.SoundOut.AL
         /// </summary>
         public void MakeCurrent()
         {
-            ALInterops.alcMakeContextCurrent(Handle);
+            ALInterops.alcGetError(_device.DeviceHandle);
+            if (!ALInterops.alcMakeContextCurrent(Handle))
+            {
+                var error = ALInterops.alcGetError(_device.DeviceHandle);
+                throw new ALException("Could not set context. alcMakeContextCurrent returned " + error, error);
+            }
         }
 
         /// <summary>
@@ -144,7 +149,10 @@ namespace CSCore.SoundOut.AL
                     ContextDictionary[_device].RefCount--;
                     if (ContextDictionary[_device].RefCount <= 0)
                     {
-                        ALInterops.alcDestroyContext(Handle);
+                        ALException.Try(
+                            () =>
+                                ALInterops.alcDestroyContext(Handle),
+                            "alcDestroyContext", _device.DeviceHandle);
                         ContextDictionary.Remove(_device);
                     }
 

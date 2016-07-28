@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 // ReSharper disable InconsistentNaming
 
@@ -24,7 +25,11 @@ namespace CSCore.SoundOut.AL
             get
             {
                 if (_deviceHandle == IntPtr.Zero)
+                {
                     _deviceHandle = ALInterops.alcOpenDevice(Name);
+                    if (_deviceHandle == IntPtr.Zero)
+                        throw new ALException(String.Format("Could not open device \"{0}\".", Name));
+                }
                 return _deviceHandle;
             }
         }
@@ -90,7 +95,10 @@ namespace CSCore.SoundOut.AL
         {
             if (_deviceHandle != IntPtr.Zero)
             {
-                ALInterops.alcCloseDevice(_deviceHandle);
+                if (!ALInterops.alcCloseDevice(_deviceHandle))
+                {
+                    Debug.WriteLine("Failed to close ALDevice. Check whether there are still some active Contexts or Buffers.");
+                }
                 _deviceHandle = IntPtr.Zero;
             }
         }

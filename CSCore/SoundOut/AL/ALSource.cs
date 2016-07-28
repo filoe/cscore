@@ -30,7 +30,10 @@ namespace CSCore.SoundOut.AL
             var sources = new uint[1];
             using (context.LockContext())
             {
-                ALInterops.alGenSources(1, sources);
+                ALException.Try(
+                    () =>
+                        ALInterops.alGenSources(1, sources),
+                    "alGenSources");
             }
 
             Id = sources[0];
@@ -43,7 +46,10 @@ namespace CSCore.SoundOut.AL
         {
             using (_context.LockContext())
             {
-                ALInterops.alSourcePlay(Id);
+                ALException.Try(
+                    () =>
+                        ALInterops.alSourcePlay(Id),
+                    "alSourcePlay");
             }
         }
 
@@ -54,7 +60,10 @@ namespace CSCore.SoundOut.AL
         {
             using (_context.LockContext())
             {
-                ALInterops.alSourcePause(Id);
+                ALException.Try(
+                    () =>
+                        ALInterops.alSourcePause(Id),
+                    "alSourcePause");
             }
         }
 
@@ -66,7 +75,10 @@ namespace CSCore.SoundOut.AL
         {
             using (_context.LockContext())
             {
-                ALInterops.alSourceStop(Id);
+                ALException.Try(
+                    () =>
+                        ALInterops.alSourceStop(Id),
+                    "alSourceStop");
             }
         }
 
@@ -78,7 +90,10 @@ namespace CSCore.SoundOut.AL
         {
             using (_context.LockContext())
             {
-                ALInterops.alSourceQueueBuffers(Id, 1, new[] {bufferHandle});
+                ALException.Try(
+                    () =>
+                        ALInterops.alSourceQueueBuffers(Id, 1, new[] {bufferHandle}),
+                    "alSourceQueueBuffers");
             }
         }
 
@@ -92,7 +107,10 @@ namespace CSCore.SoundOut.AL
             uint[] result = new uint[count];
             using (_context.LockContext())
             {
-                ALInterops.alSourceUnqueueBuffers(Id, count, result);
+                ALException.Try(
+                    () => 
+                        ALInterops.alSourceUnqueueBuffers(Id, count, result),
+                    "alSourceUnqueueBuffers");
             }
             return result;
         }
@@ -106,9 +124,33 @@ namespace CSCore.SoundOut.AL
             {
                 using (_context.LockContext())
                 {
-                    int numberOfProcessedBuffers;
-                    ALInterops.alGetSourcei(Id, ALSourceParameters.BuffersProcessed, out numberOfProcessedBuffers);
+                    int numberOfProcessedBuffers = 0;
+                    ALException.Try(
+                        () =>
+                            ALInterops.alGetSourcei(Id, ALSourceParameters.BuffersProcessed,
+                                out numberOfProcessedBuffers),
+                        "alGetSourcei");
                     return numberOfProcessedBuffers;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the number of queued buffers.
+        /// </summary>
+        public int BuffersQueued
+        {
+            get
+            {
+                using (_context.LockContext())
+                {
+                    int numberOfQueuedBuffers = 0;
+                    ALException.Try(
+                        () =>
+                            ALInterops.alGetSourcei(Id, ALSourceParameters.BuffersQueued,
+                                out numberOfQueuedBuffers),
+                        "alGetSourcei");
+                    return numberOfQueuedBuffers;
                 }
             }
         }
@@ -122,8 +164,12 @@ namespace CSCore.SoundOut.AL
             {
                 using (_context.LockContext())
                 {
-                    int alSourceState;
-                    ALInterops.alGetSourcei(Id, ALSourceParameters.SourceState, out alSourceState);
+                    int alSourceState = 0;
+                    ALException.Try(
+                        () =>
+                            ALInterops.alGetSourcei(Id, ALSourceParameters.SourceState,
+                                out alSourceState),
+                        "alGetSourcei");
                     return (ALSourceState) alSourceState;
                 }
             }
@@ -156,7 +202,10 @@ namespace CSCore.SoundOut.AL
             {
                 var sources = new uint[1];
                 sources[0] = Id;
-                ALInterops.alDeleteSources(1, sources);
+                ALException.Try(
+                    () => 
+                        ALInterops.alDeleteSources(1, sources),
+                    "alDeleteSources");
             }
         }
     }
