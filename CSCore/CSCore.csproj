@@ -287,7 +287,6 @@
     <Compile Include="DMO\SetTypeFlags.cs" />
     <Compile Include="DSP\BiQuad.cs" />
     <Compile Include="DSP\ChannelMatrixElement.cs" />
-    <None Include="DSP\EqualizerBiQuadFilter.cs" />
     <Compile Include="DSP\FastFourierTransformation.cs" />
     <Compile Include="DSP\FftProvider.cs" />
     <Compile Include="DSP\FftMode.cs" />
