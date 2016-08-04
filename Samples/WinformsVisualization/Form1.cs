@@ -7,6 +7,7 @@ using CSCore.Codecs;
 using CSCore.DSP;
 using CSCore.SoundOut;
 using CSCore.Streams;
+using CSCore.Streams.Effects;
 using WinformsVisualization.Visualization;
 
 namespace WinformsVisualization
@@ -15,6 +16,7 @@ namespace WinformsVisualization
     {
         private ISoundOut _soundOut;
         private IWaveSource _source;
+        private PitchShifter _pitchShifter;
         private LineSpectrum _lineSpectrum;
         private VoicePrint3DSpectrum _voicePrint3DSpectrum;
 
@@ -40,7 +42,9 @@ namespace WinformsVisualization
                 const FftSize fftSize = FftSize.Fft4096;
 
                 //open the selected file
-                IWaveSource source = CodecFactory.Instance.GetCodec(openFileDialog.FileName);
+                ISampleSource source = CodecFactory.Instance.GetCodec(openFileDialog.FileName)
+                    .ToSampleSource()
+                    .AppendSource(x => new PitchShifter(x), out _pitchShifter);
 
                 //create a spectrum provider which provides fft data based on some input
                 var spectrumProvider = new BasicSpectrumProvider(source.WaveFormat.Channels,
@@ -67,7 +71,7 @@ namespace WinformsVisualization
                 };
 
                 //the SingleBlockNotificationStream is used to intercept the played samples
-                var notificationSource = new SingleBlockNotificationStream(source.ToSampleSource());
+                var notificationSource = new SingleBlockNotificationStream(source);
                 //pass the intercepted samples as input data to the spectrumprovider (which will calculate a fft based on them)
                 notificationSource.SingleBlockRead += (s, a) => spectrumProvider.Add(a.Left, a.Right);
 
@@ -141,6 +145,37 @@ namespace WinformsVisualization
                 }
                 pictureBoxBottom.Image = _bitmap;
             }
+        }
+
+        private void pitchShiftToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form form = new Form()
+            {
+                Width = 250,
+                Height = 70,
+                Text = String.Empty
+            };
+            TrackBar trackBar = new TrackBar()
+            {
+                TickStyle = TickStyle.None,
+                Minimum = -100,
+                Maximum = 100,
+                Value = (int) (_pitchShifter != null ? Math.Log10(_pitchShifter.PitchShiftFactor) / Math.Log10(2) * 120 : 0),
+                Dock = DockStyle.Fill
+            };
+            trackBar.ValueChanged += (s, args) =>
+            {
+                if (_pitchShifter != null)
+                {
+                    _pitchShifter.PitchShiftFactor = (float) Math.Pow(2, trackBar.Value / 120.0);
+                    form.Text = trackBar.Value.ToString();
+                }
+            };
+            form.Controls.Add(trackBar);
+
+            form.ShowDialog();
+
+            form.Dispose();
         }
     }
 }

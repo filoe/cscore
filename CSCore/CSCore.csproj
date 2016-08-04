@@ -291,6 +291,7 @@
     <Compile Include="DSP\FftProvider.cs" />
     <Compile Include="DSP\FftMode.cs" />
     <Compile Include="DSP\FftSize.cs" />
+    <Compile Include="DSP\PitchShifterInternal.cs" />
     <Compile Include="FluentExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IReadableAudioSource.cs" />
@@ -355,6 +356,7 @@
     <Compile Include="Streams\Effects\FlangerPhase.cs" />
     <Compile Include="Streams\Effects\FlangerWaveform.cs" />
     <Compile Include="Streams\Effects\GargleWaveShape.cs" />
+    <Compile Include="Streams\Effects\PitchShifter.cs" />
     <Compile Include="Streams\FadeInOut.cs" />
     <Compile Include="Streams\GainSource.cs" />
     <Compile Include="Streams\IFadeStrategy.cs" />
