@@ -47,6 +47,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BiQuadFilterSample", "Sampl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecordWithSpecificFormat", "Samples\RecordWithSpecificFormat\RecordWithSpecificFormat.csproj", "{E0198A08-AAA8-4A76-B096-BBE72DA4F93B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConvertWavToMp3", "Samples\ConvertWavToMp3\ConvertWavToMp3.csproj", "{9CF28420-D689-46E6-B659-72520A515372}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -238,6 +240,16 @@ Global
 		{E0198A08-AAA8-4A76-B096-BBE72DA4F93B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{E0198A08-AAA8-4A76-B096-BBE72DA4F93B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{E0198A08-AAA8-4A76-B096-BBE72DA4F93B}.Release|Win32.ActiveCfg = Release|Any CPU
+		{9CF28420-D689-46E6-B659-72520A515372}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CF28420-D689-46E6-B659-72520A515372}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CF28420-D689-46E6-B659-72520A515372}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9CF28420-D689-46E6-B659-72520A515372}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9CF28420-D689-46E6-B659-72520A515372}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{9CF28420-D689-46E6-B659-72520A515372}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CF28420-D689-46E6-B659-72520A515372}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CF28420-D689-46E6-B659-72520A515372}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9CF28420-D689-46E6-B659-72520A515372}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{9CF28420-D689-46E6-B659-72520A515372}.Release|Win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -259,5 +271,6 @@ Global
 		{529DEB01-14A3-4FEC-AD89-6D4D0DC433C3} = {41D1D336-13B2-488B-8A85-C0F744035F8B}
 		{F8733117-DA1D-40DC-AEF8-98051B86E219} = {41D1D336-13B2-488B-8A85-C0F744035F8B}
 		{E0198A08-AAA8-4A76-B096-BBE72DA4F93B} = {41D1D336-13B2-488B-8A85-C0F744035F8B}
+		{9CF28420-D689-46E6-B659-72520A515372} = {41D1D336-13B2-488B-8A85-C0F744035F8B}
 	EndGlobalSection
 EndGlobal
