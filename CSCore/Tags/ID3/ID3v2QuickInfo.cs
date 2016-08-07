@@ -96,7 +96,7 @@ namespace CSCore.Tags.ID3
             {
                 Frame f;
                 int result;
-                if ((f = _id3[FrameID.Year]) != null &&
+                if ((f = _id3[FrameID.TrackNumber]) != null &&
                      Int32.TryParse((f as MultiStringTextFrame).Text, out result))
                     return result;
                 return null;
