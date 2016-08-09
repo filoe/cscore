@@ -50,9 +50,9 @@ namespace CSCore.Codecs.WAV
                     extraSize = reader.ReadInt16();
                     if (extraSize != ChunkDataSize - 18)
                         //TODO: Check whether this is the correct way of reading a fmt chunk
-                        extraSize = ChunkDataSize - 18;
+                        extraSize = (int) (ChunkDataSize - 18);
 
-                    for (int i = ChunkDataSize - 16; i > 0; i--)
+                    for (int i = (int) (ChunkDataSize - 16); i > 0; i--)
                     {
                         reader.ReadByte();
                     }

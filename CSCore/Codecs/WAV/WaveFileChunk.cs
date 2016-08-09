@@ -27,7 +27,7 @@ namespace CSCore.Codecs.WAV
             if (reader == null)
                 throw new ArgumentNullException("reader");
             ChunkID = reader.ReadInt32();
-            ChunkDataSize = reader.ReadInt32();
+            ChunkDataSize = reader.ReadUInt32();
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace CSCore.Codecs.WAV
         /// <summary>
         ///     Gets the data size of the chunk.
         /// </summary>
-        public int ChunkDataSize { get; private set; }
+        public uint ChunkDataSize { get; private set; }
 
         /// <summary>
         ///     Parses the <paramref name="stream" /> and returns a <see cref="WaveFileChunk" />. Note that the position of the

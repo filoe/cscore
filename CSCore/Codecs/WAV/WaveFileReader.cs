@@ -160,7 +160,7 @@ namespace CSCore.Codecs.WAV
                 }
                 else
                 {
-                    stream.Position += tmp.ChunkDataSize;
+                    stream.Seek(tmp.ChunkDataSize, SeekOrigin.Current);
                 }
 
             } while (stream.Length - stream.Position > 8); //8 bytes = size of chunk header
