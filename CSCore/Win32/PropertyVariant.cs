@@ -114,8 +114,11 @@ namespace CSCore.Win32
         /// <summary>
         /// VT_BOOL
         /// </summary>
-        [FieldOffset(8)]
-        public bool BoolValue;
+        public bool BoolValue
+        {
+            get { return Convert.ToBoolean(IValue); }
+            set { IValue = Convert.ToInt16(value); }
+        }
 
         /// <summary>
         /// VT_ERROR
@@ -126,8 +129,12 @@ namespace CSCore.Win32
         /// <summary>
         /// VT_DATE
         /// </summary>
-        [FieldOffset(8)]
-        public DateTime Date;
+        //marshaller will throw errors using the default marshaller: This is stored in the same representation as VT_R8.
+        public DateTime Date
+        {
+            get { return DateTime.FromOADate(DoubleValue); }
+            set { DoubleValue = value.ToOADate(); }
+        }
 
         /// <summary>
         /// VT_FILETIME
@@ -229,6 +236,9 @@ namespace CSCore.Win32
         public void Dispose()
         {
             Marshal.ThrowExceptionForHR(NativeMethods.PropVariantClear(ref this));
+
+            DataType = VarEnum.VT_EMPTY;
+            Reserved1 = Reserved2 = Reserved3 = 0;
         }
 
         /// <summary>
