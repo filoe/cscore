@@ -87,7 +87,7 @@ namespace CSCore.Tags.ID3
             byte encodingByte = buffer[offset];
 
             if (encodingByte == 0)
-                return Iso88591;
+                return Encoding.Default;
             if (encodingByte == 1)
             {
                 if (buffer.Length < stringOffset + 2)
