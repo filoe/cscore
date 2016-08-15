@@ -49,6 +49,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecordWithSpecificFormat", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConvertWavToMp3", "Samples\ConvertWavToMp3\ConvertWavToMp3.csproj", "{9CF28420-D689-46E6-B659-72520A515372}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayInputDeviceSample", "Samples\PlayInputDeviceSample\PlayInputDeviceSample.csproj", "{571AC77A-7D3D-44CF-B0E7-08DF03D7B638}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -250,6 +252,16 @@ Global
 		{9CF28420-D689-46E6-B659-72520A515372}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{9CF28420-D689-46E6-B659-72520A515372}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{9CF28420-D689-46E6-B659-72520A515372}.Release|Win32.ActiveCfg = Release|Any CPU
+		{571AC77A-7D3D-44CF-B0E7-08DF03D7B638}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{571AC77A-7D3D-44CF-B0E7-08DF03D7B638}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{571AC77A-7D3D-44CF-B0E7-08DF03D7B638}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{571AC77A-7D3D-44CF-B0E7-08DF03D7B638}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{571AC77A-7D3D-44CF-B0E7-08DF03D7B638}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{571AC77A-7D3D-44CF-B0E7-08DF03D7B638}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{571AC77A-7D3D-44CF-B0E7-08DF03D7B638}.Release|Any CPU.Build.0 = Release|Any CPU
+		{571AC77A-7D3D-44CF-B0E7-08DF03D7B638}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{571AC77A-7D3D-44CF-B0E7-08DF03D7B638}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{571AC77A-7D3D-44CF-B0E7-08DF03D7B638}.Release|Win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -272,5 +284,6 @@ Global
 		{F8733117-DA1D-40DC-AEF8-98051B86E219} = {41D1D336-13B2-488B-8A85-C0F744035F8B}
 		{E0198A08-AAA8-4A76-B096-BBE72DA4F93B} = {41D1D336-13B2-488B-8A85-C0F744035F8B}
 		{9CF28420-D689-46E6-B659-72520A515372} = {41D1D336-13B2-488B-8A85-C0F744035F8B}
+		{571AC77A-7D3D-44CF-B0E7-08DF03D7B638} = {41D1D336-13B2-488B-8A85-C0F744035F8B}
 	EndGlobalSection
 EndGlobal
