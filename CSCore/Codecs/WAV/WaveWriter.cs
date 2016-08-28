@@ -19,6 +19,8 @@ namespace CSCore.Codecs.WAV
         private BinaryWriter _writer;
         private bool _isDisposing;
 
+        private readonly bool _disposeStream;
+
         /// <summary>
         /// Signals if the object has already been disposed
         /// </summary>
@@ -52,6 +54,7 @@ namespace CSCore.Codecs.WAV
         public WaveWriter(string fileName, WaveFormat waveFormat)
             : this(File.OpenWrite(fileName), waveFormat)
         {
+            _disposeStream = false;
         }
 
         /// <summary>
@@ -83,6 +86,8 @@ namespace CSCore.Codecs.WAV
             _waveFormat = waveFormat;
 
             WriteHeader();
+
+            _disposeStream = true;
         }
 
         /// <summary>
@@ -324,16 +329,19 @@ namespace CSCore.Codecs.WAV
             }
             finally
             {
-                if (_writer != null)
+                if (_disposeStream)
                 {
-                    _writer.Close();
-                    _writer = null;
-                }
+                    if (_writer != null)
+                    {
+                        _writer.Close();
+                        _writer = null;
+                    }
 
-                if (_stream != null)
-                {
-                    _stream.Close();
-                    _stream = null;
+                    if (_stream != null)
+                    {
+                        _stream.Close();
+                        _stream = null;
+                    }
                 }
 
                 _isDisposing = false;
