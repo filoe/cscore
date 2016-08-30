@@ -220,6 +220,7 @@
     <Compile Include="CoreAudioAPI\IAudioSessionNotification.cs" />
     <Compile Include="CoreAudioAPI\IAudioVolumeDuckNotification.cs" />
     <Compile Include="CoreAudioAPI\IMMNotificationClient.cs" />
+    <Compile Include="CoreAudioAPI\MMEndpoint.cs" />
     <Compile Include="CoreAudioAPI\SessionCreatedEventArgs.cs" />
     <Compile Include="CoreAudioAPI\VolumeDuckNotificationEventArgs.cs" />
     <Compile Include="DirectSound\DirectSound8.cs" />
