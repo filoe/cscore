@@ -1,10 +1,6 @@
-﻿using CSCore.Win32;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Text;
 
 namespace CSCore.CoreAudioAPI
 {
@@ -23,7 +19,7 @@ namespace CSCore.CoreAudioAPI
         /// <param name="newDisplayName">The new display name for the session. </param>
         /// <param name="eventContext">The event context value.</param>
         /// <returns>HRESULT</returns>
-        int OnDisplayNameChanged([In, MarshalAs(UnmanagedType.LPWStr)] string newDisplayName, [In] ref Guid eventContext);
+        void OnDisplayNameChanged([In, MarshalAs(UnmanagedType.LPWStr)] string newDisplayName, [In] ref Guid eventContext);
 
         /// <summary>
         /// Notifies the client that the display icon for the session has changed.
@@ -31,7 +27,7 @@ namespace CSCore.CoreAudioAPI
         /// <param name="newIconPath">The path for the new display icon for the session.</param>
         /// <param name="eventContext">The event context value.</param>
         /// <returns>HRESULT</returns>
-        int OnIconPathChanged([In, MarshalAs(UnmanagedType.LPWStr)] string newIconPath, [In] ref Guid eventContext);
+        void OnIconPathChanged([In, MarshalAs(UnmanagedType.LPWStr)] string newIconPath, [In] ref Guid eventContext);
 
         /// <summary>
         /// Notifies the client that the volume level or muting state of the audio session has changed.
@@ -40,7 +36,7 @@ namespace CSCore.CoreAudioAPI
         /// <param name="newMute">The new muting state. If TRUE, muting is enabled. If FALSE, muting is disabled.</param>
         /// <param name="eventContext">The event context value.</param>
         /// <returns>HRESULT</returns>
-        int OnSimpleVolumeChanged([In] float newVolume, [In, MarshalAs(UnmanagedType.Bool)] bool newMute,
+        void OnSimpleVolumeChanged([In] float newVolume, [In, MarshalAs(UnmanagedType.Bool)] bool newMute,
             [In] ref Guid eventContext);
 
         /// <summary>
@@ -51,7 +47,7 @@ namespace CSCore.CoreAudioAPI
         /// <param name="changedChannel">The number of the channel whose volume level changed.</param>
         /// <param name="eventContext">The event context value.</param>
         /// <returns>HRESULT</returns>
-        int OnChannelVolumeChanged([In] int channelCount, [In] float[] newChannelVolumeArray, [In] int changedChannel,
+        void OnChannelVolumeChanged([In] int channelCount, [In] float[] newChannelVolumeArray, [In] int changedChannel,
             [In] ref Guid eventContext);
 
         /// <summary>
@@ -60,20 +56,20 @@ namespace CSCore.CoreAudioAPI
         /// <param name="newGroupingParam">The new grouping parameter for the session. This parameter points to a grouping-parameter GUID.</param>
         /// <param name="eventContext">The event context value.</param>
         /// <returns>HRESULT</returns>
-        int OnGroupingParamChanged([In] ref Guid newGroupingParam, [In] ref Guid eventContext);
+        void OnGroupingParamChanged([In] ref Guid newGroupingParam, [In] ref Guid eventContext);
 
         /// <summary>
         /// Notifies the client that the stream-activity state of the session has changed.
         /// </summary>
         /// <param name="newState">The new session state.</param>
         /// <returns>HRESULT</returns>
-        int OnStateChanged([In] AudioSessionState newState);
+        void OnStateChanged([In] AudioSessionState newState);
 
         /// <summary>
         /// Notifies the client that the audio session has been disconnected.
         /// </summary>
         /// <param name="disconnectReason">The reason that the audio session was disconnected.</param>
         /// <returns>HRESULT</returns>
-        int OnSessionDisconnected([In] AudioSessionDisconnectReason disconnectReason);
+        void OnSessionDisconnected([In] AudioSessionDisconnectReason disconnectReason);
     }
 }

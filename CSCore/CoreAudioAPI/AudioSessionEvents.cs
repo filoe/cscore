@@ -51,12 +51,11 @@ namespace CSCore.CoreAudioAPI
         /// <param name="newDisplayName">The new display name for the session. </param>
         /// <param name="eventContext">The event context value.</param>
         /// <returns>HRESULT</returns>
-        int IAudioSessionEvents.OnDisplayNameChanged(string newDisplayName, ref Guid eventContext)
+        void IAudioSessionEvents.OnDisplayNameChanged(string newDisplayName, ref Guid eventContext)
         {
-            EventHandler<AudioSessionDisplayNameChangedEventArgs> handler = this.DisplayNameChanged;
+            EventHandler<AudioSessionDisplayNameChangedEventArgs> handler = DisplayNameChanged;
             if (handler != null)
                 handler(this, new AudioSessionDisplayNameChangedEventArgs(newDisplayName, eventContext));
-            return (int) Win32.HResult.S_OK;
         }
 
         /// <summary>
@@ -65,27 +64,28 @@ namespace CSCore.CoreAudioAPI
         /// <param name="newIconPath">The path for the new display icon for the session.</param>
         /// <param name="eventContext">The event context value.</param>
         /// <returns>HRESULT</returns>
-        int IAudioSessionEvents.OnIconPathChanged(string newIconPath, ref Guid eventContext)
+        void IAudioSessionEvents.OnIconPathChanged(string newIconPath, ref Guid eventContext)
         {
-            EventHandler<AudioSessionIconPathChangedEventArgs> handler = this.IconPathChanged;
+            EventHandler<AudioSessionIconPathChangedEventArgs> handler = IconPathChanged;
             if (handler != null)
                 handler(this, new AudioSessionIconPathChangedEventArgs(newIconPath, eventContext));
-            return (int) Win32.HResult.S_OK;
         }
 
         /// <summary>
         /// Notifies the client that the volume level or muting state of the audio session has changed.
         /// </summary>
-        /// <param name="newVolume">The new volume level for the audio session. This parameter is a value in the range 0.0 to 1.0, where 0.0 is silence and 1.0 is full volume (no attenuation).</param>
+        /// <param name="newVolume">
+        /// The new volume level for the audio session. This parameter is a value in the range 0.0 to 1.0, 
+        /// where 0.0 is silence and 1.0 is full volume (no attenuation).
+        /// </param>
         /// <param name="newMute">The new muting state. If TRUE, muting is enabled. If FALSE, muting is disabled.</param>
         /// <param name="eventContext">The event context value.</param>
         /// <returns>HRESULT</returns>
-        int IAudioSessionEvents.OnSimpleVolumeChanged(float newVolume, bool newMute, ref Guid eventContext)
+        void IAudioSessionEvents.OnSimpleVolumeChanged(float newVolume, bool newMute, ref Guid eventContext)
         {
-            EventHandler<AudioSessionSimpleVolumeChangedEventArgs> handler = this.SimpleVolumeChanged;
+            EventHandler<AudioSessionSimpleVolumeChangedEventArgs> handler = SimpleVolumeChanged;
             if (handler != null)
                 handler(this, new AudioSessionSimpleVolumeChangedEventArgs(newVolume, newMute, eventContext));
-            return (int) Win32.HResult.S_OK;
         }
 
         /// <summary>
@@ -96,17 +96,16 @@ namespace CSCore.CoreAudioAPI
         /// <param name="changedChannel">The number of the channel whose volume level changed.</param>
         /// <param name="eventContext">The event context value.</param>
         /// <returns></returns>
-        int IAudioSessionEvents.OnChannelVolumeChanged(int channelCount, float[] newChannelVolumeArray,
+        void IAudioSessionEvents.OnChannelVolumeChanged(int channelCount, float[] newChannelVolumeArray,
             int changedChannel, ref Guid eventContext)
         {
-            EventHandler<AudioSessionChannelVolumeChangedEventArgs> handler = this.ChannelVolumeChanged;
+            EventHandler<AudioSessionChannelVolumeChangedEventArgs> handler = ChannelVolumeChanged;
             if (handler != null)
             {
                 handler(this,
                     new AudioSessionChannelVolumeChangedEventArgs(channelCount, newChannelVolumeArray, changedChannel,
                         eventContext));
             }
-            return (int) Win32.HResult.S_OK;
         }
 
         /// <summary>
@@ -115,12 +114,11 @@ namespace CSCore.CoreAudioAPI
         /// <param name="newGroupingParam">The new grouping parameter for the session. This parameter points to a grouping-parameter GUID.</param>
         /// <param name="eventContext">The event context value.</param>
         /// <returns>HRESULT</returns>
-        int IAudioSessionEvents.OnGroupingParamChanged(ref Guid newGroupingParam, ref Guid eventContext)
+        void IAudioSessionEvents.OnGroupingParamChanged(ref Guid newGroupingParam, ref Guid eventContext)
         {
-            EventHandler<AudioSessionGroupingParamChangedEventArgs> handler = this.GroupingParamChanged;
+            EventHandler<AudioSessionGroupingParamChangedEventArgs> handler = GroupingParamChanged;
             if (handler != null)
                 handler(this, new AudioSessionGroupingParamChangedEventArgs(newGroupingParam, eventContext));
-            return (int) Win32.HResult.S_OK;
         }
 
         /// <summary>
@@ -128,12 +126,11 @@ namespace CSCore.CoreAudioAPI
         /// </summary>
         /// <param name="newState">The new session state.</param>
         /// <returns>HRESULT</returns>
-        int IAudioSessionEvents.OnStateChanged(AudioSessionState newState)
+        void IAudioSessionEvents.OnStateChanged(AudioSessionState newState)
         {
-            EventHandler<AudioSessionStateChangedEventArgs> handler = this.StateChanged;
+            EventHandler<AudioSessionStateChangedEventArgs> handler = StateChanged;
             if (handler != null)
                 handler(this, new AudioSessionStateChangedEventArgs(newState));
-            return (int) Win32.HResult.S_OK;
         }
 
         /// <summary>
@@ -141,12 +138,11 @@ namespace CSCore.CoreAudioAPI
         /// </summary>
         /// <param name="disconnectReason">The reason that the audio session was disconnected.</param>
         /// <returns>HRESULT</returns>
-        int IAudioSessionEvents.OnSessionDisconnected(AudioSessionDisconnectReason disconnectReason)
+        void IAudioSessionEvents.OnSessionDisconnected(AudioSessionDisconnectReason disconnectReason)
         {
-            EventHandler<AudioSessionDisconnectedEventArgs> handler = this.SessionDisconnected;
+            EventHandler<AudioSessionDisconnectedEventArgs> handler = SessionDisconnected;
             if (handler != null)
                 handler(this, new AudioSessionDisconnectedEventArgs(disconnectReason));
-            return (int) Win32.HResult.S_OK;
         }
     }
 }
