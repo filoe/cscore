@@ -83,6 +83,23 @@ namespace CSCore.CoreAudioAPI
         }
 
         /// <summary>
+        /// Gets the data flow of the device.
+        /// </summary>
+        /// <value>
+        /// The data flow of the device.
+        /// </value>
+        public DataFlow DataFlow
+        {
+            get
+            {
+                using (var endpoint = new MMEndpoint(this))
+                {
+                    return endpoint.DataFlow;
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets the device format.
         /// </summary>
         /// <remarks>Specifies the device format, which is the format that the user has selected for the stream that flows between the audio engine and the audio endpoint device when the device operates in shared mode.</remarks>
