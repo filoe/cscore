@@ -487,7 +487,33 @@ namespace CSCore.CoreAudioAPI
         public bool IsFormatSupported(AudioClientShareMode shareMode, WaveFormat waveFormat)
         {
             WaveFormat tmp;
-            return IsFormatSupported(shareMode, waveFormat, out tmp);
+            bool result = IsFormatSupported(shareMode, waveFormat, out tmp);
+            if (result)
+            {
+                return true;
+            }
+
+            WaveFormatExtensible waveFormatExtensible = waveFormat as WaveFormatExtensible;
+            if (shareMode == AudioClientShareMode.Exclusive && waveFormatExtensible != null && 
+                waveFormatExtensible.Channels <= 2)
+            {
+                /*see https://msdn.microsoft.com/en-us/library/windows/desktop/dd370811(v=vs.85).aspx
+                 *To obtain reliable results from these drivers, exclusive-mode applications should call 
+                 *IsFormatSupported twice for each 1-channel or 2-channel PCM format—one call should use 
+                 *a stand-alone WAVEFORMATEX structure to specify the format, and the other call should 
+                 *use a WAVEFORMATEXTENSIBLE structure to specify the same format.
+                */
+                var encoding = AudioSubTypes.EncodingFromSubType(waveFormatExtensible.SubFormat);
+                WaveFormat waveFormat0 = new WaveFormat(
+                    waveFormatExtensible.SampleRate,
+                    waveFormatExtensible.BitsPerSample,
+                    waveFormatExtensible.Channels, 
+                    encoding);
+
+                result = IsFormatSupported(shareMode, waveFormat0, out tmp);
+            }
+
+            return result;
         }
 
         /// <summary>
