@@ -432,7 +432,7 @@ namespace CSCore.SoundOut
                     else
                     {
                         //based on the "RenderSharedTimerDriven"-Sample: http://msdn.microsoft.com/en-us/library/dd940521(v=vs.85).aspx
-                        Thread.Sleep(_latency / 8);
+                        Thread.Sleep(_latency / 8 > 0 ? _latency / 8 : 1);
                     }
 
                     if (PlaybackState == PlaybackState.Playing)
