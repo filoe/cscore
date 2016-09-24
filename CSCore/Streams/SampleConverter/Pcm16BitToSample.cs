@@ -18,7 +18,7 @@ namespace CSCore.Streams.SampleConverter
         {
             if (source == null)
                 throw new ArgumentNullException("source");
-            if (!source.WaveFormat.IsPCM() && source.WaveFormat.BitsPerSample != 16)
+            if (!source.WaveFormat.IsPCM() || source.WaveFormat.BitsPerSample != 16)
                 throw new InvalidOperationException("Invalid format. Format has to 16 bit Pcm.");
         }
 
