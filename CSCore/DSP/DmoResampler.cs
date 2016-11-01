@@ -263,8 +263,10 @@ namespace CSCore.DSP
         /// </summary>
         public void DisposeResamplerOnly()
         {
+            var disposeBaseSoure = DisposeBaseSource;
             DisposeBaseSource = false;
             Dispose();
+            DisposeBaseSource = disposeBaseSoure;
         }
 
         /// <summary>

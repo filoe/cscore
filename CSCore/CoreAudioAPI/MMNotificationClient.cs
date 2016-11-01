@@ -162,15 +162,7 @@ namespace CSCore.CoreAudioAPI
 
                 if (_deviceEnumerator != null && !_deviceEnumerator.IsDisposed)
                 {
-                    try
-                    {
-                        CoreAudioAPIException.Try(_deviceEnumerator.UnregisterEndpointNotificationCallbackNative(this),
-                            InterfaceName, "UnregisterEndpointNotificationCallback");
-                    }
-                    finally
-                    {
-                        _deviceEnumerator.Dispose();
-                    }
+                    _deviceEnumerator.Dispose();
                 }
                 GC.SuppressFinalize(this);
             }

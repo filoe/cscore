@@ -110,7 +110,7 @@ namespace CSCore.CoreAudioAPI
         /// Registers the application to receive a notification when a session is created.
         /// </summary>
         /// <param name="sessionNotification">The application's implementation of the <see cref="IAudioSessionNotification"/> interface.</param>
-        ///         /// <remarks>
+        /// <remarks>
         /// Use the <see cref="AudioSessionNotification"/> class as the default implementation for the <paramref name="sessionNotification"/> parameter.
         /// 
         /// <c>Note:</c> Make sure to call the <see cref="RegisterSessionNotification"/> from an MTA-Thread. Also make sure to enumerate all sessions after calling this method. 

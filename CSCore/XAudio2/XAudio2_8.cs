@@ -109,7 +109,7 @@ namespace CSCore.XAudio2
             if (callback != null)
             {
                 ptr = Marshal.GetComInterfaceForObject(callback, typeof (IXAudio2EngineCallback));
-                ptr = Utils.Utils.GetComInterfaceForObjectWithAdjustedVtable(ptr, 3, 3);
+                ptr = Utils.CSCoreUtils.GetComInterfaceForObjectWithAdjustedVtable(ptr, 3, 3);
             }
             try
             {
@@ -122,7 +122,7 @@ namespace CSCore.XAudio2
                     //while patching the IUnknown-members out of the vtable, we've made a backup of the release pointer,
                     //which gets called here -> the Marshal.Release method would call any function on index 2 of the vtable
                     //we've patched there
-                    Utils.Utils.Release(ptr);
+                    Utils.CSCoreUtils.Release(ptr);
                     //Marshal.Release(ptr);
                 }
             }
@@ -142,7 +142,7 @@ namespace CSCore.XAudio2
             if (callback != null)
             {
                 ptr = Marshal.GetComInterfaceForObject(callback, typeof (IXAudio2EngineCallback));
-                ptr = Utils.Utils.GetComInterfaceForObjectWithAdjustedVtable(ptr, 3, 3);
+                ptr = Utils.CSCoreUtils.GetComInterfaceForObjectWithAdjustedVtable(ptr, 3, 3);
             }
             try
             {
@@ -155,7 +155,7 @@ namespace CSCore.XAudio2
                     //while patching the IUnknown-members out of the vtable, we've made a backup of the release pointer,
                     //which gets called here -> the Marshal.Release method would call any function on index 2 of the vtable
                     //we've patched there
-                    Utils.Utils.Release(ptr);
+                    Utils.CSCoreUtils.Release(ptr);
                     //Marshal.Release(ptr);
                 }
             }
@@ -218,7 +218,7 @@ namespace CSCore.XAudio2
             if (voiceCallback != null)
             {
                 p = Marshal.GetComInterfaceForObject(voiceCallback, typeof (IXAudio2VoiceCallback));
-                p = Utils.Utils.GetComInterfaceForObjectWithAdjustedVtable(p, 7, 3);
+                p = Utils.CSCoreUtils.GetComInterfaceForObjectWithAdjustedVtable(p, 7, 3);
             }
 
             try
@@ -243,7 +243,7 @@ namespace CSCore.XAudio2
                     //while patching the IUnknown-members out of the vtable, we've made a backup of the release pointer,
                     //which gets called here -> the Marshal.Release method would call any function on index 2 of the vtable
                     //we've patched there
-                    Utils.Utils.Release(p);
+                    Utils.CSCoreUtils.Release(p);
                     //Marshal.Release(p);
                 }
             }

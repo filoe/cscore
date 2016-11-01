@@ -14,7 +14,7 @@ namespace CSCore.CoreAudioAPI
     {
         private const string InterfaceName = "IAudioSessionControl";
 
-        private readonly List<IAudioSessionEvents> _sessionEventHandler;
+        private readonly List<IAudioSessionEvents> _sessionEventHandler = new List<IAudioSessionEvents>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AudioSessionControl"/> class.
@@ -23,7 +23,19 @@ namespace CSCore.CoreAudioAPI
         public AudioSessionControl(IntPtr ptr)
             : base(ptr)
         {
-            _sessionEventHandler = new List<IAudioSessionEvents>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AudioSessionControl"/> class.
+        /// </summary>
+        /// <param name="audioClient">The audio client to create a <see cref="AudioSessionControl"/> instance for.</param>
+        /// <exception cref="System.ArgumentNullException">audioClient</exception>
+        public AudioSessionControl(AudioClient audioClient)
+        {
+            if (audioClient == null)
+                throw new ArgumentNullException("audioClient");
+
+            BasePtr = audioClient.GetService(typeof (AudioSessionControl).GUID);
         }
 
         /// <summary>

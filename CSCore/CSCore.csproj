@@ -375,7 +375,7 @@
     <Compile Include="TimeConverter.cs" />
     <Compile Include="TimeConverterAttribute.cs" />
     <Compile Include="TimeConverterFactory.cs" />
-    <Compile Include="Utils\Utils.cs" />
+    <Compile Include="Utils\CSCoreUtils.cs" />
     <Compile Include="Utils\Vector3.cs" />
     <Compile Include="Win32\CLSCTX.cs" />
     <Compile Include="Win32\ComStream.cs" />

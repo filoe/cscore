@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace CSCore.Utils
 {
-    internal static class Utils
+    internal static class CSCoreUtils
     {
         private static readonly Dictionary<IntPtr, PatchedVtable> _patchedVtables = new Dictionary<IntPtr, PatchedVtable>();
 
@@ -48,6 +48,17 @@ namespace CSCore.Utils
             }
 
             return 0;
+        }
+
+        internal static void SafeRelease<T>(ref T @object) where T : IDisposable
+        {
+            var obj = @object;
+            if (obj != null)
+            {
+                obj.Dispose();
+            }
+
+            @object = default(T);
         }
 
         private class PatchedVtable

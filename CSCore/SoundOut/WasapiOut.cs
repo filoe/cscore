@@ -6,6 +6,7 @@ using System.Threading;
 using CSCore.CoreAudioAPI;
 using CSCore.DSP;
 using CSCore.Streams;
+using CSCore.Utils;
 using CSCore.Win32;
 
 namespace CSCore.SoundOut
@@ -16,6 +17,8 @@ namespace CSCore.SoundOut
     /// </summary>
     public class WasapiOut : ISoundOut
     {
+        private const Role DeviceRoleNotSet = (Role) 0xFF;
+
         private readonly bool _eventSync;
         private readonly ThreadPriority _playbackThreadPriority;
         private readonly AudioClientShareMode _shareMode;
@@ -34,6 +37,8 @@ namespace CSCore.SoundOut
         private AudioRenderClient _renderClient;
         private VolumeSource _volumeSource;
         private IWaveSource _source;
+
+        private Role _deviceRole = DeviceRoleNotSet;
 
         private readonly object _lockObj = new object();
 
@@ -157,7 +162,7 @@ namespace CSCore.SoundOut
         {
             get
             {
-                return _device ?? (_device = MMDeviceEnumerator.DefaultAudioEndpoint(DataFlow.Render, Role.Multimedia));
+                return _device ?? (_device = MMDeviceEnumerator.DefaultAudioEndpoint(DataFlow.Render, DeviceRole));
             }
             set
             {
@@ -220,14 +225,24 @@ namespace CSCore.SoundOut
 
                 _playbackThread.WaitForExit();
 
-                source = new InterruptDisposingChainSource(source);
-
+                //prevent that the original source will be disposed anyway
+                source = new InterruptDisposingChainWaveSource(source);
+                
                 _volumeSource = new VolumeSource(source.ToSampleSource());
-                _source = _volumeSource.ToWaveSource();
+
+                _source = WrapVolumeSource(_volumeSource);
+
                 CleanupResources();
                 InitializeInternal();
                 _isInitialized = true;
             }
+        }
+
+        private IWaveSource WrapVolumeSource(VolumeSource volumeSource)
+        {
+            //since we want to reuse the volumesource in the case of a streamswitch (see streamrouting)
+            //we prevent the source chain from disposing our volume source.
+            return new InterruptDisposingChainSampleSource(volumeSource).ToWaveSource();
         }
 
         /// <summary>
@@ -393,19 +408,29 @@ namespace CSCore.SoundOut
             int taskIndex = 0;
             try
             {
-                int bufferSize = _audioClient.BufferSize;
-                int frameSize = _outputFormat.Channels * _outputFormat.BytesPerSample;
+                //we need a least one wait handle for the streamrouting stuff
+                //if eventsync is configured, we're using a second event for refilling the buffer
+                var eventWaitHandleArray = _eventSync ? new WaitHandle[] {_streamSwitchEvent, _eventWaitHandle} : new WaitHandle[] { _streamSwitchEvent };
+                
+                //the wait time for event sync has the default value of latency * 3
+                //if we're using a pure render loop, the wait time has to be much lower
+                //lets say latency / 8. otherwise we might loose too much time
+                int waitTime = _eventSync ? _latency * 3 : _latency / 8;
+                waitTime = Math.Max(1, waitTime);
 
-                var buffer = new byte[bufferSize * frameSize];
 
-                WaitHandle[] eventWaitHandleArray = { _eventWaitHandle };
-
+                //start the audio client
                 _audioClient.Start();
+
+                //update the playbackstate of the wasapiout instance
                 _playbackState = PlaybackState.Playing;
 
+                //enable mmcss
                 avrtHandle = NativeMethods.AvSetMmThreadCharacteristics(mmcssType, ref taskIndex);
 
-
+                //if a eventwaithandle got passed as argument, set it
+                //this is necessary to signal the Play method that the
+                //playbackthread is ready to play some audio data
                 if (playbackStartedEventWaithandle is EventWaitHandle)
                 {
                     ((EventWaitHandle)playbackStartedEventWaithandle).Set();
@@ -414,29 +439,59 @@ namespace CSCore.SoundOut
 
                 bool isAudioClientStopped = false;
 
+                byte[] buffer = null;
+                int bufferSize = 0;
+                int frameSize = 0;
+
                 while (PlaybackState != PlaybackState.Stopped)
                 {
-                    //based on the "RenderSharedEventDriven"-Sample: http://msdn.microsoft.com/en-us/library/dd940520(v=vs.85).aspx
-                    if (_eventSync)
+                    //initialize the buffer within the audio render loop
+                    //this is necessary because the buffer has to be rebuilt
+                    //if a streamswitch (see streamrouting) was done
+                    if (buffer == null)
                     {
-                        //3 * latency = see msdn: recommended timeout
-                        int eventWaitHandleIndex = WaitHandle.WaitAny(eventWaitHandleArray, 3 * _latency, false);
-                        if (eventWaitHandleIndex == WaitHandle.WaitTimeout)
+                        bufferSize = _audioClient.BufferSize;
+                        frameSize = _outputFormat.Channels * _outputFormat.BytesPerSample;
+
+                        buffer = new byte[bufferSize * frameSize];
+                    }
+
+                    int waitResult = WaitHandle.WaitAny(eventWaitHandleArray, waitTime);
+                    if (waitResult == WaitHandle.WaitTimeout)
+                    {
+                        if (_eventSync)
                         {
                             //guarantee that the stopped audio client (in exclusive and eventsync mode) can be
                             //restarted below
-                            if(PlaybackState != PlaybackState.Playing && !isAudioClientStopped)
+                            if (PlaybackState != PlaybackState.Playing && !isAudioClientStopped)
                                 continue;
                         }
+                        else
+                        {
+                            //no streamswitch event occurred
+                            //do nothing ... continue with processing
+                        }
                     }
-                    else
+                    else if (waitResult == 0)
                     {
-                        //based on the "RenderSharedTimerDriven"-Sample: http://msdn.microsoft.com/en-us/library/dd940521(v=vs.85).aspx
-                        Thread.Sleep(_latency / 8 > 0 ? _latency / 8 : 1);
+                        //streamswitch
+                        if (!HandleStreamSwitchEvent())
+                        {
+                            //stop playback
+                            _playbackState = PlaybackState.Stopped;
+                        }
+
+                        //set the buffer to null 
+                        //this will re-initialize the 
+                        //buffer, bufferSize and frameSize variables
+                        buffer = null;
+                        continue;
                     }
 
                     if (PlaybackState == PlaybackState.Playing)
                     {
+                        //if the audio client got stopped in order to avoid the "repetitive" sound
+                        //we have to restart it ->
                         if (isAudioClientStopped)
                         {
                             //restart the audioclient if it is still paused in exclusive mode
@@ -444,23 +499,31 @@ namespace CSCore.SoundOut
                             _audioClient.Start();
                             isAudioClientStopped = false;
                         }
-
+                        
+                        //get the current padding
                         int padding;
                         if (_eventSync && _shareMode == AudioClientShareMode.Exclusive)
+                        {
+                            /*
+                             * "For an exclusive-mode rendering or capture stream that was 
+                             * initialized with the AUDCLNT_STREAMFLAGS_EVENTCALLBACK flag, 
+                             * the client typically has no use for the padding value reported 
+                             * by GetCurrentPadding. Instead, the client accesses an entire 
+                             * buffer during each processing pass." 
+                             * (see https://msdn.microsoft.com/en-us/library/windows/desktop/dd370868(v=vs.85).aspx)
+                             */
                             padding = 0;
+                        }
                         else
-                            padding = _audioClient.GetCurrentPadding();
+                        {
+                            if (_audioClient.GetCurrentPaddingNative(out padding) != (int) HResult.S_OK)
+                                continue;
+
+                        }
 
                         int framesReadyToFill = bufferSize - padding;
+                        
                         //avoid conversion errors
-                        /*if (framesReadyToFill > 5 &&
-                            !(_source is DmoResampler &&
-                              ((DmoResampler) _source).OutputToInput(framesReadyToFill * frameSize) <= 0))
-                        {
-                            if (!FeedBuffer(_renderClient, buffer, framesReadyToFill, frameSize))
-                                _playbackState = PlaybackState.Stopped; //TODO: Fire Stopped-event here?
-                        }*/
-
                         if(framesReadyToFill <= 5 || 
                             ((_source is DmoResampler) && ((DmoResampler)_source).OutputToInput(framesReadyToFill * frameSize) <= 0))
                             continue;
@@ -585,14 +648,23 @@ namespace CSCore.SoundOut
             }
 
             _renderClient = AudioRenderClient.FromAudioClient(_audioClient);
+
+            if (_streamSwitchEvent == null)
+            {
+                _streamSwitchEvent = new AutoResetEvent(false);
+            }
+
+            InitializeStreamRouting();
         }
 
-        private void CleanupResources()
+        private void CleanupResources(bool streamSwitch = false)
         {
             if (_createdResampler && _source is DmoResampler)
             {
-                ((DmoResampler)_source).DisposeResamplerOnly();
-                _source = null;
+                //dispose the source -> the volume source won't get touched
+                //because of the interruption
+                _source.Dispose(); 
+                _source = streamSwitch ? WrapVolumeSource(_volumeSource) : null;
             }
 
             if (_renderClient != null)
@@ -620,6 +692,8 @@ namespace CSCore.SoundOut
                 _eventWaitHandle.Close();
                 _eventWaitHandle = null;
             }
+
+            TerminateStreamRouting();
 
             _isInitialized = false;
         }
@@ -816,6 +890,101 @@ namespace CSCore.SoundOut
             }
         }
 
+        private EventWaitHandle _streamSwitchCompleteEvent;
+        private AudioSessionControl _audioSessionControl;
+        private MMDeviceEnumerator _deviceEnumerator;
+        private WasapiEventHandler _eventHandler;
+        private bool _inStreamSwitch;
+        private EventWaitHandle _streamSwitchEvent;
+
+        private void InitializeStreamRouting()
+        {
+            _eventHandler = new WasapiEventHandler(this);
+
+            _audioSessionControl = new AudioSessionControl(_audioClient);
+            _deviceEnumerator = new MMDeviceEnumerator();
+
+            if (_streamSwitchCompleteEvent == null)
+            {
+                _streamSwitchCompleteEvent = new ManualResetEvent(false);
+            }
+
+            _audioSessionControl.RegisterAudioSessionNotification(_eventHandler);
+            _deviceEnumerator.RegisterEndpointNotificationCallback(_eventHandler);
+        }
+
+        private void TerminateStreamRouting()
+        {
+            if (_audioSessionControl != null)
+            {
+                _audioSessionControl.UnregisterAudioSessionNotification(_eventHandler);
+                CSCoreUtils.SafeRelease(ref _audioSessionControl);
+            }
+
+            if (_deviceEnumerator != null)
+            {
+                _deviceEnumerator.UnregisterEndpointNotificationCallback(_eventHandler);
+                CSCoreUtils.SafeRelease(ref _deviceEnumerator);
+            }
+
+            if (_streamSwitchCompleteEvent != null)
+            {
+                _streamSwitchCompleteEvent.Close();
+                _streamSwitchCompleteEvent = null;
+            }
+        }
+
+        private bool HandleStreamSwitchEvent()
+        {
+            Debug.Assert(_inStreamSwitch);
+
+            //Step 1: Stop rendering
+            _audioClient.Stop();
+
+            //Step 3: Wait for the default device to change.
+            if (!_streamSwitchCompleteEvent.WaitOne(750))
+            {
+                Debug.WriteLine("Stream switch timeout - aborting...");
+                goto StreamSwitchErrorExit;
+            }
+
+            //Step 2: Release resources. 
+            _audioSessionControl.UnregisterAudioSessionNotification(_eventHandler);
+
+            CSCoreUtils.SafeRelease(ref _audioSessionControl);
+            CleanupResources(true);
+            CSCoreUtils.SafeRelease(ref _device);
+
+            //Step 4: Try to get new endpoint
+            try
+            {
+                _deviceEnumerator = _deviceEnumerator ?? new MMDeviceEnumerator();
+                _device = _deviceEnumerator.GetDefaultAudioEndpoint(DataFlow.Render, DeviceRole);
+            }
+            catch (CoreAudioAPIException exception)
+            {
+                Debug.WriteLine("Unable to retrieve new default device during stream switch: 0x" + exception.ErrorCode.ToString("x8"));
+                goto StreamSwitchErrorExit;
+            }
+
+            //Step 5: Re-instantiate the audio client on the new endpoint.
+            InitializeInternal();
+
+            _audioClient.Start();
+
+            _inStreamSwitch = false;
+            return true;
+
+StreamSwitchErrorExit:
+            _inStreamSwitch = false;
+            return false;
+        }
+
+        private Role DeviceRole
+        {
+            get { return _deviceRole == DeviceRoleNotSet ? Role.Multimedia : _deviceRole; }
+        }
+
         /// <summary>
         /// Disposes and stops the <see cref="WasapiOut"/> instance.
         /// </summary>
@@ -831,6 +1000,11 @@ namespace CSCore.SoundOut
                     Debug.WriteLine("Disposing WasapiOut.");
                     Stop();
                     CleanupResources();
+                    if (_streamSwitchEvent != null)
+                    {
+                        _streamSwitchEvent.Close();
+                        _streamSwitchEvent = null;
+                    }
                 }
                 _disposed = true;
             }
@@ -844,14 +1018,110 @@ namespace CSCore.SoundOut
             Dispose(false);
         }
 
-        private class InterruptDisposingChainSource : WaveAggregatorBase
+        private class InterruptDisposingChainWaveSource : WaveAggregatorBase
         {
-            public InterruptDisposingChainSource(IWaveSource source)
+            public InterruptDisposingChainWaveSource(IWaveSource source)
                 : base(source)
             {
                 if (source == null)
                     throw new ArgumentNullException("source");
                 DisposeBaseSource = false;
+            }
+        }
+
+        private class InterruptDisposingChainSampleSource : SampleAggregatorBase
+        {
+            public InterruptDisposingChainSampleSource(ISampleSource source)
+                : base(source)
+            {
+                if (source == null)
+                    throw new ArgumentNullException("source");
+                DisposeBaseSource = false;
+            }
+        }
+
+        private class WasapiEventHandler : IAudioSessionEvents, IMMNotificationClient
+        {
+            private readonly WasapiOut _wasapiOut;
+
+            public WasapiEventHandler(WasapiOut wasapiOut)
+            {
+                _wasapiOut = wasapiOut;
+            }
+
+            public void OnDisplayNameChanged(string newDisplayName, ref Guid eventContext)
+            {
+            }
+
+            public void OnIconPathChanged(string newIconPath, ref Guid eventContext)
+            {
+            }
+
+            public void OnSimpleVolumeChanged(float newVolume, bool newMute, ref Guid eventContext)
+            {
+            }
+
+            public void OnChannelVolumeChanged(int channelCount, float[] newChannelVolumeArray, int changedChannel, ref Guid eventContext)
+            {
+            }
+
+            public void OnGroupingParamChanged(ref Guid newGroupingParam, ref Guid eventContext)
+            {
+            }
+
+            public void OnStateChanged(AudioSessionState newState)
+            {
+            }
+
+            public void OnSessionDisconnected(AudioSessionDisconnectReason disconnectReason)
+            {
+                if (_wasapiOut._streamSwitchEvent != null && !_wasapiOut._inStreamSwitch)
+                {
+                    if (disconnectReason == AudioSessionDisconnectReason.DisconnectReasonDeviceRemoval)
+                    {
+                        _wasapiOut._inStreamSwitch = true;
+                        _wasapiOut._streamSwitchEvent.Set();
+                    }
+                    if (disconnectReason == AudioSessionDisconnectReason.DisconnectReasonFormatChanged)
+                    {
+                        _wasapiOut._inStreamSwitch = true;
+                        _wasapiOut._streamSwitchEvent.Set();
+                        _wasapiOut._streamSwitchCompleteEvent.Set();
+                    }
+                }
+                //todo
+            }
+
+            public void OnDeviceStateChanged(string deviceId, DeviceState deviceState)
+            {
+            }
+
+            public void OnDeviceAdded(string deviceId)
+            {
+            }
+
+            public void OnDeviceRemoved(string deviceId)
+            {
+            }
+
+            public void OnDefaultDeviceChanged(DataFlow dataFlow, Role role, string deviceId)
+            {
+                if (dataFlow == DataFlow.Render && role == _wasapiOut.DeviceRole)
+                {
+                    if (!_wasapiOut._inStreamSwitch)
+                    {
+                        //we're not in stream switch already ... initiate stream switch
+                        _wasapiOut._inStreamSwitch = true;
+                        _wasapiOut._streamSwitchEvent.Set();
+                    }
+
+                    //signal the render thread to re-initialize the audio renderer
+                    _wasapiOut._streamSwitchCompleteEvent.Set();
+                }
+            }
+
+            public void OnPropertyValueChanged(string deviceId, PropertyKey key)
+            {
             }
         }
     }
