@@ -83,7 +83,7 @@ namespace CSCore.Codecs
 
             if (Mp2Decoder.IsSupported)
             {
-                Register("mp2", new CodecFactoryEntry(s => new Mp1Decoder(s),
+                Register("mp2", new CodecFactoryEntry(s => new Mp2Decoder(s),
                     "mp2", "m2ts"));
             }
 
