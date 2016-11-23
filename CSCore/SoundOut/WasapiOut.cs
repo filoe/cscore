@@ -37,6 +37,7 @@ namespace CSCore.SoundOut
         private AudioRenderClient _renderClient;
         private VolumeSource _volumeSource;
         private IWaveSource _source;
+        private StreamRoutingOptions _streamRoutingOptions = StreamRoutingOptions.OnFormatChange | StreamRoutingOptions.OnDeviceDisconnect;
 
         private Role _deviceRole = DeviceRoleNotSet;
 
@@ -124,6 +125,15 @@ namespace CSCore.SoundOut
             _syncContext = eventSyncContext;
 
             UseChannelMixingMatrices = false;
+
+            /*
+             * In order to avoid significant changes without
+             * a new release, set All as default on CSCore 1.2 and above.
+             */
+            if (CSCoreUtils.IsGreaterEqualCSCore12)
+            {
+                _streamRoutingOptions = StreamRoutingOptions.All;
+            }
         }
 
         /// <summary>
@@ -150,6 +160,27 @@ namespace CSCore.SoundOut
         }
 
         /// <summary>
+        ///     Gets or sets the stream routing options.
+        /// </summary>
+        /// <value>
+        ///     The stream routing options. 
+        /// </value>
+        /// <remarks>
+        ///     The <see cref="SoundOut.StreamRoutingOptions.OnDefaultDeviceChange"/> flag can only be used
+        ///     if the <see cref="Device"/> is the default device.
+        ///     That behavior can be changed by overriding the <see cref="UpdateStreamRoutingOptions"/> method.
+        /// </remarks>
+        public StreamRoutingOptions StreamRoutingOptions
+        {
+            get { return _streamRoutingOptions; }
+            set
+            {
+                _streamRoutingOptions = value;
+                UpdateStreamRoutingOptions();
+            }
+        }
+
+        /// <summary>
         ///     Gets or sets the <see cref="Device" /> which should be used for playback.
         ///     The <see cref="Device" /> property has to be set before initializing. The systems default playback device is used
         ///     as default value
@@ -169,6 +200,7 @@ namespace CSCore.SoundOut
                 if (value == null)
                     throw new ArgumentNullException("value");
                 _device = value;
+                UpdateStreamRoutingOptions();
             }
         }
 
@@ -445,66 +477,68 @@ namespace CSCore.SoundOut
 
                 while (PlaybackState != PlaybackState.Stopped)
                 {
-                    //initialize the buffer within the audio render loop
-                    //this is necessary because the buffer has to be rebuilt
-                    //if a streamswitch (see streamrouting) was done
-                    if (buffer == null)
+                    try
                     {
-                        bufferSize = _audioClient.BufferSize;
-                        frameSize = _outputFormat.Channels * _outputFormat.BytesPerSample;
+                        //initialize the buffer within the audio render loop
+                        //this is necessary because the buffer has to be rebuilt
+                        //if a streamswitch (see streamrouting) was done
+                        if (buffer == null)
+                        {
+                            bufferSize = _audioClient.BufferSize;
+                            frameSize = _outputFormat.Channels * _outputFormat.BytesPerSample;
 
-                        buffer = new byte[bufferSize * frameSize];
-                    }
-
-                    int waitResult = WaitHandle.WaitAny(eventWaitHandleArray, waitTime);
-                    if (waitResult == WaitHandle.WaitTimeout)
-                    {
-                        if (_eventSync)
-                        {
-                            //guarantee that the stopped audio client (in exclusive and eventsync mode) can be
-                            //restarted below
-                            if (PlaybackState != PlaybackState.Playing && !isAudioClientStopped)
-                                continue;
-                        }
-                        else
-                        {
-                            //no streamswitch event occurred
-                            //do nothing ... continue with processing
-                        }
-                    }
-                    else if (waitResult == 0)
-                    {
-                        //streamswitch
-                        if (!HandleStreamSwitchEvent())
-                        {
-                            //stop playback
-                            _playbackState = PlaybackState.Stopped;
+                            buffer = new byte[bufferSize * frameSize];
                         }
 
-                        //set the buffer to null 
-                        //this will re-initialize the 
-                        //buffer, bufferSize and frameSize variables
-                        buffer = null;
-                        continue;
-                    }
-
-                    if (PlaybackState == PlaybackState.Playing)
-                    {
-                        //if the audio client got stopped in order to avoid the "repetitive" sound
-                        //we have to restart it ->
-                        if (isAudioClientStopped)
+                        int waitResult = WaitHandle.WaitAny(eventWaitHandleArray, waitTime);
+                        if (waitResult == WaitHandle.WaitTimeout)
                         {
-                            //restart the audioclient if it is still paused in exclusive mode
-                            //belongs to the bugfix described below. http://cscore.codeplex.com/workitem/23
-                            _audioClient.Start();
-                            isAudioClientStopped = false;
+                            if (_eventSync)
+                            {
+                                //guarantee that the stopped audio client (in exclusive and eventsync mode) can be
+                                //restarted below
+                                if (PlaybackState != PlaybackState.Playing && !isAudioClientStopped)
+                                    continue;
+                            }
+                            else
+                            {
+                                //no streamswitch event occurred
+                                //do nothing ... continue with processing
+                            }
                         }
-                        
-                        //get the current padding
-                        int padding;
-                        if (_eventSync && _shareMode == AudioClientShareMode.Exclusive)
+                        else if (waitResult == 0)
                         {
-                            /*
+                            //streamswitch
+                            if (!HandleStreamSwitchEvent())
+                            {
+                                //stop playback
+                                _playbackState = PlaybackState.Stopped;
+                            }
+
+                            //set the buffer to null 
+                            //this will re-initialize the 
+                            //buffer, bufferSize and frameSize variables
+                            buffer = null;
+                            continue;
+                        }
+
+                        if (PlaybackState == PlaybackState.Playing)
+                        {
+                            //if the audio client got stopped in order to avoid the "repetitive" sound
+                            //we have to restart it ->
+                            if (isAudioClientStopped)
+                            {
+                                //restart the audioclient if it is still paused in exclusive mode
+                                //belongs to the bugfix described below. http://cscore.codeplex.com/workitem/23
+                                _audioClient.Start();
+                                isAudioClientStopped = false;
+                            }
+
+                            //get the current padding
+                            int padding;
+                            if (_eventSync && _shareMode == AudioClientShareMode.Exclusive)
+                            {
+                                /*
                              * "For an exclusive-mode rendering or capture stream that was 
                              * initialized with the AUDCLNT_STREAMFLAGS_EVENTCALLBACK flag, 
                              * the client typically has no use for the padding value reported 
@@ -512,34 +546,44 @@ namespace CSCore.SoundOut
                              * buffer during each processing pass." 
                              * (see https://msdn.microsoft.com/en-us/library/windows/desktop/dd370868(v=vs.85).aspx)
                              */
-                            padding = 0;
-                        }
-                        else
-                        {
-                            if (_audioClient.GetCurrentPaddingNative(out padding) != (int) HResult.S_OK)
+                                padding = 0;
+                            }
+                            else
+                            {
+                                if (_audioClient.GetCurrentPaddingNative(out padding) != (int) HResult.S_OK)
+                                    continue;
+
+                            }
+
+                            int framesReadyToFill = bufferSize - padding;
+
+                            //avoid conversion errors
+                            if (framesReadyToFill <= 5 ||
+                                ((_source is DmoResampler) &&
+                                 ((DmoResampler) _source).OutputToInput(framesReadyToFill * frameSize) <= 0))
                                 continue;
 
+                            if (!FeedBuffer(_renderClient, buffer, framesReadyToFill, frameSize))
+                                _playbackState = PlaybackState.Stopped; //source is eof
+
                         }
-
-                        int framesReadyToFill = bufferSize - padding;
-                        
-                        //avoid conversion errors
-                        if(framesReadyToFill <= 5 || 
-                            ((_source is DmoResampler) && ((DmoResampler)_source).OutputToInput(framesReadyToFill * frameSize) <= 0))
-                            continue;
-
-                        if(!FeedBuffer(_renderClient, buffer, framesReadyToFill, frameSize))
-                            _playbackState = PlaybackState.Stopped; //source is eof
-
+                        else if (PlaybackState == PlaybackState.Paused &&
+                                 _shareMode == AudioClientShareMode.Exclusive &&
+                                 !isAudioClientStopped)
+                        {
+                            //stop the audioclient on paused if the sharemode is set to exclusive
+                            //otherwise there would be a "repetitive" sound. see http://cscore.codeplex.com/workitem/23
+                            _audioClient.Stop();
+                            isAudioClientStopped = true;
+                        }
                     }
-                    else if(PlaybackState == PlaybackState.Paused && 
-                            _shareMode == AudioClientShareMode.Exclusive &&
-                            !isAudioClientStopped)
+                    catch (CoreAudioAPIException ex)
                     {
-                        //stop the audioclient on paused if the sharemode is set to exclusive
-                        //otherwise there would be a "repetitive" sound. see http://cscore.codeplex.com/workitem/23
-                        _audioClient.Stop();
-                        isAudioClientStopped = true;
+                        //this error can occur while if stream routing has not finished yet
+                        if (ex.ErrorCode != (int) HResult.AUDCLNT_E_DEVICE_INVALIDATED)
+                        {
+                            throw;
+                        }
                     }
                 }
 
@@ -985,6 +1029,37 @@ StreamSwitchErrorExit:
             get { return _deviceRole == DeviceRoleNotSet ? Role.Multimedia : _deviceRole; }
         }
 
+        private bool IsDefaultDevice(MMDevice device, DataFlow dataFlow, Role role)
+        {
+            var defaultAudioEndpoint = MMDeviceEnumerator.DefaultAudioEndpoint(dataFlow, role);
+            if (defaultAudioEndpoint != null && device != null)
+            {
+                return defaultAudioEndpoint.DeviceID == device.DeviceID;
+            }
+
+            return false;
+        }
+        
+        /// <summary>
+        /// Updates the stream routing options.
+        /// </summary>
+        /// <remarks>
+        /// If the current <see cref="Device"/> is not the default device, 
+        /// the <see cref="SoundOut.StreamRoutingOptions.OnDefaultDeviceChange"/> flag will be removed.
+        /// </remarks>
+        protected virtual void UpdateStreamRoutingOptions()
+        {
+            if (!IsDefaultDevice(Device, DataFlow.Render, DeviceRole) &&
+                (StreamRoutingOptions & StreamRoutingOptions.OnDefaultDeviceChange) ==
+                StreamRoutingOptions.OnDefaultDeviceChange)
+            {
+                //new device is not the default device 
+                //AND OnDefaultDeviceChange is set
+                //=> remove OnDefaultDeviceChange flag
+                StreamRoutingOptions &= ~StreamRoutingOptions.OnDefaultDeviceChange;
+            }
+        }
+
         /// <summary>
         /// Disposes and stops the <see cref="WasapiOut"/> instance.
         /// </summary>
@@ -1079,17 +1154,35 @@ StreamSwitchErrorExit:
                 {
                     if (disconnectReason == AudioSessionDisconnectReason.DisconnectReasonDeviceRemoval)
                     {
+                        //check whether OnDeviceDisconnect StreamRoutingOptions is set
+                        if ((_wasapiOut.StreamRoutingOptions &
+                             StreamRoutingOptions.OnDeviceDisconnect) != StreamRoutingOptions.OnDeviceDisconnect)
+                            return;
+
                         _wasapiOut._inStreamSwitch = true;
                         _wasapiOut._streamSwitchEvent.Set();
+
+                        //if the current device is currently not the default device, 
+                        //the OnDefaultDeviceChanged event won't be triggered
+                        //=> the streamSwitchCompleteEvent won't be set
+                        //=> set it within the OnSessionDisconnected event
+                        //otherwise wait for the final DefaultDeviceSwitch
+                        if (!_wasapiOut.IsDefaultDevice(_wasapiOut.Device, DataFlow.Render, _wasapiOut.DeviceRole))
+                        {
+                            _wasapiOut._streamSwitchCompleteEvent.Set();
+                        }
                     }
                     if (disconnectReason == AudioSessionDisconnectReason.DisconnectReasonFormatChanged)
                     {
+                        if ((_wasapiOut.StreamRoutingOptions &
+                             StreamRoutingOptions.OnFormatChange) != StreamRoutingOptions.OnFormatChange)
+                            return;
+
                         _wasapiOut._inStreamSwitch = true;
                         _wasapiOut._streamSwitchEvent.Set();
                         _wasapiOut._streamSwitchCompleteEvent.Set();
                     }
                 }
-                //todo
             }
 
             public void OnDeviceStateChanged(string deviceId, DeviceState deviceState)
@@ -1106,9 +1199,15 @@ StreamSwitchErrorExit:
 
             public void OnDefaultDeviceChanged(DataFlow dataFlow, Role role, string deviceId)
             {
+                bool defaultDeviceSwitingEnabled =
+                    (_wasapiOut.StreamRoutingOptions & StreamRoutingOptions.OnDefaultDeviceChange) ==
+                    StreamRoutingOptions.OnDefaultDeviceChange;
+
                 if (dataFlow == DataFlow.Render && role == _wasapiOut.DeviceRole)
                 {
-                    if (!_wasapiOut._inStreamSwitch)
+
+                    //check whether DefaultDeviceSwitching is enabled
+                    if (!_wasapiOut._inStreamSwitch && defaultDeviceSwitingEnabled)
                     {
                         //we're not in stream switch already ... initiate stream switch
                         _wasapiOut._inStreamSwitch = true;
@@ -1116,7 +1215,13 @@ StreamSwitchErrorExit:
                     }
 
                     //signal the render thread to re-initialize the audio renderer
-                    _wasapiOut._streamSwitchCompleteEvent.Set();
+                    if (_wasapiOut._inStreamSwitch)
+                    {
+                        //if defaultDeviceSwitching is not enabled, inStreamSwitch is always false
+                        //except the DeviceRemoval event was triggered
+                        //for that case, set the streamSwitchCompleteEvent
+                        _wasapiOut._streamSwitchCompleteEvent.Set();
+                    }
                 }
             }
 
@@ -1124,5 +1229,33 @@ StreamSwitchErrorExit:
             {
             }
         }
+    }
+
+    /// <summary>
+    /// Defines options for wasapi-streamrouting.
+    /// </summary>
+    [Flags]
+    public enum StreamRoutingOptions
+    {
+        /// <summary>
+        /// Disable stream routing.
+        /// </summary>
+        Disabled = 0,
+        /// <summary>
+        /// Use stream routing when the device format has changed.
+        /// </summary>
+        OnFormatChange = 1,
+        /// <summary>
+        /// Use stream routing when the default device has changed.
+        /// </summary>
+        OnDefaultDeviceChange = 2,
+        /// <summary>
+        /// Use stream routing when the current device was disconnected.
+        /// </summary>
+        OnDeviceDisconnect = 4,
+        /// <summary>
+        /// Combination of <see cref="OnFormatChange"/>, <see cref="OnDefaultDeviceChange"/> and <see cref="OnDeviceDisconnect"/>.
+        /// </summary>
+        All = OnFormatChange | OnDefaultDeviceChange | OnDeviceDisconnect
     }
 }

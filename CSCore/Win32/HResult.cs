@@ -60,6 +60,11 @@
         AUDCLNT_E_UNSUPPORTED_FORMAT = unchecked ((int)0x88890008),
 
         /// <summary>
+        /// AUDCLNT_E_DEVICE_INVALIDATED
+        /// </summary>
+        AUDCLNT_E_DEVICE_INVALIDATED = unchecked ((int)0x88890004),
+
+        /// <summary>
         /// AUDCLNT_S_BUFFER_EMPTY
         /// </summary>
         AUDCLNT_S_BUFFER_EMPTY = 0x08890001

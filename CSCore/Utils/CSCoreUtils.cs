@@ -9,6 +9,16 @@ namespace CSCore.Utils
     {
         private static readonly Dictionary<IntPtr, PatchedVtable> _patchedVtables = new Dictionary<IntPtr, PatchedVtable>();
 
+        public static bool IsGreaterEqualCSCore12
+        {
+            get
+            {
+                var version = typeof (CSCoreUtils).Assembly.GetName().Version;
+                var version12 = new Version(1, 2);
+                return version.CompareTo(version12) >= 0;
+            }
+        }
+
         public static unsafe IntPtr GetComInterfaceForObjectWithAdjustedVtable(IntPtr ptr, int finalVtableLength, int replaceCount, bool isIUnknown = true)
         {
             var pp = (IntPtr*)(void*)ptr;
