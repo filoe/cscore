@@ -1,0 +1,32 @@
+﻿<Window x:Class="EndpointAudioMeterSample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525">
+    <DockPanel>
+        <ComboBox DockPanel.Dock="Top"
+                  ItemsSource="{Binding Devices}"
+                  SelectedItem="{Binding SelectedDevice}"
+                  DisplayMemberPath="FriendlyName"/>
+        <ItemsControl ItemsSource="{Binding AudioMeter.Items}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <DockPanel Margin="0,5,10,5">
+                        <TextBlock DockPanel.Dock="Bottom"
+                                   TextAlignment="Center" 
+                                   Text="{Binding Path=Name}"/>
+                        <ProgressBar Orientation="Vertical" 
+                                     HorizontalAlignment="Center"
+                                     Value="{Binding Value}" 
+                                     Maximum="1" 
+                                     Width="25" />
+                    </DockPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </DockPanel>
+</Window>
