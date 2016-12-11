@@ -27,8 +27,7 @@ You may prefer to install the [CSCore nuget package](https://www.nuget.org/packa
  - **Tons of features**
  - **Fast support on [github](https://github.com/filoe/cscore), [codeplex](http://cscore.codeplex.com/) or [stackoverflow](http://stackoverflow.com/questions/tagged/cscore)** 
  - **High code coverage through unit tests** 
- - **Licensed under the MS-PL** (which allows the usage of cscore
-   for commercial products)
+ - **Licensed under the MS-PL** (does not include the [CSCore.Ffmpeg](https://github.com/filoe/cscore/tree/master/CSCore.Ffmpeg) project which is licensed under the LGPL)
 
 ### Supported Features ###
 
