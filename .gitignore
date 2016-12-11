@@ -2,7 +2,7 @@
 ###################
 *.com
 *.class
-# *.dll #
+*.dll
 *.exe
 *.o
 *.so
@@ -69,3 +69,6 @@ remove.bat
 !**/packages/build/
 # Uncomment if necessary however generally it will be regenerated when needed
 #!**/packages/repositories.config
+
+# CSCore.Ffmpeg binaries:
+!**/CSCore.Ffmpeg/FFmpeg/**
