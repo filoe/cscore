@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using CSCore.Ffmpeg.Interops;
 
 namespace CSCore.Ffmpeg
 {
@@ -26,7 +27,7 @@ namespace CSCore.Ffmpeg
         /// <param name="errorCode">The error code.</param>
         /// <param name="function">The name of the function that returned the <paramref name="errorCode"/>.</param>
         public FfmpegException(int errorCode, string function)
-            : base(String.Format("{0} returned 0x{1:x8}: {2}", function, errorCode, GetErrorMessage(errorCode)))
+            : base(String.Format("{0} returned 0x{1:x8}: {2}", function, errorCode, FfmpegCalls.AvStrError(errorCode)))
         {
         }
 
@@ -47,17 +48,6 @@ namespace CSCore.Ffmpeg
         public FfmpegException(string message)
             : base(message)
         {
-        }
-
-        private static unsafe string GetErrorMessage(int errorCode)
-        {
-            byte* buffer = stackalloc byte[500];
-            int result = InteropCalls.av_strerror(errorCode, new IntPtr(buffer), 500);
-            if (result < 0)
-                return "No description available.";
-
-            var errorMessage = Marshal.PtrToStringAnsi(new IntPtr(buffer), 500).Trim('\0').Trim();
-            return errorMessage;
         }
     }
 }

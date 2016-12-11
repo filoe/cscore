@@ -39,11 +39,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AVCodecID.cs" />
+    <Compile Include="AvFormatContext.cs" />
+    <Compile Include="AvFrame.cs" />
+    <Compile Include="AvioBuffer.cs" />
+    <Compile Include="AvioContext.cs" />
+    <Compile Include="AvStream.cs" />
+    <Compile Include="FfmpegCalls.cs" />
     <Compile Include="FfmpegDecoder.cs" />
     <Compile Include="FfmpegException.cs" />
     <Compile Include="FfmpegStream.cs" />
-    <Compile Include="InteropCalls.cs" />
+    <Compile Include="Interops\ConstCharPtrMarshaler.cs" />
+    <Compile Include="Interops\FFmpeg.avcodec.g.cs" />
+    <None Include="Interops\unused\FFmpeg.avdevice.g.cs" />
+    <None Include="Interops\unused\FFmpeg.avfilter.g.cs" />
+    <Compile Include="Interops\FFmpeg.avformat.g.cs" />
+    <Compile Include="Interops\FFmpeg.avutil.g.cs" />
+    <Compile Include="Interops\ffmpeg.extend.cs" />
+    <None Include="Interops\unused\FFmpeg.postprocess.g.cs" />
+    <Compile Include="Interops\FFmpeg.swresample.g.cs" />
+    <None Include="Interops\unused\FFmpeg.swscale.g.cs" />
+    <Compile Include="Interops\InteropHelper.cs" />
+    <Compile Include="Interops\Unresolved.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -53,11 +69,61 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="FFmpeg\bin\unix\x64\libavcodec.57">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="FFmpeg\bin\unix\x64\libavformat.57">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="FFmpeg\bin\unix\x64\libavutil.55">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="FFmpeg\bin\unix\x64\libswresample.2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="FFmpeg\bin\unix\x86\libavcodec.57">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="FFmpeg\bin\unix\x86\libavformat.57">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="FFmpeg\bin\unix\x86\libavutil.55">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="FFmpeg\bin\unix\x86\libswresample.2">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Interops\Readme.md" />
+    <None Include="License.md" />
     <None Include="Readme.md" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="ffmpeg\3.0.2\x64\" />
-    <Folder Include="ffmpeg\3.0.2\x86\" />
+    <Content Include="FFmpeg\bin\windows\x64\avcodec-57.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FFmpeg\bin\windows\x64\avformat-57.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FFmpeg\bin\windows\x64\avutil-55.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FFmpeg\bin\windows\x64\swresample-2.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FFmpeg\bin\windows\x86\avcodec-57.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FFmpeg\bin\windows\x86\avformat-57.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FFmpeg\bin\windows\x86\avutil-55.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FFmpeg\bin\windows\x86\swresample-2.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Interops\unused\Readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
