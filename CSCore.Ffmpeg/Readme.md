@@ -1,18 +1,14 @@
-﻿CSCore.Ffmpeg uses parts of https://github.com/Ruslan-B/FFmpeg.AutoGen
+﻿## Important: ##
+
+The CSCore.Ffmpeg project is licensed under the **[LGPL2.1](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)**
+
+CSCore.Ffmpeg uses parts of https://github.com/Ruslan-B/FFmpeg.AutoGen
 The author "Ruslan Balanukhin" gave the explicit permission to use its source code
 within CSCore.Ffmpeg under the MS-PL or the LPGL.
+> I do not mind if you would like to reuse some results of my work in case you will keep reference to my original project.
 
-In order to use this project, you need to include the ffmpeg libraries. 
-You can download them from https://www.ffmpeg.org.
-Important: The used ffmpeg libraries have to be compatible with 
-the wrapper of CSCore.Ffmpeg. 
-The current version of CSCore.Ffmpeg is compatible with the binaries
-shipped with release 3.0 of FFmpeg.AutoGen which can be downloaded from
-https://github.com/Ruslan-B/FFmpeg.AutoGen/releases/tag/3.0.
-Make sure to place the x86 binaries into the "{path of your CSCore.Ffmpeg.dll}/ffmpeg/3.0.2/x86/" folder 
-and the x64 binaries into the "{path of your CSCore.Ffmpeg.dll}/ffmpeg/3.0.2/x64/" folder.
+This software uses libraries from the FFmpeg project under the LGPLv2.1
 
-CSCore.Ffmpeg does not contain ffmpeg in any form (compiled or source).
-The author of CSCore.Ffmpeg is not responsible for any usage of ffmpeg 
-in any application. The user of CSCore.Ffmpeg is responsible for not breaking the
-license of ffmpeg.
+This software uses code of [FFmpeg](http://ffmpeg.org) licensed under the 
+[LGPLv2.1](http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html>LGPLv2.1) and 
+its source can be downloaded [here](https://github.com/filoe/cscore) or [here](https://github.com/filoe/cscore/tree/ffmpeg).
