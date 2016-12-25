@@ -34,9 +34,11 @@ namespace CSCore.Ffmpeg
         {
             get
             {
-                if (SelectedStream == null)
+                if (SelectedStream == null || SelectedStream.Stream.duration < 0)
                     return 0;
                 var timebase = SelectedStream.Stream.time_base;
+                if (timebase.den == 0)
+                    return 0;
                 return SelectedStream.Stream.duration * timebase.num / (double) timebase.den;
             }
         }

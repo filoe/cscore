@@ -32,6 +32,9 @@ namespace CSCore.Ffmpeg
 
                     if (!FfmpegCalls.AvReadFrame(_formatContext, &packet))
                         break;
+                    //check whether we've picked some other stream (video,...)
+                    if (packet.stream_index != _formatContext.SelectedStream.Stream.index)
+                        continue;
 
                     seconds = packet.pts * stream.time_base.num / (double) stream.time_base.den;
                     do
