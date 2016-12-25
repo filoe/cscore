@@ -223,7 +223,7 @@ namespace CSCore.Ffmpeg
         private void SeekPosition(long position)
         {
             //https://ffmpeg.org/doxygen/trunk/seek-test_8c-source.html
-            double seconds = this.GetMilliseconds(position) * 1000.0;
+            double seconds = this.GetMilliseconds(position) / 1000.0;
             lock (_lockObject)
             {
                 _formatContext.SeekFile(seconds);

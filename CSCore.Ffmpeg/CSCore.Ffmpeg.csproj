@@ -69,28 +69,28 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="FFmpeg\bin\unix\x64\libavcodec.57">
+    <None Include="FFmpeg\bin\unix\x64\libavcodec.so.57">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="FFmpeg\bin\unix\x64\libavformat.57">
+    <None Include="FFmpeg\bin\unix\x64\libavformat.so.57">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="FFmpeg\bin\unix\x64\libavutil.55">
+    <None Include="FFmpeg\bin\unix\x64\libavutil.so.55">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="FFmpeg\bin\unix\x64\libswresample.2">
+    <None Include="FFmpeg\bin\unix\x64\libswresample.so.2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="FFmpeg\bin\unix\x86\libavcodec.57">
+    <None Include="FFmpeg\bin\unix\x86\libavcodec.so.57">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="FFmpeg\bin\unix\x86\libavformat.57">
+    <None Include="FFmpeg\bin\unix\x86\libavformat.so.57">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="FFmpeg\bin\unix\x86\libavutil.55">
+    <None Include="FFmpeg\bin\unix\x86\libavutil.so.55">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="FFmpeg\bin\unix\x86\libswresample.2">
+    <None Include="FFmpeg\bin\unix\x86\libswresample.so.2">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Interops\Readme.md" />

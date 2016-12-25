@@ -1,4 +1,14 @@
-﻿## Important: ##
+﻿## Using the Project ##
+Make sure that the directory with the native libraries is placed correctly within the folder with your assembly.
+
+### Linux & Mono ###
+Make sure to start your assembly with LD_LIBRARY_PATH=./ mono MyApp.exe
+To debug your assembly using MonoDevelop follow these steps:
+1. Open the "Project Options" of your project
+2. Navigate to Run > General
+3. Add a new variable with the name "LD_LIBRARY_PATH" and use your output directory (which contains your compiled assembly) as the variables value
+
+## Important: ##
 
 The CSCore.Ffmpeg project is licensed under the **[LGPL2.1](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)**
 
