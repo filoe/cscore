@@ -1,3 +1,6 @@
+## NOTE: ##
+This license does not apply to the [CSCore.Ffmpeg](https://github.com/filoe/cscore/tree/master/CSCore.Ffmpeg) project!
+
 ## Microsoft Public License (Ms-PL) ##
 
 Microsoft Public License (Ms-PL)
