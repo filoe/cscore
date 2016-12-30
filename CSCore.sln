@@ -45,6 +45,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSCoreWaveform", "Samples\C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BiQuadFilterSample", "Samples\BiQuadFilterSample\BiQuadFilterSample.csproj", "{F8733117-DA1D-40DC-AEF8-98051B86E219}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSCore.Ffmpeg", "CSCore.Ffmpeg\CSCore.Ffmpeg.csproj", "{F4E6168A-B2CB-413C-AE0E-0D8B856B425E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FfmpegSample", "Samples\FfmpegSample\FfmpegSample.csproj", "{3CC0E6B1-1E96-4A07-8AE7-A7C7F47911B1}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecordWithSpecificFormat", "Samples\RecordWithSpecificFormat\RecordWithSpecificFormat.csproj", "{E0198A08-AAA8-4A76-B096-BBE72DA4F93B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConvertWavToMp3", "Samples\ConvertWavToMp3\ConvertWavToMp3.csproj", "{9CF28420-D689-46E6-B659-72520A515372}"
@@ -274,6 +278,26 @@ Global
 		{2EDF3192-9107-4B7A-914A-EA25AFEB9F85}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{2EDF3192-9107-4B7A-914A-EA25AFEB9F85}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{2EDF3192-9107-4B7A-914A-EA25AFEB9F85}.Release|Win32.ActiveCfg = Release|Any CPU
+		{F4E6168A-B2CB-413C-AE0E-0D8B856B425E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4E6168A-B2CB-413C-AE0E-0D8B856B425E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4E6168A-B2CB-413C-AE0E-0D8B856B425E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{F4E6168A-B2CB-413C-AE0E-0D8B856B425E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{F4E6168A-B2CB-413C-AE0E-0D8B856B425E}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{F4E6168A-B2CB-413C-AE0E-0D8B856B425E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4E6168A-B2CB-413C-AE0E-0D8B856B425E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4E6168A-B2CB-413C-AE0E-0D8B856B425E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F4E6168A-B2CB-413C-AE0E-0D8B856B425E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{F4E6168A-B2CB-413C-AE0E-0D8B856B425E}.Release|Win32.ActiveCfg = Release|Any CPU
+		{3CC0E6B1-1E96-4A07-8AE7-A7C7F47911B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CC0E6B1-1E96-4A07-8AE7-A7C7F47911B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CC0E6B1-1E96-4A07-8AE7-A7C7F47911B1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{3CC0E6B1-1E96-4A07-8AE7-A7C7F47911B1}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{3CC0E6B1-1E96-4A07-8AE7-A7C7F47911B1}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{3CC0E6B1-1E96-4A07-8AE7-A7C7F47911B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CC0E6B1-1E96-4A07-8AE7-A7C7F47911B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CC0E6B1-1E96-4A07-8AE7-A7C7F47911B1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{3CC0E6B1-1E96-4A07-8AE7-A7C7F47911B1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{3CC0E6B1-1E96-4A07-8AE7-A7C7F47911B1}.Release|Win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -298,5 +322,6 @@ Global
 		{9CF28420-D689-46E6-B659-72520A515372} = {41D1D336-13B2-488B-8A85-C0F744035F8B}
 		{571AC77A-7D3D-44CF-B0E7-08DF03D7B638} = {41D1D336-13B2-488B-8A85-C0F744035F8B}
 		{2EDF3192-9107-4B7A-914A-EA25AFEB9F85} = {41D1D336-13B2-488B-8A85-C0F744035F8B}
+		{3CC0E6B1-1E96-4A07-8AE7-A7C7F47911B1} = {41D1D336-13B2-488B-8A85-C0F744035F8B}
 	EndGlobalSection
 EndGlobal
