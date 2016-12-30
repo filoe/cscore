@@ -51,6 +51,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConvertWavToMp3", "Samples\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayInputDeviceSample", "Samples\PlayInputDeviceSample\PlayInputDeviceSample.csproj", "{571AC77A-7D3D-44CF-B0E7-08DF03D7B638}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndpointAudioMeterSample", "Samples\EndpointAudioMeterSample\EndpointAudioMeterSample.csproj", "{2EDF3192-9107-4B7A-914A-EA25AFEB9F85}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -262,6 +264,16 @@ Global
 		{571AC77A-7D3D-44CF-B0E7-08DF03D7B638}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{571AC77A-7D3D-44CF-B0E7-08DF03D7B638}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{571AC77A-7D3D-44CF-B0E7-08DF03D7B638}.Release|Win32.ActiveCfg = Release|Any CPU
+		{2EDF3192-9107-4B7A-914A-EA25AFEB9F85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EDF3192-9107-4B7A-914A-EA25AFEB9F85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EDF3192-9107-4B7A-914A-EA25AFEB9F85}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2EDF3192-9107-4B7A-914A-EA25AFEB9F85}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2EDF3192-9107-4B7A-914A-EA25AFEB9F85}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{2EDF3192-9107-4B7A-914A-EA25AFEB9F85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EDF3192-9107-4B7A-914A-EA25AFEB9F85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EDF3192-9107-4B7A-914A-EA25AFEB9F85}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2EDF3192-9107-4B7A-914A-EA25AFEB9F85}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{2EDF3192-9107-4B7A-914A-EA25AFEB9F85}.Release|Win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -285,5 +297,6 @@ Global
 		{E0198A08-AAA8-4A76-B096-BBE72DA4F93B} = {41D1D336-13B2-488B-8A85-C0F744035F8B}
 		{9CF28420-D689-46E6-B659-72520A515372} = {41D1D336-13B2-488B-8A85-C0F744035F8B}
 		{571AC77A-7D3D-44CF-B0E7-08DF03D7B638} = {41D1D336-13B2-488B-8A85-C0F744035F8B}
+		{2EDF3192-9107-4B7A-914A-EA25AFEB9F85} = {41D1D336-13B2-488B-8A85-C0F744035F8B}
 	EndGlobalSection
 EndGlobal
