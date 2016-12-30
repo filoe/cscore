@@ -751,7 +751,8 @@ namespace CSCore.SoundOut
             if (!audioClient.IsFormatSupported(_shareMode, waveFormat, out closestMatch))
             {
                 //initial format is not supported -> maybe there was some kind of close match ...
-                if (closestMatch == null)
+                //we don't know why, but for some reason, the suggested closestMatch must not be supported ... see #159
+                if (closestMatch == null || !audioClient.IsFormatSupported(_shareMode, closestMatch))
                 {
                     //no match ... check whether the format of the windows audio mixer is supported
                     //yes ... this gets executed for shared and exclusive mode streams
