@@ -219,7 +219,8 @@ namespace CSCore.Codecs.MP3
 
             for (int i = 0; i < _frameInfoCollection.Count; i++)
             {
-                if (value / WaveFormat.BytesPerBlock <= _frameInfoCollection[i].SampleIndex)
+                if (value / WaveFormat.BytesPerBlock <= _frameInfoCollection[i].SampleIndex ||
+                    i == _frameInfoCollection.Count - 1)
                 {
                     int index = i;
                     if (value / WaveFormat.BytesPerBlock < _frameInfoCollection[i].SampleIndex)
