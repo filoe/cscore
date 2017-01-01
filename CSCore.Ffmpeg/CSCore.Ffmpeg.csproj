@@ -48,6 +48,8 @@
     <Compile Include="FfmpegDecoder.cs" />
     <Compile Include="FfmpegException.cs" />
     <Compile Include="FfmpegStream.cs" />
+    <Compile Include="FfmpegUtils.cs" />
+    <Compile Include="AvCodecId.cs" />
     <Compile Include="Interops\ConstCharPtrMarshaler.cs" />
     <Compile Include="Interops\FFmpeg.avcodec.g.cs" />
     <None Include="Interops\unused\FFmpeg.avdevice.g.cs" />

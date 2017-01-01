@@ -21,7 +21,7 @@ namespace CSCore.Ffmpeg.Interops
     
     internal unsafe partial struct AVCodecDescriptor
     {
-        internal AVCodecID @id;
+        internal AvCodecId @id;
         internal AVMediaType @type;
         internal sbyte* @name;
         internal sbyte* @long_name;
@@ -93,7 +93,7 @@ namespace CSCore.Ffmpeg.Interops
         internal AVMediaType @codec_type;
         internal AVCodec* @codec;
         internal fixed sbyte @codec_name[32]; 
-        internal AVCodecID @codec_id;
+        internal AvCodecId @codec_id;
         internal uint @codec_tag;
         internal uint @stream_codec_tag;
         internal void* @priv_data;
@@ -323,7 +323,7 @@ namespace CSCore.Ffmpeg.Interops
         internal sbyte* @name;
         internal sbyte* @long_name;
         internal AVMediaType @type;
-        internal AVCodecID @id;
+        internal AvCodecId @id;
         internal int @capabilities;
         internal AVRational* @supported_framerates;
         internal AVPixelFormat* @pix_fmts;
@@ -360,7 +360,7 @@ namespace CSCore.Ffmpeg.Interops
     {
         internal sbyte* @name;
         internal AVMediaType @type;
-        internal AVCodecID @id;
+        internal AvCodecId @id;
         internal AVPixelFormat @pix_fmt;
         internal int @capabilities;
         internal AVHWAccel* @next;
@@ -410,7 +410,7 @@ namespace CSCore.Ffmpeg.Interops
     internal unsafe partial struct AVCodecParameters
     {
         internal AVMediaType @codec_type;
-        internal AVCodecID @codec_id;
+        internal AvCodecId @codec_id;
         internal uint @codec_tag;
         internal sbyte* @extradata;
         internal int @extradata_size;
@@ -535,7 +535,7 @@ namespace CSCore.Ffmpeg.Interops
     internal unsafe partial struct AVBitStreamFilter
     {
         internal sbyte* @name;
-        internal AVCodecID* @codec_ids;
+        internal AvCodecId* @codec_ids;
         internal AVClass* @priv_class;
         internal int @priv_data_size;
         internal IntPtr @init;
@@ -546,434 +546,7 @@ namespace CSCore.Ffmpeg.Interops
     internal unsafe partial struct AVBSFList
     {
     }
-    
-    internal enum AVCodecID : int
-    {
-        @AV_CODEC_ID_NONE = 0,
-        @AV_CODEC_ID_MPEG1VIDEO = 1,
-        @AV_CODEC_ID_MPEG2VIDEO = 2,
-        @AV_CODEC_ID_MPEG2VIDEO_XVMC = 3,
-        @AV_CODEC_ID_H261 = 4,
-        @AV_CODEC_ID_H263 = 5,
-        @AV_CODEC_ID_RV10 = 6,
-        @AV_CODEC_ID_RV20 = 7,
-        @AV_CODEC_ID_MJPEG = 8,
-        @AV_CODEC_ID_MJPEGB = 9,
-        @AV_CODEC_ID_LJPEG = 10,
-        @AV_CODEC_ID_SP5X = 11,
-        @AV_CODEC_ID_JPEGLS = 12,
-        @AV_CODEC_ID_MPEG4 = 13,
-        @AV_CODEC_ID_RAWVIDEO = 14,
-        @AV_CODEC_ID_MSMPEG4V1 = 15,
-        @AV_CODEC_ID_MSMPEG4V2 = 16,
-        @AV_CODEC_ID_MSMPEG4V3 = 17,
-        @AV_CODEC_ID_WMV1 = 18,
-        @AV_CODEC_ID_WMV2 = 19,
-        @AV_CODEC_ID_H263P = 20,
-        @AV_CODEC_ID_H263I = 21,
-        @AV_CODEC_ID_FLV1 = 22,
-        @AV_CODEC_ID_SVQ1 = 23,
-        @AV_CODEC_ID_SVQ3 = 24,
-        @AV_CODEC_ID_DVVIDEO = 25,
-        @AV_CODEC_ID_HUFFYUV = 26,
-        @AV_CODEC_ID_CYUV = 27,
-        @AV_CODEC_ID_H264 = 28,
-        @AV_CODEC_ID_INDEO3 = 29,
-        @AV_CODEC_ID_VP3 = 30,
-        @AV_CODEC_ID_THEORA = 31,
-        @AV_CODEC_ID_ASV1 = 32,
-        @AV_CODEC_ID_ASV2 = 33,
-        @AV_CODEC_ID_FFV1 = 34,
-        @AV_CODEC_ID_4XM = 35,
-        @AV_CODEC_ID_VCR1 = 36,
-        @AV_CODEC_ID_CLJR = 37,
-        @AV_CODEC_ID_MDEC = 38,
-        @AV_CODEC_ID_ROQ = 39,
-        @AV_CODEC_ID_INTERPLAY_VIDEO = 40,
-        @AV_CODEC_ID_XAN_WC3 = 41,
-        @AV_CODEC_ID_XAN_WC4 = 42,
-        @AV_CODEC_ID_RPZA = 43,
-        @AV_CODEC_ID_CINEPAK = 44,
-        @AV_CODEC_ID_WS_VQA = 45,
-        @AV_CODEC_ID_MSRLE = 46,
-        @AV_CODEC_ID_MSVIDEO1 = 47,
-        @AV_CODEC_ID_IDCIN = 48,
-        @AV_CODEC_ID_8BPS = 49,
-        @AV_CODEC_ID_SMC = 50,
-        @AV_CODEC_ID_FLIC = 51,
-        @AV_CODEC_ID_TRUEMOTION1 = 52,
-        @AV_CODEC_ID_VMDVIDEO = 53,
-        @AV_CODEC_ID_MSZH = 54,
-        @AV_CODEC_ID_ZLIB = 55,
-        @AV_CODEC_ID_QTRLE = 56,
-        @AV_CODEC_ID_TSCC = 57,
-        @AV_CODEC_ID_ULTI = 58,
-        @AV_CODEC_ID_QDRAW = 59,
-        @AV_CODEC_ID_VIXL = 60,
-        @AV_CODEC_ID_QPEG = 61,
-        @AV_CODEC_ID_PNG = 62,
-        @AV_CODEC_ID_PPM = 63,
-        @AV_CODEC_ID_PBM = 64,
-        @AV_CODEC_ID_PGM = 65,
-        @AV_CODEC_ID_PGMYUV = 66,
-        @AV_CODEC_ID_PAM = 67,
-        @AV_CODEC_ID_FFVHUFF = 68,
-        @AV_CODEC_ID_RV30 = 69,
-        @AV_CODEC_ID_RV40 = 70,
-        @AV_CODEC_ID_VC1 = 71,
-        @AV_CODEC_ID_WMV3 = 72,
-        @AV_CODEC_ID_LOCO = 73,
-        @AV_CODEC_ID_WNV1 = 74,
-        @AV_CODEC_ID_AASC = 75,
-        @AV_CODEC_ID_INDEO2 = 76,
-        @AV_CODEC_ID_FRAPS = 77,
-        @AV_CODEC_ID_TRUEMOTION2 = 78,
-        @AV_CODEC_ID_BMP = 79,
-        @AV_CODEC_ID_CSCD = 80,
-        @AV_CODEC_ID_MMVIDEO = 81,
-        @AV_CODEC_ID_ZMBV = 82,
-        @AV_CODEC_ID_AVS = 83,
-        @AV_CODEC_ID_SMACKVIDEO = 84,
-        @AV_CODEC_ID_NUV = 85,
-        @AV_CODEC_ID_KMVC = 86,
-        @AV_CODEC_ID_FLASHSV = 87,
-        @AV_CODEC_ID_CAVS = 88,
-        @AV_CODEC_ID_JPEG2000 = 89,
-        @AV_CODEC_ID_VMNC = 90,
-        @AV_CODEC_ID_VP5 = 91,
-        @AV_CODEC_ID_VP6 = 92,
-        @AV_CODEC_ID_VP6F = 93,
-        @AV_CODEC_ID_TARGA = 94,
-        @AV_CODEC_ID_DSICINVIDEO = 95,
-        @AV_CODEC_ID_TIERTEXSEQVIDEO = 96,
-        @AV_CODEC_ID_TIFF = 97,
-        @AV_CODEC_ID_GIF = 98,
-        @AV_CODEC_ID_DXA = 99,
-        @AV_CODEC_ID_DNXHD = 100,
-        @AV_CODEC_ID_THP = 101,
-        @AV_CODEC_ID_SGI = 102,
-        @AV_CODEC_ID_C93 = 103,
-        @AV_CODEC_ID_BETHSOFTVID = 104,
-        @AV_CODEC_ID_PTX = 105,
-        @AV_CODEC_ID_TXD = 106,
-        @AV_CODEC_ID_VP6A = 107,
-        @AV_CODEC_ID_AMV = 108,
-        @AV_CODEC_ID_VB = 109,
-        @AV_CODEC_ID_PCX = 110,
-        @AV_CODEC_ID_SUNRAST = 111,
-        @AV_CODEC_ID_INDEO4 = 112,
-        @AV_CODEC_ID_INDEO5 = 113,
-        @AV_CODEC_ID_MIMIC = 114,
-        @AV_CODEC_ID_RL2 = 115,
-        @AV_CODEC_ID_ESCAPE124 = 116,
-        @AV_CODEC_ID_DIRAC = 117,
-        @AV_CODEC_ID_BFI = 118,
-        @AV_CODEC_ID_CMV = 119,
-        @AV_CODEC_ID_MOTIONPIXELS = 120,
-        @AV_CODEC_ID_TGV = 121,
-        @AV_CODEC_ID_TGQ = 122,
-        @AV_CODEC_ID_TQI = 123,
-        @AV_CODEC_ID_AURA = 124,
-        @AV_CODEC_ID_AURA2 = 125,
-        @AV_CODEC_ID_V210X = 126,
-        @AV_CODEC_ID_TMV = 127,
-        @AV_CODEC_ID_V210 = 128,
-        @AV_CODEC_ID_DPX = 129,
-        @AV_CODEC_ID_MAD = 130,
-        @AV_CODEC_ID_FRWU = 131,
-        @AV_CODEC_ID_FLASHSV2 = 132,
-        @AV_CODEC_ID_CDGRAPHICS = 133,
-        @AV_CODEC_ID_R210 = 134,
-        @AV_CODEC_ID_ANM = 135,
-        @AV_CODEC_ID_BINKVIDEO = 136,
-        @AV_CODEC_ID_IFF_ILBM = 137,
-        @AV_CODEC_ID_KGV1 = 138,
-        @AV_CODEC_ID_YOP = 139,
-        @AV_CODEC_ID_VP8 = 140,
-        @AV_CODEC_ID_PICTOR = 141,
-        @AV_CODEC_ID_ANSI = 142,
-        @AV_CODEC_ID_A64_MULTI = 143,
-        @AV_CODEC_ID_A64_MULTI5 = 144,
-        @AV_CODEC_ID_R10K = 145,
-        @AV_CODEC_ID_MXPEG = 146,
-        @AV_CODEC_ID_LAGARITH = 147,
-        @AV_CODEC_ID_PRORES = 148,
-        @AV_CODEC_ID_JV = 149,
-        @AV_CODEC_ID_DFA = 150,
-        @AV_CODEC_ID_WMV3IMAGE = 151,
-        @AV_CODEC_ID_VC1IMAGE = 152,
-        @AV_CODEC_ID_UTVIDEO = 153,
-        @AV_CODEC_ID_BMV_VIDEO = 154,
-        @AV_CODEC_ID_VBLE = 155,
-        @AV_CODEC_ID_DXTORY = 156,
-        @AV_CODEC_ID_V410 = 157,
-        @AV_CODEC_ID_XWD = 158,
-        @AV_CODEC_ID_CDXL = 159,
-        @AV_CODEC_ID_XBM = 160,
-        @AV_CODEC_ID_ZEROCODEC = 161,
-        @AV_CODEC_ID_MSS1 = 162,
-        @AV_CODEC_ID_MSA1 = 163,
-        @AV_CODEC_ID_TSCC2 = 164,
-        @AV_CODEC_ID_MTS2 = 165,
-        @AV_CODEC_ID_CLLC = 166,
-        @AV_CODEC_ID_MSS2 = 167,
-        @AV_CODEC_ID_VP9 = 168,
-        @AV_CODEC_ID_AIC = 169,
-        @AV_CODEC_ID_ESCAPE130 = 170,
-        @AV_CODEC_ID_G2M = 171,
-        @AV_CODEC_ID_WEBP = 172,
-        @AV_CODEC_ID_HNM4_VIDEO = 173,
-        @AV_CODEC_ID_HEVC = 174,
-        @AV_CODEC_ID_FIC = 175,
-        @AV_CODEC_ID_ALIAS_PIX = 176,
-        @AV_CODEC_ID_BRENDER_PIX = 177,
-        @AV_CODEC_ID_PAF_VIDEO = 178,
-        @AV_CODEC_ID_EXR = 179,
-        @AV_CODEC_ID_VP7 = 180,
-        @AV_CODEC_ID_SANM = 181,
-        @AV_CODEC_ID_SGIRLE = 182,
-        @AV_CODEC_ID_MVC1 = 183,
-        @AV_CODEC_ID_MVC2 = 184,
-        @AV_CODEC_ID_HQX = 185,
-        @AV_CODEC_ID_TDSC = 186,
-        @AV_CODEC_ID_HQ_HQA = 187,
-        @AV_CODEC_ID_HAP = 188,
-        @AV_CODEC_ID_DDS = 189,
-        @AV_CODEC_ID_DXV = 190,
-        @AV_CODEC_ID_SCREENPRESSO = 191,
-        @AV_CODEC_ID_RSCC = 192,
-        @AV_CODEC_ID_Y41P = 32768,
-        @AV_CODEC_ID_AVRP = 32769,
-        @AV_CODEC_ID_012V = 32770,
-        @AV_CODEC_ID_AVUI = 32771,
-        @AV_CODEC_ID_AYUV = 32772,
-        @AV_CODEC_ID_TARGA_Y216 = 32773,
-        @AV_CODEC_ID_V308 = 32774,
-        @AV_CODEC_ID_V408 = 32775,
-        @AV_CODEC_ID_YUV4 = 32776,
-        @AV_CODEC_ID_AVRN = 32777,
-        @AV_CODEC_ID_CPIA = 32778,
-        @AV_CODEC_ID_XFACE = 32779,
-        @AV_CODEC_ID_SNOW = 32780,
-        @AV_CODEC_ID_SMVJPEG = 32781,
-        @AV_CODEC_ID_APNG = 32782,
-        @AV_CODEC_ID_DAALA = 32783,
-        @AV_CODEC_ID_CFHD = 32784,
-        @AV_CODEC_ID_TRUEMOTION2RT = 32785,
-        @AV_CODEC_ID_M101 = 32786,
-        @AV_CODEC_ID_MAGICYUV = 32787,
-        @AV_CODEC_ID_SHEERVIDEO = 32788,
-        @AV_CODEC_ID_YLC = 32789,
-        @AV_CODEC_ID_FIRST_AUDIO = 65536,
-        @AV_CODEC_ID_PCM_S16LE = 65536,
-        @AV_CODEC_ID_PCM_S16BE = 65537,
-        @AV_CODEC_ID_PCM_U16LE = 65538,
-        @AV_CODEC_ID_PCM_U16BE = 65539,
-        @AV_CODEC_ID_PCM_S8 = 65540,
-        @AV_CODEC_ID_PCM_U8 = 65541,
-        @AV_CODEC_ID_PCM_MULAW = 65542,
-        @AV_CODEC_ID_PCM_ALAW = 65543,
-        @AV_CODEC_ID_PCM_S32LE = 65544,
-        @AV_CODEC_ID_PCM_S32BE = 65545,
-        @AV_CODEC_ID_PCM_U32LE = 65546,
-        @AV_CODEC_ID_PCM_U32BE = 65547,
-        @AV_CODEC_ID_PCM_S24LE = 65548,
-        @AV_CODEC_ID_PCM_S24BE = 65549,
-        @AV_CODEC_ID_PCM_U24LE = 65550,
-        @AV_CODEC_ID_PCM_U24BE = 65551,
-        @AV_CODEC_ID_PCM_S24DAUD = 65552,
-        @AV_CODEC_ID_PCM_ZORK = 65553,
-        @AV_CODEC_ID_PCM_S16LE_PLANAR = 65554,
-        @AV_CODEC_ID_PCM_DVD = 65555,
-        @AV_CODEC_ID_PCM_F32BE = 65556,
-        @AV_CODEC_ID_PCM_F32LE = 65557,
-        @AV_CODEC_ID_PCM_F64BE = 65558,
-        @AV_CODEC_ID_PCM_F64LE = 65559,
-        @AV_CODEC_ID_PCM_BLURAY = 65560,
-        @AV_CODEC_ID_PCM_LXF = 65561,
-        @AV_CODEC_ID_S302M = 65562,
-        @AV_CODEC_ID_PCM_S8_PLANAR = 65563,
-        @AV_CODEC_ID_PCM_S24LE_PLANAR = 65564,
-        @AV_CODEC_ID_PCM_S32LE_PLANAR = 65565,
-        @AV_CODEC_ID_PCM_S16BE_PLANAR = 65566,
-        @AV_CODEC_ID_PCM_S64LE = 67584,
-        @AV_CODEC_ID_PCM_S64BE = 67585,
-        @AV_CODEC_ID_ADPCM_IMA_QT = 69632,
-        @AV_CODEC_ID_ADPCM_IMA_WAV = 69633,
-        @AV_CODEC_ID_ADPCM_IMA_DK3 = 69634,
-        @AV_CODEC_ID_ADPCM_IMA_DK4 = 69635,
-        @AV_CODEC_ID_ADPCM_IMA_WS = 69636,
-        @AV_CODEC_ID_ADPCM_IMA_SMJPEG = 69637,
-        @AV_CODEC_ID_ADPCM_MS = 69638,
-        @AV_CODEC_ID_ADPCM_4XM = 69639,
-        @AV_CODEC_ID_ADPCM_XA = 69640,
-        @AV_CODEC_ID_ADPCM_ADX = 69641,
-        @AV_CODEC_ID_ADPCM_EA = 69642,
-        @AV_CODEC_ID_ADPCM_G726 = 69643,
-        @AV_CODEC_ID_ADPCM_CT = 69644,
-        @AV_CODEC_ID_ADPCM_SWF = 69645,
-        @AV_CODEC_ID_ADPCM_YAMAHA = 69646,
-        @AV_CODEC_ID_ADPCM_SBPRO_4 = 69647,
-        @AV_CODEC_ID_ADPCM_SBPRO_3 = 69648,
-        @AV_CODEC_ID_ADPCM_SBPRO_2 = 69649,
-        @AV_CODEC_ID_ADPCM_THP = 69650,
-        @AV_CODEC_ID_ADPCM_IMA_AMV = 69651,
-        @AV_CODEC_ID_ADPCM_EA_R1 = 69652,
-        @AV_CODEC_ID_ADPCM_EA_R3 = 69653,
-        @AV_CODEC_ID_ADPCM_EA_R2 = 69654,
-        @AV_CODEC_ID_ADPCM_IMA_EA_SEAD = 69655,
-        @AV_CODEC_ID_ADPCM_IMA_EA_EACS = 69656,
-        @AV_CODEC_ID_ADPCM_EA_XAS = 69657,
-        @AV_CODEC_ID_ADPCM_EA_MAXIS_XA = 69658,
-        @AV_CODEC_ID_ADPCM_IMA_ISS = 69659,
-        @AV_CODEC_ID_ADPCM_G722 = 69660,
-        @AV_CODEC_ID_ADPCM_IMA_APC = 69661,
-        @AV_CODEC_ID_ADPCM_VIMA = 69662,
-        @AV_CODEC_ID_VIMA = 69662,
-        @AV_CODEC_ID_ADPCM_AFC = 71680,
-        @AV_CODEC_ID_ADPCM_IMA_OKI = 71681,
-        @AV_CODEC_ID_ADPCM_DTK = 71682,
-        @AV_CODEC_ID_ADPCM_IMA_RAD = 71683,
-        @AV_CODEC_ID_ADPCM_G726LE = 71684,
-        @AV_CODEC_ID_ADPCM_THP_LE = 71685,
-        @AV_CODEC_ID_ADPCM_PSX = 71686,
-        @AV_CODEC_ID_ADPCM_AICA = 71687,
-        @AV_CODEC_ID_ADPCM_IMA_DAT4 = 71688,
-        @AV_CODEC_ID_ADPCM_MTAF = 71689,
-        @AV_CODEC_ID_AMR_NB = 73728,
-        @AV_CODEC_ID_AMR_WB = 73729,
-        @AV_CODEC_ID_RA_144 = 77824,
-        @AV_CODEC_ID_RA_288 = 77825,
-        @AV_CODEC_ID_ROQ_DPCM = 81920,
-        @AV_CODEC_ID_INTERPLAY_DPCM = 81921,
-        @AV_CODEC_ID_XAN_DPCM = 81922,
-        @AV_CODEC_ID_SOL_DPCM = 81923,
-        @AV_CODEC_ID_SDX2_DPCM = 83968,
-        @AV_CODEC_ID_MP2 = 86016,
-        @AV_CODEC_ID_MP3 = 86017,
-        @AV_CODEC_ID_AAC = 86018,
-        @AV_CODEC_ID_AC3 = 86019,
-        @AV_CODEC_ID_DTS = 86020,
-        @AV_CODEC_ID_VORBIS = 86021,
-        @AV_CODEC_ID_DVAUDIO = 86022,
-        @AV_CODEC_ID_WMAV1 = 86023,
-        @AV_CODEC_ID_WMAV2 = 86024,
-        @AV_CODEC_ID_MACE3 = 86025,
-        @AV_CODEC_ID_MACE6 = 86026,
-        @AV_CODEC_ID_VMDAUDIO = 86027,
-        @AV_CODEC_ID_FLAC = 86028,
-        @AV_CODEC_ID_MP3ADU = 86029,
-        @AV_CODEC_ID_MP3ON4 = 86030,
-        @AV_CODEC_ID_SHORTEN = 86031,
-        @AV_CODEC_ID_ALAC = 86032,
-        @AV_CODEC_ID_WESTWOOD_SND1 = 86033,
-        @AV_CODEC_ID_GSM = 86034,
-        @AV_CODEC_ID_QDM2 = 86035,
-        @AV_CODEC_ID_COOK = 86036,
-        @AV_CODEC_ID_TRUESPEECH = 86037,
-        @AV_CODEC_ID_TTA = 86038,
-        @AV_CODEC_ID_SMACKAUDIO = 86039,
-        @AV_CODEC_ID_QCELP = 86040,
-        @AV_CODEC_ID_WAVPACK = 86041,
-        @AV_CODEC_ID_DSICINAUDIO = 86042,
-        @AV_CODEC_ID_IMC = 86043,
-        @AV_CODEC_ID_MUSEPACK7 = 86044,
-        @AV_CODEC_ID_MLP = 86045,
-        @AV_CODEC_ID_GSM_MS = 86046,
-        @AV_CODEC_ID_ATRAC3 = 86047,
-        @AV_CODEC_ID_VOXWARE = 86048,
-        @AV_CODEC_ID_APE = 86049,
-        @AV_CODEC_ID_NELLYMOSER = 86050,
-        @AV_CODEC_ID_MUSEPACK8 = 86051,
-        @AV_CODEC_ID_SPEEX = 86052,
-        @AV_CODEC_ID_WMAVOICE = 86053,
-        @AV_CODEC_ID_WMAPRO = 86054,
-        @AV_CODEC_ID_WMALOSSLESS = 86055,
-        @AV_CODEC_ID_ATRAC3P = 86056,
-        @AV_CODEC_ID_EAC3 = 86057,
-        @AV_CODEC_ID_SIPR = 86058,
-        @AV_CODEC_ID_MP1 = 86059,
-        @AV_CODEC_ID_TWINVQ = 86060,
-        @AV_CODEC_ID_TRUEHD = 86061,
-        @AV_CODEC_ID_MP4ALS = 86062,
-        @AV_CODEC_ID_ATRAC1 = 86063,
-        @AV_CODEC_ID_BINKAUDIO_RDFT = 86064,
-        @AV_CODEC_ID_BINKAUDIO_DCT = 86065,
-        @AV_CODEC_ID_AAC_LATM = 86066,
-        @AV_CODEC_ID_QDMC = 86067,
-        @AV_CODEC_ID_CELT = 86068,
-        @AV_CODEC_ID_G723_1 = 86069,
-        @AV_CODEC_ID_G729 = 86070,
-        @AV_CODEC_ID_8SVX_EXP = 86071,
-        @AV_CODEC_ID_8SVX_FIB = 86072,
-        @AV_CODEC_ID_BMV_AUDIO = 86073,
-        @AV_CODEC_ID_RALF = 86074,
-        @AV_CODEC_ID_IAC = 86075,
-        @AV_CODEC_ID_ILBC = 86076,
-        @AV_CODEC_ID_OPUS = 86077,
-        @AV_CODEC_ID_COMFORT_NOISE = 86078,
-        @AV_CODEC_ID_TAK = 86079,
-        @AV_CODEC_ID_METASOUND = 86080,
-        @AV_CODEC_ID_PAF_AUDIO = 86081,
-        @AV_CODEC_ID_ON2AVC = 86082,
-        @AV_CODEC_ID_DSS_SP = 86083,
-        @AV_CODEC_ID_FFWAVESYNTH = 88064,
-        @AV_CODEC_ID_SONIC = 88065,
-        @AV_CODEC_ID_SONIC_LS = 88066,
-        @AV_CODEC_ID_EVRC = 88067,
-        @AV_CODEC_ID_SMV = 88068,
-        @AV_CODEC_ID_DSD_LSBF = 88069,
-        @AV_CODEC_ID_DSD_MSBF = 88070,
-        @AV_CODEC_ID_DSD_LSBF_PLANAR = 88071,
-        @AV_CODEC_ID_DSD_MSBF_PLANAR = 88072,
-        @AV_CODEC_ID_4GV = 88073,
-        @AV_CODEC_ID_INTERPLAY_ACM = 88074,
-        @AV_CODEC_ID_XMA1 = 88075,
-        @AV_CODEC_ID_XMA2 = 88076,
-        @AV_CODEC_ID_DST = 88077,
-        @AV_CODEC_ID_FIRST_SUBTITLE = 94208,
-        @AV_CODEC_ID_DVD_SUBTITLE = 94208,
-        @AV_CODEC_ID_DVB_SUBTITLE = 94209,
-        @AV_CODEC_ID_TEXT = 94210,
-        @AV_CODEC_ID_XSUB = 94211,
-        @AV_CODEC_ID_SSA = 94212,
-        @AV_CODEC_ID_MOV_TEXT = 94213,
-        @AV_CODEC_ID_HDMV_PGS_SUBTITLE = 94214,
-        @AV_CODEC_ID_DVB_TELETEXT = 94215,
-        @AV_CODEC_ID_SRT = 94216,
-        @AV_CODEC_ID_MICRODVD = 96256,
-        @AV_CODEC_ID_EIA_608 = 96257,
-        @AV_CODEC_ID_JACOSUB = 96258,
-        @AV_CODEC_ID_SAMI = 96259,
-        @AV_CODEC_ID_REALTEXT = 96260,
-        @AV_CODEC_ID_STL = 96261,
-        @AV_CODEC_ID_SUBVIEWER1 = 96262,
-        @AV_CODEC_ID_SUBVIEWER = 96263,
-        @AV_CODEC_ID_SUBRIP = 96264,
-        @AV_CODEC_ID_WEBVTT = 96265,
-        @AV_CODEC_ID_MPL2 = 96266,
-        @AV_CODEC_ID_VPLAYER = 96267,
-        @AV_CODEC_ID_PJS = 96268,
-        @AV_CODEC_ID_ASS = 96269,
-        @AV_CODEC_ID_HDMV_TEXT_SUBTITLE = 96270,
-        @AV_CODEC_ID_FIRST_UNKNOWN = 98304,
-        @AV_CODEC_ID_TTF = 98304,
-        @AV_CODEC_ID_SCTE_35 = 98305,
-        @AV_CODEC_ID_BINTEXT = 100352,
-        @AV_CODEC_ID_XBIN = 100353,
-        @AV_CODEC_ID_IDF = 100354,
-        @AV_CODEC_ID_OTF = 100355,
-        @AV_CODEC_ID_SMPTE_KLV = 100356,
-        @AV_CODEC_ID_DVD_NAV = 100357,
-        @AV_CODEC_ID_TIMED_ID3 = 100358,
-        @AV_CODEC_ID_BIN_DATA = 100359,
-        @AV_CODEC_ID_PROBE = 102400,
-        @AV_CODEC_ID_MPEG2TS = 131072,
-        @AV_CODEC_ID_MPEG4SYSTEMS = 131073,
-        @AV_CODEC_ID_FFMETADATA = 135168,
-        @AV_CODEC_ID_WRAPPED_AVFRAME = 135169,
-    }
-    
+
     internal enum Motion_Est_ID : int
     {
         @ME_ZERO = 1,
@@ -1682,7 +1255,7 @@ namespace CSCore.Ffmpeg.Interops
         internal static extern void av_packet_rescale_ts(AVPacket* @pkt, AVRational @tb_src, AVRational @tb_dst);
         
         [DllImport(libavcodec, EntryPoint = "avcodec_find_decoder", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        internal static extern AVCodec* avcodec_find_decoder(AVCodecID @id);
+        internal static extern AVCodec* avcodec_find_decoder(AvCodecId @id);
         
         [DllImport(libavcodec, EntryPoint = "avcodec_find_decoder_by_name", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         internal static extern AVCodec* avcodec_find_decoder_by_name([MarshalAs(UnmanagedType.LPStr)] string @name);
@@ -1745,7 +1318,7 @@ namespace CSCore.Ffmpeg.Interops
         internal static extern void av_parser_close(AVCodecParserContext* @s);
         
         [DllImport(libavcodec, EntryPoint = "avcodec_find_encoder", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        internal static extern AVCodec* avcodec_find_encoder(AVCodecID @id);
+        internal static extern AVCodec* avcodec_find_encoder(AvCodecId @id);
         
         [DllImport(libavcodec, EntryPoint = "avcodec_find_encoder_by_name", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         internal static extern AVCodec* avcodec_find_encoder_by_name([MarshalAs(UnmanagedType.LPStr)] string @name);
@@ -1840,7 +1413,7 @@ namespace CSCore.Ffmpeg.Interops
         
         [DllImport(libavcodec, EntryPoint = "avcodec_profile_name", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(ConstCharPtrMarshaler))]
-        internal static extern string avcodec_profile_name(AVCodecID @codec_id, int @profile);
+        internal static extern string avcodec_profile_name(AvCodecId @codec_id, int @profile);
         
         [DllImport(libavcodec, EntryPoint = "avcodec_default_execute", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         internal static extern int avcodec_default_execute(AVCodecContext* @c, IntPtr @func, void* @arg, int* @ret, int @count, int @size);
@@ -1855,13 +1428,13 @@ namespace CSCore.Ffmpeg.Interops
         internal static extern void avcodec_flush_buffers(AVCodecContext* @avctx);
         
         [DllImport(libavcodec, EntryPoint = "av_get_bits_per_sample", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        internal static extern int av_get_bits_per_sample(AVCodecID @codec_id);
+        internal static extern int av_get_bits_per_sample(AvCodecId @codec_id);
         
         [DllImport(libavcodec, EntryPoint = "av_get_pcm_codec", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        internal static extern AVCodecID av_get_pcm_codec(AVSampleFormat @fmt, int @be);
+        internal static extern AvCodecId av_get_pcm_codec(AVSampleFormat @fmt, int @be);
         
         [DllImport(libavcodec, EntryPoint = "av_get_exact_bits_per_sample", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        internal static extern int av_get_exact_bits_per_sample(AVCodecID @codec_id);
+        internal static extern int av_get_exact_bits_per_sample(AvCodecId @codec_id);
         
         [DllImport(libavcodec, EntryPoint = "av_get_audio_frame_duration", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         internal static extern int av_get_audio_frame_duration(AVCodecContext* @avctx, int @frame_bytes);
@@ -1954,11 +1527,11 @@ namespace CSCore.Ffmpeg.Interops
         internal static extern int av_lockmgr_register(IntPtr @cb);
         
         [DllImport(libavcodec, EntryPoint = "avcodec_get_type", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        internal static extern AVMediaType avcodec_get_type(AVCodecID @codec_id);
+        internal static extern AVMediaType avcodec_get_type(AvCodecId @codec_id);
         
         [DllImport(libavcodec, EntryPoint = "avcodec_get_name", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(ConstCharPtrMarshaler))]
-        internal static extern string avcodec_get_name(AVCodecID @id);
+        internal static extern string avcodec_get_name(AvCodecId @id);
         
         [DllImport(libavcodec, EntryPoint = "avcodec_is_open", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         internal static extern int avcodec_is_open(AVCodecContext* @s);
@@ -1970,7 +1543,7 @@ namespace CSCore.Ffmpeg.Interops
         internal static extern int av_codec_is_decoder(AVCodec* @codec);
         
         [DllImport(libavcodec, EntryPoint = "avcodec_descriptor_get", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        internal static extern AVCodecDescriptor* avcodec_descriptor_get(AVCodecID @id);
+        internal static extern AVCodecDescriptor* avcodec_descriptor_get(AvCodecId @id);
         
         [DllImport(libavcodec, EntryPoint = "avcodec_descriptor_next", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         internal static extern AVCodecDescriptor* avcodec_descriptor_next(AVCodecDescriptor* @prev);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -56,6 +57,47 @@ namespace CSCore.Ffmpeg
 
             ffmpeg.av_register_all();
             ffmpeg.avcodec_register_all();
+        }
+
+        internal static unsafe AVOutputFormat[] GetOutputFormats()
+        {
+            List<AVOutputFormat> formats = new List<AVOutputFormat>();
+
+            var format = ffmpeg.av_oformat_next(null);
+            while (format != null)
+            {
+                formats.Add(*format);
+                format = ffmpeg.av_oformat_next(format);
+            }
+
+            return formats.ToArray();
+        }
+
+        internal static unsafe AVInputFormat[] GetInputFormats()
+        {
+            List<AVInputFormat> formats = new List<AVInputFormat>();
+
+            var format = ffmpeg.av_iformat_next(null);
+            while (format != null)
+            {
+                formats.Add(*format);
+                format = ffmpeg.av_iformat_next(format);
+            }
+
+            return formats.ToArray();
+        }
+
+        internal static unsafe List<AvCodecId> GetCodecOfCodecTag(AVCodecTag** codecTag)
+        {
+            List<AvCodecId> codecs = new List<AvCodecId>();
+            uint i = 0;
+            AvCodecId codecId;
+            while ((codecId = ffmpeg.av_codec_get_id(codecTag, i++)) != AvCodecId.None)
+            {
+                codecs.Add(codecId);
+            }
+
+            return codecs;
         }
 
         internal static unsafe IntPtr AvMalloc(int bufferSize)
@@ -138,7 +180,7 @@ namespace CSCore.Ffmpeg
             return result; //stream index
         }
 
-        internal static unsafe AVCodec* AvCodecFindDecoder(Interops.AVCodecID codecId)
+        internal static unsafe AVCodec* AvCodecFindDecoder(AvCodecId codecId)
         {
             var decoder = ffmpeg.avcodec_find_decoder(codecId);
             if (decoder == null)

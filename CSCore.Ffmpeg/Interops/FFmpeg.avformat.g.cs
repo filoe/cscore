@@ -155,9 +155,9 @@ namespace CSCore.Ffmpeg.Interops
         internal sbyte* @long_name;
         internal sbyte* @mime_type;
         internal sbyte* @extensions;
-        internal AVCodecID @audio_codec;
-        internal AVCodecID @video_codec;
-        internal AVCodecID @subtitle_codec;
+        internal AvCodecId @audio_codec;
+        internal AvCodecId @video_codec;
+        internal AvCodecId @subtitle_codec;
         internal int @flags;
         internal AVCodecTag** @codec_tag;
         internal AVClass* @priv_class;
@@ -174,7 +174,7 @@ namespace CSCore.Ffmpeg.Interops
         internal IntPtr @get_device_list;
         internal IntPtr @create_device_capabilities;
         internal IntPtr @free_device_capabilities;
-        internal AVCodecID @data_codec;
+        internal AvCodecId @data_codec;
         internal IntPtr @init;
         internal IntPtr @deinit;
         internal IntPtr @check_bitstream;
@@ -361,9 +361,9 @@ namespace CSCore.Ffmpeg.Interops
         internal int @keylen;
         internal uint @nb_programs;
         internal AVProgram** @programs;
-        internal AVCodecID @video_codec_id;
-        internal AVCodecID @audio_codec_id;
-        internal AVCodecID @subtitle_codec_id;
+        internal AvCodecId @video_codec_id;
+        internal AvCodecId @audio_codec_id;
+        internal AvCodecId @subtitle_codec_id;
         internal uint @max_index_size;
         internal uint @max_picture_buffer;
         internal uint @nb_chapters;
@@ -405,7 +405,7 @@ namespace CSCore.Ffmpeg.Interops
         internal IntPtr @control_message_cb;
         internal long @output_ts_offset;
         internal sbyte* @dump_separator;
-        internal AVCodecID @data_codec_id;
+        internal AvCodecId @data_codec_id;
         internal IntPtr @open_cb;
         internal sbyte* @protocol_whitelist;
         internal IntPtr @io_open;
@@ -968,7 +968,7 @@ namespace CSCore.Ffmpeg.Interops
         internal static extern AVOutputFormat* av_guess_format([MarshalAs(UnmanagedType.LPStr)] string @short_name, [MarshalAs(UnmanagedType.LPStr)] string @filename, [MarshalAs(UnmanagedType.LPStr)] string @mime_type);
         
         [DllImport(libavformat, EntryPoint = "av_guess_codec", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        internal static extern AVCodecID av_guess_codec(AVOutputFormat* @fmt, [MarshalAs(UnmanagedType.LPStr)] string @short_name, [MarshalAs(UnmanagedType.LPStr)] string @filename, [MarshalAs(UnmanagedType.LPStr)] string @mime_type, AVMediaType @type);
+        internal static extern AvCodecId av_guess_codec(AVOutputFormat* @fmt, [MarshalAs(UnmanagedType.LPStr)] string @short_name, [MarshalAs(UnmanagedType.LPStr)] string @filename, [MarshalAs(UnmanagedType.LPStr)] string @mime_type, AVMediaType @type);
         
         [DllImport(libavformat, EntryPoint = "av_get_output_timestamp", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         internal static extern int av_get_output_timestamp(AVFormatContext* @s, int @stream, long* @dts, long* @wall);
@@ -986,13 +986,13 @@ namespace CSCore.Ffmpeg.Interops
         internal static extern void av_pkt_dump_log2(void* @avcl, int @level, AVPacket* @pkt, int @dump_payload, AVStream* @st);
         
         [DllImport(libavformat, EntryPoint = "av_codec_get_id", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        internal static extern AVCodecID av_codec_get_id(AVCodecTag** @tags, uint @tag);
+        internal static extern AvCodecId av_codec_get_id(AVCodecTag** @tags, uint @tag);
         
         [DllImport(libavformat, EntryPoint = "av_codec_get_tag", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        internal static extern uint av_codec_get_tag(AVCodecTag** @tags, AVCodecID @id);
+        internal static extern uint av_codec_get_tag(AVCodecTag** @tags, AvCodecId @id);
         
         [DllImport(libavformat, EntryPoint = "av_codec_get_tag2", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        internal static extern int av_codec_get_tag2(AVCodecTag** @tags, AVCodecID @id, uint* @tag);
+        internal static extern int av_codec_get_tag2(AVCodecTag** @tags, AvCodecId @id, uint* @tag);
         
         [DllImport(libavformat, EntryPoint = "av_find_default_stream_index", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         internal static extern int av_find_default_stream_index(AVFormatContext* @s);
@@ -1025,7 +1025,7 @@ namespace CSCore.Ffmpeg.Interops
         internal static extern int av_match_ext([MarshalAs(UnmanagedType.LPStr)] string @filename, [MarshalAs(UnmanagedType.LPStr)] string @extensions);
         
         [DllImport(libavformat, EntryPoint = "avformat_query_codec", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        internal static extern int avformat_query_codec(AVOutputFormat* @ofmt, AVCodecID @codec_id, int @std_compliance);
+        internal static extern int avformat_query_codec(AVOutputFormat* @ofmt, AvCodecId @codec_id, int @std_compliance);
         
         [DllImport(libavformat, EntryPoint = "avformat_get_riff_video_tags", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         internal static extern AVCodecTag* avformat_get_riff_video_tags();
