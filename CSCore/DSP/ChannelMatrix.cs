@@ -157,6 +157,19 @@ namespace CSCore.DSP
             return true;
         }
 
+        internal WaveFormat BuildOutputWaveFormat(IAudioSource audioSource)
+        {
+            if (audioSource == null)
+                throw new ArgumentNullException("source");
+
+            return new WaveFormatExtensible(
+                audioSource.WaveFormat.SampleRate,
+                audioSource.WaveFormat.BitsPerSample,
+                OutputChannelCount,
+                WaveFormatExtensible.SubTypeFromWaveFormat(audioSource.WaveFormat),
+                OutputMask);
+        }
+
         private readonly ChannelMask _inputMask;
         private readonly ChannelMatrixElement[,] _matrix;
         private readonly ChannelMask _outputMask;
@@ -222,7 +235,7 @@ namespace CSCore.DSP
                 ChannelMask.SpeakerFrontLeft | ChannelMask.SpeakerFrontRight |
                 ChannelMask.SpeakerFrontCenter | ChannelMask.SpeakerLowFrequency |
                 ChannelMask.SpeakerSideLeft | ChannelMask.SpeakerSideRight);
-            MonoToFiveDotOneSurroundWithRear.SetMatrix(
+            MonoToFiveDotOneSurroundWithSide.SetMatrix(
                 new[,]
                 {
                     {0.192f, 0.192f, 0.192f, 0.038f, 0.192f, 0.192f}
@@ -230,7 +243,7 @@ namespace CSCore.DSP
             FiveDotOneSurroundWithSideToMono = MonoToFiveDotOneSurroundWithSide.Flip();
 
             MonoToSevenDotOneSurround = new ChannelMatrix(
-                ChannelMask.SpeakerFrontCenter, 
+                ChannelMask.SpeakerFrontCenter,
                 ChannelMask.SpeakerFrontLeft | ChannelMask.SpeakerFrontRight |
                 ChannelMask.SpeakerFrontCenter | ChannelMask.SpeakerLowFrequency |
                 ChannelMask.SpeakerSideLeft | ChannelMask.SpeakerSideRight |
@@ -257,9 +270,9 @@ namespace CSCore.DSP
                     {0.518f , 0f     , 0f, 0f, 0f, 0f, 0.189f, 0f},
                     {0f     , 0.518f , 0f, 0f, 0f, 0f, 0f    , 0.189f},
                     {0f     , 0f     , 0.518f, 0f, 0f, 0f,   0f, 0f},
-                    {0f,	0f,	0f,	0.518f,	0f,	0f,	0f,	0f},
-                    {0f,	0f,	0f,	0f,	0.518f,	0f,	0.482f,	0f},
-                    {0f,	0f,	0f,	0f,	0f,	0.518f,	0f,	0.482f}
+                    {0f,    0f, 0f, 0.518f, 0f, 0f, 0f, 0f},
+                    {0f,    0f, 0f, 0f, 0.518f, 0f, 0.482f, 0f},
+                    {0f,    0f, 0f, 0f, 0f, 0.518f, 0f, 0.482f}
                 });
             SevenDotOneSurroundToFiveDotOneSurroundWithRear = FiveDotOneSurroundWithRearToSevenDotOne.Flip();
 
@@ -274,15 +287,15 @@ namespace CSCore.DSP
             FiveDotOneSurroundWithSideToSevenDotOne.SetMatrix(
                 new[,]
                 {
-                    {0.447f,	0f,	0f,	0f,	0f,	0f,	0f,	0f},
-                    {0f,	0.447f,	0f,	0f,	0f,	0f,	0f,	0f},
-                    {0f,	0f,	0.447f,	0f,	0f,	0f,	0f,	0f},
-                    {0f,	0f,	0f,	0.447f,	0f,	0f,	0f,	0f},
-                    {0f,	0f,	0f,	0f,	0.429f,	0.124f,	0.447f,	0f},
-                    {0f,	0f,	0f,	0f,	0.124f,	0.429f,	0f,	0.447f}
+                    {0.447f,    0f, 0f, 0f, 0f, 0f, 0f, 0f},
+                    {0f,    0.447f, 0f, 0f, 0f, 0f, 0f, 0f},
+                    {0f,    0f, 0.447f, 0f, 0f, 0f, 0f, 0f},
+                    {0f,    0f, 0f, 0.447f, 0f, 0f, 0f, 0f},
+                    {0f,    0f, 0f, 0f, 0.429f, 0.124f, 0.447f, 0f},
+                    {0f,    0f, 0f, 0f, 0.124f, 0.429f, 0f, 0.447f}
                 });
             SevenDotOneSurroundToFiveDotOneSurroundWithSide = FiveDotOneSurroundWithSideToSevenDotOne.Flip();
-            
+
 
             StereoToMonoMatrix = new ChannelMatrix(ChannelMask.SpeakerFrontLeft | ChannelMask.SpeakerFrontRight,
                 ChannelMask.SpeakerFrontCenter);
@@ -314,9 +327,9 @@ namespace CSCore.DSP
             _inputMask = inputMask;
             _outputMask = outputMask;
 
-            if ((int) inputMask <= 0)
+            if ((int)inputMask <= 0)
                 throw new ArgumentException("Invalid inputMask");
-            if ((int) outputMask <= 0)
+            if ((int)outputMask <= 0)
                 throw new ArgumentException("Invalid outputMask");
 
             _matrix =
@@ -474,13 +487,13 @@ namespace CSCore.DSP
 
         private static ChannelMask[] GetValuesOfChannelMask(ChannelMask channelMask)
         {
-            Array totalChannelMaskValues = Enum.GetValues(typeof (ChannelMask));
+            Array totalChannelMaskValues = Enum.GetValues(typeof(ChannelMask));
             var values = new List<ChannelMask>();
             for (int i = 0; i < totalChannelMaskValues.Length; i++)
             {
-                if ((channelMask & ((ChannelMask) totalChannelMaskValues.GetValue(i))) ==
-                    (ChannelMask) totalChannelMaskValues.GetValue(i))
-                    values.Add((ChannelMask) totalChannelMaskValues.GetValue(i));
+                if ((channelMask & ((ChannelMask)totalChannelMaskValues.GetValue(i))) ==
+                    (ChannelMask)totalChannelMaskValues.GetValue(i))
+                    values.Add((ChannelMask)totalChannelMaskValues.GetValue(i));
             }
 
             return values.ToArray();
@@ -493,20 +506,20 @@ namespace CSCore.DSP
                 new FactoryEntry(ChannelMasks.MonoMask, ChannelMasks.StereoMask, MonoToStereoMatrix),
                 new FactoryEntry(ChannelMasks.MonoMask, ChannelMasks.FiveDotOneWithRearMask, MonoToFiveDotOneSurroundWithRear),
                 new FactoryEntry(ChannelMasks.MonoMask, ChannelMasks.FiveDotOneWithSideMask, MonoToFiveDotOneSurroundWithSide),
-                new FactoryEntry(ChannelMasks.MonoMask, ChannelMasks.SevenDotOneMask, MonoToSevenDotOneSurround), 
- 
+                new FactoryEntry(ChannelMasks.MonoMask, ChannelMasks.SevenDotOneMask, MonoToSevenDotOneSurround),
+
                 new FactoryEntry(ChannelMasks.StereoMask, ChannelMasks.MonoMask, StereoToMonoMatrix),
                 new FactoryEntry(ChannelMasks.StereoMask, ChannelMasks.FiveDotOneWithRearMask, StereoToFiveDotOneSurroundWithRear),
                 new FactoryEntry(ChannelMasks.StereoMask, ChannelMasks.FiveDotOneWithSideMask, StereoToFiveDotOneSurroundWithSide),
                 new FactoryEntry(ChannelMasks.StereoMask, ChannelMasks.SevenDotOneMask, StereoToSevenDotOneSurround),
- 
-                new FactoryEntry(ChannelMasks.FiveDotOneWithRearMask, ChannelMasks.MonoMask, FiveDotOneSurroundWithRearToMono), 
+
+                new FactoryEntry(ChannelMasks.FiveDotOneWithRearMask, ChannelMasks.MonoMask, FiveDotOneSurroundWithRearToMono),
                 new FactoryEntry(ChannelMasks.FiveDotOneWithRearMask, ChannelMasks.StereoMask, FiveDotOneSurroundWithRearToStereo), 
 #warning not implemented channel matrix
                 //new FactoryEntry(FiveDotOneWithRearMask, FiveDotOneWithSideMask, ), 
                 new FactoryEntry(ChannelMasks.FiveDotOneWithRearMask, ChannelMasks.SevenDotOneMask, FiveDotOneSurroundWithRearToSevenDotOne),
-                
-                new FactoryEntry(ChannelMasks.FiveDotOneWithSideMask, ChannelMasks.MonoMask, FiveDotOneSurroundWithSideToMono), 
+
+                new FactoryEntry(ChannelMasks.FiveDotOneWithSideMask, ChannelMasks.MonoMask, FiveDotOneSurroundWithSideToMono),
                 new FactoryEntry(ChannelMasks.FiveDotOneWithSideMask, ChannelMasks.StereoMask, FiveDotOneSurroundWithSideToStereo), 
 #warning not implemented channel matrix
                 //new FactoryEntry(FiveDotOneWithSideMask, FiveDotOneWithRearMask, ), 
@@ -515,7 +528,7 @@ namespace CSCore.DSP
                 new FactoryEntry(ChannelMasks.SevenDotOneMask, ChannelMasks.MonoMask, SevenDotOneSurroundToMono),
                 new FactoryEntry(ChannelMasks.SevenDotOneMask, ChannelMasks.StereoMask, SevenDotOneSurroundToStereo),
                 new FactoryEntry(ChannelMasks.SevenDotOneMask, ChannelMasks.FiveDotOneWithRearMask, SevenDotOneSurroundToFiveDotOneSurroundWithRear),
-                new FactoryEntry(ChannelMasks.SevenDotOneMask, ChannelMasks.FiveDotOneWithSideMask, SevenDotOneSurroundToFiveDotOneSurroundWithSide), 
+                new FactoryEntry(ChannelMasks.SevenDotOneMask, ChannelMasks.FiveDotOneWithSideMask, SevenDotOneSurroundToFiveDotOneSurroundWithSide),
             };
 
             public static ChannelMatrix GetMatrix(ChannelMask from, ChannelMask to)
@@ -524,7 +537,7 @@ namespace CSCore.DSP
                     throw new ArgumentException("from must not equal to.");
 
                 var matrix = FactoryEntries.FirstOrDefault(x => x.Input == @from && x.Output == to);
-                if(matrix == null)
+                if (matrix == null)
                     throw new KeyNotFoundException("Could not find a channel matrix for specified channelmasks.");
                 return matrix.Matrix;
             }

@@ -341,6 +341,7 @@
     <Compile Include="SoundOut\WaveOutDevice.cs" />
     <Compile Include="StoppedEventArgs.cs" />
     <Compile Include="Streams\CachedSoundSource.cs" />
+    <Compile Include="Streams\ChannelConversionSource.cs" />
     <Compile Include="Streams\Effects\ChorusPhase.cs" />
     <Compile Include="Streams\Effects\ChorusWaveform.cs" />
     <Compile Include="Streams\Effects\DmoChorusEffect.cs" />
