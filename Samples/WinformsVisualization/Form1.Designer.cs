@@ -38,8 +38,9 @@
             this.propertyGridBottom = new System.Windows.Forms.PropertyGrid();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.fromDefaultDeviceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pitchShiftToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -148,6 +149,7 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openToolStripMenuItem,
+            this.fromDefaultDeviceToolStripMenuItem,
             this.pitchShiftToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -162,10 +164,12 @@
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
-            // timer1
+            // fromDefaultDeviceToolStripMenuItem
             // 
-            this.timer1.Interval = 40;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.fromDefaultDeviceToolStripMenuItem.Name = "fromDefaultDeviceToolStripMenuItem";
+            this.fromDefaultDeviceToolStripMenuItem.Size = new System.Drawing.Size(126, 20);
+            this.fromDefaultDeviceToolStripMenuItem.Text = "From Default Device";
+            this.fromDefaultDeviceToolStripMenuItem.Click += new System.EventHandler(this.fromDefaultDeviceToolStripMenuItem_Click);
             // 
             // pitchShiftToolStripMenuItem
             // 
@@ -173,6 +177,11 @@
             this.pitchShiftToolStripMenuItem.Size = new System.Drawing.Size(75, 20);
             this.pitchShiftToolStripMenuItem.Text = "Pitch-Shift";
             this.pitchShiftToolStripMenuItem.Click += new System.EventHandler(this.pitchShiftToolStripMenuItem_Click);
+            // 
+            // timer1
+            // 
+            this.timer1.Interval = 40;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // Form1
             // 
@@ -218,6 +227,7 @@
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.ToolStripMenuItem pitchShiftToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fromDefaultDeviceToolStripMenuItem;
     }
 }
 

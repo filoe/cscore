@@ -87,13 +87,10 @@ namespace CSCore.DSP
                 throw new ArgumentNullException("source");
             if (channelMatrix == null)
                 throw new ArgumentNullException("channelMatrix");
-            
-            return new WaveFormatExtensible(
-                sampleRate,
-                source.WaveFormat.BitsPerSample,
-                channelMatrix.OutputChannelCount,
-                WaveFormatExtensible.SubTypeFromWaveFormat(source.WaveFormat),
-                channelMatrix.OutputMask);
+
+            var waveFormat = channelMatrix.BuildOutputWaveFormat(source);
+            waveFormat.SampleRate = sampleRate;
+            return waveFormat;
         }
 
         /// <summary>
