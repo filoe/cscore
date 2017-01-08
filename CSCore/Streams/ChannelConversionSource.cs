@@ -48,7 +48,7 @@ namespace CSCore.Streams
         /// </param>
         /// <param name="count">The maximum number of samples to read from the current source.</param>
         /// <returns>The total number of samples read into the buffer.</returns>
-        public unsafe override int Read(float[] buffer, int offset, int count)
+        public override unsafe int Read(float[] buffer, int offset, int count)
         {
             if (buffer.Length < offset + count)
                 throw new ArgumentException("buffer");
@@ -64,6 +64,7 @@ namespace CSCore.Streams
 
             int read = base.Read(_buffer, 0, bytesToRead);
             int counter = 0;
+            Array.Clear(buffer, offset, (int) InputToOutput(read));
 
             fixed (float* buf = &buffer[offset])
             {
