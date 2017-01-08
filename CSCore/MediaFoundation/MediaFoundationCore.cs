@@ -77,12 +77,12 @@ namespace CSCore.MediaFoundation
         }
 
 
-        public static IntPtr StreamToByteStreamNative(Stream stream)
+        public static IntPtr StreamToByteStreamNative(Stream stream, bool disposeBaseStream)
         {
             if (stream == null)
                 throw new ArgumentNullException("stream");
 
-            return IStreamToByteStreamNative(new ComStream(stream));
+            return IStreamToByteStreamNative(new ComStream(stream, disposeBaseStream));
         }
 
         public static MFSourceReader CreateSourceReaderFromByteStream(IntPtr byteStream, IntPtr attributes)

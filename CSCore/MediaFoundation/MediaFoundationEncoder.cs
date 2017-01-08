@@ -24,6 +24,8 @@ namespace CSCore.MediaFoundation
         private MFMediaType _targetMediaType;
         private MFByteStream _targetStream;
 
+        private bool _disposeBaseStream = true;
+
         static MediaFoundationEncoder()
         {
             MediaFoundationCore.Startup();
@@ -149,7 +151,7 @@ namespace CSCore.MediaFoundation
             MFAttributes attributes = null;
             try
             {
-                _targetBaseStream = new ComStream(stream);
+                _targetBaseStream = new ComStream(stream, _disposeBaseStream);
                 _targetStream = MediaFoundationCore.IStreamToByteStream(_targetBaseStream);
 
                 attributes = new MFAttributes(2);
@@ -337,7 +339,7 @@ namespace CSCore.MediaFoundation
                 throw new PlatformNotSupportedException("No MP3-Encoder was found.");
 
             return new MediaFoundationEncoder(targetStream, sourceMediaType, targetMediaType,
-                TranscodeContainerTypes.MFTranscodeContainerType_MP3);
+                TranscodeContainerTypes.MFTranscodeContainerType_MP3) { _disposeBaseStream = false };
         }
 
         /// <summary>
@@ -383,7 +385,7 @@ namespace CSCore.MediaFoundation
                 throw new PlatformNotSupportedException("No WMA-Encoder was found.");
 
             return new MediaFoundationEncoder(targetStream, sourceMediaType, targetMediaType,
-                TranscodeContainerTypes.MFTranscodeContainerType_ASF);
+                TranscodeContainerTypes.MFTranscodeContainerType_ASF) { _disposeBaseStream = false };
         }
 
         /// <summary>
@@ -415,7 +417,7 @@ namespace CSCore.MediaFoundation
             int bitRate = 192000)
         {
             return new AacEncoder(sourceFormat, targetStream, bitRate,
-                TranscodeContainerTypes.MFTranscodeContainerType_MPEG4);
+                TranscodeContainerTypes.MFTranscodeContainerType_MPEG4) {_disposeBaseStream = false};
         }
 
         /// <summary>

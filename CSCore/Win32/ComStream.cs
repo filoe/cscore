@@ -11,26 +11,30 @@ namespace CSCore.Win32
     public class ComStream : Stream, IStream, IWriteable
     {
         private Stream _stream;
+        private readonly bool _disposeBaseStream;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ComStream"/> class.
         /// </summary>
         /// <param name="stream">Underlying <see cref="Stream"/>.</param>
         public ComStream(Stream stream)
-            : this(stream, true)
+            : this(stream, false)
         {
         }
 
-        internal ComStream(Stream stream, bool synchronizeStream)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ComStream"/> class.
+        /// </summary>
+        /// <param name="stream">Underlying <see cref="Stream"/>.</param>
+        public ComStream(Stream stream, bool disposeBaseStream)
         {
             if (stream == null)
                 throw new ArgumentNullException("stream");
 
-            if (synchronizeStream)
-            {
-                stream = Synchronized(stream);
-            }
+            
+            stream = Synchronized(stream);    
             _stream = stream;
+            _disposeBaseStream = disposeBaseStream;
         }
 
         /// <summary>
@@ -297,10 +301,13 @@ namespace CSCore.Win32
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
-            if (_stream != null)
+            if (disposing)
             {
-                _stream.Dispose();
-                _stream = null;
+                if (_stream != null && _disposeBaseStream)
+                {
+                    _stream.Dispose();
+                    _stream = null;
+                }
             }
         }
 
@@ -310,7 +317,7 @@ namespace CSCore.Win32
         public override void Close()
         {
             base.Close();
-            if (_stream != null)
+            if (_stream != null && _disposeBaseStream)
             {
                 _stream.Close();
                 _stream = null;

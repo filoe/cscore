@@ -58,7 +58,7 @@ namespace CSCore.MediaFoundation
             if (!stream.CanRead)
                 throw new ArgumentException("Stream is not readable.", "stream");
 
-            stream = new ComStream(stream);
+            stream = new ComStream(stream, false);
             _stream = stream;
             _byteStream = MediaFoundationCore.IStreamToByteStream((IStream) stream);
             _reader = Initialize(_byteStream);

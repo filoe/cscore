@@ -56,8 +56,10 @@ namespace CSCore.MediaFoundation
         /// Initializes a new instance of the <see cref="MFByteStream"/> class which acts as a wrapper for the specified <paramref name="stream"/> to use it in a media foundation context.
         /// </summary>
         /// <param name="stream">The stream to wrap for media foundation usage.</param>
-        public MFByteStream(Stream stream)
-            : this(MediaFoundationCore.StreamToByteStreamNative(stream))
+        /// <param name="closeStreamOnDispose">A value indicating whether the <paramref name="stream"/> should be closed when the 
+        /// <see cref="Dispose"/> method is being called.</param>
+        public MFByteStream(Stream stream, bool closeStreamOnDispose)
+            : this(MediaFoundationCore.StreamToByteStreamNative(stream, closeStreamOnDispose))
         {
         }
 
