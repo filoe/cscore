@@ -757,6 +757,8 @@ namespace CSCore.SoundOut
                     //no match ... check whether the format of the windows audio mixer is supported
                     //yes ... this gets executed for shared and exclusive mode streams
                     WaveFormat mixformat = audioClient.GetMixFormat();
+                    if (_shareMode == AudioClientShareMode.Exclusive)
+                        mixformat = Device.DeviceFormat;
                     if (mixformat == null || !audioClient.IsFormatSupported(_shareMode, mixformat))
                     {
                         //mixformat is not supported
@@ -840,6 +842,8 @@ namespace CSCore.SoundOut
             {
                 new WaveFormatExtensible(sampleRate, 32, suggestedNumberOfChannels,
                     AudioSubTypes.IeeeFloat),
+                new WaveFormatExtensible(sampleRate, 32, suggestedNumberOfChannels,
+                    AudioSubTypes.Pcm), 
                 new WaveFormatExtensible(sampleRate, 24, suggestedNumberOfChannels,
                     AudioSubTypes.Pcm),
                 new WaveFormatExtensible(sampleRate, 16, suggestedNumberOfChannels,
@@ -848,6 +852,8 @@ namespace CSCore.SoundOut
                     AudioSubTypes.Pcm),
                 new WaveFormatExtensible(sampleRate, 32, 2,
                     AudioSubTypes.IeeeFloat),
+                new WaveFormatExtensible(sampleRate, 32, 2,
+                    AudioSubTypes.Pcm), 
                 new WaveFormatExtensible(sampleRate, 24, 2,
                     AudioSubTypes.Pcm),
                 new WaveFormatExtensible(sampleRate, 16, 2,
@@ -856,6 +862,8 @@ namespace CSCore.SoundOut
                     AudioSubTypes.Pcm),
                 new WaveFormatExtensible(sampleRate, 32, 1,
                     AudioSubTypes.IeeeFloat),
+                new WaveFormatExtensible(sampleRate, 32, 1,
+                    AudioSubTypes.Pcm), 
                 new WaveFormatExtensible(sampleRate, 24, 1,
                     AudioSubTypes.Pcm),
                 new WaveFormatExtensible(sampleRate, 16, 1,
