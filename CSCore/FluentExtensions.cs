@@ -100,7 +100,7 @@ namespace CSCore
             if (input.WaveFormat.Channels == 2)
                 return input;
             if (input.WaveFormat.Channels == 1)
-                return new MonoToStereoSource(input.ToSampleSource()).ToWaveSource();
+                return new MonoToStereoSource(input.ToSampleSource()).ToWaveSource(input.WaveFormat.BitsPerSample);
 
             var format = input.WaveFormat as WaveFormatExtensible;
             if (format != null)
@@ -158,7 +158,7 @@ namespace CSCore
             if (input.WaveFormat.Channels == 1)
                 return input;
             if (input.WaveFormat.Channels == 2)
-                return new StereoToMonoSource(input.ToSampleSource()).ToWaveSource();
+                return new StereoToMonoSource(input.ToSampleSource()).ToWaveSource(input.WaveFormat.BitsPerSample);
 
             WaveFormatExtensible format = input.WaveFormat as WaveFormatExtensible;
             if (format != null)
