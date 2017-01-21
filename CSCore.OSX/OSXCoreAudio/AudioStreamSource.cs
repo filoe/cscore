@@ -14,6 +14,10 @@ namespace CSCore.OSXCoreAudio
         private Stream _audioStream;
         private bool _disposed = false;
 
+        /// <summary>
+        /// The underlying audio stream
+        /// </summary>
+        /// <value>The audio stream.</value>
         public Stream AudioStream {get {return _audioStream;}}
 
         //begin with 8kb buffer
@@ -23,6 +27,7 @@ namespace CSCore.OSXCoreAudio
         ///     Initializes a new instance of the <see cref="T:CSCore.OSXCoreAudio.AudioStreamSource"/> class.
         /// </summary>
         /// <param name="stream">The underlying stream. Note this cannot be a network stream - must be either Memory or File</param>
+        /// <param name="fileType">The codec of the audio stream.</param>
         public AudioStreamSource(Stream stream, AudioFileType fileType) : base()
         {
             if (stream == null)
@@ -102,6 +107,10 @@ namespace CSCore.OSXCoreAudio
             throw new NotSupportedException();
         }
 
+        /// <summary>
+        /// Disposes the audio stream and parent AudioSource
+        /// </summary>
+        /// <param name="disposing">Indicates that we are manually diposing underlying AudioSource</param>
         protected override void Dispose(bool disposing)
         {
             if (_audioStream != null)
