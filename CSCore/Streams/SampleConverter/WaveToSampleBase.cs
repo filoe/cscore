@@ -11,11 +11,11 @@ namespace CSCore.Streams.SampleConverter
         /// <summary>
         /// The underlying source which provides the raw data.
         /// </summary>
-        internal protected IWaveSource Source;
+        protected internal IWaveSource Source;
         /// <summary>
         /// The buffer to use for reading from the <see cref="Source"/>.
         /// </summary>
-        internal protected byte[] Buffer;
+        protected internal byte[] Buffer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WaveToSampleBase"/> class.
@@ -148,6 +148,9 @@ namespace CSCore.Streams.SampleConverter
 
                     case 24:
                         return new Pcm24BitToSample(source);
+
+                    case 32:
+                        return new Pcm32BitToSample(source);
 
                     default:
                         throw new NotSupportedException("Waveformat is not supported. Invalid BitsPerSample value.");

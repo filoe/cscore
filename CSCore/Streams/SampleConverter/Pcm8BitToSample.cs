@@ -37,7 +37,7 @@ namespace CSCore.Streams.SampleConverter
         /// </param>
         /// <param name="count">The maximum number of samples to read from the current source.</param>
         /// <returns>The total number of samples read into the buffer.</returns>
-        public unsafe override int Read(float[] buffer, int offset, int count)
+        public override unsafe int Read(float[] buffer, int offset, int count)
         {
             Buffer = Buffer.CheckBuffer(count);
             int read = Source.Read(Buffer, 0, count);

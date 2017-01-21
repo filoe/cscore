@@ -365,6 +365,8 @@
     <Compile Include="Streams\LinearFadeStrategy.cs" />
     <Compile Include="Streams\PeakEventArgs.cs" />
     <Compile Include="Streams\PeakMeter.cs" />
+    <Compile Include="Streams\SampleConverter\Pcm32BitToSample.cs" />
+    <Compile Include="Streams\SampleConverter\SampleToPcm32.cs" />
     <Compile Include="Streams\SynchronizedWaveSource.cs" />
     <Compile Include="Streams\WriteableBufferingSource.cs" />
     <Compile Include="Streams\BufferSource.cs" />

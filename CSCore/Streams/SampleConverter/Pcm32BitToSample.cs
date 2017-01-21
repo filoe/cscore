@@ -3,27 +3,27 @@
 namespace CSCore.Streams.SampleConverter
 {
     /// <summary>
-    /// Converts a 16-bit PCM <see cref="IWaveSource"/> to a <see cref="ISampleSource"/>.
+    /// Converts a 32-bit PCM <see cref="IWaveSource"/> to a <see cref="ISampleSource"/>.
     /// </summary>
-    public class Pcm16BitToSample : WaveToSampleBase
+    public class Pcm32BitToSample : WaveToSampleBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Pcm16BitToSample"/> class.
+        /// Initializes a new instance of the <see cref="Pcm32BitToSample"/> class.
         /// </summary>
-        /// <param name="source">The underlying 16-bit POCM <see cref="IWaveSource"/> instance which has to get converted to a <see cref="ISampleSource"/>.</param>
+        /// <param name="source">The underlying 32-bit POCM <see cref="IWaveSource"/> instance which has to get converted to a <see cref="ISampleSource"/>.</param>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-        /// <exception cref="ArgumentException">The format of the <paramref name="source"/> is not 16-bit PCM.</exception>
-        public Pcm16BitToSample(IWaveSource source)
+        /// <exception cref="ArgumentException">The format of the <paramref name="source"/> is not 32-bit PCM.</exception>
+        public Pcm32BitToSample(IWaveSource source)
             : base(source)
         {
             if (source == null)
                 throw new ArgumentNullException("source");
-            if (!source.WaveFormat.IsPCM() || source.WaveFormat.BitsPerSample != 16)
-                throw new InvalidOperationException("Invalid format. Format has to 16 bit Pcm.");
+            if (!source.WaveFormat.IsPCM() || source.WaveFormat.BitsPerSample != 32)
+                throw new InvalidOperationException("Invalid format. Format has to 32 bit Pcm.");
         }
 
         /// <summary>
-        ///     Reads a sequence of samples from the <see cref="Pcm16BitToSample" /> and advances the position within the stream by the
+        ///     Reads a sequence of samples from the <see cref="Pcm32BitToSample" /> and advances the position within the stream by the
         ///     number of samples read.
         /// </summary>
         /// <param name="buffer">
@@ -39,18 +39,18 @@ namespace CSCore.Streams.SampleConverter
         /// <returns>The total number of samples read into the buffer.</returns>
         public override int Read(float[] buffer, int offset, int count)
         {
-            int bytesToRead = count * 2;
+            int bytesToRead = count * 4;
             Buffer = Buffer.CheckBuffer(bytesToRead);
             int read = Source.Read(Buffer, 0, bytesToRead);
 
             int startIndex = offset;
-            for (int i = 0; i < read; i += 2)
+            for (int i = 0; i < read; i += 4)
             {
-                buffer[startIndex] = BitConverter.ToInt16(Buffer, i) / 32768f;
+                buffer[startIndex] = BitConverter.ToInt32(Buffer, i) / 2147483649f;
                 startIndex++;
             }
 
-            return read / 2;
+            return read / 4;
         }
     }
 }

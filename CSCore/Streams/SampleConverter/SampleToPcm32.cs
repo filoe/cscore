@@ -3,24 +3,24 @@
 namespace CSCore.Streams.SampleConverter
 {
     /// <summary>
-    /// Converts a <see cref="ISampleSource"/> to a 24-bit PCM <see cref="IWaveSource"/>.
+    /// Converts a <see cref="ISampleSource"/> to a 32-bit PCM <see cref="IWaveSource"/>.
     /// </summary>
-    public class SampleToPcm24 : SampleToWaveBase
+    public class SampleToPcm32 : SampleToWaveBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SampleToPcm24"/> class.
+        /// Initializes a new instance of the <see cref="SampleToPcm32"/> class.
         /// </summary>
-        /// <param name="source">The underlying <see cref="ISampleSource"/> which has to get converted to a 24-bit PCM <see cref="IWaveSource"/>.</param>
+        /// <param name="source">The underlying <see cref="ISampleSource"/> which has to get converted to a 32-bit PCM <see cref="IWaveSource"/>.</param>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null.</exception>
-        public SampleToPcm24(ISampleSource source)
-            : base(source, 24, AudioEncoding.Pcm)
+        public SampleToPcm32(ISampleSource source)
+            : base(source, 32, AudioEncoding.Pcm)
         {
             if (source == null)
                 throw new ArgumentNullException("source");
         }
 
         /// <summary>
-        ///     Reads a sequence of bytes from the <see cref="SampleToPcm24" /> and advances the position within the stream by the
+        ///     Reads a sequence of bytes from the <see cref="SampleToPcm32" /> and advances the position within the stream by the
         ///     number of bytes read.
         /// </summary>
         /// <param name="buffer">
@@ -34,23 +34,24 @@ namespace CSCore.Streams.SampleConverter
         /// </param>
         /// <param name="count">The maximum number of bytes to read from the current source.</param>
         /// <returns>The total number of bytes read into the buffer.</returns>
-        public override unsafe int Read(byte[] buffer, int offset, int count)
+        public override int Read(byte[] buffer, int offset, int count)
         {
-            int sourceCount = count / 3;
-            Buffer = Buffer.CheckBuffer(sourceCount);
-            int read = Source.Read(Buffer, 0, sourceCount);
+            Buffer = Buffer.CheckBuffer(count / 4);
 
+            int read = Source.Read(Buffer, 0, count / 4);
             int bufferOffset = offset;
             for (int i = 0; i < read; i++)
             {
-                uint sample32 = (uint)(Buffer[i] * 8388608f);
-                byte* psample32 = (byte*)&sample32;
-                buffer[bufferOffset++] = psample32[0];
-                buffer[bufferOffset++] = psample32[1];
-                buffer[bufferOffset++] = psample32[2];
+                int value = (int)(Buffer[i] * int.MaxValue);
+                var bytes = BitConverter.GetBytes(value);
+
+                buffer[bufferOffset++] = bytes[0];
+                buffer[bufferOffset++] = bytes[1];
+                buffer[bufferOffset++] = bytes[2];
+                buffer[bufferOffset++] = bytes[3];
             }
 
-            return read * 3;
+            return read * 4;
         }
     }
 }
