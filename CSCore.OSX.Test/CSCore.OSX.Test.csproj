@@ -31,6 +31,7 @@
     <Reference Include="System" />
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.3.2.1\lib\net45\nunit.framework.dll</HintPath>
+      <Package>nunit</Package>
     </Reference>
     <Reference Include="MonoMac">
       <HintPath>..\CSCore.OSX\lib\MonoMac.dll</HintPath>
