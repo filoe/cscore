@@ -48,7 +48,10 @@ namespace CSCore.Ffmpeg
                     break;
                 case AVSampleFormat.AV_SAMPLE_FMT_DBL:
                 case AVSampleFormat.AV_SAMPLE_FMT_DBLP:
-                    throw new NotSupportedException("DBL format is not supported.");
+                    //dbl is converted by the AvFrame.DecodePacket method
+                    bitsPerSample = 32;
+                    encoding = AudioEncoding.IeeeFloat;
+                    break;
                 default:
                     throw new NotSupportedException("Audio Sample Format not supported.");
             }

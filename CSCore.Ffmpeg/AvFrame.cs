@@ -97,30 +97,82 @@ namespace CSCore.Ffmpeg
                             }
                             else if (dataSize == 2)
                             {
-                                buffer[offset + i * dataSize * _frame->channels + c * dataSize] = _frame->extended_data[c][i * dataSize];
-                                buffer[offset + i * dataSize * _frame->channels + c * dataSize + 1] = _frame->extended_data[c][i * dataSize + 1];
+                                buffer[offset + i * dataSize * _frame->channels + c * dataSize] =
+                                    _frame->extended_data[c][i * dataSize];
+                                buffer[offset + i * dataSize * _frame->channels + c * dataSize + 1] =
+                                    _frame->extended_data[c][i * dataSize + 1];
                             }
                             else if (dataSize == 4)
                             {
-                                buffer[offset + i * dataSize * _frame->channels + c * dataSize] = _frame->extended_data[c][i * dataSize];
-                                buffer[offset + i * dataSize * _frame->channels + c * dataSize + 1] = _frame->extended_data[c][i * dataSize + 1];
-                                buffer[offset + i * dataSize * _frame->channels + c * dataSize + 2] = _frame->extended_data[c][i * dataSize + 2];
-                                buffer[offset + i * dataSize * _frame->channels + c * dataSize + 3] = _frame->extended_data[c][i * dataSize + 3];
+                                buffer[offset + i * dataSize * _frame->channels + c * dataSize] =
+                                    _frame->extended_data[c][i * dataSize];
+                                buffer[offset + i * dataSize * _frame->channels + c * dataSize + 1] =
+                                    _frame->extended_data[c][i * dataSize + 1];
+                                buffer[offset + i * dataSize * _frame->channels + c * dataSize + 2] =
+                                    _frame->extended_data[c][i * dataSize + 2];
+                                buffer[offset + i * dataSize * _frame->channels + c * dataSize + 3] =
+                                    _frame->extended_data[c][i * dataSize + 3];
+                            }
+                            else if (dataSize == 8)
+                            {
+                                buffer[offset + i * dataSize * _frame->channels + c * dataSize] =
+                                    _frame->extended_data[c][i * dataSize];
+                                buffer[offset + i * dataSize * _frame->channels + c * dataSize + 1] =
+                                    _frame->extended_data[c][i * dataSize + 1];
+                                buffer[offset + i * dataSize * _frame->channels + c * dataSize + 2] =
+                                    _frame->extended_data[c][i * dataSize + 2];
+                                buffer[offset + i * dataSize * _frame->channels + c * dataSize + 3] =
+                                    _frame->extended_data[c][i * dataSize + 3];
+                                buffer[offset + i * dataSize * _frame->channels + c * dataSize + 4] =
+                                    _frame->extended_data[c][i * dataSize + 4];
+                                buffer[offset + i * dataSize * _frame->channels + c * dataSize + 5] =
+                                    _frame->extended_data[c][i * dataSize + 5];
+                                buffer[offset + i * dataSize * _frame->channels + c * dataSize + 6] =
+                                    _frame->extended_data[c][i * dataSize + 6];
+                                buffer[offset + i * dataSize * _frame->channels + c * dataSize + 7] =
+                                    _frame->extended_data[c][i * dataSize + 7];
                             }
                         }
                     }
 
-                    return dataSize * _frame->channels * _frame->nb_samples;
+                    size = dataSize * _frame->channels * _frame->nb_samples;
+                }
+                else
+                {
+                    for (int i = 0; i < size; i++)
+                    {
+                        buffer[i + offset] = _frame->extended_data[0][i];
+                    }
                 }
 
-                for (int i = 0; i < size; i++)
+                if (dataSize == 8)
                 {
-                    buffer[i + offset] = _frame->extended_data[0][i];
+                    //dbl
+                    size = ConvertDblToFloat(buffer, offset, size);
                 }
+
                 return size;
             }
 
             return 0;
+        }
+
+        private unsafe int ConvertDblToFloat(byte[] buffer, int offset, int count)
+        {
+            byte[] fltBuffer = new byte[count / 2];
+            fixed (void* pbuf = &buffer[offset])
+            fixed(void* pout = &fltBuffer[0])
+            {
+                float* pflt = (float*) pout;
+                double* pdbl = (double*) pbuf;
+                for (int i = 0; i < count / 8; i++)
+                {
+                    pflt[i] = (float)pdbl[i];
+                }
+            }
+            Array.Clear(buffer, offset, count);
+            Buffer.BlockCopy(fltBuffer, 0, buffer, offset, fltBuffer.Length);
+            return fltBuffer.Length;
         }
 
         private bool IsPlanar(AVSampleFormat sampleFormat)
