@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BC09FBD9-AAEB-4A4F-965E-1EBE3E880141}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>CSCore</RootNamespace>
+    <AssemblyName>CSCore.OSX</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <DocumentationFile>bin\Debug\CSCore.OSX.xml</DocumentationFile>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <DocumentationFile>bin\Release\CSCore.OSX.xml</DocumentationFile>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MonoMac">
+      <HintPath>lib\MonoMac.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="OSXCoreAudio\OSXAudioDecoder.cs" />
+    <Compile Include="OSXCoreAudio\AudioStreamSource.cs" />
+    <Compile Include="OSXCoreAudio\OSXAudio.cs" />
+    <Compile Include="Codecs\AAC\AACDecoderOSX.cs" />
+    <Compile Include="Codecs\MP3\MP3DecoderOSX.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\CSCore\CSCore.csproj">
+      <Project>{C3DCCFE3-DD3F-4EEE-849B-33E355B1E064}</Project>
+      <Name>CSCore</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Policies>
+          <DotNetNamingPolicy DirectoryNamespaceAssociation="PrefixedHierarchical" ResourceNamePolicy="FileFormatDefault" />
+        </Policies>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
+  <PropertyGroup Condition=" '$(OS)' == 'Unix' ">
+    <CustomCommands>
+      <CustomCommands>
+        <Command ContinueOnError="true" type="AfterBuild" command="monolinker -c skip -b true -l none -p link MonoMac -p skip CSCore -o ../linked-output/${ProjectConfig} -a CSCore.OSX.dll" workingdir="${TargetDir}" />
+        <Command ContinueOnError="true" type="AfterBuild" command="mono ${SolutionDir}/packages/ILRepack.2.0.10/tools/ILRepack.exe /out:../../merged-output/${ProjectConfig}/${TargetName} ${TargetFile} MonoMac.dll" workingdir="${TargetDir}/../linked-output/${ProjectConfig}" />
+        <Command type="AfterBuild" command="cp ${TargetDir}/CSCore.OSX.xml ${TargetDir}/../merged-output/${ProjectConfig}/" />
+        <Command type="AfterBuild" command="rm -rf ${TargetDir}" />
+        <Command type="AfterBuild" command="mkdir ${TargetDir}" />
+        <Command type="AfterBuild" command="cp ${TargetDir}/../merged-output/${ProjectConfig}/${TargetName} ${TargetDir}" />
+        <Command type="AfterBuild" command="cp ${TargetDir}/../merged-output/${ProjectConfig}/CSCore.OSX.xml ${TargetDir}" />
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(OS)' == 'Unix' ">
+    <CustomCommands>
+      <CustomCommands>
+        <Command ContinueOnError="true" type="AfterBuild" command="monolinker -c skip -b true -l none -p link MonoMac -p skip CSCore -o ../linked-output/${ProjectConfig} -a CSCore.OSX.dll" workingdir="${TargetDir}" />
+        <Command ContinueOnError="true" type="AfterBuild" command="mono ${SolutionDir}/packages/ILRepack.2.0.10/tools/ILRepack.exe /out:../../merged-output/${ProjectConfig}/${TargetName} ${TargetFile} MonoMac.dll" workingdir="${TargetDir}/../linked-output/${ProjectConfig}" />
+        <Command type="AfterBuild" command="cp ${TargetDir}/CSCore.OSX.xml ${TargetDir}/../merged-output/${ProjectConfig}/" />
+        <Command type="AfterBuild" command="rm -rf ${TargetDir}" />
+        <Command type="AfterBuild" command="mkdir ${TargetDir}" />
+        <Command type="AfterBuild" command="cp ${TargetDir}/../merged-output/${ProjectConfig}/${TargetName} ${TargetDir}" />
+        <Command type="AfterBuild" command="cp ${TargetDir}/../merged-output/${ProjectConfig}/CSCore.OSX.xml ${TargetDir}" />
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent Condition=" '$(OS)' == 'Windows_NT' ">
+		  $(SolutionDir)/packages/ILRepack.2.0.10/tools/ILRepack.exe /out:../merged-output/$(ConfigurationName)/$(TargetFileName) $(TargetPath) MonoMac.dll
+      copy "$(TargetDir)/CSCore.OSX.xml" "$(TargetDir)/../merged-output/$(ConfigurationName)/"
+      del /S /Q "$(TargetDir)/"
+      copy "$(TargetDir)..\merged-output\$(ConfigurationName)\*.*" "$(TargetDir)"
+	</PostBuildEvent>
+  </PropertyGroup>
+</Project>
