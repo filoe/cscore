@@ -14,6 +14,7 @@ using CSCore.Codecs.MP3;
 using CSCore.Codecs.WAV;
 using CSCore.Codecs.WMA;
 using CSCore.MediaFoundation;
+using CSCore.Utils;
 
 namespace CSCore.Codecs
 {
@@ -27,23 +28,44 @@ namespace CSCore.Codecs
 
         private readonly Dictionary<object, CodecFactoryEntry> _codecs;
 
+        protected DefaultCodecAction DefaultCodec { get; set; }
+
+        /// <summary>
+        ///     Add initial codec entrys to the registry
+        ///     Only adds windows specific codecs if we are running on windows
+        ///     Linux/OSX need to manually register their codecs
+        /// </summary>
         private CodecFactory()
         {
             _codecs = new Dictionary<object, CodecFactoryEntry>();
-            Register("mp3", new CodecFactoryEntry(s =>
+
+            Platform plat = PlatformDetection.RunningPlatform();
+
+            // Add MediaFoundation as default on Windows
+            if (plat == Platform.Windows) RegisterDefaultCodec((url, isWebURL) => { return new MediaFoundationDecoder(url); });
+
+            // only register DMO/Mediafoundation if we are on Windows
+            // require other platforms (Linux/OSX) to register themselves
+            if (plat == Platform.Windows)
             {
-                try
+                Register("mp3", new CodecFactoryEntry(s =>
                 {
-                    return new DmoMp3Decoder(s);
-                }
-                catch (Exception)
-                {
-                    if (Mp3MediafoundationDecoder.IsSupported)
-                        return new Mp3MediafoundationDecoder(s);
-                    throw;
-                }
-            },
-                "mp3", "mpeg3"));
+                    try
+                    {
+                        return new DmoMp3Decoder(s);
+                    }
+                    catch (Exception)
+                    {
+                        if (Mp3MediafoundationDecoder.IsSupported)
+                            return new Mp3MediafoundationDecoder(s);
+                        throw;
+                    }
+                },
+                    "mp3", "mpeg3"));
+            }
+
+            // These codecs are platform independent
+
             Register("wave", new CodecFactoryEntry(s =>
             {
                 IWaveSource res = new WaveFileReader(s);
@@ -62,32 +84,34 @@ namespace CSCore.Codecs
             Register("aiff", new CodecFactoryEntry(s => new AiffReader(s),
                 "aiff", "aif", "aifc"));
 
-            if (AacDecoder.IsSupported)
+            // !! Only attempt to register the following codecs if we are running on windows !!
+
+            if (plat == Platform.Windows && AacDecoder.IsSupported)
             {
                 Register("aac", new CodecFactoryEntry(s => new AacDecoder(s),
                     "aac", "adt", "adts", "m2ts", "mp2", "3g2", "3gp2", "3gp", "3gpp", "m4a", "m4v", "mp4v", "mp4",
                     "mov"));
             }
 
-            if (WmaDecoder.IsSupported)
+            if (plat == Platform.Windows && WmaDecoder.IsSupported)
             {
                 Register("wma", new CodecFactoryEntry(s => new WmaDecoder(s),
                     "asf", "wm", "wmv", "wma"));
             }
 
-            if (Mp1Decoder.IsSupported)
+            if (plat == Platform.Windows && Mp1Decoder.IsSupported)
             {
                 Register("mp1", new CodecFactoryEntry(s => new Mp1Decoder(s),
                     "mp1", "m2ts"));
             }
 
-            if (Mp2Decoder.IsSupported)
+            if (plat == Platform.Windows && Mp2Decoder.IsSupported)
             {
-                Register("mp2", new CodecFactoryEntry(s => new Mp2Decoder(s),
+                Register("mp2", new CodecFactoryEntry(s => new Mp1Decoder(s),
                     "mp2", "m2ts"));
             }
 
-            if (DDPDecoder.IsSupported)
+            if (plat == Platform.Windows && DDPDecoder.IsSupported)
             {
                 Register("ddp", new CodecFactoryEntry(s => new DDPDecoder(s),
                     "mp2", "m2ts", "m4a", "m4v", "mp4v", "mp4", "mov", "asf", "wm", "wmv", "wma", "avi", "ac3", "ec3"));
@@ -101,6 +125,7 @@ namespace CSCore.Codecs
         {
             get { return _instance; }
         }
+
 
         /// <summary>
         ///     Gets the file filter in English. This filter can be used e.g. in combination with an OpenFileDialog.
@@ -127,6 +152,15 @@ namespace CSCore.Codecs
 
             if (_codecs.ContainsKey(key) != true)
                 _codecs.Add(key, codec);
+        }
+
+        /// <summary>
+        ///     Registers a default codec action
+        /// </summary>
+        /// <param name="action">The default codec action to register</param>
+        public void RegisterDefaultCodec(DefaultCodecAction action)
+        {
+            DefaultCodec = action;
         }
 
         /// <summary>
@@ -202,7 +236,7 @@ namespace CSCore.Codecs
         {
             try
             {
-                return Default(url);
+                return Default(url, true);
             }
             catch (Exception)
             {
@@ -220,9 +254,9 @@ namespace CSCore.Codecs
             }
         }
 
-        private static IWaveSource Default(string url)
+        private static IWaveSource Default(string url, bool isWebURL = false)
         {
-            return new MediaFoundationDecoder(url);
+            return Instance.DefaultCodec(url, isWebURL);
         }
 
         /// <summary>
