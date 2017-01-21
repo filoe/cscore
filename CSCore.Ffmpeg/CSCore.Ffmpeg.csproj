@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -45,11 +46,14 @@
     <Compile Include="AvioContext.cs" />
     <Compile Include="AvStream.cs" />
     <Compile Include="FfmpegCalls.cs" />
+    <Compile Include="FfmpegConfigurationSection.cs" />
     <Compile Include="FfmpegDecoder.cs" />
     <Compile Include="FfmpegException.cs" />
+    <Compile Include="FfmpegLogReceivedEventArgs.cs" />
     <Compile Include="FfmpegStream.cs" />
     <Compile Include="FfmpegUtils.cs" />
     <Compile Include="AvCodecId.cs" />
+    <Compile Include="Format.cs" />
     <Compile Include="Interops\ConstCharPtrMarshaler.cs" />
     <Compile Include="Interops\FFmpeg.avcodec.g.cs" />
     <None Include="Interops\unused\FFmpeg.avdevice.g.cs" />
@@ -62,6 +66,7 @@
     <None Include="Interops\unused\FFmpeg.swscale.g.cs" />
     <Compile Include="Interops\InteropHelper.cs" />
     <Compile Include="Interops\Unresolved.cs" />
+    <Compile Include="LogLevel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using CSCore.Ffmpeg.Interops;
@@ -49,14 +51,31 @@ namespace CSCore.Ffmpeg
             {
                 string path = Path.Combine(
                     assemblyDirectory,
-                    Path.Combine("FFmpeg", Path.Combine("bin", 
+                    Path.Combine("FFmpeg", Path.Combine("bin",
                         Path.Combine(platform, IntPtr.Size == 8 ? "x64" : "x86"))));
 
                 InteropHelper.RegisterLibrariesSearchPath(path);
             }
 
+            FfmpegConfigurationSection ffmpegSettings =
+                (FfmpegConfigurationSection)ConfigurationManager.GetSection("ffmpeg");
+            if (ffmpegSettings != null)
+            {
+                if (!String.IsNullOrEmpty(ffmpegSettings.HttpProxy))
+                {
+                    Environment.SetEnvironmentVariable("http_proxy", ffmpegSettings.HttpProxy);
+                    Environment.SetEnvironmentVariable("no_proxy", ffmpegSettings.ProxyWhitelist);
+                }
+                if (ffmpegSettings.LogLevel != null)
+                {
+                    FfmpegUtils.LogLevel = ffmpegSettings.LogLevel.Value;
+                }
+            }
+
             ffmpeg.av_register_all();
             ffmpeg.avcodec_register_all();
+
+            ffmpeg.avformat_network_init();
         }
 
         internal static unsafe AVOutputFormat[] GetOutputFormats()
@@ -104,7 +123,7 @@ namespace CSCore.Ffmpeg
         {
             void* buffer = ffmpeg.av_malloc((ulong) bufferSize);
             IntPtr ptr = new IntPtr(buffer);
-            if(ptr == IntPtr.Zero)
+            if (ptr == IntPtr.Zero)
                 throw new OutOfMemoryException("Could not allocate memory.");
             return ptr;
         }
@@ -112,13 +131,13 @@ namespace CSCore.Ffmpeg
 
         internal static unsafe void AvFree(IntPtr buffer)
         {
-            ffmpeg.av_free((void*)buffer);
+            ffmpeg.av_free((void*) buffer);
         }
 
         internal static unsafe AVIOContext* AvioAllocContext(AvioBuffer buffer, bool writeable, IntPtr userData,
             AvioReadData readData, AvioWriteData writeData, AvioSeek seek)
         {
-            byte* bufferPtr = (byte*)buffer.Buffer;
+            byte* bufferPtr = (byte*) buffer.Buffer;
 
             var avioContext = ffmpeg.avio_alloc_context(
                 bufferPtr,
@@ -235,7 +254,8 @@ namespace CSCore.Ffmpeg
             return result >= 0;
         }
 
-        internal static unsafe bool AvCodecDecodeAudio4(AVCodecContext* codecContext, AVFrame* frame, AVPacket* packet, out int bytesConsumed)
+        internal static unsafe bool AvCodecDecodeAudio4(AVCodecContext* codecContext, AVFrame* frame, AVPacket* packet,
+            out int bytesConsumed)
         {
             int gotFrame;
             int result = ffmpeg.avcodec_decode_audio4(codecContext, frame, &gotFrame, packet);
@@ -281,6 +301,54 @@ namespace CSCore.Ffmpeg
             Debug.WriteLineIf(Debugger.IsAttached, errorMessage);
 #endif
             return errorMessage;
+        }
+
+        internal static void SetLogLevel(LogLevel level)
+        {
+            ffmpeg.av_log_set_level((int) level);
+        }
+
+        internal static LogLevel GetLogLevel()
+        {
+            return (LogLevel) ffmpeg.av_log_get_level();
+        }
+
+        internal unsafe delegate void LogCallback(void* ptr, int level, byte* fmt, IntPtr vl);
+
+        internal static unsafe void SetLogCallback(LogCallback callback)
+        {
+            ffmpeg.av_log_set_callback(Marshal.GetFunctionPointerForDelegate(callback));
+        }
+
+        internal static unsafe LogCallback GetDefaultLogCallback()
+        {
+            return (ptr, level, fmt, vl) =>
+            {
+                ffmpeg.av_log_default_callback(ptr, level, Marshal.PtrToStringAnsi(new IntPtr(fmt)), (sbyte*) vl);
+            };
+        }
+
+        internal static unsafe string FormatLine(void* avcl, int level, string fmt, IntPtr vl,
+            ref int printPrefix)
+        {
+            string line = String.Empty;
+
+            const int bufferSize = 0x400;
+            byte* buffer = stackalloc byte[bufferSize];
+            fixed (int* ppp = &printPrefix)
+            {
+                int result = ffmpeg.av_log_format_line2(avcl, level, fmt, (sbyte*) vl, (IntPtr) buffer, bufferSize, ppp);
+                if (result < 0)
+                {
+                    Debug.WriteLine("av_log_format_line2 failed with " + result.ToString("x8"));
+                    return line;
+                }
+
+                line = Marshal.PtrToStringAnsi((IntPtr)buffer);
+                if (line != null && result > 0)
+                    line = line.Substring(0, result);
+                return line;
+            }
         }
     }
 }

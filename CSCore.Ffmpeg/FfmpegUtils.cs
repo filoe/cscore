@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using CSCore.Ffmpeg.Interops;
@@ -12,6 +13,23 @@ namespace CSCore.Ffmpeg
     /// </summary>
     public static class FfmpegUtils
     {
+        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
+        private static readonly FfmpegCalls.LogCallback LogCallback;
+        private static readonly FfmpegCalls.LogCallback DefaultLogCallback;
+        private static readonly object LockObj = new object();
+
+        /// <summary>
+        /// Occurs when a ffmpeg log entry was received.
+        /// </summary>
+        public static event EventHandler<FfmpegLogReceivedEventArgs> FfmpegLogReceived;
+
+        static unsafe FfmpegUtils()
+        {
+            LogCallback = OnLogMessage;
+            DefaultLogCallback = FfmpegCalls.GetDefaultLogCallback();
+            FfmpegCalls.SetLogCallback(LogCallback);
+        }
+
         /// <summary>
         /// Gets the output formats.
         /// </summary>
@@ -33,58 +51,75 @@ namespace CSCore.Ffmpeg
         }
 
         /// <summary>
-        /// Represents a ffmpeg format.
+        /// Gets or sets the log level.
         /// </summary>
-        public class Format
+        /// <value>
+        /// The log level.
+        /// </value>
+        /// <exception cref="System.ComponentModel.InvalidEnumArgumentException">value</exception>
+        public static LogLevel LogLevel
         {
-            /// <summary>
-            /// Gets the name of the format.
-            /// </summary>
-            public string Name { get; private set; }
-
-            /// <summary>
-            /// Gets the long name of the format.
-            /// </summary>
-            public string LongName { get; private set; }
-
-            /// <summary>
-            /// Gets a list of the common codecs.
-            /// </summary>
-            public ReadOnlyCollection<AvCodecId> Codecs { get; private set; }
-
-            /// <summary>
-            /// Gets a list with the common file extensions of the format.
-            /// </summary>
-            public ReadOnlyCollection<string> FileExtensions { get; private set; }
-
-            /*
-             * In order to copy duplicate code, we could use dynamic parameters ...
-             * Unfortunately they are not supported by mono on .net 3.5
-             */
-            internal unsafe Format(AVOutputFormat format)
+            get { return FfmpegCalls.GetLogLevel(); }
+            set
             {
-                LongName = Marshal.PtrToStringAnsi((IntPtr) format.long_name);
-                Name = Marshal.PtrToStringAnsi((IntPtr) format.name);
+                if ((int)value < (int)LogLevel.Quit || (int)value > (int)LogLevel.Debug || (int)value % 8 != 0)
+                    throw new InvalidEnumArgumentException("value", (int)value, typeof(LogLevel));
 
-                Codecs = FfmpegCalls.GetCodecOfCodecTag(format.codec_tag).AsReadOnly();
-                
-                var extensions = Marshal.PtrToStringAnsi((IntPtr)format.extensions);
-                FileExtensions = !string.IsNullOrEmpty(extensions) 
-                    ? extensions.Split(',').ToList().AsReadOnly() 
-                    : Enumerable.Empty<string>().ToList().AsReadOnly();
+                FfmpegCalls.SetLogLevel(value);
             }
+        }
 
-            internal unsafe Format(AVInputFormat format)
+        /// <summary>
+        /// Gets or sets a value indicating whether log entries should be passed to the default ffmpeg logger.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if log messages should be passed to the default ffmpeg logger; otherwise, <c>false</c>.
+        /// </value>
+        public static bool LogToDefaultLogger { get; set; }
+
+        private static unsafe void OnLogMessage(void* ptr, int level, byte* fmt, IntPtr vl)
+        {
+            lock (LockObj)
             {
-                LongName = Marshal.PtrToStringAnsi((IntPtr)format.long_name);
-                Name = Marshal.PtrToStringAnsi((IntPtr)format.name);
+                if (level >= 0)
+                {
+                    level &= 0xFF;
+                }
 
-                Codecs = FfmpegCalls.GetCodecOfCodecTag(format.codec_tag).AsReadOnly();
+                if (level > (int)LogLevel)
+                    return;
 
-                var extensions = Marshal.PtrToStringAnsi((IntPtr)format.extensions);
-                FileExtensions = !string.IsNullOrEmpty(extensions)
-                    ? extensions.Split(',').ToList().AsReadOnly()
-                    : Enumerable.Empty<string>().ToList().AsReadOnly();
+                if (LogToDefaultLogger)
+                {
+                    DefaultLogCallback(ptr, level, fmt, vl);
+                }
+
+                var eventHandler = FfmpegLogReceived;
+                if (eventHandler != null)
+                {
+                    AVClass? avClass = null;
+                    AVClass? parentLogContext = null;
+                    AVClass** parentpp = default(AVClass**);
+                    if (ptr != null)
+                    {
+                        avClass = **(AVClass**)ptr;
+                        if (avClass.Value.parent_log_context_offset != 0)
+                        {
+                            parentpp = *(AVClass***)((byte*)ptr + avClass.Value.parent_log_context_offset);
+                            if (parentpp != null && *parentpp != null)
+                            {
+                                parentLogContext = **parentpp;
+                            }
+                        }
+                    }
+
+
+                    int printPrefix = 1;
+                    string line = FfmpegCalls.FormatLine(ptr, level, Marshal.PtrToStringAnsi((IntPtr)fmt), vl, ref printPrefix);
+
+                    eventHandler(null,
+                        new FfmpegLogReceivedEventArgs(avClass, parentLogContext, (LogLevel) level, line, ptr, parentpp));
+                }
             }
         }
     }
