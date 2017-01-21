@@ -66,38 +66,23 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
-  <PropertyGroup Condition=" '$(OS)' == 'Unix' ">
-    <CustomCommands>
-      <CustomCommands>
-        <Command ContinueOnError="true" type="AfterBuild" command="monolinker -c skip -b true -l none -p link MonoMac -p skip CSCore -o ../linked-output/${ProjectConfig} -a CSCore.OSX.dll" workingdir="${TargetDir}" />
-        <Command ContinueOnError="true" type="AfterBuild" command="mono ${SolutionDir}/packages/ILRepack.2.0.10/tools/ILRepack.exe /out:../../merged-output/${ProjectConfig}/${TargetName} ${TargetFile} MonoMac.dll" workingdir="${TargetDir}/../linked-output/${ProjectConfig}" />
-        <Command type="AfterBuild" command="cp ${TargetDir}/CSCore.OSX.xml ${TargetDir}/../merged-output/${ProjectConfig}/" />
-        <Command type="AfterBuild" command="rm -rf ${TargetDir}" />
-        <Command type="AfterBuild" command="mkdir ${TargetDir}" />
-        <Command type="AfterBuild" command="cp ${TargetDir}/../merged-output/${ProjectConfig}/${TargetName} ${TargetDir}" />
-        <Command type="AfterBuild" command="cp ${TargetDir}/../merged-output/${ProjectConfig}/CSCore.OSX.xml ${TargetDir}" />
-      </CustomCommands>
-    </CustomCommands>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(OS)' == 'Unix' ">
-    <CustomCommands>
-      <CustomCommands>
-        <Command ContinueOnError="true" type="AfterBuild" command="monolinker -c skip -b true -l none -p link MonoMac -p skip CSCore -o ../linked-output/${ProjectConfig} -a CSCore.OSX.dll" workingdir="${TargetDir}" />
-        <Command ContinueOnError="true" type="AfterBuild" command="mono ${SolutionDir}/packages/ILRepack.2.0.10/tools/ILRepack.exe /out:../../merged-output/${ProjectConfig}/${TargetName} ${TargetFile} MonoMac.dll" workingdir="${TargetDir}/../linked-output/${ProjectConfig}" />
-        <Command type="AfterBuild" command="cp ${TargetDir}/CSCore.OSX.xml ${TargetDir}/../merged-output/${ProjectConfig}/" />
-        <Command type="AfterBuild" command="rm -rf ${TargetDir}" />
-        <Command type="AfterBuild" command="mkdir ${TargetDir}" />
-        <Command type="AfterBuild" command="cp ${TargetDir}/../merged-output/${ProjectConfig}/${TargetName} ${TargetDir}" />
-        <Command type="AfterBuild" command="cp ${TargetDir}/../merged-output/${ProjectConfig}/CSCore.OSX.xml ${TargetDir}" />
-      </CustomCommands>
-    </CustomCommands>
-  </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent Condition=" '$(OS)' == 'Windows_NT' ">
-		  $(SolutionDir)/packages/ILRepack.2.0.10/tools/ILRepack.exe /out:../merged-output/$(ConfigurationName)/$(TargetFileName) $(TargetPath) MonoMac.dll
-      copy "$(TargetDir)/CSCore.OSX.xml" "$(TargetDir)/../merged-output/$(ConfigurationName)/"
-      del /S /Q "$(TargetDir)/"
-      copy "$(TargetDir)..\merged-output\$(ConfigurationName)\*.*" "$(TargetDir)"
+        $(SolutionDir)/packages/ILRepack.2.0.10/tools/ILRepack.exe /out:../merged-output/$(ConfigurationName)/$(TargetFileName) $(TargetPath) MonoMac.dll
+        copy "$(TargetDir)/CSCore.OSX.xml" "$(TargetDir)/../merged-output/$(ConfigurationName)/"
+        del /S /Q "$(TargetDir)/"
+        copy "$(TargetDir)..\merged-output\$(ConfigurationName)\*.*" "$(TargetDir)"
+	</PostBuildEvent>
+    <PostBuildEvent Condition=" '$(OS)' == 'Unix' ">
+        cd $(TargetDir)
+        monolinker -c skip -b true -l none -p link MonoMac -p skip CSCore -o ../linked-output/$(ConfigurationName) -a CSCore.OSX.dll
+        cd ../linked-output/$(ConfigurationName)
+        mono $(SolutionDir)/packages/ILRepack.2.0.10/tools/ILRepack.exe /out:../../merged-output/$(ConfigurationName)/$(TargetFileName) $(TargetFile) MonoMac.dll 
+        cp $(TargetDir)/CSCore.OSX.xml $(TargetDir)/../merged-output/$(ConfigurationName)/
+        rm -r $(TargetDir)
+        mkdir $(TargetDir)
+        cp $(TargetDir)/../merged-output/$(ConfigurationName)/$(TargetFileName) $(TargetDir)
+        cp $(TargetDir)/../merged-output/$(ConfigurationName)/CSCore.OSX.xml $(TargetDir)
 	</PostBuildEvent>
   </PropertyGroup>
 </Project>
