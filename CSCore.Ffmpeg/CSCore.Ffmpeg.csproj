@@ -56,6 +56,7 @@
     <Compile Include="Format.cs" />
     <Compile Include="Interops\ConstCharPtrMarshaler.cs" />
     <Compile Include="Interops\FFmpeg.avcodec.g.cs" />
+    <Compile Include="ResolveFfmpegAssemblyLocationEventArgs.cs" />
     <None Include="Interops\unused\FFmpeg.avdevice.g.cs" />
     <None Include="Interops\unused\FFmpeg.avfilter.g.cs" />
     <Compile Include="Interops\FFmpeg.avformat.g.cs" />

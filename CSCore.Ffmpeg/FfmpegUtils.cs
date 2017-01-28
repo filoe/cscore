@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using CSCore.Ffmpeg.Interops;
@@ -22,6 +22,12 @@ namespace CSCore.Ffmpeg
         /// Occurs when a ffmpeg log entry was received.
         /// </summary>
         public static event EventHandler<FfmpegLogReceivedEventArgs> FfmpegLogReceived;
+
+        /// <summary>
+        /// Occurs when the location of the native FFmpeg binaries has get resolved.
+        /// Note: This is currently only available for Windows Platforms.
+        /// </summary>
+        public static event EventHandler<ResolveFfmpegAssemblyLocationEventArgs> ResolveFfmpegAssemblyLocation; 
 
         static unsafe FfmpegUtils()
         {
@@ -121,6 +127,16 @@ namespace CSCore.Ffmpeg
                         new FfmpegLogReceivedEventArgs(avClass, parentLogContext, (LogLevel) level, line, ptr, parentpp));
                 }
             }
+        }
+
+        internal static DirectoryInfo FindFfmpegDirectory(PlatformID platform)
+        {
+            var resolveEvent = ResolveFfmpegAssemblyLocation;
+            ResolveFfmpegAssemblyLocationEventArgs eventArgs = new ResolveFfmpegAssemblyLocationEventArgs(platform);
+            if (resolveEvent != null)
+                resolveEvent(null, eventArgs);
+
+            return eventArgs.FfmpegDirectory;
         }
     }
 }

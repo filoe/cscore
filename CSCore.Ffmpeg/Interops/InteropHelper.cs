@@ -6,10 +6,18 @@ namespace CSCore.Ffmpeg.Interops
 {
     internal static class InteropHelper
     {
+        // ReSharper disable once InconsistentNaming
         public const string LD_LIBRARY_PATH = "LD_LIBRARY_PATH";
 
         public static void RegisterLibrariesSearchPath(string path)
         {
+            if (!Directory.Exists(path))
+            {
+                var directory = FfmpegUtils.FindFfmpegDirectory(Environment.OSVersion.Platform);
+                if (directory != null)
+                    path = directory.FullName;
+            }
+
             switch (Environment.OSVersion.Platform)
             {
                 case PlatformID.Win32NT:
