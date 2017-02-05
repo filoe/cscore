@@ -1,0 +1,1313 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>CSCore - CSCore.CoreAudioAPI</title>
+        <meta name="viewport" content="width=device-width">
+
+		
+			<link rel="stylesheet" type="text/css" href="../assets/css/font.css?version=0.9.5.10" />
+			<link rel="stylesheet" type="text/css" href="../assets/css/font-awesome.css?version=0.9.5.10" />
+			<link rel="stylesheet" type="text/css" href="../assets/css/style.css?version=0.9.5.10" />
+			
+			<!--[if IE 8]>
+				<script src="../assets/js/vendor.ie8.js?version=0.9.5.10"></script>
+			<![endif]-->
+			<![if !IE 8]>
+				<script src="../assets/js/vendor.js?version=0.9.5.10"></script>
+			<![endif]>
+
+			<script src="../assets/js/frame.js?version=0.9.5.10"></script>
+		
+
+		<script>hljs.initHighlightingOnLoad();</script>
+
+    </head>
+    <body>        
+       
+	    <div id="dropdown-1" class="dropdown dropdown-tip">
+			<ul class="dropdown-menu">
+				
+					<li><a href="../type/AudioCaptureClient.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioCaptureClient</a></li>
+
+				
+					<li><a href="../type/AudioClient.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioClient</a></li>
+
+				
+					<li><a href="../type/AudioClientBufferFlags.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioClientBufferFlags</a></li>
+
+				
+					<li><a href="../type/AudioClientSessionFlags.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioClientSessionFlags</a></li>
+
+				
+					<li><a href="../type/AudioClientShareMode.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioClientShareMode</a></li>
+
+				
+					<li><a href="../type/AudioClientStreamFlags.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioClientStreamFlags</a></li>
+
+				
+					<li><a href="../type/AudioClock.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioClock</a></li>
+
+				
+					<li><a href="../type/AudioClock2.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioClock2</a></li>
+
+				
+					<li><a href="../type/AudioEndpointVolume.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioEndpointVolume</a></li>
+
+				
+					<li><a href="../type/AudioEndpointVolumeCallback.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioEndpointVolumeCallback</a></li>
+
+				
+					<li><a href="../type/AudioEndpointVolumeCallbackEventArgs.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioEndpointVolumeCallbackEventArgs</a></li>
+
+				
+					<li><a href="../type/AudioEndpointVolumeChannel.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioEndpointVolumeChannel</a></li>
+
+				
+					<li><a href="../type/AudioMeterInformation.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioMeterInformation</a></li>
+
+				
+					<li><a href="../type/AudioRenderClient.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioRenderClient</a></li>
+
+				
+					<li><a href="../type/AudioSessionChannelVolumeChangedEventArgs.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioSessionChannelVolumeChangedEventArgs</a></li>
+
+				
+					<li><a href="../type/AudioSessionControl.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioSessionControl</a></li>
+
+				
+					<li><a href="../type/AudioSessionControl2.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioSessionControl2</a></li>
+
+				
+					<li><a href="../type/AudioSessionDisconnectedEventArgs.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioSessionDisconnectedEventArgs</a></li>
+
+				
+					<li><a href="../type/AudioSessionDisconnectReason.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioSessionDisconnectReason</a></li>
+
+				
+					<li><a href="../type/AudioSessionDisplayNameChangedEventArgs.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioSessionDisplayNameChangedEventArgs</a></li>
+
+				
+					<li><a href="../type/AudioSessionEnumerator.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioSessionEnumerator</a></li>
+
+				
+					<li><a href="../type/AudioSessionEventContextEventArgs.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioSessionEventContextEventArgs</a></li>
+
+				
+					<li><a href="../type/AudioSessionEvents.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioSessionEvents</a></li>
+
+				
+					<li><a href="../type/AudioSessionGroupingParamChangedEventArgs.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioSessionGroupingParamChangedEventArgs</a></li>
+
+				
+					<li><a href="../type/AudioSessionIconPathChangedEventArgs.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioSessionIconPathChangedEventArgs</a></li>
+
+				
+					<li><a href="../type/AudioSessionManager.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioSessionManager</a></li>
+
+				
+					<li><a href="../type/AudioSessionManager2.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioSessionManager2</a></li>
+
+				
+					<li><a href="../type/AudioSessionNotification.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioSessionNotification</a></li>
+
+				
+					<li><a href="../type/AudioSessionSimpleVolumeChangedEventArgs.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioSessionSimpleVolumeChangedEventArgs</a></li>
+
+				
+					<li><a href="../type/AudioSessionState.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioSessionState</a></li>
+
+				
+					<li><a href="../type/AudioSessionStateChangedEventArgs.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioSessionStateChangedEventArgs</a></li>
+
+				
+					<li><a href="../type/AudioVolumeDuckNotification.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioVolumeDuckNotification</a></li>
+
+				
+					<li><a href="../type/AudioVolumeNotificationData.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> AudioVolumeNotificationData</a></li>
+
+				
+					<li><a href="../type/CoreAudioAPIException.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> CoreAudioAPIException</a></li>
+
+				
+					<li><a href="../type/DataFlow.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> DataFlow</a></li>
+
+				
+					<li><a href="../type/DefaultDeviceChangedEventArgs.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> DefaultDeviceChangedEventArgs</a></li>
+
+				
+					<li><a href="../type/DeviceNotificationEventArgs.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> DeviceNotificationEventArgs</a></li>
+
+				
+					<li><a href="../type/DevicePropertyChangedEventArgs.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> DevicePropertyChangedEventArgs</a></li>
+
+				
+					<li><a href="../type/DeviceState.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> DeviceState</a></li>
+
+				
+					<li><a href="../type/DeviceStateChangedEventArgs.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> DeviceStateChangedEventArgs</a></li>
+
+				
+					<li><a href="../type/EndpointHardwareSupportFlags.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> EndpointHardwareSupportFlags</a></li>
+
+				
+					<li><a href="../type/IAudioEndpointVolumeCallback.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> IAudioEndpointVolumeCallback</a></li>
+
+				
+					<li><a href="../type/IAudioSessionEvents.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> IAudioSessionEvents</a></li>
+
+				
+					<li><a href="../type/IAudioSessionNotification.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> IAudioSessionNotification</a></li>
+
+				
+					<li><a href="../type/IAudioVolumeDuckNotification.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> IAudioVolumeDuckNotification</a></li>
+
+				
+					<li><a href="../type/IMMDevice.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> IMMDevice</a></li>
+
+				
+					<li><a href="../type/IMMDeviceCollection.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> IMMDeviceCollection</a></li>
+
+				
+					<li><a href="../type/IMMDeviceEnumerator.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> IMMDeviceEnumerator</a></li>
+
+				
+					<li><a href="../type/IMMNotificationClient.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> IMMNotificationClient</a></li>
+
+				
+					<li><a href="../type/MMDevice.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MMDevice</a></li>
+
+				
+					<li><a href="../type/MMDeviceCollection.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MMDeviceCollection</a></li>
+
+				
+					<li><a href="../type/MMDeviceEnumerator.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MMDeviceEnumerator</a></li>
+
+				
+					<li><a href="../type/MMEndpoint.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MMEndpoint</a></li>
+
+				
+					<li><a href="../type/MMNotificationClient.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> MMNotificationClient</a></li>
+
+				
+					<li><a href="../type/Role.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> Role</a></li>
+
+				
+					<li><a href="../type/SessionCreatedEventArgs.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> SessionCreatedEventArgs</a></li>
+
+				
+					<li><a href="../type/SimpleAudioVolume.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> SimpleAudioVolume</a></li>
+
+				
+					<li><a href="../type/StorageAccess.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> StorageAccess</a></li>
+
+				
+					<li><a href="../type/VolumeDuckNotificationEventArgs.html"><img alt="Class-Icon" src="../assets/images/icons/class_public.png"> VolumeDuckNotificationEventArgs</a></li>
+
+				
+			</ul>
+		</div>
+	   
+	    <div class="ui-layout-north">
+			<div class="toolbar">
+				<a href="#" data-dropdown="#dropdown-1" class="button"><img src="../assets/images/icons/class_public.png"/> Types <span class="info">(59)</span> <i class="icon-caret-down"></i></a>
+				<div class="right">
+					<span class="toolbar-info"> Assembly: CSCore</span>
+					<a href="#" id="print-button" class="button" title="print"><i class="icon-print"></i></a>
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+		</div>
+        
+		<div class="ui-layout-center">
+			<div>
+				
+
+					<h3 class="box-title first-heading">Types</h3>
+
+				
+
+				<div class="table-box">
+					<table>
+						<thead>
+							<tr>
+								<td></td>
+								<td>Name</td>
+								<td>Description</td>
+							</tr>
+						</thead>
+						<tbody>			
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioCaptureClient" href="../type/AudioCaptureClient.html">AudioCaptureClient</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Enables a client to read input data from a capture endpoint buffer. For more information, see
+.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioClient" href="../type/AudioClient.html">AudioClient</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Enables a client to create and initialize an audio stream between an audio application and the audio engine (for a
+shared-mode stream) or the hardware buffer of an audio endpoint device (for an exclusive-mode stream). For more
+information, see
+.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioClientBufferFlags" href="../type/AudioClientBufferFlags.html">AudioClientBufferFlags</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Defines flags that indicate the status of an audio endpoint buffer.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioClientSessionFlags" href="../type/AudioClientSessionFlags.html">AudioClientSessionFlags</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>The AudioClientSessionFlags constants indicate characteristics of an audio session associated with
+the stream. A client can specify these options during the initialization of the stream by through the
+StreamFlags parameter of the Initialize method.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioClientShareMode" href="../type/AudioClientShareMode.html">AudioClientShareMode</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>AudioClient share mode</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioClientStreamFlags" href="../type/AudioClientStreamFlags.html">AudioClientStreamFlags</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Specifies characteristics that a client can assign to an audio stream during the initialization of the stream.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioClock" href="../type/AudioClock.html">AudioClock</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>The AudioClock class enables a client to monitor a stream's data rate and the current position in
+the stream.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioClock2" href="../type/AudioClock2.html">AudioClock2</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Used to get the device position.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioEndpointVolume" href="../type/AudioEndpointVolume.html">AudioEndpointVolume</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>The AudioEndpointVolume interface represents the volume controls on the audio stream to or from an
+audio endpoint device.
+For more information, see
+.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioEndpointVolumeCallback" href="../type/AudioEndpointVolumeCallback.html">AudioEndpointVolumeCallback</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Provides an implementation of the IAudioEndpointVolumeCallback interface.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioEndpointVolumeCallbackEventArgs" href="../type/AudioEndpointVolumeCallbackEventArgs.html">AudioEndpointVolumeCallbackEventArgs</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Provides data for the NotifyRecived event.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioEndpointVolumeChannel" href="../type/AudioEndpointVolumeChannel.html">AudioEndpointVolumeChannel</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Represents a single audio endpoint volume channel.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioMeterInformation" href="../type/AudioMeterInformation.html">AudioMeterInformation</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Represents a peak meter on an audio stream to or from an audio endpoint device.
+For more information, see
+.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioRenderClient" href="../type/AudioRenderClient.html">AudioRenderClient</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>The AudioRenderClient class enables a client to write output data to a rendering endpoint buffer.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioSessionChannelVolumeChangedEventArgs" href="../type/AudioSessionChannelVolumeChangedEventArgs.html">AudioSessionChannelVolumeChangedEventArgs</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Provides data for the ChannelVolumeChanged event.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioSessionControl" href="../type/AudioSessionControl.html">AudioSessionControl</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>The AudioSessionControl class enables a client to configure the control parameters for an audio session and to monitor events in the session.
+For more information, see .</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioSessionControl2" href="../type/AudioSessionControl2.html">AudioSessionControl2</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>The AudioSessionControl2 class can be used by a client to get information about the audio session.
+For more information, see .</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioSessionDisconnectedEventArgs" href="../type/AudioSessionDisconnectedEventArgs.html">AudioSessionDisconnectedEventArgs</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Provides data for the SessionDisconnected event.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioSessionDisconnectReason" href="../type/AudioSessionDisconnectReason.html">AudioSessionDisconnectReason</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Specifies reasons that a audio session was disconnected.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioSessionDisplayNameChangedEventArgs" href="../type/AudioSessionDisplayNameChangedEventArgs.html">AudioSessionDisplayNameChangedEventArgs</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Provides data for the DisplayNameChanged event.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioSessionEnumerator" href="../type/AudioSessionEnumerator.html">AudioSessionEnumerator</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>The AudioSessionEnumerator object enumerates audio sessions on an audio device.
+For more information, see .</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioSessionEventContextEventArgs" href="../type/AudioSessionEventContextEventArgs.html">AudioSessionEventContextEventArgs</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>A base class for all event-args classes which specify an EventContext value.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioSessionEvents" href="../type/AudioSessionEvents.html">AudioSessionEvents</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Provides notifications of session-related events such as changes in the volume level, display name, and session state.
+For more information, see .</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioSessionGroupingParamChangedEventArgs" href="../type/AudioSessionGroupingParamChangedEventArgs.html">AudioSessionGroupingParamChangedEventArgs</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Provides data for the GroupingParamChanged event.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioSessionIconPathChangedEventArgs" href="../type/AudioSessionIconPathChangedEventArgs.html">AudioSessionIconPathChangedEventArgs</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Provides data for the IconPathChanged event.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioSessionManager" href="../type/AudioSessionManager.html">AudioSessionManager</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>The AudioSessionManager class enables a client to access the session controls and volume controls for both cross-process and process-specific audio sessions.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioSessionManager2" href="../type/AudioSessionManager2.html">AudioSessionManager2</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Enables an application to manage submixes for the audio device.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioSessionNotification" href="../type/AudioSessionNotification.html">AudioSessionNotification</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>The AudioSessionNotification object provides notification when an audio session is created.
+For more information, .</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioSessionSimpleVolumeChangedEventArgs" href="../type/AudioSessionSimpleVolumeChangedEventArgs.html">AudioSessionSimpleVolumeChangedEventArgs</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Provides data for the SimpleVolumeChanged event.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioSessionState" href="../type/AudioSessionState.html">AudioSessionState</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Defines constants that indicate the current state of an audio session.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioSessionStateChangedEventArgs" href="../type/AudioSessionStateChangedEventArgs.html">AudioSessionStateChangedEventArgs</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Provides data for the StateChanged event.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioVolumeDuckNotification" href="../type/AudioVolumeDuckNotification.html">AudioVolumeDuckNotification</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>The default implementation of the IAudioVolumeDuckNotification interface.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="AudioVolumeNotificationData" href="../type/AudioVolumeNotificationData.html">AudioVolumeNotificationData</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>The AudioVolumeNotificationData structure describes a change in the volume level or muting state of an audio endpoint device.
+For more information, see .</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="CoreAudioAPIException" href="../type/CoreAudioAPIException.html">CoreAudioAPIException</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>CoreAudioAPI COM Exception</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="DataFlow" href="../type/DataFlow.html">DataFlow</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Defines constants that indicate the direction in which audio data flows between an audio endpoint device and an application.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="DefaultDeviceChangedEventArgs" href="../type/DefaultDeviceChangedEventArgs.html">DefaultDeviceChangedEventArgs</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Provides data for the DefaultDeviceChanged event.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="DeviceNotificationEventArgs" href="../type/DeviceNotificationEventArgs.html">DeviceNotificationEventArgs</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Provides basic data for all device notification events.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="DevicePropertyChangedEventArgs" href="../type/DevicePropertyChangedEventArgs.html">DevicePropertyChangedEventArgs</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Provides data for the DevicePropertyChanged event.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="DeviceState" href="../type/DeviceState.html">DeviceState</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Indicates the current state of an audio endpoint device.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="DeviceStateChangedEventArgs" href="../type/DeviceStateChangedEventArgs.html">DeviceStateChangedEventArgs</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Provides data for the DeviceStateChanged event.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="EndpointHardwareSupportFlags" href="../type/EndpointHardwareSupportFlags.html">EndpointHardwareSupportFlags</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>The EndpointHardwareSupportFlags are hardware support flags for an audio endpoint device.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="IAudioEndpointVolumeCallback" href="../type/IAudioEndpointVolumeCallback.html">IAudioEndpointVolumeCallback</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>The IAudioEndpointVolumeCallback interface provides notifications of changes in the volume level and muting state of an audio endpoint device.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="IAudioSessionEvents" href="../type/IAudioSessionEvents.html">IAudioSessionEvents</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>The IAudioSessionEvents interface provides notifications of session-related events such as changes in the volume level, display name, and session state.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="IAudioSessionNotification" href="../type/IAudioSessionNotification.html">IAudioSessionNotification</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>The IAudioSessionNotification interface provides notification when an audio session is created.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="IAudioVolumeDuckNotification" href="../type/IAudioVolumeDuckNotification.html">IAudioVolumeDuckNotification</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>The IAudioVolumeDuckNotification interface is used to by the system to send notifications about stream attenuation changes.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="IMMDevice" href="../type/IMMDevice.html">IMMDevice</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Encapsulates the generic features of a multimedia device resource.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="IMMDeviceCollection" href="../type/IMMDeviceCollection.html">IMMDeviceCollection</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Represents a collection of multimedia device resources.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="IMMDeviceEnumerator" href="../type/IMMDeviceEnumerator.html">IMMDeviceEnumerator</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Provides methods for enumerating multimedia device resources.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="IMMNotificationClient" href="../type/IMMNotificationClient.html">IMMNotificationClient</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>The IMMNotificationClient interface provides notifications when an audio endpoint device is added or removed, when the state or properties of an endpoint device change, or when there is a change in the default role assigned to an endpoint device.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MMDevice" href="../type/MMDevice.html">MMDevice</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Encapsulates the generic features of a multimedia device resource.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MMDeviceCollection" href="../type/MMDeviceCollection.html">MMDeviceCollection</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Represents a collection of multimedia device resources.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MMDeviceEnumerator" href="../type/MMDeviceEnumerator.html">MMDeviceEnumerator</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Provides methods for enumerating multimedia device resources.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MMEndpoint" href="../type/MMEndpoint.html">MMEndpoint</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Represents an audio endpoint device
+(see also ).</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="MMNotificationClient" href="../type/MMNotificationClient.html">MMNotificationClient</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>The MMNotificationClient object provides notifications when an audio endpoint device is added or removed, when the state or properties of an endpoint device change, or when there is a change in the default role assigned to an endpoint device.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="Role" href="../type/Role.html">Role</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Defines constants that indicate the role that the system has assigned to an audio endpoint device.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="SessionCreatedEventArgs" href="../type/SessionCreatedEventArgs.html">SessionCreatedEventArgs</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Provides data for the SessionCreated event.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="SimpleAudioVolume" href="../type/SimpleAudioVolume.html">SimpleAudioVolume</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>The SimpleAudioVolume object enables a client to control the master volume level of an audio session. 
+For more information, see .</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr  class="even" >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="StorageAccess" href="../type/StorageAccess.html">StorageAccess</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Specifies how to open a property store.</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+								<tr >
+									<td class="iconColumn">
+										<img alt="Class-Icon" src="../assets/images/icons/class_public.png">
+									</td>
+									<td>
+										<a title="VolumeDuckNotificationEventArgs" href="../type/VolumeDuckNotificationEventArgs.html">VolumeDuckNotificationEventArgs</a>
+									</td>	
+									<td class="markdown">
+										
+												<p>Provides data for the VolumeDuckNotification and the VolumeUnDuckNotification event. 
+For more information, see .</p>
+
+										
+									</td>
+								</tr>
+
+							
+
+						</tbody>
+					</table>
+				</div>
+
+				
+					<h3 class="box-title">Uses</h3>
+					<div class="list-box">
+						<ul>
+						
+							<li><a href="../namespace/CSCore.html">CSCore</a></li>
+						
+							<li><a href="../namespace/CSCore.Win32.html">CSCore.Win32</a></li>
+						
+						</ul>
+					</div>
+				
+
+				
+					<h3 class="box-title">Used by</h3>
+					<div class="list-box">
+						<ul>
+						
+							<li><a href="../namespace/CSCore.SoundIn.html">CSCore.SoundIn</a></li>
+						
+						</ul>
+					</div>
+				
+			</div>
+		</div>
+	   
+    </body>
+</html>
+
