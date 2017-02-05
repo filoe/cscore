@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -14,7 +13,9 @@ namespace CSCore.Codecs.FLAC
     public sealed partial class FlacFrame : IDisposable
     {
         private List<FlacSubFrameData> _subFrameData;
-        private ReadOnlyCollection<FlacSubFrameBase> _subFrames;  
+#if FLAC_DEBUG
+        private System.Collections.ObjectModel.ReadOnlyCollection<FlacSubFrameBase> _subFrames;  
+#endif
         private Stream _stream;
         private FlacMetadataStreamInfo _streamInfo;
 

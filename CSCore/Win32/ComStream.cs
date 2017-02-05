@@ -26,6 +26,7 @@ namespace CSCore.Win32
         /// Initializes a new instance of the <see cref="ComStream"/> class.
         /// </summary>
         /// <param name="stream">Underlying <see cref="Stream"/>.</param>
+        /// <param name="disposeBaseStream">Indicates whether the underlying stream should be disposed on <see cref="Dispose"/>.</param>
         public ComStream(Stream stream, bool disposeBaseStream)
         {
             if (stream == null)

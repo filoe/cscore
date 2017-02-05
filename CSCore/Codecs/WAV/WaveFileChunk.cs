@@ -38,7 +38,7 @@ namespace CSCore.Codecs.WAV
         /// <summary>
         ///     Gets the data size of the chunk.
         /// </summary>
-        public uint ChunkDataSize { get; private set; }
+        public long ChunkDataSize { get; private set; }
 
         /// <summary>
         ///     Parses the <paramref name="stream" /> and returns a <see cref="WaveFileChunk" />. Note that the position of the

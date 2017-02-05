@@ -81,11 +81,11 @@ namespace CSCore.Codecs.AIFF
             hiMant = ((ulong) (bytes[2] & 0xFF) << 24)
                      | ((ulong) (bytes[3] & 0xFF) << 16)
                      | ((ulong) (bytes[4] & 0xFF) << 8)
-                     | ((ulong) (bytes[5] & 0xFF));
+                     | (ulong) (bytes[5] & 0xFF);
             loMant = ((ulong) (bytes[6] & 0xFF) << 24)
                      | ((ulong) (bytes[7] & 0xFF) << 16)
                      | ((ulong) (bytes[8] & 0xFF) << 8)
-                     | ((ulong) (bytes[9] & 0xFF));
+                     | (ulong) (bytes[9] & 0xFF);
 
             if (expon == 0 && hiMant == 0 && loMant == 0)
                 f = 0;
