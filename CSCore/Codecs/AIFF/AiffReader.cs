@@ -14,6 +14,7 @@ namespace CSCore.Codecs.AIFF
         private readonly SoundDataChunk _soundDataChunk;
         private readonly Stream _stream;
         private bool _disposed;
+        private readonly bool _closeStream;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="AiffReader" /> class for the specified <paramref name="filename" />.
@@ -29,6 +30,7 @@ namespace CSCore.Codecs.AIFF
         public AiffReader(string filename)
             : this(File.OpenRead(filename))
         {
+            _closeStream = true;
         }
 
         /// <summary>
@@ -247,7 +249,7 @@ namespace CSCore.Codecs.AIFF
         /// </param>
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
+            if (disposing && _closeStream)
                 _stream.Dispose();
         }
 

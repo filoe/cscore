@@ -20,6 +20,7 @@ namespace CSCore.Codecs.WAV
         private Stream _stream;
         private WaveFormat _waveFormat;
         private readonly DataChunk _dataChunk;
+        private readonly bool _closeStream;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="WaveFileReader" /> class.
@@ -28,6 +29,7 @@ namespace CSCore.Codecs.WAV
         public WaveFileReader(string fileName)
             : this(File.OpenRead(fileName))
         {
+            _closeStream = true;
         }
 
         /// <summary>
@@ -187,7 +189,7 @@ namespace CSCore.Codecs.WAV
             {
                 lock (_lockObj)
                 {
-                    if (_stream != null)
+                    if (_stream != null && _closeStream)
                     {
                         _stream.Dispose();
                         _stream = null;

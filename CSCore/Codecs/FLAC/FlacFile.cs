@@ -22,6 +22,8 @@ namespace CSCore.Codecs.FLAC
 
         private readonly object _bufferLock = new object();
 
+        private readonly bool _closeStream;
+
         //overflow:
         private byte[] _overflowBuffer;
 
@@ -66,6 +68,7 @@ namespace CSCore.Codecs.FLAC
         public FlacFile(string fileName)
             : this(File.OpenRead(fileName))
         {
+            _closeStream = true;
         }
 
         /// <summary>
@@ -391,7 +394,7 @@ namespace CSCore.Codecs.FLAC
                         _frame = null;
                     }
 
-                    if (_stream != null && !_stream.IsClosed())
+                    if (_stream != null && !_stream.IsClosed() && _closeStream)
                         _stream.Dispose();
 
                     _disposed = true;

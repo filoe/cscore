@@ -145,19 +145,47 @@ namespace CSCore.Codecs
                 throw new FileNotFoundException("File not found.", filename);
 
             string extension = Path.GetExtension(filename).Remove(0, 1); //get the extension without the "dot".
-            //remove the dot in front of the file extension.
-            foreach (var codecEntry in _codecs)
+
+            IWaveSource source = null;
+            if (File.Exists(filename))
             {
+                Stream stream = File.OpenRead(filename);
                 try
                 {
-                    if (codecEntry.Value.FileExtensions.Any(x => x.Equals(extension, StringComparison.OrdinalIgnoreCase)))
-                        return codecEntry.Value.GetCodecAction(File.OpenRead(filename));
+                    foreach (var codecEntry in _codecs)
+                    {
+                        try
+                        {
+                            if (
+                                codecEntry.Value.FileExtensions.Any(
+                                    x => x.Equals(extension, StringComparison.OrdinalIgnoreCase)))
+                            {
+                                source = codecEntry.Value.GetCodecAction(File.OpenRead(filename));
+                                if (source != null)
+                                    break;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine(ex.ToString());
+                        }
+                    }
                 }
-                catch (Exception ex)
+                finally
                 {
-                    Debug.WriteLine(ex.ToString());
+                    if (source == null)
+                    {
+                        stream.Dispose();
+                    }
+                    else
+                    {
+                        source = new DisposeFileStreamSource(source, stream);
+                    }
                 }
             }
+
+            if (source != null)
+                return source;
 
             return Default(filename);
         }
@@ -253,6 +281,37 @@ namespace CSCore.Codecs
             stringBuilder.Append(String.Concat(GetSupportedFileExtensions().Select(x => "*." + x + ";").ToArray()));
             stringBuilder.Remove(stringBuilder.Length - 1, 1);
             return stringBuilder.ToString();
+        }
+
+        private class DisposeFileStreamSource : WaveAggregatorBase
+        {
+            private Stream _stream;
+
+            public DisposeFileStreamSource(IWaveSource source, Stream stream)
+                : base(source)
+            {
+                _stream = stream;
+            }
+
+            protected override void Dispose(bool disposing)
+            {
+                base.Dispose(disposing);
+                if (_stream != null)
+                {
+                    try
+                    {
+                        _stream.Dispose();
+                    }
+                    catch (Exception)
+                    {
+                        Debug.WriteLine("Stream was already disposed.");
+                    }
+                    finally
+                    {
+                        _stream = null;
+                    }
+                }
+            }
         }
     }
 }

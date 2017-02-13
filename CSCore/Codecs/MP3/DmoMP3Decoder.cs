@@ -12,7 +12,7 @@ namespace CSCore.Codecs.MP3
     /// </summary>
     public class DmoMp3Decoder : DmoStream
     {
-        private readonly Stream _stream;
+        private Stream _stream;
 
         private DmoMP3DecoderObject _comObj;
         private FrameInfoCollection _frameInfoCollection;
@@ -21,6 +21,8 @@ namespace CSCore.Codecs.MP3
         private long _position;
         private readonly bool _canSeek;
 
+        private readonly bool _closeStream;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DmoMp3Decoder"/> class.
         /// </summary>
@@ -28,6 +30,7 @@ namespace CSCore.Codecs.MP3
         public DmoMp3Decoder(string filename)
             : this(File.OpenRead(filename))
         {
+            _closeStream = true;
         }
 
         /// <summary>
@@ -270,6 +273,11 @@ namespace CSCore.Codecs.MP3
             {
                 _frameInfoCollection.Dispose();
                 _frameInfoCollection = null;
+            }
+            if (_stream != null && _closeStream)
+            {
+                _stream.Dispose();
+                _stream = null;
             }
         }
 
