@@ -1,0 +1,3 @@
+Source can be found at:
+https://github.com/filoe/cscore/tree/master/CSCore.Ffmpeg
+https://github.com/filoe/cscore/tree/master/CSCore.Ffmpeg/FFmpeg/src
