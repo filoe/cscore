@@ -20,7 +20,11 @@ Feel free to download or clone the source code:
 You may prefer to install the [CSCore nuget package](https://www.nuget.org/packages/CSCore/):
 
     Install-Package CSCore
+    
+For **FFmpeg** support, install the [CSCore.Ffmpeg nuget package](https://www.nuget.org/packages/CSCore.Ffmpeg/)
 
+    Install-Package CSCore.Ffmpeg -Pre
+    
 ### Why CSCore? ###
  - **Highly optimized PERFORMANCE** through usage of CLI instructions
  - **Designed for newbies and professionals** 
@@ -46,6 +50,9 @@ Currently the following features are implemented:
   - WMA
   - Raw data
   - OGG-Vorbis (through NVorbis)
+  - FFmpeg (lots of additional formats, see [CSCore.Ffmpeg](https://github.com/filoe/cscore/tree/master/CSCore.Ffmpeg))
+- **FFmpeg support**
+  - Supported through [CSCore.Ffmpeg](https://github.com/filoe/cscore/tree/master/CSCore.Ffmpeg))
 - **Speaker Output**
   - WaveOut
   - DirectSoundOut (realtime streaming)
