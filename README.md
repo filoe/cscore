@@ -7,6 +7,8 @@
 [![NuGet-Release](https://img.shields.io/nuget/v/CSCore.svg)](https://www.nuget.org/packages/CSCore/)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=N2ZU8PSBFEXPJ)
 
+[![NuGet-Release](https://img.shields.io/nuget/vpre/CSCore.Ffmpeg.svg?label=%22nuget%20CScore.Ffmpeg%22)](https://www.nuget.org/packages/CSCore.Ffmpeg/)
+
 CSCore is a free .NET audio library which is completely written in C#. Although it is still a rather young project, it offers tons of features like playing or capturing audio, en- or decoding many different codecs, effects and much more!
 
 CSCore is based on a very extensible architecture which allows you to make it fit to your needs without any major effort. You can build music players, voice chats, audio recorders and so on!
@@ -20,7 +22,11 @@ Feel free to download or clone the source code:
 You may prefer to install the [CSCore nuget package](https://www.nuget.org/packages/CSCore/):
 
     Install-Package CSCore
+    
+For **FFmpeg** support, install the [CSCore.Ffmpeg nuget package](https://www.nuget.org/packages/CSCore.Ffmpeg/)
 
+    Install-Package CSCore.Ffmpeg -Pre
+    
 ### Why CSCore? ###
  - **Highly optimized PERFORMANCE** through usage of CLI instructions
  - **Designed for newbies and professionals** 
@@ -46,6 +52,9 @@ Currently the following features are implemented:
   - WMA
   - Raw data
   - OGG-Vorbis (through NVorbis)
+  - FFmpeg (lots of additional formats, see [CSCore.Ffmpeg](https://github.com/filoe/cscore/tree/master/CSCore.Ffmpeg))
+- **FFmpeg support**
+  - Supported through [CSCore.Ffmpeg](https://github.com/filoe/cscore/tree/master/CSCore.Ffmpeg))
 - **Speaker Output**
   - WaveOut
   - DirectSoundOut (realtime streaming)
