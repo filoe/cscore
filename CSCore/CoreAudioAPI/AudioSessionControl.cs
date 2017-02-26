@@ -15,6 +15,70 @@ namespace CSCore.CoreAudioAPI
         private const string InterfaceName = "IAudioSessionControl";
 
         private readonly List<IAudioSessionEvents> _sessionEventHandler = new List<IAudioSessionEvents>();
+        private readonly AudioSessionEvents _sessionEvents = new AudioSessionEvents();
+
+        /// <summary>
+        /// Occurs when the display name for the session has changed.
+        /// </summary>
+        public event EventHandler<AudioSessionDisplayNameChangedEventArgs> DisplayNameChanged
+        {
+            add { _sessionEvents.DisplayNameChanged += value; }
+            remove { _sessionEvents.DisplayNameChanged -= value; }
+        }
+
+        /// <summary>
+        /// Occurs when the display icon for the session has changed.
+        /// </summary>
+        public event EventHandler<AudioSessionIconPathChangedEventArgs> IconPathChanged
+        {
+            add { _sessionEvents.IconPathChanged += value; }
+            remove { _sessionEvents.IconPathChanged -= value; }
+        }
+
+        /// <summary>
+        /// Occurs when the volume level or muting state of the session has changed.
+        /// </summary>
+        public event EventHandler<AudioSessionSimpleVolumeChangedEventArgs> SimpleVolumeChanged
+        {
+            add { _sessionEvents.SimpleVolumeChanged += value; }
+            remove { _sessionEvents.SimpleVolumeChanged -= value; }
+        }
+
+        /// <summary>
+        /// Occurs when the volume level of an audio channel in the session submix has changed.
+        /// </summary>
+        public event EventHandler<AudioSessionChannelVolumeChangedEventArgs> ChannelVolumeChanged
+        {
+            add { _sessionEvents.ChannelVolumeChanged += value; }
+            remove { _sessionEvents.ChannelVolumeChanged -= value; }
+        }
+
+        /// <summary>
+        /// Occurs when the grouping parameter for the session has changed.
+        /// </summary>
+        public event EventHandler<AudioSessionGroupingParamChangedEventArgs> GroupingParamChanged
+        {
+            add { _sessionEvents.GroupingParamChanged += value; }
+            remove { _sessionEvents.GroupingParamChanged -= value; }
+        }
+
+        /// <summary>
+        /// Occurs when the stream-activity state of the session has changed.
+        /// </summary>
+        public event EventHandler<AudioSessionStateChangedEventArgs> StateChanged
+        {
+            add { _sessionEvents.StateChanged += value; }
+            remove { _sessionEvents.StateChanged -= value; }
+        }
+
+        /// <summary>
+        /// Occurs when the session has been disconnected.
+        /// </summary>
+        public event EventHandler<AudioSessionDisconnectedEventArgs> SessionDisconnected
+        {
+            add { _sessionEvents.SessionDisconnected += value; }
+            remove { _sessionEvents.SessionDisconnected -= value; }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AudioSessionControl"/> class.
@@ -23,6 +87,7 @@ namespace CSCore.CoreAudioAPI
         public AudioSessionControl(IntPtr ptr)
             : base(ptr)
         {
+            RegisterAudioSessionNotification(_sessionEvents);
         }
 
         /// <summary>
@@ -36,6 +101,7 @@ namespace CSCore.CoreAudioAPI
                 throw new ArgumentNullException("audioClient");
 
             BasePtr = audioClient.GetService(typeof (AudioSessionControl).GUID);
+            RegisterAudioSessionNotification(_sessionEvents);
         }
 
         /// <summary>
