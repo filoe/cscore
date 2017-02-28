@@ -18,6 +18,36 @@ namespace CSCore.CoreAudioAPI
         private readonly List<IAudioSessionNotification> _sessionNotifications;
         private readonly List<IAudioVolumeDuckNotification> _volumeDuckNotifications;
 
+        private readonly AudioSessionNotification _audioSessionNotification = new AudioSessionNotification();
+        private readonly AudioVolumeDuckNotification _audioVolumeDuckNotification = new AudioVolumeDuckNotification();
+
+        /// <summary>
+        /// Occurs when the audio session has been created.
+        /// </summary>
+        public event EventHandler<SessionCreatedEventArgs> SessionCreated
+        {
+            add { _audioSessionNotification.SessionCreated += value; }
+            remove { _audioSessionNotification.SessionCreated -= value; }
+        }
+
+        /// <summary>
+        /// Occurs when a pending system ducking event gets fired.
+        /// </summary>
+        public event EventHandler<VolumeDuckNotificationEventArgs> VolumeDuckNotification
+        {
+            add { _audioVolumeDuckNotification.VolumeDuckNotification += value; }
+            remove { _audioVolumeDuckNotification.VolumeDuckNotification -= value; }
+        }
+
+        /// <summary>
+        /// Occurs when a pending system unducking event gets fired.
+        /// </summary>
+        public event EventHandler<VolumeDuckNotificationEventArgs> VolumeUnDuckNotification
+        {
+            add { _audioVolumeDuckNotification.VolumeUnDuckNotification += value; }
+            remove { _audioVolumeDuckNotification.VolumeUnDuckNotification -= value; }
+        }
+
         /// <summary>
         /// Creates a new instance of <see cref="AudioSessionManager2"/> based on a <see cref="MMDevice"/>.
         /// </summary>
@@ -38,6 +68,9 @@ namespace CSCore.CoreAudioAPI
         {
             _sessionNotifications = new List<IAudioSessionNotification>();
             _volumeDuckNotifications = new List<IAudioVolumeDuckNotification>();
+
+            RegisterSessionNotification(_audioSessionNotification);
+            RegisterDuckNotification(null, _audioVolumeDuckNotification);
         }
 
         /// <summary>
