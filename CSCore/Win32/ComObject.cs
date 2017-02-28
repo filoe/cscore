@@ -146,7 +146,7 @@ namespace CSCore.Win32
         /// Decrements the reference count for an interface on an object.
         /// </summary>
         /// <returns>The method returns the new reference count. This value is intended to be used only for test purposes.</returns>
-        protected int Release()
+        protected virtual int Release()
         {
             return ((IUnknown) this).Release();
         }
@@ -174,7 +174,7 @@ namespace CSCore.Win32
         {
             if (BasePtr != IntPtr.Zero)
             {
-                ((IUnknown)this).Release();
+                Release();
                 UnsafeBasePtr = IntPtr.Zero.ToPointer();
             }
             _disposed = true;

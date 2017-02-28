@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Runtime.InteropServices;
 
 namespace CSCore.CoreAudioAPI
@@ -26,7 +23,7 @@ namespace CSCore.CoreAudioAPI
         int IAudioSessionNotification.OnSessionCreated([In] IntPtr newSession)
         {
             if (SessionCreated != null)
-                SessionCreated(this, new SessionCreatedEventArgs(new AudioSessionControl(newSession)));
+                SessionCreated(this, new SessionCreatedEventArgs(new AudioSessionControl(newSession, true)));
             return (int) Win32.HResult.S_OK;
         }
     }
