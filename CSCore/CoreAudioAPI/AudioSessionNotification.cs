@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using CSCore.Win32;
 
 namespace CSCore.CoreAudioAPI
 {
@@ -23,8 +24,16 @@ namespace CSCore.CoreAudioAPI
         int IAudioSessionNotification.OnSessionCreated([In] IntPtr newSession)
         {
             if (SessionCreated != null)
-                SessionCreated(this, new SessionCreatedEventArgs(new AudioSessionControl(newSession, true)));
-            return (int) Win32.HResult.S_OK;
+            {
+                var sessionControl = new AudioSessionControl(newSession);
+                //make sure, the reference can be used within our application
+                //in order to prevent the instance from being released, add a reference
+                //if it won't be used in our application (eventhandlers and so on), the
+                //destructor will release the instance.
+                ((IUnknown) sessionControl).AddRef(); 
+                SessionCreated(this, new SessionCreatedEventArgs(sessionControl));
+            }
+            return (int) HResult.S_OK;
         }
     }
 }

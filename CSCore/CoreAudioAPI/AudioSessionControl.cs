@@ -12,7 +12,6 @@ namespace CSCore.CoreAudioAPI
     [Guid("F4B1A599-7266-4319-A8CA-E70ACB11E8CD")]
     public class AudioSessionControl : ComObject
     {
-        private readonly bool _preventRelease;
         private const string InterfaceName = "IAudioSessionControl";
 
         private readonly List<IAudioSessionEvents> _sessionEventHandler = new List<IAudioSessionEvents>();
@@ -86,20 +85,8 @@ namespace CSCore.CoreAudioAPI
         /// </summary>
         /// <param name="ptr">Native pointer of the <see cref="AudioSessionControl"/> object.</param>
         public AudioSessionControl(IntPtr ptr)
-            : this(ptr, false)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AudioSessionControl"/> class.
-        /// </summary>
-        /// <param name="ptr">Native pointer of the <see cref="AudioSessionControl"/> object.</param>
-        /// <param name="preventRelease">Prevent the <see cref="Dispose"/> method from calling <see cref="IUnknown.Release"/>.
-        /// The default value is false.</param>
-        public AudioSessionControl(IntPtr ptr, bool preventRelease)
             : base(ptr)
         {
-            _preventRelease = preventRelease;
             RegisterAudioSessionNotification(_sessionEvents);
         }
 
@@ -370,19 +357,6 @@ namespace CSCore.CoreAudioAPI
         {
             CoreAudioAPIException.Try(UnregisterAudioSessionNotificationNative(notifications), InterfaceName,
                 "UnregisterAudioSessionNotification");
-        }
-
-        /// <summary>
-        /// Decrements the reference count for an interface on an object.
-        /// </summary>
-        /// <returns>The method returns the new reference count. This value is intended to be used only for test purposes.</returns>
-        protected override int Release()
-        {
-            if (!_preventRelease)
-            {
-                return base.Release();
-            }
-            return -1;
         }
 
         /// <summary>
