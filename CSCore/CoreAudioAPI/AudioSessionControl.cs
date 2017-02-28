@@ -87,7 +87,6 @@ namespace CSCore.CoreAudioAPI
         public AudioSessionControl(IntPtr ptr)
             : base(ptr)
         {
-            RegisterAudioSessionNotification(_sessionEvents);
         }
 
         /// <summary>
