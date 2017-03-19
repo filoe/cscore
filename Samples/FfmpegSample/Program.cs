@@ -1,9 +1,14 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using CSCore;
+using CSCore.CoreAudioAPI;
+using CSCore.DSP;
 using CSCore.Ffmpeg;
 using CSCore.SoundOut;
+using CSCore.Streams;
 
 namespace FfmpegSample
 {
@@ -12,6 +17,18 @@ namespace FfmpegSample
         [STAThread]
         static void Main(string[] args)
         {
+            if (Debugger.IsAttached)
+            {
+                //seems like while a debugger is attached the ffmpeg log does not appear in the console
+                FfmpegUtils.LogToDefaultLogger = false;
+                FfmpegUtils.FfmpegLogReceived += (s, e) =>
+                {
+                    Console.Error.Write(e.Message);
+                };
+            }
+
+            EnumerateSupportedFormats();
+
             const string DefaultStream =
                 @"http://stream.srg-ssr.ch/m/rsj/aacp_96";
 
@@ -49,7 +66,7 @@ namespace FfmpegSample
             //we could also easily pass the filename as url
             //but since we want to test the decoding of System.IO.Stream, we
             //pass a FileStream as argument.
-            FfmpegDecoder ffmpegDecoder = stream == null
+            IWaveSource ffmpegDecoder = stream == null
                 ? new FfmpegDecoder(url)
                 : new FfmpegDecoder(stream);
 
@@ -60,6 +77,30 @@ namespace FfmpegSample
                 wasapiOut.Play();
 
                 Console.ReadKey();
+            }
+        }
+
+        private static void EnumerateSupportedFormats()
+        {
+            Console.BufferHeight = 1500;
+
+            foreach (var format in FfmpegUtils.GetInputFormats())
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine(format.Name);
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.WriteLine(format.LongName);
+                Console.ResetColor();
+
+                string extensions = String.Empty;
+                if (format.FileExtensions.Count > 0)
+                    extensions = format.FileExtensions.Aggregate((x, y) => x + ", " + y);
+                Console.WriteLine("Extensions: " + extensions);
+                Console.WriteLine("Codecs");
+                foreach (var supportedCodec in format.Codecs)
+                {
+                    Console.WriteLine(" -" + supportedCodec);
+                }
             }
         }
     }
