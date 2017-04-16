@@ -60,6 +60,7 @@ namespace CSCore.Codecs.AIFF
                 throw new ArgumentException("Stream is not seekable.", "stream");
 
             _stream = stream;
+            _closeStream = true;
 
             _chunkContainer = new AiffChunkContainer(new BinaryReader(_stream));
             var commonChunk = (CommonChunk) _chunkContainer.Chunks.FirstOrDefault(x => x is CommonChunk);

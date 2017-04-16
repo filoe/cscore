@@ -108,6 +108,7 @@ namespace CSCore.Codecs.FLAC
                 throw new ArgumentException("Stream is not readable.", "stream");
 
             _stream = stream;
+            _closeStream = true;
 
             //skip ID3v2
             while (ID3v2.SkipTag(stream))

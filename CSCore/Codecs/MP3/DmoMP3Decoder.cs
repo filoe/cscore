@@ -51,6 +51,7 @@ namespace CSCore.Codecs.MP3
             if (!stream.CanSeek && enableSeeking)
                 throw new ArgumentException("Stream is not seekable.", "stream");
 
+            _closeStream = true;
             _stream = stream;
             _canSeek = enableSeeking;
 
