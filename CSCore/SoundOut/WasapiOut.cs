@@ -1022,6 +1022,7 @@ namespace CSCore.SoundOut
 
             //Step 5: Re-instantiate the audio client on the new endpoint.
             InitializeInternal();
+            _isInitialized = true;
 
             _audioClient.Start();
 
