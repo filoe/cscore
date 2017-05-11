@@ -266,7 +266,7 @@ namespace CSCore.SoundOut
 
                 CleanupResources();
                 InitializeInternal();
-                _isInitialized = true;
+
             }
         }
 
@@ -698,6 +698,8 @@ namespace CSCore.SoundOut
                 _streamSwitchEvent = new AutoResetEvent(false);
             }
 
+            _isInitialized = true;
+
             InitializeStreamRouting();
         }
 
@@ -1022,7 +1024,6 @@ namespace CSCore.SoundOut
 
             //Step 5: Re-instantiate the audio client on the new endpoint.
             InitializeInternal();
-            _isInitialized = true;
 
             _audioClient.Start();
 
