@@ -135,6 +135,8 @@ namespace CSCore.XAudio2
             return new StreamingSourceVoice(ptr, voiceCallback, waveSource, bufferSize);
         }
 
+        public bool Loop { get; set; }
+
         /// <summary>
         ///     Occurs when the playback stops and no more data is available.
         /// </summary>
@@ -178,10 +180,21 @@ namespace CSCore.XAudio2
 
                 XAudio2Buffer nbuffer = _buffers[_currentBufferIndex];
                 nbuffer.AudioBytes = read;
+
                 //bug: could be critical since some wave sources don't provide length and position
-                nbuffer.Flags = _waveSource.Position >= _waveSource.Length
-                    ? XAudio2BufferFlags.EndOfStream
-                    : XAudio2BufferFlags.None;
+                if (_waveSource.Position >= _waveSource.Length)
+                {
+                    if (!Loop)
+                        nbuffer.Flags = XAudio2BufferFlags.EndOfStream;
+                    else
+                    {
+                        nbuffer.Flags = XAudio2BufferFlags.None;
+                        _waveSource.Position = 0;
+                    }
+                }
+                else
+                    nbuffer.Flags = XAudio2BufferFlags.None;
+
                 using (var stream = nbuffer.GetStream())
                 {
                     stream.Write(_buffer, 0, read);

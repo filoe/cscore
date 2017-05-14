@@ -70,6 +70,7 @@ namespace X3DAudioSample
 
 
             StreamingSourceVoiceListener.Default.Add(_streamingSourceVoice);
+            _streamingSourceVoice.Loop = true;
             _streamingSourceVoice.Start();
 
             _isPlaying = true;
