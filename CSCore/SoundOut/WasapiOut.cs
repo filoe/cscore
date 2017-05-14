@@ -266,7 +266,7 @@ namespace CSCore.SoundOut
 
                 CleanupResources();
                 InitializeInternal();
-                _isInitialized = true;
+
             }
         }
 
@@ -697,6 +697,8 @@ namespace CSCore.SoundOut
             {
                 _streamSwitchEvent = new AutoResetEvent(false);
             }
+
+            _isInitialized = true;
 
             InitializeStreamRouting();
         }
