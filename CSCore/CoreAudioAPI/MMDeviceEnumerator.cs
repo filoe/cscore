@@ -1,5 +1,6 @@
 ﻿using CSCore.Win32;
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace CSCore.CoreAudioAPI
@@ -11,6 +12,8 @@ namespace CSCore.CoreAudioAPI
     public class MMDeviceEnumerator : ComObject
     {
         private const string InterfaceName = "IMMDeviceEnumerator";
+        private readonly MMNotificationClient _notificationClient = new MMNotificationClient();
+        private readonly List<IMMNotificationClient> _notificationClients = new List<IMMNotificationClient>();
 
         /// <summary>
         /// Returns the default audio endpoint for the specified data-flow direction and role.
@@ -79,11 +82,57 @@ namespace CSCore.CoreAudioAPI
         }
 
         /// <summary>
+        /// Occurs when the state of an audio endpoint device has changed.
+        /// </summary>
+        public event EventHandler<DeviceStateChangedEventArgs> DeviceStateChanged
+        {
+            add { _notificationClient.DeviceStateChanged += value; }
+            remove { _notificationClient.DeviceStateChanged -= value; }
+        }
+
+        /// <summary>
+        /// Occurs when a new audio endpoint device has been added.
+        /// </summary>
+        public event EventHandler<DeviceNotificationEventArgs> DeviceAdded
+        {
+            add { _notificationClient.DeviceAdded += value; }
+            remove { _notificationClient.DeviceAdded -= value; }
+        }
+
+        /// <summary>
+        /// Occurs when an audio endpoint device has been removed.
+        /// </summary>
+        public event EventHandler<DeviceNotificationEventArgs> DeviceRemoved
+        {
+            add { _notificationClient.DeviceRemoved += value; }
+            remove { _notificationClient.DeviceRemoved -= value; }
+        }
+
+        /// <summary>
+        /// Occurs when the default audio endpoint device for a particular device role has changed.
+        /// </summary>
+        public event EventHandler<DefaultDeviceChangedEventArgs> DefaultDeviceChanged
+        {
+            add { _notificationClient.DefaultDeviceChanged += value; }
+            remove { _notificationClient.DefaultDeviceChanged -= value; }
+        }
+
+        /// <summary>
+        /// Occurs when the value of a property belonging to an audio endpoint device has changed.
+        /// </summary>
+        public event EventHandler<DevicePropertyChangedEventArgs> DevicePropertyChanged
+        {
+            add { _notificationClient.DevicePropertyChanged += value; }
+            remove { _notificationClient.DevicePropertyChanged -= value; }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="MMDeviceEnumerator"/> class.
         /// </summary>
         public MMDeviceEnumerator()
             : base(CreateMmDeviceEnumerator())
         {
+            RegisterEndpointNotificationCallback(_notificationClient);
         }
 
         /// <summary>
@@ -212,7 +261,12 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT</returns>
         public unsafe int RegisterEndpointNotificationCallbackNative(IMMNotificationClient notificationClient)
         {
-            int result = InteropCalls.CallI(UnsafeBasePtr, notificationClient, ((void**) (*(void**) UnsafeBasePtr))[6]);
+            int result = 0;
+            if (!_notificationClients.Contains(notificationClient))
+            {
+                result = InteropCalls.CallI(UnsafeBasePtr, notificationClient, ((void**)(*(void**)UnsafeBasePtr))[6]);
+                _notificationClients.Add(notificationClient);
+            }
             return result;
         }
 
@@ -233,7 +287,23 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT</returns>
         public unsafe int UnregisterEndpointNotificationCallbackNative(IMMNotificationClient notificationClient)
         {
-            return InteropCalls.CallI(UnsafeBasePtr, notificationClient, ((void**) (*(void**) UnsafeBasePtr))[7]);
+            int result = 0;
+            if (_notificationClients.Contains(notificationClient))
+            {
+                result = InteropCalls.CallI(UnsafeBasePtr, notificationClient, ((void**)(*(void**)UnsafeBasePtr))[7]);
+                _notificationClients.Remove(notificationClient);
+            }
+            return result;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            for(int i = _notificationClients.Count - 1; i >= 0; i--)
+            {
+                UnregisterEndpointNotificationCallback(_notificationClients[i]);
+            }
+
+            base.Dispose(disposing);
         }
 
         [ComImport]

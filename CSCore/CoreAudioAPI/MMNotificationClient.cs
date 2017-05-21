@@ -48,8 +48,6 @@ namespace CSCore.CoreAudioAPI
         /// </summary>
         public MMNotificationClient()
         {
-            _deviceEnumerator = new MMDeviceEnumerator();
-            Initialize(_deviceEnumerator);
         }
 
         /// <summary>

@@ -17,7 +17,7 @@ namespace CSCore.SoundOut
     /// </summary>
     public class WasapiOut : ISoundOut
     {
-        private const Role DeviceRoleNotSet = (Role) 0xFF;
+        private const Role DeviceRoleNotSet = (Role)0xFF;
 
         private readonly bool _eventSync;
         private readonly ThreadPriority _playbackThreadPriority;
@@ -259,7 +259,7 @@ namespace CSCore.SoundOut
 
                 //prevent that the original source will be disposed anyway
                 source = new InterruptDisposingChainWaveSource(source);
-                
+
                 _volumeSource = new VolumeSource(source.ToSampleSource());
 
                 _source = WrapVolumeSource(_volumeSource);
@@ -442,8 +442,8 @@ namespace CSCore.SoundOut
             {
                 //we need a least one wait handle for the streamrouting stuff
                 //if eventsync is configured, we're using a second event for refilling the buffer
-                var eventWaitHandleArray = _eventSync ? new WaitHandle[] {_streamSwitchEvent, _eventWaitHandle} : new WaitHandle[] { _streamSwitchEvent };
-                
+                var eventWaitHandleArray = _eventSync ? new WaitHandle[] { _streamSwitchEvent, _eventWaitHandle } : new WaitHandle[] { _streamSwitchEvent };
+
                 //the wait time for event sync has the default value of latency * 3
                 //if we're using a pure render loop, the wait time has to be much lower
                 //lets say latency / 8. otherwise we might loose too much time
@@ -550,7 +550,7 @@ namespace CSCore.SoundOut
                             }
                             else
                             {
-                                if (_audioClient.GetCurrentPaddingNative(out padding) != (int) HResult.S_OK)
+                                if (_audioClient.GetCurrentPaddingNative(out padding) != (int)HResult.S_OK)
                                     continue;
 
                             }
@@ -560,7 +560,7 @@ namespace CSCore.SoundOut
                             //avoid conversion errors
                             if (framesReadyToFill <= 5 ||
                                 ((_source is DmoResampler) &&
-                                 ((DmoResampler) _source).OutputToInput(framesReadyToFill * frameSize) <= 0))
+                                 ((DmoResampler)_source).OutputToInput(framesReadyToFill * frameSize) <= 0))
                                 continue;
 
                             if (!FeedBuffer(_renderClient, buffer, framesReadyToFill, frameSize))
@@ -580,7 +580,7 @@ namespace CSCore.SoundOut
                     catch (CoreAudioAPIException ex)
                     {
                         //this error can occur while if stream routing has not finished yet
-                        if (ex.ErrorCode != (int) HResult.AUDCLNT_E_DEVICE_INVALIDATED)
+                        if (ex.ErrorCode != (int)HResult.AUDCLNT_E_DEVICE_INVALIDATED)
                         {
                             throw;
                         }
@@ -645,7 +645,7 @@ namespace CSCore.SoundOut
             _outputFormat = SetupWaveFormat(_source, _audioClient);
 
             long latency = _latency * reftimesPerMillisecond;
-        AUDCLNT_E_BUFFER_SIZE_NOT_ALIGNED_TRY_AGAIN:
+            AUDCLNT_E_BUFFER_SIZE_NOT_ALIGNED_TRY_AGAIN:
             try
             {
 
@@ -682,7 +682,7 @@ namespace CSCore.SoundOut
 
             if (_audioClient.StreamLatency != 0) //windows 10 returns zero, got no idea why => https://github.com/filoe/cscore/issues/11
             {
-                Latency = (int)(_audioClient.StreamLatency / reftimesPerMillisecond);   
+                Latency = (int)(_audioClient.StreamLatency / reftimesPerMillisecond);
             }
 
             if (_eventSync)
@@ -707,7 +707,7 @@ namespace CSCore.SoundOut
             {
                 //dispose the source -> the volume source won't get touched
                 //because of the interruption
-                _source.Dispose(); 
+                _source.Dispose();
                 _source = streamSwitch ? WrapVolumeSource(_volumeSource) : null;
             }
 
@@ -779,7 +779,7 @@ namespace CSCore.SoundOut
                                 //none of the tested formats were supported
                                 //try some different samplerates
                                 List<WaveFormatExtensible> waveFormats = new List<WaveFormatExtensible>();
-                                foreach (var sampleRate in new[] {44100, 48000, 96000, 192000})
+                                foreach (var sampleRate in new[] { 44100, 48000, 96000, 192000 })
                                 {
                                     waveFormats.AddRange(GetPossibleFormats(sampleRate, deviceFormat.Channels));
                                 }
@@ -843,7 +843,7 @@ namespace CSCore.SoundOut
                 new WaveFormatExtensible(sampleRate, 32, suggestedNumberOfChannels,
                     AudioSubTypes.IeeeFloat),
                 new WaveFormatExtensible(sampleRate, 32, suggestedNumberOfChannels,
-                    AudioSubTypes.Pcm), 
+                    AudioSubTypes.Pcm),
                 new WaveFormatExtensible(sampleRate, 24, suggestedNumberOfChannels,
                     AudioSubTypes.Pcm),
                 new WaveFormatExtensible(sampleRate, 16, suggestedNumberOfChannels,
@@ -853,7 +853,7 @@ namespace CSCore.SoundOut
                 new WaveFormatExtensible(sampleRate, 32, 2,
                     AudioSubTypes.IeeeFloat),
                 new WaveFormatExtensible(sampleRate, 32, 2,
-                    AudioSubTypes.Pcm), 
+                    AudioSubTypes.Pcm),
                 new WaveFormatExtensible(sampleRate, 24, 2,
                     AudioSubTypes.Pcm),
                 new WaveFormatExtensible(sampleRate, 16, 2,
@@ -863,7 +863,7 @@ namespace CSCore.SoundOut
                 new WaveFormatExtensible(sampleRate, 32, 1,
                     AudioSubTypes.IeeeFloat),
                 new WaveFormatExtensible(sampleRate, 32, 1,
-                    AudioSubTypes.Pcm), 
+                    AudioSubTypes.Pcm),
                 new WaveFormatExtensible(sampleRate, 24, 1,
                     AudioSubTypes.Pcm),
                 new WaveFormatExtensible(sampleRate, 16, 1,
@@ -934,7 +934,8 @@ namespace CSCore.SoundOut
         private void RaiseStopped(Exception exception)
         {
             EventHandler<PlaybackStoppedEventArgs> handler = Stopped;
-            if (handler != null) {
+            if (handler != null)
+            {
                 if (_syncContext != null)
                     //since Send could cause deadlocks better use Post instead
                     _syncContext.Post(x => handler(this, new PlaybackStoppedEventArgs(exception)), null);
@@ -946,14 +947,11 @@ namespace CSCore.SoundOut
         private EventWaitHandle _streamSwitchCompleteEvent;
         private AudioSessionControl _audioSessionControl;
         private MMDeviceEnumerator _deviceEnumerator;
-        private WasapiEventHandler _eventHandler;
         private bool _inStreamSwitch;
         private EventWaitHandle _streamSwitchEvent;
 
         private void InitializeStreamRouting()
         {
-            _eventHandler = new WasapiEventHandler(this);
-
             _audioSessionControl = new AudioSessionControl(_audioClient);
             _deviceEnumerator = new MMDeviceEnumerator();
 
@@ -962,21 +960,88 @@ namespace CSCore.SoundOut
                 _streamSwitchCompleteEvent = new ManualResetEvent(false);
             }
 
-            _audioSessionControl.RegisterAudioSessionNotification(_eventHandler);
-            _deviceEnumerator.RegisterEndpointNotificationCallback(_eventHandler);
+            _audioSessionControl.SessionDisconnected += OnAudioSessionDisconnected;
+            _deviceEnumerator.DefaultDeviceChanged += OnDefaultDeviceChanged;
+        }
+
+        private void OnDefaultDeviceChanged(object sender, DefaultDeviceChangedEventArgs e)
+        {
+            var dataFlow = e.DataFlow;
+            var role = e.Role;
+
+            bool defaultDeviceSwitingEnabled =
+                (StreamRoutingOptions & StreamRoutingOptions.OnDefaultDeviceChange) ==
+                 StreamRoutingOptions.OnDefaultDeviceChange;
+
+            if (dataFlow == DataFlow.Render && role == DeviceRole)
+            {
+
+                //check whether DefaultDeviceSwitching is enabled
+                if (!_inStreamSwitch && defaultDeviceSwitingEnabled)
+                {
+                    //we're not in stream switch already ... initiate stream switch
+                    _inStreamSwitch = true;
+                    _streamSwitchEvent.Set();
+                }
+
+                //signal the render thread to re-initialize the audio renderer
+                if (_inStreamSwitch)
+                {
+                    //if defaultDeviceSwitching is not enabled, inStreamSwitch is always false
+                    //except the DeviceRemoval event was triggered
+                    //for that case, set the streamSwitchCompleteEvent
+                    _streamSwitchCompleteEvent.Set();
+                }
+            }
+        }
+
+        private void OnAudioSessionDisconnected(object sender, AudioSessionDisconnectedEventArgs e)
+        {
+            var disconnectReason = e.DisconnectReason;
+            if (_streamSwitchEvent != null && !_inStreamSwitch)
+            {
+                if (disconnectReason == AudioSessionDisconnectReason.DisconnectReasonDeviceRemoval)
+                {
+                    //check whether OnDeviceDisconnect StreamRoutingOptions is set
+                    if ((StreamRoutingOptions &
+                         StreamRoutingOptions.OnDeviceDisconnect) != StreamRoutingOptions.OnDeviceDisconnect)
+                        return;
+
+                    _inStreamSwitch = true;
+                    _streamSwitchEvent.Set();
+
+                    //if the current device is currently not the default device, 
+                    //the OnDefaultDeviceChanged event won't be triggered
+                    //=> the streamSwitchCompleteEvent won't be set
+                    //=> set it within the OnSessionDisconnected event
+                    //otherwise wait for the final DefaultDeviceSwitch
+                    if (!IsDefaultDevice(Device, DataFlow.Render, DeviceRole))
+                    {
+                        _streamSwitchCompleteEvent.Set();
+                    }
+                }
+                if (disconnectReason == AudioSessionDisconnectReason.DisconnectReasonFormatChanged)
+                {
+                    if ((StreamRoutingOptions &
+                         StreamRoutingOptions.OnFormatChange) != StreamRoutingOptions.OnFormatChange)
+                        return;
+
+                    _inStreamSwitch = true;
+                    _streamSwitchEvent.Set();
+                    _streamSwitchCompleteEvent.Set();
+                }
+            }
         }
 
         private void TerminateStreamRouting()
         {
             if (_audioSessionControl != null)
             {
-                _audioSessionControl.UnregisterAudioSessionNotification(_eventHandler);
                 CSCoreUtils.SafeRelease(ref _audioSessionControl);
             }
 
             if (_deviceEnumerator != null)
             {
-                _deviceEnumerator.UnregisterEndpointNotificationCallback(_eventHandler);
                 CSCoreUtils.SafeRelease(ref _deviceEnumerator);
             }
 
@@ -1002,7 +1067,6 @@ namespace CSCore.SoundOut
             }
 
             //Step 2: Release resources. 
-            _audioSessionControl.UnregisterAudioSessionNotification(_eventHandler);
 
             CSCoreUtils.SafeRelease(ref _audioSessionControl);
             CleanupResources(true);
@@ -1028,7 +1092,7 @@ namespace CSCore.SoundOut
             _inStreamSwitch = false;
             return true;
 
-StreamSwitchErrorExit:
+            StreamSwitchErrorExit:
             _inStreamSwitch = false;
             return false;
         }
@@ -1048,7 +1112,7 @@ StreamSwitchErrorExit:
 
             return false;
         }
-        
+
         /// <summary>
         /// Updates the stream routing options.
         /// </summary>
@@ -1121,121 +1185,6 @@ StreamSwitchErrorExit:
                 if (source == null)
                     throw new ArgumentNullException("source");
                 DisposeBaseSource = false;
-            }
-        }
-
-        private class WasapiEventHandler : IAudioSessionEvents, IMMNotificationClient
-        {
-            private readonly WasapiOut _wasapiOut;
-
-            public WasapiEventHandler(WasapiOut wasapiOut)
-            {
-                _wasapiOut = wasapiOut;
-            }
-
-            public void OnDisplayNameChanged(string newDisplayName, ref Guid eventContext)
-            {
-            }
-
-            public void OnIconPathChanged(string newIconPath, ref Guid eventContext)
-            {
-            }
-
-            public void OnSimpleVolumeChanged(float newVolume, bool newMute, ref Guid eventContext)
-            {
-            }
-
-            public void OnChannelVolumeChanged(int channelCount, float[] newChannelVolumeArray, int changedChannel, ref Guid eventContext)
-            {
-            }
-
-            public void OnGroupingParamChanged(ref Guid newGroupingParam, ref Guid eventContext)
-            {
-            }
-
-            public void OnStateChanged(AudioSessionState newState)
-            {
-            }
-
-            public void OnSessionDisconnected(AudioSessionDisconnectReason disconnectReason)
-            {
-                if (_wasapiOut._streamSwitchEvent != null && !_wasapiOut._inStreamSwitch)
-                {
-                    if (disconnectReason == AudioSessionDisconnectReason.DisconnectReasonDeviceRemoval)
-                    {
-                        //check whether OnDeviceDisconnect StreamRoutingOptions is set
-                        if ((_wasapiOut.StreamRoutingOptions &
-                             StreamRoutingOptions.OnDeviceDisconnect) != StreamRoutingOptions.OnDeviceDisconnect)
-                            return;
-
-                        _wasapiOut._inStreamSwitch = true;
-                        _wasapiOut._streamSwitchEvent.Set();
-
-                        //if the current device is currently not the default device, 
-                        //the OnDefaultDeviceChanged event won't be triggered
-                        //=> the streamSwitchCompleteEvent won't be set
-                        //=> set it within the OnSessionDisconnected event
-                        //otherwise wait for the final DefaultDeviceSwitch
-                        if (!_wasapiOut.IsDefaultDevice(_wasapiOut.Device, DataFlow.Render, _wasapiOut.DeviceRole))
-                        {
-                            _wasapiOut._streamSwitchCompleteEvent.Set();
-                        }
-                    }
-                    if (disconnectReason == AudioSessionDisconnectReason.DisconnectReasonFormatChanged)
-                    {
-                        if ((_wasapiOut.StreamRoutingOptions &
-                             StreamRoutingOptions.OnFormatChange) != StreamRoutingOptions.OnFormatChange)
-                            return;
-
-                        _wasapiOut._inStreamSwitch = true;
-                        _wasapiOut._streamSwitchEvent.Set();
-                        _wasapiOut._streamSwitchCompleteEvent.Set();
-                    }
-                }
-            }
-
-            public void OnDeviceStateChanged(string deviceId, DeviceState deviceState)
-            {
-            }
-
-            public void OnDeviceAdded(string deviceId)
-            {
-            }
-
-            public void OnDeviceRemoved(string deviceId)
-            {
-            }
-
-            public void OnDefaultDeviceChanged(DataFlow dataFlow, Role role, string deviceId)
-            {
-                bool defaultDeviceSwitingEnabled =
-                    (_wasapiOut.StreamRoutingOptions & StreamRoutingOptions.OnDefaultDeviceChange) ==
-                    StreamRoutingOptions.OnDefaultDeviceChange;
-
-                if (dataFlow == DataFlow.Render && role == _wasapiOut.DeviceRole)
-                {
-
-                    //check whether DefaultDeviceSwitching is enabled
-                    if (!_wasapiOut._inStreamSwitch && defaultDeviceSwitingEnabled)
-                    {
-                        //we're not in stream switch already ... initiate stream switch
-                        _wasapiOut._inStreamSwitch = true;
-                        _wasapiOut._streamSwitchEvent.Set();
-                    }
-
-                    //signal the render thread to re-initialize the audio renderer
-                    if (_wasapiOut._inStreamSwitch)
-                    {
-                        //if defaultDeviceSwitching is not enabled, inStreamSwitch is always false
-                        //except the DeviceRemoval event was triggered
-                        //for that case, set the streamSwitchCompleteEvent
-                        _wasapiOut._streamSwitchCompleteEvent.Set();
-                    }
-                }
-            }
-
-            public void OnPropertyValueChanged(string deviceId, PropertyKey key)
-            {
             }
         }
     }
