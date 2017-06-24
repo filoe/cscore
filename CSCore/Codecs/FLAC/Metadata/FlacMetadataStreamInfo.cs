@@ -11,16 +11,10 @@ namespace CSCore.Codecs.FLAC
     public class FlacMetadataStreamInfo : FlacMetadata
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="FlacMetadataStreamInfo" /> class.
+        /// Initializes the properties of the <see cref="FlacMetadata"/> by reading them from the <paramref name="stream"/>.
         /// </summary>
-        /// <param name="stream">The stream which contains the <see cref="FlacMetadataStreamInfo"/>.</param>
-        /// <param name="length">The length of the <see cref="FlacMetadataStreamInfo"/> inside of the stream in bytes. Does not include the metadata header.</param>
-        /// <param name="lastBlock">
-        ///     A value which indicates whether this is the last <see cref="FlacMetadata" /> block inside of
-        ///     the stream. <c>true</c> means that this is the last <see cref="FlacMetadata" /> block inside of the stream.
-        /// </param>
-        public unsafe FlacMetadataStreamInfo(Stream stream, int length, bool lastBlock)
-            : base(FlacMetaDataType.StreamInfo, lastBlock, length)
+        /// <param name="stream">The stream which contains the metadata.</param>
+        protected override unsafe void InitializeByStream(Stream stream)
         {
             //http://flac.sourceforge.net/format.html#metadata_block_streaminfo
             var reader = new BinaryReader(stream, Encoding.ASCII);
@@ -44,14 +38,22 @@ namespace CSCore.Codecs.FLAC
             fixed (byte* b = buffer)
             {
                 var bitreader = new FlacBitReader(b, 0);
-                MinFrameSize = (int) bitreader.ReadBits(24);
-                MaxFrameSize = (int) bitreader.ReadBits(24);
-                SampleRate = (int) bitreader.ReadBits(20);
-                Channels = 1 + (int) bitreader.ReadBits(3);
-                BitsPerSample = 1 + (int) bitreader.ReadBits(5);
-                TotalSamples = (long) bitreader.ReadBits64(36);
+                MinFrameSize = (int)bitreader.ReadBits(24);
+                MaxFrameSize = (int)bitreader.ReadBits(24);
+                SampleRate = (int)bitreader.ReadBits(20);
+                Channels = 1 + (int)bitreader.ReadBits(3);
+                BitsPerSample = 1 + (int)bitreader.ReadBits(5);
+                TotalSamples = (long)bitreader.ReadBits64(36);
                 Md5 = new String(reader.ReadChars(16));
             }
+        }
+
+        /// <summary>
+        /// Gets the type of the <see cref="FlacMetadata"/>.
+        /// </summary>
+        public override FlacMetaDataType MetaDataType
+        {
+            get { return FlacMetaDataType.StreamInfo; }
         }
 
         /// <summary>

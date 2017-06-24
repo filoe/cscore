@@ -101,6 +101,7 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
@@ -151,7 +152,9 @@
     <Compile Include="Codecs\FLAC\FlacPreScanFinishedEventArgs.cs" />
     <Compile Include="Codecs\FLAC\FlacPreScanMode.cs" />
     <Compile Include="Codecs\FLAC\FlacSubFrameData.cs" />
+    <Compile Include="Codecs\FLAC\Metadata\DefaultFlacMetadata.cs" />
     <Compile Include="Codecs\FLAC\Metadata\FlacMetadata.cs" />
+    <Compile Include="Codecs\FLAC\Metadata\FlacMetadataFactory.cs" />
     <Compile Include="Codecs\FLAC\Metadata\FlacMetadataSeekTable.cs" />
     <Compile Include="Codecs\FLAC\Metadata\FlacMetadataStreamInfo.cs" />
     <Compile Include="Codecs\FLAC\FlacPartitionedRice.cs" />

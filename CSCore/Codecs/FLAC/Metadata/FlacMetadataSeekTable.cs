@@ -8,33 +8,7 @@ namespace CSCore.Codecs.FLAC
     /// </summary>
     public class FlacMetadataSeekTable : FlacMetadata
     {
-        private readonly FlacSeekPoint[] _seekPoints;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FlacMetadataSeekTable"/> class.
-        /// </summary>
-        /// <param name="stream">The stream which contains the seektable.</param>
-        /// <param name="length">The length of the seektable inside of the stream in bytes. Does not include the metadata header.</param>
-        /// <param name="lastBlock">A value which indicates whether this is the last <see cref="FlacMetadata"/> block inside of the stream. <c>true</c> means that this is the last <see cref="FlacMetadata"/> block inside of the stream.</param>
-        public FlacMetadataSeekTable(Stream stream, int length, bool lastBlock)
-            : base(FlacMetaDataType.Seektable, lastBlock, length)
-        {
-            int entryCount = length / 18;
-            EntryCount = entryCount;
-            _seekPoints = new FlacSeekPoint[entryCount];
-            BinaryReader reader = new BinaryReader(stream);
-            try
-            {
-                for (int i = 0; i < entryCount; i++)
-                {
-                    _seekPoints[i] = new FlacSeekPoint(reader.ReadInt64(), reader.ReadInt64(), reader.ReadInt16());
-                }
-            }
-            catch (IOException e)
-            {
-                throw new FlacException(e, FlacLayer.Metadata);
-            }
-        }
+        private FlacSeekPoint[] _seekPoints;
 
         /// <summary>
         /// Gets the number of entries, the seektable offers.
@@ -63,6 +37,37 @@ namespace CSCore.Codecs.FLAC
             {
                 return _seekPoints[index];
             }
+        }
+
+        /// <summary>
+        /// Initializes the properties of the <see cref="FlacMetadata"/> by reading them from the <paramref name="stream"/>.
+        /// </summary>
+        /// <param name="stream">The stream which contains the metadata.</param>
+        protected override void InitializeByStream(Stream stream)
+        {
+            int entryCount = Length / 18;
+            EntryCount = entryCount;
+            _seekPoints = new FlacSeekPoint[entryCount];
+            BinaryReader reader = new BinaryReader(stream);
+            try
+            {
+                for (int i = 0; i < entryCount; i++)
+                {
+                    _seekPoints[i] = new FlacSeekPoint(reader.ReadInt64(), reader.ReadInt64(), reader.ReadInt16());
+                }
+            }
+            catch (IOException e)
+            {
+                throw new FlacException(e, FlacLayer.Metadata);
+            }
+        }
+
+        /// <summary>
+        /// Gets the type of the <see cref="FlacMetadata"/>.
+        /// </summary>
+        public override FlacMetaDataType MetaDataType
+        {
+            get { return FlacMetaDataType.Seektable; }
         }
     }
 }
