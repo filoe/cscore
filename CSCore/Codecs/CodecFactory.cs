@@ -160,7 +160,7 @@ namespace CSCore.Codecs
                                 codecEntry.Value.FileExtensions.Any(
                                     x => x.Equals(extension, StringComparison.OrdinalIgnoreCase)))
                             {
-                                source = codecEntry.Value.GetCodecAction(File.OpenRead(filename));
+                                source = codecEntry.Value.GetCodecAction(stream);
                                 if (source != null)
                                     break;
                             }
