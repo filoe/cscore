@@ -13,7 +13,6 @@ namespace CSCore.Win32
         /// </summary>
         [CLSCompliant(false)]
         protected volatile void* UnsafeBasePtr;
-        private readonly object _lockObj = new object();
         private bool _disposed;
 
         /// <summary>
@@ -156,13 +155,10 @@ namespace CSCore.Win32
         /// </summary>
         public void Dispose()
         {
-            lock (_lockObj)
+            if (!_disposed)
             {
-                if (!_disposed)
-                {
-                    Dispose(true);
-                    GC.SuppressFinalize(this);
-                }
+                Dispose(true);
+                GC.SuppressFinalize(this);
             }
         }
 
@@ -185,10 +181,7 @@ namespace CSCore.Win32
         /// </summary>
         ~ComObject()
         {
-            lock (_lockObj)
-            {
-                Dispose(false);
-            }
+            Dispose(false);
         }
     }
 }
