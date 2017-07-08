@@ -89,6 +89,16 @@ namespace CSCore.Ffmpeg.Interops
     {
         internal sbyte* @key;
         internal sbyte* @value;
+
+        public string Key
+        {
+            get { return Marshal.PtrToStringAnsi((IntPtr) key); }
+        }
+
+        public string Value
+        {
+            get { return Marshal.PtrToStringAnsi((IntPtr) value); }
+        }
     }
     
     internal unsafe partial struct AVDictionary

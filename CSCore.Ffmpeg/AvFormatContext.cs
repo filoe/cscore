@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using CSCore.Ffmpeg.Interops;
 
 namespace CSCore.Ffmpeg
@@ -53,6 +55,8 @@ namespace CSCore.Ffmpeg
             }
         }
 
+        public Dictionary<string,string> Metadata { get; private set; }
+
         public unsafe AvFormatContext(FfmpegStream stream)
         {
             _formatContext = FfmpegCalls.AvformatAllocContext();
@@ -78,6 +82,16 @@ namespace CSCore.Ffmpeg
             FfmpegCalls.AvFormatFindStreamInfo(_formatContext);
             BestAudioStreamIndex = FfmpegCalls.AvFindBestStreamInfo(_formatContext);
              _stream = new AvStream((IntPtr)_formatContext->streams[BestAudioStreamIndex]);
+
+            Metadata = new Dictionary<string, string>();
+            if (_formatContext->metadata != null)
+            {
+                var metadata = _formatContext->metadata->Elements;
+                foreach (var element in metadata)
+                {
+                    Metadata.Add(element.Key, element.Value);
+                }
+            }
         }
 
         public void SeekFile(double seconds)

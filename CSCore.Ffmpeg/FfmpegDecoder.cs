@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 
@@ -25,6 +26,19 @@ namespace CSCore.Ffmpeg
         private int _overflowCount;
         private int _overflowOffset;
         private long _position;
+
+        /// <summary>
+        /// Gets a dictionary with found metadata.
+        /// </summary>
+        public Dictionary<string, string> Metadata
+        {
+            get
+            {
+                if(_formatContext == null)
+                    return new Dictionary<string, string>();
+                return _formatContext.Metadata;
+            }
+        }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="FfmpegDecoder" /> class based on a specified filename or url.

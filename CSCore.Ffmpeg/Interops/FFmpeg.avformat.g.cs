@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace CSCore.Ffmpeg.Interops
@@ -17,6 +18,25 @@ namespace CSCore.Ffmpeg.Interops
     
     internal unsafe partial struct AVDictionary
     {
+        internal int count;
+        internal AVDictionaryEntry* elems;
+
+        public AVDictionaryEntry[] Elements
+        {
+            get { return GetElements(); }
+        }
+
+        private AVDictionaryEntry[] GetElements()
+        {
+            var cpy = elems;
+            AVDictionaryEntry[] elements = new AVDictionaryEntry[count];
+            for (int i = 0; i < count; i++)
+            {
+                elements[i] = cpy[i];
+            }
+
+            return elements;
+        }
     }
     
     internal unsafe partial struct AVCodecInternal
