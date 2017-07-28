@@ -150,7 +150,6 @@ namespace CSCore.XAudio2
             _waitHandle = new AutoResetEvent(true); //set the initial state to true to start streaming
 
             _voiceCallback.BufferEnd += (s, e) => _waitHandle.Set();
-            //Start(); //start the playback
         }
 
         /// <summary>
@@ -219,7 +218,7 @@ namespace CSCore.XAudio2
                 }
 
                 base.Dispose(disposing);
-                
+
                 _voiceCallback.Dispose();
 
                 _disposed = true;

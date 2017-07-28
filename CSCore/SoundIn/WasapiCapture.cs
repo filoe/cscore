@@ -346,14 +346,6 @@ namespace CSCore.SoundIn
             var defaultFormat = _waveFormat;
 
             _audioClient = AudioClient.FromMMDevice(Device);
-            /*if (_shareMode == AudioClientShareMode.Exclusive)
-            {
-                _waveFormat = _waveFormat ?? _audioClient.MixFormat;
-            }
-            else
-            {
-                _waveFormat = _waveFormat ?? _audioClient.MixFormat;
-            }*/
             _waveFormat = _waveFormat ?? _audioClient.MixFormat;
 
             _waveFormat = SetupWaveFormat(_waveFormat, _audioClient);

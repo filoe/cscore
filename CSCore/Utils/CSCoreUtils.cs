@@ -32,7 +32,7 @@ namespace CSCore.Utils
                 return ptr;
             }
 
-            _patchedVtables.Add(z, new PatchedVtable(ptr, pp));
+            _patchedVtables.Add(z, new PatchedVtable(pp));
 
             for (int i = 0; i < finalVtableLength; i++)
             {
@@ -43,18 +43,23 @@ namespace CSCore.Utils
 
 #if DEBUG
                 IntPtr after = pp[i];
-                System.Diagnostics.Debug.WriteLine(String.Format("{0} -> {1}", prev, after));
+                Debug.WriteLine(String.Format("{0} -> {1}", prev, after));
 #endif
             }
             return ptr;
         }
 
-        public static int Release(IntPtr ptr)
+        public static unsafe int Release(IntPtr ptr)
         {
+            var pp = (IntPtr*)(void*)ptr;
+            pp = (IntPtr*)pp[0];
+
+            IntPtr z = new IntPtr(pp);
+
             PatchedVtable vtable;
-            if (_patchedVtables.TryGetValue(ptr, out vtable))
+            if (_patchedVtables.TryGetValue(z, out vtable))
             {
-                return vtable.ReleaseFunc(vtable.Ptr);
+                return vtable.ReleaseFunc(ptr);
             }
 
             return 0;
@@ -76,16 +81,12 @@ namespace CSCore.Utils
             [UnmanagedFunctionPointer(CallingConvention.StdCall)]
             public delegate int Release(IntPtr thisPtr);
 
-            public IntPtr Ptr { get; private set; }
-
             private IntPtr ReleasePtr { get; set; }
 
             public Release ReleaseFunc { get; private set; }
 
-            public unsafe PatchedVtable(IntPtr thisPtr, IntPtr* ptr)
+            public unsafe PatchedVtable(IntPtr* ptr)
             {
-                Ptr = thisPtr;
-
                 ReleasePtr = ptr[2];
                 ReleaseFunc = (Release)Marshal.GetDelegateForFunctionPointer(ReleasePtr, typeof (Release));
             }

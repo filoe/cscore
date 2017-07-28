@@ -123,7 +123,6 @@ namespace CSCore.XAudio2
                     //which gets called here -> the Marshal.Release method would call any function on index 2 of the vtable
                     //we've patched there
                     Utils.CSCoreUtils.Release(ptr);
-                    //Marshal.Release(ptr);
                 }
             }
         }
@@ -156,7 +155,6 @@ namespace CSCore.XAudio2
                     //which gets called here -> the Marshal.Release method would call any function on index 2 of the vtable
                     //we've patched there
                     Utils.CSCoreUtils.Release(ptr);
-                    //Marshal.Release(ptr);
                 }
             }
         }
@@ -244,7 +242,6 @@ namespace CSCore.XAudio2
                     //which gets called here -> the Marshal.Release method would call any function on index 2 of the vtable
                     //we've patched there
                     Utils.CSCoreUtils.Release(p);
-                    //Marshal.Release(p);
                 }
             }
         }
