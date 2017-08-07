@@ -38,7 +38,6 @@ namespace CSCore.SoundOut
         private Thread _playbackThread;
         private ALDevice _playingDevice;
         private IWaveSource _source;
-        private VolumeSource _volumeSource;
         private ALContext _context;
 
         /// <summary>
@@ -139,12 +138,12 @@ namespace CSCore.SoundOut
         /// </summary>
         public float Volume
         {
-            get { return _volumeSource != null ? _volumeSource.Volume : 1; }
+            get { return _alSource != null ? _alSource.Gain : 1; }
             set
             {
                 CheckForDisposed();
                 CheckForIsInitialized();
-                _volumeSource.Volume = value;
+                _alSource.Gain = value;
             }
         }
 
@@ -327,10 +326,9 @@ namespace CSCore.SoundOut
                 _context = new ALContext(_playingDevice);
 
                 source = new InterruptDisposingChainSource(source);
-                _volumeSource = new VolumeSource(source.ToSampleSource());
 
                 int numberOfBitsPerSample = FindBestBitDepth(source.WaveFormat);
-                _source = _volumeSource.ToWaveSource(numberOfBitsPerSample);
+                _source = source.ToSampleSource().ToWaveSource(numberOfBitsPerSample);
 
                 InitializeInternal();
 
