@@ -54,6 +54,37 @@ namespace CSCore.SoundOut.AL
         }
 
         /// <summary>
+        /// Sets gain of <see cref="ALSource"/>.
+        /// </summary>
+        public float Gain
+        {
+            get
+            {
+                using (_context.LockContext())
+                {
+                    float gain = 1f;
+                    ALException.Try(
+                        () =>
+                            ALInterops.alGetSourcef(Id, ALSourceParameters.Gain, out gain),
+                        "alGetSourcef(gain)");
+                    return gain;
+                }
+            }
+
+            set
+            {
+                using (_context.LockContext())
+                {
+                    ALException.Try(
+                        () =>
+                            ALInterops.alSourcef(Id, ALSourceParameters.Gain, value),
+                        "alSourcef(gain)");
+                }
+            }
+
+        }
+
+        /// <summary>
         /// Pauses the <see cref="ALSource"/>.
         /// </summary>
         public void Pause()
