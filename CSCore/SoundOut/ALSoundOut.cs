@@ -466,7 +466,7 @@ namespace CSCore.SoundOut
                         ALInterops.alGenBuffers(_buffers.Length, _buffers),
                     "alGenBuffers");
             }
-            _bufferSize = (int)_source.WaveFormat.MillisecondsToBytes(_latency);
+            _bufferSize = (int)_source.WaveFormat.MillisecondsToBytes(_latency / NumberOfBuffers);
         }
 
         private void CleanupResources()
