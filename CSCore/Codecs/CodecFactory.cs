@@ -205,10 +205,10 @@ namespace CSCore.Codecs
 
             try
             {
-                if (uri.IsFile)
-                {
-                    return GetCodec(uri.LocalPath);
-                }
+                var filename = TryFindFilename(uri);
+                if (!String.IsNullOrEmpty(filename))
+                    return GetCodec(filename);
+
                 return OpenWebStream(uri.ToString());
             }
             catch (IOException)
@@ -281,6 +281,47 @@ namespace CSCore.Codecs
             stringBuilder.Append(String.Concat(GetSupportedFileExtensions().Select(x => "*." + x + ";").ToArray()));
             stringBuilder.Remove(stringBuilder.Length - 1, 1);
             return stringBuilder.ToString();
+        }
+
+        private string TryFindFilename(Uri uri)
+        {
+            if (File.Exists(uri.LocalPath))
+                return uri.LocalPath;
+
+            FileInfo fileInfo;
+            try
+            {
+                fileInfo = new FileInfo(uri.LocalPath);
+                if (fileInfo.Exists)
+                    return fileInfo.FullName;
+            }
+            catch (Exception)
+            {
+                Debug.WriteLine(String.Format("{0} not found.", uri.LocalPath));
+            }
+
+            try
+            {
+                fileInfo = new FileInfo(uri.OriginalString);
+                if (fileInfo.Exists)
+                    return fileInfo.FullName;
+            }
+            catch (Exception)
+            {
+                Debug.WriteLine(String.Format("{0} not found.", uri.OriginalString));
+            }
+
+            var path = Win32.NativeMethods.PathCreateFromUrl(uri.OriginalString);
+            if (path == null || !File.Exists(path))
+            {
+                path = Win32.NativeMethods.PathCreateFromUrl(uri.AbsoluteUri);
+            }
+            if (path != null && File.Exists(path))
+            {
+                return path;
+            }
+
+            return null;
         }
 
         private class DisposeFileStreamSource : WaveAggregatorBase

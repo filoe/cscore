@@ -13,7 +13,7 @@ namespace CSCore.Win32
         internal static extern int FormatMessage(int dwFlags, IntPtr lpSource, int dwMessageId, int dwLanguageId, [Out, MarshalAs(UnmanagedType.LPTStr)] StringBuilder lpBuffer, int nSize, IntPtr va_list_arguments);
 
         [DllImport("kernel32", CharSet = CharSet.Unicode, SetLastError = true)]
-        internal extern static IntPtr LoadLibrary(string librayName);
+        internal static extern IntPtr LoadLibrary(string librayName);
 
         [DllImport("kernel32.dll", SetLastError = true)]
         internal static extern bool FreeLibrary(IntPtr hModule);
@@ -32,5 +32,22 @@ namespace CSCore.Win32
 
         [DllImport("ole32.dll")]
         public static extern int PropVariantClear(ref PropertyVariant propertyVariant);
+
+        [DllImport("shlwapi.dll", SetLastError = true)]
+        public static extern int PathCreateFromUrl([In]string url, [Out] StringBuilder path, [In, Out]ref uint pathLength, [In]uint reserved);
+
+        public static string PathCreateFromUrl(string url)
+        {
+            const int internetMaxPathLength = 2048;
+            StringBuilder stringBuilder = new StringBuilder(internetMaxPathLength);
+            uint pathLength = internetMaxPathLength;
+
+            var error = PathCreateFromUrl(url, stringBuilder, ref pathLength, 0);
+            if (error == (int) HResult.S_OK)
+            {
+                return stringBuilder.ToString();
+            }
+            return null;
+        }
     }
 }
