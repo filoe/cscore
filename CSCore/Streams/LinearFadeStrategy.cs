@@ -213,7 +213,9 @@ namespace CSCore.Streams
 
         private bool IsFadingFinished()
         {
-            return Math.Abs(_currentVolume - _targetVolume) < 0.00001f;
+            return Math.Abs(_currentVolume - _targetVolume) < Math.Abs(_step) ||
+                   _step > 0.0f && _currentVolume > _targetVolume ||
+                   _step < 0.0f && _currentVolume < _targetVolume;
         }
 
         private void StopFadingInternal()
