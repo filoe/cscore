@@ -42,5 +42,10 @@ namespace CSCore.Codecs.WAV
         /// Gets the zero-based position inside of the stream at which the audio data starts.
         /// </summary>
         public long DataStartPosition { get; private set; }
+
+        public long DataEndPosition
+        {
+            get { return DataStartPosition + ChunkDataSize; }
+        }
     }
 }

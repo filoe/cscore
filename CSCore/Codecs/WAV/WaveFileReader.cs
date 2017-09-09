@@ -90,7 +90,11 @@ namespace CSCore.Codecs.WAV
             {
                 CheckForDisposed();
 
+                count = (int) Math.Min(count, _dataChunk.DataEndPosition - _stream.Position);
                 count -= count % WaveFormat.BlockAlign;
+                if (count <= 0)
+                    return 0;
+
                 return _stream.Read(buffer, offset, count);
             }
         }
