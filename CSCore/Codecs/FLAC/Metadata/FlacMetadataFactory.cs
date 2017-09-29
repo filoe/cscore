@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.DirectoryServices;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace CSCore.Codecs.FLAC.Metadata
 {
