@@ -1,7 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Drawing;
 
+#if !NETSTANDARD2_0
+using System.Drawing;
+#endif
 namespace CSCore.Tags.ID3.Frames
 {
     public class PictureFrame : Frame
@@ -14,22 +16,21 @@ namespace CSCore.Tags.ID3.Frames
 
         internal byte[] RawData { get; private set; }
 
+        #if !NETSTANDARD2_0
         private Image _image;
-
+        
         /// <summary>
         /// WARNING: If MimeType equals "-->" the picture will be downloaded from the web.
         /// Use GetURL() the get the url to the picture. If not, data, contained by the frame will
         /// be used.
         /// </summary>
-        public Image Image
-        {
-            get { return _image ?? (_image = DecodeImage()); }
-        }
+        public Image Image =>  _image ?? (_image = DecodeImage());
 
         private Image DecodeImage()
         {
             return ID3Utils.DecodeImage(RawData, MimeType);
         }
+        #endif
 
         private ID3Version _version;
 
