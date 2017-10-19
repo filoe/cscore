@@ -419,9 +419,12 @@ namespace CSCore
 
             using (var waitHandle = new AutoResetEvent(false))
             {
-// ReSharper disable once AccessToDisposedClosure
-                soundOut.Stopped += (s, e) => waitHandle.Set();
-                return waitHandle.WaitOne(millisecondsTimeout);
+                EventHandler<PlaybackStoppedEventArgs> handler = (s, e) => waitHandle.Set();
+                soundOut.Stopped += handler;
+                bool result = waitHandle.WaitOne(millisecondsTimeout);
+                // need to unsubscrive because waitHandle will be disposed
+                soundOut.Stopped -= handler;
+                return result;
             }
         }
 
