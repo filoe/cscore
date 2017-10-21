@@ -113,7 +113,11 @@ namespace CSCore.DSP
                 throw new ArgumentNullException("fftResultBuffer");
 
             var input = fftResultBuffer;
-            Array.Copy(_storedSamples, input, _storedSamples.Length);
+
+            //copy from block [offset - end] to input buffer
+            Array.Copy(_storedSamples, _currentSampleOffset, input, 0, _storedSamples.Length - _currentSampleOffset);
+            //copy from block [0 - offset] to input buffer
+            Array.Copy(_storedSamples, 0, input, _storedSamples.Length - _currentSampleOffset, _currentSampleOffset);
 
             FastFourierTransformation.Fft(input, _fftSizeExponent);
             var result = _newDataAvailable;
