@@ -137,6 +137,7 @@ namespace CSCore.Tags.ID3
 
         public const string MimeURL = "-->";
 
+        #if !NETSTANDARD2_0
         public static System.Drawing.Image DecodeImage(byte[] rawdata, string mimetype)
         {
             Stream stream;
@@ -153,6 +154,7 @@ namespace CSCore.Tags.ID3
 
             return Image.FromStream(stream);
         }
+        #endif
 
         public static string GetURL(byte[] RawData, string MimeType)
         {

@@ -65,6 +65,8 @@ namespace CSCore.Tags.ID3
             }
         }
 
+        #if !NETSTANDARD2_0
+
         public System.Drawing.Image Image
         {
             get
@@ -75,6 +77,8 @@ namespace CSCore.Tags.ID3
                 return null;
             }
         }
+
+        #endif
 
         public int? Year
         {
