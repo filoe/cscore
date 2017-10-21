@@ -53,10 +53,27 @@ namespace CSCli
             /*
              * Load and process assembly
              */
-            if (!File.Exists(filename))
+            if (String.IsNullOrEmpty(filename) || !File.Exists(filename))
             {
                 MessageIntegration.WriteError(String.Format("Could not find file \"{0}\".", filename));
-                Environment.Exit(-1);
+                Environment.Exit(-4);
+            }
+            string originalFilename = filename + "_orig"; //use this filename for reader of Mono.Cecil
+
+            if(File.Exists(originalFilename))
+            {
+                //delete previous version, if existing 
+                File.Delete(originalFilename); 
+            }
+
+            try
+            {
+                File.Move(filename, originalFilename); //file for reader
+            }
+            catch (Exception ex)
+            {
+                MessageIntegration.WriteError("Rename file to _orig failed: " + ex);
+                Environment.Exit(-3);
             }
 
             WriterParameters wp = new WriterParameters();
@@ -88,12 +105,12 @@ namespace CSCli
                 rp.SymbolReaderProvider = new PdbReaderProvider();
             }
 
-            MessageIntegration.Info("Generating pdb: " + generatePdb.ToString());
+            MessageIntegration.Info("Generating pdb: " + generatePdb);
 
             //open assembly
-            var assembly = AssemblyDefinition.ReadAssembly(filename, rp);
+            var assembly = AssemblyDefinition.ReadAssembly(originalFilename, rp); //read
             //add the directory assembly directory as search directory to resolve referenced assemblies
-            ((BaseAssemblyResolver)assembly.MainModule.AssemblyResolver).AddSearchDirectory(Path.GetDirectoryName(filename));
+            ((BaseAssemblyResolver)assembly.MainModule.AssemblyResolver).AddSearchDirectory(Path.GetDirectoryName(originalFilename));
 
             //path the assembly
             AssemblyPatcher patcher = new AssemblyPatcher(assembly, calliAttributeName, removeTypeAttributeName);
@@ -101,15 +118,12 @@ namespace CSCli
             {
                 try
                 {
-                    //if the assembly was patched successfully -> replace the old assembly file with the new, patched assembly file
-                    //the symbols file will be created automatically
-                    File.Delete(filename);
                     assembly.Write(filename, wp);
                 }
                 catch (Exception ex)
                 {
-                    MessageIntegration.WriteError("Creating new assembly failed: " + ex.ToString());
-                    Environment.Exit(-1);
+                    MessageIntegration.WriteError("Creating patched assembly failed: " + ex);
+                    Environment.Exit(-2);
                 }
 
                 MessageIntegration.Info(String.Format("CSCli patched assembly \"{0}\" successfully.", Path.GetFileName(filename)));
@@ -120,6 +134,7 @@ namespace CSCli
                 MessageIntegration.WriteError(String.Format("\"{0}\" could not be patched.", filename));
                 Environment.Exit(-1);
             }
+
         }
 
     }
