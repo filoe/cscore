@@ -1,9 +1,13 @@
-﻿namespace CSCore.Ffmpeg.Interops
+﻿#pragma warning disable CS0649
+#pragma warning disable IDE1006
+
+namespace CSCore.Ffmpeg.Interops
 {
  
     internal struct pp_mode
     {
     }
+
 
     internal struct pp_context
     {
