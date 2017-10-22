@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +30,10 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -254,6 +259,7 @@
     <Compile Include="SoundOut\WaveOut.cs" />
     <Compile Include="SoundOut\WaveOutBuffer.cs" />
     <Compile Include="SoundOut\WaveOutDevice.cs" />
+    <Compile Include="Startup.cs" />
     <Compile Include="Streams\Effects\ChorusPhase.cs" />
     <Compile Include="Streams\Effects\ChorusWaveform.cs" />
     <Compile Include="Streams\Effects\DmoChorusEffect.cs" />
@@ -343,4 +349,79 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+      @echo off &amp; setLocal EnableDELAYedeXpansion
+      chcp 65001
+
+      set errorCode=0
+
+      set target=$(TargetPath)
+      set project=$(ProjectPath)
+
+      set sdk=%2525PROGRAMFILES(x86)%2525\Microsoft SDKs\Windows\v8.1A\bin\NETFX 4.5.1 Tools
+      set framework=%2525WINDIR%2525\Microsoft.NET\Framework\v2.0.50727
+      set inlineILCompiler=$(SolutionDir)Tools\InlineILCompiler\InlineILCompiler\bin\$(ConfigurationName)\InlineILCompiler.exe
+      set cscli=$(SolutionDir)Tools\CSCli\bin\$(ConfigurationName)\CSCli.exe
+
+      IF exist "%2525sdk%2525\." (
+      echo OK: The Microsoft Windows SDK was found.
+      ) else (
+      echo FAILED: The Microsoft Windows SDK Dir was not found. Check the following path: "%2525sdk%2525"
+      goto EXIT_ERR
+      )
+      IF exist "%2525framework%2525\." (
+      echo OK: The .NET Framework Dir was found.
+      ) else (
+      echo FAILED: The Framework-Dir was not found. Check the following path: "%2525framework%2525"
+      goto EXIT_ERR
+      )
+      IF exist "%2525inlineILCompiler%2525" (
+      echo OK: Found the inline-il-compiler.
+      ) else (
+      echo FAILED: The inline-il-compiler was not found. Check the following path: "%2525inlineILCompiler%2525"
+      goto EXIT_ERR
+      )
+      IF exist "%2525cscli%2525" (
+      echo OK: Found the cscli-compiler.
+      ) else (
+      echo FAILED: The cscli was not found. Check the following path: "%2525cscli%2525"
+      goto EXIT_ERR
+      )
+
+      if $(ConfigurationName) == Debug (
+      echo Build-Configuration: DEBUG
+      echo    DEBUG=IMPL
+      echo    NO OPTIMIZE
+      set ilasm_args=/DLL /DEBUG=IMPL
+      ) else (
+      if $(ConfigurationName) == Release (
+      echo Build-Configuration: RELEASE
+      echo    NO DEBUG
+      echo    OPTIMIZE
+      set ilasm_args=/DLL /OPTIMIZE
+      ) else (
+      echo FAILED: Invalid Configuration.
+      goto EXIT_ERR
+      )
+      )
+
+      echo.
+      echo.
+      echo Calling the inline-il-compiler ...
+      call "%2525inlineILCompiler%2525"
+
+      echo.
+      echo.
+      echo Calling CSCli ...
+      call "%2525cscli%2525" -file:"$(TargetPath)" -r:"RemoveObjAttribute" -c:"CSCalliAttribute"
+
+      :EXIT
+      EXIT /B %2525errorCode%2525
+
+      :EXIT_ERR
+      set errorCode=-1
+      goto EXIT
+</PostBuildEvent>
+  </PropertyGroup>
 </Project>
