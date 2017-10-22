@@ -3,11 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSCore", "CSCore\CSCore.csproj", "{C3DCCFE3-DD3F-4EEE-849B-33E355B1E064}"
-	ProjectSection(ProjectDependencies) = postProject
-		{9522588A-5311-41F1-814C-4FB626FC0B47} = {9522588A-5311-41F1-814C-4FB626FC0B47}
-		{9C5B4994-70C3-489D-933C-E2049C0505DB} = {9C5B4994-70C3-489D-933C-E2049C0505DB}
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSCore", "CSCore\CSCore.csproj", "{C3DCCFE3-DD3F-4EEE-849B-33E355B1E064}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSCore.Test", "CSCore.Test\CSCore.Test.csproj", "{A4816166-67F7-42FF-B199-2758574312B2}"
 EndProject
@@ -58,6 +54,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndpointAudioMeterSample", "Samples\EndpointAudioMeterSample\EndpointAudioMeterSample.csproj", "{2EDF3192-9107-4B7A-914A-EA25AFEB9F85}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSCore.Windows", "CSCore.Windows\CSCore.Windows.csproj", "{7F569678-8C28-402D-A189-7D7F18E3FB14}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9522588A-5311-41F1-814C-4FB626FC0B47} = {9522588A-5311-41F1-814C-4FB626FC0B47}
+		{9C5B4994-70C3-489D-933C-E2049C0505DB} = {9C5B4994-70C3-489D-933C-E2049C0505DB}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
