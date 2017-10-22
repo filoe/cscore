@@ -378,4 +378,4 @@ namespace CSCore
 
 // ReSharper restore InconsistentNaming 
 	}
-}
+} 

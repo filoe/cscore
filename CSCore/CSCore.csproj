@@ -1,22 +1,20 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C3DCCFE3-DD3F-4EEE-849B-33E355B1E064}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CSCore</RootNamespace>
     <AssemblyName>CSCore</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworks>net451;netcoreapp2.0</TargetFrameworks>
+    <VersionPrefix>1.2.1.1</VersionPrefix>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+
+    <!-- Packet Details -->
+    <Copyright>Florian R.</Copyright>
+    <Description>.NET Sound Library</Description>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -31,7 +29,13 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <NoWarn>1573</NoWarn>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+
+    <!-- Sign the assembly to expose to tests-->
+    <AssemblyOriginatorKeyFile>cscore.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
+
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
@@ -46,368 +50,74 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
-  <PropertyGroup />
+
   <PropertyGroup>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.DirectoryServices" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Xml" />
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">
+    <PackageReference Include="System.Drawing.Common" Version="4.5.0-preview1-25718-03" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="AudioSubTypes.cs">
+    <None Remove=".gitattributes" />
+    <None Remove=".gitignore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="AudioSubTypes.cs">
       <DependentUpon>AudioSubTypes.tt</DependentUpon>
-      <SubType>Code</SubType>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Include="AudioSubTypes.Utils.cs">
+
+    <Compile Update="AudioSubTypes.Utils.cs">
       <DependentUpon>AudioSubTypes.tt</DependentUpon>
     </Compile>
-    <Compile Include="ChannelMask.cs" />
-    <Compile Include="ChannelMasks.cs" />
-    <Compile Include="Codecs\AIFF\AiffBinaryReader.cs" />
-    <Compile Include="Codecs\AIFF\AiffChunk.cs" />
-    <Compile Include="Codecs\AIFF\AiffChunkContainer.cs" />
-    <Compile Include="Codecs\AIFF\AiffException.cs" />
-    <Compile Include="Codecs\AIFF\AiffReader.cs" />
-    <Compile Include="Codecs\AIFF\CommonChunk.cs" />
-    <Compile Include="Codecs\AIFF\FormatVersionChunk.cs" />
-    <Compile Include="Codecs\AIFF\SoundDataChunk.cs" />
-    <Compile Include="Codecs\CodecFactoryEntry.cs" />
-    <Compile Include="Codecs\ConnectionEstablishedEventArgs.cs" />
-    <Compile Include="Codecs\CodecFactory.cs" />
-    <Compile Include="Codecs\FLAC\ChannelAssignment.cs" />
-    <Compile Include="Codecs\FLAC\FlacException.cs" />
-    <Compile Include="Codecs\FLAC\FlacConstant.cs" />
-    <Compile Include="Codecs\FLAC\FlacFrame_GetBuffer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
+
+    <Compile Update="Codecs\FLAC\FlacFrame_GetBuffer.cs">
       <DependentUpon>FlacFrame_GetBuffer.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Codecs\FLAC\FlacResidualCodingMethod.cs" />
-    <Compile Include="Codecs\FLAC\FlacFile.cs" />
-    <Compile Include="Codecs\FLAC\FlacFrame.cs" />
-    <Compile Include="Codecs\FLAC\FlacFrameHeader.cs" />
-    <Compile Include="Codecs\FLAC\FlacFrameInformation.cs" />
-    <Compile Include="Codecs\FLAC\FlacLayer.cs" />
-    <Compile Include="Codecs\FLAC\BlockingStrategy.cs" />
-    <Compile Include="Codecs\FLAC\FlacPreScan.cs" />
-    <Compile Include="Codecs\FLAC\FlacPreScanFinishedEventArgs.cs" />
-    <Compile Include="Codecs\FLAC\FlacPreScanMode.cs" />
-    <Compile Include="Codecs\FLAC\FlacSubFrameData.cs" />
-    <Compile Include="Codecs\FLAC\Metadata\DefaultFlacMetadata.cs" />
-    <Compile Include="Codecs\FLAC\Metadata\FlacMetadata.cs" />
-    <Compile Include="Codecs\FLAC\Metadata\FlacMetadataFactory.cs" />
-    <Compile Include="Codecs\FLAC\Metadata\FlacMetadataSeekTable.cs" />
-    <Compile Include="Codecs\FLAC\Metadata\FlacMetadataStreamInfo.cs" />
-    <Compile Include="Codecs\FLAC\FlacPartitionedRice.cs" />
-    <Compile Include="Codecs\FLAC\FlacPartitionedRiceContent.cs" />
-    <Compile Include="Codecs\FLAC\Metadata\FlacMetaDataType.cs" />
-    <Compile Include="Codecs\FLAC\Metadata\FlacSeekPoint.cs" />
-    <Compile Include="Codecs\FLAC\SubFrames\FlacResidual.cs" />
-    <Compile Include="Codecs\FLAC\SubFrames\FlacSubFrameBase.cs" />
-    <Compile Include="Codecs\FLAC\SubFrames\FlacSubFrameConstant.cs" />
-    <Compile Include="Codecs\FLAC\SubFrames\FlacSubFrameFixed.cs" />
-    <Compile Include="Codecs\FLAC\SubFrames\FlacSubFrameLPC.cs" />
-    <Compile Include="Codecs\FLAC\SubFrames\FlacSubFrameLPC_Calculation.cs">
+
+    <Compile Update="Codecs\FLAC\SubFrames\FlacSubFrameLPC_Calculation.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>FlacSubFrameLPC_Calculation.tt</DependentUpon>
     </Compile>
-    <Compile Include="Codecs\FLAC\SubFrames\FlacSubFrameVerbatim.cs" />
-    <Compile Include="Codecs\GetCodecAction.cs" />
-    <Compile Include="DSP\BandpassFilter.cs" />
-    <Compile Include="DSP\BiQuad.cs" />
-    <Compile Include="DSP\ChannelMatrixElement.cs" />
-    <Compile Include="DSP\FastFourierTransformation.cs" />
-    <Compile Include="DSP\FftProvider.cs" />
-    <Compile Include="DSP\FftMode.cs" />
-    <Compile Include="DSP\FftSize.cs" />
-    <Compile Include="DSP\HighpassFilter.cs" />
-    <Compile Include="DSP\HighShelfFilter.cs" />
-    <Compile Include="DSP\LowpassFilter.cs" />
-    <Compile Include="DSP\LowShelfFilter.cs" />
-    <Compile Include="DSP\NotchFilter.cs" />
-    <Compile Include="DSP\PeakFilter.cs" />
-    <Compile Include="DSP\PitchShifterInternal.cs" />
-    <Compile Include="FluentExtensions.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="IReadableAudioSource.cs" />
-    <Compile Include="IWriteable.cs" />
-    <Compile Include="SoundIn\RecordingState.cs" />
-    <Compile Include="SoundIn\RecordingStoppedEventArgs.cs" />
-    <Compile Include="SoundOut\PlaybackStoppedEventArgs.cs" />
-    <Compile Include="StoppedEventArgs.cs" />
-    <Compile Include="Streams\CachedSoundSource.cs" />
-    <Compile Include="Streams\ChannelConversionSource.cs" />
-    <Compile Include="Streams\Effects\Equalizer.cs" />
-    <Compile Include="Streams\Effects\EqualizerChannelFilter.cs" />
-    <Compile Include="Streams\Effects\EqualizerFilter.cs" />
-    <Compile Include="Streams\Effects\PitchShifter.cs" />
-    <Compile Include="Streams\FadeInOut.cs" />
-    <Compile Include="Streams\GainSource.cs" />
-    <Compile Include="Streams\IFadeStrategy.cs" />
-    <Compile Include="Streams\LinearFadeStrategy.cs" />
-    <Compile Include="Streams\PeakEventArgs.cs" />
-    <Compile Include="Streams\PeakMeter.cs" />
-    <Compile Include="Streams\SampleConverter\Pcm32BitToSample.cs" />
-    <Compile Include="Streams\SampleConverter\SampleToPcm32.cs" />
-    <Compile Include="Streams\SynchronizedWaveSource.cs" />
-    <Compile Include="Streams\WriteableBufferingSource.cs" />
-    <Compile Include="Streams\BufferSource.cs" />
-    <Compile Include="Streams\SingleBlockNotificationStream.cs" />
-    <Compile Include="Streams\SingleBlockReadEventArgs.cs" />
-    <Compile Include="AudioEncoding.cs" />
-    <Compile Include="Tags\ID3\Frames\PictureFormat.cs" />
-    <Compile Include="Tags\ID3\Frames\ReceivedType.cs" />
-    <Compile Include="TimeConverter.cs" />
-    <Compile Include="TimeConverterAttribute.cs" />
-    <Compile Include="TimeConverterFactory.cs" />
-    <Compile Include="Utils\Vector3.cs" />
-    <Compile Include="Codecs\RAW\RawDataReader.cs" />
-    <Compile Include="DSP\ChannelMatrix.cs" />
-    <Compile Include="Streams\BlockReadEventArgs.cs" />
-    <Compile Include="Streams\MonoToStereoSource.cs" />
-    <Compile Include="Streams\NotificationSource.cs" />
-    <Compile Include="Streams\PanSource.cs" />
-    <Compile Include="Streams\SampleConverter\SampleToIeeeFloat32.cs" />
-    <Compile Include="Streams\SampleConverter\SampleToPcm24.cs" />
-    <Compile Include="Streams\SampleConverter\SampleToPcm8.cs" />
-    <Compile Include="Streams\SimpleNotificationSource.cs" />
-    <Compile Include="Streams\VolumeSource.cs" />
-    <Compile Include="Streams\SoundInSource.cs" />
-    <Compile Include="Tags\ID3\Frames\BinaryFrame.cs" />
-    <Compile Include="Tags\ID3\Frames\CommentAndLyricsFrame.cs" />
-    <Compile Include="Tags\ID3\Frames\CommercialFrame.cs" />
-    <Compile Include="Tags\ID3\Frames\DataFrame.cs" />
-    <Compile Include="Tags\ID3\Frames\FrameIDFactory.cs" />
-    <Compile Include="Tags\ID3\Frames\MultiStringTextFrame.cs" />
-    <Compile Include="Tags\ID3\Frames\NumericTextFrame.cs" />
-    <Compile Include="Tags\ID3\Frames\OwnershipFrame.cs" />
-    <Compile Include="Tags\ID3\Frames\PictureFrame.cs" />
-    <Compile Include="Tags\ID3\Frames\Popularimeter.cs" />
-    <Compile Include="Tags\ID3\Frames\TermsOfUseFrame.cs" />
-    <Compile Include="Tags\ID3\Frames\TimestampTextFrame.cs" />
-    <Compile Include="Tags\ID3\Frames\UserDefiniedTextFrame.cs" />
-    <Compile Include="Tags\ID3\ID3Genre.cs" />
-    <Compile Include="Tags\ID3\ID3v1.cs" />
-    <Compile Include="Tags\ID3\ID3v2QuickInfo.cs" />
-    <Compile Include="Utils\ReadBlockStream.cs" />
-    <Compile Include="WaveFormatExtensible.cs" />
-    <Compile Include="Codecs\WAV\DataChunk.cs" />
-    <Compile Include="Codecs\WAV\FmtChunk.cs" />
-    <Compile Include="Codecs\WAV\WaveFileChunk.cs" />
-    <Compile Include="Codecs\WAV\WaveFileReader.cs" />
-    <Compile Include="Codecs\WAV\WaveWriter.cs" />
-    <Compile Include="ISampleSource.cs" />
-    <Compile Include="IWaveSource.cs" />
-    <Compile Include="IAudioSource.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SoundIn\DataAvailableEventArgs.cs" />
-    <Compile Include="SoundIn\ISoundIn.cs" />
-    <Compile Include="Streams\SampleConverter\IeeeFloatToSample.cs" />
-    <Compile Include="Streams\SampleConverter\SampleToPcm16.cs" />
-    <Compile Include="Streams\SampleConverter\SampleToWaveBase.cs" />
-    <Compile Include="Streams\StereoToMonoSource.cs" />
-    <Compile Include="SampleAggregatorBase.cs" />
-    <Compile Include="Tags\ID3\Frames\FrameFactory.cs" />
-    <Compile Include="Tags\ID3\Frames\FrameFlags.cs" />
-    <Compile Include="Tags\ID3\Frames\FrameHeader.cs" />
-    <Compile Include="Tags\ID3\Frames\FrameID.cs" />
-    <Compile Include="Tags\ID3\Frames\TextFrame.cs" />
-    <Compile Include="Tags\ID3\ID3Exception.cs" />
-    <Compile Include="Tags\ID3\ID3Utils.cs" />
-    <Compile Include="Tags\ID3\ID3v2.cs" />
-    <Compile Include="Tags\ID3\ID3v2ExtendedHeader.cs" />
-    <Compile Include="Tags\ID3\ID3v2ExtendedHeaderFlags.cs" />
-    <Compile Include="Tags\ID3\ID3v2Footer.cs" />
-    <Compile Include="Tags\ID3\Frames\Frame.cs" />
-    <Compile Include="Tags\ID3\ID3v2Header.cs" />
-    <Compile Include="Tags\ID3\ID3v2HeaderFlags.cs" />
-    <Compile Include="Tags\ID3\ID3v2ImageEncodingRestriction.cs" />
-    <Compile Include="Tags\ID3\ID3v2ImageSizeRestriction.cs" />
-    <Compile Include="Tags\ID3\ID3v2TagSizeRestriction.cs" />
-    <Compile Include="Tags\ID3\ID3v2TextFieldSizeRestriction.cs" />
-    <Compile Include="Tags\ID3\ID3Version.cs" />
-    <Compile Include="Tags\ID3\ID3v2TextEncodingRestriction.cs" />
-    <Compile Include="Tags\ID3\UnsyncStream.cs" />
-    <Compile Include="Utils\BitReader.cs" />
-    <Compile Include="Utils\FlacBitReader.cs" />
-    <Compile Include="SoundOut\ISoundOut.cs" />
-    <Compile Include="SoundOut\PlaybackState.cs" />
-    <Compile Include="Streams\LoopStream.cs" />
-    <Compile Include="Streams\SampleConverter\Pcm16BitToSample.cs" />
-    <Compile Include="Streams\SampleConverter\Pcm24BitToSample.cs" />
-    <Compile Include="Streams\SampleConverter\Pcm8BitToSample.cs" />
-    <Compile Include="Streams\SampleConverter\WaveToSampleBase.cs" />
-    <Compile Include="Streams\SineGenerator.cs" />
-    <Compile Include="Utils\Buffer\FixedSizeBuffer.cs" />
-    <Compile Include="Utils\Complex.cs" />
-    <Compile Include="Utils\CRC16.cs" />
-    <Compile Include="Utils\CRC8.cs" />
-    <Compile Include="Utils\CRCBase.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="Utils\UintOffsets.cs" />
-    <Compile Include="WaveAggregatorBase.cs" />
-    <Compile Include="WaveFormat.cs" />
-    <None Include="AudioSubTypes.tt">
+
+    <!-- TT Templates -->
+    <None Update="AudioSubTypes.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>AudioSubTypes.cs</LastGenOutput>
     </None>
-    <None Include="Base.cd" />
-    <None Include="Codecs\FLAC\FlacFrame_GetBuffer.tt">
+
+    <None Update="Codecs\FLAC\FlacFrame_GetBuffer.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>FlacFrame_GetBuffer.cs</LastGenOutput>
     </None>
-    <None Include="Codecs\FLAC\SubFrames\FlacSubFrameLPC_Calculation.tt">
+
+    <None Update="Codecs\FLAC\SubFrames\FlacSubFrameLPC_Calculation.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>FlacSubFrameLPC_Calculation.cs</LastGenOutput>
     </None>
+
+    <!-- Other -->
+    <None Include="Base.cd" />
+
     <None Include="cscore.snk">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
   <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
   <PropertyGroup>
-    <PostBuildEvent>
-      @echo off &amp; setLocal EnableDELAYedeXpansion
-      chcp 65001
-
-      set errorCode=0
-
-      set target=$(TargetPath)
-      set project=$(ProjectPath)
-
-      set sdk=%25PROGRAMFILES(x86)%25\Microsoft SDKs\Windows\v8.1A\bin\NETFX 4.5.1 Tools
-      set framework=%25WINDIR%25\Microsoft.NET\Framework\v2.0.50727
-      set inlineILCompiler=$(SolutionDir)Tools\InlineILCompiler\InlineILCompiler\bin\$(ConfigurationName)\InlineILCompiler.exe
-      set cscli=$(SolutionDir)Tools\CSCli\bin\$(ConfigurationName)\CSCli.exe
-
-      IF exist "%25sdk%25\." (
-      echo OK: The Microsoft Windows SDK was found.
-      ) else (
-      echo FAILED: The Microsoft Windows SDK Dir was not found. Check the following path: "%25sdk%25"
-      goto EXIT_ERR
-      )
-      IF exist "%25framework%25\." (
-      echo OK: The .NET Framework Dir was found.
-      ) else (
-      echo FAILED: The Framework-Dir was not found. Check the following path: "%25framework%25"
-      goto EXIT_ERR
-      )
-      IF exist "%25inlineILCompiler%25" (
-      echo OK: Found the inline-il-compiler.
-      ) else (
-      echo FAILED: The inline-il-compiler was not found. Check the following path: "%25inlineILCompiler%25"
-      goto EXIT_ERR
-      )
-      IF exist "%25cscli%25" (
-      echo OK: Found the cscli-compiler.
-      ) else (
-      echo FAILED: The cscli was not found. Check the following path: "%25cscli%25"
-      goto EXIT_ERR
-      )
-
-      if $(ConfigurationName) == Debug (
-      echo Build-Configuration: DEBUG
-      echo    DEBUG=IMPL
-      echo    NO OPTIMIZE
-      set ilasm_args=/DLL /DEBUG=IMPL
-      ) else (
-      if $(ConfigurationName) == Release (
-      echo Build-Configuration: RELEASE
-      echo    NO DEBUG
-      echo    OPTIMIZE
-      set ilasm_args=/DLL /OPTIMIZE
-      ) else (
-      echo FAILED: Invalid Configuration.
-      goto EXIT_ERR
-      )
-      )
-
-      echo.
-      echo.
-      echo Calling the inline-il-compiler ...
-      call "%25inlineILCompiler%25"
-
-      echo.
-      echo.
-      echo Calling CSCli ...
-      call "%25cscli%25" -file:"$(TargetPath)" -r:"RemoveObjAttribute" -c:"CSCalliAttribute"
-
-      :EXIT
-      EXIT /B %25errorCode%25
-
-      :EXIT_ERR
-      set errorCode=-1
-      goto EXIT
-</PostBuildEvent>
+    <Version>2.0.0.0</Version>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <FileVersion>2.0.0.0</FileVersion>
   </PropertyGroup>
-  <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
