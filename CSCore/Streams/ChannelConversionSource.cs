@@ -6,7 +6,7 @@ namespace CSCore.Streams
     /// <summary>
     /// NOT RELEASED YET! Provides conversion between a set of input and output channels using a <see cref="ChannelMatrix"/>.
     /// </summary>
-    public class ChannelConversionSource : SampleAggregatorBase
+    internal class ChannelConversionSource : SampleAggregatorBase
     {
         private readonly ChannelMatrix _channelMatrix;
         private WaveFormat _waveFormat;

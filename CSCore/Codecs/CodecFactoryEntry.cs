@@ -17,10 +17,29 @@ namespace CSCore.Codecs
         /// </summary>
         public GetCodecAction GetCodecAction { get; private set; }
 
+        public GetCodecActionUrl GetCodecActionUrl { get; set; }
+
         /// <summary>
         /// Gets all with the codec associated file extensions.
         /// </summary>
         public ReadOnlyCollection<string> FileExtensions { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether an url as can be handled as input.
+        /// </summary>
+        public bool CanHandleUrl { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether this is a generic decoder like the Microsoft MediaFoundationDecoder or FFmpeg.
+        /// </summary>
+        public bool IsGenericDecoder { get; set; }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="CodecFactoryEntry"/> class.
+        /// </summary>
+        public CodecFactoryEntry()
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CodecFactoryEntry"/> class.

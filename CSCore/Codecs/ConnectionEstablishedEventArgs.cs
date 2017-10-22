@@ -1,10 +1,9 @@
 ﻿using System;
-using CSCore.Codecs.MP3;
 
 namespace CSCore.Codecs
 {
     /// <summary>
-    /// Provides data for all events which notify the client that a connection got established. For example the <see cref="Mp3WebStream.ConnectionEstablished"/> event.
+    /// Provides data for all events which notify the client that a connection got established.
     /// </summary>
     public class ConnectionEstablishedEventArgs : EventArgs
     {

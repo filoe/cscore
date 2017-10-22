@@ -1,13 +1,11 @@
 ﻿using System;
-using CSCore.DMO;
-using CSCore.MediaFoundation;
 
 namespace CSCore
 {
     /// <summary>
     /// Defines <see cref="AudioSubTypes"/> and provides methods to convert between <see cref="AudioEncoding"/>-values and <see cref="AudioSubTypes"/>-values.
     /// </summary>
-    /// <remarks><see cref="AudioSubTypes"/> are used by the <see cref="WaveFormatExtensible"/>, the <see cref="MFMediaType"/> and the <see cref="MediaType"/> class.</remarks>
+    /// <remarks><see cref="AudioSubTypes"/> are used by the <see cref="WaveFormatExtensible"/>.</remarks>
     public static partial class AudioSubTypes
     {
         /// <summary>

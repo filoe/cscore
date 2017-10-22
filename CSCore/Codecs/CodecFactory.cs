@@ -3,17 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
-using CSCore.Codecs.AAC;
 using CSCore.Codecs.AIFF;
-using CSCore.Codecs.DDP;
 using CSCore.Codecs.FLAC;
-using CSCore.Codecs.MP1;
-using CSCore.Codecs.MP2;
-using CSCore.Codecs.MP3;
 using CSCore.Codecs.WAV;
-using CSCore.Codecs.WMA;
-using CSCore.MediaFoundation;
 
 namespace CSCore.Codecs
 {
@@ -25,25 +19,11 @@ namespace CSCore.Codecs
 // ReSharper disable once InconsistentNaming
         private static readonly CodecFactory _instance = new CodecFactory();
 
-        private readonly Dictionary<object, CodecFactoryEntry> _codecs;
+        private readonly List<KeyValuePair<object, CodecFactoryEntry>> _codecs;
 
         private CodecFactory()
         {
-            _codecs = new Dictionary<object, CodecFactoryEntry>();
-            Register("mp3", new CodecFactoryEntry(s =>
-            {
-                try
-                {
-                    return new DmoMp3Decoder(s);
-                }
-                catch (Exception)
-                {
-                    if (Mp3MediafoundationDecoder.IsSupported)
-                        return new Mp3MediafoundationDecoder(s);
-                    throw;
-                }
-            },
-                "mp3", "mpeg3"));
+            _codecs = new List<KeyValuePair<object, CodecFactoryEntry>>();
             Register("wave", new CodecFactoryEntry(s =>
             {
                 IWaveSource res = new WaveFileReader(s);
@@ -51,8 +31,7 @@ namespace CSCore.Codecs
                     res.WaveFormat.WaveFormatTag != AudioEncoding.IeeeFloat &&
                     res.WaveFormat.WaveFormatTag != AudioEncoding.Extensible)
                 {
-                    res.Dispose();
-                    res = new MediaFoundationDecoder(s);
+                    return null;
                 }
                 return res;
             },
@@ -61,37 +40,6 @@ namespace CSCore.Codecs
                 "flac", "fla"));
             Register("aiff", new CodecFactoryEntry(s => new AiffReader(s),
                 "aiff", "aif", "aifc"));
-
-            if (AacDecoder.IsSupported)
-            {
-                Register("aac", new CodecFactoryEntry(s => new AacDecoder(s),
-                    "aac", "adt", "adts", "m2ts", "mp2", "3g2", "3gp2", "3gp", "3gpp", "m4a", "m4v", "mp4v", "mp4",
-                    "mov"));
-            }
-
-            if (WmaDecoder.IsSupported)
-            {
-                Register("wma", new CodecFactoryEntry(s => new WmaDecoder(s),
-                    "asf", "wm", "wmv", "wma"));
-            }
-
-            if (Mp1Decoder.IsSupported)
-            {
-                Register("mp1", new CodecFactoryEntry(s => new Mp1Decoder(s),
-                    "mp1", "m2ts"));
-            }
-
-            if (Mp2Decoder.IsSupported)
-            {
-                Register("mp2", new CodecFactoryEntry(s => new Mp2Decoder(s),
-                    "mp2", "m2ts"));
-            }
-
-            if (DDPDecoder.IsSupported)
-            {
-                Register("ddp", new CodecFactoryEntry(s => new DDPDecoder(s),
-                    "mp2", "m2ts", "m4a", "m4v", "mp4v", "mp4", "mov", "asf", "wm", "wmv", "wma", "avi", "ac3", "ec3"));
-            }
         }
 
         /// <summary>
@@ -125,8 +73,7 @@ namespace CSCore.Codecs
             if (keyString != null)
                 key = keyString.ToLower();
 
-            if (_codecs.ContainsKey(key) != true)
-                _codecs.Add(key, codec);
+            _codecs.Add(new KeyValuePair<object, CodecFactoryEntry>(key, codec));
         }
 
         /// <summary>
@@ -221,36 +168,42 @@ namespace CSCore.Codecs
             }
         }
 
-        internal IWaveSource GetCodec(Stream stream, object key)
-        {
-            return _codecs[key].GetCodecAction(stream);
-        }
-
         private IWaveSource OpenWebStream(string url)
         {
-            try
-            {
-                return Default(url);
-            }
-            catch (Exception)
+            foreach (var codec in _codecs.Where(x => x.Value.CanHandleUrl))
             {
                 try
                 {
-#pragma warning disable 618
-                    return new Mp3WebStream(url, false);
-#pragma warning restore 618
+                    var source = codec.Value.GetCodecActionUrl(url);
+                    if (source != null)
+                        return source;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    Debug.WriteLine("No mp3 webstream.");
+                    Debug.WriteLine(ex);
                 }
-                throw; //better throw the exception of the MediaFoundationDecoder. We just try to use the Mp3WebStream class since a few mp3 streams are not supported by the mediafoundation.
             }
+
+            throw new NotSupportedException("Codec not supported.");
         }
 
-        private static IWaveSource Default(string url)
+        private IWaveSource Default(string url)
         {
-            return new MediaFoundationDecoder(url);
+            foreach (var codec in _codecs.Where(x => x.Value.IsGenericDecoder))
+            {
+                try
+                {
+                    var source = codec.Value.GetCodecActionUrl(url);
+                    if (source != null)
+                        return source;
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+            }
+
+            throw new NotSupportedException("Codec not supported.");
         }
 
         /// <summary>
@@ -311,11 +264,28 @@ namespace CSCore.Codecs
                 Debug.WriteLine(String.Format("{0} not found.", uri.OriginalString));
             }
 
-            var path = Win32.NativeMethods.PathCreateFromUrl(uri.OriginalString);
-            if (path == null || !File.Exists(path))
+            string path = null;
+
+            var nativeMethodsType = Type.GetType("CSCore.Win32.NativeMethods");
+            if (nativeMethodsType != null)
             {
-                path = Win32.NativeMethods.PathCreateFromUrl(uri.AbsoluteUri);
+                var method = nativeMethodsType.GetMethod("PathCreateFromUrl", BindingFlags.Public);
+                if (method != null)
+                {
+                    path = method.Invoke(null, new object[] {uri.OriginalString}) as string;
+                    if (path == null || !File.Exists(path))
+                    {
+                        path = method.Invoke(null, new object[] {uri.AbsoluteUri}) as string;
+                    }
+                }
             }
+            else
+            {
+                path = uri.LocalPath
+                    .Replace(@"\\localhost\", String.Empty)
+                    .Replace(@"\\127.0.0.1\", String.Empty);
+            }
+
             if (path != null && File.Exists(path))
             {
                 return path;

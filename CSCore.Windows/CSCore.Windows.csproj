@@ -1,0 +1,346 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7F569678-8C28-402D-A189-7D7F18E3FB14}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CSCore.Windows</RootNamespace>
+    <AssemblyName>CSCore.Windows</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Codecs\AAC\AacAudioProfileLevelIndication.cs" />
+    <Compile Include="Codecs\AAC\AacDecoder.cs" />
+    <Compile Include="Codecs\AAC\AACEncoder.cs" />
+    <Compile Include="Codecs\DDP\DDPDecoder.cs" />
+    <Compile Include="Codecs\MP1\MP1Decoder.cs" />
+    <Compile Include="Codecs\MP2\MP2Decoder.cs" />
+    <Compile Include="Codecs\MP3\DmoMP3Decoder.cs" />
+    <Compile Include="Codecs\MP3\FrameInfoCollection.cs" />
+    <Compile Include="Codecs\MP3\MP3ChannelMode.cs" />
+    <Compile Include="Codecs\MP3\Mp3Format.cs" />
+    <Compile Include="Codecs\MP3\Mp3FormatId.cs" />
+    <Compile Include="Codecs\MP3\Mp3Frame.cs" />
+    <Compile Include="Codecs\MP3\MP3FrameInfo.cs" />
+    <Compile Include="Codecs\MP3\MP3MediafoundationDecoder.cs" />
+    <Compile Include="Codecs\MP3\Mp3PaddingFlags.cs" />
+    <Compile Include="Codecs\MP3\Mp3WebStream.cs" />
+    <Compile Include="Codecs\MP3\MpegLayer.cs" />
+    <Compile Include="Codecs\MP3\MpegVersion.cs" />
+    <Compile Include="Codecs\MP3\XingHeader.cs" />
+    <Compile Include="Codecs\MP3\XingHeaderFlags.cs" />
+    <Compile Include="Codecs\WMA\WMADecoder.cs" />
+    <Compile Include="CoreAudioAPI\AudioCaptureClient.cs" />
+    <Compile Include="CoreAudioAPI\AudioClient.cs" />
+    <Compile Include="CoreAudioAPI\AudioClientBufferFlags.cs" />
+    <Compile Include="CoreAudioAPI\AudioClientSessionFlags.cs" />
+    <Compile Include="CoreAudioAPI\AudioClientShareMode.cs" />
+    <Compile Include="CoreAudioAPI\AudioClientStreamFlags.cs" />
+    <Compile Include="CoreAudioAPI\AudioClock.cs" />
+    <Compile Include="CoreAudioAPI\AudioClock2.cs" />
+    <Compile Include="CoreAudioAPI\AudioEndpointVolume.cs" />
+    <Compile Include="CoreAudioAPI\AudioEndpointVolumeCallback.cs" />
+    <Compile Include="CoreAudioAPI\AudioEndpointVolumeCallbackEventArgs.cs" />
+    <Compile Include="CoreAudioAPI\AudioEndpointVolumeChannel.cs" />
+    <Compile Include="CoreAudioAPI\AudioMeterInformation.cs" />
+    <Compile Include="CoreAudioAPI\AudioRenderClient.cs" />
+    <Compile Include="CoreAudioAPI\AudioSessionChannelVolumeChangedEventArgs.cs" />
+    <Compile Include="CoreAudioAPI\AudioSessionControl.cs" />
+    <Compile Include="CoreAudioAPI\AudioSessionControl2.cs" />
+    <Compile Include="CoreAudioAPI\AudioSessionDisconnectedEventArgs.cs" />
+    <Compile Include="CoreAudioAPI\AudioSessionDisconnectReason.cs" />
+    <Compile Include="CoreAudioAPI\AudioSessionDisplayNameChangedEventArgs.cs" />
+    <Compile Include="CoreAudioAPI\AudioSessionEnumerator.cs" />
+    <Compile Include="CoreAudioAPI\AudioSessionEventContextEventArgs.cs" />
+    <Compile Include="CoreAudioAPI\AudioSessionEvents.cs" />
+    <Compile Include="CoreAudioAPI\AudioSessionGroupingParamChangedEventArgs.cs" />
+    <Compile Include="CoreAudioAPI\AudioSessionIconPathChangedEventArgs.cs" />
+    <Compile Include="CoreAudioAPI\AudioSessionManager.cs" />
+    <Compile Include="CoreAudioAPI\AudioSessionManager2.cs" />
+    <Compile Include="CoreAudioAPI\AudioSessionNotification.cs" />
+    <Compile Include="CoreAudioAPI\AudioSessionSimpleVolumeChangedEventArgs.cs" />
+    <Compile Include="CoreAudioAPI\AudioSessionState.cs" />
+    <Compile Include="CoreAudioAPI\AudioSessionStateChangedEventArgs.cs" />
+    <Compile Include="CoreAudioAPI\AudioVolumeDuckNotification.cs" />
+    <Compile Include="CoreAudioAPI\AudioVolumeNotificationData.cs" />
+    <Compile Include="CoreAudioAPI\CoreAudioAPIException.cs" />
+    <Compile Include="CoreAudioAPI\DataFlow.cs" />
+    <Compile Include="CoreAudioAPI\DefaultDeviceChangedEventArgs.cs" />
+    <Compile Include="CoreAudioAPI\DeviceNotificationEventArgs.cs" />
+    <Compile Include="CoreAudioAPI\DevicePropertyChangedEventArgs.cs" />
+    <Compile Include="CoreAudioAPI\DeviceState.cs" />
+    <Compile Include="CoreAudioAPI\DeviceStateChangedEventArgs.cs" />
+    <Compile Include="CoreAudioAPI\EndpointHardwareSupportFlags.cs" />
+    <Compile Include="CoreAudioAPI\IAudioEndpointVolumeCallback.cs" />
+    <Compile Include="CoreAudioAPI\IAudioSessionEvents.cs" />
+    <Compile Include="CoreAudioAPI\IAudioSessionNotification.cs" />
+    <Compile Include="CoreAudioAPI\IAudioVolumeDuckNotification.cs" />
+    <Compile Include="CoreAudioAPI\IMMDevice.cs" />
+    <Compile Include="CoreAudioAPI\IMMDeviceCollection.cs" />
+    <Compile Include="CoreAudioAPI\IMMDeviceEnumerator.cs" />
+    <Compile Include="CoreAudioAPI\IMMNotificationClient.cs" />
+    <Compile Include="CoreAudioAPI\InteropCalls.cs" />
+    <Compile Include="CoreAudioAPI\MMDevice.cs" />
+    <Compile Include="CoreAudioAPI\MMDeviceCollection.cs" />
+    <Compile Include="CoreAudioAPI\MMDeviceEnumerator.cs" />
+    <Compile Include="CoreAudioAPI\MMEndpoint.cs" />
+    <Compile Include="CoreAudioAPI\MMNotificationClient.cs" />
+    <Compile Include="CoreAudioAPI\Role.cs" />
+    <Compile Include="CoreAudioAPI\SessionCreatedEventArgs.cs" />
+    <Compile Include="CoreAudioAPI\SimpleAudioVolume.cs" />
+    <Compile Include="CoreAudioAPI\StorageAccess.cs" />
+    <Compile Include="CoreAudioAPI\VolumeDuckNotificationEventArgs.cs" />
+    <Compile Include="DirectSound\DirectSound8.cs" />
+    <Compile Include="DirectSound\DirectSoundBase.cs" />
+    <Compile Include="DirectSound\DirectSoundBuffer.cs" />
+    <Compile Include="DirectSound\DirectSoundCapabilities.cs" />
+    <Compile Include="DirectSound\DirectSoundDevice.cs" />
+    <Compile Include="DirectSound\DirectSoundDeviceEnumerator.cs" />
+    <Compile Include="DirectSound\DirectSoundException.cs" />
+    <Compile Include="DirectSound\DirectSoundNotify.cs" />
+    <Compile Include="DirectSound\DirectSoundPrimaryBuffer.cs" />
+    <Compile Include="DirectSound\DirectSoundSecondaryBuffer.cs" />
+    <Compile Include="DirectSound\DSBLock.cs" />
+    <Compile Include="DirectSound\DSBPlayFlags.cs" />
+    <Compile Include="DirectSound\DSBPositionNotify.cs" />
+    <Compile Include="DirectSound\DSBStatus.cs" />
+    <Compile Include="DirectSound\DSBufferCaps.cs" />
+    <Compile Include="DirectSound\DSBufferCapsFlags.cs" />
+    <Compile Include="DirectSound\DSBufferDescription.cs" />
+    <Compile Include="DirectSound\DSCapabilitiesFlags.cs" />
+    <Compile Include="DirectSound\DSCertification.cs" />
+    <Compile Include="DirectSound\DSCooperativeLevelType.cs" />
+    <Compile Include="DirectSound\DSEnumCallback.cs" />
+    <Compile Include="DirectSound\DSResult.cs" />
+    <Compile Include="DirectSound\DSSpeakerConfigurations.cs" />
+    <Compile Include="DirectSound\DSSpeakerGeometry.cs" />
+    <Compile Include="DirectSound\DSUtils.cs" />
+    <Compile Include="DirectSound\InteropCalls.cs" />
+    <Compile Include="DirectSound\NativeMethods.cs" />
+    <Compile Include="DMO\DmoAggregator.cs" />
+    <Compile Include="DMO\DmoEnumeratorCategories.cs" />
+    <Compile Include="DMO\DmoEnumFlags.cs" />
+    <Compile Include="DMO\DmoEnumItem.cs" />
+    <Compile Include="DMO\DmoErrorCodes.cs" />
+    <Compile Include="DMO\DmoException.cs" />
+    <Compile Include="DMO\DmoInputSizeInfo.cs" />
+    <Compile Include="DMO\DmoInputStreamInfoFlags.cs" />
+    <Compile Include="DMO\DmoOutputDataBuffer.cs" />
+    <Compile Include="DMO\DmoOutputStreamInfoFlags.cs" />
+    <Compile Include="DMO\DmoPartialMediaType.cs" />
+    <Compile Include="DMO\DmoSizeInfo.cs" />
+    <Compile Include="DMO\DmoStream.cs" />
+    <Compile Include="DMO\Effects\ChorusParameters.cs" />
+    <Compile Include="DMO\Effects\CompressorParameters.cs" />
+    <Compile Include="DMO\Effects\DirectSoundFXBase.cs" />
+    <Compile Include="DMO\Effects\DirectSoundFXChorus.cs" />
+    <Compile Include="DMO\Effects\DirectSoundFXCompressor.cs" />
+    <Compile Include="DMO\Effects\DirectSoundFXDistortion.cs" />
+    <Compile Include="DMO\Effects\DirectSoundFXEcho.cs" />
+    <Compile Include="DMO\Effects\DirectSoundFXFlanger.cs" />
+    <Compile Include="DMO\Effects\DirectSoundFXGargle.cs" />
+    <Compile Include="DMO\Effects\DirectSoundFXWavesReverb.cs" />
+    <Compile Include="DMO\Effects\DistortionParameters.cs" />
+    <Compile Include="DMO\Effects\EchoParameters.cs" />
+    <Compile Include="DMO\Effects\FlangerParameters.cs" />
+    <Compile Include="DMO\Effects\GargleParameters.cs" />
+    <Compile Include="DMO\Effects\WavesReverbParameters.cs" />
+    <Compile Include="DMO\EnumDMO.cs" />
+    <Compile Include="DMO\IMediaBuffer.cs" />
+    <Compile Include="DMO\IMediaObject.cs" />
+    <Compile Include="DMO\InputDataBufferFlags.cs" />
+    <Compile Include="DMO\InputStatusFlags.cs" />
+    <Compile Include="DMO\InputStreamInfoFlags.cs" />
+    <Compile Include="DMO\InteropCalls.cs" />
+    <Compile Include="DMO\IWMResamplerProps.cs" />
+    <Compile Include="DMO\MediaBuffer.cs" />
+    <Compile Include="DMO\MediaObject.cs" />
+    <Compile Include="DMO\MediaType.cs" />
+    <Compile Include="DMO\NativeMethods.cs" />
+    <Compile Include="DMO\OutputDataBufferFlags.cs" />
+    <Compile Include="DMO\OutputStreamInfoFlags.cs" />
+    <Compile Include="DMO\ProcessOutputFlags.cs" />
+    <Compile Include="DMO\SetTypeFlags.cs" />
+    <Compile Include="DMO\WMResampler.cs" />
+    <Compile Include="DMO\WMResamplerProps.cs" />
+    <Compile Include="DSP\DmoChannelResampler.cs" />
+    <Compile Include="DSP\DmoResampler.cs" />
+    <Compile Include="MediaFoundation\CommonAudioDecoderGuids.cs" />
+    <Compile Include="MediaFoundation\IMFCollection.cs" />
+    <Compile Include="MediaFoundation\InteropCalls.cs" />
+    <Compile Include="MediaFoundation\MediaFoundationAttributes.cs" />
+    <Compile Include="MediaFoundation\MediaFoundationCore.cs" />
+    <Compile Include="MediaFoundation\MediaFoundationDecoder.cs" />
+    <Compile Include="MediaFoundation\MediaFoundationEncoder.cs" />
+    <Compile Include="MediaFoundation\MediaFoundationException.cs" />
+    <Compile Include="MediaFoundation\MediaTypeEqualFlags.cs" />
+    <Compile Include="MediaFoundation\MFActivate.cs" />
+    <Compile Include="MediaFoundation\MFAttribute.cs" />
+    <Compile Include="MediaFoundation\MFAttributeMatchType.cs" />
+    <Compile Include="MediaFoundation\MFAttributes.cs" />
+    <Compile Include="MediaFoundation\MFAttributeType.cs" />
+    <Compile Include="MediaFoundation\MFByteStream.cs" />
+    <Compile Include="MediaFoundation\MFByteStreamCapsFlags.cs" />
+    <Compile Include="MediaFoundation\MFByteStreamSeekOrigin.cs" />
+    <Compile Include="MediaFoundation\MFMediaBuffer.cs" />
+    <Compile Include="MediaFoundation\MFMediaSourceCharacteristics.cs" />
+    <Compile Include="MediaFoundation\MFMediaType.cs" />
+    <Compile Include="MediaFoundation\MFMediaTypes.cs" />
+    <Compile Include="MediaFoundation\MFSample.cs" />
+    <Compile Include="MediaFoundation\MFSampleFlags.cs" />
+    <Compile Include="MediaFoundation\MFSinkWriter.cs" />
+    <Compile Include="MediaFoundation\MFSinkWriterStatistics.cs" />
+    <Compile Include="MediaFoundation\MFSourceReader.cs" />
+    <Compile Include="MediaFoundation\MFSourceReaderFlags.cs" />
+    <Compile Include="MediaFoundation\MFTCategories.cs" />
+    <Compile Include="MediaFoundation\MFTEnumerator.cs" />
+    <Compile Include="MediaFoundation\MFTEnumFlags.cs" />
+    <Compile Include="MediaFoundation\MFTRegisterTypeInfo.cs" />
+    <Compile Include="MediaFoundation\MFWaveFormatExConvertFlags.cs" />
+    <Compile Include="MediaFoundation\NativeMethods.cs" />
+    <Compile Include="MediaFoundation\SourceReaderControlFlags.cs" />
+    <Compile Include="MediaFoundation\TranscodeContainerTypes.cs" />
+    <Compile Include="MmException.cs" />
+    <Compile Include="MmResult.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegisterAssemblyCodecsAttribute.cs" />
+    <Compile Include="SoundIn\WasapiCapture.cs" />
+    <Compile Include="SoundIn\WasapiLoopbackCapture.cs" />
+    <Compile Include="SoundIn\WaveIn.cs" />
+    <Compile Include="SoundIn\WaveInBuffer.cs" />
+    <Compile Include="SoundIn\WaveInDevice.cs" />
+    <Compile Include="SoundOut\DirectSoundOut.cs" />
+    <Compile Include="SoundOut\MmDeviceFormats.cs" />
+    <Compile Include="SoundOut\MmDeviceSupported.cs" />
+    <Compile Include="SoundOut\MmInterop\NativeMethods.cs" />
+    <Compile Include="SoundOut\MmInterop\Utils.cs" />
+    <Compile Include="SoundOut\MmInterop\WaveCallback.cs" />
+    <Compile Include="SoundOut\MmInterop\WaveHeader.cs" />
+    <Compile Include="SoundOut\MmInterop\WaveHeaderFlags.cs" />
+    <Compile Include="SoundOut\MmInterop\WaveInCaps.cs" />
+    <Compile Include="SoundOut\MmInterop\WaveMsg.cs" />
+    <Compile Include="SoundOut\MmInterop\WaveOutCaps.cs" />
+    <Compile Include="SoundOut\WasapiOut.cs" />
+    <Compile Include="SoundOut\WaveOut.cs" />
+    <Compile Include="SoundOut\WaveOutBuffer.cs" />
+    <Compile Include="SoundOut\WaveOutDevice.cs" />
+    <Compile Include="Streams\Effects\ChorusPhase.cs" />
+    <Compile Include="Streams\Effects\ChorusWaveform.cs" />
+    <Compile Include="Streams\Effects\DmoChorusEffect.cs" />
+    <Compile Include="Streams\Effects\DmoCompressorEffect.cs" />
+    <Compile Include="Streams\Effects\DmoDistortionEffect.cs" />
+    <Compile Include="Streams\Effects\DmoEchoEffect.cs" />
+    <Compile Include="Streams\Effects\DmoEffectBase.cs" />
+    <Compile Include="Streams\Effects\DmoFlangerEffect.cs" />
+    <Compile Include="Streams\Effects\DmoGargleEffect.cs" />
+    <Compile Include="Streams\Effects\DmoWavesReverbEffect.cs" />
+    <Compile Include="Streams\Effects\FlangerPhase.cs" />
+    <Compile Include="Streams\Effects\FlangerWaveform.cs" />
+    <Compile Include="Streams\Effects\GargleWaveShape.cs" />
+    <Compile Include="Utils\CSCoreUtils.cs" />
+    <Compile Include="Utils\ILUtils.cs" />
+    <Compile Include="Utils\PostCompiler\CSCalliAttribute.cs" />
+    <Compile Include="Utils\PostCompiler\RemoveObjAttribute.cs" />
+    <Compile Include="Win32\Blob.cs" />
+    <Compile Include="Win32\CLSCTX.cs" />
+    <Compile Include="Win32\ComObject.cs" />
+    <Compile Include="Win32\ComStream.cs" />
+    <Compile Include="Win32\HResult.cs" />
+    <Compile Include="Win32\IStream.cs" />
+    <Compile Include="Win32\IUnknown.cs" />
+    <Compile Include="Win32\NativeBool.cs" />
+    <Compile Include="Win32\NativeMethods.cs" />
+    <Compile Include="Win32\PropertyKey.cs" />
+    <Compile Include="Win32\PropertyStore.cs" />
+    <Compile Include="Win32\PropertyVariant.cs" />
+    <Compile Include="Win32\WaveFormatMarshaler.cs" />
+    <Compile Include="Win32\Win32ComException.cs" />
+    <Compile Include="XAudio2\AudioStreamCategory.cs" />
+    <Compile Include="XAudio2\DebugConfiguration.cs" />
+    <Compile Include="XAudio2\DeviceDetails.cs" />
+    <Compile Include="XAudio2\EffectChain.cs" />
+    <Compile Include="XAudio2\EffectDescriptor.cs" />
+    <Compile Include="XAudio2\FilterParameters.cs" />
+    <Compile Include="XAudio2\FilterType.cs" />
+    <Compile Include="XAudio2\GetVoiceStateFlags.cs" />
+    <Compile Include="XAudio2\InteropCalls.cs" />
+    <Compile Include="XAudio2\IXAudio2EngineCallback.cs" />
+    <Compile Include="XAudio2\IXAudio2VoiceCallback.cs" />
+    <Compile Include="XAudio2\LogMask.cs" />
+    <Compile Include="XAudio2\NativeMethods.cs" />
+    <Compile Include="XAudio2\PerformanceData.cs" />
+    <Compile Include="XAudio2\SourceVoiceStopFlags.cs" />
+    <Compile Include="XAudio2\StreamingSourceVoice.cs" />
+    <Compile Include="XAudio2\StreamingSourceVoiceListener.cs" />
+    <Compile Include="XAudio2\VoiceCallback.cs" />
+    <Compile Include="XAudio2\VoiceDetails.cs" />
+    <Compile Include="XAudio2\VoiceFlags.cs" />
+    <Compile Include="XAudio2\VoiceSendDescriptor.cs" />
+    <Compile Include="XAudio2\VoiceSendFlags.cs" />
+    <Compile Include="XAudio2\VoiceSends.cs" />
+    <Compile Include="XAudio2\VoiceState.cs" />
+    <Compile Include="XAudio2\X3DAudio\CalculateFlags.cs" />
+    <Compile Include="XAudio2\X3DAudio\Cone.cs" />
+    <Compile Include="XAudio2\X3DAudio\CurveNative.cs" />
+    <Compile Include="XAudio2\X3DAudio\CurvePoint.cs" />
+    <Compile Include="XAudio2\X3DAudio\DspSettings.cs" />
+    <Compile Include="XAudio2\X3DAudio\Emitter.cs" />
+    <Compile Include="XAudio2\X3DAudio\Listener.cs" />
+    <Compile Include="XAudio2\X3DAudio\X3DAudioCore.cs" />
+    <Compile Include="XAudio2\XAudio2.cs" />
+    <Compile Include="XAudio2\XAudio2Buffer.cs" />
+    <Compile Include="XAudio2\XAudio2BufferEventArgs.cs" />
+    <Compile Include="XAudio2\XAudio2BufferFlags.cs" />
+    <Compile Include="XAudio2\XAudio2CriticalErrorEventArgs.cs" />
+    <Compile Include="XAudio2\XAudio2DeviceRole.cs" />
+    <Compile Include="XAudio2\XAudio2EngineCallback.cs" />
+    <Compile Include="XAudio2\XAudio2Exception.cs" />
+    <Compile Include="XAudio2\XAudio2MasteringVoice.cs" />
+    <Compile Include="XAudio2\XAudio2ProcessingPassStartEventArgs.cs" />
+    <Compile Include="XAudio2\XAudio2Processor.cs" />
+    <Compile Include="XAudio2\XAudio2SourceVoice.cs" />
+    <Compile Include="XAudio2\XAudio2SubmixVoice.cs" />
+    <Compile Include="XAudio2\XAudio2Version.cs" />
+    <Compile Include="XAudio2\XAudio2Voice.cs" />
+    <Compile Include="XAudio2\XAudio2VoiceErrorEventArgs.cs" />
+    <Compile Include="XAudio2\XAudio2_7.cs" />
+    <Compile Include="XAudio2\XAudio2_8.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CSCore\CSCore.csproj">
+      <Project>{c3dccfe3-dd3f-4eee-849b-33e355b1e064}</Project>
+      <Name>CSCore</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
