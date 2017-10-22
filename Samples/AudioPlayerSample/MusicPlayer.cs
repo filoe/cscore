@@ -73,7 +73,6 @@ namespace AudioPlayerSample
             _waveSource =
                 CodecFactory.Instance.GetCodec(filename)
                     .ToSampleSource()
-                    .ToMono()
                     .ToWaveSource();
             _soundOut = new WasapiOut() {Latency = 100, Device = device};
             _soundOut.Initialize(_waveSource);
