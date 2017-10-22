@@ -1,3 +1,3 @@
 ﻿using CSCore.Windows;
 
-[assembly:RegisterAssemblyCodecs] 
+[assembly:WindowsCodecs] 

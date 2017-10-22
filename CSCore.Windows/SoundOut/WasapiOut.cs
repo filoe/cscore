@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
+using CSCore;
 using CSCore.CoreAudioAPI;
 using CSCore.DSP;
 using CSCore.Streams;

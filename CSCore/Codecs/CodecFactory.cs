@@ -17,29 +17,43 @@ namespace CSCore.Codecs
     public class CodecFactory
     {
 // ReSharper disable once InconsistentNaming
-        private static readonly CodecFactory _instance = new CodecFactory();
+        private static CodecFactory _instance = new CodecFactory();
 
         private readonly List<KeyValuePair<object, CodecFactoryEntry>> _codecs;
 
         private CodecFactory()
         {
+            _instance = this;
             _codecs = new List<KeyValuePair<object, CodecFactoryEntry>>();
+            Initialize();
+        }
+
+        private void Initialize()
+        {
             Register("wave", new CodecFactoryEntry(s =>
-            {
-                IWaveSource res = new WaveFileReader(s);
-                if (res.WaveFormat.WaveFormatTag != AudioEncoding.Pcm &&
-                    res.WaveFormat.WaveFormatTag != AudioEncoding.IeeeFloat &&
-                    res.WaveFormat.WaveFormatTag != AudioEncoding.Extensible)
                 {
-                    return null;
-                }
-                return res;
-            },
+                    IWaveSource res = new WaveFileReader(s);
+                    if (res.WaveFormat.WaveFormatTag != AudioEncoding.Pcm &&
+                        res.WaveFormat.WaveFormatTag != AudioEncoding.IeeeFloat &&
+                        res.WaveFormat.WaveFormatTag != AudioEncoding.Extensible)
+                    {
+                        return null;
+                    }
+                    return res;
+                },
                 "wav", "wave"));
             Register("flac", new CodecFactoryEntry(s => new FlacFile(s),
                 "flac", "fla"));
             Register("aiff", new CodecFactoryEntry(s => new AiffReader(s),
                 "aiff", "aif", "aifc"));
+
+            var assemblyCodecAttributes = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(asm => asm.GetCustomAttributes(typeof(RegisterAssemblyCodecsAttribute), true))
+                .Cast<RegisterAssemblyCodecsAttribute>();
+            foreach (var assemblyCodecAttr in assemblyCodecAttributes)
+            {
+                assemblyCodecAttr.RegisterAssemblyCodecs();
+            }
         }
 
         /// <summary>
@@ -216,7 +230,7 @@ namespace CSCore.Codecs
         public string[] GetSupportedFileExtensions()
         {
             var extensions = new List<string>();
-            foreach (CodecFactoryEntry item in _codecs.Select(x => x.Value))
+            foreach (CodecFactoryEntry item in _codecs.Select(x => x.Value).Where(x => x.FileExtensions != null))
             {
                 foreach (string e in item.FileExtensions)
                 {

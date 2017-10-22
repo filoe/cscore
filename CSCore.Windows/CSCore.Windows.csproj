@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CSCore.Windows</RootNamespace>
     <AssemblyName>CSCore.Windows</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,6 +23,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,6 +33,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
@@ -238,7 +241,7 @@
     <Compile Include="MmException.cs" />
     <Compile Include="MmResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RegisterAssemblyCodecsAttribute.cs" />
+    <Compile Include="WindowsCodecsAttribute.cs" />
     <Compile Include="SoundIn\WasapiCapture.cs" />
     <Compile Include="SoundIn\WasapiLoopbackCapture.cs" />
     <Compile Include="SoundIn\WaveIn.cs" />
@@ -359,33 +362,33 @@
       set target=$(TargetPath)
       set project=$(ProjectPath)
 
-      set sdk=%2525PROGRAMFILES(x86)%2525\Microsoft SDKs\Windows\v8.1A\bin\NETFX 4.5.1 Tools
-      set framework=%2525WINDIR%2525\Microsoft.NET\Framework\v2.0.50727
+      set sdk=%25PROGRAMFILES(x86)%25\Microsoft SDKs\Windows\v8.1A\bin\NETFX 4.5.1 Tools
+      set framework=%25WINDIR%25\Microsoft.NET\Framework\v2.0.50727
       set inlineILCompiler=$(SolutionDir)Tools\InlineILCompiler\InlineILCompiler\bin\$(ConfigurationName)\InlineILCompiler.exe
       set cscli=$(SolutionDir)Tools\CSCli\bin\$(ConfigurationName)\CSCli.exe
 
-      IF exist "%2525sdk%2525\." (
+      IF exist "%25sdk%25\." (
       echo OK: The Microsoft Windows SDK was found.
       ) else (
-      echo FAILED: The Microsoft Windows SDK Dir was not found. Check the following path: "%2525sdk%2525"
+      echo FAILED: The Microsoft Windows SDK Dir was not found. Check the following path: "%25sdk%25"
       goto EXIT_ERR
       )
-      IF exist "%2525framework%2525\." (
+      IF exist "%25framework%25\." (
       echo OK: The .NET Framework Dir was found.
       ) else (
-      echo FAILED: The Framework-Dir was not found. Check the following path: "%2525framework%2525"
+      echo FAILED: The Framework-Dir was not found. Check the following path: "%25framework%25"
       goto EXIT_ERR
       )
-      IF exist "%2525inlineILCompiler%2525" (
+      IF exist "%25inlineILCompiler%25" (
       echo OK: Found the inline-il-compiler.
       ) else (
-      echo FAILED: The inline-il-compiler was not found. Check the following path: "%2525inlineILCompiler%2525"
+      echo FAILED: The inline-il-compiler was not found. Check the following path: "%25inlineILCompiler%25"
       goto EXIT_ERR
       )
-      IF exist "%2525cscli%2525" (
+      IF exist "%25cscli%25" (
       echo OK: Found the cscli-compiler.
       ) else (
-      echo FAILED: The cscli was not found. Check the following path: "%2525cscli%2525"
+      echo FAILED: The cscli was not found. Check the following path: "%25cscli%25"
       goto EXIT_ERR
       )
 
@@ -409,19 +412,19 @@
       echo.
       echo.
       echo Calling the inline-il-compiler ...
-      call "%2525inlineILCompiler%2525"
+      call "%25inlineILCompiler%25"
 
       echo.
       echo.
       echo Calling CSCli ...
-      call "%2525cscli%2525" -file:"$(TargetPath)" -r:"RemoveObjAttribute" -c:"CSCalliAttribute"
+      call "%25cscli%25" -file:"$(TargetPath)" -r:"RemoveObjAttribute" -c:"CSCalliAttribute"
 
       :EXIT
-      EXIT /B %2525errorCode%2525
+      EXIT /B %25errorCode%25
 
       :EXIT_ERR
       set errorCode=-1
       goto EXIT
-</PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

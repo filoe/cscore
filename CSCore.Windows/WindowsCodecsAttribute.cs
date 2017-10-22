@@ -13,15 +13,9 @@ using CSCore.Codecs.WMA;
 
 namespace CSCore.Windows
 {
-    [AttributeUsage(AttributeTargets.Assembly)]
-    public class RegisterAssemblyCodecsAttribute : Attribute
+    public sealed class WindowsCodecsAttribute : RegisterAssemblyCodecsAttribute
     {
-        public RegisterAssemblyCodecsAttribute()
-        {
-            RegisterCodecs();
-        }
-
-        private void RegisterCodecs()
+        public override void RegisterAssemblyCodecs()
         {
             CodecFactory.Instance.Register("mp3", new CodecFactoryEntry(s =>
                 {
@@ -72,9 +66,9 @@ namespace CSCore.Windows
             {
                 CodecFactory.Instance.Register("mf-generic", new CodecFactoryEntry()
                 {
-                   GetCodecActionUrl = url => new MediaFoundationDecoder(url),
-                   CanHandleUrl = true,
-                   IsGenericDecoder = true
+                    GetCodecActionUrl = url => new MediaFoundationDecoder(url),
+                    CanHandleUrl = true,
+                    IsGenericDecoder = true
                 });
             }
 

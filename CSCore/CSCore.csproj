@@ -32,7 +32,7 @@
 
     <!-- Sign the assembly to expose to tests-->
     <AssemblyOriginatorKeyFile>cscore.snk</AssemblyOriginatorKeyFile>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
     <DelaySign>false</DelaySign>
   </PropertyGroup>
 
