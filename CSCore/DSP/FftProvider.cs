@@ -36,6 +36,14 @@ namespace CSCore.DSP
         }
 
         /// <summary>
+        /// Gets or sets the used window function.
+        /// </summary>
+        /// <remarks>
+        /// The default value is <see cref="WindowFunctions.None"/>.
+        /// </remarks>
+        public WindowFunction WindowFunction { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="FftProvider"/> class.
         /// </summary>
         /// <param name="channels">Number of channels of the input data.</param>
@@ -55,6 +63,8 @@ namespace CSCore.DSP
             _fftSize = fftSize; //todo: add validation for the fftSize parameter.
             _fftSizeExponent = (int)exponent;
             _storedSamples = new Complex[(int) fftSize];
+
+            WindowFunction = WindowFunctions.None;
         }
 
         /// <summary>
@@ -64,7 +74,6 @@ namespace CSCore.DSP
         /// <param name="right">The sample of the right channel.</param>
         public virtual void Add(float left, float right)
         {
-            //todo: may throw an exception... not sure
             _storedSamples[_currentSampleOffset].Imaginary = 0f;
             _storedSamples[_currentSampleOffset].Real = (left + right) / 2f;
             _currentSampleOffset++;
@@ -118,6 +127,11 @@ namespace CSCore.DSP
             Array.Copy(_storedSamples, _currentSampleOffset, input, 0, _storedSamples.Length - _currentSampleOffset);
             //copy from block [0 - offset] to input buffer
             Array.Copy(_storedSamples, 0, input, _storedSamples.Length - _currentSampleOffset, _currentSampleOffset);
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                input[i].Real *= WindowFunction(i, input.Length);
+            }
 
             FastFourierTransformation.Fft(input, _fftSizeExponent);
             var result = _newDataAvailable;

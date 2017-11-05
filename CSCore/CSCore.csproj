@@ -303,6 +303,8 @@
     <Compile Include="DSP\NotchFilter.cs" />
     <Compile Include="DSP\PeakFilter.cs" />
     <Compile Include="DSP\PitchShifterInternal.cs" />
+    <Compile Include="DSP\WindowFunction.cs" />
+    <Compile Include="DSP\WindowFunctions.cs" />
     <Compile Include="FluentExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IReadableAudioSource.cs" />
