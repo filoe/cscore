@@ -70,6 +70,7 @@ namespace FfmpegSample
                 ? new FfmpegDecoder(url)
                 : new FfmpegDecoder(stream);
 
+            using (stream)
             using (ffmpegDecoder)
             using (var wasapiOut = new WasapiOut())
             {
