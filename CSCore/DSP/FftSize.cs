@@ -49,6 +49,11 @@
         /// <summary>
         ///     16384 bands.
         /// </summary>
-        Fft16384 = 16384
+        Fft16384 = 16384,
+
+		/// <summary>
+		///		32768 bands.
+		/// </summary>
+		Fft32768 = 32768
     }
 }
