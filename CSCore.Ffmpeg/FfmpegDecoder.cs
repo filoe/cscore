@@ -21,11 +21,13 @@ namespace CSCore.Ffmpeg
         private readonly Uri _uri;
         private FfmpegStream _ffmpegStream;
         private AvFormatContext _formatContext;
+        private bool _disposeStream = false;
 
         private byte[] _overflowBuffer = new byte[0];
         private int _overflowCount;
         private int _overflowOffset;
         private long _position;
+        private Stream _stream;
 
         /// <summary>
         /// Gets a dictionary with found metadata.
@@ -55,9 +57,26 @@ namespace CSCore.Ffmpeg
         /// <exception cref="ArgumentNullException">uri</exception>
         public FfmpegDecoder(string url)
         {
+            const int invalidArgument = unchecked((int) 0xffffffea);
+
             _uri = new Uri(url);
-            _formatContext = new AvFormatContext(url);
-            Initialize();
+            try
+            {
+                _formatContext = new AvFormatContext(url);
+                Initialize();
+            }
+            catch (FfmpegException ex)
+            {
+                if (ex.ErrorCode == invalidArgument && "avformat_open_input".Equals(ex.Function, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (!TryInitializeWithFileAsStream(url))
+                        throw;
+                }
+                else
+                {
+                    throw;
+                }
+            }
         }
 
         /// <summary>
@@ -78,9 +97,7 @@ namespace CSCore.Ffmpeg
             if (stream == null)
                 throw new ArgumentNullException("stream");
 
-            _ffmpegStream = new FfmpegStream(stream);
-            _formatContext = new AvFormatContext(_ffmpegStream);
-            Initialize();
+            InitializeWithStream(stream, false);
         }
 
         /// <summary>
@@ -207,6 +224,12 @@ namespace CSCore.Ffmpeg
 
             if (disposing)
             {
+                if (_disposeStream && _stream != null)
+                {
+                    _stream.Dispose();
+                    _stream = null;
+                }
+
                 if (_formatContext != null)
                 {
                     _formatContext.Dispose();
@@ -224,6 +247,38 @@ namespace CSCore.Ffmpeg
         private void Initialize()
         {
             WaveFormat = _formatContext.SelectedStream.GetSuggestedWaveFormat();
+        }
+
+        private void InitializeWithStream(Stream stream, bool disposeStream)
+        {
+            _stream = stream;
+            _disposeStream = disposeStream;
+
+            _ffmpegStream = new FfmpegStream(stream);
+            _formatContext = new AvFormatContext(_ffmpegStream);
+            Initialize();
+        }
+
+        private bool TryInitializeWithFileAsStream(string filename)
+        {
+            if (!File.Exists(filename))
+                return false;
+
+            Stream stream = null;
+            try
+            {
+                stream = File.OpenRead(filename);
+                InitializeWithStream(stream, true);
+                return true;
+            }
+            catch (Exception)
+            {
+                if (stream != null)
+                {
+                    stream.Dispose();
+                }
+                return false;
+            }
         }
 
         /// <summary>
