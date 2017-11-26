@@ -925,7 +925,7 @@ namespace CSCore.Ffmpeg.Interops
         internal static extern int av_probe_input_buffer(AVIOContext* @pb, AVInputFormat** @fmt, [MarshalAs(UnmanagedType.LPStr)] string @url, void* @logctx, uint @offset, uint @max_probe_size);
         
         [DllImport(libavformat, EntryPoint = "avformat_open_input", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-        internal static extern int avformat_open_input(AVFormatContext** @ps, [MarshalAs(UnmanagedType.LPWStr)] string @url, AVInputFormat* @fmt, AVDictionary** @options);
+        internal static extern int avformat_open_input(AVFormatContext** @ps, [MarshalAs(UnmanagedType.LPStr)] string @url, AVInputFormat* @fmt, AVDictionary** @options);
         
         [DllImport(libavformat, EntryPoint = "av_demuxer_open", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         internal static extern int av_demuxer_open(AVFormatContext* @ic);
