@@ -81,27 +81,28 @@ namespace CSCore.Utils.Buffer
         /// <returns>Number of added elements.</returns>
         public int Write(T[] buffer, int offset, int count)
         {
-            int written = 0;
+            var written = 0;
 
             lock (_lockObj)
             {
-                if (count > _buffer.Length - _bufferedElements)
-                    count = _buffer.Length - _bufferedElements;
+                var lastWrittenOffset = (_writeOffset + count - 1) % _buffer.Length;
+                var offset1 = Math.Max(lastWrittenOffset - count + 1, 0);
+                var length1 = lastWrittenOffset - offset1 + 1;
+                Array.Copy(buffer, offset + count - length1, _buffer, offset1, length1);
+                written += length1;
 
-                int length = Math.Min(count, _buffer.Length - _writeOffset);
-                Array.Copy(buffer, offset, _buffer, _writeOffset, length); //copy to buffer
-                _writeOffset += length;
-                written += length;
-                _writeOffset = _writeOffset % _buffer.Length;
-
-                if (written < count)
+                if (length1 < _buffer.Length && count > length1)
                 {
-                    Array.Copy(buffer, offset + written, _buffer, _writeOffset, count - written);
-                    _writeOffset += (count - written);
-                    written += (count - written);
+                    var remainedLength = count - length1;
+                    var offset2 = _buffer.Length - remainedLength <= lastWrittenOffset
+                        ? lastWrittenOffset
+                        : _buffer.Length - remainedLength;
+                    var length2 = _buffer.Length - offset2;
+                    Array.Copy(buffer, offset + count - length1 - length2, _buffer, offset2, length2);
+                    written += length2;
                 }
-
-                _bufferedElements += written;
+                _bufferedElements = Math.Min(_bufferedElements + written, _buffer.Length);
+                _writeOffset = (lastWrittenOffset + 1) % _buffer.Length;
             }
 
             return written;
