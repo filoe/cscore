@@ -1,10 +1,4 @@
-﻿#define static_buffer_array
-
-//define static_buffer_queue
-using System;
-#if static_buffer_queue
-using System.Collections.Generic;
-#endif
+﻿using System;
 using System.IO;
 
 namespace CSCore.Utils.Buffer
@@ -15,48 +9,6 @@ namespace CSCore.Utils.Buffer
     /// <typeparam name="T">Specifies the type of the elements to store.</typeparam>
     public class FixedSizeBuffer<T> : IDisposable
     {
-#if static_buffer_queue
-        private readonly int _bufferSize;
-        private Queue<T> _queue;
-        public FixedSizeBuffer(int bufferSize)
-        {
-            _queue = new Queue<T>();
-            _bufferSize = bufferSize;
-        }
-
-        public int Write(T[] buffer, int offset, int count)
-        {
-            for (int i = offset; i < count; i++)
-            {
-                _queue.Enqueue(buffer[i]);
-            }
-
-            return count;
-        }
-
-        public int Read(T[] buffer, int offset, int count)
-        {
-            int read = 0;
-            for (int i = offset; i < Math.Min(count, _queue.Count); i++)
-            {
-                buffer[i] = _queue.Dequeue();
-                read++;
-            }
-
-            return read;
-        }
-
-        public int Buffered { get { return _queue.Count; } }
-        public int Length { get { return _bufferSize; } }
-
-
-#error implement clear
-        public void Dispose()
-        {
-            _queue = null;
-        }
-#endif
-#if static_buffer_array
         private T[] _buffer; 
         private int _bufferedElements;
         private int _writeOffset;
@@ -85,23 +37,46 @@ namespace CSCore.Utils.Buffer
 
             lock (_lockObj)
             {
-                if (count > _buffer.Length - _bufferedElements)
-                    count = _buffer.Length - _bufferedElements;
+                //number of elements writeOffset is ahead of readOffset
+                int readWriteDelta = ((_buffer.Length - _readOffset) + _writeOffset) % _buffer.Length;
 
-                int length = Math.Min(count, _buffer.Length - _writeOffset);
-                Array.Copy(buffer, offset, _buffer, _writeOffset, length); //copy to buffer
-                _writeOffset += length;
-                written += length;
-                _writeOffset = _writeOffset % _buffer.Length;
-
-                if (written < count)
+                do
                 {
-                    Array.Copy(buffer, offset + written, _buffer, _writeOffset, count - written);
-                    _writeOffset += (count - written);
-                    written += (count - written);
-                }
+                    //compute number of elements left in the buffer (length - writeOffset)
+                    int spaceLeft = _buffer.Length - _writeOffset;
+                    //determine number of elements to copy in this iteration
+                    int length = Math.Min(count, spaceLeft);
 
-                _bufferedElements += written;
+                    //if no data has to be copied, exit
+                    if (length <= 0)
+                        break;
+
+                    //if we anyway have to overwrite the data once again, don't actually copy
+                    if (count - length < _buffer.Length)
+                    {
+                        //copy bytes for this iteration
+                        Array.Copy(buffer, offset, _buffer, _writeOffset, length);
+                    }
+
+                    //update variables, counters etc.
+                    _writeOffset += length;
+                    _writeOffset %= _buffer.Length; //if we hit the end of the buffer; reset writeOffset to zero
+                    written += length;
+                    offset += length;
+                    count -= length;
+                } while (count > 0);
+
+                //update buffered elements
+                _bufferedElements = Math.Min(_bufferedElements + written, _buffer.Length);
+
+                if (written > _buffer.Length - readWriteDelta)
+                {
+                    //if readOffset was overridden, determine number of elements to increment the readOffset
+                    int incrementReadOffsetBy = written - (_buffer.Length - readWriteDelta);
+                    incrementReadOffsetBy %= _buffer.Length;
+                    //increment readOffset
+                    _readOffset += incrementReadOffsetBy;
+                }
             }
 
             return written;
@@ -207,7 +182,6 @@ namespace CSCore.Utils.Buffer
                 throw new NotSupportedException("Only byte buffers are supported.");
             return new FixedSizeByteStream(this as FixedSizeBuffer<byte>);
         }
-#endif
 
         private class FixedSizeByteStream : Stream
         {
