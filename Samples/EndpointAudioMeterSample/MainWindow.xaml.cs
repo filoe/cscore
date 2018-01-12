@@ -69,11 +69,13 @@ namespace EndpointAudioMeterSample
 
         private void UpdateDevices()
         {
-            Devices.Clear();
-            foreach (var device in _deviceEnumerator.EnumAudioEndpoints(DataFlow.All, DeviceState.Active))
-            {
-                Devices.Add(device);
-            }
+            Application.Current.Dispatcher.Invoke(() => {
+                Devices.Clear();
+                foreach (var device in _deviceEnumerator.EnumAudioEndpoints(DataFlow.All, DeviceState.Active))
+                {
+                    Devices.Add(device);
+                }
+            });
         }
 
         public void Dispose()
@@ -107,7 +109,7 @@ namespace EndpointAudioMeterSample
             set
             {
                 _endpoint = value;
-                EnableCaptureEndpoint();
+                //EnableCaptureEndpoint();
 
                 if (_endpoint != null)
                 {
@@ -167,6 +169,8 @@ namespace EndpointAudioMeterSample
 
         private void EnableCaptureEndpoint()
         {
+            //Capture devices won't provide AudioMeterInformation as long as no application uses them
+            //Therefore, create a dummy instance of WasapiCapture
             if (_dummyCapture != null)
             {
                 _dummyCapture.Dispose();
