@@ -83,7 +83,7 @@ namespace CSCore.SoundIn
         /// <param name="eventSync">True, to use eventsynchronization instead of a simple loop and sleep behavior. Don't use this in combination with exclusive mode.</param>
         /// <param name="shareMode">Specifies how to open the audio device. Note that if exclusive mode is used, the device can only be used once on the whole system. Don't use exclusive mode in combination with eventSync.</param>
         public WasapiCapture(bool eventSync, AudioClientShareMode shareMode)
-            : this(eventSync, shareMode, 100)
+            : this(eventSync, shareMode, 25)
         {
         }
 
@@ -248,7 +248,7 @@ namespace CSCore.SoundIn
 
                 long actualDuration = (long) ((double) ReftimesPerSecond * bufferSize / WaveFormat.SampleRate);
                 int actualLatency = (int) (actualDuration / ReftimesPerMillisecond);
-                int sleepDuration = actualLatency / 8;
+                int sleepDuration = actualLatency;
 
                 byte[] buffer = new byte[bufferSize * frameSize];
 
