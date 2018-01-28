@@ -11,23 +11,17 @@ namespace CSCore.XAudio2
     {
         void IXAudio2EngineCallback.OnProcessingPassStart()
         {
-            EventHandler handler = this.ProcessingPassStart;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            ProcessingPassStart?.Invoke(this, EventArgs.Empty);
         }
 
         void IXAudio2EngineCallback.OnProcessingPassEnd()
         {
-            EventHandler handler = this.ProcessingPassEnd;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            ProcessingPassEnd?.Invoke(this, EventArgs.Empty);
         }
 
         void IXAudio2EngineCallback.OnCriticalError(int error)
         {
-            EventHandler<XAudio2CriticalErrorEventArgs> handler = this.CriticalError;
-            if (handler != null)
-                handler(this, new XAudio2CriticalErrorEventArgs(error));
+            CriticalError?.Invoke(this, new XAudio2CriticalErrorEventArgs(error));
         }
 
         /// <summary>

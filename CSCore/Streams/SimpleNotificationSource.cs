@@ -91,7 +91,7 @@ namespace CSCore.Streams
             int read = base.Read(buffer, offset, count);
             int channels = WaveFormat.Channels;
 
-            EventHandler blockRead = this.BlockRead;
+            EventHandler blockRead = BlockRead;
             if (blockRead != null)
             {
                 for (int i = 0; i < read / channels; i++)
@@ -105,9 +105,7 @@ namespace CSCore.Streams
                 }
             }
 
-            EventHandler dataRead = this.DataRead;
-            if (dataRead != null)
-                dataRead(this, EventArgs.Empty);
+            DataRead?.Invoke(this, EventArgs.Empty);
 
             return read;
         }

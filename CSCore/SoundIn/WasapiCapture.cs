@@ -397,7 +397,7 @@ namespace CSCore.SoundIn
             if (count <= 0)
                 return;
 
-            EventHandler<DataAvailableEventArgs> handler = this.DataAvailable;
+            EventHandler<DataAvailableEventArgs> handler = DataAvailable;
             if (handler != null)
             {
                 var e = new DataAvailableEventArgs(buffer, offset, count, WaveFormat);
@@ -410,7 +410,7 @@ namespace CSCore.SoundIn
 
         private void RaiseStopped(Exception exception)
         {
-            EventHandler<RecordingStoppedEventArgs> handler = this.Stopped;
+            EventHandler<RecordingStoppedEventArgs> handler = Stopped;
             if (handler != null)
             {
                 var e = new RecordingStoppedEventArgs(exception);

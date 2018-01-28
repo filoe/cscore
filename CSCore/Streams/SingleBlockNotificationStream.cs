@@ -44,7 +44,7 @@ namespace CSCore.Streams
         public override int Read(float[] buffer, int offset, int count)
         {
             int read = base.Read(buffer, offset, count);
-            EventHandler<SingleBlockReadEventArgs> singleBlockRead = this.SingleBlockRead;
+            EventHandler<SingleBlockReadEventArgs> singleBlockRead = SingleBlockRead;
             if (read != 0 && singleBlockRead != null)
             {
                 int channels = WaveFormat.Channels;

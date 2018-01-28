@@ -12,51 +12,37 @@ namespace CSCore.XAudio2
     {
         void IXAudio2VoiceCallback.OnVoiceProcessingPassStart(int bytesRequired)
         {
-            EventHandler<XAudio2ProcessingPassStartEventArgs> handler = this.ProcessingPassStart;
-            if (handler != null)
-                handler(this, new XAudio2ProcessingPassStartEventArgs(bytesRequired));
+            ProcessingPassStart?.Invoke(this, new XAudio2ProcessingPassStartEventArgs(bytesRequired));
         }
 
         void IXAudio2VoiceCallback.OnVoiceProcessingPassEnd()
         {
-            EventHandler handler = this.ProcessingPassEnd;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            ProcessingPassEnd?.Invoke(this, EventArgs.Empty);
         }
 
         void IXAudio2VoiceCallback.OnStreamEnd()
         {
-            EventHandler handler = this.StreamEnd;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            StreamEnd?.Invoke(this, EventArgs.Empty);
         }
 
         void IXAudio2VoiceCallback.OnBufferStart(IntPtr bufferContextPtr)
         {
-            EventHandler<XAudio2BufferEventArgs> handler = this.BufferStart;
-            if (handler != null)
-                handler(this, new XAudio2BufferEventArgs(bufferContextPtr));
+            BufferStart?.Invoke(this, new XAudio2BufferEventArgs(bufferContextPtr));
         }
 
         void IXAudio2VoiceCallback.OnBufferEnd(IntPtr bufferContextPtr)
         {
-            EventHandler<XAudio2BufferEventArgs> handler = this.BufferEnd;
-            if (handler != null)
-                handler(this, new XAudio2BufferEventArgs(bufferContextPtr));
+            BufferEnd?.Invoke(this, new XAudio2BufferEventArgs(bufferContextPtr));
         }
 
         void IXAudio2VoiceCallback.OnLoopEnd(IntPtr bufferContextPtr)
         {
-            EventHandler<XAudio2BufferEventArgs> handler = this.LoopEnd;
-            if (handler != null)
-                handler(this, new XAudio2BufferEventArgs(bufferContextPtr));
+            LoopEnd?.Invoke(this, new XAudio2BufferEventArgs(bufferContextPtr));
         }
 
         void IXAudio2VoiceCallback.OnVoiceError(IntPtr bufferContextPtr, int error)
         {
-            EventHandler<XAudio2VoiceErrorEventArgs> handler = this.VoiceError;
-            if (handler != null)
-                handler(this, new XAudio2VoiceErrorEventArgs(bufferContextPtr, error));
+            VoiceError?.Invoke(this, new XAudio2VoiceErrorEventArgs(bufferContextPtr, error));
         }
 
         /// <summary>

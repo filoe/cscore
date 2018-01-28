@@ -51,7 +51,7 @@ namespace CSCore.Streams
                 int r = base.Read(buffer, offset + read, count - read);
                 if (r == 0)
                 {
-                    EventHandler handler = this.StreamFinished;
+                    EventHandler handler = StreamFinished;
                     if (handler != null && !_raisedStreamFinishedEvent)
                     {
                         handler(this, EventArgs.Empty);

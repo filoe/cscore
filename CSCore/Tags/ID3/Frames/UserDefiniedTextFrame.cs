@@ -18,7 +18,7 @@ namespace CSCore.Tags.ID3.Frames
 
             var info = Header.GetFrameInformation();
             bool url = false;
-            url = (info != null) && info.ID == ID3.Frames.FrameID.UserURLLinkFrame;
+            url = (info != null) && info.ID == FrameID.UserURLLinkFrame;
 
             var encoding0 = ID3Utils.GetEncoding(content, 0, 1);
             Encoding encoding1 = encoding0;

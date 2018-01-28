@@ -137,7 +137,7 @@ namespace CSCore.Tags.ID3
 
         public const string MimeURL = "-->";
 
-        public static System.Drawing.Image DecodeImage(byte[] rawdata, string mimetype)
+        public static Image DecodeImage(byte[] rawdata, string mimetype)
         {
             Stream stream;
             if (mimetype.Trim() == MimeURL)
@@ -161,7 +161,7 @@ namespace CSCore.Tags.ID3
             if (MimeType != MimeURL)
                 throw new InvalidOperationException("MimeType != " + MimeURL);
 
-            return ID3Utils.ReadString(RawData, 0, -1, ID3Utils.Iso88591);
+            return ReadString(RawData, 0, -1, Iso88591);
         }
     }
 }

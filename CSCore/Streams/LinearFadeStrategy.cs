@@ -237,9 +237,7 @@ namespace CSCore.Streams
 
         private void OnFadingFinished()
         {
-            EventHandler handler = FadingFinished;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            FadingFinished?.Invoke(this, EventArgs.Empty);
         }
     }
 }

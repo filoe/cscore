@@ -197,7 +197,7 @@ namespace CSCore.Codecs.MP3
                     if(success)
                         _decoder = new DmoMp3Decoder(new ReadBlockStream(_buffer.ToStream()), false);
                 }
-                EventHandler<ConnectionEstablishedEventArgs> handler = this.ConnectionEstablished;
+                EventHandler<ConnectionEstablishedEventArgs> handler = ConnectionEstablished;
                 if (handler != null && async)
                     handler(this, new ConnectionEstablishedEventArgs(_address, success));
 
