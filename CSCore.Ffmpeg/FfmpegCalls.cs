@@ -22,10 +22,13 @@ namespace CSCore.Ffmpeg
             SeekForce = 0x20000
         }
 
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate int AvioReadData(IntPtr opaque, IntPtr buffer, int bufferSize);
 
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate int AvioWriteData(IntPtr opaque, IntPtr buffer, int bufferSize);
 
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         public delegate long AvioSeek(IntPtr opaque, long offset, SeekFlags whence);
 
         static FfmpegCalls()
