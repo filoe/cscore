@@ -43,7 +43,6 @@ namespace CSCore.Codecs.WAV
             if (!stream.CanRead)
                 throw new ArgumentException("stream is not readable");
 
-            _closeStream = true;
             _stream = stream;
 
             var reader = new BinaryReader(stream);
