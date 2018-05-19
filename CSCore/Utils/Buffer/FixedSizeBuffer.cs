@@ -176,7 +176,11 @@ namespace CSCore.Utils.Buffer
             Dispose(false);
         }
 
-        internal Stream ToStream()
+        /// <summary>
+        /// Converts the buffer into a stream.
+        /// </summary>
+        /// <returns>Stream wrapper around the buffer.</returns>
+        public Stream ToStream()
         {
             if(typeof(T) != typeof(byte))
                 throw new NotSupportedException("Only byte buffers are supported.");
