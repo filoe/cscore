@@ -42,7 +42,12 @@ namespace CSCore.Codecs.MP3
         {
         }
 
-        internal DmoMp3Decoder(Stream stream, bool enableSeeking)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DmoMp3Decoder"/> class.
+        /// </summary>
+        /// <param name="stream">Stream wich contains raw MP3 data.</param>
+        /// <param name="enableSeeking">Bool defining if seek should be used on the MP3 stream.</param>
+        public DmoMp3Decoder(Stream stream, bool enableSeeking)
         {
             if (stream == null)
                 throw new ArgumentNullException("stream");
