@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace CSCore.Streams
+namespace SoundTouchPitchAndTempo
 {
     public interface ISoundTouch : IDisposable
     {

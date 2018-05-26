@@ -379,8 +379,6 @@
     <Compile Include="Streams\PeakMeter.cs" />
     <Compile Include="Streams\SampleConverter\Pcm32BitToSample.cs" />
     <Compile Include="Streams\SampleConverter\SampleToPcm32.cs" />
-    <Compile Include="Streams\SoundTouch.cs" />
-    <Compile Include="Streams\SoundTouchSource.cs" />
     <Compile Include="Streams\SynchronizedWaveSource.cs" />
     <Compile Include="Streams\WriteableBufferingSource.cs" />
     <Compile Include="Streams\BufferSource.cs" />
@@ -626,9 +624,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /y /d  "$(ProjectDir)Libs\*.dll" "$(TargetDir)"
-
-      @echo off &amp; setLocal EnableDELAYedeXpansion
+    <PostBuildEvent>@echo off &amp; setLocal EnableDELAYedeXpansion
       chcp 65001
 
       set errorCode=0

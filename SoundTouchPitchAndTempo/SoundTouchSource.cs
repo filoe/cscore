@@ -1,6 +1,7 @@
-﻿using System;
+﻿using CSCore;
+using System;
 
-namespace CSCore.Streams
+namespace SoundTouchPitchAndTempo
 {
     public class SoundTouchSource : WaveAggregatorBase
     {
