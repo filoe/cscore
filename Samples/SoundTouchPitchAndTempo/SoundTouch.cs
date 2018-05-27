@@ -22,47 +22,47 @@ namespace SoundTouchPitchAndTempo
 
         public SoundTouch()
         {
-            _soundTouchHandle = soundtouch_createInstance();
+            _soundTouchHandle = CreateInstance();
         }
 
         public uint NumberOfSamples()
         {
-            return soundtouch_numSamples(_soundTouchHandle);
+            return NumberOfSamples(_soundTouchHandle);
         }
 
         public void PutSamples(float[] samples, uint numSamples)
         {
-            soundtouch_putSamples(_soundTouchHandle, samples, numSamples);
+            PutSamples(_soundTouchHandle, samples, numSamples);
         }
 
         public void SetChannels(uint numChannels)
         {
-            soundtouch_setChannels(_soundTouchHandle, numChannels);
+            SetChannels(_soundTouchHandle, numChannels);
         }
 
         public void SetSampleRate(uint srate)
         {
-            soundtouch_setSampleRate(_soundTouchHandle, srate);
+            SetSampleRate(_soundTouchHandle, srate);
         }
 
         public uint ReceiveSamples(float[] outBuffer, uint maxSamples)
         {
-            return soundtouch_receiveSamples(_soundTouchHandle, outBuffer, maxSamples);
+            return ReceiveSamples(_soundTouchHandle, outBuffer, maxSamples);
         }
 
         public void Flush()
         {
-            soundtouch_flush(_soundTouchHandle);
+            Flush(_soundTouchHandle);
         }
 
         public void SetTempoChange(float newTempo)
         {
-            soundtouch_setTempoChange(_soundTouchHandle, newTempo);
+            SetTempoChange(_soundTouchHandle, newTempo);
         }
 
         public void SetPitchSemiTones(float newPitch)
         {
-            soundtouch_setPitchSemiTones(_soundTouchHandle, newPitch);
+            SetPitchSemiTones(_soundTouchHandle, newPitch);
         }
 
         public void Dispose()
@@ -80,43 +80,43 @@ namespace SoundTouchPitchAndTempo
 
             if(disposing)
             {
-                soundtouch_destroyInstance(_soundTouchHandle);
+                DestroyInstance(_soundTouchHandle);
             }
 
             disposed = true;
         }
 
-        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr soundtouch_createInstance();
+        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_createInstance")]
+        private static extern IntPtr CreateInstance();
 
-        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void soundtouch_destroyInstance(IntPtr h);
+        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_destroyInstance")]
+        private static extern void DestroyInstance(IntPtr h);
 
-        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void soundtouch_setTempoChange(IntPtr h, float newTempo);
+        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_setTempoChange")]
+        private static extern void SetTempoChange(IntPtr h, float newTempo);
 
-        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void soundtouch_setPitch(IntPtr h, float newPitch);
+        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_setPitch")]
+        private static extern void SetPitch(IntPtr h, float newPitch);
 
-        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void soundtouch_setPitchSemiTones(IntPtr h, float newPitch);
+        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_setPitchSemiTones")]
+        private static extern void SetPitchSemiTones(IntPtr h, float newPitch);
 
-        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void soundtouch_setChannels(IntPtr h, uint numChannels);
+        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_setChannels")]
+        private static extern void SetChannels(IntPtr h, uint numChannels);
 
-        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void soundtouch_setSampleRate(IntPtr h, uint srate);
+        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_setSampleRate")]
+        private static extern void SetSampleRate(IntPtr h, uint srate);
 
-        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void soundtouch_flush(IntPtr h);
+        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_flush")]
+        private static extern void Flush(IntPtr h);
 
-        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void soundtouch_putSamples(IntPtr h, float[] samples, uint numSamples);
+        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_putSamples")]
+        private static extern void PutSamples(IntPtr h, float[] samples, uint numSamples);
 
-        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern uint soundtouch_receiveSamples(IntPtr h, float[] outBuffer, uint maxSamples);
+        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_receiveSamples")]
+        private static extern uint ReceiveSamples(IntPtr h, float[] outBuffer, uint maxSamples);
 
-        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern uint soundtouch_numSamples(IntPtr h);
+        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_numSamples")]
+        private static extern uint NumberOfSamples(IntPtr h);
     }
 }
