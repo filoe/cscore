@@ -132,6 +132,9 @@ namespace SoundTouchPitchAndTempo
 
             _soundOut = new WasapiOut();
             _soundOut.Initialize(waveSource);
+
+            TempoSliderValue = 0;
+            PitchSliderValue = 0;
         }
 
         private void PlayHandler()
