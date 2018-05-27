@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2018
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSCore", "CSCore\CSCore.csproj", "{C3DCCFE3-DD3F-4EEE-849B-33E355B1E064}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -57,7 +57,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayInputDeviceSample", "Sa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndpointAudioMeterSample", "Samples\EndpointAudioMeterSample\EndpointAudioMeterSample.csproj", "{2EDF3192-9107-4B7A-914A-EA25AFEB9F85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundTouchPitchAndTempo", "SoundTouchPitchAndTempo\SoundTouchPitchAndTempo.csproj", "{01F89C84-1F14-4D37-BE59-A4A91647A1D8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundTouchPitchAndTempo", "Samples\SoundTouchPitchAndTempo\SoundTouchPitchAndTempo.csproj", "{01F89C84-1F14-4D37-BE59-A4A91647A1D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
