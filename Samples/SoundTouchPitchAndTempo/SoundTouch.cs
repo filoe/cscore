@@ -17,6 +17,8 @@ namespace SoundTouchPitchAndTempo
 
     public class SoundTouch : ISoundTouch
     {
+        private const string SoundTouchDLL = "SoundTouch.dll";
+
         private bool disposed;
         private readonly IntPtr _soundTouchHandle;
 
@@ -86,37 +88,37 @@ namespace SoundTouchPitchAndTempo
             disposed = true;
         }
 
-        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_createInstance")]
+        [DllImport(SoundTouchDLL, CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_createInstance")]
         private static extern IntPtr CreateInstance();
 
-        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_destroyInstance")]
+        [DllImport(SoundTouchDLL, CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_destroyInstance")]
         private static extern void DestroyInstance(IntPtr h);
 
-        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_setTempoChange")]
+        [DllImport(SoundTouchDLL, CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_setTempoChange")]
         private static extern void SetTempoChange(IntPtr h, float newTempo);
 
-        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_setPitch")]
+        [DllImport(SoundTouchDLL, CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_setPitch")]
         private static extern void SetPitch(IntPtr h, float newPitch);
 
-        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_setPitchSemiTones")]
+        [DllImport(SoundTouchDLL, CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_setPitchSemiTones")]
         private static extern void SetPitchSemiTones(IntPtr h, float newPitch);
 
-        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_setChannels")]
+        [DllImport(SoundTouchDLL, CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_setChannels")]
         private static extern void SetChannels(IntPtr h, uint numChannels);
 
-        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_setSampleRate")]
+        [DllImport(SoundTouchDLL, CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_setSampleRate")]
         private static extern void SetSampleRate(IntPtr h, uint srate);
 
-        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_flush")]
+        [DllImport(SoundTouchDLL, CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_flush")]
         private static extern void Flush(IntPtr h);
 
-        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_putSamples")]
+        [DllImport(SoundTouchDLL, CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_putSamples")]
         private static extern void PutSamples(IntPtr h, float[] samples, uint numSamples);
 
-        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_receiveSamples")]
+        [DllImport(SoundTouchDLL, CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_receiveSamples")]
         private static extern uint ReceiveSamples(IntPtr h, float[] outBuffer, uint maxSamples);
 
-        [DllImport("SoundTouch.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_numSamples")]
+        [DllImport(SoundTouchDLL, CallingConvention = CallingConvention.Cdecl, EntryPoint = "soundtouch_numSamples")]
         private static extern uint NumberOfSamples(IntPtr h);
     }
 }

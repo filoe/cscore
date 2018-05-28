@@ -6,7 +6,6 @@ namespace SoundTouchPitchAndTempo
     public class SoundTouchSource : WaveAggregatorBase
     {
         private byte[] _bytebuffer = new byte[4096];
-        private float[] _floatbuffer = new float[1024];
         private bool _endReached = false;
         private readonly object lockObject;
 
@@ -56,6 +55,7 @@ namespace SoundTouchPitchAndTempo
             {
                 try
                 {
+                    var floatbuffer = new float[buffer.Length / 4];
                     while(_soundTouch.NumberOfSamples() < count)
                     {
                         var bytesRead = _waveSource.Read(_bytebuffer, offset, _bytebuffer.Length);
@@ -70,17 +70,12 @@ namespace SoundTouchPitchAndTempo
                             break;
                         }
 
-                        Buffer.BlockCopy(_bytebuffer, 0, _floatbuffer, 0, bytesRead);
-                        _soundTouch.PutSamples(_floatbuffer, (uint)(bytesRead / 8));
+                        Buffer.BlockCopy(_bytebuffer, 0, floatbuffer, 0, bytesRead);
+                        _soundTouch.PutSamples(floatbuffer, (uint)(bytesRead / 8));
                     }
 
-                    if(_floatbuffer.Length < count / 4)
-                    {
-                        _floatbuffer = new float[count / 4];
-                    }
-
-                    var numberOfSamples = (int)_soundTouch.ReceiveSamples(_floatbuffer, (uint)(count / 8));
-                    Buffer.BlockCopy(_floatbuffer, 0, buffer, offset, numberOfSamples * 8);
+                    var numberOfSamples = (int)_soundTouch.ReceiveSamples(floatbuffer, (uint)(count / 8));
+                    Buffer.BlockCopy(floatbuffer, 0, buffer, offset, numberOfSamples * 8);
 
                     return numberOfSamples * 8;
                 }
