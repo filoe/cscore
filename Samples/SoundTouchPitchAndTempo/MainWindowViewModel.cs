@@ -126,8 +126,8 @@ namespace SoundTouchPitchAndTempo
             }
 
             var waveSource = CodecFactory.Instance.GetCodec(fileName)
-                .AppendSource(x => new SoundTouchSource(x), out _soundTouchSource)
                 .ToSampleSource()
+                .AppendSource(x => new SoundTouchSource(x, 50), out _soundTouchSource)
                 .ToWaveSource();
 
             _soundOut = new WasapiOut();
