@@ -17,6 +17,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Button
@@ -42,7 +43,20 @@
             HorizontalAlignment="Right"
             Command="{Binding StopCommand}"
             Content="Stop" />
-        <Grid Grid.Row="1" Margin="0">
+        <Slider
+            x:Name="PositionSlider"
+            Grid.Row="1"
+            Margin="10"
+            IsSelectionRangeEnabled="True"
+            LargeChange="50"
+            Maximum="{Binding PositionMaximum}"
+            PreviewMouseDown="PositionSliderMouseDown"
+            PreviewMouseUp="PositionSliderMouseUp"
+            SelectionEnd="{Binding PositionValue}"
+            SelectionStart="0"
+            SmallChange="1"
+            Value="{Binding PositionValue}" />
+        <Grid Grid.Row="2" Margin="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="24" />
                 <RowDefinition Height="Auto" />
@@ -97,7 +111,7 @@
             </Grid>
         </Grid>
         <Border
-            Grid.Row="2"
+            Grid.Row="3"
             BorderBrush="Black"
             BorderThickness="0,1,0,0">
             <Grid Margin="0">

@@ -1,6 +1,7 @@
 ﻿using CSCore;
 using CSCore.Codecs;
 using CSCore.SoundOut;
+using System;
 using System.Windows.Forms;
 using System.Windows.Input;
 
@@ -24,12 +25,17 @@ namespace SoundTouchPitchAndTempo
         int PitchSliderValue { get; set; }
         string TempoValue { get; }
         string PitchValue { get; }
+
+        void PositionSliderMouseDown();
+        void PositionSliderMouseUp();
     }
 
     public class MainWindowViewModel : PropertyChangedBase, IMainWindowViewModel
     {
         private ISoundOut _soundOut;
         private SoundTouchSource _soundTouchSource;
+
+        private bool _stopPositionSliderUpdate;
 
         public ICommand OpenCommand { get; set; }
         public ICommand PlayCommand { get; set; }
@@ -99,6 +105,33 @@ namespace SoundTouchPitchAndTempo
             }
         }
 
+        public int PositionMaximum
+        {
+            get
+            {
+                return 1000;
+            }
+        }
+
+        private int _positionValue;
+        public int PositionValue
+        {
+            get
+            {
+                return _positionValue;
+            }
+            set
+            {
+                _positionValue = value;
+                OnPropertyChanged();
+
+                if(_stopPositionSliderUpdate)
+                {
+                    PositionSliderValueChanged(PositionValue, PositionMaximum);
+                }
+            }
+        }
+
         public MainWindowViewModel()
         {
             OpenCommand = new Command(OpenHandler);
@@ -115,6 +148,17 @@ namespace SoundTouchPitchAndTempo
 
             TempoSliderValue = 0;
             PitchSliderValue = 0;
+        }
+
+        public void PositionSliderMouseDown()
+        {
+            _stopPositionSliderUpdate = true;
+        }
+
+        public void PositionSliderMouseUp()
+        {
+            _stopPositionSliderUpdate = false;
+            PositionSliderValueChanged(PositionValue, PositionMaximum);
         }
 
         private void OpenHandler()
@@ -135,6 +179,14 @@ namespace SoundTouchPitchAndTempo
 
             TempoSliderValue = 0;
             PitchSliderValue = 0;
+        }
+
+        private void PositionSliderValueChanged(int value, int maximum)
+        {
+            var percent = value / (double)maximum;
+            TimeSpan position = TimeSpan.FromMilliseconds(Math.Round(_soundOut.WaveSource.GetLength().TotalMilliseconds * percent));
+            _soundOut.WaveSource.SetPosition(position);
+            _soundTouchSource.Seek();
         }
 
         private void PlayHandler()
