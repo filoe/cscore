@@ -4,6 +4,7 @@ using CSCore.SoundOut;
 using System;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace SoundTouchPitchAndTempo
 {
@@ -36,6 +37,7 @@ namespace SoundTouchPitchAndTempo
         private SoundTouchSource _soundTouchSource;
 
         private bool _stopPositionSliderUpdate;
+        private DispatcherTimer _updateTimer;
 
         public ICommand OpenCommand { get; set; }
         public ICommand PlayCommand { get; set; }
@@ -134,6 +136,10 @@ namespace SoundTouchPitchAndTempo
 
         public MainWindowViewModel()
         {
+            _updateTimer = new DispatcherTimer();
+            _updateTimer.Tick += UpdateTimerTick;
+            _updateTimer.Interval = TimeSpan.FromMilliseconds(1);
+
             OpenCommand = new Command(OpenHandler);
             PlayCommand = new Command(PlayHandler);
             StopCommand = new Command(StopHandler);
@@ -189,14 +195,33 @@ namespace SoundTouchPitchAndTempo
             _soundTouchSource.Seek();
         }
 
+        private void UpdateTimerTick(object sender, EventArgs e)
+        {
+            var total = _soundOut.WaveSource.GetLength();
+            var current = _soundOut.WaveSource.GetPosition();
+
+            if(!_stopPositionSliderUpdate)
+            {
+                var percent = total != TimeSpan.Zero
+                    ? current.TotalMilliseconds / total.TotalMilliseconds * PositionMaximum
+                    : 0;
+
+                PositionValue = (int)percent;
+            }
+        }
+
         private void PlayHandler()
         {
             _soundOut.Play();
+            _updateTimer.IsEnabled = true;
+            PositionValue = 0;
         }
 
         private void StopHandler()
         {
             _soundOut.Stop();
+            _updateTimer.IsEnabled = false;
+            PositionValue = 0;
         }
 
         private string OpenFileDialog(string filter, string initialDirectory = "")
