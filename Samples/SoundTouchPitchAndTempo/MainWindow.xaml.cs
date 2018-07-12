@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 using System.Windows.Input;
 
 namespace SoundTouchPitchAndTempo
@@ -27,6 +28,12 @@ namespace SoundTouchPitchAndTempo
         private void PositionSliderMouseUp(object sender, MouseButtonEventArgs e)
         {
             _mainWindowViewModel.PositionSliderMouseUp();
+        }
+
+        private void WindowClosing(object sender, CancelEventArgs e)
+        {
+            Hide();
+            _mainWindowViewModel.Close();
         }
     }
 }

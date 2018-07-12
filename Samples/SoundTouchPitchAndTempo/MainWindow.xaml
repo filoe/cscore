@@ -7,6 +7,7 @@
     Title="SoundTouch Example"
     Width="225"
     Height="375"
+    Closing="WindowClosing"
     ResizeMode="NoResize"
     mc:Ignorable="d">
     <Grid

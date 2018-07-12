@@ -8,7 +8,7 @@ using System.Windows.Threading;
 
 namespace SoundTouchPitchAndTempo
 {
-    public interface IMainWindowViewModel
+    public interface IMainWindowViewModel : IDisposable
     {
         ICommand OpenCommand { get; set; }
         ICommand PlayCommand { get; set; }
@@ -29,10 +29,14 @@ namespace SoundTouchPitchAndTempo
 
         void PositionSliderMouseDown();
         void PositionSliderMouseUp();
+
+        void Close();
     }
 
     public class MainWindowViewModel : PropertyChangedBase, IMainWindowViewModel
     {
+        private bool _isDisposed;
+
         private ISoundOut _soundOut;
         private SoundTouchSource _soundTouchSource;
 
@@ -167,6 +171,11 @@ namespace SoundTouchPitchAndTempo
             PositionSliderValueChanged(PositionValue, PositionMaximum);
         }
 
+        public void Close()
+        {
+            Dispose();
+        }
+
         private void OpenHandler()
         {
             var fileName = OpenFileDialog("MP3 Files|*.mp3");
@@ -198,7 +207,7 @@ namespace SoundTouchPitchAndTempo
         private void UpdateTimerTick(object sender, EventArgs e)
         {
             var total = _soundOut.WaveSource.GetLength();
-            var current = _soundOut.WaveSource.GetPosition();
+            var current = _soundTouchSource.GetPosition();
 
             if(!_stopPositionSliderUpdate)
             {
@@ -207,6 +216,11 @@ namespace SoundTouchPitchAndTempo
                     : 0;
 
                 PositionValue = (int)percent;
+            }
+
+            if(current >= total)
+            {
+                StopHandler();
             }
         }
 
@@ -285,6 +299,45 @@ namespace SoundTouchPitchAndTempo
             }
 
             PitchSliderValue -= 1;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.Collect();
+        }
+
+        private void Dispose(bool isDisposing)
+        {
+            if(_isDisposed)
+            {
+                return;
+            }
+
+            if(isDisposing)
+            {
+                StopHandler();
+
+                if(_updateTimer != null)
+                {
+                    _updateTimer.Stop();
+                    _updateTimer = null;
+                }
+
+                if(_soundTouchSource != null)
+                {
+                    _soundTouchSource.Dispose();
+                    _soundTouchSource = null;
+                }
+
+                if(_soundOut != null)
+                {
+                    _soundOut.Dispose();
+                    _soundOut = null;
+                }
+            }
+
+            _isDisposed = true;
         }
     }
 }
