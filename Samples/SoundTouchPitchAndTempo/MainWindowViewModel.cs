@@ -191,7 +191,7 @@ namespace SoundTouchPitchAndTempo
         {
             var percent = value / (double)maximum;
             TimeSpan position = TimeSpan.FromMilliseconds(Math.Round(_soundOut.WaveSource.GetLength().TotalMilliseconds * percent));
-            _soundOut.WaveSource.SetPosition(position);
+            _soundTouchSource.SetPosition(position);
             _soundTouchSource.Seek();
         }
 
