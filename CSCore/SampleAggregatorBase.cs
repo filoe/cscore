@@ -16,10 +16,7 @@ namespace CSCore
         /// <param name="source">Underlying base source which provides audio data.</param>
         public SampleAggregatorBase(ISampleSource source)
         {
-            if (source == null)
-                throw new ArgumentNullException("source");
-
-            _baseSource = source;
+			_baseSource = source ?? throw new ArgumentNullException("source");
             DisposeBaseSource = true;
         }
 
@@ -100,9 +97,7 @@ namespace CSCore
             get { return _baseSource; }
             set
             {
-                if (value == null)
-                    throw new ArgumentNullException("value");
-                _baseSource = value;
+				_baseSource = value ?? throw new ArgumentNullException("value");
             }
         }
 

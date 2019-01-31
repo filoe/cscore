@@ -22,10 +22,7 @@ namespace CSCore.Streams
         {
             if (source == null)
                 throw new ArgumentNullException("source");
-            if (channelMatrix == null)
-                throw new ArgumentNullException("channelMatrix");
-
-            _channelMatrix = channelMatrix;
+			_channelMatrix = channelMatrix ?? throw new ArgumentNullException("channelMatrix");
             _waveFormat = channelMatrix.BuildOutputWaveFormat(source);
 
             _ratio = (float)_waveFormat.Channels / source.WaveFormat.Channels;

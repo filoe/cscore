@@ -139,11 +139,7 @@ namespace CSCore.SoundOut
             lock (_lockObj)
             {
                 CheckForDisposed();
-
-                if (source == null)
-                    throw new ArgumentNullException("source");
-
-                if (_playbackState != PlaybackState.Stopped)
+				if (_playbackState != PlaybackState.Stopped)
                 {
                     throw new InvalidOperationException(
                         "PlaybackState has to be Stopped. Call DirectSoundOut::Stop to stop the playback.");
@@ -154,7 +150,7 @@ namespace CSCore.SoundOut
                 //if (_isInitialized)
                 //    throw new InvalidOperationException("DirectSoundOut is already initialized. Call DirectSoundOut::Stop to uninitialize DirectSoundOut.");
 
-                _source = source;
+                _source = source ?? throw new ArgumentNullException("source");
 
                 CleanupResources();
                 InitializeInternal();

@@ -51,13 +51,10 @@ namespace CSCore.SoundIn
                 throw new ArgumentOutOfRangeException("offset");
             if (bytecount <= 0 || bytecount > data.Length)
                 throw new ArgumentOutOfRangeException("bytecount");
-            if (format == null)
-                throw new ArgumentNullException("format");
-
-            Offset = offset;
+			Offset = offset;
             Data = data;
             ByteCount = bytecount;
-            Format = format;
+            Format = format ?? throw new ArgumentNullException("format");
         }
     }
 }

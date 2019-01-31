@@ -67,9 +67,7 @@ namespace CSCore.SoundOut
             get { return _device; }
             set
             {
-                if (value == null)
-                    throw new ArgumentNullException("value");
-                _device = value;
+				_device = value ?? throw new ArgumentNullException("value");
             }
         }
 

@@ -48,14 +48,12 @@ namespace CSCore.Codecs
         /// <param name="fileExtensions">All which the codec associated file extensions.</param>
         public CodecFactoryEntry(GetCodecAction getCodecAction, params string[] fileExtensions)
         {
-            if (getCodecAction == null)
-                throw new ArgumentNullException("getCodecAction");
-            if (fileExtensions == null || fileExtensions.Length <= 0)
+			if (fileExtensions == null || fileExtensions.Length <= 0)
                 throw new ArgumentException("No specified file extensions.", "fileExtensions");
 
             fileExtensions = fileExtensions.Where(x => x != null).Select(x => x.Replace(".", String.Empty)).ToArray();
 
-            GetCodecAction = getCodecAction;
+            GetCodecAction = getCodecAction ?? throw new ArgumentNullException("getCodecAction");
             FileExtensions = new ReadOnlyCollection<string>(fileExtensions);
         }
     }

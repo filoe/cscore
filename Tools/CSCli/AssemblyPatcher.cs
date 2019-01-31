@@ -20,14 +20,12 @@ namespace CSCli
 
         public AssemblyPatcher(AssemblyDefinition assembly, string calliAttributeName, string removeTypeAttributeName)
         {
-            if (assembly == null)
-                throw new ArgumentNullException("assembly");
-            if (String.IsNullOrEmpty(calliAttributeName))
+			if (String.IsNullOrEmpty(calliAttributeName))
                 throw new ArgumentNullException("calliAttributeName");
             if (String.IsNullOrEmpty(removeTypeAttributeName))
                 throw new ArgumentNullException("removeTypeAttributeName");
 
-            _assembly = assembly;
+            _assembly = assembly ?? throw new ArgumentNullException("assembly");
             _calliAttributeName = calliAttributeName;
             _removeTypeAttributeName = removeTypeAttributeName;
             _typesToRemove = new List<TypeDefinition>();

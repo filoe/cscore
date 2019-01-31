@@ -11,7 +11,7 @@ namespace CSCore.Streams
     public class BufferSource : WaveAggregatorBase
     {
         private readonly Thread _bufferThread;
-        private readonly Object _lockObject;
+        private readonly object _lockObject;
 
         private readonly FixedSizeBuffer<byte> _buffer;
         private bool _disposing;

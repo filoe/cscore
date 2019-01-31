@@ -22,12 +22,10 @@ namespace CSCore.Codecs.AIFF
         /// </exception>
         public AiffChunk(BinaryReader binaryReader, string chunkId)
         {
-            if (binaryReader == null)
-                throw new ArgumentNullException("binaryReader");
-            if (string.IsNullOrEmpty(chunkId))
+			if (string.IsNullOrEmpty(chunkId))
                 throw new ArgumentNullException("chunkId");
 
-            BinaryReader = binaryReader;
+            BinaryReader = binaryReader ?? throw new ArgumentNullException("binaryReader");
             ChunkStartPosition = BinaryReader.BaseStream.Position - 4; //sub the chunkid
 
             ChunkId = chunkId;

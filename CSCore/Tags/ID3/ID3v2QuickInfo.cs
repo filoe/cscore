@@ -156,9 +156,7 @@ namespace CSCore.Tags.ID3
 
         public ID3v2QuickInfo(ID3v2 id3)
         {
-            if (id3 == null)
-                throw new ArgumentNullException("id3");
-            _id3 = id3;
+			_id3 = id3 ?? throw new ArgumentNullException("id3");
         }
     }
 }

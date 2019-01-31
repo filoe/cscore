@@ -39,9 +39,7 @@ namespace CSCore.SoundIn
             get { return _device; }
             set
             {
-                if (value == null)
-                    throw new ArgumentNullException("value");
-                _device = value;
+				_device = value ?? throw new ArgumentNullException("value");
             }
         }
 
@@ -75,9 +73,7 @@ namespace CSCore.SoundIn
         /// <exception cref="System.ArgumentNullException">waveFormat</exception>
         public WaveIn(WaveFormat waveFormat)
         {
-            if (waveFormat == null)
-                throw new ArgumentNullException("waveFormat");
-            WaveFormat = waveFormat;
+			WaveFormat = waveFormat ?? throw new ArgumentNullException("waveFormat");
             _callback = Callback;
             RecordingState = RecordingState.Stopped;
             Device = WaveInDevice.DefaultDevice;

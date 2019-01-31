@@ -19,9 +19,7 @@ namespace CSCore.CoreAudioAPI
         /// <exception cref="System.ArgumentNullException"><paramref name="newSession"/> must not be null.</exception>
         public SessionCreatedEventArgs(AudioSessionControl newSession)
         {
-            if (newSession == null)
-                throw new ArgumentNullException("newSession");
-            NewSession = newSession;
+			NewSession = newSession ?? throw new ArgumentNullException("newSession");
         }
     }
 }

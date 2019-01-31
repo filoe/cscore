@@ -25,10 +25,7 @@ namespace CSCore
         protected WaveAggregatorBase(IWaveSource baseSource)
             : this()
         {
-            if (baseSource == null)
-                throw new ArgumentNullException("baseSource");
-
-            _baseSource = baseSource;
+			_baseSource = baseSource ?? throw new ArgumentNullException("baseSource");
         }
 
         /// <summary>
@@ -45,9 +42,7 @@ namespace CSCore
             get { return _baseSource; }
             set
             {
-                if (value == null)
-                    throw new ArgumentNullException("value", "BaseSource must not be null.");
-                _baseSource = value;
+				_baseSource = value ?? throw new ArgumentNullException("value", "BaseSource must not be null.");
             }
         }
 

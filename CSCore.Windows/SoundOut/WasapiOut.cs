@@ -198,9 +198,7 @@ namespace CSCore.SoundOut
             }
             set
             {
-                if (value == null)
-                    throw new ArgumentNullException("value");
-                _device = value;
+				_device = value ?? throw new ArgumentNullException("value");
                 UpdateStreamRoutingOptions();
             }
         }

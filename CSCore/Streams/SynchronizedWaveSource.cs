@@ -103,9 +103,7 @@ namespace CSCore.Streams
             {
                 lock (_lockObj)
                 {
-                    if (value == null)
-                        throw new ArgumentNullException("value");
-                    _baseSource = value;
+					_baseSource = value ?? throw new ArgumentNullException("value");
                 }
             }
         }

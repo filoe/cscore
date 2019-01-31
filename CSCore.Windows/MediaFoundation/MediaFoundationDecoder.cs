@@ -70,9 +70,7 @@ namespace CSCore.MediaFoundation
         /// <param name="byteStream">Stream which provides the audio data to decode.</param>
         public MediaFoundationDecoder(MFByteStream byteStream)
         {
-            if (byteStream == null)
-                throw new ArgumentNullException("byteStream");
-            _byteStream = byteStream;
+			_byteStream = byteStream ?? throw new ArgumentNullException("byteStream");
             _reader = Initialize(_byteStream);
         }
 

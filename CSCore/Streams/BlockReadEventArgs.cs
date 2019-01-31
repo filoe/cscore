@@ -25,12 +25,10 @@ namespace CSCore.Streams
         /// <param name="length">The number of read elements.</param>
         public BlockReadEventArgs(T[] data, int length)
         {
-            if (data == null)
-                throw new ArgumentNullException("data");
-            if (length < 0)
+			if (length < 0)
                 throw new ArgumentNullException("length");
 
-            Data = data;
+            Data = data ?? throw new ArgumentNullException("data");
             Length = length;
         }
     }

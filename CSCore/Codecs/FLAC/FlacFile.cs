@@ -132,10 +132,7 @@ namespace CSCore.Codecs.FLAC
 
                 var streamInfo =
                     metadata.First(x => x.MetaDataType == FlacMetaDataType.StreamInfo) as FlacMetadataStreamInfo;
-                if (streamInfo == null)
-                    throw new FlacException("No StreamInfo-Metadata found.", FlacLayer.Metadata);
-
-                _streamInfo = streamInfo;
+				_streamInfo = streamInfo ?? throw new FlacException("No StreamInfo-Metadata found.", FlacLayer.Metadata);
                 _waveFormat = CreateWaveFormat(streamInfo);
                 Debug.WriteLine("Flac StreamInfo found -> WaveFormat: " + _waveFormat);
                 Debug.WriteLine("Flac-File-Metadata read.");

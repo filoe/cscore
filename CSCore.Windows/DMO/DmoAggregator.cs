@@ -15,10 +15,7 @@ namespace CSCore.DMO
         /// <param name="source">Base source of the <see cref="DmoAggregator" />.</param>
         protected DmoAggregator(IWaveSource source)
         {
-            if (source == null)
-                throw new ArgumentNullException("source");
-
-            _source = source;
+			_source = source ?? throw new ArgumentNullException("source");
         }
 
         /// <summary>

@@ -24,10 +24,7 @@ namespace CSCore.Streams.SampleConverter
         /// <exception cref="ArgumentNullException">The <paramref name="source"/> argument is null.</exception>
         protected WaveToSampleBase(IWaveSource source)
         {
-            if (source == null) 
-                throw new ArgumentNullException("source");
-
-            Source = source;
+			Source = source ?? throw new ArgumentNullException("source");
             _waveFormat = (WaveFormat) source.WaveFormat.Clone();
             _waveFormat.BitsPerSample = 32;
             _waveFormat.SetWaveFormatTagInternal(AudioEncoding.IeeeFloat);

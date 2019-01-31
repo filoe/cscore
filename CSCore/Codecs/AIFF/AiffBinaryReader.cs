@@ -9,9 +9,7 @@ namespace CSCore.Codecs.AIFF
 
         public AiffBinaryReader(BinaryReader binaryReader)
         {
-            if (binaryReader == null)
-                throw new ArgumentNullException("binaryReader");
-            _binaryReader = binaryReader;
+			_binaryReader = binaryReader ?? throw new ArgumentNullException("binaryReader");
         }
 
         public double ReadIeeeExtended()

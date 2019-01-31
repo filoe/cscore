@@ -14,7 +14,7 @@ namespace CSCore.CoreAudioAPI
         public string SessionID { get; private set; }
 
         /// <summary>
-        /// The number of active communications sessions. If there are n sessions, the sessions are numbered from 0 to ñ1.
+        /// The number of active communications sessions. If there are n sessions, the sessions are numbered from 0 to ÅE.
         /// </summary>
         public int CountCommunicationSessions { get; private set; }
 
@@ -27,12 +27,10 @@ namespace CSCore.CoreAudioAPI
         /// <exception cref="System.ArgumentOutOfRangeException">countCommunicationSessions is less than zero.</exception>
         public VolumeDuckNotificationEventArgs(string sessionID, int countCommunicationSessions)
         {
-            if (sessionID == null)
-                throw new ArgumentNullException("sessionID");
-            if (countCommunicationSessions < 0)
+			if (countCommunicationSessions < 0)
                 throw new ArgumentOutOfRangeException("countCommunicationSessions");
 
-            SessionID = sessionID;
+            SessionID = sessionID ?? throw new ArgumentNullException("sessionID");
             CountCommunicationSessions = countCommunicationSessions;
         }
     }

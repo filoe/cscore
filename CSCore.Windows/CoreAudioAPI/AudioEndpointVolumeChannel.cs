@@ -35,12 +35,10 @@ namespace CSCore.CoreAudioAPI
         /// <param name="channelIndex">The zero-based index of the channel.</param>
         public AudioEndpointVolumeChannel(AudioEndpointVolume audioEndpointVolume, int channelIndex)
         {
-            if (audioEndpointVolume == null)
-                throw new ArgumentNullException("audioEndpointVolume");
-            if (channelIndex < 0)
+			if (channelIndex < 0)
                 throw new ArgumentOutOfRangeException("channelIndex");
 
-            AudioEndpointVolume = audioEndpointVolume;
+            AudioEndpointVolume = audioEndpointVolume ?? throw new ArgumentNullException("audioEndpointVolume");
             _channelIndex = channelIndex;
         }
 

@@ -54,13 +54,10 @@ namespace CSCore.MediaFoundation
 
             if (inputMediaType == null)
                 throw new ArgumentNullException("inputMediaType");
-            if (targetMediaType == null)
-                throw new ArgumentNullException("targetMediaType");
-
-            if (containerType == Guid.Empty)
+			if (containerType == Guid.Empty)
                 throw new ArgumentException("containerType");
 
-            _targetMediaType = targetMediaType;
+            _targetMediaType = targetMediaType ?? throw new ArgumentNullException("targetMediaType");
 
             SetTargetStream(stream, inputMediaType, targetMediaType, containerType);
         }

@@ -68,9 +68,7 @@ namespace CSCore.Codecs.MP3
         /// </param>
         public Mp3WebStream(Uri address, bool async)
         {
-            if (address == null)
-                throw new ArgumentNullException("address");
-            _address = address;
+			_address = address ?? throw new ArgumentNullException("address");
 
             if (!SetAllowUnsafeHeaderParsing20())
                 throw new Exception("Setting allowed Unsafe-Header-Parsing failed.");

@@ -56,10 +56,7 @@ namespace CSCore.CoreAudioAPI
         /// <param name="enumerator"></param>
         public MMNotificationClient(MMDeviceEnumerator enumerator)
         {
-            if (enumerator == null)
-                throw new ArgumentNullException("enumerator");
-
-            _deviceEnumerator = enumerator;
+			_deviceEnumerator = enumerator ?? throw new ArgumentNullException("enumerator");
             Initialize(enumerator);
         }
 
