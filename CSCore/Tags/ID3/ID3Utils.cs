@@ -2,7 +2,9 @@
 using System.Drawing;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace CSCore.Tags.ID3
 {
@@ -137,15 +139,29 @@ namespace CSCore.Tags.ID3
 
         public const string MimeURL = "-->";
 
-        public static System.Drawing.Image DecodeImage(byte[] rawdata, string mimetype)
+        public static async Task<Image> DecodeImageAsync(byte[] rawdata, string mimetype)
         {
             Stream stream;
             if (mimetype.Trim() == MimeURL)
             {
-                WebClient client = new WebClient();
-                var data = client.DownloadData(GetURL(rawdata, mimetype));
-                stream = new MemoryStream(data);
-            }
+                //WebClient client = new WebClient();
+                //var data = client.DownloadData(GetURL(rawdata, mimetype));
+                //stream = new MemoryStream(data);
+				using(var client = new HttpClient())
+				{
+					HttpResponseMessage response = await client.GetAsync(GetURL(rawdata, mimetype));
+					if (response.IsSuccessStatusCode)
+					{
+						HttpContent content = response.Content;
+						var contentStream = await content.ReadAsStreamAsync(); // get the actual content stream
+						return Image.FromStream(contentStream);
+					}
+					else
+					{
+						throw new FileNotFoundException();
+					}
+				}
+			}
             else
             {
                 stream = new MemoryStream(rawdata, false);

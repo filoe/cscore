@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <AssemblyName>CSCore.Ffmpeg</AssemblyName>
-    <TargetFrameworks>net451;netcoreapp2.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <VersionPrefix>1.0.0</VersionPrefix>
     <Copyright>Florian R.</Copyright>
     <Description>.NET Sound Library - FFmpeg Wrapper</Description>
