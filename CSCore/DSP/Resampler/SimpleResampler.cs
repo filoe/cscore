@@ -18,11 +18,11 @@ namespace CSCore.DSP.Resampler
 		/// <param name="SampleRate">Output sampling rate</param>
 		public SimpleResampler(ISampleSource source, int SampleRate) : base(source, SampleRate)
 		{
-			channelFilterBuffer = new float[source.WaveFormat.Channels];
+
 		}
 
 		float[] processBuffer = new float[8];
-		readonly float[] channelFilterBuffer;
+
 		/// <summary>
 		/// Linear-Interpolated Resampling
 		/// </summary>
@@ -44,7 +44,7 @@ namespace CSCore.DSP.Resampler
 					int indexF = (int)Math.Floor(pos);
 					int indexC = Math.Min(indexF + 1, samples - 1);
 					var ratio = pos - indexF;
-					output[i + j * WaveFormat.Channels] = (float)(ratio * processBuffer[i + WaveFormat.Channels * indexF] + (1 - ratio) * processBuffer[i + WaveFormat.Channels * indexC]);
+					output[i + j * WaveFormat.Channels] = (float)((1 - ratio) * processBuffer[i + WaveFormat.Channels * indexF] + ratio * processBuffer[i + WaveFormat.Channels * indexC]);
 				}
 			}
 			return count;
