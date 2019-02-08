@@ -84,7 +84,6 @@ namespace CSCore
 			return new SimpleResampler(input, destinationSampleRate);
 		}
 
-
 		/// <summary>
 		///     Converts the specified wave source with n channels to a wave source with two channels.
 		///     Note: If the <paramref name="input" /> has only one channel, the <see cref="ToStereo(CSCore.IWaveSource)" />
@@ -96,15 +95,14 @@ namespace CSCore
 		[Obsolete("Not Implemented")]
 		public static IWaveSource ToStereo(this IWaveSource input)
 		{
+			if (input == null)
+				throw new ArgumentNullException("input");
+
+			if (input.WaveFormat.Channels == 2)
+				return input;
+			if (input.WaveFormat.Channels == 1)
+				return new MonoToStereoSource(input.ToSampleSource()).ToWaveSource(input.WaveFormat.BitsPerSample);
 			throw new NotImplementedException();
-			//if (input == null)
-			//	throw new ArgumentNullException("input");
-
-			//if (input.WaveFormat.Channels == 2)
-			//	return input;
-			//if (input.WaveFormat.Channels == 1)
-			//	return new MonoToStereoSource(input.ToSampleSource()).ToWaveSource(input.WaveFormat.BitsPerSample);
-
 			//var format = input.WaveFormat as WaveFormatExtensible;
 			//if (format != null)
 			//{
@@ -226,12 +224,16 @@ namespace CSCore
 			{
 				case 8:
 					return new SampleToPcm8(sampleSource);
+
 				case 16:
 					return new SampleToPcm16(sampleSource);
+
 				case 24:
 					return new SampleToPcm24(sampleSource);
+
 				case 32:
 					return new SampleToIeeeFloat32(sampleSource);
+
 				default:
 					throw new ArgumentOutOfRangeException("bits", "Must be 8, 16, 24 or 32 bits.");
 			}
@@ -254,7 +256,7 @@ namespace CSCore
 		///     Converts a <see cref="IWaveSource"/> to a <see cref="ISampleSource"/>.
 		/// </summary>
 		/// <param name="waveSource">The <see cref="IWaveSource"/> to convert to a <see cref="ISampleSource"/>.</param>
-		/// <returns>The <see cref="ISampleSource"/> wrapped around the specified <paramref name="waveSource"/>.</returns>        
+		/// <returns>The <see cref="ISampleSource"/> wrapped around the specified <paramref name="waveSource"/>.</returns>
 		public static ISampleSource ToSampleSource(this IWaveSource waveSource)
 		{
 			if (waveSource == null)

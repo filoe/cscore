@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace CSCore.DSP.Resampler
 {
 	/// <summary>
-	/// 
+	///
 	/// </summary>
 	public abstract class ResamplerBase : SampleAggregatorBase
 	{
@@ -19,12 +19,13 @@ namespace CSCore.DSP.Resampler
 		/// <summary>
 		/// Conversion ratio(out/in).
 		/// </summary>
-		protected double ConversionRatio => (double)SampleRateFrom / WaveFormat.SampleRate;
+		protected double ConversionRatio => (double)WaveFormat.SampleRate / SampleRateFrom;
 
 		/// <summary>
 		/// Conversion ratio(in/out).
 		/// </summary>
-		protected double InverseConversionRatio => (double)WaveFormat.SampleRate / SampleRateFrom;
+		protected double InverseConversionRatio => (double)SampleRateFrom / WaveFormat.SampleRate;
+
 		/// <summary>
 		///     Gets the <see cref="IAudioSource.WaveFormat" /> of the waveform-audio data.
 		/// </summary>
@@ -39,6 +40,7 @@ namespace CSCore.DSP.Resampler
 		{
 			WaveFormat = new WaveFormat(SampleRate, 32, source.WaveFormat.Channels, AudioEncoding.IeeeFloat);
 		}
+
 		/// <summary>
 		///     Reads a sequence of samples from the <see cref="SampleAggregatorBase" /> and advances the position within the stream by
 		///     the number of samples read.

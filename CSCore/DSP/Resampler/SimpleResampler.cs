@@ -31,19 +31,21 @@ namespace CSCore.DSP.Resampler
 		/// <returns></returns>
 		protected override int Process(float[] output, int offset, int count)
 		{
-			int samplesToRead = (int)Math.Floor(count / WaveFormat.Channels * ConversionRatio) * WaveFormat.Channels;
+			int sampleOut = count / WaveFormat.Channels;
+			int samplesToRead = (int)Math.Ceiling(sampleOut * InverseConversionRatio) * WaveFormat.Channels;
+			samplesToRead -= samplesToRead % WaveFormat.Channels;
 			processBuffer = processBuffer.CheckBuffer(samplesToRead);
-			int read = BaseSource.Read(processBuffer, offset, samplesToRead);
-			int samples = count / WaveFormat.Channels;
+			int read = BaseSource.Read(processBuffer, 0, samplesToRead);
+			int samplesIn = read / WaveFormat.Channels;
 			for (int i = 0; i < WaveFormat.Channels; i++)
 			{
-				for (int j = 0; j < samples; j++)
+				for (int j = 0; j < sampleOut; j++)
 				{
 					var pos = j * InverseConversionRatio;
 					int indexF = (int)Math.Floor(pos);
-					int indexC = Math.Min(indexF + 1, samples - 1);
-					var ratio = pos - indexF;
-					output[i + j * WaveFormat.Channels] = (float)((1 - ratio) * processBuffer[i + WaveFormat.Channels * indexF] + ratio * processBuffer[i + WaveFormat.Channels * indexC]);
+					int indexC = Math.Min(indexF + 1, samplesIn - 1);
+					var ratio = indexC - pos;
+					output[i + j * WaveFormat.Channels] = (float)(ratio * processBuffer[i + WaveFormat.Channels * indexF] + (1 - ratio) * processBuffer[i + WaveFormat.Channels * indexC]);
 				}
 			}
 			return count;
