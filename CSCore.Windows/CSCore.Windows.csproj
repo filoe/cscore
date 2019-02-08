@@ -38,6 +38,9 @@
   <PropertyGroup>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -362,8 +365,8 @@
       set target=$(TargetPath)
       set project=$(ProjectPath)
 
-      set sdk=%25PROGRAMFILES(x86)%25\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6.1 Tools
-      set framework=%25WINDIR%25\Microsoft.NET\Framework\v2.0.50727
+      set sdk=%25PROGRAMFILES(x86)%25\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.7.2 Tools
+      set framework=%25WINDIR%25\Microsoft.NET\Framework\v4.0.30319
       set inlineILCompiler=$(SolutionDir)Tools\InlineILCompiler\InlineILCompiler\bin\$(ConfigurationName)\InlineILCompiler.exe
       set cscli=$(SolutionDir)Tools\CSCli\bin\$(ConfigurationName)\CSCli.exe
 

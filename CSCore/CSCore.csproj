@@ -1,129 +1,126 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <AssemblyName>CSCore</AssemblyName>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <VersionPrefix>1.2.1.1</VersionPrefix>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	<PropertyGroup>
+		<AssemblyName>CSCore</AssemblyName>
+		<TargetFrameworks>net461;netstandard2.0;net47;net471</TargetFrameworks>
+		<VersionPrefix>1.2.1.1</VersionPrefix>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 
-    <!-- Packet Details -->
-    <Copyright>Florian R.</Copyright>
-    <Description>.NET Sound Library</Description>
-  </PropertyGroup>
+		<!-- Packet Details -->
+		<Copyright>Florian R.</Copyright>
+		<Description>.NET Sound Library</Description>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
+	<PropertyGroup>
+		<Prefer32Bit>false</Prefer32Bit>
+	</PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;FLAC_DEBUG</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
-    <DocumentationFile>bin\Debug\CSCore.XML</DocumentationFile>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <NoWarn>1573</NoWarn>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>full</DebugType>
+		<Optimize>false</Optimize>
+		<OutputPath>bin\Debug\</OutputPath>
+		<DefineConstants>TRACE;DEBUG;FLAC_DEBUG</DefineConstants>
+		<ErrorReport>prompt</ErrorReport>
+		<WarningLevel>4</WarningLevel>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<UseVSHostingProcess>true</UseVSHostingProcess>
+		<DocumentationFile>bin\Debug\CSCore.XML</DocumentationFile>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+		<NoWarn>1573</NoWarn>
+		<CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
 
-    <!-- Sign the assembly to expose to tests-->
-    <AssemblyOriginatorKeyFile>cscore.snk</AssemblyOriginatorKeyFile>
-    <SignAssembly>false</SignAssembly>
-    <DelaySign>false</DelaySign>
-  </PropertyGroup>
+		<!-- Sign the assembly to expose to tests-->
+		<AssemblyOriginatorKeyFile>cscore.snk</AssemblyOriginatorKeyFile>
+		<SignAssembly>false</SignAssembly>
+		<DelaySign>false</DelaySign>
+	</PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>bin\Release\CSCore.XML</DocumentationFile>
-    <NoWarn>1591</NoWarn>
-    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+		<DebugType>pdbonly</DebugType>
+		<Optimize>true</Optimize>
+		<OutputPath>bin\Release\</OutputPath>
+		<DefineConstants>TRACE</DefineConstants>
+		<ErrorReport>prompt</ErrorReport>
+		<WarningLevel>4</WarningLevel>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<DocumentationFile>bin\Release\CSCore.XML</DocumentationFile>
+		<NoWarn>1591</NoWarn>
+		<GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+		<UseVSHostingProcess>false</UseVSHostingProcess>
+		<DebugSymbols>true</DebugSymbols>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
-  </PropertyGroup>
+	<PropertyGroup>
+		<RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+	</PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">
-    <PackageReference Include="System.Drawing.Common" Version="4.5.0-preview1-25718-03" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove=".gitattributes" />
+		<None Remove=".gitignore" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Remove=".gitattributes" />
-    <None Remove=".gitignore" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Update="AudioSubTypes.cs">
+			<DependentUpon>AudioSubTypes.tt</DependentUpon>
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+		</Compile>
 
-  <ItemGroup>
-    <Compile Update="AudioSubTypes.cs">
-      <DependentUpon>AudioSubTypes.tt</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
+		<Compile Update="AudioSubTypes.Utils.cs">
+			<DependentUpon>AudioSubTypes.tt</DependentUpon>
+		</Compile>
 
-    <Compile Update="AudioSubTypes.Utils.cs">
-      <DependentUpon>AudioSubTypes.tt</DependentUpon>
-    </Compile>
+		<Compile Update="Codecs\FLAC\FlacFrame_GetBuffer.cs">
+			<DependentUpon>FlacFrame_GetBuffer.tt</DependentUpon>
+			<AutoGen>True</AutoGen>
+			<DesignTime>True</DesignTime>
+		</Compile>
 
-    <Compile Update="Codecs\FLAC\FlacFrame_GetBuffer.cs">
-      <DependentUpon>FlacFrame_GetBuffer.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
+		<Compile Update="Codecs\FLAC\SubFrames\FlacSubFrameLPC_Calculation.cs">
+			<AutoGen>True</AutoGen>
+			<DesignTime>True</DesignTime>
+			<DependentUpon>FlacSubFrameLPC_Calculation.tt</DependentUpon>
+		</Compile>
 
-    <Compile Update="Codecs\FLAC\SubFrames\FlacSubFrameLPC_Calculation.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FlacSubFrameLPC_Calculation.tt</DependentUpon>
-    </Compile>
+		<!-- TT Templates -->
+		<None Update="AudioSubTypes.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>AudioSubTypes.cs</LastGenOutput>
+		</None>
 
-    <!-- TT Templates -->
-    <None Update="AudioSubTypes.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>AudioSubTypes.cs</LastGenOutput>
-    </None>
+		<None Update="Codecs\FLAC\FlacFrame_GetBuffer.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>FlacFrame_GetBuffer.cs</LastGenOutput>
+		</None>
 
-    <None Update="Codecs\FLAC\FlacFrame_GetBuffer.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>FlacFrame_GetBuffer.cs</LastGenOutput>
-    </None>
+		<None Update="Codecs\FLAC\SubFrames\FlacSubFrameLPC_Calculation.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>FlacSubFrameLPC_Calculation.cs</LastGenOutput>
+		</None>
 
-    <None Update="Codecs\FLAC\SubFrames\FlacSubFrameLPC_Calculation.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>FlacSubFrameLPC_Calculation.cs</LastGenOutput>
-    </None>
+		<!-- Other -->
+		<None Include="Base.cd" />
 
-    <!-- Other -->
-    <None Include="Base.cd" />
+		<None Include="cscore.snk">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 
-    <None Include="cscore.snk">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="System.Drawing.Common" Version="4.5.1" />
+		<PackageReference Include="System.Net.Http" Version="4.3.4" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
-  </ItemGroup>
+	<ItemGroup>
+		<Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-  </ItemGroup>
-
-  <PropertyGroup>
-    <Version>2.0.0.0</Version>
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
-    <FileVersion>2.0.0.0</FileVersion>
-    <LangVersion>7.3</LangVersion>
-    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
-  </PropertyGroup>
+	<PropertyGroup>
+		<Version>2.0.0.0</Version>
+		<AssemblyVersion>2.0.0.0</AssemblyVersion>
+		<FileVersion>2.0.0.0</FileVersion>
+		<LangVersion>7.3</LangVersion>
+		<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+	</PropertyGroup>
 </Project>

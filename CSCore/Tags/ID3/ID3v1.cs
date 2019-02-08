@@ -83,7 +83,7 @@ namespace CSCore.Tags.ID3
             var title = Title.Length > 30 ? Title.Substring(0, 30) : Title;
             var artist = Artist.Length > 30 ? Title.Substring(0, 30) : Artist;
             var album = Album.Length > 30 ? Album.Substring(0, 30) : Album;
-            int year = Year.HasValue ? Year.Value : 0;
+            int year = Year ?? 0;
             var comment = Comment.Length > 30 ? Comment.Substring(0, 30) : Comment;
             var genre = (byte)Genre;
 

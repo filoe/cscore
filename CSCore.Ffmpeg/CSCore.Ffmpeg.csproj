@@ -13,14 +13,6 @@
     <ProjectReference Include="..\CSCore\CSCore.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.4.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net451'">
-    <Reference Include="System.Configuration" />
-  </ItemGroup>
-
   <ItemGroup>
     <Compile Remove="FFmpeg\**" />
     <EmbeddedResource Remove="FFmpeg\**" />
@@ -83,6 +75,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Interops\unused\Readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
   </ItemGroup>
 
 </Project>

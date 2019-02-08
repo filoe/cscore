@@ -41,7 +41,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSCoreWaveform", "Samples\C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BiQuadFilterSample", "Samples\BiQuadFilterSample\BiQuadFilterSample.csproj", "{F8733117-DA1D-40DC-AEF8-98051B86E219}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSCore.Ffmpeg", "CSCore.Ffmpeg\CSCore.Ffmpeg.csproj", "{F4E6168A-B2CB-413C-AE0E-0D8B856B425E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSCore.Ffmpeg", "CSCore.Ffmpeg\CSCore.Ffmpeg.csproj", "{F4E6168A-B2CB-413C-AE0E-0D8B856B425E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FfmpegSample", "Samples\FfmpegSample\FfmpegSample.csproj", "{3CC0E6B1-1E96-4A07-8AE7-A7C7F47911B1}"
 EndProject

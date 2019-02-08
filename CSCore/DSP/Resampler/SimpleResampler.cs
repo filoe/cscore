@@ -18,10 +18,9 @@ namespace CSCore.DSP.Resampler
 		/// <param name="SampleRate">Output sampling rate</param>
 		public SimpleResampler(ISampleSource source, int SampleRate) : base(source, SampleRate)
 		{
-
 		}
 
-		float[] processBuffer = new float[8];
+		private float[] processBuffer = new float[8];
 
 		/// <summary>
 		/// Linear-Interpolated Resampling
@@ -32,9 +31,9 @@ namespace CSCore.DSP.Resampler
 		/// <returns></returns>
 		protected override int Process(float[] output, int offset, int count)
 		{
-			int samplesToRead = (int)Math.Floor(count / WaveFormat.Channels * InverseConversionRatio) * WaveFormat.Channels;
+			int samplesToRead = (int)Math.Floor(count / WaveFormat.Channels * ConversionRatio) * WaveFormat.Channels;
 			processBuffer = processBuffer.CheckBuffer(samplesToRead);
-			int read = BaseSource.Read(processBuffer, offset, count);
+			int read = BaseSource.Read(processBuffer, offset, samplesToRead);
 			int samples = count / WaveFormat.Channels;
 			for (int i = 0; i < WaveFormat.Channels; i++)
 			{
