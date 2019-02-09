@@ -129,16 +129,14 @@ namespace CSCore
 		[Obsolete("Not Implemented")]
 		public static ISampleSource ToStereo(this ISampleSource input)
 		{
-			throw new NotImplementedException();
-			//if (input == null)
-			//	throw new ArgumentNullException("input");
+			if (input == null)
+				throw new ArgumentNullException("input");
 
-			//if (input.WaveFormat.Channels == 2)
-			//	return input;
-			//if (input.WaveFormat.Channels == 1)
-			//	return new MonoToStereoSource(input);
-
-			//return ToStereo(input.ToWaveSource()).ToSampleSource();
+			if (input.WaveFormat.Channels == 2)
+				return input;
+			if (input.WaveFormat.Channels == 1)
+				return new MonoToStereoSource(input);
+			return ToStereo(input.ToWaveSource()).ToSampleSource();
 		}
 
 		/// <summary>
