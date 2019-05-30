@@ -19,6 +19,12 @@ namespace CSCore
         /// Stereo.
         /// </summary>
         public const ChannelMask StereoMask = ChannelMask.SpeakerFrontLeft | ChannelMask.SpeakerFrontRight;
+
+        /// <summary>
+        /// Quadraphonic
+        /// </summary>
+        public const ChannelMask QuadraphonicMask = ChannelMask.SpeakerFrontLeft | ChannelMask.SpeakerFrontRight |
+                                                ChannelMask.SpeakerBackLeft | ChannelMask.SpeakerBackRight;
         /// <summary>
         /// 5.1 surround with rear speakers.
         /// </summary>

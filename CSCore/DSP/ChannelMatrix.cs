@@ -105,6 +105,16 @@ namespace CSCore.DSP
         public static readonly ChannelMatrix SevenDotOneSurroundToFiveDotOneSurroundWithSide;
 
         /// <summary>
+        /// Defines a quadraphonic to stereo channel conversion matrix.
+        /// </summary>
+        public static readonly ChannelMatrix QuadraphonicToStereo;
+
+        /// <summary>
+        /// Defines a stereo to quadraphonic channel conversion matrix.
+        /// </summary>
+        public static readonly ChannelMatrix StereoToQuadraphonic;
+
+        /// <summary>
         /// Gets a <see cref="ChannelMatrix"/> to convert between the two specified <see cref="ChannelMask"/>s.
         /// </summary>
         /// <param name="from">The <see cref="ChannelMask"/> of the input stream.</param>
@@ -314,6 +324,18 @@ namespace CSCore.DSP
                     //left|right
                     {1f, 1f} //mono
                 });
+
+            StereoToQuadraphonic = new ChannelMatrix(
+                ChannelMask.SpeakerFrontLeft | ChannelMask.SpeakerFrontRight,
+                ChannelMask.SpeakerFrontLeft | ChannelMask.SpeakerFrontRight |
+                ChannelMask.SpeakerBackLeft | ChannelMask.SpeakerBackRight);
+            StereoToQuadraphonic.SetMatrix(
+                new[,]
+                {
+                    { 0.5f, 0.0f, 0.5f, 0.0f },
+                    { 0.0f, 0.5f, 0.0f, 0.5f }
+                });
+            QuadraphonicToStereo = StereoToQuadraphonic.Flip();
         }
 
         /// <summary>
@@ -529,6 +551,9 @@ namespace CSCore.DSP
                 new FactoryEntry(ChannelMasks.SevenDotOneMask, ChannelMasks.StereoMask, SevenDotOneSurroundToStereo),
                 new FactoryEntry(ChannelMasks.SevenDotOneMask, ChannelMasks.FiveDotOneWithRearMask, SevenDotOneSurroundToFiveDotOneSurroundWithRear),
                 new FactoryEntry(ChannelMasks.SevenDotOneMask, ChannelMasks.FiveDotOneWithSideMask, SevenDotOneSurroundToFiveDotOneSurroundWithSide),
+
+                new FactoryEntry(ChannelMasks.QuadraphonicMask, ChannelMasks.StereoMask, QuadraphonicToStereo), 
+                new FactoryEntry(ChannelMasks.StereoMask, ChannelMasks.QuadraphonicMask, StereoToQuadraphonic), 
             };
 
             public static ChannelMatrix GetMatrix(ChannelMask from, ChannelMask to)
