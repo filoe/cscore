@@ -17,7 +17,7 @@ namespace CSCore.SoundOut
         private readonly WaveCallback _callback;
         private readonly Queue<int> _failedBuffers = new Queue<int>();
         private readonly object _lockObject = new object();
-        private int _activeBuffers;
+        private volatile int _activeBuffers;
         private WaveOutBuffer[] _buffers;
         private Thread _callbackThread;
         private WaveOutDevice _device;
@@ -465,7 +465,6 @@ namespace CSCore.SoundOut
 
         private void WaitForBuffersToFinish()
         {
-            //do we have volatile to _activeBuffers???
             while (Interlocked.CompareExchange(ref _activeBuffers, 0, 0) != 0 && PlaybackState != PlaybackState.Stopped)
             {
                 Thread.Sleep(10);
