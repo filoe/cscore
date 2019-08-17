@@ -16,7 +16,7 @@ namespace CSCore.Test.SoundOut
     [TestClass]
     public abstract class SoundOutBehaviourTests
     {
-        const int BasicIterationCount =30;
+        const int BasicIterationCount = 150;
         const int TimeOut = 60000 * 2 * BasicIterationCount;// / 50
 
         private ISoundOut _soundOut;
