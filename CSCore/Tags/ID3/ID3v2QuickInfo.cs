@@ -1,6 +1,7 @@
 ﻿using CSCore.Tags.ID3.Frames;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -65,7 +66,7 @@ namespace CSCore.Tags.ID3
             }
         }
 
-        public System.Drawing.Image Image
+        public Stream Image
         {
             get
             {
