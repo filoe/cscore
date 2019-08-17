@@ -83,7 +83,7 @@ namespace CSCore.Ffmpeg.Interops
     {
         internal AVClass* @av_class;
         internal AVFormatContext* @device_context;
-        internal AVCodecID @codec;
+        internal int @codec;
         internal AVSampleFormat @sample_format;
         internal AVPixelFormat @pixel_format;
         internal int @sample_rate;
