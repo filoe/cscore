@@ -1,5 +1,6 @@
 ﻿using CSCore;
 using CSCore.Codecs;
+using CSCore.Ffmpeg;
 using CSCore.SoundOut;
 using System;
 using System.Diagnostics;
@@ -12,12 +13,16 @@ namespace DotNetCoreSample
     {
         static void Main(string[] args)
         {
+            var ffmpeg = FfmpegUtils.GetInputFormats();
+
+            Console.WriteLine(CodecFactory.SupportedFilesFilterEn);
+
             Console.Write("Enter filename > ");
             var filename = Console.ReadLine();
 
             Console.WriteLine("Opening file ... {0}", filename);
 
-            using (var source = CodecFactory.Instance.GetCodec(filename))
+            using (var source = CodecFactory.Instance.GetCodec(new Uri(filename)))
             {
                 Debug.Assert(source.CanSeek, "Source does not support seeking.");
 
