@@ -362,7 +362,7 @@
       set target=$(TargetPath)
       set project=$(ProjectPath)
 
-      set sdk=%25PROGRAMFILES(x86)%25\Microsoft SDKs\Windows\v8.1A\bin\NETFX 4.5.1 Tools
+      set sdk=%25PROGRAMFILES(x86)%25\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6.1 Tools\x64
       set framework=%25WINDIR%25\Microsoft.NET\Framework\v2.0.50727
       set inlineILCompiler=$(SolutionDir)Tools\InlineILCompiler\InlineILCompiler\bin\$(ConfigurationName)\InlineILCompiler.exe
       set cscli=$(SolutionDir)Tools\CSCli\bin\$(ConfigurationName)\CSCli.exe
@@ -425,6 +425,6 @@
       :EXIT_ERR
       set errorCode=-1
       goto EXIT
-    </PostBuildEvent>
+</PostBuildEvent>
   </PropertyGroup>
 </Project>

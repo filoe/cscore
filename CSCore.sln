@@ -41,7 +41,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSCoreWaveform", "Samples\C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BiQuadFilterSample", "Samples\BiQuadFilterSample\BiQuadFilterSample.csproj", "{F8733117-DA1D-40DC-AEF8-98051B86E219}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSCore.Ffmpeg", "CSCore.Ffmpeg\CSCore.Ffmpeg.csproj", "{F4E6168A-B2CB-413C-AE0E-0D8B856B425E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSCore.Ffmpeg", "CSCore.Ffmpeg\CSCore.Ffmpeg.csproj", "{F4E6168A-B2CB-413C-AE0E-0D8B856B425E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FfmpegSample", "Samples\FfmpegSample\FfmpegSample.csproj", "{3CC0E6B1-1E96-4A07-8AE7-A7C7F47911B1}"
 EndProject
@@ -58,6 +58,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSCore.Windows", "CSCore.Wi
 		{9522588A-5311-41F1-814C-4FB626FC0B47} = {9522588A-5311-41F1-814C-4FB626FC0B47}
 		{9C5B4994-70C3-489D-933C-E2049C0505DB} = {9C5B4994-70C3-489D-933C-E2049C0505DB}
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetCoreSample", "Samples\DotNetCoreSample\DotNetCoreSample.csproj", "{B6D831F2-7304-4BEE-8ACE-3F0B8327B6BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -312,6 +314,18 @@ Global
 		{7F569678-8C28-402D-A189-7D7F18E3FB14}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{7F569678-8C28-402D-A189-7D7F18E3FB14}.Release|Win32.ActiveCfg = Release|Any CPU
 		{7F569678-8C28-402D-A189-7D7F18E3FB14}.Release|Win32.Build.0 = Release|Any CPU
+		{B6D831F2-7304-4BEE-8ACE-3F0B8327B6BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6D831F2-7304-4BEE-8ACE-3F0B8327B6BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6D831F2-7304-4BEE-8ACE-3F0B8327B6BF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{B6D831F2-7304-4BEE-8ACE-3F0B8327B6BF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{B6D831F2-7304-4BEE-8ACE-3F0B8327B6BF}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{B6D831F2-7304-4BEE-8ACE-3F0B8327B6BF}.Debug|Win32.Build.0 = Debug|Any CPU
+		{B6D831F2-7304-4BEE-8ACE-3F0B8327B6BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6D831F2-7304-4BEE-8ACE-3F0B8327B6BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6D831F2-7304-4BEE-8ACE-3F0B8327B6BF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B6D831F2-7304-4BEE-8ACE-3F0B8327B6BF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{B6D831F2-7304-4BEE-8ACE-3F0B8327B6BF}.Release|Win32.ActiveCfg = Release|Any CPU
+		{B6D831F2-7304-4BEE-8ACE-3F0B8327B6BF}.Release|Win32.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -337,6 +351,7 @@ Global
 		{9CF28420-D689-46E6-B659-72520A515372} = {41D1D336-13B2-488B-8A85-C0F744035F8B}
 		{571AC77A-7D3D-44CF-B0E7-08DF03D7B638} = {41D1D336-13B2-488B-8A85-C0F744035F8B}
 		{2EDF3192-9107-4B7A-914A-EA25AFEB9F85} = {41D1D336-13B2-488B-8A85-C0F744035F8B}
+		{B6D831F2-7304-4BEE-8ACE-3F0B8327B6BF} = {41D1D336-13B2-488B-8A85-C0F744035F8B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BDD5A67B-0BAC-4124-9D1F-C5A86160B48B}
