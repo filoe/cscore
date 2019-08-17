@@ -65,7 +65,7 @@ namespace CSCore.SoundIn
         /// Initializes a new instance of the <see cref="WasapiCapture"/> class.
         /// CaptureThreadPriority = AboveNormal. 
         /// DefaultFormat = null. 
-        /// Latency = 100ms. 
+        /// Latency = 25ms. 
         /// EventSync = true.
         /// SharedMode = Shared.
         /// </summary>
@@ -78,12 +78,12 @@ namespace CSCore.SoundIn
         /// Initializes a new instance of the <see cref="WasapiCapture"/> class.
         /// CaptureThreadPriority = AboveNormal. 
         /// DefaultFormat = null.
-        /// Latency = 100ms.
+        /// Latency = 25ms.
         /// </summary>
         /// <param name="eventSync">True, to use eventsynchronization instead of a simple loop and sleep behavior. Don't use this in combination with exclusive mode.</param>
         /// <param name="shareMode">Specifies how to open the audio device. Note that if exclusive mode is used, the device can only be used once on the whole system. Don't use exclusive mode in combination with eventSync.</param>
         public WasapiCapture(bool eventSync, AudioClientShareMode shareMode)
-            : this(eventSync, shareMode, 100)
+            : this(eventSync, shareMode, 25)
         {
         }
 
@@ -248,7 +248,7 @@ namespace CSCore.SoundIn
 
                 long actualDuration = (long) ((double) ReftimesPerSecond * bufferSize / WaveFormat.SampleRate);
                 int actualLatency = (int) (actualDuration / ReftimesPerMillisecond);
-                int sleepDuration = actualLatency / 8;
+                int sleepDuration = actualLatency;
 
                 byte[] buffer = new byte[bufferSize * frameSize];
 
@@ -397,7 +397,7 @@ namespace CSCore.SoundIn
             if (count <= 0)
                 return;
 
-            EventHandler<DataAvailableEventArgs> handler = this.DataAvailable;
+            EventHandler<DataAvailableEventArgs> handler = DataAvailable;
             if (handler != null)
             {
                 var e = new DataAvailableEventArgs(buffer, offset, count, WaveFormat);
@@ -410,7 +410,7 @@ namespace CSCore.SoundIn
 
         private void RaiseStopped(Exception exception)
         {
-            EventHandler<RecordingStoppedEventArgs> handler = this.Stopped;
+            EventHandler<RecordingStoppedEventArgs> handler = Stopped;
             if (handler != null)
             {
                 var e = new RecordingStoppedEventArgs(exception);

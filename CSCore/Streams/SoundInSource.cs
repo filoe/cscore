@@ -62,7 +62,7 @@ namespace CSCore.Streams
         private void OnDataAvailable(object sender, DataAvailableEventArgs e)
         {
             _buffer.Write(e.Data, 0, e.ByteCount);
-            EventHandler<DataAvailableEventArgs> dataAvailable = this.DataAvailable;
+            EventHandler<DataAvailableEventArgs> dataAvailable = DataAvailable;
             if (e.ByteCount > 0 && dataAvailable != null)
                 dataAvailable(this, e);
         }

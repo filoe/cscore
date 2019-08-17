@@ -198,15 +198,19 @@ namespace CSCore.Streams
                     }
                 }
 
-                _currentVolume += _step;
-                if (IsFading && IsFadingFinished())
+                if (IsFading)
                 {
-                    FinalizeFading();
-                    int c = count - (sampleIndex - offset);
-                    if (c > 0)
-                        ApplyFading(buffer, sampleIndex, c); //apply the rest
+                    _currentVolume += _step;
 
-                    sampleIndex += c;
+                    if (IsFadingFinished())
+                    {
+                        FinalizeFading();
+                        int c = count - (sampleIndex - offset);
+                        if (c > 0)
+                            ApplyFading(buffer, sampleIndex, c); //apply the rest
+
+                        sampleIndex += c;
+                    }
                 }
             }
         }
@@ -233,9 +237,7 @@ namespace CSCore.Streams
 
         private void OnFadingFinished()
         {
-            EventHandler handler = FadingFinished;
-            if (handler != null)
-                handler(this, EventArgs.Empty);
+            FadingFinished?.Invoke(this, EventArgs.Empty);
         }
     }
 }

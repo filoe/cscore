@@ -29,6 +29,8 @@ namespace CSCore.Ffmpeg
         public FfmpegException(int errorCode, string function)
             : base(String.Format("{0} returned 0x{1:x8}: {2}", function, errorCode, FfmpegCalls.AvStrError(errorCode)))
         {
+            ErrorCode = errorCode;
+            Function = function;
         }
 
         /// <summary>
@@ -39,6 +41,7 @@ namespace CSCore.Ffmpeg
         public FfmpegException(string message, string function)
             : base(String.Format("{0} failed: {1}", message, function))
         {
+            Function = function;
         }
 
         /// <summary>
@@ -49,5 +52,15 @@ namespace CSCore.Ffmpeg
             : base(message)
         {
         }
+
+        /// <summary>
+        /// Gets the error code.
+        /// </summary>
+        public int ErrorCode { get; private set; }
+
+        /// <summary>
+        /// Gets the ffmpeg function which caused the error.
+        /// </summary>
+        public string Function { get; private set; }
     }
 }

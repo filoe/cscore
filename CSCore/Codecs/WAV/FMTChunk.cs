@@ -61,8 +61,6 @@ namespace CSCore.Codecs.WAV
                 }
 
                 _waveFormat = new WaveFormat(sampleRate, (short) bitsPerSample, (short) channels, encoding, extraSize);
-                Debug.Assert(blockAlign == _waveFormat.BlockAlign);
-                Debug.Assert(avgBps == _waveFormat.BytesPerSecond);
             }
         }
 

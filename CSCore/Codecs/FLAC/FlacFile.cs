@@ -149,8 +149,7 @@ namespace CSCore.Codecs.FLAC
                 var scan = new FlacPreScan(stream);
                 scan.ScanFinished += (s, e) =>
                 {
-                    if (onscanFinished != null)
-                        onscanFinished(e);
+                    onscanFinished?.Invoke(e);
                 };
                 scan.ScanStream(_streamInfo, scanFlag);
                 _scan = scan;

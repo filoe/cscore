@@ -57,6 +57,7 @@ namespace CSCore.Ffmpeg
         /// </value>
         public string ParentLogContextItemName { get; set; }
 
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate IntPtr ItemNameFunc(IntPtr avClass);
 
         internal unsafe FfmpegLogReceivedEventArgs(AVClass? avClass, AVClass? parentLogContext, LogLevel level, string line, void* ptr, void* ptr1)

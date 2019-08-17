@@ -149,6 +149,7 @@
     <Compile Include="Utils\DisposableSource.cs" />
     <Compile Include="Utils\ILUtilsTests.cs" />
     <Compile Include="Utils\TrimmedWaveSource.cs" />
+    <Compile Include="Utils\FixedSizeBufferTests.cs" />
     <Compile Include="WaveInOut\WaveInTests.cs" />
     <Compile Include="XAudio2\XAudio2Tests.cs" />
     <None Include="cscore.snk" />

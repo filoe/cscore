@@ -509,7 +509,7 @@ namespace CSCore.SoundOut
 
         private void RaiseStopped(Exception exception)
         {
-            EventHandler<PlaybackStoppedEventArgs> handler = this.Stopped;
+            EventHandler<PlaybackStoppedEventArgs> handler = Stopped;
             if (handler != null) {
                 if (_syncContext != null)
                     _syncContext.Post(x => handler(this, new PlaybackStoppedEventArgs(exception)), null);

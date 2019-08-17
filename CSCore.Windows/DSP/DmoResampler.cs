@@ -189,6 +189,9 @@ namespace CSCore.DSP
                     if (mediaObject.IsReadyForInput(0))
                     {
                         var bytesToRead = (int) OutputToInput(count - read);
+                        bytesToRead = Math.Min(WaveFormat.BytesPerSecond * 2, bytesToRead);
+                        bytesToRead -= (bytesToRead % BaseSource.WaveFormat.BlockAlign);
+
                         _readBuffer = _readBuffer.CheckBuffer(bytesToRead);
                         int bytesRead = base.Read(_readBuffer, 0, bytesToRead);
                         if (bytesRead <= 0)

@@ -53,9 +53,7 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT</returns>
         void IAudioSessionEvents.OnDisplayNameChanged(string newDisplayName, ref Guid eventContext)
         {
-            EventHandler<AudioSessionDisplayNameChangedEventArgs> handler = DisplayNameChanged;
-            if (handler != null)
-                handler(this, new AudioSessionDisplayNameChangedEventArgs(newDisplayName, eventContext));
+            DisplayNameChanged?.Invoke(this, new AudioSessionDisplayNameChangedEventArgs(newDisplayName, eventContext));
         }
 
         /// <summary>
@@ -66,9 +64,7 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT</returns>
         void IAudioSessionEvents.OnIconPathChanged(string newIconPath, ref Guid eventContext)
         {
-            EventHandler<AudioSessionIconPathChangedEventArgs> handler = IconPathChanged;
-            if (handler != null)
-                handler(this, new AudioSessionIconPathChangedEventArgs(newIconPath, eventContext));
+            IconPathChanged?.Invoke(this, new AudioSessionIconPathChangedEventArgs(newIconPath, eventContext));
         }
 
         /// <summary>
@@ -83,9 +79,7 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT</returns>
         void IAudioSessionEvents.OnSimpleVolumeChanged(float newVolume, bool newMute, ref Guid eventContext)
         {
-            EventHandler<AudioSessionSimpleVolumeChangedEventArgs> handler = SimpleVolumeChanged;
-            if (handler != null)
-                handler(this, new AudioSessionSimpleVolumeChangedEventArgs(newVolume, newMute, eventContext));
+            SimpleVolumeChanged?.Invoke(this, new AudioSessionSimpleVolumeChangedEventArgs(newVolume, newMute, eventContext));
         }
 
         /// <summary>
@@ -99,13 +93,9 @@ namespace CSCore.CoreAudioAPI
         void IAudioSessionEvents.OnChannelVolumeChanged(int channelCount, float[] newChannelVolumeArray,
             int changedChannel, ref Guid eventContext)
         {
-            EventHandler<AudioSessionChannelVolumeChangedEventArgs> handler = ChannelVolumeChanged;
-            if (handler != null)
-            {
-                handler(this,
+            ChannelVolumeChanged?.Invoke(this,
                     new AudioSessionChannelVolumeChangedEventArgs(channelCount, newChannelVolumeArray, changedChannel,
                         eventContext));
-            }
         }
 
         /// <summary>
@@ -116,9 +106,7 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT</returns>
         void IAudioSessionEvents.OnGroupingParamChanged(ref Guid newGroupingParam, ref Guid eventContext)
         {
-            EventHandler<AudioSessionGroupingParamChangedEventArgs> handler = GroupingParamChanged;
-            if (handler != null)
-                handler(this, new AudioSessionGroupingParamChangedEventArgs(newGroupingParam, eventContext));
+            GroupingParamChanged?.Invoke(this, new AudioSessionGroupingParamChangedEventArgs(newGroupingParam, eventContext));
         }
 
         /// <summary>
@@ -128,9 +116,7 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT</returns>
         void IAudioSessionEvents.OnStateChanged(AudioSessionState newState)
         {
-            EventHandler<AudioSessionStateChangedEventArgs> handler = StateChanged;
-            if (handler != null)
-                handler(this, new AudioSessionStateChangedEventArgs(newState));
+            StateChanged?.Invoke(this, new AudioSessionStateChangedEventArgs(newState));
         }
 
         /// <summary>
@@ -140,9 +126,7 @@ namespace CSCore.CoreAudioAPI
         /// <returns>HRESULT</returns>
         void IAudioSessionEvents.OnSessionDisconnected(AudioSessionDisconnectReason disconnectReason)
         {
-            EventHandler<AudioSessionDisconnectedEventArgs> handler = SessionDisconnected;
-            if (handler != null)
-                handler(this, new AudioSessionDisconnectedEventArgs(disconnectReason));
+            SessionDisconnected?.Invoke(this, new AudioSessionDisconnectedEventArgs(disconnectReason));
         }
     }
 }

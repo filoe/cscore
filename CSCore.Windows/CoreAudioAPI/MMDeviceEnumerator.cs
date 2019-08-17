@@ -264,7 +264,10 @@ namespace CSCore.CoreAudioAPI
             int result = 0;
             if (!_notificationClients.Contains(notificationClient))
             {
-                result = InteropCalls.CallI(UnsafeBasePtr, notificationClient, ((void**)(*(void**)UnsafeBasePtr))[6]);
+                result = InteropCalls.CallI(UnsafeBasePtr,
+                    Marshal.GetComInterfaceForObject(notificationClient, typeof(IMMNotificationClient)),
+                    ((void**)(*(void**)UnsafeBasePtr))[6]);
+                //result = InteropCalls.CallI(UnsafeBasePtr, notificationClient, ((void**)(*(void**)UnsafeBasePtr))[6]);
                 _notificationClients.Add(notificationClient);
             }
             return result;
@@ -290,12 +293,19 @@ namespace CSCore.CoreAudioAPI
             int result = 0;
             if (_notificationClients.Contains(notificationClient))
             {
-                result = InteropCalls.CallI(UnsafeBasePtr, notificationClient, ((void**)(*(void**)UnsafeBasePtr))[7]);
+                result = InteropCalls.CallI(UnsafeBasePtr,
+                    Marshal.GetComInterfaceForObject(notificationClient, typeof(IMMNotificationClient)),
+                    ((void**) (*(void**) UnsafeBasePtr))[7]);
+                //result = InteropCalls.CallI(UnsafeBasePtr, notificationClient, ((void**)(*(void**)UnsafeBasePtr))[7]);
                 _notificationClients.Remove(notificationClient);
             }
             return result;
         }
 
+        /// <summary>
+        /// Releases the COM object and unregisters all notication clients.
+        /// </summary>
+        /// <param name="disposing">True to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
             for(int i = _notificationClients.Count - 1; i >= 0; i--)

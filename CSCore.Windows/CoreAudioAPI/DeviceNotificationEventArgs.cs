@@ -18,8 +18,6 @@ namespace CSCore.CoreAudioAPI
         /// <param name="deviceId">The device id that identifies the audio endpoint device.</param>
         public DeviceNotificationEventArgs(string deviceId)
         {
-            if (String.IsNullOrEmpty(deviceId))
-                throw new ArgumentNullException("deviceId");
             DeviceId = deviceId;
         }
 

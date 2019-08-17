@@ -114,7 +114,7 @@ namespace CSCore.SoundOut.MMInterop
         public static extern Int32 waveInGetNumDevs();
 
         [DllImport("winmm.dll")]
-        public static extern MmResult waveInGetDevCaps(IntPtr deviceID, out CSCore.SoundIn.WaveInCaps waveInCaps, uint cbWaveInCaps);
+        public static extern MmResult waveInGetDevCaps(IntPtr deviceID, out SoundIn.WaveInCaps waveInCaps, uint cbWaveInCaps);
 
 
         #endregion waveIn

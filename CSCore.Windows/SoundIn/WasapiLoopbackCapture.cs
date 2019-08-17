@@ -54,7 +54,21 @@ namespace CSCore.SoundIn
         public WasapiLoopbackCapture(int latency, WaveFormat defaultFormat, ThreadPriority captureThreadPriority)
             : base(false, AudioClientShareMode.Shared, latency, defaultFormat, captureThreadPriority)
         {
-            
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WasapiLoopbackCapture"/> class with the <paramref name="latency"/> specified in milliseconds,
+        /// the <paramref name="defaultFormat"/> to use, the <see cref="ThreadPriority"/> of the internal capture thread 
+        /// and a the <paramref name="eventSync"/> flag which indicates whether to use eventsynchronization.
+        /// </summary>
+        /// <param name="eventSync">True, to use eventsynchronization instead of a simple loop and sleep behavior.</param>
+        /// <param name="latency">Latency of the capture specified in milliseconds.</param>
+        /// <param name="captureThreadPriority">ThreadPriority of the capturethread which runs in background and provides the audiocapture itself.</param>
+        /// <param name="defaultFormat">The default WaveFormat to use for the capture. If this parameter is set to null, the best available format will be chosen automatically.</param>
+        public WasapiLoopbackCapture(int latency, WaveFormat defaultFormat, ThreadPriority captureThreadPriority,
+            bool eventSync)
+            : base(eventSync, AudioClientShareMode.Shared, latency, defaultFormat, captureThreadPriority)
+        {
         }
 
         /// <summary>
