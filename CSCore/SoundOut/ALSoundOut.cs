@@ -92,6 +92,11 @@ namespace CSCore.SoundOut
 			_latency = latency;
 			_playbackPriority = playbackThreadPriority;
 			_syncContext = eventSyncContext;
+
+            if (!ALInterops.IsSupported())
+            {
+                throw new PlatformNotSupportedException("openAL is not supported by the current platform. Consider installing openAL on the current platform.");
+            }
 		}
 
 		/// <summary>
