@@ -3,28 +3,37 @@ using System;
 
 namespace SoundTouchPitchAndTempo
 {
-    public class SoundTouchSource : WaveAggregatorBase
+    public class SoundTouchSource : SampleAggregatorBase
     {
-        private byte[] _bytebuffer = new byte[4096];
-        private bool _endReached = false;
+        private bool _isDisposed;
+
+        private readonly int _latency;
+        private readonly float[] _sourceReadBuffer;
+        private readonly float[] _soundTouchReadBuffer;
         private readonly object lockObject;
 
-        private IWaveSource _waveSource;
+        private bool _seekRequested;
+
+        private ISampleSource _sampleSource;
         private ISoundTouch _soundTouch;
 
-        public SoundTouchSource(IWaveSource waveSource)
-            : this(waveSource, new SoundTouch())
+        public SoundTouchSource(ISampleSource sampleSource, int latency)
+            : this(sampleSource, latency, new SoundTouch())
         {
         }
 
-        public SoundTouchSource(IWaveSource waveSource, ISoundTouch soundTouch)
-            : base(waveSource)
+        public SoundTouchSource(ISampleSource sampleSource, int latency, ISoundTouch soundTouch)
+            : base(sampleSource)
         {
-            _waveSource = waveSource;
-
+            _sampleSource = sampleSource;
+            _latency = latency;
             _soundTouch = soundTouch;
-            _soundTouch.SetChannels((uint)_waveSource.WaveFormat.Channels);
-            _soundTouch.SetSampleRate((uint)_waveSource.WaveFormat.SampleRate);
+
+            _soundTouch.SetChannels(_sampleSource.WaveFormat.Channels);
+            _soundTouch.SetSampleRate(_sampleSource.WaveFormat.SampleRate);
+
+            _sourceReadBuffer = new float[(_sampleSource.WaveFormat.SampleRate * _sampleSource.WaveFormat.Channels * (long)_latency) / 1000];
+            _soundTouchReadBuffer = new float[_sourceReadBuffer.Length * 10];
 
             lockObject = new object();
         }
@@ -49,41 +58,89 @@ namespace SoundTouchPitchAndTempo
             _soundTouch.SetTempoChange(tempo);
         }
 
-        public override int Read(byte[] buffer, int offset, int count)
+        public void Seek()
+        {
+            _seekRequested = true;
+        }
+
+        public override int Read(float[] buffer, int offset, int count)
         {
             lock(lockObject)
             {
-                try
+                if(_seekRequested)
                 {
-                    var floatbuffer = new float[buffer.Length / 4];
-                    while(_soundTouch.NumberOfSamples() < count)
-                    {
-                        var bytesRead = _waveSource.Read(_bytebuffer, offset, _bytebuffer.Length);
-                        if(bytesRead == 0)
-                        {
-                            if(_endReached == false)
-                            {
-                                _endReached = true;
-                                _soundTouch.Flush();
-                            }
+                    _soundTouch.Clear();
+                    _seekRequested = false;
+                }
 
-                            break;
+                var samplesRead = 0;
+                var endOfSource = false;
+
+                while(samplesRead < count)
+                {
+                    if(_soundTouch.NumberOfSamples() == 0)
+                    {
+                        var readFromSource = _sampleSource.Read(_sourceReadBuffer, 0, _sourceReadBuffer.Length);
+                        if(readFromSource == 0)
+                        {
+                            endOfSource = true;
+                            _soundTouch.Flush();
                         }
 
-                        Buffer.BlockCopy(_bytebuffer, 0, floatbuffer, 0, bytesRead);
-                        _soundTouch.PutSamples(floatbuffer, (uint)(bytesRead / 8));
+                        _soundTouch.PutSamples(_sourceReadBuffer, readFromSource / _sampleSource.WaveFormat.Channels);
                     }
 
-                    var numberOfSamples = (int)_soundTouch.ReceiveSamples(floatbuffer, (uint)(count / 8));
-                    Buffer.BlockCopy(floatbuffer, 0, buffer, offset, numberOfSamples * 8);
+                    var desiredSampleFrames = (count - samplesRead) / _sampleSource.WaveFormat.Channels;
+                    var received = _soundTouch.ReceiveSamples(_soundTouchReadBuffer, desiredSampleFrames) * _sampleSource.WaveFormat.Channels;
 
-                    return numberOfSamples * 8;
+                    for(int n = 0; n < received; n++)
+                    {
+                        buffer[offset + samplesRead++] = _soundTouchReadBuffer[n];
+                    }
+
+                    if(received == 0 && endOfSource)
+                    {
+                        break;
+                    }
                 }
-                catch
+
+                return samplesRead;
+            }
+        }
+
+        public new void Dispose()
+        {
+            base.Dispose();
+
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual new void Dispose(bool isDisposing)
+        {
+            base.Dispose(isDisposing);
+
+            if(_isDisposed)
+            {
+                return;
+            }
+
+            if(isDisposing)
+            {
+                if(_sampleSource != null)
                 {
-                    return 0;
+                    _sampleSource.Dispose();
+                    _sampleSource = null;
+                }
+
+                if(_soundTouch != null)
+                {
+                    _soundTouch.Dispose();
+                    _soundTouch = null;
                 }
             }
+
+            _isDisposed = true;
         }
     }
 }
