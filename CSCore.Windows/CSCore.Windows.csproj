@@ -241,6 +241,7 @@
     <Compile Include="MmException.cs" />
     <Compile Include="MmResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WindowsChannelMapperFactory.cs" />
     <Compile Include="WindowsCodecsAttribute.cs" />
     <Compile Include="SoundIn\WasapiCapture.cs" />
     <Compile Include="SoundIn\WasapiLoopbackCapture.cs" />
@@ -294,6 +295,7 @@
     <Compile Include="Win32\PropertyVariant.cs" />
     <Compile Include="Win32\WaveFormatMarshaler.cs" />
     <Compile Include="Win32\Win32ComException.cs" />
+    <Compile Include="WindowsResamplerFactory.cs" />
     <Compile Include="XAudio2\AudioStreamCategory.cs" />
     <Compile Include="XAudio2\DebugConfiguration.cs" />
     <Compile Include="XAudio2\DeviceDetails.cs" />

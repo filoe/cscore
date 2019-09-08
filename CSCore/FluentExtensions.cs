@@ -48,7 +48,7 @@ namespace CSCore
         /// <param name="input">Already existing wave source whose sample rate has to be changed.</param>
         /// <param name="destinationSampleRate">Destination sample rate.</param>
         /// <returns>Wave source with the specified <paramref name="destinationSampleRate" />.</returns>
-        /*public static IWaveSource ChangeSampleRate(this IWaveSource input, int destinationSampleRate)
+        public static IWaveSource ChangeSampleRate(this IWaveSource input, int destinationSampleRate)
         {
             if (input == null)
                 throw new ArgumentNullException("input");
@@ -59,8 +59,9 @@ namespace CSCore
             if (input.WaveFormat.SampleRate == destinationSampleRate)
                 return input;
 
-            return new DmoResampler(input, destinationSampleRate);
-        }*/
+            var resamplerFactory = Locator.Instance.Get<IResamplerFactory>();
+            return resamplerFactory.CreateResampler(input, destinationSampleRate);
+        }
 
         /// <summary>
         ///     Changes the SampleRate of an already existing sample source. Note: This extension has to convert the
@@ -69,7 +70,7 @@ namespace CSCore
         /// <param name="input">Already existing sample source whose sample rate has to be changed.</param>
         /// <param name="destinationSampleRate">Destination sample rate.</param>
         /// <returns>Sample source with the specified <paramref name="destinationSampleRate" />.</returns>
-        /*public static ISampleSource ChangeSampleRate(this ISampleSource input, int destinationSampleRate)
+        public static ISampleSource ChangeSampleRate(this ISampleSource input, int destinationSampleRate)
         {
             if (input == null)
                 throw new ArgumentNullException("input");
@@ -80,8 +81,9 @@ namespace CSCore
             if (input.WaveFormat.SampleRate == destinationSampleRate)
                 return input;
 
-            return new DmoResampler(input.ToWaveSource(), destinationSampleRate).ToSampleSource();
-        }*/
+            var resamplerFactory = Locator.Instance.Get<IResamplerFactory>();
+            return resamplerFactory.CreateResampler(input, destinationSampleRate);
+        }
 
 
         /// <summary>
@@ -92,7 +94,7 @@ namespace CSCore
         /// </summary>
         /// <param name="input">Already existing wave source.</param>
         /// <returns><see cref="IWaveSource" /> instance with two channels.</returns>
-        /*public static IWaveSource ToStereo(this IWaveSource input)
+        public static IWaveSource ToStereo(this IWaveSource input)
         {
             if (input == null)
                 throw new ArgumentNullException("input");
@@ -102,20 +104,20 @@ namespace CSCore
             if (input.WaveFormat.Channels == 1)
                 return new MonoToStereoSource(input.ToSampleSource()).ToWaveSource(input.WaveFormat.BitsPerSample);
 
+            var channelMapperFactory = Locator.Instance.Get<IChannelMapperFactory>();
+
             var format = input.WaveFormat as WaveFormatExtensible;
             if (format != null)
             {
                 ChannelMask channelMask = format.ChannelMask;
                 ChannelMatrix channelMatrix = ChannelMatrix.GetMatrix(channelMask, ChannelMasks.StereoMask);
-                return new DmoChannelResampler(input, channelMatrix);
+                return channelMapperFactory.MapChannels(input, channelMatrix);
             }
 
             Debug.WriteLine("MultiChannel stream with no ChannelMask.");
 
-            WaveFormat waveFormat = (WaveFormat)input.WaveFormat.Clone();
-            waveFormat.Channels = 2;
-            return new DmoResampler(input, waveFormat);
-        }*/
+            return channelMapperFactory.MapChannels(input, 2);
+        }
 
         /// <summary>
         ///     Converts the specified sample source with n channels to a wave source with two channels.
@@ -125,7 +127,7 @@ namespace CSCore
         /// </summary>
         /// <param name="input">Already existing sample source.</param>
         /// <returns><see cref="ISampleSource" /> instance with two channels.</returns>
-        /*public static ISampleSource ToStereo(this ISampleSource input)
+        public static ISampleSource ToStereo(this ISampleSource input)
         {
             if (input == null)
                 throw new ArgumentNullException("input");
@@ -136,7 +138,7 @@ namespace CSCore
                 return new MonoToStereoSource(input);
 
             return ToStereo(input.ToWaveSource()).ToSampleSource();
-        }*/
+        }
 
         /// <summary>
         ///     Converts the specified wave source with n channels to a wave source with one channel.
@@ -146,7 +148,7 @@ namespace CSCore
         /// </summary>
         /// <param name="input">Already existing wave source.</param>
         /// <returns><see cref="IWaveSource" /> instance with one channel.</returns>
-        /*public static IWaveSource ToMono(this IWaveSource input)
+        public static IWaveSource ToMono(this IWaveSource input)
         {
             if (input == null)
                 throw new ArgumentNullException("input");
@@ -156,20 +158,20 @@ namespace CSCore
             if (input.WaveFormat.Channels == 2)
                 return new StereoToMonoSource(input.ToSampleSource()).ToWaveSource(input.WaveFormat.BitsPerSample);
 
+            var channelMapperFactory = Locator.Instance.Get<IChannelMapperFactory>();
+
             WaveFormatExtensible format = input.WaveFormat as WaveFormatExtensible;
             if (format != null)
             {
                 ChannelMask channelMask = format.ChannelMask;
                 ChannelMatrix channelMatrix = ChannelMatrix.GetMatrix(channelMask, ChannelMasks.MonoMask);
-                return new DmoChannelResampler(input, channelMatrix);
+                return channelMapperFactory.MapChannels(input, channelMatrix);
             }
 
             Debug.WriteLine("MultiChannel stream with no ChannelMask.");
 
-            WaveFormat waveFormat = (WaveFormat) input.WaveFormat.Clone();
-            waveFormat.Channels = 1;
-            return new DmoResampler(input, waveFormat);
-        }*/
+            return channelMapperFactory.MapChannels(input, 1);
+        }
 
         /// <summary>
         ///     Converts the specified sample source with n channels to a wave source with one channel.
@@ -179,7 +181,7 @@ namespace CSCore
         /// </summary>
         /// <param name="input">Already existing sample source.</param>
         /// <returns><see cref="ISampleSource" /> instance with one channels</returns>
-        /*public static ISampleSource ToMono(this ISampleSource input)
+        public static ISampleSource ToMono(this ISampleSource input)
         {
             if (input == null)
                 throw new ArgumentNullException("input");
@@ -190,7 +192,7 @@ namespace CSCore
                 return new StereoToMonoSource(input);
 
             return ToMono(input.ToWaveSource()).ToSampleSource();
-        }*/
+        }
 
         /// <summary>
         ///     Appends a new instance of the <see cref="LoopStream" /> class to the audio chain.
