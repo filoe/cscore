@@ -9,6 +9,7 @@ namespace CSCore.Utils
         private long _position;
 
         private readonly Stream _stream;
+        private const int ZeroReadTimeoutInMs = 2000;
 
         public ReadBlockStream(Stream stream)
         {
@@ -22,14 +23,31 @@ namespace CSCore.Utils
 
         public override int Read(byte[] buffer, int offset, int count)
         {
+            var watch = new Stopwatch();
+
             int read = 0;
             while (read < count)
             {
-                read += _stream.Read(buffer, offset + read, count - read);
+                var r = _stream.Read(buffer, offset + read, count - read);
+                read += r;
+
+                //if stream continusly returns zero, wait for ZeroReadTimeoutInMs
+                //if within ZeroReadTimeoutInMs no bytes were read, exit the read loop
+                if (r == 0)
+                {
+                    if (!watch.IsRunning)
+                        watch = Stopwatch.StartNew();
+                    else if (watch.ElapsedMilliseconds >= ZeroReadTimeoutInMs)
+                        break;
+                }
+                else if(watch.IsRunning)
+                {
+                    watch.Stop();
+                }
             }
 
             _position += read;
-            return count;
+            return read;
         }
 
         public override bool CanRead

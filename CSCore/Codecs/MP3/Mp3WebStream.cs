@@ -288,6 +288,9 @@ namespace CSCore.Codecs.MP3
                     }
                 } while (!_disposing);
             }
+            catch (Mp3Frame.InternalEofException)
+            {
+            }
             finally
             {
                 if (resetEvent != null)

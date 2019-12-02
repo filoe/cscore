@@ -124,7 +124,8 @@ namespace CSCore.Codecs.MP3
             if ((stream.Read(buffer, 0, buffer.Length)) < 4)
             {
                 Debug.WriteLine("Stream is EOF.");
-                return false;
+                //do not throw EndOfStreamException --> will be caught and will trigger retry
+                throw new InternalEofException("Stream is EOF.");
             }
 
             //int totalRead = 0;
@@ -140,7 +141,8 @@ namespace CSCore.Codecs.MP3
                 if ((stream.Read(buffer, 3, 1)) < 1)
                 {
                     Debug.WriteLine("Mp3Frame::FindFrame: Stream EOF.");
-                    return false;
+                    //do not throw EndOfStreamException --> will be caught and will trigger retry
+                    throw new InternalEofException("Stream is EOF.");
                 }
 
                 /*totalRead += read;
@@ -389,6 +391,21 @@ namespace CSCore.Codecs.MP3
                 return 2;
 
             return 0;
+        }
+
+        internal class InternalEofException : Exception
+        {
+            public InternalEofException() : base()
+            {
+            }
+
+            public InternalEofException(string message) : base(message)
+            {
+            }
+
+            public InternalEofException(string message, Exception innerException) : base(message, innerException)
+            {
+            }
         }
     }
 }
