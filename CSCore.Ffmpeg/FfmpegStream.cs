@@ -10,7 +10,11 @@ namespace CSCore.Ffmpeg
 
         public AvioContext AvioContext { get; private set; }
 
-        public FfmpegStream(Stream stream)
+        public FfmpegStream(Stream stream) : this(stream, true)
+        {
+        }
+
+        public FfmpegStream(Stream stream, bool allowWrite)
         {
             if (stream == null)
                 throw new ArgumentNullException("stream");
@@ -21,7 +25,7 @@ namespace CSCore.Ffmpeg
 
             AvioContext = new AvioContext(ReadDataCallback, 
                 stream.CanSeek ? new FfmpegCalls.AvioSeek(SeekCallback) : null, 
-                stream.CanWrite ? new FfmpegCalls.AvioWriteData(WriteDataCallback) : null);
+                stream.CanWrite && allowWrite ? new FfmpegCalls.AvioWriteData(WriteDataCallback) : null);
         }
 
         private long SeekCallback(IntPtr opaque, long offset, FfmpegCalls.SeekFlags whence)
@@ -70,8 +74,10 @@ namespace CSCore.Ffmpeg
                     break;
             }
 
+            read = Math.Min(read, bufferSize);
             Marshal.Copy(managedBuffer, 0, buffer, Math.Min(read, bufferSize));
 
+            Console.WriteLine("Read: " + read);
             return read;
         }
 

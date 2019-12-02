@@ -254,7 +254,7 @@ namespace CSCore.Ffmpeg
             _stream = stream;
             _disposeStream = disposeStream;
 
-            _ffmpegStream = new FfmpegStream(stream);
+            _ffmpegStream = new FfmpegStream(stream, false);
             _formatContext = new AvFormatContext(_ffmpegStream);
             Initialize();
         }
