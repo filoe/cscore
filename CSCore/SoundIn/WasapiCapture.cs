@@ -248,7 +248,7 @@ namespace CSCore.SoundIn
 
                 long actualDuration = (long) ((double) ReftimesPerSecond * bufferSize / WaveFormat.SampleRate);
                 int actualLatency = (int) (actualDuration / ReftimesPerMillisecond);
-                int sleepDuration = actualLatency;
+                int sleepDuration = actualLatency / 2;
 
                 byte[] buffer = new byte[bufferSize * frameSize];
 
