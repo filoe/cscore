@@ -32,7 +32,7 @@ For **FFmpeg** support, install the [CSCore.Ffmpeg nuget package](https://www.nu
  - **Highly optimized PERFORMANCE** through usage of CLI instructions
  - **Designed for newbies and professionals** 
  - **Tons of features**
- - **Fast support on [github](https://github.com/filoe/cscore), [codeplex](http://cscore.codeplex.com/) or [stackoverflow](http://stackoverflow.com/questions/tagged/cscore)** 
+ - **Fast support on [github](https://github.com/filoe/cscore) and [stackoverflow](http://stackoverflow.com/questions/tagged/cscore)** 
  - **High code coverage through unit tests** 
  - **Licensed under the MS-PL** (does not include the [CSCore.Ffmpeg](https://github.com/filoe/cscore/tree/master/CSCore.Ffmpeg) project which is licensed under the LGPL)
 
