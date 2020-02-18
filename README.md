@@ -13,6 +13,7 @@
 CSCore is a free .NET audio library which is completely written in C#. Although it is still a rather young project, it offers tons of features like playing or capturing audio, en- or decoding many different codecs, effects and much more!
 
 CSCore is based on a very extensible architecture which allows you to make it fit to your needs without any major effort. You can build music players, voice chats, audio recorders and so on!
+Supported platforms: Windows only, linux and mac experimental (see https://github.com/filoe/cscore/tree/netstandard).
 
 For more details, take a look at the source or the [online documentation](http://filoe.github.io/cscore/sharpDox/).
 
