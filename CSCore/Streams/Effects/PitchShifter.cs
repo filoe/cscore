@@ -17,6 +17,7 @@ namespace CSCore.Streams.Effects
     /// </remarks>
     public class PitchShifter : SampleAggregatorBase
     {
+        private readonly PitchShifterInternal _pitchShifterInternal;
         /// <summary>
         /// Gets or sets the pitch shift factor.
         /// </summary>
@@ -34,6 +35,7 @@ namespace CSCore.Streams.Effects
         public PitchShifter(ISampleSource source) : base(source)
         {
             PitchShiftFactor = 1.0f;
+            _pitchShifterInternal = new PitchShifterInternal();
         }
 
         /// <summary>
@@ -62,7 +64,7 @@ namespace CSCore.Streams.Effects
                     Buffer.BlockCopy(buffer, offset, pitchBuffer, 0, read);
                 }
 
-                PitchShifterInternal.PitchShift(PitchShiftFactor, read, WaveFormat.SampleRate, buffer);
+                _pitchShifterInternal.PitchShift(PitchShiftFactor, read, WaveFormat.SampleRate, buffer);
 
                 if (offset != 0)
                 {
