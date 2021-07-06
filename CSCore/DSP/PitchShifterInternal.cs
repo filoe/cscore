@@ -49,17 +49,17 @@ namespace CSCore.DSP
     internal class PitchShifterInternal
     {
         private static readonly int MaxFrameLength = 16000;
-        private static readonly float[] InFifo = new float[MaxFrameLength];
-        private static readonly float[] OutFifo = new float[MaxFrameLength];
-        private static readonly float[] FfTworksp = new float[2 * MaxFrameLength];
-        private static readonly float[] LastPhase = new float[MaxFrameLength / 2 + 1];
-        private static readonly float[] SumPhase = new float[MaxFrameLength / 2 + 1];
-        private static readonly float[] OutputAccum = new float[2 * MaxFrameLength];
-        private static readonly float[] AnaFreq = new float[MaxFrameLength];
-        private static readonly float[] AnaMagn = new float[MaxFrameLength];
-        private static readonly float[] SynFreq = new float[MaxFrameLength];
-        private static readonly float[] SynMagn = new float[MaxFrameLength];
-        private static long _gRover;
+        private readonly float[] InFifo = new float[MaxFrameLength];
+        private readonly float[] OutFifo = new float[MaxFrameLength];
+        private readonly float[] FfTworksp = new float[2 * MaxFrameLength];
+        private readonly float[] LastPhase = new float[MaxFrameLength / 2 + 1];
+        private readonly float[] SumPhase = new float[MaxFrameLength / 2 + 1];
+        private readonly float[] OutputAccum = new float[2 * MaxFrameLength];
+        private readonly float[] AnaFreq = new float[MaxFrameLength];
+        private readonly float[] AnaMagn = new float[MaxFrameLength];
+        private readonly float[] SynFreq = new float[MaxFrameLength];
+        private readonly float[] SynMagn = new float[MaxFrameLength];
+        private long _gRover;
 
         public static void PitchShift(float pitchShift, long numSampsToProcess,
            float sampleRate, float[] indata)
