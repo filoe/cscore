@@ -61,12 +61,12 @@ namespace CSCore.DSP
         private readonly float[] SynMagn = new float[MaxFrameLength];
         private long _gRover;
 
-        public static void PitchShift(float pitchShift, long numSampsToProcess,
+        public void PitchShift(float pitchShift, long numSampsToProcess,
            float sampleRate, float[] indata)
         {
             PitchShift(pitchShift, numSampsToProcess, 2048, 10, sampleRate, indata);
         }
-        public static void PitchShift(float pitchShift, long numSampsToProcess, long fftFrameSize,
+        public void PitchShift(float pitchShift, long numSampsToProcess, long fftFrameSize,
             long osamp, float sampleRate, float[] indata)
         {
             long i;
@@ -226,7 +226,7 @@ namespace CSCore.DSP
             }
         }
 
-        public static void ShortTimeFourierTransform(float[] fftBuffer, long fftFrameSize, long sign)
+        public void ShortTimeFourierTransform(float[] fftBuffer, long fftFrameSize, long sign)
         {
             long i;
             long j, le;
