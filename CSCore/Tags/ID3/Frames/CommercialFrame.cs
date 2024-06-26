@@ -1,5 +1,6 @@
 ﻿using System;
 
+
 namespace CSCore.Tags.ID3.Frames
 {
     public class CommercialFrame : Frame
