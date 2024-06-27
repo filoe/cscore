@@ -13,5 +13,5 @@ its is proven quality. But if you need the features I am working on, or want to 
 your own, this is a place to start.
 
 Release Status: 
-1.0beta Compiling and seeimingly working but not fully tested
+1.0beta Compiling and seemingly working but not fully tested
 
