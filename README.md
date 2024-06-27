@@ -1,7 +1,7 @@
 ![CSCore Logo](http://fs1.directupload.net/images/150528/h8n8qwyc.png)
 
 
-# CSCore-Core - .NET Audio Library #
+# CSCore-Core  .NET Audio Library #
 This is a fork of the https://github.com/filoe/cscore project.
 
 Development on CSCore stopped at .NET Framework4.5.  This repo is an update
