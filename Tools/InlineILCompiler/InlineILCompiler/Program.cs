@@ -301,6 +301,7 @@ namespace InlineILCompiler
                 // search for inline IL and store them in segments, also find native exports
                 //
                 Console.WriteLine("Searching for inline IL ...");
+                Console.WriteLine("In project " + ProjectPath);
                 var sources = GetSourceFilesFromProject(ProjectPath);
                 if (!PreprocessCode(sources, out exports, out segments))
                     return 0;

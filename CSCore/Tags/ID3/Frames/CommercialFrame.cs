@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 
 
 namespace CSCore.Tags.ID3.Frames

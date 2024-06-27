@@ -114,43 +114,51 @@ namespace CSCli
                     //check whether the instruction is a call to a method
                     if (instruction.OpCode.Code == Code.Call && instruction.Operand is MethodReference)
                     {
-                        //get the called method
-                        MethodReference methodDescription = (MethodReference)instruction.Operand;
-                        //get the attributes of the called method
-                        var attributes = GetAttributes(methodDescription.Resolve());
-
-                        //check whether the called method is marked with the given calli attribute
-                        if (attributes.Contains(_calliAttributeName))
+                        try
                         {
-                            //MessageIntegration.Info("Patching [{0}] @ [{1}].", method.ToString(), instruction.ToString());
-                            if (!method.Name.EndsWith("Native"))
-                                MessageIntegration.Info(String.Format("CallI-Comimport Methodnames should end with a \"Native\". Method: \"{0}\".", method.FullName));
+                            //get the called method
+                            MethodReference methodDescription = (MethodReference)instruction.Operand;
+                            //get the attributes of the called method
 
-                            //create a callsite for the calli instruction using stdcall calling convention
-                            var callSite = new CallSite(methodDescription.ReturnType)
-                            {
-                                CallingConvention = MethodCallingConvention.StdCall
-                            };
+                            var attributes = GetAttributes(methodDescription.Resolve());
 
-                            //iterate through every parameter of the original method-call
-                            for (int j = 0; j < methodDescription.Parameters.Count - 1; j++) //foreach won't work because iterator length is bigger than count??
+                            //check whether the called method is marked with the given calli attribute
+                            if (attributes.Contains(_calliAttributeName))
                             {
-                                var p = methodDescription.Parameters[j];
-                                if (p.ParameterType.FullName == "System.Boolean")
+                                //MessageIntegration.Info("Patching [{0}] @ [{1}].", method.ToString(), instruction.ToString());
+                                if (!method.Name.EndsWith("Native"))
+                                    MessageIntegration.Info(String.Format("CallI-Comimport Methodnames should end with a \"Native\". Method: \"{0}\".", method.FullName));
+
+                                //create a callsite for the calli instruction using stdcall calling convention
+                                var callSite = new CallSite(methodDescription.ReturnType)
                                 {
-                                    MessageIntegration.WriteWarning("Native bool has a size of 4 bytes. Make sure to use a 16bit Integer for \"VARIANT_BOOL\" and a 32bit Integer for \"BOOL\".", "CI0001");
+                                    CallingConvention = MethodCallingConvention.StdCall
+                                };
+
+                                //iterate through every parameter of the original method-call
+                                for (int j = 0; j < methodDescription.Parameters.Count - 1; j++) //foreach won't work because iterator length is bigger than count??
+                                {
+                                    var p = methodDescription.Parameters[j];
+                                    if (p.ParameterType.FullName == "System.Boolean")
+                                    {
+                                        MessageIntegration.WriteWarning("Native bool has a size of 4 bytes. Make sure to use a 16bit Integer for \"VARIANT_BOOL\" and a 32bit Integer for \"BOOL\".", "CI0001");
+                                    }
+
+                                    //append every parameter of the method-call to the callsite of the calli instruction
+                                    callSite.Parameters.Add(p);
                                 }
 
-                                //append every parameter of the method-call to the callsite of the calli instruction
-                                callSite.Parameters.Add(p);
+                                //create a calli-instruction including the just built callSite
+                                var calliInstruction = ilProcessor.Create(OpCodes.Calli, callSite);
+                                //replace the method-call by the calli-instruction
+                                ilProcessor.Replace(instruction, calliInstruction);
+
+                                _replacedCallsCount++;
                             }
-
-                            //create a calli-instruction including the just built callSite
-                            var calliInstruction = ilProcessor.Create(OpCodes.Calli, callSite);
-                            //replace the method-call by the calli-instruction
-                            ilProcessor.Replace(instruction, calliInstruction);
-
-                            _replacedCallsCount++;
+                        } catch (Exception e)
+                        {
+                            MessageIntegration.WriteWarning("Failure to resolve method ");
+                            MessageIntegration.WriteWarning("Reason: " + e.Message);
                         }
                     }
                 }
