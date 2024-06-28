@@ -15,6 +15,8 @@ using CSCore.Codecs.WAV;
 using CSCore.Codecs.WMA;
 using CSCore.MediaFoundation;
 
+// Modified on 6/28/2024 by jpkessel to support loading audio from streams
+
 namespace CSCore.Codecs
 {
     /// <summary>
@@ -138,56 +140,54 @@ namespace CSCore.Codecs
         /// <exception cref="NotSupportedException">The codec of the specified file is not supported.</exception>
         public IWaveSource GetCodec(string filename)
         {
-            if(String.IsNullOrEmpty(filename))
+            if (String.IsNullOrEmpty(filename))
                 throw new ArgumentNullException("filename");
 
             if (!File.Exists(filename))
                 throw new FileNotFoundException("File not found.", filename);
 
             string extension = Path.GetExtension(filename).Remove(0, 1); //get the extension without the "dot".
+           
+            Stream stream = File.OpenRead(filename);
+            return GetCodec(stream, extension)??Default(filename);
+        }
 
+        public IWaveSource GetCodec(Stream stream, string extension)
+        {
             IWaveSource source = null;
-            if (File.Exists(filename))
+            try
             {
-                Stream stream = File.OpenRead(filename);
-                try
+                foreach (var codecEntry in _codecs)
                 {
-                    foreach (var codecEntry in _codecs)
+                    try
                     {
-                        try
+                        if (
+                            codecEntry.Value.FileExtensions.Any(
+                                x => x.Equals(extension, StringComparison.OrdinalIgnoreCase)))
                         {
-                            if (
-                                codecEntry.Value.FileExtensions.Any(
-                                    x => x.Equals(extension, StringComparison.OrdinalIgnoreCase)))
-                            {
-                                source = codecEntry.Value.GetCodecAction(stream);
-                                if (source != null)
-                                    break;
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Debug.WriteLine(ex.ToString());
+                            source = codecEntry.Value.GetCodecAction(stream);
+                            if (source != null)
+                                break;
                         }
                     }
-                }
-                finally
-                {
-                    if (source == null)
+                    catch (Exception ex)
                     {
-                        stream.Dispose();
-                    }
-                    else
-                    {
-                        source = new DisposeFileStreamSource(source, stream);
+                        Debug.WriteLine(ex.ToString());
                     }
                 }
             }
-
-            if (source != null)
-                return source;
-
-            return Default(filename);
+            finally
+            {
+                if (source == null)
+                {
+                    stream.Dispose();
+                }
+                else
+                {
+                    source = new DisposeFileStreamSource(source, stream);
+                }
+            }
+            return source;
         }
 
         /// <summary>
