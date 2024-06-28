@@ -113,14 +113,14 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>CSCore-Core</PackageId>
     <Title>CSCore for .NET Core</Title>
-    <Version>1.0.0-beta</Version>
+    <Version>1.0.1-beta</Version>
     <Authors>Jeffrey Kesselman</Authors>
     <Company>Purdue Polytechnic</Company>
     <PackageProjectUrl>https://github.com/profK/cscore-core</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/profK/cscore-core</RepositoryUrl>
     <PackageTags>.net;.net8;audio</PackageTags>
-    <PackageReleaseNotes>
+    <PackageReleaseNotes>Release Status: 1.0.1beta now can use CodecFactory to create a codec that reads its data from a provided stream.
 
 Release Status: 1.0beta Compiling in .NET8 and seemingly working but not fully tested</PackageReleaseNotes>
     <PackageLicenseFile>license.md</PackageLicenseFile>
