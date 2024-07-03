@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Drawing;
 
 namespace CSCore.Tags.ID3
 {

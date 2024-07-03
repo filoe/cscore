@@ -4,12 +4,12 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
-using System.Net.Configuration;
 using System.Reflection;
 using System.Threading;
 using CSCore.Utils;
 using CSCore.Utils.Buffer;
 using ThreadState = System.Threading.ThreadState;
+using System.Configuration;
 
 namespace CSCore.Codecs.MP3
 {
@@ -402,38 +402,42 @@ namespace CSCore.Codecs.MP3
             }
         }
 
-        //Copied from http://social.msdn.microsoft.com/forums/en-US/netfxnetcom/thread/ff098248-551c-4da9-8ba5-358a9f8ccc57/
-        private static bool SetAllowUnsafeHeaderParsing20()
+        //Copied from chatGPT
+        public static bool SetAllowUnsafeHeaderParsing20()
         {
-            //Get the assembly that contains the internal class
-            Assembly aNetAssembly = Assembly.GetAssembly(typeof (SettingsSection));
-            if (aNetAssembly != null)
-            {
-                //Use the assembly in order to get the internal type for the internal class
-                Type aSettingsType = aNetAssembly.GetType("System.Net.Configuration.SettingsSectionInternal");
-                if (aSettingsType != null)
-                {
-                    //Use the internal static property to get an instance of the internal settings class.
-                    //If the static instance isn't created allready the property will create it for us.
-                    object anInstance = aSettingsType.InvokeMember("Section",
-                        BindingFlags.Static | BindingFlags.GetProperty | BindingFlags.NonPublic, null, null,
-                        new object[] {});
+            // Get the assembly that contains the internal class
+            Assembly assembly = Assembly.GetAssembly(typeof(HttpWebRequest));
 
-                    if (anInstance != null)
+            if (assembly != null)
+            {
+                // Get the internal class type
+                Type type = assembly.GetType("System.Net.Configuration.SettingsSectionInternal");
+
+                if (type != null)
+                {
+                    // Get the instance of the internal class
+                    object instance = type
+                        .GetField("section", BindingFlags.Static | BindingFlags.NonPublic)
+                        .GetValue(null);
+
+                    if (instance != null)
                     {
-                        //Locate the private bool field that tells the framework is unsafe header parsing should be allowed or not
-                        FieldInfo aUseUnsafeHeaderParsing = aSettingsType.GetField("useUnsafeHeaderParsing",
-                            BindingFlags.NonPublic | BindingFlags.Instance);
-                        if (aUseUnsafeHeaderParsing != null)
+                        // Set the AllowUnsafeHeaderParsing property
+                        FieldInfo allowUnsafeHeaderParsing = type
+                            .GetField("useUnsafeHeaderParsing", BindingFlags.NonPublic | BindingFlags.Instance);
+
+                        if (allowUnsafeHeaderParsing != null)
                         {
-                            aUseUnsafeHeaderParsing.SetValue(anInstance, true);
+                            allowUnsafeHeaderParsing.SetValue(instance, true);
                             return true;
                         }
                     }
                 }
             }
+
             return false;
         }
+
     }
 }
 
